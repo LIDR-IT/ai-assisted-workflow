@@ -1,0 +1,1 @@
+../../.agents/rules/process/documentation.md
