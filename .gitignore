@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Environment variables (secrets)
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE settings (personal)
+.vscode/settings.json
+.idea/workspace.xml
+
+# Temporary files
+*.tmp
+.cache/
+
+# Note: We DO commit the following (important for the project):
+# - .agents/ (source of truth)
+# - .cursor/, .claude/, .gemini/, .agent/ (agent configs and symlinks)
+# - Generated MCP configs (.cursor/mcp.json, .claude/mcp.json, etc.)
+# - SETUP_*.md files

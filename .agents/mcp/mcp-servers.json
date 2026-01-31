@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "description": "MCP servers configuration for template-best-practices project",
+  "servers": {
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {
+        "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"
+      },
+      "platforms": ["cursor", "claude", "gemini", "antigravity"],
+      "description": "Context7 - Up-to-date documentation for popular frameworks and libraries"
+    }
+  }
+}
