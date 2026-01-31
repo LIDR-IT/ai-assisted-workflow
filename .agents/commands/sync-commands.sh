@@ -74,10 +74,85 @@ sync_claude() {
   echo ""
 }
 
+# Convert Markdown command to TOML format for Gemini CLI
+convert_md_to_toml() {
+  local md_file=$1
+  local toml_file=$2
+
+  # Check if file has frontmatter
+  local has_frontmatter=false
+  if head -1 "$md_file" | grep -q "^---$"; then
+    has_frontmatter=true
+  fi
+
+  # Extract description from YAML frontmatter (if exists)
+  local description=""
+  if [ "$has_frontmatter" = true ]; then
+    description=$(sed -n '/^---$/,/^---$/p' "$md_file" | grep "^description:" | sed 's/description: *//')
+  fi
+
+  # Extract prompt content (everything after second ---)
+  local prompt=""
+  if [ "$has_frontmatter" = true ]; then
+    # Skip lines until we pass the closing --- of frontmatter
+    prompt=$(awk 'BEGIN{skip=1} /^---$/{if(NR==1)next; skip=0; next} !skip{print}' "$md_file")
+  else
+    prompt=$(cat "$md_file")
+  fi
+
+  # Convert $ARGUMENTS to {{args}}
+  prompt=$(echo "$prompt" | sed 's/\$ARGUMENTS/{{args}}/g')
+
+  # Generate TOML file
+  {
+    if [ -n "$description" ]; then
+      echo "description = \"$description\""
+      echo ""
+    fi
+    echo 'prompt = """'
+    echo "$prompt"
+    echo '"""'
+  } > "$toml_file"
+}
+
 # Sync Gemini CLI
 sync_gemini() {
-  echo "💎 Syncing Gemini CLI commands..."
-  create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.gemini/commands" "commands"
+  echo "💎 Syncing Gemini CLI commands (converting .md → .toml)..."
+
+  if [ "$DRY_RUN" = true ]; then
+    echo "  [DRY RUN] Would convert and copy commands to .gemini/commands/"
+    echo ""
+    return 0
+  fi
+
+  # Remove existing directory/symlink
+  if [ -e "$PROJECT_ROOT/.gemini/commands" ] || [ -L "$PROJECT_ROOT/.gemini/commands" ]; then
+    rm -rf "$PROJECT_ROOT/.gemini/commands"
+  fi
+
+  # Create commands directory
+  mkdir -p "$PROJECT_ROOT/.gemini/commands"
+
+  echo "  📝 Converting and copying commands..."
+
+  local count=0
+  for md_file in "$COMMANDS_SOURCE"/*.md; do
+    if [ -f "$md_file" ]; then
+      local base_name=$(basename "$md_file" .md)
+      local toml_file="$PROJECT_ROOT/.gemini/commands/${base_name}.toml"
+
+      convert_md_to_toml "$md_file" "$toml_file"
+      echo "    ✅ ${base_name}.md → ${base_name}.toml"
+      ((count++))
+    fi
+  done
+
+  if [ $count -gt 0 ]; then
+    echo "  ✅ Converted $count commands to TOML format"
+  else
+    echo "  ⚠️  No commands found to convert"
+  fi
+
   echo ""
 }
 
@@ -122,14 +197,15 @@ sync_antigravity() {
   echo ""
 }
 
-# Verify symlinks
-verify_symlinks() {
-  echo "🔍 Verifying symlinks..."
+# Verify symlinks and generated files
+verify_sync() {
+  echo "🔍 Verifying synchronization..."
 
   if [ "$DRY_RUN" = false ]; then
     local errors=0
 
-    for agent in cursor claude gemini; do
+    # Verify Cursor and Claude symlinks
+    for agent in cursor claude; do
       local link="$PROJECT_ROOT/.$agent/commands"
       if [ -L "$link" ]; then
         local target=$(readlink "$link")
@@ -139,6 +215,15 @@ verify_symlinks() {
         ((errors++))
       fi
     done
+
+    # Verify Gemini converted files
+    if [ -d "$PROJECT_ROOT/.gemini/commands" ]; then
+      local toml_count=$(find "$PROJECT_ROOT/.gemini/commands" -name "*.toml" | wc -l)
+      echo "  ✅ gemini commands: $toml_count TOML files generated"
+    else
+      echo "  ❌ gemini commands: Directory not found"
+      ((errors++))
+    fi
 
     echo ""
 
@@ -161,20 +246,22 @@ main() {
   sync_gemini
   sync_antigravity
 
-  verify_symlinks
+  verify_sync
 
   if [ "$DRY_RUN" = false ]; then
     echo "✅ Commands synchronization completed successfully"
     echo ""
     echo "Summary:"
-    echo "  - Cursor: commands ✅ (full symlink)"
-    echo "  - Claude Code: commands ✅ (full symlink)"
-    echo "  - Gemini CLI: commands ✅ (full symlink)"
-    echo "  - Antigravity: workflows ✅ (selective symlinks)"
+    echo "  - Cursor: commands ✅ (full symlink to .md files)"
+    echo "  - Claude Code: commands ✅ (full symlink to .md files)"
+    echo "  - Gemini CLI: commands ✅ (converted to .toml files)"
+    echo "  - Antigravity: workflows ✅ (selective symlinks to .md files)"
     echo ""
     echo "📁 All commands now synchronized from .agents/commands/"
     echo ""
-    echo "⚠️  Note: Antigravity uses .agent/workflows/ for commands"
+    echo "⚠️  Notes:"
+    echo "  - Antigravity uses .agent/workflows/ for commands"
+    echo "  - Gemini CLI commands auto-converted from .md to .toml format"
   else
     echo "✅ Dry run completed - no changes made"
     echo ""
