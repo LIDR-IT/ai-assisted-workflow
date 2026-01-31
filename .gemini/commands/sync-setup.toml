@@ -28,7 +28,7 @@ Ejecuta el proceso completo de sincronización de la configuración multi-agente
 
 Ejecuta los siguientes comandos en orden:
 
-```bash
+[Code block:]
 # 1. Ejecutar sincronización completa
 ./.agents/sync-all.sh
 
@@ -44,7 +44,7 @@ ls -la .agent/workflows/ | grep "\->"
 
 # 4. Verificar MCP configs existen
 ls -la .cursor/mcp.json .claude/mcp.json .gemini/settings.json
-```
+
 
 Presenta un resumen claro del resultado con:
 - ✅ Componentes sincronizados exitosamente

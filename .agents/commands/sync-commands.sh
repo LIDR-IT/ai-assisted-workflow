@@ -103,6 +103,10 @@ convert_md_to_toml() {
   # Convert $ARGUMENTS to {{args}}
   prompt=$(echo "$prompt" | sed 's/\$ARGUMENTS/{{args}}/g')
 
+  # Remove triple backticks (conflict with TOML triple quotes)
+  # Convert ```bash to just a marker, and remove closing ```
+  prompt=$(echo "$prompt" | sed 's/```bash/[Code block:]/g' | sed 's/```//g')
+
   # Generate TOML file
   {
     if [ -n "$description" ]; then
