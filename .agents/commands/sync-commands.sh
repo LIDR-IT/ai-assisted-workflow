@@ -4,7 +4,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-RULES_SOURCE="$SCRIPT_DIR"
+COMMANDS_SOURCE="$SCRIPT_DIR"
 
 # Parse command line arguments
 DRY_RUN=false
@@ -14,19 +14,19 @@ if [[ "$1" == "--dry-run" ]]; then
   echo ""
 fi
 
-echo "🔄 Synchronizing rules from .agents/rules/ to all agent directories..."
+echo "🔄 Synchronizing commands from .agents/commands/ to all agent directories..."
 echo ""
 
 # Validate source directory exists
 validate_source() {
   echo "📋 Validating source directory..."
 
-  if [ ! -d "$RULES_SOURCE" ]; then
-    echo "❌ Rules source directory not found: $RULES_SOURCE"
+  if [ ! -d "$COMMANDS_SOURCE" ]; then
+    echo "❌ Commands source directory not found: $COMMANDS_SOURCE"
     exit 1
   fi
 
-  echo "  ✅ Rules source: $RULES_SOURCE"
+  echo "  ✅ Commands source: $COMMANDS_SOURCE"
   echo ""
 }
 
@@ -62,45 +62,45 @@ create_directory_symlink() {
 
 # Sync Cursor
 sync_cursor() {
-  echo "🎯 Syncing Cursor rules..."
-  create_directory_symlink "../.agents/rules" "$PROJECT_ROOT/.cursor/rules" "rules"
+  echo "🎯 Syncing Cursor commands..."
+  create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.cursor/commands" "commands"
   echo ""
 }
 
 # Sync Claude Code
 sync_claude() {
-  echo "🤖 Syncing Claude Code rules..."
-  create_directory_symlink "../.agents/rules" "$PROJECT_ROOT/.claude/rules" "rules"
+  echo "🤖 Syncing Claude Code commands..."
+  create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands" "commands"
   echo ""
 }
 
 # Sync Gemini CLI
 sync_gemini() {
-  echo "💎 Syncing Gemini CLI rules..."
-  create_directory_symlink "../.agents/rules" "$PROJECT_ROOT/.gemini/rules" "rules"
+  echo "💎 Syncing Gemini CLI commands..."
+  create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.gemini/commands" "commands"
   echo ""
 }
 
-# Sync Antigravity (selective symlinks)
+# Sync Antigravity (selective symlinks to workflows)
 sync_antigravity() {
-  echo "🌌 Syncing Antigravity rules (selective symlinks)..."
+  echo "🌌 Syncing Antigravity commands (selective symlinks to workflows)..."
 
   if [ "$DRY_RUN" = true ]; then
-    echo "  [DRY RUN] Would create selective symlinks in .agent/rules/"
+    echo "  [DRY RUN] Would create selective symlinks in .agent/workflows/"
     echo ""
     return 0
   fi
 
-  mkdir -p "$PROJECT_ROOT/.agent/rules"
+  mkdir -p "$PROJECT_ROOT/.agent/workflows"
 
-  echo "  📝 Creating selective symlinks for each rule..."
+  echo "  📝 Creating selective symlinks for each command..."
 
   local count=0
-  for rule_file in "$RULES_SOURCE"/*.md; do
-    if [ -f "$rule_file" ]; then
-      local rule_name=$(basename "$rule_file")
-      local target="../../.agents/rules/$rule_name"
-      local link_path="$PROJECT_ROOT/.agent/rules/$rule_name"
+  for command_file in "$COMMANDS_SOURCE"/*.md; do
+    if [ -f "$command_file" ]; then
+      local command_name=$(basename "$command_file")
+      local target="../../.agents/commands/$command_name"
+      local link_path="$PROJECT_ROOT/.agent/workflows/$command_name"
 
       # Remove existing file/symlink if present
       if [ -e "$link_path" ] || [ -L "$link_path" ]; then
@@ -108,15 +108,15 @@ sync_antigravity() {
       fi
 
       ln -s "$target" "$link_path"
-      echo "    ✅ $rule_name"
+      echo "    ✅ $command_name"
       ((count++))
     fi
   done
 
   if [ $count -gt 0 ]; then
-    echo "  ✅ Created $count selective symlinks in .agent/rules/"
+    echo "  ✅ Created $count selective symlinks in .agent/workflows/"
   else
-    echo "  ⚠️  No rules found to symlink"
+    echo "  ⚠️  No commands found to symlink"
   fi
 
   echo ""
@@ -130,12 +130,12 @@ verify_symlinks() {
     local errors=0
 
     for agent in cursor claude gemini; do
-      local link="$PROJECT_ROOT/.$agent/rules"
+      local link="$PROJECT_ROOT/.$agent/commands"
       if [ -L "$link" ]; then
         local target=$(readlink "$link")
-        echo "  ✅ $agent rules: $link → $target"
+        echo "  ✅ $agent commands: $link → $target"
       else
-        echo "  ❌ $agent rules: Not a symlink"
+        echo "  ❌ $agent commands: Not a symlink"
         ((errors++))
       fi
     done
@@ -164,20 +164,22 @@ main() {
   verify_symlinks
 
   if [ "$DRY_RUN" = false ]; then
-    echo "✅ Rules synchronization completed successfully"
+    echo "✅ Commands synchronization completed successfully"
     echo ""
     echo "Summary:"
-    echo "  - Cursor: rules ✅ (full symlink)"
-    echo "  - Claude Code: rules ✅ (full symlink)"
-    echo "  - Gemini CLI: rules ✅ (full symlink)"
-    echo "  - Antigravity: rules ✅ (selective symlinks)"
+    echo "  - Cursor: commands ✅ (full symlink)"
+    echo "  - Claude Code: commands ✅ (full symlink)"
+    echo "  - Gemini CLI: commands ✅ (full symlink)"
+    echo "  - Antigravity: workflows ✅ (selective symlinks)"
     echo ""
-    echo "📁 All rules now synchronized from .agents/rules/"
+    echo "📁 All commands now synchronized from .agents/commands/"
+    echo ""
+    echo "⚠️  Note: Antigravity uses .agent/workflows/ for commands"
   else
     echo "✅ Dry run completed - no changes made"
     echo ""
     echo "Run without --dry-run to apply changes:"
-    echo "  ./.agents/rules/sync-rules.sh"
+    echo "  ./.agents/commands/sync-commands.sh"
   fi
 
   echo ""

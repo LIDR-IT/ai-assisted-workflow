@@ -46,20 +46,20 @@ Claude: [Ejecuta el command y revisa código]
 
 ## Estructura de Commands
 
-### ⚠️ Commands NO Usan `.agents/`
+### ✅ Commands Ahora Usan `.agents/`
 
-**Diferencia importante:** A diferencia de Rules y Skills, Commands NO usan el patrón `.agents/` con symlinks.
+**Nueva arquitectura:** Commands ahora usan el patrón centralizado `.agents/` igual que Rules y Skills.
 
-**Razón:** Commands son específicos de cada agente (Claude Code, Cursor, etc.) y no están diseñados para compartirse automáticamente entre plataformas.
+**Source of Truth:** `.agents/commands/`
+**Sincronización:** Automática vía symlinks (Cursor, Claude, Gemini) o copia (Antigravity workflows)
 
 ### Ubicaciones
 
-**Project commands** (`.claude/commands/`):
-- Creados directamente en `.claude/commands/`
-- Compartidos con equipo (versionados en Git)
-- Específicos del proyecto
+**Project commands** (`.agents/commands/`):
+- Source of truth para commands compartidos
+- Sincronizados automáticamente a todos los agentes
+- Versionados en Git
 - Mostrados como "(project)" en `/help`
-- **NO hay `.agents/commands/`**
 
 **Personal commands** (`~/.claude/commands/`):
 - Solo para ti
@@ -74,15 +74,19 @@ Claude: [Ejecuta el command y revisa código]
 ### Comparación con Rules/Skills
 
 ```
-Rules:   .agents/rules/    → .cursor/rules (symlink)
-                           → .claude/rules (symlink)
+Rules:    .agents/rules/    → .cursor/rules (symlink)
+                            → .claude/rules (symlink)
 
-Skills:  .agents/skills/   → .cursor/skills (symlink)
-                           → .claude/skills (symlink)
+Skills:   .agents/skills/   → .cursor/skills (symlink)
+                            → .claude/skills (symlink)
 
-Commands: .claude/commands/  (directorio real, NO symlink)
-          .cursor/commands/  (directorio real, separado)
+Commands: .agents/commands/ → .cursor/commands (symlink)
+                            → .claude/commands (symlink)
+                            → .gemini/commands (symlink)
+                            → .agent/workflows (copiados para Antigravity)
 ```
+
+**Nota:** Antigravity usa `.agent/workflows/` en lugar de `.agent/commands/`
 
 ### Formato de Archivo
 

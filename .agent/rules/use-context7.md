@@ -1,0 +1,1 @@
+../../.agents/rules/use-context7.md
