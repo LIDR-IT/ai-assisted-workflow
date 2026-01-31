@@ -38,9 +38,9 @@ ls -la .claude/rules .claude/skills .claude/commands
 ls -la .gemini/rules .gemini/skills .gemini/commands
 
 # 3. Verificar Antigravity
-ls -la .agent/rules/ | grep "\->"
-ls -la .agent/skills/ | grep "\->"
-ls -la .agent/workflows/ | grep "\->"
+ls -la .agent/rules/ | grep "\\->"
+ls -la .agent/skills/ | grep "\\->"
+ls -la .agent/workflows/ | grep "\\->"
 
 # 4. Verificar MCP configs existen
 ls -la .cursor/mcp.json .claude/mcp.json .gemini/settings.json

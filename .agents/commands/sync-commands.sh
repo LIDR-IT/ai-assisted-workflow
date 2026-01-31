@@ -107,6 +107,10 @@ convert_md_to_toml() {
   # Convert ```bash to just a marker, and remove closing ```
   prompt=$(echo "$prompt" | sed 's/```bash/[Code block:]/g' | sed 's/```//g')
 
+  # Escape backslashes for TOML (must be done AFTER other replacements)
+  # In TOML strings, backslashes must be escaped: \ becomes \\
+  prompt=$(echo "$prompt" | sed 's/\\/\\\\/g')
+
   # Generate TOML file
   {
     if [ -n "$description" ]; then
