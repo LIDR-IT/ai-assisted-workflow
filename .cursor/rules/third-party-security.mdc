@@ -1,17 +1,18 @@
 ---
-description: Security guidelines for third-party MCP servers and Skills installation
+name: third-party-security
+description: Review third-party MCP/Skill security before installation
+alwaysApply: false
+globs: [".agents/mcp/**/*.json", ".agents/skills/**/*", "**/.mcp.json"]
 argument-hint: <mcp-or-skill-source>
-category: Security Guidelines
-status: Team Standard
-enforcement: Required - Security Critical
-last-updated: January 2026
+paths: [".agents/mcp/**/*", ".agents/skills/**/*"]
+trigger: always_on
 ---
 
 # Third-Party Security Guidelines
 
 Review third-party MCP/Skill before installation: $ARGUMENTS
 
-Only install from **official providers**. Evaluate security risks before using with sensitive data.
+Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.
 
 ## Rules
 
@@ -322,6 +323,38 @@ Use this template when evaluating third-party MCP/Skills:
 5. ✅ Do I have security approval?
 
 **If any answer is ❌ → DO NOT INSTALL**
+
+## Output Format
+
+Use `file:line` or `path` format (VS Code clickable). Terse findings.
+
+```text
+## Security Review
+
+.agents/mcp/mcp-servers.json - ✓ All servers from official sources
+.agents/skills/custom-skill/ - ✗ No official badge, verify publisher
+~/.claude/skills/untrusted/ - ✗ User-level unverified skill detected
+
+## Issues Found
+
+.agents/mcp/mcp-servers.json:15 - "random-mcp" from unverified GitHub repo
+.agents/skills/data-exporter/SKILL.md:23 - External URL fetch detected
+.claude/mcp.json - ✗ Contains credentials in plain text
+
+## Security Risks
+
+HIGH - .agents/mcp/mcp-servers.json:15 - Unverified MCP with filesystem access
+MEDIUM - .agents/skills/analytics/ - No publisher verification
+LOW - .cursor/mcp.json - Missing env variable validation
+
+## Summary
+
+✓ 8 resources verified from official sources
+✗ 3 security issues require immediate attention
+⚠️  2 warnings - review recommended
+```
+
+State issue + severity + location. Skip explanation unless fix non-obvious. No preamble.
 
 ## References
 

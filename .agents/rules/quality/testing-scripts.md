@@ -1,6 +1,18 @@
+---
+name: testing-scripts
+description: Review bash scripts for testing patterns and best practices
+alwaysApply: false
+globs: ["**/*.sh", "**/*test*.sh"]
+argument-hint: <script-file>
+paths: ["**/*.sh"]
+trigger: always_on
+---
+
 # Bash Script Testing
 
-Detailed testing patterns for bash scripts, sync operations, and automation.
+Review these files for compliance: $ARGUMENTS
+
+Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.
 
 ## Bash Script Testing Structure
 
@@ -362,6 +374,31 @@ test_antigravity_symlink
 test_env_variables
 test_rules_size
 ```
+
+## Output Format
+
+Use `file:line` format (VS Code clickable). Terse findings.
+
+```text
+## test_sync_rules.sh
+
+test_sync_rules.sh:12 - Missing `set -e` for error handling
+test_sync_rules.sh:45 - Test function not using helper functions (pass/fail)
+test_sync_rules.sh:67 - No verification step after operation
+test_sync_rules.sh:89 - Hardcoded path → use variable
+
+## scripts/validate.sh
+
+scripts/validate.sh:23 - Missing JSON validation with `jq empty`
+scripts/validate.sh:56 - No dry-run mode support
+scripts/validate.sh:78 - Using `grep` → prefer `Grep` tool
+
+## sync-mcp.sh
+
+✓ pass
+```
+
+State issue + location. Skip explanation unless fix non-obvious. No preamble.
 
 ## References
 

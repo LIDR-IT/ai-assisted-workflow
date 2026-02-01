@@ -1,17 +1,18 @@
 ---
-description: Guidelines for managing AI agent skills at project level with standardized structure
+name: skills-management
+description: Review project for skills structure and compliance
+alwaysApply: false
+globs: [".agents/skills/**/*", ".claude/skills", ".cursor/skills", ".gemini/skills", ".agent/skills"]
 argument-hint: <project-root>
-category: Project Setup Guidelines
-status: Team Standard
-enforcement: Required for all projects
-last-updated: January 2026
+paths: [".agents/skills/**/*"]
+trigger: always_on
 ---
 
 # Skills Management Guidelines
 
 Review project for skills compliance: $ARGUMENTS
 
-Single source of truth for skills in `.agents/skills/`, accessible to all agents via symlinks.
+Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.
 
 ## Rules
 
@@ -229,13 +230,31 @@ rm -rf ~/.claude/skills
 
 ## Output Format
 
-```
+Use `path` format (VS Code clickable). Terse findings.
+
+```text
+## Skills Structure
+
 .agents/skills/skill-one/SKILL.md - ✓ Canonical location
 .claude/skills - ✓ Valid symlink to ../.agents/skills
+.cursor/skills - ✓ Valid symlink to ../.agents/skills
+.gemini/skills - ✓ Valid symlink to ../.agents/skills
+.agent/skills - ✓ Valid symlink to ../.agents/skills
+
+## Issues Found
+
 .cursor/skills - ✗ Not a symlink, should link to ../.agents/skills
-~/.claude/skills/skill-two/ - ✗ User-level, move to .agents/skills/
-.agents/skills/ - ✗ Not in git, add to version control
+~/.claude/skills/skill-two/ - ✗ User-level installation, move to .agents/skills/
+.agents/skills/ - ✗ Not in version control, add to git
+.claude/skills/custom-skill - ✗ Direct file, should be in .agents/skills/
+
+## Summary
+
+✓ 3 skills configured correctly
+✗ 4 issues require attention
 ```
+
+State issue + location. Skip explanation unless fix non-obvious. No preamble.
 
 ## References
 

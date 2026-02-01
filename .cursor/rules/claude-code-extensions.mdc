@@ -1,6 +1,18 @@
+---
+name: claude-code-extensions
+description: Review Claude Code extension structure and usage
+alwaysApply: false
+globs: [".agents/**/*", ".claude/**/*"]
+argument-hint: <extension-path>
+paths: [".agents/skills/**/*", ".agents/commands/**/*", ".agents/agents/**/*"]
+trigger: always_on
+---
+
 # Claude Code Extension Reference
 
-Quick reference for extending Claude Code. For detailed instructions, invoke the appropriate skill.
+Review these files for compliance: $ARGUMENTS
+
+Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.
 
 ## Available Extension Types
 
@@ -83,3 +95,35 @@ When extending Claude Code, always invoke the relevant skill to get current, ver
 - Platform-specific considerations
 - Bundled examples and templates
 - Progressive disclosure of complexity
+
+## Output Format
+
+Use `file:line` or `path` format (VS Code clickable). Terse findings.
+
+```text
+## Extensions Structure
+
+.agents/skills/custom-skill/SKILL.md - ✓ Proper structure with YAML frontmatter
+.agents/commands/deploy.md - ✓ Valid command with args defined
+.agents/agents/reviewer.md - ✓ Agent with tools specified
+
+## Issues Found
+
+.agents/skills/broken-skill/skill.md - ✗ Wrong filename, should be SKILL.md
+.agents/commands/test.md:1 - ✗ Missing YAML frontmatter
+.claude/skills/direct-skill/ - ✗ Should be in .agents/skills/
+.agents/agents/worker.md:5 - ✗ Missing required 'description' field
+
+## Recommendations
+
+.agents/skills/old-skill/ - ⚠️  Consider using `/skill-creator` for updates
+.agents/commands/complex.md - ⚠️  Complex logic → consider creating agent instead
+
+## Summary
+
+✓ 8 extensions properly configured
+✗ 4 issues require fixes
+⚠️  2 recommendations
+```
+
+State issue + location. Skip explanation unless fix non-obvious. No preamble.
