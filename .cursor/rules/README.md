@@ -286,14 +286,32 @@ Use hierarchical headers (H2, H3, H4) for scannable structure:
 
 After editing rules:
 ```bash
-# Sync to all platforms
+# Sync to all platforms (includes YAML validation)
 ./.agents/rules/sync-rules.sh
+
+# Sync options
+./.agents/rules/sync-rules.sh --dry-run          # Preview changes
+./.agents/rules/sync-rules.sh --skip-yaml-check  # Skip YAML validation
+./.agents/rules/sync-rules.sh --help             # Show help
 
 # Verify sync
 ls -la .cursor/rules
 ls -la .claude/rules
 ls -la .gemini/rules
 ls -la .agent/rules
+```
+
+**Automatic YAML Validation:**
+
+The sync script automatically checks for missing or incomplete YAML frontmatter:
+- Warns about rules without YAML frontmatter
+- Identifies missing platform-specific fields
+- Shows sample warnings (first 3)
+- Non-blocking (sync continues even with warnings)
+
+**For detailed YAML analysis:**
+```bash
+./.agents/rules/migrate-yaml.sh  # Full analysis with suggestions
 ```
 
 **Known behavior - Antigravity file detection:**

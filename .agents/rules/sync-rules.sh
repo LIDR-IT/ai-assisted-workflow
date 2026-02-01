@@ -1,4 +1,20 @@
 #!/bin/bash
+#
+# sync-rules.sh - Synchronize rules across all AI agent platforms
+#
+# Usage:
+#   ./sync-rules.sh [OPTIONS]
+#
+# Options:
+#   --dry-run           Preview changes without applying them
+#   --skip-yaml-check   Skip YAML frontmatter validation
+#   --help              Show this help message
+#
+# Examples:
+#   ./sync-rules.sh                    # Normal sync with YAML validation
+#   ./sync-rules.sh --dry-run          # Preview changes only
+#   ./sync-rules.sh --skip-yaml-check  # Sync without YAML validation
+#
 
 set -e
 
@@ -6,10 +22,36 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 RULES_SOURCE="$SCRIPT_DIR"
 
+# Show help
+show_help() {
+  head -15 "$0" | grep "^#" | sed 's/^# //' | sed 's/^#//'
+  exit 0
+}
+
 # Parse command line arguments
 DRY_RUN=false
-if [[ "$1" == "--dry-run" ]]; then
-  DRY_RUN=true
+SKIP_YAML_CHECK=false
+
+for arg in "$@"; do
+  case $arg in
+    --dry-run)
+      DRY_RUN=true
+      ;;
+    --skip-yaml-check)
+      SKIP_YAML_CHECK=true
+      ;;
+    --help|-h)
+      show_help
+      ;;
+    *)
+      echo "Unknown option: $arg"
+      echo "Use --help for usage information"
+      exit 1
+      ;;
+  esac
+done
+
+if [ "$DRY_RUN" = true ]; then
   echo "🧪 DRY RUN MODE - No changes will be made"
   echo ""
 fi
@@ -28,6 +70,77 @@ validate_source() {
 
   echo "  ✅ Rules source: $RULES_SOURCE"
   echo ""
+}
+
+# Validate YAML frontmatter in rules
+validate_yaml_frontmatter() {
+  if [ "$SKIP_YAML_CHECK" = true ]; then
+    return 0
+  fi
+
+  echo "🔍 Checking YAML frontmatter compatibility..."
+
+  local total=0
+  local missing_yaml=0
+  local incomplete_yaml=0
+  local warnings=()
+
+  # Check all .md files (excluding special files)
+  while IFS= read -r -d '' rule_file; do
+    ((total++))
+    local filename=$(basename "$rule_file")
+    local relative_path=$(echo "$rule_file" | sed "s|$RULES_SOURCE/||")
+
+    # Check if has YAML frontmatter
+    if ! head -1 "$rule_file" | grep -q "^---$"; then
+      ((missing_yaml++))
+      warnings+=("  ⚠️  $relative_path - No YAML frontmatter")
+      continue
+    fi
+
+    # Extract YAML and check for recommended fields
+    local yaml=$(awk '/^---$/{if(++n==2) exit} n==1{print}' "$rule_file" | grep -v "^---$")
+    local missing_fields=()
+
+    # Check for platform-specific fields
+    echo "$yaml" | grep -q "^name:" || missing_fields+=("name")
+    echo "$yaml" | grep -q "^description:" || missing_fields+=("description")
+
+    if [ ${#missing_fields[@]} -gt 0 ]; then
+      ((incomplete_yaml++))
+      warnings+=("  ⚠️  $relative_path - Missing: ${missing_fields[*]}")
+    fi
+  done < <(find "$RULES_SOURCE" -type f -name "*.md" ! -name "README.md" ! -name "YAML-FORMATS.md" ! -name "*.sh" -print0)
+
+  # Show summary
+  if [ $missing_yaml -gt 0 ] || [ $incomplete_yaml -gt 0 ]; then
+    echo "  📊 YAML Status: $total rules checked"
+    echo "    ⚠️  $missing_yaml without YAML frontmatter"
+    echo "    ⚠️  $incomplete_yaml with incomplete YAML"
+    echo ""
+    echo "  💡 For better cross-platform compatibility, add YAML frontmatter:"
+    echo "     See YAML-FORMATS.md for field reference"
+    echo "     Or run: ./migrate-yaml.sh for detailed analysis"
+    echo ""
+
+    # Show first few warnings
+    local show_count=3
+    if [ ${#warnings[@]} -gt 0 ]; then
+      echo "  📋 Sample warnings (showing $show_count of ${#warnings[@]}):"
+      for i in "${!warnings[@]}"; do
+        if [ $i -lt $show_count ]; then
+          echo "${warnings[$i]}"
+        fi
+      done
+      if [ ${#warnings[@]} -gt $show_count ]; then
+        echo "     ... and $((${#warnings[@]} - show_count)) more"
+      fi
+      echo ""
+    fi
+  else
+    echo "  ✅ All rules have proper YAML frontmatter"
+    echo ""
+  fi
 }
 
 # Create directory symlink safely
@@ -228,6 +341,7 @@ verify_sync() {
 # Main execution
 main() {
   validate_source
+  validate_yaml_frontmatter
 
   sync_cursor
   sync_claude
