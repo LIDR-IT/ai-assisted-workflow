@@ -88,6 +88,8 @@ sync_cursor() {
     local subdir=$(dirname "$rule_file" | sed "s|$RULES_SOURCE||" | sed 's|^/||')
 
     cp "$rule_file" "$dest_file"
+    # Force timestamp update for file watchers (Cursor/Antigravity)
+    touch "$dest_file"
     if [ -n "$subdir" ]; then
       echo "    ✅ $rule_name (from $subdir/)"
     else
@@ -147,6 +149,8 @@ sync_antigravity() {
     local subdir=$(dirname "$rule_file" | sed "s|$RULES_SOURCE||" | sed 's|^/||')
 
     cp "$rule_file" "$dest_file"
+    # Force timestamp update for file watchers (Cursor/Antigravity)
+    touch "$dest_file"
     if [ -n "$subdir" ]; then
       echo "    ✅ $rule_name (from $subdir/)"
     else

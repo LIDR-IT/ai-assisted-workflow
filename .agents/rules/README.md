@@ -296,6 +296,15 @@ ls -la .gemini/rules
 ls -la .agent/rules
 ```
 
+**Known behavior - Antigravity file detection:**
+
+Antigravity uses file watchers that detect changes based on modification timestamps. The sync script now automatically updates timestamps when copying files, so Antigravity will detect changes immediately after running sync.
+
+**If Antigravity doesn't detect changes:**
+1. Run sync script again: `./.agents/rules/sync-rules.sh`
+2. Close and reopen Antigravity project
+3. Timestamps are now automatically updated during sync
+
 ## Checklist for New Rules
 
 Before adding a new rule file:
