@@ -8,7 +8,7 @@
 
 ## Commands & Skills
 
-- [ ] Agregar comando `/commit` para git commits
+- [x] Agregar comando `/commit` para git commits
 - [ ] Agregar skill para gestión de commits
 - [ ] Crear SETUP_SUBAGENTS.md
 
