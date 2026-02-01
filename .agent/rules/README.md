@@ -326,6 +326,42 @@ Antigravity uses file watchers that detect changes based on modification timesta
 - Only detects changes to files AFTER they're loaded into memory
 - Solution: Reload Antigravity after sync to pick up changes
 
+## YAML Frontmatter (Platform-Specific)
+
+Different platforms support different YAML fields. See `YAML-FORMATS.md` for complete guide.
+
+### Universal Format (Recommended)
+
+Use this format in `.agents/rules/` for maximum compatibility:
+
+```yaml
+---
+# Cursor-specific
+name: rule-name
+description: Brief description
+alwaysApply: false
+globs: ["**/*.ts"]
+
+# Claude/Gemini-specific
+argument-hint: <file-pattern>
+paths: ["src/**/*.ts"]
+
+# Antigravity-specific
+trigger: always_on
+---
+```
+
+### Quick Reference
+
+| Platform | Extension | Key Fields |
+|----------|-----------|------------|
+| Cursor | `.md` | `name`, `description`, `alwaysApply`, `globs` |
+| Claude Code | `.md` | `description`, `argument-hint`, `paths` |
+| Gemini CLI | `.md` | `description`, `argument-hint` |
+| Antigravity | `.md` | `trigger` |
+
+**Note:** For detailed field definitions and examples, see `YAML-FORMATS.md`.
+
 ## Checklist for New Rules
 
 Before adding a new rule file:
@@ -334,6 +370,7 @@ Before adding a new rule file:
 - [ ] Under 12,000 characters (`wc -c file.md`)
 - [ ] Descriptive filename (lowercase-hyphen)
 - [ ] Proper category subdirectory
+- [ ] **YAML frontmatter with platform fields** (see above)
 - [ ] Specific and concrete instructions
 - [ ] Examples included
 - [ ] Active voice used
