@@ -191,22 +191,25 @@ sync_cursor() {
   # Create flat rules directory
   mkdir -p "$PROJECT_ROOT/.cursor/rules"
 
-  echo "  📝 Copying all rules (flattened for Cursor compatibility)..."
+  echo "  📝 Copying all rules (converting .md → .mdc for Cursor)..."
 
   local count=0
-  # Find all .md files recursively and copy them flat
+  # Find all .md files recursively and copy them flat as .mdc
   while IFS= read -r -d '' rule_file; do
     local rule_name=$(basename "$rule_file")
-    local dest_file="$PROJECT_ROOT/.cursor/rules/$rule_name"
+    local rule_base="${rule_name%.md}"
+    local dest_file="$PROJECT_ROOT/.cursor/rules/${rule_base}.mdc"
     local subdir=$(dirname "$rule_file" | sed "s|$RULES_SOURCE||" | sed 's|^/||')
 
+    # Copy and rename to .mdc
     cp "$rule_file" "$dest_file"
-    # Force timestamp update for file watchers (Cursor/Antigravity)
+    # Force timestamp update for file watchers
     touch "$dest_file"
+
     if [ -n "$subdir" ]; then
-      echo "    ✅ $rule_name (from $subdir/)"
+      echo "    ✅ ${rule_base}.mdc (from $subdir/${rule_name})"
     else
-      echo "    ✅ $rule_name"
+      echo "    ✅ ${rule_base}.mdc (from ${rule_name})"
     fi
     ((count++))
   done < <(find "$RULES_SOURCE" -type f -name "*.md" ! -name "sync-*.sh" -print0)
@@ -354,7 +357,7 @@ main() {
     echo "✅ Rules synchronization completed successfully"
     echo ""
     echo "Summary:"
-    echo "  - Cursor: rules ✅ (flattened .md files - no subdirs)"
+    echo "  - Cursor: rules ✅ (flattened .mdc files - no subdirs)"
     echo "  - Claude Code: rules ✅ (symlink with subdirs)"
     echo "  - Gemini CLI: rules ✅ (symlink with subdirs)"
     echo "  - Antigravity: rules ✅ (flattened .md files - no subdirs)"

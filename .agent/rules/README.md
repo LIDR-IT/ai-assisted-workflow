@@ -373,10 +373,12 @@ trigger: always_on
 
 | Platform | Extension | Key Fields |
 |----------|-----------|------------|
-| Cursor | `.md` | `name`, `description`, `alwaysApply`, `globs` |
+| Cursor | `.mdc` (auto-converted) | `name`, `description`, `alwaysApply`, `globs` |
 | Claude Code | `.md` | `description`, `argument-hint`, `paths` |
 | Gemini CLI | `.md` | `description`, `argument-hint` |
 | Antigravity | `.md` | `trigger` |
+
+**Note:** Cursor requires `.mdc` extension. The sync script automatically converts `.md` → `.mdc` when copying to `.cursor/rules/`.
 
 **Note:** For detailed field definitions and examples, see `YAML-FORMATS.md`.
 

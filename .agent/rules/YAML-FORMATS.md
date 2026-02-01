@@ -16,7 +16,9 @@ Guide to YAML frontmatter fields supported by each AI agent platform.
 
 ## Cursor (.mdc format)
 
-**File extension:** `.mdc` (Markdown Context)
+**File extension:** `.mdc` (Markdown Context) - **REQUIRED**
+
+**Important:** Cursor requires `.mdc` extension for rules. The sync script automatically converts `.md` → `.mdc` when copying to Cursor.
 
 **Supported fields:**
 ```yaml
