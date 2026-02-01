@@ -237,50 +237,10 @@ sync_gemini() {
   echo ""
 }
 
-# Sync Antigravity (flattened - no subdirectory support)
+# Sync Antigravity
 sync_antigravity() {
-  echo "🌌 Syncing Antigravity rules (flattened structure)..."
-
-  if [ "$DRY_RUN" = true ]; then
-    echo "  [DRY RUN] Would copy all .md files to .agent/rules/ (flattened)"
-    echo ""
-    return 0
-  fi
-
-  # Remove existing directory/symlink
-  if [ -e "$PROJECT_ROOT/.agent/rules" ] || [ -L "$PROJECT_ROOT/.agent/rules" ]; then
-    rm -rf "$PROJECT_ROOT/.agent/rules"
-  fi
-
-  # Create flat rules directory
-  mkdir -p "$PROJECT_ROOT/.agent/rules"
-
-  echo "  📝 Copying all rules (flattened for Antigravity compatibility)..."
-
-  local count=0
-  # Find all .md files recursively and copy them flat
-  while IFS= read -r -d '' rule_file; do
-    local rule_name=$(basename "$rule_file")
-    local dest_file="$PROJECT_ROOT/.agent/rules/$rule_name"
-    local subdir=$(dirname "$rule_file" | sed "s|$RULES_SOURCE||" | sed 's|^/||')
-
-    cp "$rule_file" "$dest_file"
-    # Force timestamp update for file watchers (Cursor/Antigravity)
-    touch "$dest_file"
-    if [ -n "$subdir" ]; then
-      echo "    ✅ $rule_name (from $subdir/)"
-    else
-      echo "    ✅ $rule_name"
-    fi
-    ((count++))
-  done < <(find "$RULES_SOURCE" -type f -name "*.md" ! -name "sync-*.sh" -print0)
-
-  if [ $count -gt 0 ]; then
-    echo "  ✅ Copied $count rules to flat structure"
-  else
-    echo "  ⚠️  No rules found to copy"
-  fi
-
+  echo "🌌 Syncing Antigravity rules..."
+  create_directory_symlink "../.agents/rules" "$PROJECT_ROOT/.agent/rules" "rules"
   echo ""
 }
 
@@ -320,12 +280,13 @@ verify_sync() {
       ((errors++))
     fi
 
-    # Verify Antigravity (flattened files)
-    if [ -d "$PROJECT_ROOT/.agent/rules" ]; then
-      local antigrav_count=$(find "$PROJECT_ROOT/.agent/rules" -type f -name "*.md" | wc -l)
-      echo "  ✅ antigravity rules: $antigrav_count files (flattened)"
+    # Verify Antigravity (symlink with subdirs)
+    local link="$PROJECT_ROOT/.agent/rules"
+    if [ -L "$link" ]; then
+      local target=$(readlink "$link")
+      echo "  ✅ antigravity rules: $link → $target (with subdirs)"
     else
-      echo "  ❌ antigravity rules: Directory not found"
+      echo "  ❌ antigravity rules: Not a symlink"
       ((errors++))
     fi
 
@@ -360,7 +321,7 @@ main() {
     echo "  - Cursor: rules ✅ (flattened .mdc files - no subdirs)"
     echo "  - Claude Code: rules ✅ (symlink with subdirs)"
     echo "  - Gemini CLI: rules ✅ (symlink with subdirs)"
-    echo "  - Antigravity: rules ✅ (flattened .md files - no subdirs)"
+    echo "  - Antigravity: rules ✅ (symlink with subdirs)"
     echo ""
     echo "📁 All rules now synchronized from .agents/rules/"
     echo ""

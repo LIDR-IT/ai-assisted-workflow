@@ -183,10 +183,10 @@ echo "# Test Rule" > .agents/rules/test-rule.md
 # 2. Run sync
 ./.agents/rules/sync-rules.sh > /dev/null 2>&1
 
-# 3. Verify in all agents (flattened for Cursor/Antigravity)
-if [ -f ".cursor/rules/test-rule.md" ] &&
-   [ -f ".agent/rules/test-rule.md" ]; then
-  echo "✅ Rule propagated to Cursor and Antigravity"
+# 3. Verify in all agents (Cursor gets .mdc, others get symlinks)
+if [ -f ".cursor/rules/test-rule.mdc" ] &&
+   [ -L ".agent/rules" ]; then
+  echo "✅ Rule propagated to all agents"
 else
   echo "❌ Rule not propagated correctly"
   exit 1
@@ -320,14 +320,14 @@ test_file_overwrite() {
   fi
 }
 
-# Issue #2: Antigravity rules not copied (flattened)
-test_antigravity_copy() {
+# Issue #2: Antigravity rules symlink created
+test_antigravity_symlink() {
   rm -rf .agent/rules
   ./.agents/rules/sync-rules.sh > /dev/null 2>&1
-  if [ -f ".agent/rules/principles.md" ]; then
-    echo "✅ Antigravity rules copied (flattened)"
+  if [ -L ".agent/rules" ]; then
+    echo "✅ Antigravity rules symlink created"
   else
-    echo "❌ Antigravity rules not copied"
+    echo "❌ Antigravity rules symlink not created"
   fi
 }
 
@@ -358,7 +358,7 @@ test_rules_size() {
 
 # Run all tests
 test_file_overwrite
-test_antigravity_copy
+test_antigravity_symlink
 test_env_variables
 test_rules_size
 ```

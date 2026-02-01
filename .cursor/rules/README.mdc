@@ -7,10 +7,10 @@
 **Maximum:** 12,000 characters per rule file
 
 **Why?** Based on Cursor's recommendation of ~500 lines and cross-platform compatibility:
-- Cursor: 500 lines recommended
+- Cursor: 500 lines recommended (flattened .mdc files)
 - Claude Code: No hard limit, but concise is better
 - Gemini CLI: Performance degrades with large files
-- Antigravity: Flat structure requires focused rules
+- Antigravity: Supports subdirectories via symlinks
 
 **Check file size:**
 ```bash

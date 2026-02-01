@@ -165,10 +165,10 @@ Your rule content here...
 ```
 
 **Sync behavior:**
-- **Cursor:** Extracts `name`, `description`, `alwaysApply`, `globs` → saves as `.mdc`
+- **Cursor:** Extracts `name`, `description`, `alwaysApply`, `globs` → saves as `.mdc` (flattened, no subdirs)
 - **Claude Code:** Keeps original via symlink (ignores Cursor fields)
 - **Gemini CLI:** Keeps original via symlink (ignores Cursor fields)
-- **Antigravity:** Extracts `trigger` → copies as `.md`
+- **Antigravity:** Keeps original via symlink (supports subdirectories)
 
 ## Field Definitions
 
@@ -257,9 +257,8 @@ If you need platform-specific rules, use naming convention:
 
 **Sync script will:**
 1. Copy `.cursor.mdc` files to Cursor (if they exist)
-2. Otherwise, generate `.mdc` from universal `.md`
-3. Copy `.antigravity.md` files to Antigravity (if they exist)
-4. Otherwise, copy universal `.md` with YAML filtering
+2. Otherwise, generate `.mdc` from universal `.md` (auto-convert, flatten to single directory)
+3. Symlink `.agents/rules/` to Claude, Gemini, and Antigravity (supports subdirectories)
 
 ## Best Practices
 

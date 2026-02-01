@@ -41,10 +41,10 @@ trigger: always_on
 - [ ] Script runs without errors
 - [ ] Dry-run mode works (no changes)
 - [ ] Validates source directories exist
-- [ ] Creates Cursor files correctly (flattened)
+- [ ] Creates Cursor files correctly (flattened .mdc)
 - [ ] Creates Claude symlinks correctly (subdirs)
 - [ ] Creates Gemini symlinks correctly (subdirs)
-- [ ] Copies rules for Antigravity (flattened)
+- [ ] Creates Antigravity symlinks correctly (subdirs)
 - [ ] Verification step passes
 - [ ] Error messages are clear
 - [ ] Output formatting is helpful

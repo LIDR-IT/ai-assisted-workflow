@@ -29,7 +29,7 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 
 **1. Symlinks (Rules, Skills, Commands, Agents)**
 - **Used for:** Rules, skills, commands, and agents distribution
-- **Platforms:** Cursor, Claude Code, Gemini CLI
+- **Platforms:** Claude Code, Gemini CLI, Antigravity
 - **Mechanism:** Full directory symlinks pointing to `.agents/`
 - **Advantages:** Instant propagation, zero duplication, single source of truth
 - **Note:** Antigravity does NOT support agents directory
@@ -40,20 +40,20 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 - **Mechanism:** Transforms `.agents/mcp/mcp-servers.json` into platform-specific configs
 - **Advantages:** Platform-specific formatting, validation, preprocessing
 
-**3. Manual Copy (Antigravity and Cursor Special Case)**
-- **Used for:** Antigravity and Cursor rules (limitation: no subdirectory support)
+**3. Manual Copy (Cursor Special Case)**
+- **Used for:** Cursor rules only (limitation: no subdirectory support)
 - **Script:** `.agents/rules/sync-rules.sh`
-- **Mechanism:** Copy `.md` files to `.agent/rules/` and `.cursor/rules/` (flattened structure)
-- **Note:** Skills use different strategies per platform
+- **Mechanism:** Copy `.md` files to `.cursor/rules/` (flattened structure, auto-converted to `.mdc`)
+- **Note:** Antigravity uses symlinks like Claude and Gemini
 
 ### Platform Support Matrix
 
 | Platform | Rules | Skills | Commands | Agents | MCP Project | MCP Global |
 |----------|-------|--------|----------|--------|-------------|------------|
-| Cursor | ✅ Copy (flat) | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
+| Cursor | ✅ Copy (flat .mdc) | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Gemini CLI | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
-| Antigravity | ✅ Copy (flat) | ✅ Selective | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
+| Antigravity | ✅ Symlink | ✅ Selective | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
 
 ## Design Decisions
 
@@ -78,9 +78,9 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 - **Trade-off:** Custom maintenance, but aligns with project patterns
 
 ### 5. Graceful Platform Degradation
-- **Decision:** Handle Antigravity limitations with copy strategy
+- **Decision:** Handle Cursor limitation (no subdirectories) with copy/flatten strategy
 - **Rationale:** Support all platforms despite limitations
-- **Trade-off:** Manual copy required, but documented clearly
+- **Trade-off:** Manual copy required for Cursor, auto-converts .md → .mdc
 
 ## Development Philosophy
 
@@ -155,9 +155,9 @@ ls .claude/skills/
 3. Remember: Project-level MCP not supported
 
 **Changes not propagating:**
-1. Verify symlink: `readlink .cursor/rules`
+1. Verify symlink: `readlink .cursor/rules` (or `.claude/rules`, `.gemini/rules`, `.agent/rules`)
 2. Check source file exists: `ls .agents/rules/{file}.md`
-3. For Antigravity: Re-run sync script (rules are copied)
+3. For Cursor: Re-run sync script (rules are copied and converted to .mdc)
 
 ## References
 
