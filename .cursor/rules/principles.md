@@ -1,3 +1,10 @@
+---
+name: principles
+description: Core principles and architectural decisions
+alwaysApply: false
+trigger: always_on
+---
+
 # Core Principles
 
 ## Project Architecture

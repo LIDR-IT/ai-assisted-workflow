@@ -1,6 +1,10 @@
 ---
+name: copywriting
 description: Review copy for effective copywriting principles and best practices
+alwaysApply: false
+globs: ["**/*.md", "**/*.tsx", "**/*.jsx"]
 argument-hint: <file-or-pattern>
+trigger: always_on
 ---
 
 # Copywriting Guidelines

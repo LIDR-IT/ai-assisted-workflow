@@ -1,3 +1,10 @@
+---
+name: git-workflow
+description: Git workflow and commit conventions
+alwaysApply: false
+trigger: always_on
+---
+
 # Git Workflow Guidelines
 
 ## Branch Strategy

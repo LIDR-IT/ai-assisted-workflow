@@ -1,4 +1,7 @@
 ---
+name: use-context7
+description: Always use Context7 MCP for library/API documentation
+alwaysApply: true
 trigger: always_on
 ---
 

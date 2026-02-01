@@ -1,4 +1,11 @@
 ---
+name: web-design
+description: Web interface design guidelines
+alwaysApply: false
+trigger: always_on
+---
+
+---
 description: Review UI code for Vercel Web Interface Guidelines compliance
 argument-hint: <file-or-pattern>
 ---

@@ -1,3 +1,10 @@
+---
+name: style
+description: Code style guidelines and conventions
+alwaysApply: false
+trigger: always_on
+---
+
 # Code Style Guidelines
 
 ## General Principles

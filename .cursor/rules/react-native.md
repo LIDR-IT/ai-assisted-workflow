@@ -1,6 +1,11 @@
 ---
+name: react-native
 description: Review React Native code for Vercel React Native Best Practices compliance
+alwaysApply: false
+globs: ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js"]
 argument-hint: <file-or-pattern>
+paths: ["**/*.tsx", "**/*.ts"]
+trigger: always_on
 ---
 
 # React Native Best Practices

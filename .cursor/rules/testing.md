@@ -1,3 +1,10 @@
+---
+name: testing
+description: Testing guidelines and best practices
+alwaysApply: false
+trigger: always_on
+---
+
 # Testing Guidelines
 
 ## Testing Philosophy

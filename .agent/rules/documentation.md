@@ -1,3 +1,10 @@
+---
+name: documentation
+description: Documentation standards and practices
+alwaysApply: false
+trigger: always_on
+---
+
 # Documentation Standards
 
 ## Documentation Philosophy
