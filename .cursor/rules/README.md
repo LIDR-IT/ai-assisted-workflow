@@ -296,6 +296,36 @@ ls -la .gemini/rules
 ls -la .agent/rules
 ```
 
+**Known behavior - Antigravity file detection:**
+
+Antigravity uses file watchers that detect changes based on modification timestamps. The sync script automatically updates timestamps when copying files.
+
+**IMPORTANT - Correct workflow for Antigravity:**
+
+**Option 1: Sync BEFORE opening Antigravity (Recommended)**
+```bash
+# 1. Make changes in .agents/rules/
+# 2. Run sync
+./.agents/sync-all.sh
+# 3. THEN open Antigravity
+# Rules will load with updated timestamps
+```
+
+**Option 2: Reload AFTER sync**
+```bash
+# 1. Antigravity already open
+# 2. Run sync
+./.agents/sync-all.sh
+# 3. Close and reopen project in Antigravity
+# Or restart Antigravity completely
+```
+
+**Why this happens:**
+- Antigravity loads rules into memory when it starts
+- Sync updates file timestamps, but Antigravity already cached the rules
+- Only detects changes to files AFTER they're loaded into memory
+- Solution: Reload Antigravity after sync to pick up changes
+
 ## Checklist for New Rules
 
 Before adding a new rule file:

@@ -52,4 +52,16 @@ Presenta un resumen claro del resultado con:
 - ⚠️ Advertencias si las hay
 - ❌ Errores que requieran atención
 - 📋 Siguiente paso recomendado (si aplica)
+
+## ⚠️ IMPORTANTE - Antigravity
+
+Si estás usando Antigravity, **cierra y reabre el proyecto** después del sync para que detecte los cambios.
+
+**Por qué:** Antigravity carga las rules en memoria al inicio y solo detecta cambios en archivos que se modifican DESPUÉS de haberlos cargado. El sync actualiza timestamps, pero Antigravity ya tiene las rules cacheadas.
+
+**Workflow recomendado:**
+1. Ejecutar sync: `./.agents/sync-all.sh`
+2. Cerrar proyecto en Antigravity
+3. Reabrir proyecto
+4. Las rules actualizadas se cargarán automáticamente
 """
