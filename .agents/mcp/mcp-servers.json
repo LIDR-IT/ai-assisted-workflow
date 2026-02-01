@@ -1,6 +1,16 @@
 {
   "version": "1.0",
   "description": "MCP servers configuration for template-best-practices project",
+  "_notes": {
+    "gemini_settings": "Gemini CLI settings.json includes additional configurations",
+    "experimental": {
+      "enableAgents": true
+    },
+    "context": {
+      "fileName": ["AGENTS.md", "CONTEXT.md", "GEMINI.md", "CLAUDE.md"]
+    },
+    "sync_behavior": "sync-mcp.sh preserves experimental and context sections in .gemini/settings.json"
+  },
   "servers": {
     "context7": {
       "type": "stdio",

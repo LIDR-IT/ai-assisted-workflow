@@ -12,17 +12,20 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 - Synchronized to agent-specific directories via symlinks or generation scripts
 
 **Key Directories:**
-- `.agents/skills/` - Source of truth for all agent skills
 - `.agents/rules/` - Source of truth for all project rules
+- `.agents/skills/` - Source of truth for all agent skills
+- `.agents/commands/` - Source of truth for all slash commands
+- `.agents/agents/` - Source of truth for all subagents
 - `.agents/mcp/` - Source of truth for MCP server configurations
 
 ### Synchronization Strategies
 
-**1. Symlinks (Skills & Rules)**
-- **Used for:** Skills and rules distribution
+**1. Symlinks (Rules, Skills, Commands, Agents)**
+- **Used for:** Rules, skills, commands, and agents distribution
 - **Platforms:** Cursor, Claude Code, Gemini CLI
 - **Mechanism:** Full directory symlinks pointing to `.agents/`
 - **Advantages:** Instant propagation, zero duplication, single source of truth
+- **Note:** Antigravity does NOT support agents directory
 
 **2. Script Generation (MCP Configs)**
 - **Used for:** MCP server configurations
@@ -38,12 +41,12 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 
 ### Platform Support Matrix
 
-| Platform | MCP Project | MCP Global | Skills Project | Rules Project |
-|----------|-------------|------------|----------------|---------------|
-| Cursor | ✅ | ✅ | ✅ Symlink | ✅ Symlink |
-| Claude Code | ✅ | ✅ | ✅ Symlink | ✅ Symlink |
-| Gemini CLI | ✅ | ✅ | ✅ Symlink | ✅ Symlink |
-| Antigravity | ❌ Global only | ✅ | ✅ Selective | ✅ Copy |
+| Platform | Rules | Skills | Commands | Agents | MCP Project | MCP Global |
+|----------|-------|--------|----------|--------|-------------|------------|
+| Cursor | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
+| Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
+| Gemini CLI | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
+| Antigravity | ✅ Copy | ✅ Selective | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
 
 ## Design Decisions
 

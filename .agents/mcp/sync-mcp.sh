@@ -105,8 +105,10 @@ generate_gemini_config() {
 
   mkdir -p "$PROJECT_ROOT/.gemini"
 
-  # Generar settings.json para Gemini CLI
-  jq '{
+  local GEMINI_SETTINGS="$PROJECT_ROOT/.gemini/settings.json"
+
+  # Generar solo la sección mcpServers
+  local MCP_SERVERS=$(jq '{
     mcpServers: (
       .servers |
       to_entries |
@@ -134,7 +136,28 @@ generate_gemini_config() {
       ) |
       from_entries
     )
-  }' "$MCP_CONFIG" > "$PROJECT_ROOT/.gemini/settings.json"
+  }' "$MCP_CONFIG")
+
+  # Si existe settings.json, hacer merge preservando experimental y context
+  if [ -f "$GEMINI_SETTINGS" ]; then
+    jq --argjson mcp "$MCP_SERVERS" '. + $mcp' "$GEMINI_SETTINGS" > "$GEMINI_SETTINGS.tmp"
+    mv "$GEMINI_SETTINGS.tmp" "$GEMINI_SETTINGS"
+  else
+    # Si no existe, crear con configuración completa
+    jq --argjson mcp "$MCP_SERVERS" '{
+      experimental: {
+        enableAgents: true
+      },
+      context: {
+        fileName: [
+          "AGENTS.md",
+          "CONTEXT.md",
+          "GEMINI.md",
+          "CLAUDE.md"
+        ]
+      }
+    } + $mcp' <<< '{}' > "$GEMINI_SETTINGS"
+  fi
 }
 
 # Generar configs para cada plataforma

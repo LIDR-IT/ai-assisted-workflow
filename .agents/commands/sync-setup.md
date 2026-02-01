@@ -1,5 +1,5 @@
 ---
-description: Sincroniza toda la configuración de AI (rules, skills, commands, MCP)
+description: Sincroniza toda la configuración de AI (rules, skills, commands, agents, MCP)
 allowed-tools: Bash
 model: sonnet
 ---
@@ -14,6 +14,7 @@ Ejecuta el proceso completo de sincronización de la configuración multi-agente
    - Sincroniza rules desde `.agents/rules/`
    - Sincroniza skills desde `.agents/skills/`
    - Sincroniza commands desde `.agents/commands/`
+   - Sincroniza agents desde `.agents/agents/`
    - Sincroniza MCP configs desde `.agents/mcp/`
 
 2. **Verificar sincronización**
@@ -35,11 +36,11 @@ Ejecuta los siguientes comandos en orden:
 ./.agents/sync-all.sh
 
 # 2. Verificar symlinks principales
-ls -la .cursor/rules .cursor/skills .cursor/commands
-ls -la .claude/rules .claude/skills .claude/commands
-ls -la .gemini/rules .gemini/skills .gemini/commands
+ls -la .cursor/rules .cursor/skills .cursor/commands .cursor/agents
+ls -la .claude/rules .claude/skills .claude/commands .claude/agents
+ls -la .gemini/rules .gemini/skills .gemini/commands .gemini/agents
 
-# 3. Verificar Antigravity
+# 3. Verificar Antigravity (no soporta agents)
 ls -la .agent/rules/ | grep "\->"
 ls -la .agent/skills/ | grep "\->"
 ls -la .agent/workflows/ | grep "\->"
