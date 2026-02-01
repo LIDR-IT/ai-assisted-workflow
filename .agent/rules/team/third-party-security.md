@@ -1,0 +1,1 @@
+../../.agents/rules/team/third-party-security.md

@@ -1,0 +1,1 @@
+../../.agents/rules/team/skills-management.md
