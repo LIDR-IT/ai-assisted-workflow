@@ -53,7 +53,7 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 | Cursor | ✅ Copy (flat .mdc) | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Gemini CLI | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
-| Antigravity | ✅ Symlink | ✅ Selective | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
+| Antigravity | ✅ Symlink | ✅ Symlink | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
 
 ## Design Decisions
 

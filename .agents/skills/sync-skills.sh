@@ -81,44 +81,10 @@ sync_gemini() {
   echo ""
 }
 
-# Sync Antigravity (selective symlinks)
+# Sync Antigravity
 sync_antigravity() {
-  echo "🌌 Syncing Antigravity skills (selective)..."
-
-  if [ "$DRY_RUN" = true ]; then
-    echo "  [DRY RUN] Would create selective symlinks in .agent/skills/"
-    echo ""
-    return 0
-  fi
-
-  mkdir -p "$PROJECT_ROOT/.agent/skills"
-
-  echo "  📝 Creating selective symlinks for each skill..."
-
-  local count=0
-  for skill_dir in "$SKILLS_SOURCE"/*/; do
-    if [ -d "$skill_dir" ]; then
-      local skill_name=$(basename "$skill_dir")
-      local target="../../.agents/skills/$skill_name"
-      local link_path="$PROJECT_ROOT/.agent/skills/$skill_name"
-
-      # Remove existing symlink if present
-      if [ -L "$link_path" ]; then
-        rm "$link_path"
-      fi
-
-      ln -s "$target" "$link_path"
-      echo "    ✅ $skill_name"
-      ((count++))
-    fi
-  done
-
-  if [ $count -gt 0 ]; then
-    echo "  ✅ Created $count selective symlinks in .agent/skills/"
-  else
-    echo "  ⚠️  No skills found to symlink"
-  fi
-
+  echo "🌌 Syncing Antigravity skills..."
+  create_directory_symlink "../.agents/skills" "$PROJECT_ROOT/.agent/skills" "skills"
   echo ""
 }
 
@@ -129,7 +95,7 @@ verify_symlinks() {
   if [ "$DRY_RUN" = false ]; then
     local errors=0
 
-    for agent in cursor claude gemini; do
+    for agent in cursor claude gemini agent; do
       local link="$PROJECT_ROOT/.$agent/skills"
       if [ -L "$link" ]; then
         local target=$(readlink "$link")
@@ -139,15 +105,6 @@ verify_symlinks() {
         ((errors++))
       fi
     done
-
-    # Check Antigravity selective symlinks
-    if [ -d "$PROJECT_ROOT/.agent/skills" ]; then
-      local skill_count=$(find "$PROJECT_ROOT/.agent/skills" -type l | wc -l)
-      echo "  ✅ Antigravity skills: $skill_count selective symlinks"
-    else
-      echo "  ❌ Antigravity skills: Directory not found"
-      ((errors++))
-    fi
 
     echo ""
 
@@ -179,7 +136,7 @@ main() {
     echo "  - Cursor: skills ✅ (full symlink)"
     echo "  - Claude Code: skills ✅ (full symlink)"
     echo "  - Gemini CLI: skills ✅ (full symlink)"
-    echo "  - Antigravity: skills ✅ (selective symlinks)"
+    echo "  - Antigravity: skills ✅ (full symlink)"
     echo ""
     echo "📁 All skills now synchronized from .agents/skills/"
   else
