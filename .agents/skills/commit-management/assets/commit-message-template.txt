@@ -1,0 +1,80 @@
+type(scope): brief summary (50 chars max)
+
+[Detailed explanation of what changed and why. Wrap at 72 characters.
+Explain the context and rationale for the change.]
+
+[Additional paragraphs if needed. Separate with blank lines.]
+
+[Optional list of changes:]
+- Change 1
+- Change 2
+- Change 3
+
+[Optional footers:]
+BREAKING CHANGE: [Description of breaking change]
+Closes: #[issue-number]
+Fixes: #[issue-number]
+Refs: #[issue-number]
+Co-Authored-By: Name <email@example.com>
+
+
+# ===== Conventional Commit Format =====
+#
+# Type (required): feat, fix, docs, refactor, test, chore, perf, style
+# Scope (optional): Component, module, or area (e.g., api, auth, ui)
+# Subject (required): Brief description in imperative mood
+#
+# Body (optional): Detailed explanation
+# - What changed
+# - Why it changed (rationale)
+# - How it impacts the project
+# - Any relevant context
+#
+# Footer (optional):
+# - BREAKING CHANGE: Describe incompatible changes
+# - Issue references: Closes, Fixes, Refs
+# - Co-authors: Co-Authored-By
+#
+# ===== Rules =====
+#
+# Subject line:
+# - Use imperative mood ("add" not "added")
+# - No period at the end
+# - Keep under 50 characters
+# - Lowercase after type
+#
+# Body:
+# - Wrap at 72 characters
+# - Explain WHY, not HOW (code shows how)
+# - Separate from subject with blank line
+#
+# Footer:
+# - Separate from body with blank line
+# - Use for metadata (breaking changes, issues, co-authors)
+#
+# ===== Examples =====
+#
+# Simple:
+# feat(auth): add login endpoint
+#
+# With body:
+# fix(api): resolve timeout on user endpoint
+#
+# Added retry logic with exponential backoff to prevent
+# timeout errors when database is under high load.
+#
+# Fixes: #234
+#
+# With breaking change:
+# feat(api): change authentication flow
+#
+# Redesigned authentication to use JWT tokens instead of
+# session-based authentication for better scalability.
+#
+# BREAKING CHANGE: All auth endpoints changed. Clients must
+# update to use /auth/login and include JWT in Authorization
+# header for subsequent requests.
+#
+# Migration guide: docs/migration/v2-auth.md
+#
+# Closes: #567

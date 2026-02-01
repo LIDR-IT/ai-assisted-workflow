@@ -1,0 +1,176 @@
+feat(scope): brief description of feature with breaking change
+
+[Detailed explanation of what changed and why the breaking change
+was necessary. Provide context about the problem being solved and
+why this approach requires breaking existing functionality.]
+
+Changes:
+- List the specific changes made
+- Highlight what's different from before
+- Explain the new behavior
+
+BREAKING CHANGE: [Clear description of what broke and how it affects users]
+
+[Detailed migration instructions:]
+1. Step one to migrate
+2. Step two to migrate
+3. Step three to migrate
+
+[Or reference migration guide:]
+Migration guide: docs/migration/v[version]-[feature].md
+
+[Optional: deprecation timeline]
+Deprecated APIs will be removed in v[version] ([date])
+
+[Issue references:]
+Closes: #[issue-number]
+Refs: #[related-issue]
+
+
+# ===== Breaking Change Commit Template =====
+#
+# Use this template when making changes that break backward compatibility
+#
+# CRITICAL: Breaking changes trigger a MAJOR version bump (1.x.x -> 2.0.0)
+# in Semantic Versioning. Only use when absolutely necessary.
+#
+# ===== When to Use =====
+#
+# - Changing public API signatures
+# - Removing features or endpoints
+# - Changing response formats
+# - Modifying behavior of existing features
+# - Upgrading dependencies with breaking changes
+# - Changing configuration requirements
+#
+# ===== Required Elements =====
+#
+# 1. Type and scope (usually "feat" for breaking features)
+# 2. Clear subject line
+# 3. Body explaining the change
+# 4. BREAKING CHANGE footer (REQUIRED)
+# 5. Migration instructions or guide reference
+#
+# ===== BREAKING CHANGE Footer =====
+#
+# Format:
+# BREAKING CHANGE: [Description]
+#
+# Must include:
+# - What changed
+# - How it affects users
+# - Why the change was necessary (if not obvious from body)
+#
+# ===== Migration Instructions =====
+#
+# Provide either:
+# A. Inline step-by-step migration instructions
+# B. Reference to detailed migration guide document
+#
+# Migration guide should include:
+# - Before/after code examples
+# - Step-by-step instructions
+# - Troubleshooting common issues
+# - Timeline for deprecated features
+#
+# ===== Examples =====
+#
+# API Change:
+# feat(api): redesign authentication endpoints
+#
+# Complete redesign of authentication API for improved security
+# and better developer experience.
+#
+# Changes:
+# - POST /auth/login now returns JWT token instead of session cookie
+# - Added POST /auth/refresh for token refresh
+# - POST /auth/logout now requires Authorization header
+# - Removed /session/* endpoints
+#
+# BREAKING CHANGE: Authentication flow completely changed from
+# session-based to JWT-based. All API clients must migrate to new
+# authentication flow.
+#
+# Migration steps:
+# 1. Update login calls to use POST /auth/login
+# 2. Store returned JWT token securely
+# 3. Include token in Authorization header: "Bearer <token>"
+# 4. Implement token refresh using POST /auth/refresh
+# 5. Remove session cookie handling
+#
+# Detailed migration guide: docs/migration/v2-auth.md
+#
+# Old sessions will be supported until 2025-12-31, then removed.
+#
+# Closes: #567
+# Refs: #543, #234
+#
+# ---
+#
+# Dependency Update:
+# chore(deps): update Node.js to v18 LTS
+#
+# Update minimum Node.js version from v14 to v18 LTS to enable
+# use of modern JavaScript features and improved performance.
+#
+# BREAKING CHANGE: Node.js v14 and v16 are no longer supported.
+# Minimum required version is now Node.js v18.
+#
+# Migration: Install Node.js v18 or higher before upgrading.
+#
+# Check your version:
+# $ node --version
+#
+# Upgrade using nvm:
+# $ nvm install 18
+# $ nvm use 18
+#
+# Or download from: https://nodejs.org/
+#
+# Closes: #890
+#
+# ---
+#
+# Data Format Change:
+# feat(api): standardize error response format
+#
+# Implement consistent error response format across all API
+# endpoints for better error handling in clients.
+#
+# All errors now return:
+# {
+#   "error": {
+#     "code": "ERROR_CODE",
+#     "message": "Human readable message",
+#     "details": {}
+#   }
+# }
+#
+# BREAKING CHANGE: Error response format changed. Clients must
+# update error handling to use new error object structure.
+#
+# Before:
+# { "error": "Error message" }
+#
+# After:
+# { "error": { "code": "ERROR_CODE", "message": "Error message" } }
+#
+# Migration: Update error handling code to access error.message
+# instead of error.
+#
+# See: docs/api/error-handling.md
+#
+# Closes: #234
+# Refs: #456, #789
+#
+# ===== Checklist Before Commit =====
+#
+# - [ ] BREAKING CHANGE footer included
+# - [ ] Migration instructions provided
+# - [ ] Impact clearly described
+# - [ ] Alternatives considered and documented
+# - [ ] Team/stakeholders notified
+# - [ ] Migration guide written (if complex)
+# - [ ] Deprecation timeline set (if applicable)
+# - [ ] Tests updated for new behavior
+# - [ ] Documentation updated
