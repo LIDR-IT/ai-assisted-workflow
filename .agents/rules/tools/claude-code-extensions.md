@@ -14,7 +14,44 @@ Review these files for compliance: $ARGUMENTS
 
 Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.
 
-## Available Extension Types
+## Rules
+
+### CRITICAL - Proper Structure
+
+- Skills must be in `.agents/skills/{skill-name}/SKILL.md` (uppercase SKILL.md)
+- Commands must be in `.agents/commands/{command-name}.md`
+- Agents must be in `.agents/agents/{agent-name}.md`
+- All extensions need complete YAML frontmatter
+- Never create extensions in agent-specific directories (`.claude/`, `.cursor/` use symlinks)
+
+### CRITICAL - YAML Frontmatter Required
+
+**Skills:**
+```yaml
+---
+name: skill-name
+description: When to use this skill
+---
+```
+
+**Commands:**
+```yaml
+---
+name: command-name
+args: [arg1, arg2]
+---
+```
+
+**Agents:**
+```yaml
+---
+name: agent-name
+description: Triggering conditions with examples
+tools: ["Read", "Write"]
+---
+```
+
+### Available Extension Types
 
 | Extension | Skill | Use When |
 |-----------|-------|----------|
@@ -24,9 +61,9 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 | **Hooks** | `/hook-development` | Event-driven automation (PreToolUse, PostToolUse, etc.) |
 | **MCP Servers** | `/mcp-integration` | Connecting external tools/services |
 
-## Quick Patterns
+### Reference Templates
 
-### Creating a Skill
+#### Creating a Skill
 ```markdown
 ---
 name: skill-name
@@ -36,7 +73,7 @@ description: When to use this skill
 ```
 **Invoke:** `/skill-creator` for full guide
 
-### Creating a Command
+#### Creating a Command
 ```markdown
 ---
 name: command-name
@@ -46,7 +83,7 @@ args: [arg1, arg2]
 ```
 **Invoke:** `/command-development` for full guide
 
-### Creating an Agent
+#### Creating an Agent
 ```markdown
 ---
 name: agent-name
@@ -57,14 +94,14 @@ System prompt here
 ```
 **Invoke:** `/agent-development` for full guide
 
-### Creating a Hook
+#### Creating a Hook
 ```bash
 #!/bin/bash
 # .claude/hooks/PreToolUse/validate.sh
 ```
 **Invoke:** `/hook-development` for full guide
 
-### Adding MCP Server
+#### Adding MCP Server
 ```json
 {
   "servers": {
@@ -78,7 +115,7 @@ System prompt here
 ```
 **Invoke:** `/mcp-integration` for full guide
 
-## File Locations
+### File Locations
 
 - **Skills:** `.agents/skills/{skill-name}/skill.md`
 - **Commands:** `.agents/commands/{command-name}.md`
@@ -86,7 +123,7 @@ System prompt here
 - **Hooks:** `.claude/hooks/{Event}/{hook-name}.sh`
 - **MCP:** `.agents/mcp/mcp-servers.json`
 
-## Prefer Retrieval Over Pre-training
+### Prefer Retrieval Over Pre-training
 
 When extending Claude Code, always invoke the relevant skill to get current, version-matched documentation rather than relying on training data.
 
