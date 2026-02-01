@@ -230,10 +230,138 @@ sync_claude() {
   echo ""
 }
 
-# Sync Gemini CLI
+# Sync Gemini CLI (generates index file - Gemini doesn't support rules)
 sync_gemini() {
-  echo "💎 Syncing Gemini CLI rules..."
-  create_directory_symlink "../.agents/rules" "$PROJECT_ROOT/.gemini/rules" "rules"
+  echo "💎 Syncing Gemini CLI (generating index)..."
+
+  if [ "$DRY_RUN" = true ]; then
+    echo "  [DRY RUN] Would generate GEMINI.md index file"
+    echo ""
+    return 0
+  fi
+
+  # Remove existing symlink/directory if present
+  if [ -e "$PROJECT_ROOT/.gemini/rules" ] || [ -L "$PROJECT_ROOT/.gemini/rules" ]; then
+    rm -rf "$PROJECT_ROOT/.gemini/rules"
+  fi
+
+  # Create .gemini directory if needed
+  mkdir -p "$PROJECT_ROOT/.gemini"
+
+  # Generate GEMINI.md index file
+  cat > "$PROJECT_ROOT/.gemini/GEMINI.md" << 'EOF'
+# Rules Reference for Gemini CLI
+
+> **Note:** Gemini CLI does not support rules like other agents. This document serves as an index to the project's rules located in `.agents/rules/`.
+
+## Project Rules Location
+
+All rules are centralized in: `.agents/rules/`
+
+## Rules by Category
+
+### Code Standards
+
+#### **[Principles](../.agents/rules/code/principles.md)**
+Core principles and architectural decisions for the project.
+
+#### **[Style](../.agents/rules/code/style.md)**
+Code style guidelines and formatting standards.
+
+---
+
+### Content Guidelines
+
+#### **[Copywriting](../.agents/rules/content/copywriting.md)**
+Copywriting and content standards for user-facing text.
+
+---
+
+### Design Standards
+
+#### **[Web Design](../.agents/rules/design/web-design.md)**
+Web interface guidelines and accessibility standards.
+
+---
+
+### Framework-Specific
+
+#### **[React Native](../.agents/rules/frameworks/react-native.md)**
+React Native best practices and performance optimization.
+
+---
+
+### Process & Workflow
+
+#### **[Git Workflow](../.agents/rules/process/git-workflow.md)**
+Git branching strategy, commit conventions, and PR guidelines.
+
+#### **[Documentation](../.agents/rules/process/documentation.md)**
+Documentation standards and writing guidelines.
+
+---
+
+### Quality Assurance
+
+#### **[Testing](../.agents/rules/quality/testing.md)**
+Testing philosophy, manual testing checklists, and verification.
+
+#### **[Testing Scripts](../.agents/rules/quality/testing-scripts.md)**
+Bash script testing patterns and best practices.
+
+---
+
+### Team Conventions
+
+#### **[Skills Management](../.agents/rules/team/skills-management.md)**
+Guidelines for managing AI agent skills at project level.
+
+#### **[Third-Party Security](../.agents/rules/team/third-party-security.md)**
+Security guidelines for third-party MCP servers and Skills.
+
+---
+
+### Tools & Extensions
+
+#### **[Claude Code Extensions](../.agents/rules/tools/claude-code-extensions.md)**
+Reference for extending Claude Code with skills, commands, and agents.
+
+#### **[Use Context7](../.agents/rules/tools/use-context7.md)**
+Guidelines for using Context7 MCP for library/API documentation.
+
+---
+
+## Synchronization
+
+Rules are synchronized across agents using:
+
+```bash
+./.agents/rules/sync-rules.sh
+```
+
+**Platform Support:**
+- **Cursor:** Rules copied as .mdc files (flattened)
+- **Claude Code:** Rules symlinked with subdirectories
+- **Gemini CLI:** Index file (this document) - no native rules support
+- **Antigravity:** Rules symlinked with subdirectories
+
+---
+
+## Additional Resources
+
+- **[README](../.agents/rules/README.md)** - Rules best practices guide
+- **[YAML Formats](../.agents/rules/YAML-FORMATS.md)** - Platform-specific YAML frontmatter
+
+---
+
+*Last synchronized: [Auto-generated]*
+EOF
+
+  # Update timestamp in generated file
+  local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+  sed -i '' "s/\[Auto-generated\]/$timestamp/" "$PROJECT_ROOT/.gemini/GEMINI.md"
+
+  echo "  ✅ Generated GEMINI.md index file"
   echo ""
 }
 
@@ -270,13 +398,11 @@ verify_sync() {
       ((errors++))
     fi
 
-    # Verify Gemini CLI (symlink with subdirs)
-    local link="$PROJECT_ROOT/.gemini/rules"
-    if [ -L "$link" ]; then
-      local target=$(readlink "$link")
-      echo "  ✅ gemini rules: $link → $target (with subdirs)"
+    # Verify Gemini CLI (index file - no native rules support)
+    if [ -f "$PROJECT_ROOT/.gemini/GEMINI.md" ]; then
+      echo "  ✅ gemini: GEMINI.md index file (no native rules support)"
     else
-      echo "  ❌ gemini rules: Not a symlink"
+      echo "  ❌ gemini: GEMINI.md index file not found"
       ((errors++))
     fi
 
@@ -320,7 +446,7 @@ main() {
     echo "Summary:"
     echo "  - Cursor: rules ✅ (flattened .mdc files - no subdirs)"
     echo "  - Claude Code: rules ✅ (symlink with subdirs)"
-    echo "  - Gemini CLI: rules ✅ (symlink with subdirs)"
+    echo "  - Gemini CLI: index file ✅ (GEMINI.md - no native rules support)"
     echo "  - Antigravity: rules ✅ (symlink with subdirs)"
     echo ""
     echo "📁 All rules now synchronized from .agents/rules/"

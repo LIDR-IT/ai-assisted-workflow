@@ -27,24 +27,30 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 
 ### Synchronization Strategies
 
-**1. Symlinks (Rules, Skills, Commands, Agents)**
-- **Used for:** Rules, skills, commands, and agents distribution
-- **Platforms:** Claude Code, Gemini CLI, Antigravity
+**1. Symlinks (Skills, Commands, Agents)**
+- **Used for:** Skills, commands, and agents distribution
+- **Platforms:** Cursor, Claude Code, Gemini CLI, Antigravity
 - **Mechanism:** Full directory symlinks pointing to `.agents/`
 - **Advantages:** Instant propagation, zero duplication, single source of truth
 - **Note:** Antigravity does NOT support agents directory
 
-**2. Script Generation (MCP Configs)**
-- **Used for:** MCP server configurations
-- **Script:** `.agents/mcp/sync-mcp.sh`
-- **Mechanism:** Transforms `.agents/mcp/mcp-servers.json` into platform-specific configs
+**2. Symlinks (Rules - Selective)**
+- **Used for:** Rules distribution
+- **Platforms:** Claude Code, Antigravity
+- **Mechanism:** Full directory symlinks pointing to `.agents/rules/`
+- **Note:** Only Claude Code and Antigravity support rules via symlinks
+
+**3. Script Generation (MCP Configs, Gemini Index)**
+- **Used for:** MCP server configurations and Gemini rules index
+- **Scripts:** `.agents/mcp/sync-mcp.sh`, `.agents/rules/sync-rules.sh`
+- **Mechanism:** Generates platform-specific configs and GEMINI.md index file
 - **Advantages:** Platform-specific formatting, validation, preprocessing
 
-**3. Manual Copy (Cursor Special Case)**
+**4. Manual Copy (Cursor Rules)**
 - **Used for:** Cursor rules only (limitation: no subdirectory support)
 - **Script:** `.agents/rules/sync-rules.sh`
 - **Mechanism:** Copy `.md` files to `.cursor/rules/` (flattened structure, auto-converted to `.mdc`)
-- **Note:** Antigravity uses symlinks like Claude and Gemini
+- **Note:** Gemini CLI generates index file (no native rules support)
 
 ### Platform Support Matrix
 
@@ -52,7 +58,7 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 |----------|-------|--------|----------|--------|-------------|------------|
 | Cursor | ✅ Copy (flat .mdc) | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
-| Gemini CLI | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
+| Gemini CLI | ❌ Index file only | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Antigravity | ✅ Symlink | ✅ Symlink | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
 
 ## Design Decisions
