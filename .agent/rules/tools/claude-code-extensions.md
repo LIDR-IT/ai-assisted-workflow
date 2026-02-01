@@ -1,1 +1,0 @@
-../../.agents/rules/tools/claude-code-extensions.md

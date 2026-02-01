@@ -33,20 +33,20 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 - **Mechanism:** Transforms `.agents/mcp/mcp-servers.json` into platform-specific configs
 - **Advantages:** Platform-specific formatting, validation, preprocessing
 
-**3. Manual Copy (Antigravity Special Case)**
-- **Used for:** Antigravity rules (limitation: no project-level symlink support)
+**3. Manual Copy (Antigravity and Cursor Special Case)**
+- **Used for:** Antigravity and Cursor rules (limitation: no subdirectory support)
 - **Script:** `.agents/rules/sync-rules.sh`
-- **Mechanism:** Copy `.md` files to `.agent/rules/`
-- **Note:** Skills use selective symlinks in `.agent/skills/`
+- **Mechanism:** Copy `.md` files to `.agent/rules/` and `.cursor/rules/` (flattened structure)
+- **Note:** Skills use different strategies per platform
 
 ### Platform Support Matrix
 
 | Platform | Rules | Skills | Commands | Agents | MCP Project | MCP Global |
 |----------|-------|--------|----------|--------|-------------|------------|
-| Cursor | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
+| Cursor | ✅ Copy (flat) | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Gemini CLI | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
-| Antigravity | ✅ Copy | ✅ Selective | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
+| Antigravity | ✅ Copy (flat) | ✅ Selective | ✅ Copy | ❌ Not supported | ❌ Global only | ✅ |
 
 ## Design Decisions
 

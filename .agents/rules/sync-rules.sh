@@ -119,52 +119,46 @@ sync_gemini() {
   echo ""
 }
 
-# Sync Antigravity (selective symlinks with subdirectories)
+# Sync Antigravity (flattened - no subdirectory support)
 sync_antigravity() {
-  echo "🌌 Syncing Antigravity rules (selective symlinks with subdirs)..."
+  echo "🌌 Syncing Antigravity rules (flattened structure)..."
 
   if [ "$DRY_RUN" = true ]; then
-    echo "  [DRY RUN] Would create selective symlinks in .agent/rules/"
+    echo "  [DRY RUN] Would copy all .md files to .agent/rules/ (flattened)"
     echo ""
     return 0
   fi
 
-  # Remove existing directory and recreate
+  # Remove existing directory/symlink
   if [ -e "$PROJECT_ROOT/.agent/rules" ] || [ -L "$PROJECT_ROOT/.agent/rules" ]; then
     rm -rf "$PROJECT_ROOT/.agent/rules"
   fi
+
+  # Create flat rules directory
   mkdir -p "$PROJECT_ROOT/.agent/rules"
 
-  echo "  📝 Creating selective symlinks (preserving subdirectory structure)..."
+  echo "  📝 Copying all rules (flattened for Antigravity compatibility)..."
 
   local count=0
-  # Find all .md files recursively
+  # Find all .md files recursively and copy them flat
   while IFS= read -r -d '' rule_file; do
-    # Get relative path from RULES_SOURCE
-    local rel_path="${rule_file#$RULES_SOURCE/}"
-    local link_path="$PROJECT_ROOT/.agent/rules/$rel_path"
+    local rule_name=$(basename "$rule_file")
+    local dest_file="$PROJECT_ROOT/.agent/rules/$rule_name"
+    local subdir=$(dirname "$rule_file" | sed "s|$RULES_SOURCE||" | sed 's|^/||')
 
-    # Calculate relative target path from link location
-    local subdir_depth=$(echo "$rel_path" | tr -cd '/' | wc -c)
-    local rel_prefix="../"
-    for ((i=0; i<subdir_depth; i++)); do
-      rel_prefix="../$rel_prefix"
-    done
-    local target="${rel_prefix}.agents/rules/$rel_path"
-
-    # Create parent directory if needed
-    mkdir -p "$(dirname "$link_path")"
-
-    # Create symlink
-    ln -s "$target" "$link_path"
-    echo "    ✅ $rel_path"
+    cp "$rule_file" "$dest_file"
+    if [ -n "$subdir" ]; then
+      echo "    ✅ $rule_name (from $subdir/)"
+    else
+      echo "    ✅ $rule_name"
+    fi
     ((count++))
   done < <(find "$RULES_SOURCE" -type f -name "*.md" ! -name "sync-*.sh" -print0)
 
   if [ $count -gt 0 ]; then
-    echo "  ✅ Created $count selective symlinks in .agent/rules/"
+    echo "  ✅ Copied $count rules to flat structure"
   else
-    echo "  ⚠️  No rules found to symlink"
+    echo "  ⚠️  No rules found to copy"
   fi
 
   echo ""
@@ -206,10 +200,10 @@ verify_sync() {
       ((errors++))
     fi
 
-    # Verify Antigravity (selective symlinks with subdirs)
+    # Verify Antigravity (flattened files)
     if [ -d "$PROJECT_ROOT/.agent/rules" ]; then
-      local antigrav_count=$(find "$PROJECT_ROOT/.agent/rules" -type l -name "*.md" | wc -l)
-      echo "  ✅ antigravity rules: $antigrav_count selective symlinks (with subdirs)"
+      local antigrav_count=$(find "$PROJECT_ROOT/.agent/rules" -type f -name "*.md" | wc -l)
+      echo "  ✅ antigravity rules: $antigrav_count files (flattened)"
     else
       echo "  ❌ antigravity rules: Directory not found"
       ((errors++))
@@ -245,7 +239,7 @@ main() {
     echo "  - Cursor: rules ✅ (flattened .md files - no subdirs)"
     echo "  - Claude Code: rules ✅ (symlink with subdirs)"
     echo "  - Gemini CLI: rules ✅ (symlink with subdirs)"
-    echo "  - Antigravity: rules ✅ (selective symlinks with subdirs)"
+    echo "  - Antigravity: rules ✅ (flattened .md files - no subdirs)"
     echo ""
     echo "📁 All rules now synchronized from .agents/rules/"
     echo ""

@@ -1,1 +1,0 @@
-../../.agents/rules/frameworks/react-native.md

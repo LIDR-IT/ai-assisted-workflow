@@ -76,9 +76,10 @@ This runs all synchronization scripts:
 .gemini/settings.json
 ```
 
-**Copy Strategy** (Antigravity only):
+**Copy Strategy** (Cursor and Antigravity - no subdirectory support):
 ```
-.agents/rules/ → .agent/rules/  (copied)
+.agents/rules/ → .cursor/rules/  (copied, flattened)
+.agents/rules/ → .agent/rules/   (copied, flattened)
 .agents/skills/ → .agent/skills/  (selective symlinks)
 ```
 
@@ -346,7 +347,7 @@ ls -la .claude/
 Download from [cursor.com](https://cursor.com)
 
 **Configuration:**
-- Rules: `.cursor/rules/` (symlink)
+- Rules: `.cursor/rules/` (copied files, flattened - no subdirectories)
 - Skills: `.cursor/skills/` (symlink)
 - MCP: `.cursor/mcp.json` (generated)
 
@@ -382,14 +383,14 @@ gemini skill list
 Follow [Antigravity documentation](https://antigravity.dev/docs)
 
 **Configuration:**
-- Rules: `.agent/rules/` (copied, not symlinked)
+- Rules: `.agent/rules/` (copied files, flattened - no subdirectories)
 - Skills: `.agent/skills/` (selective symlinks)
 - MCP: `~/.gemini/antigravity/mcp_config.json` (global only)
 
 **Important limitations:**
 - No project-level MCP support (global only)
 - No agents directory support
-- Rules must be copied (no symlink support)
+- Rules must be copied and flattened (no subdirectory support)
 
 **Verify setup:**
 ```bash
