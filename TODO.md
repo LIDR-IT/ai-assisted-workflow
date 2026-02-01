@@ -10,7 +10,7 @@
 
 - [x] Agregar comando `/commit` para git commits
 - [x] Agregar skill para gestión de commits
-- [ ] Crear SETUP_SUBAGENTS.md
+- [x] Crear SETUP_SUBAGENTS.md
 
 ## Subagents
 
