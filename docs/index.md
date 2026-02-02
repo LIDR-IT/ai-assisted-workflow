@@ -1,102 +1,36 @@
----
-layout: home
+# LIDR Documentation
 
-hero:
-  name: LIDR
-  text: Documentación Interna
-  tagline: Best practices, guías y referencias del equipo
-  actions:
-    - theme: brand
-      text: Comenzar
-      link: /modules/skills/
-    - theme: alt
-      text: Ver Guías
-      link: /guides/
+Select your language / Selecciona tu idioma:
 
-features:
-  - icon: 🎓
-    title: Módulos de Aprendizaje
-    details: Documentación estructurada sobre Skills, MCP, Agents y más
-    link: /modules/skills/
-
-  - icon: 📚
-    title: Guías Paso a Paso
-    details: Instrucciones detalladas para configurar y usar las herramientas del equipo
-    link: /guides/
-
-  - icon: 📖
-    title: Referencias Técnicas
-    details: Documentación técnica de agents, MCP servers, y herramientas de desarrollo
-    link: /references/
-
-  - icon: ✨
-    title: Guidelines
-    details: Estándares de código, diseño y convenciones del equipo
-    link: /guidelines/
-
-  - icon: 🔬
-    title: Notas de Investigación
-    details: Análisis comparativos y exploraciones de nuevas tecnologías
-    link: /notes/
----
-
-## Inicio Rápido
-
-Esta documentación está organizada en secciones principales:
-
-### 🎓 [Módulos](/modules/skills/)
-Documentación estructurada y completa sobre diferentes temas.
-
-**Destacados:**
-- [Skills Module](/modules/skills/) - Todo sobre Skills y su ecosistema
-
-### 📚 [Guías](/guides/)
-Instrucciones paso a paso para tareas específicas.
-
-### 📖 [Referencias](/references/)
-Documentación técnica detallada sobre sistemas, APIs y arquitectura.
-
-### ✨ [Guidelines](/guidelines/)
-Estándares y mejores prácticas del equipo.
-
-### 🔬 [Notas](/notes/)
-Investigaciones y análisis técnicos.
-
-## Estructura del Proyecto
-
-```
-.agents/              # Configuraciones centralizadas
-├── mcp/             # MCP server configs
-├── rules/           # Reglas del proyecto
-├── skills/          # Agent skills
-├── commands/        # Slash commands
-└── agents/          # Subagents
-
-docs/                # Esta documentación
-├── modules/         # Módulos de aprendizaje (español)
-├── guides/          # Guías prácticas (español)
-├── references/      # Referencias técnicas (español)
-└── en/              # English version
-```
-
-## Contribuir
-
-Para mejorar esta documentación:
-
-1. Edita los archivos en `docs/` (español) o `docs/en/` (inglés)
-2. Los cambios se reflejan automáticamente en desarrollo
-3. Crea un PR con tus mejoras
-
-```bash
-# Desarrollo local
-npm run docs:dev
-
-# Build para producción
-npm run docs:build
-```
+- [🇬🇧 English](/en/)
+- [🇪🇸 Español](/es/) *(Coming soon / Próximamente)*
 
 ---
 
-::: tip Búsqueda Rápida
-Usa `Cmd/Ctrl + K` para buscar en toda la documentación
-:::
+<style>
+.language-selector {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin: 3rem 0;
+}
+.language-selector a {
+  padding: 1.5rem 3rem;
+  border: 2px solid var(--vp-c-brand-1);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+.language-selector a:hover {
+  background: var(--vp-c-brand-1);
+  color: white;
+}
+</style>
+
+<script setup>
+// Auto-redirect to English (default)
+if (typeof window !== 'undefined' && window.location.pathname === '/') {
+  window.location.href = '/en/'
+}
+</script>

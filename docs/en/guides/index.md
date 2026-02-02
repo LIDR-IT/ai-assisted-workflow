@@ -1,20 +1,34 @@
-# Guías
+# Guides
 
-Instrucciones paso a paso para configurar y usar las herramientas del equipo.
+Step-by-step instructions for setting up and using team tools.
 
-## MCP (Model Context Protocol)
+## 🚀 Getting Started
 
-Guías completas para configurar MCP en diferentes plataformas:
+- **[Setup Guide](./setup.md)** - Complete setup guide for the project
 
-- **[MCP Setup Guide](mcp/mcp-setup-guide.md)** - Configuración general de MCP servers
-- **[Antigravity Setup](mcp/ANTIGRAVITY_SETUP.md)** - Configuración específica para Antigravity
-- **[Limitaciones de Antigravity](mcp/ANTIGRAVITY_LIMITATION.md)** - Restricciones y workarounds
-- **[Validación](mcp/VALIDATION.md)** - Cómo validar que MCP está funcionando correctamente
+## 🔌 MCP (Model Context Protocol)
 
-## Próximamente
+Complete guides for configuring MCP on different platforms:
 
-Esta sección se expandirá con más guías sobre:
-- Configuración de agents
-- Setup de skills personalizados
-- Workflows de desarrollo
-- Deployment y CI/CD
+- **[MCP Setup Guide](./mcp/mcp-setup-guide.md)** - General MCP server configuration
+- **[Antigravity Setup](./mcp/ANTIGRAVITY_SETUP.md)** - Antigravity-specific configuration
+- **[Antigravity Limitations](./mcp/ANTIGRAVITY_LIMITATION.md)** - Restrictions and workarounds
+- **[Validation](./mcp/VALIDATION.md)** - How to validate MCP is working correctly
+- **[MCP Overview](./mcp/README.md)** - MCP introduction and overview
+
+## 🔄 Synchronization
+
+- **[Rules Sync Setup](./rules/SYNC_SETUP.md)** - How to sync rules across platforms
+- **[Agents Sync Setup](./sync/AGENTS_SYNC_SETUP.md)** - How to sync agents across platforms
+
+## 🎯 Patterns
+
+- **[Command-Agent-Skill Pattern](./patterns/command-agent-skill-pattern.md)** - Understanding the relationship between commands, agents, and skills
+- **[Patterns Overview](./patterns/README.md)** - Common patterns and best practices
+
+## 📚 Additional Resources
+
+For more technical documentation, see:
+- [References](/en/references/) - Technical documentation and API references
+- [Modules](/en/modules/skills/) - In-depth learning modules
+- [Guidelines](/en/guidelines/) - Team standards and conventions

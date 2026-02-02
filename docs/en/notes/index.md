@@ -1,35 +1,45 @@
-# Notas y Research
+# Research Notes
 
-Investigaciones, análisis comparativos y exploraciones técnicas del equipo.
+Team research, comparative analysis, and technical explorations.
 
-::: warning Documentación en Evolución
-Esta sección contiene investigaciones y notas que pueden estar en desarrollo o sujetas a cambios.
+::: warning Work in Progress
+This section contains research and notes that may be in development or subject to change.
 :::
 
-## Análisis de Agents
+## Agent Analysis
 
-Investigaciones sobre sistemas de agents y formatos:
+Research on agent systems and formats:
 
-- **[Agent Format Cross-Platform Analysis](agent-format-cross-platform-analysis.md)** - Análisis comparativo de formatos de agents entre plataformas
-- **[Gemini Agent Format Limitations](gemini-agent-format-limitations.md)** - Limitaciones del formato de agents en Gemini
-- **[Gemini Experimental Features](gemini-experimental-features.md)** - Features experimentales de Gemini
+- **[Agent Format Cross-Platform Analysis](./agent-format-cross-platform-analysis.md)** - Comparative analysis of agent formats across platforms
+- **[Agents vs Skills](./agents-vs-skills.md)** - Comparison between agents and skills
+- **[Gemini Agent Format Limitations](./gemini-agent-format-limitations.md)** - Limitations of Gemini agent format
+- **[Gemini Experimental Features](./gemini-experimental-features.md)** - Experimental features in Gemini
+- **[Antigravity Agent Modes Settings](./antigravity-agent-modes-settings.md)** - Agent modes and settings in Antigravity
 
-## Comparativas
+## Platform Comparisons
 
-Comparaciones entre diferentes enfoques y tecnologías:
+Comparisons between different approaches and technologies:
 
-- **[Skills vs MCP Comparison](skills-installation-and-mcp-comparison.md)** - Comparación entre skills nativos y MCP servers
+- **[Skills Installation and MCP Comparison](./skills-installation-and-mcp-comparison.md)** - Comparison between native skills and MCP servers
+- **[Command Platform Differences](./command-platform-differences.md)** - How commands differ across platforms
 
-## Propósito de esta Sección
+## Purpose of This Section
 
-Las notas sirven para:
+These notes serve to:
 
-- Documentar decisiones técnicas y su contexto
-- Compartir investigaciones con el equipo
-- Registrar lecciones aprendidas
-- Comparar alternativas antes de tomar decisiones
-- Mantener un registro de experimentos
+- Document technical decisions and their context
+- Share research with the team
+- Record lessons learned
+- Compare alternatives before making decisions
+- Maintain a log of experiments
 
-::: tip Contribuir
-Si tienes investigaciones o análisis que compartir, agrégalos aquí con la fecha y contexto.
+::: tip Contributing
+If you have research or analysis to share, add it here with the date and context.
 :::
+
+## 📚 Related Documentation
+
+For more structured content, see:
+- [References](/en/references/) - Technical documentation and API references
+- [Guides](/en/guides/) - Step-by-step tutorials
+- [Modules](/en/modules/skills/) - In-depth learning modules
