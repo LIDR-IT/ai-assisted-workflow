@@ -120,10 +120,13 @@ All components must use functional components...
 ### Platform-Specific Behavior
 
 **Cursor (.mdc format):**
-- Extension must be `.mdc` (sync script auto-converts .md → .mdc)
+- ⚠️ **Extension MUST be `.mdc`** (sync script auto-converts .md → .mdc)
+- ⚠️ **NO subdirectories supported** - rules must be in flat structure
+- ⚠️ **`name` field REQUIRED** - rule won't appear in UI without it
 - Extracts: `name`, `description`, `alwaysApply`, `globs`
-- Flattened structure (no subdirectories)
+- Flattened structure: `code/principles.md` → `principles.mdc`
 - `alwaysApply: true` = always active, `false` = intelligent application
+- **Ignores:** `argument-hint`, `paths`, `trigger` (safe to include)
 
 **Claude Code (.md format):**
 - Uses symlinks to `.agents/rules/` (supports subdirectories)

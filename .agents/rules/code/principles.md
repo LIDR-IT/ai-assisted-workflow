@@ -66,6 +66,11 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 - **Antigravity Commands:** Symlink with different name `.agent/workflows` → `.agents/commands`
 - **Symlinks in UI:** Explorers (VS Code, Finder) show symlinks as directories (visual only)
 
+**⚠️ Critical Limitations:**
+- **Cursor Rules:** Must be `.mdc` + flat structure (no subdirectories) + `name` field required
+- **Missing YAML fields:** Can cause rules to be silently ignored on specific platforms
+- **Platform-specific fields:** Each platform ignores unsupported fields (safe to include all)
+
 ## Design Decisions
 
 ### 1. Centralized Configuration Over Distributed

@@ -175,7 +175,35 @@ Use the `/sync-setup` command which runs `.agents/sync-all.sh` to synchronize af
 
 See `.agents/skills/team-skill-creator/` for templates and validation scripts.
 
-## Important Constraints
+## ⚠️ Critical Platform Limitations
+
+### Cursor Limitations (MUST FOLLOW)
+
+1. **Requires .mdc extension:**
+   - Rules MUST be `.mdc` files (not `.md`)
+   - Sync script auto-converts `.md` → `.mdc`
+   - Manual `.md` files in `.cursor/rules/` are IGNORED
+
+2. **No subdirectory support:**
+   - Cursor does NOT recognize rules in subdirectories
+   - Rules MUST be in flat structure: `.cursor/rules/*.mdc`
+   - Sync script auto-flattens directory structure
+   - Example: `code/principles.md` → `principles.mdc`
+
+3. **YAML frontmatter required:**
+   - `name` field is REQUIRED (rule won't appear without it)
+   - Missing `name` = rule silently ignored in UI
+   - Other fields optional but recommended
+
+**Verification:**
+```bash
+# Check Cursor rules are flat .mdc files
+ls .cursor/rules/
+# Should show: principles.mdc, style.mdc (no subdirectories)
+
+# Verify rule appears in Cursor
+# Open Cursor → Settings → Rules → Check rule is listed
+```
 
 ### Antigravity Limitations
 
@@ -272,7 +300,11 @@ trigger: always_on                   # Antigravity only (optional)
 ---
 ```
 
-**Never create platform-specific rule files.** Use one file with all fields.
+**⚠️ CRITICAL WARNINGS:**
+- **Missing fields = Rule ignored:** Cursor requires `name` field or rule won't appear in UI
+- **Platform-specific fields:** Each platform ignores fields it doesn't recognize (safe to include all)
+- **Never create platform-specific files:** Use one file with all fields for all platforms
+- **Test on target platforms:** Always verify rules appear in settings/memory after sync
 
 ## Git Workflow
 
@@ -375,9 +407,95 @@ VitePress-powered documentation with bilingual support (EN/ES). Configuration li
 - Modules organized by concept (Skills, MCP, etc.)
 - Cross-referenced guides and references
 
+## Common Pitfalls & Troubleshooting
+
+### Rule Not Appearing in Cursor
+
+**Symptom:** Rule file exists but doesn't show in Cursor settings
+
+**Causes:**
+1. Missing `name` field in YAML frontmatter ❌
+2. File is `.md` instead of `.mdc` ❌
+3. Rule in subdirectory instead of flat structure ❌
+4. YAML frontmatter malformed ❌
+
+**Solution:**
+```bash
+# 1. Check file has .mdc extension
+ls .cursor/rules/*.md
+# If any .md files exist, they're ignored
+
+# 2. Verify YAML has required 'name' field
+head -10 .agents/rules/my-rule.md
+# Should have: name: my-rule
+
+# 3. Re-run sync
+./.agents/rules/sync-rules.sh
+
+# 4. Verify in Cursor
+# Settings → Rules → Check rule appears
+```
+
+### Rule Not Working on Specific Platform
+
+**Symptom:** Rule works on Claude but not on Cursor (or vice versa)
+
+**Causes:**
+1. Platform-specific YAML field missing
+2. Field ignored by target platform (expected behavior)
+
+**Check:**
+```yaml
+# Cursor needs:
+name: rule-name           # REQUIRED
+description: ...          # Recommended
+
+# Claude needs:
+description: ...          # Recommended
+argument-hint: ...        # Optional
+
+# Antigravity needs:
+trigger: always_on        # Optional
+```
+
+### Subdirectories Not Recognized (Cursor)
+
+**Symptom:** Created rule in `.cursor/rules/code/` but Cursor doesn't see it
+
+**Cause:** Cursor does NOT support subdirectories
+
+**Solution:**
+```bash
+# Don't create subdirectories in .cursor/rules/
+# Instead, let sync script flatten structure automatically
+
+# Source (OK - has subdirs):
+.agents/rules/code/principles.md
+
+# Cursor (auto-flattened):
+.cursor/rules/principles.mdc
+```
+
+### Changes Not Propagating
+
+**Symptom:** Edited rule in `.agents/rules/` but platforms don't see changes
+
+**Solutions by platform:**
+```bash
+# Cursor: Re-run sync (rules are copied)
+./.agents/rules/sync-rules.sh
+
+# Claude/Gemini/Antigravity: Changes instant (symlinks)
+# Just verify symlink exists:
+readlink .claude/rules  # Should: ../.agents/rules
+
+# Antigravity: May need project reload
+# Close and reopen project in Antigravity
+```
+
 ## References
 
 - Platform limitations: `docs/guides/mcp/ANTIGRAVITY_LIMITATION.md`
-- Rules guide: `.agents/rules/README.md`
+- Rules guide: `.agents/rules-readme.md`
 - Core principles: `.agents/rules/code/principles.md`
 - Skills management: `.agents/rules/team/skills-management.md`
