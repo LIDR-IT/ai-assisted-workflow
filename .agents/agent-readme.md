@@ -1,8 +1,3 @@
----
-name: README
-model: fast
----
-
 # Agents Directory
 
 This directory contains autonomous agents that handle complex, multi-step tasks independently.
