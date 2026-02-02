@@ -1,5 +1,5 @@
 {
-  "description": "Pre-commit validation hooks for ticket workflow",
+  "description": "Git workflow automation hooks for development process",
   "hooks": {
     "PreToolUse": [
       {
@@ -9,6 +9,30 @@
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-commit.sh",
             "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "pattern": "git push",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pre-push.sh",
+            "timeout": 180
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "pattern": "git (pull|merge)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/post-merge.sh",
+            "timeout": 120
           }
         ]
       }

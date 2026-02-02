@@ -1,14 +1,14 @@
 ---
 id: TICK-003
 title: Add post-merge and pre-push git hooks for automation
-status: backlog
+status: in-progress
 priority: high
 assignee: development-team
 type: feature
 provider: none
 external_link: null
-created_at: 2026-02-02 00:00
-updated_at: 2026-02-02 00:00
+created_at: 2026-02-02 14:30
+updated_at: 2026-02-02 23:20
 ---
 
 # Add Post-Merge and Pre-Push Git Hooks
@@ -130,14 +130,13 @@ Feature: Pre-Push Hook Validation
 ## Tasks
 
 - [ ] Design hook architecture and configuration - Assigned to: tech-lead
-- [ ] Implement post-merge.sh script - Assigned to: developer-name
-- [ ] Implement pre-push.sh script - Assigned to: developer-name
-- [ ] Update hooks.json with new hooks - Assigned to: developer-name
-- [ ] Add timeout handling for long operations - Assigned to: developer-name
-- [ ] Write progress message formatter - Assigned to: developer-name
-- [ ] Test on Cursor, Claude, Gemini, Antigravity - Assigned to: QA-team
+- [ ] Implement post-merge.sh script - Assigned to: development-team
+- [ ] Implement pre-push.sh script - Assigned to: development-team
+- [ ] Update hooks.json with new hooks - Assigned to: development-team
+- [ ] Add timeout handling for long operations - Assigned to: development-team
+- [ ] Write progress message formatter - Assigned to: development-team
 - [ ] Write hook documentation - Assigned to: doc-improver agent
-- [ ] Create troubleshooting guide for hooks - Assigned to: developer-name
+- [ ] Create troubleshooting guide for hooks - Assigned to: development-team
 
 ## Notes
 
