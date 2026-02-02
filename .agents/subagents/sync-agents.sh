@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Source directory
-AGENTS_SOURCE="$PROJECT_ROOT/.agents/agents"
+AGENTS_SOURCE="$PROJECT_ROOT/.agents/subagents"
 
 # Target directories
 CURSOR_AGENTS="$PROJECT_ROOT/.cursor/agents"
@@ -29,7 +29,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-echo "🔄 Synchronizing agents from .agents/agents/ to platform directories..."
+echo "🔄 Synchronizing subagents from .agents/subagents/ to platform directories..."
 echo ""
 
 # Function to create directory symlink
@@ -73,21 +73,21 @@ validate_sources() {
 # Function to sync Cursor agents
 sync_cursor() {
   echo "🎯 Syncing Cursor agents..."
-  create_directory_symlink "../.agents/agents" "$CURSOR_AGENTS" "Cursor"
+  create_directory_symlink "../.agents/subagents" "$CURSOR_AGENTS" "Cursor"
   echo ""
 }
 
 # Function to sync Claude Code agents
 sync_claude() {
   echo "🤖 Syncing Claude Code agents..."
-  create_directory_symlink "../.agents/agents" "$CLAUDE_AGENTS" "Claude Code"
+  create_directory_symlink "../.agents/subagents" "$CLAUDE_AGENTS" "Claude Code"
   echo ""
 }
 
 # Function to sync Gemini CLI agents
 sync_gemini() {
   echo "💎 Syncing Gemini CLI agents..."
-  create_directory_symlink "../.agents/agents" "$GEMINI_AGENTS" "Gemini CLI"
+  create_directory_symlink "../.agents/subagents" "$GEMINI_AGENTS" "Gemini CLI"
   echo ""
 }
 
@@ -140,7 +140,7 @@ verify_sync() {
   echo "  - Gemini CLI: agents ✅ (symlink)"
   echo "  - Antigravity: agents ⊘ (not supported)"
   echo ""
-  echo "📁 All agents now synchronized from .agents/agents/"
+  echo "📁 All subagents now synchronized from .agents/subagents/"
   echo ""
   echo "ℹ️  Notes:"
   echo "   - All platforms use symlinks (minimal format requires no transformation)"

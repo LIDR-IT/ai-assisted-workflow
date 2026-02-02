@@ -40,7 +40,7 @@ run_sync() {
 run_sync "$SCRIPT_DIR/rules/sync-rules.sh" "1. RULES"
 run_sync "$SCRIPT_DIR/skills/sync-skills.sh" "2. SKILLS"
 run_sync "$SCRIPT_DIR/commands/sync-commands.sh" "3. COMMANDS"
-run_sync "$SCRIPT_DIR/agents/sync-agents.sh" "4. AGENTS"
+run_sync "$SCRIPT_DIR/subagents/sync-agents.sh" "4. SUBAGENTS"
 run_sync "$SCRIPT_DIR/mcp/sync-mcp.sh" "5. MCP SERVERS"
 
 # Final summary
@@ -54,7 +54,7 @@ if [ -z "$DRY_RUN_FLAG" ]; then
   echo "  ✅ Rules - Synced to all agents"
   echo "  ✅ Skills - Synced to all agents"
   echo "  ✅ Commands - Synced to all agents"
-  echo "  ✅ Agents - Synced to Cursor, Claude, Gemini (not Antigravity)"
+  echo "  ✅ Subagents - Synced to Cursor, Claude, Gemini (not Antigravity)"
   echo "  ✅ MCP Servers - Configs generated"
   echo ""
   echo "All agent directories now have latest configurations from .agents/"

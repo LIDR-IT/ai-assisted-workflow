@@ -22,17 +22,18 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 - `.agents/rules/` - Source of truth for all project rules
 - `.agents/skills/` - Source of truth for all agent skills
 - `.agents/commands/` - Source of truth for all slash commands
-- `.agents/agents/` - Source of truth for all subagents
+- `.agents/subagents/` - Source of truth for all subagents
 - `.agents/mcp/` - Source of truth for MCP server configurations
+- `orchestrator/` - Orchestrator documentation (AGENTS.md)
 
 ### Synchronization Strategies
 
-**1. Symlinks (Skills, Commands, Agents)**
-- **Used for:** Skills, commands, and agents distribution
+**1. Symlinks (Skills, Commands, Subagents)**
+- **Used for:** Skills, commands, and subagents distribution
 - **Platforms:** Cursor, Claude Code, Gemini CLI, Antigravity
 - **Mechanism:** Full directory symlinks pointing to `.agents/`
 - **Advantages:** Instant propagation, zero duplication, single source of truth
-- **Note:** Antigravity does NOT support agents directory
+- **Note:** Antigravity does NOT support subagents directory
 
 **2. Symlinks (Rules - Selective)**
 - **Used for:** Rules distribution
@@ -54,11 +55,11 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 
 ### Platform Support Matrix
 
-| Platform | Rules | Skills | Commands | Agents | MCP Project | MCP Global |
-|----------|-------|--------|----------|--------|-------------|------------|
-| Cursor | ✅ Copy (flat .mdc) | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
-| Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
-| Gemini CLI | ❌ Index file only | ✅ Symlink | ✅ Generated (.toml) | ✅ Symlink | ✅ | ✅ |
+| Platform | Rules | Skills | Commands | Subagents | MCP Project | MCP Global |
+|----------|-------|--------|----------|-----------|-------------|------------|
+| Cursor | ✅ Copy (flat .mdc) | ✅ Symlink | ✅ Symlink | ✅ Symlink (as agents/) | ✅ | ✅ |
+| Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink (as agents/) | ✅ | ✅ |
+| Gemini CLI | ❌ Index file only | ✅ Symlink | ✅ Generated (.toml) | ✅ Symlink (as agents/) | ✅ | ✅ |
 | Antigravity | ✅ Symlink | ✅ Symlink | ✅ Symlink (as workflows) | ❌ Not supported | ❌ Global only | ✅ |
 
 **Notes:**

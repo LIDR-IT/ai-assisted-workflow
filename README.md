@@ -304,12 +304,23 @@ All AI agent configurations centralized in `.agents/` directory:
 ├── rules/                    # 14 rules, 8 categories
 ├── skills/                   # 9 skill packages
 ├── commands/                 # 3 slash commands
-├── agents/                   # 1 autonomous agent
+├── subagents/                # Specialized subagents
 ├── mcp/                      # MCP server configs
 └── sync-all.sh               # Master sync script
+
+orchestrator/                 # ← Orchestrator documentation
+└── AGENTS.md                 # Source of truth for agent docs
+
+Root symlinks:
+├── AGENTS.md → orchestrator/AGENTS.md
+├── CLAUDE.md → orchestrator/AGENTS.md
+└── GEMINI.md → orchestrator/AGENTS.md
 ```
 
-**Key principle:** Edit once in `.agents/`, automatically synchronized to all platforms.
+**Key principles:**
+- Edit once in `.agents/`, automatically synchronized to all platforms
+- One orchestrator, multiple subagents - edit any root symlink to update all
+- Bidirectional editing: changes to `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md` update the orchestrator source
 
 ### Synchronization Strategies
 
@@ -317,7 +328,7 @@ All AI agent configurations centralized in `.agents/` directory:
 
 #### 1. Symlinks (Instant Propagation)
 
-**Used for:** Skills, Commands, Agents
+**Used for:** Skills, Commands, Subagents, Orchestrator docs
 **Platforms:** Cursor, Claude Code, Gemini CLI
 
 **Technical implementation:**
