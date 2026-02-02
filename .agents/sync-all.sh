@@ -37,11 +37,12 @@ run_sync() {
 }
 
 # Run all sync scripts in order
-run_sync "$SCRIPT_DIR/rules/sync-rules.sh" "1. RULES"
-run_sync "$SCRIPT_DIR/skills/sync-skills.sh" "2. SKILLS"
-run_sync "$SCRIPT_DIR/commands/sync-commands.sh" "3. COMMANDS"
-run_sync "$SCRIPT_DIR/subagents/sync-agents.sh" "4. SUBAGENTS"
-run_sync "$SCRIPT_DIR/mcp/sync-mcp.sh" "5. MCP SERVERS"
+run_sync "$SCRIPT_DIR/orchestrator/sync-orchestrator.sh" "1. ORCHESTRATOR"
+run_sync "$SCRIPT_DIR/rules/sync-rules.sh" "2. RULES"
+run_sync "$SCRIPT_DIR/skills/sync-skills.sh" "3. SKILLS"
+run_sync "$SCRIPT_DIR/commands/sync-commands.sh" "4. COMMANDS"
+run_sync "$SCRIPT_DIR/subagents/sync-agents.sh" "5. SUBAGENTS"
+run_sync "$SCRIPT_DIR/mcp/sync-mcp.sh" "6. MCP SERVERS"
 
 # Final summary
 echo "╔═══════════════════════════════════════════════════════════════════╗"
@@ -51,6 +52,7 @@ echo ""
 
 if [ -z "$DRY_RUN_FLAG" ]; then
   echo "Summary of synchronized components:"
+  echo "  ✅ Orchestrator - Root symlinks (AGENTS.md, CLAUDE.md, GEMINI.md)"
   echo "  ✅ Rules - Synced to all agents"
   echo "  ✅ Skills - Synced to all agents"
   echo "  ✅ Commands - Synced to all agents"
@@ -60,6 +62,7 @@ if [ -z "$DRY_RUN_FLAG" ]; then
   echo "All agent directories now have latest configurations from .agents/"
   echo ""
   echo "Verify with:"
+  echo "  ls -la {AGENTS,CLAUDE,GEMINI}.md"
   echo "  ls -la .cursor/{rules,skills,commands,agents}"
   echo "  ls -la .claude/{rules,skills,commands,agents}"
   echo "  ls -la .gemini/{rules,skills,commands,agents}"

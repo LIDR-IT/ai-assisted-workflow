@@ -1,1 +1,1 @@
-orchestrator/AGENTS.md
+.agents/orchestrator/AGENTS.md

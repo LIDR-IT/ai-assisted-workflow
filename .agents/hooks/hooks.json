@@ -1,0 +1,17 @@
+{
+  "description": "Pre-commit validation hooks for ticket workflow",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-commit.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
