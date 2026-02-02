@@ -7,8 +7,8 @@ assignee: documentation-team
 type: docs
 provider: none
 external_link: null
-created_at: 2026-02-02
-updated_at: 2026-02-02
+created_at: 2026-02-02 00:00
+updated_at: 2026-02-02 00:00
 ---
 
 # Create Video Tutorials and Troubleshooting Guide

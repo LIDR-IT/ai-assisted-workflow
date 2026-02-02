@@ -7,8 +7,8 @@ assignee: [department|person|agent-name]
 type: refactor
 provider: none
 external_link: null
-created_at: YYYY-MM-DD
-updated_at: YYYY-MM-DD
+created_at: YYYY-MM-DD HH:MM
+updated_at: YYYY-MM-DD HH:MM
 ---
 
 # [Refactor Title]

@@ -15,8 +15,19 @@ Review these files: $ARGUMENTS. Check against workflow stages and ticket structu
 ## Workflow: Create → Enrich → Plan → Implement → Validate → Hook Check → Commit → PR → Archive
 
 ### 1. Ticket Creation
-- Manual: Copy `.agents/tickets/templates/{type}.md` → `backlog/TICK-{id}.md`
-- Automated: `/create-ticket [type]`
+- Manual: Copy template → `backlog/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/ticket.md`
+- Automated: `/create-ticket [type]` (creates full folder structure)
+- Folder structure:
+  ```
+  TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/
+  ├── ticket.md           # Main ticket file
+  ├── plan.md             # Implementation plan
+  └── resources/          # Supporting files
+      ├── wireframes/     # UI/UX wireframes
+      ├── designs/        # Design files
+      ├── json/           # JSON configs, API responses
+      └── diagrams/       # Architecture diagrams
+  ```
 - Branch: `{type}/TICK-{id}-{brief-description}`
 
 ### 2. Ticket Enrichment
@@ -25,9 +36,11 @@ Review these files: $ARGUMENTS. Check against workflow stages and ticket structu
 - Checks: YAML, acceptance criteria, DoD, BDD scenarios, tasks
 
 ### 3. Planning
-- Break ticket into tasks with assignments
-- Move backlog/ → active/
-- Update YAML: `status: in-progress`
+- Break ticket into tasks with assignments in `plan.md`
+- Add resources (wireframes, diagrams, etc.) to `resources/` folder
+- Move `backlog/TICK-XXX-*/` → `active/TICK-XXX-*/`
+- Update YAML in `ticket.md`: `status: in-progress`
+- Update `updated_at` with current timestamp
 
 ### 4. Implementation
 - Complete assigned tasks
@@ -55,8 +68,10 @@ Review these files: $ARGUMENTS. Check against workflow stages and ticket structu
 - All DoD checkboxes marked
 
 ### 9. Archive
-- Move active/ → archived/{YYYY-QX}/
-- Update YAML: `status: done`
+- Move `active/TICK-XXX-*/` → `archived/{YYYY-QX}/TICK-XXX-*/`
+- Update YAML in `ticket.md`: `status: done`
+- Update `updated_at` with completion timestamp
+- All resources preserved in ticket folder
 - Delete branch
 
 ## Ticket YAML Required Fields
@@ -71,10 +86,12 @@ assignee: department|person|agent
 type: feature|bug|refactor|docs
 provider: none|github|jira|notion|trello|linear
 external_link: null|URL
-created_at: YYYY-MM-DD
-updated_at: YYYY-MM-DD
+created_at: YYYY-MM-DD HH:MM
+updated_at: YYYY-MM-DD HH:MM
 ---
 ```
+
+**Note:** Dates include hour and minutes (24-hour format, no seconds)
 
 ## Ticket Sections
 
@@ -172,7 +189,8 @@ Implementation decisions, trade-offs, references
 2. Extract TICK-ID from branch
 3. If no TICK-ID: ALLOW
 4. If TICK-ID:
-   - Check ticket exists (active/ or backlog/)
+   - Check ticket folder exists (`active/TICK-XXX-*/` or `backlog/TICK-XXX-*/`)
+   - Look for `ticket.md` inside folder
    - If not found: DENY
    - If found: ASK user to run /validate-pr
 
@@ -202,6 +220,7 @@ TICK-123:45 - Vague: "improve" → specify outcome
 
 **Flag these:**
 - YAML field missing (id, title, status, priority, assignee, type)
+- Date format incorrect (missing HH:MM or wrong format)
 - Status invalid (not enum)
 - Branch doesn't match pattern
 - Acceptance criteria vague ("better", "improved", "faster")
@@ -212,6 +231,9 @@ TICK-123:45 - Vague: "improve" → specify outcome
 - Provider set but no external_link
 - Ticket in backlog/ but branch created (should be active/)
 - Ticket archived but branch exists
+- Folder name doesn't match pattern (TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy)
+- Missing required files (ticket.md, plan.md)
+- Missing resources/ structure
 
 ## References
 

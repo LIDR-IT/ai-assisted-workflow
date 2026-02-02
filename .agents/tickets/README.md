@@ -14,40 +14,62 @@ Code-resident ticket management with BDD patterns and automated validation.
 
 ```
 .agents/tickets/
-├── README.md              # This file
-├── templates/             # Ticket templates by type
-│   ├── feature.md         # New feature template
-│   ├── bug.md             # Bug fix template
-│   ├── refactor.md        # Code refactoring template
-│   └── docs.md            # Documentation template
-├── backlog/               # Tickets not yet started (status: backlog|todo)
-├── active/                # Tickets in progress (status: in-progress|review)
-└── archived/              # Completed tickets (status: done|archived)
-    ├── 2026-Q1/           # Organized by quarter
-    ├── 2026-Q2/
-    └── .gitkeep
+├── README.md                      # This file
+├── templates/                     # Ticket templates by type
+│   ├── feature.md                 # New feature template
+│   ├── bug.md                     # Bug fix template
+│   ├── refactor.md                # Code refactoring template
+│   └── docs.md                    # Documentation template
+├── backlog/                       # Tickets not yet started
+│   └── TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/
+│       ├── ticket.md              # Main ticket file
+│       ├── plan.md                # Implementation plan
+│       └── resources/             # Supporting files
+│           ├── wireframes/        # UI/UX wireframes
+│           ├── designs/           # Design files (Figma, Sketch)
+│           ├── json/              # JSON configs, API responses
+│           └── diagrams/          # Architecture diagrams
+├── active/                        # Tickets in progress
+│   └── TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/
+│       ├── ticket.md
+│       ├── plan.md
+│       └── resources/
+└── archived/                      # Completed tickets
+    └── 2026-Q1/                   # Organized by quarter
+        └── TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/
+            ├── ticket.md
+            ├── plan.md
+            └── resources/
 ```
+
+**Folder Naming:** `TICK-{id}-start-{dd-mm-yyyy}-end-{dd-mm-yyyy}`
+- Example: `TICK-001-start-02-02-2026-end-09-02-2026`
+- Dates in dd-mm-yyyy format for readability
+- Start date = created_at, End date = updated_at (or estimated completion)
 
 ## Ticket Lifecycle
 
 ### 1. Backlog
 - **Status:** `backlog` or `todo`
-- **Location:** `.agents/tickets/backlog/TICK-{id}.md`
+- **Location:** `.agents/tickets/backlog/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/`
 - **Purpose:** Tickets awaiting prioritization or start
-- **Transition:** Move to `active/` when work begins
+- **Files:** `ticket.md`, `plan.md` (draft), `resources/` (empty or with specs)
+- **Transition:** Move entire folder to `active/` when work begins
 
 ### 2. Active
 - **Status:** `in-progress` or `review`
-- **Location:** `.agents/tickets/active/TICK-{id}.md`
+- **Location:** `.agents/tickets/active/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/`
 - **Purpose:** Tickets being actively worked on
 - **Branch:** Create branch `{type}/TICK-{id}-{description}`
-- **Transition:** Move to `archived/` when PR merged
+- **Files:** Update `plan.md`, add resources as needed
+- **Transition:** Move entire folder to `archived/{YYYY-QX}/` when PR merged
 
 ### 3. Archived
 - **Status:** `done` or `archived`
-- **Location:** `.agents/tickets/archived/{YYYY-QX}/TICK-{id}.md`
+- **Location:** `.agents/tickets/archived/{YYYY-QX}/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/`
 - **Purpose:** Completed work for historical reference
 - **Organization:** Group by quarter for easy browsing
+- **Preserved:** All ticket files, plan, and resources remain intact
 
 ## YAML Metadata
 
@@ -63,10 +85,12 @@ assignee: department|person|agent      # Who owns this
 type: feature|bug|refactor|docs        # Ticket category
 provider: none|github|jira|notion|trello|linear  # External sync (optional)
 external_link: null|URL                # Link if provider set
-created_at: YYYY-MM-DD                 # ISO date
-updated_at: YYYY-MM-DD                 # ISO date
+created_at: YYYY-MM-DD HH:MM           # ISO date with time (24h format)
+updated_at: YYYY-MM-DD HH:MM           # ISO date with time (24h format)
 ---
 ```
+
+**Note:** Timestamps use 24-hour format without seconds (e.g., `2026-02-02 14:30`)
 
 ### Field Definitions
 
