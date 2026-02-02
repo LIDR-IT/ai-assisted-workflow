@@ -43,33 +43,42 @@ export default {
 
 ### Brand Colors
 
-The theme uses a blue primary color and purple accent:
+The theme uses a gold primary color with complementary slate backgrounds:
 
 **Light Mode:**
-- Primary: `#3b82f6` (blue-500)
-- Accent: `#8b5cf6` (purple-500)
+- Primary: `oklch(0.72 0.16 85)` (slightly darker gold for legibility)
+- Soft: `oklch(0.95 0.05 90)` (very light gold tint)
+- Dark: `oklch(0.6 0.18 80)` (darker gold for accents)
 
 **Dark Mode:**
-- Primary: `#60a5fa` (blue-400)
-- Accent: `#a78bfa` (purple-400)
+- Complementary gold palette optimized for dark backgrounds
+- Enhanced contrast for WCAG AA compliance
+
+**Why oklch():**
+- Better perceptual uniformity than hex/rgb
+- Easier to create consistent color scales
+- Better color management across light/dark modes
 
 ### CSS Custom Properties
 
-All colors are defined as CSS custom properties for easy customization:
+All colors are defined as CSS custom properties using oklch() format:
 
 ```css
 :root {
-  --vp-c-brand-1: #3b82f6;  /* Primary brand color */
-  --vp-c-brand-2: #2563eb;  /* Hover state */
-  --vp-c-brand-3: #1e40af;  /* Active state */
-  --vp-c-brand-soft: #dbeafe; /* Background tint */
+  --gold-primary: oklch(0.72 0.16 85);
+  --gold-soft: oklch(0.95 0.05 90);
+  --gold-dark: oklch(0.6 0.18 80);
+
+  --vp-c-brand-1: var(--gold-primary);
+  --vp-c-brand-2: var(--gold-dark);
+  --vp-c-brand-3: var(--gold-dark);
+  --vp-c-brand-soft: oklch(0.72 0.16 85 / 10%);
 }
 
 .dark {
-  --vp-c-brand-1: #60a5fa;  /* Lighter for dark mode */
-  --vp-c-brand-2: #3b82f6;
-  --vp-c-brand-3: #2563eb;
-  --vp-c-brand-soft: #1e3a8a;
+  /* Complementary gold palette for dark mode */
+  --vp-c-brand-1: var(--gold-primary);
+  /* Additional dark mode adjustments */
 }
 ```
 

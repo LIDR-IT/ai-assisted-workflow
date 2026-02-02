@@ -349,12 +349,14 @@ Add meta tags, favicons, scripts:
 export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['meta', { name: 'theme-color', content: '#3b82f6' }],
+    ['meta', { name: 'theme-color', content: '#d4a574' }], // Gold brand color (hex approximation)
     ['meta', { name: 'og:type', content: 'website' }],
     ['meta', { name: 'og:locale', content: 'es' }],
   ]
 })
 ```
+
+**Note:** The theme uses `oklch(0.72 0.16 85)` for the gold brand color in CSS, but `theme-color` meta tag requires hex format. Use `#d4a574` as the closest hex approximation.
 
 ### Search Configuration
 
