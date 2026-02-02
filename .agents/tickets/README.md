@@ -21,7 +21,7 @@ Code-resident ticket management with BDD patterns and automated validation.
 │   ├── refactor.md                # Code refactoring template
 │   └── docs.md                    # Documentation template
 ├── backlog/                       # Tickets not yet started
-│   └── TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/
+│   └── TICK-XXX-start-dd-mm-yyyy/
 │       ├── ticket.md              # Main ticket file
 │       ├── plan.md                # Implementation plan
 │       └── resources/             # Supporting files
@@ -30,7 +30,7 @@ Code-resident ticket management with BDD patterns and automated validation.
 │           ├── json/              # JSON configs, API responses
 │           └── diagrams/          # Architecture diagrams
 ├── active/                        # Tickets in progress
-│   └── TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/
+│   └── TICK-XXX-start-dd-mm-yyyy/
 │       ├── ticket.md
 │       ├── plan.md
 │       └── resources/
@@ -42,10 +42,13 @@ Code-resident ticket management with BDD patterns and automated validation.
             └── resources/
 ```
 
-**Folder Naming:** `TICK-{id}-start-{dd-mm-yyyy}-end-{dd-mm-yyyy}`
-- Example: `TICK-001-start-02-02-2026-end-09-02-2026`
-- Dates in dd-mm-yyyy format for readability
-- Start date = created_at, End date = updated_at (or estimated completion)
+**Folder Naming:**
+- **Backlog/Active:** `TICK-{id}-start-{dd-mm-yyyy}/`
+  - Example: `TICK-002-start-02-02-2026/`
+  - Only start date (no end date until completed)
+- **Archived:** `TICK-{id}-start-{dd-mm-yyyy}-end-{dd-mm-yyyy}/`
+  - Example: `TICK-001-start-02-02-2026-end-09-02-2026/`
+  - Includes end date when archived
 
 ## Ticket Lifecycle
 

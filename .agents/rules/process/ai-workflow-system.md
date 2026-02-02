@@ -15,20 +15,21 @@ Review these files: $ARGUMENTS. Check against workflow stages and ticket structu
 ## Workflow: Create → Enrich → Plan → Implement → Validate → Hook Check → Commit → PR → Archive
 
 ### 1. Ticket Creation
-- Manual: Copy template → `backlog/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/ticket.md`
+- Manual: Copy template → `backlog/TICK-{id}-start-dd-mm-yyyy/ticket.md`
 - Automated: `/create-ticket [type]` (creates full folder structure)
 - Folder structure:
   ```
-  TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/
-  ├── ticket.md           # Main ticket file
-  ├── plan.md             # Implementation plan
-  └── resources/          # Supporting files
-      ├── wireframes/     # UI/UX wireframes
-      ├── designs/        # Design files
-      ├── json/           # JSON configs, API responses
-      └── diagrams/       # Architecture diagrams
+  TICK-{id}-start-dd-mm-yyyy/          # No end date (not completed yet)
+  ├── ticket.md                         # Main ticket file
+  ├── plan.md                           # Implementation plan
+  └── resources/                        # Supporting files
+      ├── wireframes/                   # UI/UX wireframes
+      ├── designs/                      # Design files
+      ├── json/                         # JSON configs, API responses
+      └── diagrams/                     # Architecture diagrams
   ```
 - Branch: `{type}/TICK-{id}-{brief-description}`
+- **Note:** Only archived tickets have `end-dd-mm-yyyy` in folder name
 
 ### 2. Ticket Enrichment
 - Command: `/enrich-ticket TICK-{id}`
@@ -68,7 +69,8 @@ Review these files: $ARGUMENTS. Check against workflow stages and ticket structu
 - All DoD checkboxes marked
 
 ### 9. Archive
-- Move `active/TICK-XXX-*/` → `archived/{YYYY-QX}/TICK-XXX-*/`
+- Rename folder to add end date: `TICK-XXX-start-dd-mm-yyyy/` → `TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/`
+- Move to archive: `active/TICK-XXX-*/` → `archived/{YYYY-QX}/TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/`
 - Update YAML in `ticket.md`: `status: done`
 - Update `updated_at` with completion timestamp
 - All resources preserved in ticket folder
@@ -231,7 +233,8 @@ TICK-123:45 - Vague: "improve" → specify outcome
 - Provider set but no external_link
 - Ticket in backlog/ but branch created (should be active/)
 - Ticket archived but branch exists
-- Folder name doesn't match pattern (TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy)
+- Folder name in backlog/active has end date (should be TICK-XXX-start-dd-mm-yyyy only)
+- Folder name in archived missing end date (should be TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy)
 - Missing required files (ticket.md, plan.md)
 - Missing resources/ structure
 
