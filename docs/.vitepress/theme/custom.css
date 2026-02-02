@@ -1,0 +1,156 @@
+/**
+ * Custom VitePress Theme Colors
+ *
+ * This file defines the color scheme for the LIDR documentation site.
+ * Colors are defined using CSS custom properties for both light and dark modes.
+ */
+
+:root {
+  /* Brand Colors - Light Mode */
+  --vp-c-brand-1: #3b82f6; /* Primary blue */
+  --vp-c-brand-2: #2563eb; /* Darker blue for hover states */
+  --vp-c-brand-3: #1e40af; /* Darkest blue for active states */
+  --vp-c-brand-soft: #dbeafe; /* Soft blue for backgrounds */
+
+  /* Accent Colors */
+  --vp-c-accent-1: #8b5cf6; /* Purple accent */
+  --vp-c-accent-2: #7c3aed; /* Darker purple */
+  --vp-c-accent-soft: #ede9fe; /* Soft purple */
+
+  /* Background Colors - Light Mode */
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f9fafb;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f3f4f6;
+
+  /* Text Colors - Light Mode */
+  --vp-c-text-1: #111827; /* Primary text */
+  --vp-c-text-2: #4b5563; /* Secondary text */
+  --vp-c-text-3: #6b7280; /* Tertiary text */
+
+  /* Border Colors */
+  --vp-c-border: #e5e7eb;
+  --vp-c-divider: #e5e7eb;
+  --vp-c-gutter: #e5e7eb;
+
+  /* Code Block Colors */
+  --vp-code-bg: #f3f4f6;
+  --vp-code-color: #1f2937;
+
+  /* Tip/Warning/Danger Colors */
+  --vp-c-tip-1: #10b981; /* Green for tips */
+  --vp-c-tip-2: #059669;
+  --vp-c-tip-3: #047857;
+  --vp-c-tip-soft: #d1fae5;
+
+  --vp-c-warning-1: #f59e0b; /* Orange for warnings */
+  --vp-c-warning-2: #d97706;
+  --vp-c-warning-3: #b45309;
+  --vp-c-warning-soft: #fef3c7;
+
+  --vp-c-danger-1: #ef4444; /* Red for danger */
+  --vp-c-danger-2: #dc2626;
+  --vp-c-danger-3: #b91c1c;
+  --vp-c-danger-soft: #fee2e2;
+}
+
+.dark {
+  /* Brand Colors - Dark Mode */
+  --vp-c-brand-1: #60a5fa; /* Lighter blue for dark mode */
+  --vp-c-brand-2: #3b82f6; /* Medium blue */
+  --vp-c-brand-3: #2563eb; /* Darker blue */
+  --vp-c-brand-soft: #1e3a8a; /* Dark blue background */
+
+  /* Accent Colors - Dark Mode */
+  --vp-c-accent-1: #a78bfa; /* Lighter purple */
+  --vp-c-accent-2: #8b5cf6; /* Medium purple */
+  --vp-c-accent-soft: #4c1d95; /* Dark purple background */
+
+  /* Background Colors - Dark Mode */
+  --vp-c-bg: #0f172a; /* Dark slate background */
+  --vp-c-bg-alt: #1e293b; /* Slightly lighter slate */
+  --vp-c-bg-elv: #1e293b; /* Elevated background */
+  --vp-c-bg-soft: #334155; /* Soft background */
+
+  /* Text Colors - Dark Mode */
+  --vp-c-text-1: #f1f5f9; /* Primary text - light slate */
+  --vp-c-text-2: #cbd5e1; /* Secondary text */
+  --vp-c-text-3: #94a3b8; /* Tertiary text */
+
+  /* Border Colors - Dark Mode */
+  --vp-c-border: #334155;
+  --vp-c-divider: #334155;
+  --vp-c-gutter: #1e293b;
+
+  /* Code Block Colors - Dark Mode */
+  --vp-code-bg: #1e293b;
+  --vp-code-color: #e2e8f0;
+
+  /* Tip/Warning/Danger Colors - Dark Mode */
+  --vp-c-tip-1: #34d399;
+  --vp-c-tip-2: #10b981;
+  --vp-c-tip-3: #059669;
+  --vp-c-tip-soft: #064e3b;
+
+  --vp-c-warning-1: #fbbf24;
+  --vp-c-warning-2: #f59e0b;
+  --vp-c-warning-3: #d97706;
+  --vp-c-warning-soft: #78350f;
+
+  --vp-c-danger-1: #f87171;
+  --vp-c-danger-2: #ef4444;
+  --vp-c-danger-3: #dc2626;
+  --vp-c-danger-soft: #7f1d1d;
+}
+
+/**
+ * Component-specific customizations
+ */
+
+/* Custom scrollbar for dark mode */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--vp-c-bg-alt);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--vp-c-bg-soft);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--vp-c-border);
+}
+
+/* Enhanced code block styling */
+div[class*='language-'] {
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+/* Custom link styling */
+.vp-doc a {
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* Enhanced sidebar styling */
+.VPSidebar {
+  border-right: 1px solid var(--vp-c-divider);
+}
+
+/* Custom badge styling */
+.vp-badge {
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
