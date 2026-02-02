@@ -1,7 +1,7 @@
 ---
 id: TICK-003
 title: Add post-merge and pre-push git hooks for automation
-status: backlog
+status: in-progress
 priority: high
 assignee: development-team
 type: feature

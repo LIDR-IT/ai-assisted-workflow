@@ -1,5 +1,5 @@
 {
-  "description": "Pre-commit validation hooks for ticket workflow",
+  "description": "Git workflow automation hooks for ticket system and quality gates",
   "hooks": {
     "PreToolUse": [
       {
@@ -8,10 +8,39 @@
           {
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-commit.sh",
-            "timeout": 30
+            "timeout": 30,
+            "description": "Pre-commit: Validates ticket exists before commit"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/post-merge.sh",
+            "timeout": 120,
+            "description": "Post-merge: Syncs configs, updates deps, cleans stale branches"
           }
         ]
       }
     ]
+  },
+  "additionalHooks": {
+    "note": "Pre-push hook runs via git native hook (not Claude hook system)",
+    "setup": "Copy .agents/hooks/scripts/pre-push.sh to .git/hooks/pre-push",
+    "prePush": {
+      "script": ".agents/hooks/scripts/pre-push.sh",
+      "timeout": 180,
+      "checks": [
+        "Manual test confirmation",
+        "Playwright MCP E2E tests (optional)",
+        "Documentation validation",
+        "Linting check",
+        "Security scan (npm audit)"
+      ]
+    }
   }
 }
