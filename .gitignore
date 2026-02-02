@@ -37,3 +37,4 @@ Thumbs.db
 # - Generated MCP configs (.cursor/mcp.json, .claude/mcp.json, etc.)
 # - SETUP_*.md files
 .vitepress/cache/
+.playwright-mcp/
