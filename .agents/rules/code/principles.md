@@ -58,8 +58,13 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 |----------|-------|--------|----------|--------|-------------|------------|
 | Cursor | ✅ Copy (flat .mdc) | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
 | Claude Code | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
-| Gemini CLI | ❌ Index file only | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ | ✅ |
+| Gemini CLI | ❌ Index file only | ✅ Symlink | ✅ Generated (.toml) | ✅ Symlink | ✅ | ✅ |
 | Antigravity | ✅ Symlink | ✅ Symlink | ✅ Symlink (as workflows) | ❌ Not supported | ❌ Global only | ✅ |
+
+**Notes:**
+- **Gemini Commands:** Converted from `.md` → `.toml` (not symlinks, requires TOML format)
+- **Antigravity Commands:** Symlink with different name `.agent/workflows` → `.agents/commands`
+- **Symlinks in UI:** Explorers (VS Code, Finder) show symlinks as directories (visual only)
 
 ## Design Decisions
 

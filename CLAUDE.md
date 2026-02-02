@@ -96,9 +96,14 @@ All AI agent configurations live in `.agents/` and are synchronized to platform-
 |-----------|--------|-------------|------------|-------------|
 | Rules | ✅ Copy (.mdc) | ✅ Symlink | ❌ Index only | ✅ Symlink |
 | Skills | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink |
-| Commands | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink (as workflows) |
+| Commands | ✅ Symlink (.md) | ✅ Symlink (.md) | ✅ Generated (.toml) | ✅ Symlink (as workflows) |
 | Agents | ✅ Symlink | ✅ Symlink | ✅ Symlink | ❌ Not supported |
 | MCP (Project) | ✅ Generated | ✅ Generated | ✅ Generated | ❌ Global only |
+
+**Key Details:**
+- **Gemini Commands:** Auto-converted `.md` → `.toml` (Gemini requires TOML format, not symlinks)
+- **Antigravity Commands:** Directory symlink `.agent/workflows` → `.agents/commands` (single symlink for all commands)
+- **Visual Note:** File explorers display symlinks as regular directories (this is normal behavior)
 
 ## Critical Workflows
 
@@ -188,6 +193,11 @@ See `.agents/skills/team-skill-creator/` for templates and validation scripts.
 
 1. **No native rules support:** Uses generated index file at `.gemini/GEMINI.md`
 2. **Index regenerated on sync:** Don't manually edit `GEMINI.md`
+3. **Commands require TOML format:**
+   - Cannot use `.md` files directly
+   - `sync-commands.sh` auto-converts `.md` → `.toml`
+   - Generated files in `.gemini/commands/` (not symlinks)
+   - Conversion happens automatically on every sync
 
 ## File Organization Principles
 
@@ -239,7 +249,12 @@ See `.agents/skills/team-skill-creator/` for templates and validation scripts.
 
 1. Run `./.agents/sync-all.sh` (or use `/sync-setup` command)
 2. Symlinks created automatically for supported platforms
-3. Verify with `ls -la .cursor/skills .claude/skills .gemini/skills`
+3. Gemini commands auto-converted to `.toml` format
+4. Verify with `ls -la .cursor/skills .claude/skills .gemini/skills`
+
+**Command Sync Behavior:**
+- **Cursor/Claude/Antigravity:** Symlinks to `.agents/commands/` (instant sync)
+- **Gemini CLI:** Conversion `.md` → `.toml` (regenerated on sync)
 
 ## YAML Frontmatter Requirements
 
@@ -312,13 +327,25 @@ readlink .claude/rules
 ### Symlink Issues
 
 ```bash
+# Verify if path is a symlink (look for "l" prefix)
+ls -ld .agent/workflows
+# lrwxr-xr-x = symlink ✅
+# drwxr-xr-x = directory ❌
+
+# Check symlink target
+readlink .agent/workflows
+# Should show: ../.agents/commands
+
 # Verify source exists
-ls -la .agents/rules .agents/skills
+ls -la .agents/rules .agents/skills .agents/commands
 
 # Recreate manually if needed
 ln -s ../.agents/rules .claude/rules
 ln -s ../.agents/skills .cursor/skills
+ln -s ../.agents/commands .agent/workflows
 ```
+
+**Note:** File explorers (VS Code, Finder) display symlinks as regular directories. Use terminal `ls -l` to verify symlinks.
 
 ### MCP Not Working
 
