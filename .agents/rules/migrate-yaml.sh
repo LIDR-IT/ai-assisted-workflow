@@ -123,7 +123,7 @@ while IFS= read -r -d '' rule_file; do
     ((needs_update++))
     suggest_improvements "$rule_file"
   fi
-done < <(find "$RULES_DIR" -type f -name "*.md" ! -name "README.md" ! -name "YAML-FORMATS.md" ! -name "*.sh" -print0)
+done < <(find "$RULES_DIR" -type f -name "*.md" ! -name "README.md" ! -name "*.sh" -print0)
 
 # Summary
 echo "════════════════════════════════════════════════════════════"
@@ -138,7 +138,7 @@ if [ $needs_update -gt 0 ]; then
   echo "💡 Next steps:"
   echo "  1. Review suggestions above"
   echo "  2. Update rule files with missing YAML fields"
-  echo "  3. See YAML-FORMATS.md for complete field reference"
+  echo "  3. See README.md (YAML Frontmatter section) for complete field reference"
   echo "  4. Run sync-rules.sh to propagate changes"
 else
   echo -e "${GREEN}✅ All rules have good YAML frontmatter!${NC}"

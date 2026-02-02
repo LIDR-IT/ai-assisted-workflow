@@ -97,9 +97,8 @@ Rules are synchronized across agents using:
 
 ## Additional Resources
 
-- **[README](../.agents/rules/README.md)** - Rules best practices guide
-- **[YAML Formats](../.agents/rules/YAML-FORMATS.md)** - Platform-specific YAML frontmatter
+- **[README](../.agents/rules/README.md)** - Rules best practices and YAML frontmatter guide
 
 ---
 
-*Last synchronized: 2026-02-02 00:53:16*
+*Last synchronized: 2026-02-02 01:05:11*

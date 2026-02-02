@@ -110,7 +110,7 @@ validate_yaml_frontmatter() {
       ((incomplete_yaml++))
       warnings+=("  ⚠️  $relative_path - Missing: ${missing_fields[*]}")
     fi
-  done < <(find "$RULES_SOURCE" -type f -name "*.md" ! -name "README.md" ! -name "YAML-FORMATS.md" ! -name "*.sh" -print0)
+  done < <(find "$RULES_SOURCE" -type f -name "*.md" ! -name "README.md" ! -name "*.sh" -print0)
 
   # Show summary
   if [ $missing_yaml -gt 0 ] || [ $incomplete_yaml -gt 0 ]; then
@@ -119,7 +119,7 @@ validate_yaml_frontmatter() {
     echo "    ⚠️  $incomplete_yaml with incomplete YAML"
     echo ""
     echo "  💡 For better cross-platform compatibility, add YAML frontmatter:"
-    echo "     See YAML-FORMATS.md for field reference"
+    echo "     See README.md (YAML Frontmatter section) for field reference"
     echo "     Or run: ./migrate-yaml.sh for detailed analysis"
     echo ""
 
@@ -349,8 +349,7 @@ Rules are synchronized across agents using:
 
 ## Additional Resources
 
-- **[README](../.agents/rules/README.md)** - Rules best practices guide
-- **[YAML Formats](../.agents/rules/YAML-FORMATS.md)** - Platform-specific YAML frontmatter
+- **[README](../.agents/rules/README.md)** - Rules best practices and YAML frontmatter guide
 
 ---
 
