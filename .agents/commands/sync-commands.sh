@@ -164,44 +164,10 @@ sync_gemini() {
   echo ""
 }
 
-# Sync Antigravity (selective symlinks to workflows)
+# Sync Antigravity (directory symlink with different name: workflows)
 sync_antigravity() {
-  echo "🌌 Syncing Antigravity commands (selective symlinks to workflows)..."
-
-  if [ "$DRY_RUN" = true ]; then
-    echo "  [DRY RUN] Would create selective symlinks in .agent/workflows/"
-    echo ""
-    return 0
-  fi
-
-  mkdir -p "$PROJECT_ROOT/.agent/workflows"
-
-  echo "  📝 Creating selective symlinks for each command..."
-
-  local count=0
-  for command_file in "$COMMANDS_SOURCE"/*.md; do
-    if [ -f "$command_file" ]; then
-      local command_name=$(basename "$command_file")
-      local target="../../.agents/commands/$command_name"
-      local link_path="$PROJECT_ROOT/.agent/workflows/$command_name"
-
-      # Remove existing file/symlink if present
-      if [ -e "$link_path" ] || [ -L "$link_path" ]; then
-        rm "$link_path"
-      fi
-
-      ln -s "$target" "$link_path"
-      echo "    ✅ $command_name"
-      ((count++))
-    fi
-  done
-
-  if [ $count -gt 0 ]; then
-    echo "  ✅ Created $count selective symlinks in .agent/workflows/"
-  else
-    echo "  ⚠️  No commands found to symlink"
-  fi
-
+  echo "🌌 Syncing Antigravity commands (workflows symlink)..."
+  create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.agent/workflows" "workflows"
   echo ""
 }
 
@@ -233,6 +199,16 @@ verify_sync() {
       ((errors++))
     fi
 
+    # Verify Antigravity workflows symlink
+    local antigravity_link="$PROJECT_ROOT/.agent/workflows"
+    if [ -L "$antigravity_link" ]; then
+      local target=$(readlink "$antigravity_link")
+      echo "  ✅ antigravity workflows: $antigravity_link → $target"
+    else
+      echo "  ❌ antigravity workflows: Not a symlink"
+      ((errors++))
+    fi
+
     echo ""
 
     if [ $errors -gt 0 ]; then
@@ -260,15 +236,15 @@ main() {
     echo "✅ Commands synchronization completed successfully"
     echo ""
     echo "Summary:"
-    echo "  - Cursor: commands ✅ (full symlink to .md files)"
-    echo "  - Claude Code: commands ✅ (full symlink to .md files)"
+    echo "  - Cursor: commands ✅ (directory symlink)"
+    echo "  - Claude Code: commands ✅ (directory symlink)"
     echo "  - Gemini CLI: commands ✅ (converted to .toml files)"
-    echo "  - Antigravity: workflows ✅ (selective symlinks to .md files)"
+    echo "  - Antigravity: workflows ✅ (directory symlink with different name)"
     echo ""
     echo "📁 All commands now synchronized from .agents/commands/"
     echo ""
     echo "⚠️  Notes:"
-    echo "  - Antigravity uses .agent/workflows/ for commands"
+    echo "  - Antigravity uses .agent/workflows/ (symlink to .agents/commands/)"
     echo "  - Gemini CLI commands auto-converted from .md to .toml format"
   else
     echo "✅ Dry run completed - no changes made"
