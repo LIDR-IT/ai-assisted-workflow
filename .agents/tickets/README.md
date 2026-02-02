@@ -24,22 +24,23 @@ Code-resident ticket management with BDD patterns and automated validation.
 │   └── TICK-XXX-start-dd-mm-yyyy/
 │       ├── ticket.md              # Main ticket file
 │       ├── plan.md                # Implementation plan
-│       └── resources/             # Supporting files
-│           ├── wireframes/        # UI/UX wireframes
-│           ├── designs/           # Design files (Figma, Sketch)
-│           ├── json/              # JSON configs, API responses
-│           └── diagrams/          # Architecture diagrams
+│       └── resources/             # All supporting files (flat structure)
+│           ├── README.md          # Naming conventions guide
+│           ├── wireframe-auth-login.png
+│           ├── final-desktop-ui-dashboard.png
+│           ├── diagram-architecture.mmd
+│           └── api-response-users.json
 ├── active/                        # Tickets in progress
 │   └── TICK-XXX-start-dd-mm-yyyy/
 │       ├── ticket.md
 │       ├── plan.md
-│       └── resources/
+│       └── resources/             # All files (wireframes, designs, diagrams, etc.)
 └── archived/                      # Completed tickets
     └── 2026-Q1/                   # Organized by quarter
         └── TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/
             ├── ticket.md
             ├── plan.md
-            └── resources/
+            └── resources/         # Preserved artifacts
 ```
 
 **Folder Naming:**

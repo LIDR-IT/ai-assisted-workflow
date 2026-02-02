@@ -46,10 +46,7 @@ migrate_ticket() {
   local new_folder="$TICKETS_ROOT/$directory/${ticket_id}-start-${start_date}-end-${end_date}"
 
   mkdir -p "$new_folder"
-  mkdir -p "$new_folder/resources/wireframes"
-  mkdir -p "$new_folder/resources/designs"
-  mkdir -p "$new_folder/resources/json"
-  mkdir -p "$new_folder/resources/diagrams"
+  mkdir -p "$new_folder/resources"
 
   # Move ticket.md
   cp "$old_path" "$new_folder/ticket.md"

@@ -19,15 +19,21 @@ Review these files: $ARGUMENTS. Check against workflow stages and ticket structu
 - Automated: `/create-ticket [type]` (creates full folder structure)
 - Folder structure:
   ```
-  TICK-{id}-start-dd-mm-yyyy/          # No end date (not completed yet)
-  ├── ticket.md                         # Main ticket file
-  ├── plan.md                           # Implementation plan
-  └── resources/                        # Supporting files
-      ├── wireframes/                   # UI/UX wireframes
-      ├── designs/                      # Design files
-      ├── json/                         # JSON configs, API responses
-      └── diagrams/                     # Architecture diagrams
+  TICK-{id}-start-dd-mm-yyyy/                  # No end date (not completed yet)
+  ├── ticket.md                                 # Main ticket file
+  ├── plan.md                                   # Implementation plan
+  └── resources/                                # All supporting files (flat)
+      ├── README.md                             # Naming conventions
+      ├── wireframe-[context].png               # UI wireframes
+      ├── final-[platform]-ui-[context].png     # Final designs
+      ├── diagram-[type].mmd                    # Architecture diagrams
+      └── api-[endpoint].json                   # API data/configs
   ```
+- **File naming:** Follow conventions in `resources/README.md`
+  - Type prefix: `wireframe-`, `final-`, `diagram-`, `api-`, `config-`
+  - Platform (optional): `desktop`, `mobile`, `tablet`
+  - Context: Descriptive name
+  - Version (optional): `v1`, `v2`, `v3`
 - Branch: `{type}/TICK-{id}-{brief-description}`
 - **Note:** Only archived tickets have `end-dd-mm-yyyy` in folder name
 

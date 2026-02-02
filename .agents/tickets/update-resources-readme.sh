@@ -1,3 +1,20 @@
+#!/bin/bash
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "🔄 Updating resources README files..."
+echo ""
+
+# Find all resources/ directories
+find "$SCRIPT_DIR" -type d -name "resources" | while read resources_dir; do
+  readme="$resources_dir/README.md"
+  
+  echo "📝 Updating $readme"
+  
+  # Create new README with naming conventions
+  cat > "$readme" <<'RESOURCES_EOF'
 # Resources Naming Conventions
 
 Store all ticket resources in this directory using clear naming conventions.
@@ -136,3 +153,19 @@ final-tablet-ui-dashboard.png
 - Document mock data for testing
 
 Extensions don't matter—use what's appropriate for the content.
+RESOURCES_EOF
+
+  # Remove subdirectories if they exist
+  for subdir in wireframes designs json diagrams; do
+    if [ -d "$resources_dir/$subdir" ]; then
+      echo "  🗑️  Removing empty subdirectory: $resources_dir/$subdir"
+      rmdir "$resources_dir/$subdir" 2>/dev/null || true
+    fi
+  done
+  
+  echo "  ✅ Updated"
+done
+
+echo ""
+echo "✅ All resources README files updated!"
+echo "✅ Empty subdirectories removed!"
