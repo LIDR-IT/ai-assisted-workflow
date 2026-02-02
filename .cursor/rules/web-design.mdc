@@ -146,6 +146,22 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Second person; avoid first person
 - `&` over "and" where space-constrained
 
+### Documentation Color System
+
+**VitePress Theme Colors:**
+- Use documented color variables from `docs/.vitepress/theme/custom.css`
+- Primary brand: Gold (`oklch(0.72 0.16 85)` light, complementary dark)
+- Secondary: Slate gray for text and backgrounds
+- Semantic: Tip (green), Warning (orange), Danger (red)
+- Reference: See `docs/guides/vitepress-theme-customization.md`
+
+**Color Usage:**
+- Use CSS custom properties: `var(--vp-c-brand-1)`, `var(--gold-primary)`
+- Support both light and dark modes (define in `:root` and `.dark`)
+- Use `oklch()` format for better color management
+- Maintain WCAG AA contrast ratios (4.5:1 text, 3:1 UI)
+- Test in both themes before committing
+
 ### Anti-patterns (flag these)
 
 - `user-scalable=no` or `maximum-scale=1` disabling zoom

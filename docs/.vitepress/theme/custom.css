@@ -1,0 +1,191 @@
+/**
+ * Custom VitePress Theme Colors
+ *
+ * This file defines the color scheme for the LIDR documentation site.
+ * Colors are defined using CSS custom properties for both light and dark modes.
+ */
+
+:root {
+  /* --- Light Mode (Default) --- */
+  --gold-primary: oklch(0.72 0.16 85); /* Slightly darker gold for light mode legibility */
+  --gold-soft: oklch(0.95 0.05 90);
+  --gold-dark: oklch(0.6 0.18 80);
+  
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f8fafc;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f1f5f9;
+
+  --vp-c-text-1: #0f172a;
+  --vp-c-text-2: #334155;
+  --vp-c-text-3: #64748b;
+
+  --vp-c-border: #e2e8f0;
+  --vp-c-divider: #f1f5f9;
+  --vp-c-gutter: #f8fafc;
+
+  /* Brand Branding (Light Mode) */
+  --vp-c-brand-1: var(--gold-primary);
+  --vp-c-brand-2: var(--gold-dark);
+  --vp-c-brand-3: var(--gold-dark);
+  --vp-c-brand-soft: oklch(0.72 0.16 85 / 10%);
+
+  /* Internal Tokens (Light Mode) */
+  --background: var(--vp-c-bg);
+  --foreground: var(--vp-c-text-1);
+  --primary: var(--gold-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--vp-c-bg-soft);
+  --secondary-foreground: var(--vp-c-text-1);
+  --border: var(--vp-c-border);
+  --ring: var(--gold-primary);
+}
+
+.dark {
+  /* --- Dark Mode (Charcoal Palette) --- */
+  --gold-primary: oklch(0.86 0.14 88);
+  --gold-soft: oklch(0.92 0.08 90);
+  --gold-dark: oklch(0.75 0.15 85);
+  
+  --charcoal-bg: oklch(0.12 0.02 250);
+  --charcoal-card: oklch(0.14 0.02 250);
+  --charcoal-muted: oklch(0.25 0.03 250);
+
+  --vp-c-bg: var(--charcoal-bg);
+  --vp-c-bg-alt: var(--charcoal-card);
+  --vp-c-bg-elv: var(--charcoal-card);
+  --vp-c-bg-soft: var(--charcoal-muted);
+
+  --vp-c-text-1: oklch(0.985 0 0);
+  --vp-c-text-2: oklch(0.85 0.01 250);
+  --vp-c-text-3: oklch(0.7 0.02 250);
+
+  --vp-c-border: var(--charcoal-muted);
+  --vp-c-divider: var(--charcoal-muted);
+  --vp-c-gutter: var(--charcoal-bg);
+
+  --vp-c-brand-1: var(--gold-primary);
+  --vp-c-brand-2: var(--gold-dark);
+  --vp-c-brand-soft: oklch(0.86 0.14 88 / 15%);
+
+  /* Internal Tokens (Dark Mode) */
+  --background: var(--charcoal-bg);
+  --foreground: oklch(0.985 0 0);
+  --primary: var(--gold-primary);
+  --primary-foreground: oklch(0.12 0.02 250);
+  --secondary: var(--charcoal-muted);
+  --border: var(--charcoal-muted);
+}
+
+/**
+ * Component-specific customizations
+ */
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 10px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Smooth Transitions for interactive elements */
+.vp-button, .nav-bar, .sidebar {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Enhanced code block styling */
+div[class*='language-'] {
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+/* Custom link styling */
+.vp-doc a {
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* Enhanced sidebar styling */
+.VPSidebar {
+  border-right: 1px solid var(--vp-c-divider);
+}
+
+/* Custom badge styling */
+.vp-badge {
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* --- Premium Animations & Effects --- */
+
+@keyframes aurora {
+  from { background-position: 50% 50%, 50% 50%; }
+  to { background-position: 350% 50%, 350% 50%; }
+}
+
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+
+/* Apply subtle aurora effect to the hero background */
+.VPHero {
+  position: relative;
+  overflow: hidden;
+}
+
+.VPHero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, var(--gold-soft) 0%, transparent 50%);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -1;
+  animation: aurora 20s linear infinite;
+}
+
+/* Glow effects for feature cards */
+.VPFeature:hover {
+  border: 1px solid var(--gold-primary);
+  box-shadow: 0 0 20px oklch(0.86 0.14 88 / 10%);
+}
+
+/* Specific contrast overrides for VitePress buttons */
+/* Specific contrast overrides for VitePress buttons */
+.VPButton.brand {
+  color: var(--primary-foreground) !important;
+}
+
+.VPButton.alt {
+  background-color: var(--secondary) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.dark .VPButton.alt {
+  background-color: var(--charcoal-muted) !important;
+  color: var(--vp-c-text-1) !important;
+}

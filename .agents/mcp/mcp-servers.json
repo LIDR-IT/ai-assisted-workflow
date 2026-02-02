@@ -21,6 +21,13 @@
       },
       "platforms": ["cursor", "claude", "gemini", "antigravity"],
       "description": "Context7 - Up-to-date documentation for popular frameworks and libraries"
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "platforms": ["cursor", "claude", "gemini"],
+      "description": "Playwright - Browser automation for testing and visual validation"
     }
   }
 }
