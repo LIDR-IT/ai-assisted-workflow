@@ -1,0 +1,716 @@
+---
+name: test-hooks
+description: Interactive testing for cross-platform hooks (auto-format, protect-secrets)
+arguments:
+  - name: platform
+    description: Platform to test (claude-code, cursor, gemini-cli)
+    required: true
+---
+
+# Test Hooks Command
+
+Interactive testing guide for cross-platform development hooks.
+
+## Usage
+
+```bash
+/test-hooks claude-code
+/test-hooks cursor
+/test-hooks gemini-cli
+```
+
+## What This Command Does
+
+This command provides **interactive testing** for the transversal development hooks:
+
+1. **auto-format.sh** (PostToolUse/AfterTool/postToolUse) - Automatic formatting after Edit/Write
+2. **protect-secrets.sh** (PreToolUse/BeforeTool/preToolUse) - Block edits to sensitive files
+
+These hooks work **identically** across all 3 platforms.
+
+**Note on notify.sh:** The system includes a third hook (`notify.sh` for desktop notifications), but it's **not tested here** because:
+
+- **Cursor does NOT support Notification events** (would fail on Cursor)
+- Testing requires triggering notifications (hard to test interactively)
+- notify.sh is simple (16 lines) and works on Claude Code & Gemini CLI only
+
+For notify.sh testing, see platform-specific manual validation guides.
+
+---
+
+## Implementation
+
+When invoked, the agent should guide the user through testing both hooks:
+
+### Step 1: Validate Platform
+
+```javascript
+const validPlatforms = ["claude-code", "cursor", "gemini-cli"];
+const platform = args.platform.toLowerCase();
+
+if (!validPlatforms.includes(platform)) {
+  return `❌ Invalid platform: ${args.platform}
+
+Valid platforms:
+  - claude-code   (Claude Code CLI)
+  - cursor        (Cursor IDE)
+  - gemini-cli    (Gemini CLI)
+
+Usage: /test-hooks <platform>`;
+}
+```
+
+### Step 2: Present Welcome Screen
+
+```
+🧪 Testing Cross-Platform Hooks - ${PLATFORM}
+
+Platform: ${PLATFORM_NAME}
+Hooks to Test: 2
+  1. auto-format.sh (PostToolUse - Edit|Write)
+  2. protect-secrets.sh (PreToolUse - Edit|Write)
+
+Duration: ~10 minutes
+Type: Interactive (requires agent actions)
+
+These hooks are CROSS-PLATFORM - they work identically
+in Claude Code, Cursor, and Gemini CLI.
+
+Ready to begin? (yes/no)
+```
+
+---
+
+## Test Flow
+
+### Test 1: Auto-Format Hook (PostToolUse)
+
+**Objective:** Verify that files are automatically formatted after Edit/Write
+
+#### Test 1.1: Format JSON File
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 1.1: Auto-Format JSON File
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Objective: Verify that JSON files are auto-formatted after editing
+
+What I will do:
+1. Create a test JSON file with bad formatting
+2. Use Edit tool to modify it (triggers auto-format hook)
+3. Check if file was auto-formatted by prettier
+
+Expected behavior:
+  - Hook detects Edit tool usage
+  - Prettier formats the file automatically
+  - No errors occur
+
+Ready to execute? (yes/skip)
+```
+
+**If user says yes:**
+
+**Agent actions:**
+
+```javascript
+// Create test file with bad formatting
+Write("test-format.json", `{"name":"test","value":123,"nested":{"key":"value"}}`);
+
+// Use Edit to trigger the hook
+Edit(
+  "test-format.json",
+  `{"name":"test","value":123,"nested":{"key":"value"}}`,
+  `{"name":"test-updated","value":123,"nested":{"key":"value"}}`
+);
+
+// Read the result
+Read("test-format.json");
+```
+
+**Agent checks:**
+
+- File should now be formatted with proper indentation
+- File content:
+
+```json
+{
+  "name": "test-updated",
+  "value": 123,
+  "nested": {
+    "key": "value"
+  }
+}
+```
+
+**Validation:**
+
+```
+✅ Test 1.1 Result
+
+File formatted: test-format.json
+
+Before (minified):
+{"name":"test-updated","value":123,"nested":{"key":"value"}}
+
+After (prettier):
+{
+  "name": "test-updated",
+  "value": 123,
+  "nested": {
+    "key": "value"
+  }
+}
+
+Did the file get auto-formatted correctly? (yes/no)
+```
+
+#### Test 1.2: Format Markdown File
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 1.2: Auto-Format Markdown File
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Objective: Verify markdown files are auto-formatted
+
+What I will do:
+1. Create markdown with inconsistent formatting
+2. Edit the file (triggers hook)
+3. Check if prettier formatted it
+
+Ready to execute? (yes/skip)
+```
+
+**Agent actions:**
+
+```javascript
+Write(
+  "test-format.md",
+  `#Header\nNo space after hash.   Extra spaces.  \n\n\n\nToo many newlines.`
+);
+Edit("test-format.md", "No space", "Fixed spacing");
+Read("test-format.md");
+```
+
+**Expected result:**
+
+```markdown
+# Header
+
+Fixed spacing after hash. Extra spaces.
+
+Too many newlines.
+```
+
+#### Test 1.3: Skip Non-Supported Files
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 1.3: Skip Non-Supported Files
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Objective: Verify hook gracefully skips files prettier can't format
+
+What I will do:
+1. Create a binary-like file (.bin)
+2. Edit it (hook should skip formatting)
+3. Verify no errors occurred
+
+Ready to execute? (yes/skip)
+```
+
+**Agent actions:**
+
+```javascript
+Write("test.bin", "binary content here");
+Edit("test.bin", "binary", "modified");
+Read("test.bin");
+```
+
+**Expected:**
+
+- Hook runs but skips formatting (not a supported type)
+- No errors thrown
+- File modified successfully
+
+---
+
+### Test 2: Protect Secrets Hook (PreToolUse)
+
+**Objective:** Verify that edits to sensitive files are blocked
+
+#### Test 2.1: Block .env File
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 2.1: Block Editing .env File
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Objective: Verify hook blocks edits to .env files
+
+What I will do:
+1. Create a .env file
+2. Attempt to edit it (should be BLOCKED by hook)
+3. Verify edit was prevented
+
+Expected behavior:
+  - Hook detects Edit tool targeting .env
+  - Hook blocks the edit (exit code 2)
+  - Error message: "Cannot edit sensitive file"
+
+Ready to execute? (yes/skip)
+```
+
+**Agent actions:**
+
+```javascript
+// Create .env file
+Write(".env", "API_KEY=secret123\nDB_PASSWORD=pass456");
+
+// Try to edit (should be blocked)
+try {
+  Edit(".env", "secret123", "newsecret");
+  // If we reach here, hook FAILED
+  result = "❌ Hook did NOT block the edit!";
+} catch (error) {
+  // Hook should block with error
+  if (error.includes("Cannot edit sensitive file") || error.includes("Blocked")) {
+    result = "✅ Hook correctly blocked the edit";
+  } else {
+    result = "⚠️ Edit blocked but with unexpected error";
+  }
+}
+```
+
+**Validation:**
+
+```
+✅ Test 2.1 Result
+
+Attempted to edit: .env
+Hook response: Blocked - Cannot edit sensitive file '.env'
+
+Edit was blocked: YES ✅
+File unchanged: YES ✅
+
+Did the hook correctly block the .env edit? (yes/no)
+```
+
+#### Test 2.2: Block .key and .pem Files
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 2.2: Block Key and Certificate Files
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Objective: Verify hook blocks .key and .pem files
+
+What I will do:
+1. Create test.key and test.pem files
+2. Attempt to edit both (should be BLOCKED)
+3. Verify both edits prevented
+
+Ready to execute? (yes/skip)
+```
+
+**Agent actions:**
+
+```javascript
+// Create sensitive files
+Write("test.key", "-----BEGIN PRIVATE KEY-----\nKEY_DATA_HERE\n-----END PRIVATE KEY-----");
+Write("test.pem", "-----BEGIN CERTIFICATE-----\nCERT_DATA_HERE\n-----END CERTIFICATE-----");
+
+// Try to edit (both should be blocked)
+results = [];
+for (file of ["test.key", "test.pem"]) {
+  try {
+    Edit(file, "KEY_DATA", "MODIFIED");
+    results.push({ file, blocked: false });
+  } catch (error) {
+    results.push({ file, blocked: true, error });
+  }
+}
+```
+
+**Expected:**
+Both files blocked with appropriate error messages.
+
+#### Test 2.3: Allow Normal Files
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 2.3: Allow Editing Normal Files
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Objective: Verify hook only blocks sensitive files, not normal ones
+
+What I will do:
+1. Create normal files (README.md, config.json)
+2. Edit them (should be ALLOWED)
+3. Verify edits succeeded
+
+Ready to execute? (yes/skip)
+```
+
+**Agent actions:**
+
+```javascript
+Write("README.md", "# Test\nContent here");
+Write("config.json", '{"setting": "value"}');
+
+Edit("README.md", "Content here", "Updated content");
+Edit("config.json", '"value"', '"updated"');
+
+Read("README.md");
+Read("config.json");
+```
+
+**Expected:**
+Both edits succeed without being blocked.
+
+#### Test 2.4: Block Files in Protected Directories
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 2.4: Block Protected Directories
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Objective: Verify hook blocks files in secrets/ and credentials/ dirs
+
+What I will do:
+1. Create files in secrets/ and credentials/
+2. Attempt to edit them (should be BLOCKED)
+3. Verify protection
+
+Ready to execute? (yes/skip)
+```
+
+**Agent actions:**
+
+```javascript
+// Create directories and files
+Write("secrets/api-key.txt", "secret-key-123");
+Write("credentials/database.json", '{"user": "admin", "pass": "secret"}');
+
+// Try to edit (should be blocked)
+try {
+  Edit("secrets/api-key.txt", "secret-key", "new-key");
+} catch (error) {
+  secretsBlocked = error.includes("Blocked");
+}
+
+try {
+  Edit("credentials/database.json", "secret", "newsecret");
+} catch (error) {
+  credsBlocked = error.includes("Blocked");
+}
+```
+
+**Expected:**
+Both edits blocked due to directory patterns.
+
+---
+
+## Results Summary
+
+After all tests complete:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎉 Hook Testing Complete - ${PLATFORM}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Auto-Format Hook (PostToolUse):
+  ✅ 1.1 - JSON formatting
+  ✅ 1.2 - Markdown formatting
+  ✅ 1.3 - Skip unsupported files
+
+Protect Secrets Hook (PreToolUse):
+  ✅ 2.1 - Blocked .env file
+  ✅ 2.2 - Blocked .key and .pem files
+  ✅ 2.3 - Allowed normal files
+  ✅ 2.4 - Blocked protected directories
+
+Overall: 7/7 tests passed ✅
+
+Platform: ${PLATFORM}
+Duration: ${DURATION} minutes
+
+These hooks work CROSS-PLATFORM - same behavior in
+Claude Code, Cursor, and Gemini CLI.
+
+Cleanup: Delete test files? (yes/no)
+```
+
+---
+
+## Cleanup
+
+If user confirms cleanup:
+
+```javascript
+// Delete all test files
+const testFiles = [
+  "test-format.json",
+  "test-format.md",
+  "test.bin",
+  ".env",
+  "test.key",
+  "test.pem",
+  "README.md",
+  "config.json",
+  "secrets/api-key.txt",
+  "credentials/database.json",
+];
+
+for (file of testFiles) {
+  Bash(`rm -f "${file}"`);
+}
+
+Bash("rmdir secrets credentials 2>/dev/null || true");
+```
+
+---
+
+## Agent Instructions
+
+### Phase 1: Setup
+
+1. Validate platform argument
+2. Show welcome screen
+3. Explain what will be tested
+4. Wait for user confirmation
+
+### Phase 2: Test Execution
+
+For each test:
+
+1. **Announce test**
+   - Show test number, name, objective
+   - Explain what agent will do
+   - Ask: "Ready to execute?"
+
+2. **Execute test**
+   - Perform Write/Edit operations
+   - Let hooks trigger automatically
+   - Capture results
+
+3. **Show results**
+   - Display before/after states
+   - Highlight hook behavior
+   - Ask: "Did this work correctly?"
+
+4. **Record result**
+   - Mark as passed/failed
+   - Capture notes if needed
+
+### Phase 3: Summary
+
+1. Generate results table
+2. Calculate pass/fail counts
+3. Show platform confirmation (hooks work cross-platform)
+4. Offer cleanup
+
+### Phase 4: Next Steps
+
+**If all tests passed:**
+
+```
+✅ Hooks working correctly on ${platform}!
+
+Next steps:
+  - Test on another platform: /test-hooks <platform>
+  - Or mark TICK-003 testing complete
+
+Available platforms:
+${remaining_platforms}
+```
+
+**If any tests failed:**
+
+```
+⚠️ Some tests failed
+
+Failed tests:
+${failed_test_list}
+
+Recommendations:
+  - Review hook scripts in .agents/hooks/scripts/
+  - Check hook configuration in .agents/hooks/hooks.json
+  - Verify prettier is installed (for auto-format)
+  - Check tool permissions (for protect-secrets)
+```
+
+---
+
+## Platform-Specific Notes
+
+### All Platforms
+
+These hooks are **truly cross-platform** because they:
+
+- Use standard bash (no platform-specific APIs)
+- Trigger on Edit/Write tools (available everywhere)
+- Output JSON (compatible with all platforms)
+- No UI dependencies
+
+**Only requirement:**
+
+- prettier must be installed for auto-format tests
+- jq must be installed for JSON parsing in hooks
+
+### Verification Commands
+
+**Check prettier:**
+
+```bash
+which prettier
+prettier --version
+```
+
+**Check jq:**
+
+```bash
+which jq
+jq --version
+```
+
+**Install if missing:**
+
+```bash
+# prettier
+npm install -g prettier
+
+# jq (macOS)
+brew install jq
+```
+
+---
+
+## Hook Behavior Details
+
+### auto-format.sh
+
+**Triggers:** After Edit or Write tool usage
+**Timeout:** 30 seconds
+**Behavior:**
+
+- Reads file path from tool input JSON
+- Checks if prettier is installed
+- Formats file if supported type
+- Silently skips if unsupported
+- Never blocks or fails
+
+**Supported files:**
+
+- JSON (.json)
+- Markdown (.md)
+- JavaScript (.js, .ts)
+- CSS (.css, .scss)
+- HTML (.html)
+
+### protect-secrets.sh
+
+**Triggers:** Before Edit or Write tool usage
+**Timeout:** 10 seconds
+**Behavior:**
+
+- Reads file path from tool input JSON
+- Checks against protected patterns
+- Blocks edit if match found (exit 2)
+- Allows edit if no match (exit 0)
+
+**Protected patterns:**
+
+- `.env` (environment files)
+- `.pem` (certificates)
+- `.key` (private keys)
+- `secrets/` (directory)
+- `credentials/` (directory)
+- `.git/config` (git config)
+- `package-lock.json` (lock file)
+
+---
+
+## Example Session
+
+**User:** `/test-hooks claude-code`
+
+**Agent:**
+
+```
+🧪 Testing Cross-Platform Hooks - Claude Code CLI
+
+Platform: Claude Code CLI
+Hooks to Test: 2
+  1. auto-format.sh (PostToolUse)
+  2. protect-secrets.sh (PreToolUse)
+
+Duration: ~10 minutes
+Type: Interactive (I'll perform Edit/Write actions)
+
+Ready to begin? (yes/no)
+```
+
+**User:** `yes`
+
+**Agent:**
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Test 1.1: Auto-Format JSON File
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+I will create and edit a JSON file to trigger auto-format.
+
+Ready to execute? (yes/skip)
+```
+
+**User:** `yes`
+
+**Agent performs Write and Edit, then:**
+
+```
+✅ Test 1.1 Complete
+
+Created: test-format.json (minified)
+Edited: Changed "test" to "test-updated"
+Result: File auto-formatted with proper indentation
+
+Before (minified):
+{"name":"test-updated","value":123}
+
+After (prettier):
+{
+  "name": "test-updated",
+  "value": 123
+}
+
+✅ Auto-format hook worked correctly!
+
+Continue to Test 1.2? (yes/quit)
+```
+
+**... and so on through all tests ...**
+
+---
+
+## Integration with TICK-003
+
+This command validates the hook implementation for TICK-003.
+
+**After testing on all platforms:**
+
+1. Mark DoD checkbox: `[x] Hooks tested on all platforms`
+2. Add results to TICK-003 notes
+3. If all passed: Ready for `/validate-pr`
+4. If issues found: Fix hooks before proceeding
+
+---
+
+## See Also
+
+- Hook scripts: `.agents/hooks/scripts/`
+- Hook config: `.agents/hooks/hooks.json`
+- Hook documentation: `docs/references/hooks/`
