@@ -1,41 +1,35 @@
 {
-  "description": "Git workflow automation hooks for development process",
+  "version": "1.0",
+  "description": "Cross-platform hooks for AI-assisted development workflow",
+  "_notes": {
+    "platforms": "Valid values: cursor, claude, gemini",
+    "cursor_limitation": "Cursor hooks are unreliable and lack PreToolUse - use Husky pre-commit instead",
+    "sync_behavior": "sync-hooks.sh reads 'platforms' field to generate platform-specific configs"
+  },
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-commit.sh",
-            "timeout": 30
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "pattern": "git push",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pre-push.sh",
-            "timeout": 180
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "pattern": "git (pull|merge)",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/post-merge.sh",
-            "timeout": 120
-          }
-        ]
-      }
-    ]
+    "notify": {
+      "event": "Notification",
+      "matcher": "*",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/notify.sh\"",
+      "timeout": 5,
+      "platforms": ["claude", "gemini"],
+      "description": "Desktop notifications for task completion"
+    },
+    "auto-format": {
+      "event": "PostToolUse",
+      "matcher": "Edit|Write",
+      "command": "bash ${PLUGIN_ROOT}/hooks/scripts/auto-format.sh",
+      "timeout": 30,
+      "platforms": ["claude", "gemini"],
+      "description": "Auto-format files with prettier after edits"
+    },
+    "protect-secrets": {
+      "event": "PreToolUse",
+      "matcher": "Edit|Write",
+      "command": "bash ${PLUGIN_ROOT}/hooks/scripts/protect-secrets.sh",
+      "timeout": 10,
+      "platforms": ["claude", "gemini"],
+      "description": "Block edits to sensitive files (.env, .key, .pem, etc.)"
+    }
   }
 }

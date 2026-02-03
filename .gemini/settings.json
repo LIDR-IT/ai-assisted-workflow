@@ -3,30 +3,61 @@
     "enableAgents": true
   },
   "context": {
-    "fileName": [
-      "AGENTS.md",
-      "CONTEXT.md",
-      "GEMINI.md",
-      "CLAUDE.md"
-    ]
+    "fileName": ["AGENTS.md", "CONTEXT.md", "GEMINI.md", "CLAUDE.md"]
   },
   "mcpServers": {
     "context7": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp"
-      ],
+      "args": ["-y", "@upstash/context7-mcp"],
       "env": {
         "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"
       }
     },
     "playwright": {
       "command": "npx",
-      "args": [
-        "@playwright/mcp@latest"
-      ],
+      "args": ["@playwright/mcp@latest"],
       "env": {}
     }
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "notify",
+            "type": "command",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/notify.sh\"",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "name": "protect-secrets",
+            "type": "command",
+            "command": "bash ${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/protect-secrets.sh",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "name": "auto-format",
+            "type": "command",
+            "command": "bash ${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/auto-format.sh",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
   }
 }

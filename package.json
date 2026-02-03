@@ -9,7 +9,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,scss,md,html,yaml,yml}": [
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
@@ -25,6 +33,9 @@
   "homepage": "https://github.com/LIDR-IT/ai-assisted-workflow#readme",
   "description": "",
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
     "vitepress": "^1.6.4"
   }
 }
