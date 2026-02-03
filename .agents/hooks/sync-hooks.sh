@@ -310,7 +310,14 @@ sync_cursor() {
   cursor_hooks=$(generate_cursor_hooks "$PROJECT_ROOT/.agents/hooks/hooks.json")
   echo "$cursor_hooks" > "$PROJECT_ROOT/.cursor/hooks.json"
   
-  echo -e "${GREEN}  ✅ Updated .cursor/hooks.json (empty - Husky handles formatting/secrets)${NC}"
+  local cursor_hook_count
+  cursor_hook_count=$(echo "$cursor_hooks" | jq '.hooks | to_entries | length' 2>/dev/null || echo "0")
+  
+  if [ "$cursor_hook_count" -gt 0 ]; then
+    echo -e "${GREEN}  ✅ Updated .cursor/hooks.json (auto-format enabled, Husky as backup)${NC}"
+  else
+    echo -e "${GREEN}  ✅ Updated .cursor/hooks.json (empty - Husky handles formatting/secrets)${NC}"
+  fi
 }
 
 # Verification
@@ -376,7 +383,11 @@ verify_sync() {
     echo "Summary:"
     echo "  • Claude Code: All hooks (Notification, PreToolUse, PostToolUse)"
     echo "  • Gemini CLI:  All hooks (Notification, BeforeTool, AfterTool)"
-    echo "  • Cursor:      No hooks (use Husky pre-commit for formatting/secrets)"
+    if [ "$cursor_count" -gt 0 ]; then
+      echo "  • Cursor:      auto-format only (best-effort, Husky guarantees)"
+    else
+      echo "  • Cursor:      No hooks (use Husky pre-commit for formatting/secrets)"
+    fi
   else
     echo ""
     echo -e "${RED}❌ Synchronization completed with $errors error(s)${NC}"

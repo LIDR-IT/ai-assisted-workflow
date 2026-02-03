@@ -1,5 +1,17 @@
 {
   "version": 1,
-  "_note": "Cursor hooks disabled - use Husky pre-commit instead (more reliable)",
-  "hooks": {}
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "bash .cursor/hooks/scripts/auto-format.sh",
+        "timeout": 30
+      }
+    ],
+    "afterTabFileEdit": [
+      {
+        "command": "bash .cursor/hooks/scripts/auto-format.sh",
+        "timeout": 30
+      }
+    ]
+  }
 }

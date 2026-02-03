@@ -3,7 +3,7 @@
   "description": "Cross-platform hooks for AI-assisted development workflow",
   "_notes": {
     "platforms": "Valid values: cursor, claude, gemini",
-    "cursor_limitation": "Cursor hooks are unreliable and lack PreToolUse - use Husky pre-commit instead",
+    "cursor_limitation": "Cursor lacks PreToolUse (no blocking). auto-format is 'nice to have', Husky pre-commit guarantees formatting",
     "sync_behavior": "sync-hooks.sh reads 'platforms' field to generate platform-specific configs"
   },
   "hooks": {
@@ -20,8 +20,8 @@
       "matcher": "Edit|Write",
       "command": "bash ${PLUGIN_ROOT}/hooks/scripts/auto-format.sh",
       "timeout": 30,
-      "platforms": ["claude", "gemini"],
-      "description": "Auto-format files with prettier after edits"
+      "platforms": ["claude", "gemini", "cursor"],
+      "description": "Auto-format files with prettier after edits (Cursor: best-effort, Husky guarantees)"
     },
     "protect-secrets": {
       "event": "PreToolUse",
