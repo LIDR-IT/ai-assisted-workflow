@@ -14,35 +14,42 @@ Skills extend AI agent capabilities with specialized knowledge, workflows, and t
 ## Official Documentation
 
 **Claude Code:**
+
 - [Skills Documentation](https://docs.anthropic.com/en/docs/build-with-claude/skills)
 - [Skill Development Guide](https://github.com/anthropics/claude-code/blob/main/docs/skills.md)
 - CLI: `claude skill list`, `claude skill add`
 
 **Cursor:**
+
 - Skills are supported via `.cursor/skills/` directory
 - Same markdown format as Claude Code
 
 **Gemini CLI:**
+
 - Skills supported in `.gemini/skills/` directory
 - Uses frontmatter format with `name`, `description`, `args`
 
 **Antigravity:**
+
 - Limited skill support (selective symlinks)
 - Global skills: `~/.gemini/antigravity/skills/`
 
 ## Skill Ecosystems
 
 **OpenSkills Platform:**
+
 - [skills.sh](https://skills.sh) - Public skill registry
 - Discover and share community skills
 - Install with `claude skill add <skill-name>`
 
 **NPM Skills Package:**
+
 - [npm @skills](https://www.npmjs.com/search?q=%40skills)
 - Versioned skill distributions
 - Install: `npm install @skills/<skill-name>`
 
 **Vercel Skill Discovery:**
+
 - [v0 Skills](https://v0.dev/skills) - Browse curated skills
 - Integration examples and templates
 
@@ -61,6 +68,7 @@ This project uses centralized skills in `.agents/skills/`:
 ```
 
 **Current Team Skills:**
+
 - `agent-development` - Create custom agents
 - `command-development` - Create slash commands
 - `commit-management` - Git commit best practices
@@ -74,6 +82,7 @@ This project uses centralized skills in `.agents/skills/`:
 ## Skill Anatomy
 
 **Basic Structure:**
+
 ```markdown
 ---
 name: skill-name
@@ -87,6 +96,7 @@ Instructions and context for the agent.
 ```
 
 **Frontmatter Fields:**
+
 - `name` - Skill identifier (required)
 - `description` - When to trigger this skill (required)
 - `args` - Command-line arguments (optional)
@@ -96,6 +106,7 @@ Instructions and context for the agent.
 ## Creating Skills
 
 **Using team-skill-creator:**
+
 ```bash
 # Invoke the skill
 claude /team-skill-creator
@@ -104,6 +115,7 @@ claude /team-skill-creator
 ```
 
 **Manual creation:**
+
 ```bash
 # Create skill directory
 mkdir -p .agents/skills/my-skill
@@ -125,24 +137,29 @@ EOF
 ## Skill Patterns
 
 **Knowledge Skills:**
+
 - Provide specialized domain knowledge
 - Example: `copywriting-guidelines`, `react-native-patterns`
 
 **Workflow Skills:**
+
 - Multi-step procedures
 - Example: `commit-management`, `mcp-integration`
 
 **Tool Integration Skills:**
+
 - Connect external tools/APIs
 - Example: `context7-query`, `database-access`
 
 **Generator Skills:**
+
 - Create code, configs, or documentation
 - Example: `skill-creator`, `command-development`
 
 ## Discovery and Installation
 
 **Finding skills:**
+
 ```bash
 # Team skill (invokes find-skills)
 claude /find-skills
@@ -155,6 +172,7 @@ open https://skills.sh
 ```
 
 **Installing skills:**
+
 ```bash
 # From OpenSkills
 claude skill add skill-name
@@ -170,6 +188,7 @@ git clone https://github.com/user/skill.git .agents/skills/skill-name
 ## Skill Invocation
 
 **Slash commands:**
+
 ```bash
 # Invoke skill by name
 claude /skill-name
@@ -187,34 +206,39 @@ Skills with good `description` fields trigger automatically based on user intent
 ## Advanced Features
 
 **Dynamic Context:**
+
 - Skills can reference `${CLAUDE_PLUGIN_ROOT}`
 - Access project files and configs
 
 **Extended Thinking:**
+
 - Enable longer reasoning with `thinking: true`
 - Better for complex problem-solving
 
 **Tool Restrictions:**
+
 - Limit tool access with `tools: [Read, Write]`
 - Enhance security and focus
 
 **Subagent Integration:**
+
 - Skills can spawn subagents
 - Delegate complex subtasks
 
 ## Platform Compatibility
 
-| Feature | Claude Code | Cursor | Gemini CLI | Antigravity |
-|---------|-------------|--------|------------|-------------|
-| Markdown Skills | ✅ | ✅ | ✅ | ⚠️ Selective |
-| Slash Commands | ✅ | ✅ | ✅ | ❌ |
-| Auto-trigger | ✅ | ✅ | ✅ | ❌ |
-| Tool Restrictions | ✅ | ⚠️ Limited | ⚠️ Limited | ❌ |
-| Extended Thinking | ✅ | ❌ | ❌ | ❌ |
+| Feature           | Claude Code | Cursor     | Gemini CLI | Antigravity  |
+| ----------------- | ----------- | ---------- | ---------- | ------------ |
+| Markdown Skills   | ✅          | ✅         | ✅         | ⚠️ Selective |
+| Slash Commands    | ✅          | ✅         | ✅         | ❌           |
+| Auto-trigger      | ✅          | ✅         | ✅         | ❌           |
+| Tool Restrictions | ✅          | ⚠️ Limited | ⚠️ Limited | ❌           |
+| Extended Thinking | ✅          | ❌         | ❌         | ❌           |
 
 ## Troubleshooting
 
 **Skill not appearing:**
+
 ```bash
 # Verify file exists
 ls .agents/skills/skill-name/skill.md
@@ -227,11 +251,13 @@ readlink .claude/skills
 ```
 
 **Skill not triggering:**
+
 - Improve `description` field with triggering keywords
 - Test with explicit invocation: `claude /skill-name`
 - Check frontmatter syntax
 
 **Antigravity skill issues:**
+
 - Antigravity uses selective symlinks or copies
 - Check `.agent/skills/` for copied skills
 - Global skills: `~/.gemini/antigravity/skills/`
@@ -239,21 +265,25 @@ readlink .claude/skills
 ## Best Practices
 
 **Skill Design:**
+
 - Clear, specific descriptions
 - Progressive disclosure (start simple, add detail)
 - Include examples and templates
 
 **Naming:**
+
 - Use kebab-case: `skill-name`
 - Be descriptive: `commit-management` not `commit`
 - Avoid conflicts with built-in commands
 
 **Organization:**
+
 - Group related skills in subdirectories
 - Maintain README in skill directories
 - Document dependencies
 
 **Testing:**
+
 - Test across all platforms
 - Verify auto-triggering works
 - Check slash command invocation
@@ -273,4 +303,4 @@ readlink .claude/skills
 
 ---
 
-*Maintained by LIDR Template Team | Last updated: 2026-02-01*
+_Maintained by LIDR Template Team | Last updated: 2026-02-01_

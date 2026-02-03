@@ -13,6 +13,7 @@
 ### Definition
 
 Sub-agents are autonomous AI assistants that:
+
 - Run in **separate context windows**
 - Have **custom system prompts**
 - Use **specific tool subsets**
@@ -32,6 +33,7 @@ When Claude encounters a task matching a sub-agent's description, it **delegates
 Keep exploration and implementation out of your main conversation.
 
 **Example:**
+
 - Research task generates 10,000 tokens of analysis
 - Only summary (500 tokens) returns to main conversation
 - Main context stays focused
@@ -41,6 +43,7 @@ Keep exploration and implementation out of your main conversation.
 Limit which tools a sub-agent can use.
 
 **Example:**
+
 - Read-only reviewer cannot modify files
 - Database agent can only run SELECT queries
 - Security scanner has no network access
@@ -50,6 +53,7 @@ Limit which tools a sub-agent can use.
 Share sub-agents across projects with user-level agents.
 
 **Example:**
+
 - Code reviewer available in all projects
 - Testing agent works everywhere
 - Custom workflows persist
@@ -59,6 +63,7 @@ Share sub-agents across projects with user-level agents.
 Focused system prompts for specific domains.
 
 **Example:**
+
 - Security expert for vulnerability scanning
 - Performance optimizer for speed improvements
 - Documentation writer for API docs
@@ -68,6 +73,7 @@ Focused system prompts for specific domains.
 Route tasks to faster, cheaper models like Haiku.
 
 **Example:**
+
 - Exploration with Haiku (fast, cheap)
 - Complex reasoning with Sonnet (balanced)
 - Critical analysis with Opus (capable)
@@ -83,16 +89,19 @@ Claude Code includes several built-in sub-agents:
 **Purpose:** Fast, read-only codebase exploration
 
 **Configuration:**
+
 - **Model:** Haiku (fast, low-latency)
 - **Tools:** Read-only (no Write/Edit)
 - **Use cases:** File discovery, code search, codebase understanding
 
 **Thoroughness Levels:**
+
 - `quick` - Targeted lookups
 - `medium` - Balanced exploration
 - `very thorough` - Comprehensive analysis
 
 **When Claude uses it:**
+
 - Searching for files
 - Understanding code structure
 - Finding patterns
@@ -103,11 +112,13 @@ Claude Code includes several built-in sub-agents:
 **Purpose:** Research agent for plan mode
 
 **Configuration:**
+
 - **Model:** Inherits from main
 - **Tools:** Read-only
 - **Use cases:** Codebase research for planning
 
 **When Claude uses it:**
+
 - During plan mode
 - Gathering context before presenting plan
 - Understanding existing implementation
@@ -119,11 +130,13 @@ Claude Code includes several built-in sub-agents:
 **Purpose:** Complex, multi-step tasks
 
 **Configuration:**
+
 - **Model:** Inherits from main
 - **Tools:** All tools
 - **Use cases:** Complex research, multi-step operations, modifications
 
 **When Claude uses it:**
+
 - Both exploration and modification needed
 - Complex reasoning required
 - Multiple dependent steps
@@ -131,11 +144,11 @@ Claude Code includes several built-in sub-agents:
 
 ### Other Built-in Agents
 
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| Bash | Inherits | Terminal commands in separate context |
-| statusline-setup | Sonnet | Configure status line (`/statusline` command) |
-| Claude Code Guide | Haiku | Answer questions about Claude Code features |
+| Agent             | Model    | Purpose                                       |
+| ----------------- | -------- | --------------------------------------------- |
+| Bash              | Inherits | Terminal commands in separate context         |
+| statusline-setup  | Sonnet   | Configure status line (`/statusline` command) |
+| Claude Code Guide | Haiku    | Answer questions about Claude Code features   |
 
 ---
 
@@ -148,6 +161,7 @@ Claude Code includes several built-in sub-agents:
 **Steps:**
 
 1. **Open interface:**
+
    ```
    /agents
    ```
@@ -198,12 +212,12 @@ actionable feedback on quality, security, and best practices.
 
 ### Storage Locations
 
-| Location | Scope | Priority | Use Case |
-|----------|-------|----------|----------|
-| `--agents` CLI flag | Current session | 1 (highest) | Testing, automation |
-| `.claude/agents/` | Project | 2 | Team workflows |
-| `~/.claude/agents/` | User (all projects) | 3 | Personal tools |
-| Plugin `agents/` | Where plugin enabled | 4 (lowest) | Distributed agents |
+| Location            | Scope                | Priority    | Use Case            |
+| ------------------- | -------------------- | ----------- | ------------------- |
+| `--agents` CLI flag | Current session      | 1 (highest) | Testing, automation |
+| `.claude/agents/`   | Project              | 2           | Team workflows      |
+| `~/.claude/agents/` | User (all projects)  | 3           | Personal tools      |
+| Plugin `agents/`    | Where plugin enabled | 4 (lowest)  | Distributed agents  |
 
 **Priority:** When multiple sub-agents share the same name, higher priority wins.
 
@@ -212,12 +226,14 @@ actionable feedback on quality, security, and best practices.
 **Location:** `.claude/agents/`
 
 **Benefits:**
+
 - Specific to codebase
 - Version controlled
 - Team collaboration
 - Shared improvements
 
 **Use cases:**
+
 - Project-specific workflows
 - Team standards
 - Codebase conventions
@@ -227,11 +243,13 @@ actionable feedback on quality, security, and best practices.
 **Location:** `~/.claude/agents/`
 
 **Benefits:**
+
 - Available everywhere
 - Personal preferences
 - Cross-project consistency
 
 **Use cases:**
+
 - Personal workflows
 - Coding style
 - Common patterns
@@ -241,6 +259,7 @@ actionable feedback on quality, security, and best practices.
 **Method:** `--agents` flag
 
 **Format:**
+
 ```bash
 claude --agents '{
   "code-reviewer": {
@@ -253,6 +272,7 @@ claude --agents '{
 ```
 
 **Benefits:**
+
 - Session-only (not saved)
 - Quick testing
 - Automation scripts
@@ -263,6 +283,7 @@ claude --agents '{
 **Location:** Plugin's `agents/` directory
 
 **Benefits:**
+
 - Distributed with plugin
 - Automatic installation
 - Shared across teams
@@ -277,16 +298,19 @@ claude --agents '{
 #### Required Fields
 
 **`name`**
+
 - Unique identifier
 - Lowercase letters and hyphens
 - Examples: `code-reviewer`, `test-runner`, `security-scanner`
 
 **`description`**
+
 - When Claude should delegate
 - Include concrete examples
 - Be specific about triggers
 
 **Example:**
+
 ```yaml
 description: Expert code reviewer. Use proactively after code changes to check quality, security, and best practices.
 ```
@@ -294,50 +318,58 @@ description: Expert code reviewer. Use proactively after code changes to check q
 #### Optional Fields
 
 **`tools`**
+
 - Tools the sub-agent can use
 - Allowlist approach
 - Inherits all if omitted
 
 **Example:**
+
 ```yaml
 tools: Read, Grep, Glob, Bash
 ```
 
 **`disallowedTools`**
+
 - Tools to deny
 - Denylist approach
 - Removed from inherited list
 
 **Example:**
+
 ```yaml
 disallowedTools: Write, Edit
 ```
 
 **`model`**
+
 - Which model to use
 - Options: `sonnet`, `opus`, `haiku`, `inherit`
 - Defaults to `inherit`
 
 **`permissionMode`**
+
 - How to handle permissions
 - Options: `default`, `acceptEdits`, `dontAsk`, `bypassPermissions`, `plan`
 
 **Permission Modes:**
 
-| Mode | Behavior |
-|------|----------|
-| `default` | Standard permission prompts |
-| `acceptEdits` | Auto-accept file edits |
-| `dontAsk` | Auto-deny prompts (allowed tools still work) |
-| `bypassPermissions` | Skip all checks (⚠️ use with caution) |
-| `plan` | Read-only plan mode |
+| Mode                | Behavior                                     |
+| ------------------- | -------------------------------------------- |
+| `default`           | Standard permission prompts                  |
+| `acceptEdits`       | Auto-accept file edits                       |
+| `dontAsk`           | Auto-deny prompts (allowed tools still work) |
+| `bypassPermissions` | Skip all checks (⚠️ use with caution)        |
+| `plan`              | Read-only plan mode                          |
 
 **`skills`**
+
 - Skills to preload into context
 - Full content injected at startup
 - Not inherited from parent
 
 **Example:**
+
 ```yaml
 skills:
   - api-conventions
@@ -345,6 +377,7 @@ skills:
 ```
 
 **`hooks`**
+
 - Lifecycle hooks for this sub-agent
 - Scoped to sub-agent only
 - Cleaned up when finished
@@ -356,6 +389,7 @@ skills:
 ### Available Tools
 
 Sub-agents can use Claude Code's internal tools:
+
 - Read, Write, Edit
 - Grep, Glob
 - Bash
@@ -364,11 +398,13 @@ Sub-agents can use Claude Code's internal tools:
 ### Tool Restrictions
 
 **Allowlist (tools field):**
+
 ```yaml
 tools: Read, Grep, Glob
 ```
 
 **Denylist (disallowedTools field):**
+
 ```yaml
 tools: Read, Write, Edit, Grep, Glob
 disallowedTools: Write, Edit
@@ -396,6 +432,7 @@ hooks:
 ```
 
 **Validation script:**
+
 ```bash
 #!/bin/bash
 # validate-readonly-query.sh
@@ -415,6 +452,7 @@ exit 0
 ### Disable Specific Sub-Agents
 
 **Via settings.json:**
+
 ```json
 {
   "permissions": {
@@ -424,6 +462,7 @@ exit 0
 ```
 
 **Via CLI:**
+
 ```bash
 claude --disallowedTools "Task(Explore)"
 ```
@@ -438,13 +477,14 @@ Define hooks that run only while sub-agent is active.
 
 **Available events:**
 
-| Event | Matcher Input | When it Fires |
-|-------|---------------|---------------|
-| `PreToolUse` | Tool name | Before using tool |
-| `PostToolUse` | Tool name | After using tool |
-| `Stop` | (none) | When sub-agent finishes |
+| Event         | Matcher Input | When it Fires           |
+| ------------- | ------------- | ----------------------- |
+| `PreToolUse`  | Tool name     | Before using tool       |
+| `PostToolUse` | Tool name     | After using tool        |
+| `Stop`        | (none)        | When sub-agent finishes |
 
 **Example:**
+
 ```yaml
 ---
 name: code-reviewer
@@ -474,12 +514,13 @@ Define hooks that respond to sub-agent lifecycle in main session.
 
 **Available events:**
 
-| Event | Matcher Input | When it Fires |
-|-------|---------------|---------------|
-| `SubagentStart` | Agent type name | When sub-agent begins |
-| `SubagentStop` | Agent type name | When sub-agent completes |
+| Event           | Matcher Input   | When it Fires            |
+| --------------- | --------------- | ------------------------ |
+| `SubagentStart` | Agent type name | When sub-agent begins    |
+| `SubagentStop`  | Agent type name | When sub-agent completes |
 
 **Example:**
+
 ```json
 {
   "hooks": {
@@ -516,11 +557,13 @@ Define hooks that respond to sub-agent lifecycle in main session.
 ### Automatic Delegation
 
 Claude automatically delegates based on:
+
 - Task description in request
 - Sub-agent `description` field
 - Current context
 
 **Encourage proactive delegation:**
+
 ```yaml
 description: Expert code reviewer. Use proactively after code changes.
 ```
@@ -528,6 +571,7 @@ description: Expert code reviewer. Use proactively after code changes.
 ### Explicit Invocation
 
 Request specific sub-agent:
+
 ```
 Use the test-runner sub-agent to fix failing tests
 Have the code-reviewer sub-agent look at my recent changes
@@ -536,12 +580,14 @@ Have the code-reviewer sub-agent look at my recent changes
 ### Foreground vs Background
 
 **Foreground (blocking):**
+
 - Blocks main conversation
 - Permission prompts passed through
 - Can ask clarifying questions
 - Full interactivity
 
 **Background (concurrent):**
+
 - Runs concurrently
 - Pre-approved permissions only
 - Auto-denies unapproved requests
@@ -549,11 +595,13 @@ Have the code-reviewer sub-agent look at my recent changes
 - No MCP tools
 
 **Control:**
+
 - Claude decides based on task
 - Ask: "run this in the background"
 - Press **Ctrl+B** to background running task
 
 **Disable background:**
+
 ```bash
 export CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1
 ```
@@ -591,6 +639,7 @@ Use code-reviewer to find issues, then use optimizer to fix them
 ```
 
 **Workflow:**
+
 1. Sub-agent 1 completes → returns results
 2. Claude analyzes results
 3. Claude delegates to sub-agent 2
@@ -599,6 +648,7 @@ Use code-reviewer to find issues, then use optimizer to fix them
 ### When to Use Sub-Agents vs Main Conversation
 
 **Use Main Conversation When:**
+
 - Frequent back-and-forth needed
 - Iterative refinement
 - Phases share significant context
@@ -606,12 +656,14 @@ Use code-reviewer to find issues, then use optimizer to fix them
 - Latency matters
 
 **Use Sub-Agents When:**
+
 - Verbose output not needed in main context
 - Specific tool restrictions required
 - Self-contained work
 - Summary sufficient
 
 **Consider Skills When:**
+
 - Reusable prompts/workflows
 - Main conversation context preferred
 - Not isolated execution
@@ -625,6 +677,7 @@ Use code-reviewer to find issues, then use optimizer to fix them
 Each invocation creates new instance with fresh context.
 
 **To continue existing work:**
+
 ```
 Use code-reviewer to review auth module
 [Agent completes]
@@ -634,12 +687,14 @@ Continue that review and analyze authorization logic
 ```
 
 **Benefits:**
+
 - Retains full conversation history
 - Includes all tool calls and results
 - Preserves reasoning
 - Picks up where it stopped
 
 **Finding Agent IDs:**
+
 - Ask Claude for the ID
 - Check transcripts: `~/.claude/projects/{project}/{sessionId}/subagents/`
 - Each stored as: `agent-{agentId}.jsonl`
@@ -647,11 +702,13 @@ Continue that review and analyze authorization logic
 ### Transcript Persistence
 
 **Storage:**
+
 - Independent of main conversation
 - Separate files per sub-agent
 - Session-scoped
 
 **Persistence:**
+
 - Main conversation compaction → sub-agent unaffected
 - Session restart → can resume same sub-agent
 - Automatic cleanup → after `cleanupPeriodDays` (default: 30)
@@ -659,11 +716,13 @@ Continue that review and analyze authorization logic
 ### Auto-Compaction
 
 Sub-agents support automatic compaction:
+
 - Same logic as main conversation
 - Default: triggers at ~95% capacity
 - Override: `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=50`
 
 **Logged in transcript:**
+
 ```json
 {
   "type": "system",
@@ -692,11 +751,13 @@ model: inherit
 You are a senior code reviewer ensuring high standards.
 
 When invoked:
+
 1. Run git diff to see recent changes
 2. Focus on modified files
 3. Begin review immediately
 
 Review checklist:
+
 - Code clarity and readability
 - Proper naming conventions
 - No code duplication
@@ -707,6 +768,7 @@ Review checklist:
 - Performance considerations
 
 Provide feedback by priority:
+
 - **Critical** (must fix)
 - **Warnings** (should fix)
 - **Suggestions** (consider)
@@ -726,6 +788,7 @@ tools: Read, Edit, Bash, Grep, Glob
 You are an expert debugger specializing in root cause analysis.
 
 When invoked:
+
 1. Capture error and stack trace
 2. Identify reproduction steps
 3. Isolate failure location
@@ -733,6 +796,7 @@ When invoked:
 5. Verify solution works
 
 Debugging process:
+
 - Analyze errors and logs
 - Check recent changes
 - Form and test hypotheses
@@ -740,6 +804,7 @@ Debugging process:
 - Inspect variable states
 
 For each issue provide:
+
 - Root cause explanation
 - Supporting evidence
 - Specific code fix
@@ -762,6 +827,7 @@ model: sonnet
 You are a data scientist specializing in SQL and BigQuery.
 
 When invoked:
+
 1. Understand analysis requirement
 2. Write efficient SQL queries
 3. Use BigQuery CLI (bq) when appropriate
@@ -769,6 +835,7 @@ When invoked:
 5. Present findings clearly
 
 Key practices:
+
 - Optimized SQL with proper filters
 - Appropriate aggregations/joins
 - Comment complex logic
@@ -776,6 +843,7 @@ Key practices:
 - Provide data-driven recommendations
 
 For each analysis:
+
 - Explain query approach
 - Document assumptions
 - Highlight key findings
@@ -787,6 +855,7 @@ Ensure queries are efficient and cost-effective.
 ### 4. Database Query Validator (Hook-Based)
 
 **Sub-agent file:**
+
 ```markdown
 ---
 name: db-reader
@@ -803,6 +872,7 @@ hooks:
 You are a database analyst with read-only access.
 
 When analyzing data:
+
 1. Identify relevant tables
 2. Write efficient SELECT queries
 3. Present results with context
@@ -811,6 +881,7 @@ You cannot modify data. If asked to INSERT, UPDATE, DELETE, or modify schema, ex
 ```
 
 **Validation script (`scripts/validate-readonly-query.sh`):**
+
 ```bash
 #!/bin/bash
 # Blocks SQL write operations, allows SELECT only
@@ -832,6 +903,7 @@ exit 0
 ```
 
 **Make executable:**
+
 ```bash
 chmod +x ./scripts/validate-readonly-query.sh
 ```
@@ -843,6 +915,7 @@ chmod +x ./scripts/validate-readonly-query.sh
 ### Design
 
 ✅ **DO:**
+
 - Design focused sub-agents (one task each)
 - Write detailed descriptions for delegation
 - Limit tool access to minimum needed
@@ -850,6 +923,7 @@ chmod +x ./scripts/validate-readonly-query.sh
 - Use proactive language: "Use proactively after..."
 
 ❌ **DON'T:**
+
 - Create generic, multi-purpose sub-agents
 - Use vague descriptions
 - Grant unnecessary permissions
@@ -858,6 +932,7 @@ chmod +x ./scripts/validate-readonly-query.sh
 ### Documentation
 
 ✅ **DO:**
+
 - Check into version control (project sub-agents)
 - Document tool requirements
 - Explain permission needs
@@ -865,6 +940,7 @@ chmod +x ./scripts/validate-readonly-query.sh
 - Maintain system prompt quality
 
 ❌ **DON'T:**
+
 - Keep sub-agents local only
 - Forget to document restrictions
 - Leave system prompt vague
@@ -873,12 +949,14 @@ chmod +x ./scripts/validate-readonly-query.sh
 ### Context Management
 
 ✅ **DO:**
+
 - Use sub-agents for verbose operations
 - Resume for continued work
 - Monitor context usage
 - Clean up old transcripts
 
 ❌ **DON'T:**
+
 - Run many verbose sub-agents in parallel
 - Start fresh when resuming would work
 - Ignore transcript storage
@@ -890,16 +968,19 @@ chmod +x ./scripts/validate-readonly-query.sh
 ### What Sub-Agents Cannot Do
 
 ❌ **Spawn other sub-agents**
+
 - Sub-agents cannot delegate to other sub-agents
 - Prevents infinite nesting
 - Use main conversation to chain sub-agents
 
 ❌ **Access parent context**
+
 - Start with fresh context
 - Only receive their system prompt
 - Don't inherit main conversation history
 
 ❌ **Use skills automatically**
+
 - Must explicitly list in `skills` field
 - Don't inherit from parent
 

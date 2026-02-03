@@ -13,6 +13,7 @@
 ## What Are Skills?
 
 Skills are **modular packages** that extend Claude's capabilities with:
+
 - **Specialized knowledge**: Domain-specific information and expertise
 - **Workflows**: Step-by-step processes and procedures
 - **Tools**: Scripts, templates, and resources for specific tasks
@@ -28,10 +29,12 @@ Skills transform Claude from a general assistant into a specialized agent for sp
 #### SKILL.md (Required)
 
 The main skill file containing:
+
 1. **YAML frontmatter**: Metadata (name and description)
 2. **Markdown instructions**: Detailed guidance for Claude
 
 **Structure:**
+
 ```markdown
 ---
 name: skill-name
@@ -50,11 +53,13 @@ Detailed instructions for Claude...
 Executable code for deterministic, repeatable tasks.
 
 **When to use:**
+
 - Tasks that must be performed exactly the same way every time
 - Error-prone operations requiring precise execution
 - Automation that benefits from code over natural language
 
 **Examples:**
+
 - File manipulation scripts
 - Data transformation utilities
 - API interaction helpers
@@ -65,11 +70,13 @@ Executable code for deterministic, repeatable tasks.
 Documentation loaded into context as needed.
 
 **When to use:**
+
 - Large reference materials (API docs, specifications)
 - Background information not always needed
 - Supporting documentation for complex topics
 
 **Examples:**
+
 - API documentation
 - Configuration schemas
 - Code examples
@@ -80,12 +87,14 @@ Documentation loaded into context as needed.
 Templates, icons, and boilerplate files for output use.
 
 **When to use:**
+
 - Files that need to be created/copied
 - Templates for common patterns
 - Boilerplate code structures
 - Images, icons, or other media
 
 **Examples:**
+
 - Code templates
 - Configuration file templates
 - Markdown templates
@@ -102,12 +111,14 @@ Templates, icons, and boilerplate files for output use.
 **Rule:** Only include information Claude wouldn't already know.
 
 **Application:**
+
 - Don't explain basic programming concepts
 - Don't include general knowledge
 - Focus on domain-specific information
 - Remove redundant explanations
 
 **Example:**
+
 ```markdown
 ❌ Don't:
 React is a JavaScript library for building user interfaces.
@@ -116,6 +127,7 @@ Components are reusable pieces of UI.
 ✅ Do:
 Prefer server components by default.
 Use 'use client' only when:
+
 - Component uses hooks (useState, useEffect)
 - Component handles browser events
 - Component uses browser-only APIs
@@ -126,6 +138,7 @@ Use 'use client' only when:
 **Principle:** Match specificity to task fragility.
 
 **Spectrum:**
+
 1. **Text instructions** → Flexible tasks where approach varies
 2. **Pseudocode** → Preferred patterns with some flexibility
 3. **Specific scripts** → Error-prone operations requiring precision
@@ -133,14 +146,17 @@ Use 'use client' only when:
 **When to use each:**
 
 **Text Instructions:**
+
 ```markdown
 Review code for performance issues:
+
 - Check for unnecessary re-renders
 - Identify expensive calculations
 - Look for missing memoization
 ```
 
 **Pseudocode:**
+
 ```markdown
 Create API endpoint following this pattern:
 
@@ -151,6 +167,7 @@ Create API endpoint following this pattern:
 ```
 
 **Specific Scripts:**
+
 ```bash
 #!/bin/bash
 # scripts/deploy.sh
@@ -185,6 +202,7 @@ aws cloudfront create-invalidation --distribution-id ID --paths "/*"
    - Can be larger as they're loaded on-demand
 
 **Example Structure:**
+
 ```
 my-skill/
 ├── SKILL.md (3,500 words - loaded when skill triggers)
@@ -202,6 +220,7 @@ my-skill/
 ### Frontmatter Requirements
 
 **Required Fields:**
+
 ```yaml
 ---
 name: skill-name
@@ -212,12 +231,14 @@ description: What this skill does and when to use it
 **Field Details:**
 
 **`name`**
+
 - Skill identifier
 - kebab-case format
 - Short and descriptive
 - Used in commands and references
 
 **`description`**
+
 - **Critical triggering mechanism**
 - Describes what the skill does AND when to use it
 - Claude uses this to decide when to invoke the skill
@@ -231,19 +252,16 @@ description: What this skill does and when to use it
 name: react-review
 description: Review React components for performance, accessibility, and best practices. Use when reviewing .jsx/.tsx files.
 ---
-
 # ✅ Good
 ---
 name: api-generator
 description: Generate REST API endpoints with TypeScript, validation, and tests. Use when creating new API routes.
 ---
-
 # ❌ Too Vague
 ---
 name: helper
 description: Helps with code
 ---
-
 # ❌ Missing When Clause
 ---
 name: test-writer
@@ -256,6 +274,7 @@ description: Writes unit tests
 ### Body Content
 
 **Structure:**
+
 ```markdown
 ---
 name: skill-name
@@ -290,6 +309,7 @@ Links to scripts, references, or assets if needed.
    - Split complex skills into multiple focused skills
 
 2. **Use imperative/infinitive form**
+
    ```markdown
    ✅ Check for type errors
    ✅ Validate user input
@@ -298,6 +318,7 @@ Links to scripts, references, or assets if needed.
    ```
 
 3. **Include table of contents for 100+ line files**
+
    ```markdown
    ## Table of Contents
 
@@ -308,6 +329,7 @@ Links to scripts, references, or assets if needed.
    ```
 
 4. **Organize references one level deep**
+
    ```
    ✅ Good:
    my-skill/
@@ -326,8 +348,10 @@ Links to scripts, references, or assets if needed.
    ```
 
 5. **Avoid extraneous files**
+
    ```markdown
    ❌ Don't include:
+
    - README.md (use SKILL.md)
    - CHANGELOG.md (track in git)
    - LICENSE (use package metadata)
@@ -343,22 +367,26 @@ Links to scripts, references, or assets if needed.
 Before writing anything, gather real examples:
 
 **Questions to answer:**
+
 - What specific tasks will this skill handle?
 - What are the input variations?
 - What should the output look like?
 - What edge cases exist?
 
 **Example:**
+
 ```markdown
 Task: Create API endpoint skill
 
 Usage examples:
+
 1. Create GET endpoint for fetching users
 2. Create POST endpoint with validation
 3. Create endpoint with authentication
 4. Create endpoint with file upload
 
 Edge cases:
+
 - Missing authentication
 - Invalid input schemas
 - Error handling
@@ -370,21 +398,25 @@ Edge cases:
 Decide what belongs in each directory:
 
 **SKILL.md:**
+
 - Core instructions
 - Decision-making guidelines
 - Process workflows
 
 **scripts/:**
+
 - Deployment automation
 - File generation utilities
 - Data transformation
 
 **references/:**
+
 - API documentation
 - Configuration examples
 - Best practices guides
 
 **assets/:**
+
 - Code templates
 - Config file templates
 - Example files
@@ -402,6 +434,7 @@ my-skill/
 ```
 
 **Initial SKILL.md:**
+
 ```markdown
 ---
 name: my-skill
@@ -433,6 +466,7 @@ description: [What it does] when [criteria for use]
 6. Refine based on results
 
 **Tips:**
+
 - Start with minimal viable skill
 - Add complexity as needed
 - Get feedback from actual use
@@ -451,6 +485,7 @@ tar -czf my-skill.tar.gz my-skill/
 ```
 
 **Verify package contents:**
+
 ```bash
 # Check file sizes
 du -sh my-skill/*
@@ -465,12 +500,14 @@ wc -l my-skill/SKILL.md
 ### Step 6: Iterate Based on Real Usage
 
 **Monitor:**
+
 - When skill is invoked correctly
 - When skill is missed (should have triggered but didn't)
 - When skill produces wrong output
 - User feedback and corrections
 
 **Common iterations:**
+
 1. Refine description for better triggering
 2. Add missing edge cases to instructions
 3. Create scripts for repetitive tasks
@@ -519,6 +556,7 @@ code-review/
 ```
 
 **SKILL.md:**
+
 ```markdown
 ---
 name: code-review
@@ -530,18 +568,21 @@ description: Review code for bugs, performance, and best practices. Use when use
 Review code systematically for:
 
 ## Security
+
 - SQL injection vulnerabilities
 - XSS attack vectors
 - Authentication bypass risks
 - Sensitive data exposure
 
 ## Performance
+
 - N+1 queries
 - Missing indexes
 - Inefficient algorithms
 - Memory leaks
 
 ## Best Practices
+
 - Code organization
 - Error handling
 - Type safety
@@ -563,6 +604,7 @@ api-generator/
 ```
 
 **SKILL.md:**
+
 ```markdown
 ---
 name: api-generator
@@ -611,6 +653,7 @@ deployment/
 ```
 
 **SKILL.md:**
+
 ```markdown
 ---
 name: deployment
@@ -628,6 +671,7 @@ description: Deploy applications to production with validation and rollback. Use
 ## Deployment
 
 Execute scripts/deploy.sh which:
+
 - Builds production bundle
 - Runs tests
 - Deploys to AWS
@@ -659,16 +703,19 @@ description: Audit web pages for WCAG compliance. Use when checking accessibilit
 Check for:
 
 ## Level A (Critical)
+
 - Alt text on images
 - Keyboard navigation
 - Form labels
 
 ## Level AA (Important)
+
 - Color contrast ratios
 - Focus indicators
 - ARIA labels
 
 ## Level AAA (Enhanced)
+
 - Extended contrast
 - Detailed descriptions
 
@@ -734,6 +781,7 @@ Provide actionable feedback with line numbers.
 **Problem:** Skill available but not invoked when expected
 
 **Solutions:**
+
 1. Improve description with clearer "when to use" criteria
 2. Add more specific keywords to description
 3. Test description against actual user queries
@@ -744,6 +792,7 @@ Provide actionable feedback with line numbers.
 **Problem:** SKILL.md exceeds 500 lines
 
 **Solutions:**
+
 1. Move detailed docs to references/
 2. Move code to scripts/
 3. Remove general knowledge
@@ -755,6 +804,7 @@ Provide actionable feedback with line numbers.
 **Problem:** Claude produces inconsistent results
 
 **Solutions:**
+
 1. Add more specific instructions
 2. Include concrete examples
 3. Move from text to pseudocode
@@ -766,6 +816,7 @@ Provide actionable feedback with line numbers.
 **Problem:** References or scripts not found
 
 **Solutions:**
+
 1. Check file paths (case-sensitive)
 2. Verify directory structure
 3. Ensure references are one level deep

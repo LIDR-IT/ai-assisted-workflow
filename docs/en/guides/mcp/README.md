@@ -7,12 +7,14 @@ Guías detalladas de configuración, troubleshooting y validación de MCP server
 ### Setup y Configuración
 
 **[mcp-setup-guide.md](./mcp-setup-guide.md)**
+
 - Configuración completa de Context7
 - Setup por plataforma (Cursor, Claude, Gemini CLI)
 - Uso de MCP servers
 - Troubleshooting común
 
 **[ANTIGRAVITY_SETUP.md](./ANTIGRAVITY_SETUP.md)**
+
 - Configuración específica de Antigravity
 - Configuración global vs proyecto
 - Instrucciones paso a paso
@@ -21,6 +23,7 @@ Guías detalladas de configuración, troubleshooting y validación de MCP server
 ### Limitaciones y Consideraciones
 
 **[ANTIGRAVITY_LIMITATION.md](./ANTIGRAVITY_LIMITATION.md)**
+
 - Por qué Antigravity no soporta MCP a nivel de proyecto
 - Impacto en el desarrollo
 - Soluciones alternativas
@@ -29,6 +32,7 @@ Guías detalladas de configuración, troubleshooting y validación de MCP server
 ### Validación y Testing
 
 **[VALIDATION.md](./VALIDATION.md)**
+
 - Checklist completo de validación
 - Verificación por plataforma
 - Testing de funcionalidad
@@ -39,10 +43,12 @@ Guías detalladas de configuración, troubleshooting y validación de MCP server
 ## 🔗 Enlaces Relacionados
 
 ### Configuración Operacional
+
 - `.agents/mcp/` - Source of truth y scripts de sincronización
 - `.agents/mcp/README.md` - Quick start
 
 ### Documentación de Referencia
+
 - `docs/references/mcp/` - Documentación técnica por plataforma
   - mcp-cursor.md
   - mcp-gemini-cli.md

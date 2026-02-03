@@ -13,9 +13,11 @@ Commands are markdown files that register slash commands in Claude Code CLI. The
 **Purpose:** Audits and improves project documentation
 
 **Arguments:**
+
 - `path` (optional) - Path to document or directory to audit
 
 **What it does:**
+
 - Invokes `doc-improver` agent
 - Analyzes documentation against project standards
 - Identifies gaps and issues
@@ -23,6 +25,7 @@ Commands are markdown files that register slash commands in Claude Code CLI. The
 - Implements approved changes
 
 **Usage:**
+
 ```bash
 # Audit entire project
 /improve-docs
@@ -35,6 +38,7 @@ Commands are markdown files that register slash commands in Claude Code CLI. The
 ```
 
 **Related:**
+
 - Agent: `.agents/agents/doc-improver.md`
 - Rule: `.agents/rules/process/documentation.md`
 
@@ -68,9 +72,9 @@ Every command file contains:
 
 ```yaml
 ---
-name: command-name           # How it's invoked (/command-name)
-description: Brief summary   # What it does
-args:                        # Arguments it accepts
+name: command-name # How it's invoked (/command-name)
+description: Brief summary # What it does
+args: # Arguments it accepts
   - name: arg1
     description: Arg description
     required: false
@@ -79,7 +83,7 @@ args:                        # Arguments it accepts
 
 ### 2. Documentation Content
 
-```markdown
+````markdown
 # Command Name
 
 Brief description of what this command does.
@@ -93,11 +97,13 @@ Brief description of what this command does.
 ```bash
 /command-name arg1 arg2
 ```
+````
 
 ## Examples
 
 [Usage examples]
-```
+
+````
 
 ## Creating a New Command
 
@@ -108,9 +114,10 @@ See: [Command → Agent → Skill Pattern Guide](../../docs/guides/patterns/comm
 1. **Create command file:**
 ```bash
 touch .agents/commands/your-command.md
-```
+````
 
 2. **Add frontmatter:**
+
 ```yaml
 ---
 name: your-command
@@ -123,6 +130,7 @@ args:
 ```
 
 3. **Document usage:**
+
 ```markdown
 # Your Command
 
@@ -130,16 +138,19 @@ Explanation, usage, examples.
 ```
 
 4. **Create corresponding agent (if needed):**
+
 ```bash
 touch .agents/agents/your-agent.md
 ```
 
 5. **Test:**
+
 ```bash
 /your-command
 ```
 
 **Or use:**
+
 ```bash
 /command-development  # Skill with full guide
 ```
@@ -151,11 +162,13 @@ touch .agents/agents/your-agent.md
 Use descriptive, action-oriented names:
 
 ✅ Good:
+
 - `/improve-docs`
 - `/review-code`
 - `/generate-tests`
 
 ❌ Bad:
+
 - `/doc`
 - `/check`
 - `/do`
@@ -178,23 +191,28 @@ args:
 
 Include multiple usage examples:
 
-```markdown
+````markdown
 ## Examples
 
 **Example 1: Basic usage**
+
 ```bash
 /command
 ```
+````
 
 **Example 2: With path**
+
 ```bash
 /command src/
 ```
 
 **Example 3: Full options**
+
 ```bash
 /command src/ --format json
 ```
+
 ````
 
 ### 4. Link to Related Resources

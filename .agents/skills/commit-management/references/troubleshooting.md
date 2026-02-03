@@ -167,6 +167,7 @@ git rebase -i HEAD~3
 ```
 
 **In editor:**
+
 ```
 pick a1b2c3d First commit
 squash b2c3d4e Second commit
@@ -394,6 +395,7 @@ git rebase -i HEAD~N
 ### 13. Can't Push - Diverged History
 
 **Error:**
+
 ```
 ! [rejected] main -> main (non-fast-forward)
 ```
@@ -473,6 +475,7 @@ git rebase -i HEAD~N
 ```
 
 **In editor, reorder lines:**
+
 ```
 pick c3d4e5f Third commit (should be first)
 pick a1b2c3d First commit
@@ -514,6 +517,7 @@ echo "✅ Pre-commit checks passed"
 ```
 
 Make executable:
+
 ```bash
 chmod +x .git/hooks/pre-commit
 ```
@@ -544,6 +548,7 @@ echo "✅ Commit message valid"
 ```
 
 Make executable:
+
 ```bash
 chmod +x .git/hooks/commit-msg
 ```
@@ -632,17 +637,20 @@ git push --force-with-lease
 **Options:**
 
 1. **Use reflog** (if recent)
+
    ```bash
    git reflog
    git reset --hard abc123  # Before mistake
    ```
 
 2. **Restore from backup** (if you have backups)
+
    ```bash
    cp -r /backup/repo/.git .
    ```
 
 3. **Re-clone and cherry-pick work**
+
    ```bash
    # Clone fresh from remote
    git clone repo-url repo-fresh

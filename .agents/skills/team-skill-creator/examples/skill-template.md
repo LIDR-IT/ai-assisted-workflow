@@ -15,7 +15,7 @@ This is a copy-paste template for creating new skills within the `.agents/` syst
 
 ## Template Content
 
-```markdown
+````markdown
 ---
 name: [skill-name]
 description: This skill should be used when the user asks to "[trigger phrase 1]", "[trigger phrase 2]", "[trigger phrase 3]". [Add context about what the skill provides and when to use it].
@@ -38,6 +38,7 @@ version: 0.1.0
 # Example code or command
 [code example]
 ```
+````
 
 ## Usage Patterns
 
@@ -46,6 +47,7 @@ version: 0.1.0
 [Description of first usage pattern]
 
 **Example:**
+
 ```[language]
 [code example]
 ```
@@ -55,6 +57,7 @@ version: 0.1.0
 [Description of second usage pattern]
 
 **Example:**
+
 ```[language]
 [code example]
 ```
@@ -67,6 +70,7 @@ version: 0.1.0
 - **`scripts/[another-script].py`** - [Description]
 
 Usage:
+
 ```bash
 [how to use the script]
 ```
@@ -77,6 +81,7 @@ Usage:
 - **`references/[another-reference].md`** - [Description]
 
 When to read:
+
 - Read [reference-name].md when [specific condition]
 - Read [another-reference].md when [another condition]
 
@@ -86,6 +91,7 @@ When to read:
 - **`assets/[another-asset].png`** - [Description]
 
 How to use:
+
 - Copy `assets/[template-name].tsx` and modify for [purpose]
 - Use `assets/[another-asset].png` in [context]
 
@@ -96,11 +102,13 @@ How to use:
 [Description of example scenario]
 
 **Setup:**
+
 ```[language]
 [setup code]
 ```
 
 **Usage:**
+
 ```[language]
 [usage code]
 ```
@@ -113,11 +121,13 @@ How to use:
 [Description of second example]
 
 **Setup:**
+
 ```[language]
 [setup code]
 ```
 
 **Usage:**
+
 ```[language]
 [usage code]
 ```
@@ -146,6 +156,7 @@ For implementation details, see `references/[implementation-guide].md`
 [When to use this pattern]
 
 **Implementation:**
+
 ```[language]
 [code example showing pattern]
 ```
@@ -155,6 +166,7 @@ For implementation details, see `references/[implementation-guide].md`
 [When to use this second pattern]
 
 **Implementation:**
+
 ```[language]
 [code example]
 ```
@@ -166,6 +178,7 @@ For implementation details, see `references/[implementation-guide].md`
 **Symptoms:** [How to recognize this issue]
 
 **Solution:**
+
 ```[language]
 [solution code or steps]
 ```
@@ -175,6 +188,7 @@ For implementation details, see `references/[implementation-guide].md`
 **Symptoms:** [How to identify]
 
 **Solution:**
+
 ```[language]
 [solution]
 ```
@@ -190,27 +204,33 @@ For implementation details, see `references/[implementation-guide].md`
 ## References
 
 **Detailed guides:**
+
 - `references/[guide-name].md` - [Description]
 - `references/[another-guide].md` - [Description]
 
 **Templates:**
+
 - `assets/[template-name]` - [Description]
 - `assets/[another-template]` - [Description]
 
 **Scripts:**
+
 - `scripts/[script-name]` - [Description]
 - `scripts/[another-script]` - [Description]
 
 ## Related
 
 **See also:**
+
 - [Related skill name] - [Why it's related]
 - [Another related skill] - [Connection]
 
 **External resources:**
+
 - [External doc/tool name](URL) - [Why it's useful]
 - [Another external resource](URL) - [Purpose]
-```
+
+````
 
 ---
 
@@ -233,21 +253,24 @@ For implementation details, see `references/[implementation-guide].md`
 **Example good description:**
 ```yaml
 description: This skill should be used when the user needs to "test React components", "write React tests", "test hooks", "test async components", or "set up testing environment". Provides testing patterns, Jest/RTL templates, and test boilerplate generation for React component and hook testing.
-```
+````
 
 ### Body Structure
 
 **Keep SKILL.md lean:**
+
 - Target: 400-700 lines
 - Maximum: 5,000 lines (but split earlier)
 
 **Move details to references:**
+
 - Detailed docs → `references/`
 - Complex examples → `examples/`
 - Executable code → `scripts/`
 - Templates/assets → `assets/`
 
 **Reference from SKILL.md:**
+
 ```markdown
 For detailed schema documentation, see `references/schema.md`
 For complete examples, see `examples/advanced-usage.md`
@@ -256,6 +279,7 @@ For complete examples, see `examples/advanced-usage.md`
 ### Bundled Resources
 
 **Only include what's necessary:**
+
 - ✅ Scripts that would be rewritten repeatedly
 - ✅ References needed while working
 - ✅ Templates/assets used in output
@@ -263,6 +287,7 @@ For complete examples, see `examples/advanced-usage.md`
 - ❌ One-time use files
 
 **Organize clearly:**
+
 ```
 skill-name/
 ├── SKILL.md
@@ -305,6 +330,7 @@ Brief explanation of what this skill does.
 ## Complete Real Example
 
 See `.agents/skills/team-skill-creator/` for a complete, real implementation of this template with:
+
 - ✅ Comprehensive SKILL.md (~680 lines)
 - ✅ 5 reference files in `references/`
 - ✅ 3 example templates in `examples/`

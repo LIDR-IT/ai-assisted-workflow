@@ -22,27 +22,30 @@ Examples in body (not in frontmatter)
 
 ### Campos que TODAS las plataformas aceptan
 
-| Campo | Claude | Gemini | Cursor | Descripción |
-|-------|--------|--------|--------|-------------|
-| `name` | ✅ | ✅ | ✅ | Identificador único |
-| `description` | ✅ | ✅ | ✅ | Cuándo invocar |
-| `model` | ✅ | ✅ | ✅ | Modelo a usar |
+| Campo         | Claude | Gemini | Cursor | Descripción         |
+| ------------- | ------ | ------ | ------ | ------------------- |
+| `name`        | ✅     | ✅     | ✅     | Identificador único |
+| `description` | ✅     | ✅     | ✅     | Cuándo invocar      |
+| `model`       | ✅     | ✅     | ✅     | Modelo a usar       |
 
 ### Valores Válidos
 
 **name:**
+
 ```yaml
-name: agent-name    # lowercase + hyphens
+name: agent-name # lowercase + hyphens
 ```
 
 **description:**
+
 ```yaml
 description: Brief one-line description without XML examples
 ```
 
 **model:**
+
 ```yaml
-model: inherit      # Funciona en todas las plataformas
+model: inherit # Funciona en todas las plataformas
 ```
 
 ## Por Qué Este Formato Mínimo
@@ -50,25 +53,28 @@ model: inherit      # Funciona en todas las plataformas
 ### Decisión: Simplicidad sobre Features
 
 **Antes (maximalista):**
+
 ```yaml
 ---
 name: agent-name
 description: Brief desc
 model: inherit
-tools: [Read, Write]           # ❌ Gemini rechaza
-temperature: 0.2               # ⚠️ Solo Gemini usa
-max_turns: 10                  # ⚠️ Solo Gemini usa
-skills: [skill-1]              # ⚠️ Solo Claude usa
+tools: [Read, Write] # ❌ Gemini rechaza
+temperature: 0.2 # ⚠️ Solo Gemini usa
+max_turns: 10 # ⚠️ Solo Gemini usa
+skills: [skill-1] # ⚠️ Solo Claude usa
 ---
 ```
 
 **Problema:**
+
 - Gemini rechaza `tools` en formato PascalCase
 - Requiere transformación Python
 - Source y destino son diferentes
 - Complejidad innecesaria
 
 **Ahora (minimalista):**
+
 ```yaml
 ---
 name: agent-name
@@ -78,6 +84,7 @@ model: inherit
 ```
 
 **Ventajas:**
+
 - ✅ Funciona en todas sin transformación
 - ✅ Source = Destino (symlinks simples)
 - ✅ Sin dependencias (Python)
@@ -86,12 +93,14 @@ model: inherit
 ### Trade-off Aceptado
 
 **Perdemos:**
+
 - ❌ Skills precargadas en Claude
 - ❌ Temperature control en Gemini
 - ❌ max_turns en Gemini
 - ❌ Tools específicas
 
 **Ganamos:**
+
 - ✅ Simplicidad total
 - ✅ Sin errores de formato
 - ✅ Sin transformaciones
@@ -190,6 +199,7 @@ Si necesitas features específicas de una plataforma, documéntalas claramente:
 ### Para Claude: Skills
 
 **Opción 1 - Plugin específico de Claude:**
+
 ```bash
 # .claude/agents/doc-improver-claude.md
 ---
@@ -203,6 +213,7 @@ skills:
 ```
 
 **Opción 2 - Usar Skills invocables:**
+
 ```markdown
 When you need documentation standards:
 Use Skill("documentation-standards")
@@ -211,6 +222,7 @@ Use Skill("documentation-standards")
 ### Para Gemini: Temperature
 
 **Opción 1 - Config global en settings.json:**
+
 ```json
 {
   "temperature": 0.2
@@ -218,6 +230,7 @@ Use Skill("documentation-standards")
 ```
 
 **Opción 2 - Mencionar en system prompt:**
+
 ```markdown
 Operate with high precision (low temperature).
 ```
@@ -305,20 +318,24 @@ cat .gemini/agents/doc-improver.md     # Via symlink
 ## Conclusión
 
 **Filosofía:**
+
 > Simplicidad > Features específicas
 
 **Resultado:**
+
 - Formato que funciona en TODAS las plataformas
 - Sin transformaciones
 - Sin errores
 - Mantenimiento cero
 
 **Si necesitas features específicas:**
+
 - Úsalas en plugins específicos de plataforma
 - O en configuración global
 - O mencionadas en system prompt
 
 **El 90% de casos solo necesita:**
+
 ```yaml
 name: agent-name
 description: Brief description

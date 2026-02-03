@@ -10,10 +10,10 @@
 Estos campos funcionan en **todas las plataformas** sin causar errores:
 
 ```yaml
-name: agent-name          # ✅ Claude, Gemini, Cursor
-description: Brief desc   # ✅ Claude, Gemini, Cursor
-model: inherit            # ✅ Claude, Gemini, Cursor
-tools: [Read, Write]      # ✅ Claude, Gemini (Cursor ignora)
+name: agent-name # ✅ Claude, Gemini, Cursor
+description: Brief desc # ✅ Claude, Gemini, Cursor
+model: inherit # ✅ Claude, Gemini, Cursor
+tools: [Read, Write] # ✅ Claude, Gemini (Cursor ignora)
 ```
 
 **Decisión:** Usar estos como base del formato estándar.
@@ -32,25 +32,27 @@ skills:
 ```
 
 **Qué hace:**
+
 - ✅ Skills se cargan en contexto al iniciar agent
 - ✅ Agent tiene conocimiento inmediato (no necesita invocar)
 - ✅ Mejora consistencia (siempre usa mismas conventions)
 - ✅ Reduce turnos (no busca información)
 
 **Por qué es importante:**
+
 - Permite "memory injection" de conocimiento especializado
 - Similar al patrón AGENTS.md de Vercel (always-on context)
 - Agents pueden seguir team conventions sin buscarlas
 
 **Ejemplo práctico:**
+
 ```yaml
 ---
 name: api-developer
 skills:
-  - api-conventions    # Precargado en contexto
-  - security-patterns  # Precargado en contexto
+  - api-conventions # Precargado en contexto
+  - security-patterns # Precargado en contexto
 ---
-
 Implement endpoints following the preloaded conventions.
 [Agent ya conoce las conventions sin necesidad de Skill() call]
 ```
@@ -63,18 +65,20 @@ Implement endpoints following the preloaded conventions.
 Gemini soporta campos de control que Claude no tiene:
 
 ```yaml
-temperature: 0.2    # Control de creatividad (0.0-2.0)
-max_turns: 10       # Límite de turnos autónomos
+temperature: 0.2 # Control de creatividad (0.0-2.0)
+max_turns: 10 # Límite de turnos autónomos
 ```
 
 **Valores recomendados:**
 
 **temperature:**
+
 - `0.0-0.2` → Análisis, code review (determinístico)
 - `0.3-0.5` → Code generation
 - `0.6-0.8` → Creative writing
 
 **max_turns:**
+
 - `5` → Tareas simples
 - `10` → Tareas normales
 - `20` → Workflows complejos
@@ -85,16 +89,19 @@ max_turns: 10       # Límite de turnos autónomos
 ### Campos Específicos de Plataforma
 
 **Claude only:**
+
 - `hooks` - Lifecycle hooks (PreToolUse, PostToolUse)
 - `permissionMode` - Modos de permisos
 - `disallowedTools` - Denylist de tools
 - `color` - Color UI
 
 **Gemini only:**
+
 - `kind` - local/remote
 - `timeout_mins` - Timeout
 
 **Cursor only:**
+
 - `readonly` - Restricción write
 - `is_background` - Ejecución async
 
@@ -150,11 +157,13 @@ Examples in body (not frontmatter for Gemini compatibility)
 ### 1. Por qué incluir `skills` aunque solo Claude lo use
 
 **Pro:**
+
 - Valor enorme en Claude (knowledge injection)
 - Gemini y Cursor ignoran sin error
 - Sigue patrón source-of-truth único
 
 **Con:**
+
 - Campo "muerto" en Gemini/Cursor
 
 **Decisión:** INCLUIR
@@ -163,11 +172,13 @@ Examples in body (not frontmatter for Gemini compatibility)
 ### 2. Por qué incluir `temperature` y `max_turns`
 
 **Pro:**
+
 - Gemini los usa
 - Claude y Cursor ignoran sin error
 - Control útil de comportamiento
 
 **Con:**
+
 - No funcionan en Claude/Cursor
 
 **Decisión:** INCLUIR
@@ -176,9 +187,11 @@ Examples in body (not frontmatter for Gemini compatibility)
 ### 3. Por qué NO incluir `hooks` en estándar base
 
 **Pro:**
+
 - Muy poderoso en Claude (validación, automation)
 
 **Con:**
+
 - Solo Claude
 - Muy específico a casos de uso
 - Complica formato estándar
@@ -200,16 +213,19 @@ Cursor    Claude     Gemini
 ```
 
 **Claude Code (symlink):**
+
 - Ve todos los campos
 - Usa: name, description, model, tools, skills
 - Ignora: temperature, max_turns (no fatal)
 
 **Gemini CLI (copy):**
+
 - Ve todos los campos
 - Usa: name, description, model, tools, temperature, max_turns
 - Ignora: skills (no disponible)
 
 **Cursor (symlink):**
+
 - Ve todos los campos
 - Usa: name, description, model
 - Ignora: tools, temperature, max_turns, skills (no fatal)
@@ -250,13 +266,14 @@ tools:
   - Skill
 temperature: 0.2
 max_turns: 10
-skills:                    # ⭐ NUEVO - Knowledge injection
+skills: # ⭐ NUEVO - Knowledge injection
   - skill-creator
   - agent-development
 ---
 ```
 
 **Mejoras:**
+
 1. ✅ Skills precargadas en Claude
 2. ✅ Tools más completa
 3. ✅ Comentarios explicativos
@@ -271,11 +288,10 @@ skills:                    # ⭐ NUEVO - Knowledge injection
 name: api-developer
 description: Implement REST API endpoints
 skills:
-  - api-conventions        # Team API standards
-  - security-patterns      # Security best practices
-  - error-handling         # Error response formats
+  - api-conventions # Team API standards
+  - security-patterns # Security best practices
+  - error-handling # Error response formats
 ---
-
 Implement endpoints following preloaded conventions.
 ```
 
@@ -288,11 +304,10 @@ Implement endpoints following preloaded conventions.
 name: code-reviewer
 description: Review code for quality and security
 skills:
-  - code-style            # Project code standards
-  - security-checklist    # Security review items
-  - performance-patterns  # Performance best practices
+  - code-style # Project code standards
+  - security-checklist # Security review items
+  - performance-patterns # Performance best practices
 ---
-
 Review code against preloaded standards.
 ```
 
@@ -305,10 +320,9 @@ Review code against preloaded standards.
 name: doc-improver
 description: Audit and improve documentation
 skills:
-  - documentation-standards  # Doc format requirements
-  - markdown-best-practices  # Markdown conventions
+  - documentation-standards # Doc format requirements
+  - markdown-best-practices # Markdown conventions
 ---
-
 Improve documentation following preloaded standards.
 ```
 
@@ -404,6 +418,7 @@ ls .agents/agents/
 ### 3. Documentar Patterns de Skills
 
 Crear guía de cuándo usar:
+
 - Skills invocables (on-demand)
 - Skills precargadas (always-on via agent skills field)
 - Rules (always-on via project context)
@@ -411,6 +426,7 @@ Crear guía de cuándo usar:
 ### 4. Testing Cross-Platform
 
 Verificar agents funcionan correctamente en:
+
 - [ ] Claude Code (verifica skills precargadas)
 - [ ] Gemini CLI (verifica temperature/max_turns)
 - [ ] Cursor (verifica no hay errores)
@@ -427,6 +443,7 @@ Verificar agents funcionan correctamente en:
 ## TL;DR
 
 **Formato óptimo:**
+
 ```yaml
 name: agent-name
 description: Brief desc
@@ -434,15 +451,17 @@ model: inherit
 tools: [Read, Write, ...]
 temperature: 0.2
 max_turns: 10
-skills: [skill-1, ...]    # ⭐ Game-changer en Claude
+skills: [skill-1, ...] # ⭐ Game-changer en Claude
 ```
 
 **Por qué funciona:**
+
 - Claude: Usa skills (knowledge injection)
 - Gemini: Usa temperature/max_turns (control)
 - Cursor: Ignora todo extra (sin error)
 
 **Valor principal:**
+
 - Skills precargadas = agents más inteligentes en Claude
 - Un source of truth = menos mantenimiento
 - Cross-platform = máxima compatibilidad

@@ -13,6 +13,7 @@ MCP (Model Context Protocol) servers extend Gemini CLI capabilities by exposing 
 The integration operates through two main layers:
 
 ### Discovery Layer
+
 - Iterates through configured servers
 - Establishes connections
 - Fetches tool definitions
@@ -20,6 +21,7 @@ The integration operates through two main layers:
 - Registers tools with conflict resolution
 
 ### Execution Layer
+
 - Each tool wrapped in `DiscoveredMCPTool` instance
 - Manages confirmations
 - Executes calls
@@ -39,7 +41,7 @@ Add `mcpServers` object to `settings.json`:
     "serverName": {
       "command": "path/to/server",
       "args": ["--arg1"],
-      "env": {"API_KEY": "$MY_API_TOKEN"},
+      "env": { "API_KEY": "$MY_API_TOKEN" },
       "timeout": 30000,
       "trust": false
     }
@@ -55,16 +57,16 @@ Add `mcpServers` object to `settings.json`:
 
 ### Optional Properties
 
-| Property | Purpose |
-|----------|---------|
-| `args` | Command-line arguments for stdio |
-| `headers` | Custom HTTP headers |
-| `env` | Environment variables (supports `$VAR_NAME` syntax) |
-| `cwd` | Working directory |
-| `timeout` | Request timeout in milliseconds (default: 600,000) |
-| `trust` | Bypass all confirmations for this server |
-| `includeTools` | Allowlist specific tools |
-| `excludeTools` | Block specific tools |
+| Property       | Purpose                                             |
+| -------------- | --------------------------------------------------- |
+| `args`         | Command-line arguments for stdio                    |
+| `headers`      | Custom HTTP headers                                 |
+| `env`          | Environment variables (supports `$VAR_NAME` syntax) |
+| `cwd`          | Working directory                                   |
+| `timeout`      | Request timeout in milliseconds (default: 600,000)  |
+| `trust`        | Bypass all confirmations for this server            |
+| `includeTools` | Allowlist specific tools                            |
+| `excludeTools` | Block specific tools                                |
 
 ---
 
@@ -88,7 +90,7 @@ Three transport types supported:
     "pythonTools": {
       "command": "python",
       "args": ["-m", "my_mcp_server"],
-      "env": {"DATABASE_URL": "$DB_CONNECTION_STRING"},
+      "env": { "DATABASE_URL": "$DB_CONNECTION_STRING" },
       "timeout": 15000
     }
   }
@@ -103,7 +105,7 @@ Three transport types supported:
     "dockerServer": {
       "command": "docker",
       "args": ["run", "-i", "--rm", "my-server:latest"],
-      "env": {"API_KEY": "$EXTERNAL_TOKEN"}
+      "env": { "API_KEY": "$EXTERNAL_TOKEN" }
     }
   }
 }
@@ -200,6 +202,7 @@ When starting, Gemini CLI follows this sequence:
 ### Response Handling
 
 Tools can return rich, multi-part content including text, images, audio, and binary data. Responses separate into:
+
 - `llmContent` for model context
 - `returnDisplay` for user output
 
@@ -214,6 +217,7 @@ Tools can return rich, multi-part content including text, images, audio, and bin
 ```
 
 Displays:
+
 - All servers
 - Connection status
 - Available tools
@@ -261,6 +265,7 @@ MCP servers expose contextual resources referenced using `@` syntax:
 ```
 
 **Features:**
+
 - Resources appear in completion menus alongside filesystem paths
 - When submitted, CLI calls `resources/read`
 - Content injected into conversation
@@ -305,16 +310,17 @@ The server substitutes arguments into templates and returns prompt text for mode
 
 ### Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| Server won't connect | Verify command path, test manually, check permissions |
-| No tools discovered | Confirm server registers tools, verify MCP protocol implementation |
-| Tools fail to execute | Check parameter schemas, validate input compatibility |
-| Sandbox conflicts | Use Docker containers, ensure executables accessible, verify network |
+| Issue                 | Solution                                                             |
+| --------------------- | -------------------------------------------------------------------- |
+| Server won't connect  | Verify command path, test manually, check permissions                |
+| No tools discovered   | Confirm server registers tools, verify MCP protocol implementation   |
+| Tools fail to execute | Check parameter schemas, validate input compatibility                |
+| Sandbox conflicts     | Use Docker containers, ensure executables accessible, verify network |
 
 ### Debugging
 
 **Enable debug mode:**
+
 ```bash
 gemini --debug
 ```
@@ -330,6 +336,7 @@ gemini --debug
 ### Tool Filtering
 
 **Allowlist specific tools:**
+
 ```json
 {
   "mcpServers": {
@@ -342,6 +349,7 @@ gemini --debug
 ```
 
 **Blocklist specific tools:**
+
 ```json
 {
   "mcpServers": {
@@ -356,12 +364,14 @@ gemini --debug
 ### Global Settings
 
 Configure defaults via:
+
 - `mcp.allowed` - Global allowlist
 - `mcp.excluded` - Global blocklist
 
 ### Rich Content Returns
 
 Tools can return multi-part responses:
+
 - Text content
 - Images (base64)
 - Audio files
@@ -370,6 +380,7 @@ Tools can return multi-part responses:
 ### Schema Sanitization
 
 System automatically removes incompatible properties:
+
 - `$schema`
 - `additionalProperties`
 
@@ -406,11 +417,13 @@ System automatically removes incompatible properties:
 ## Related Resources
 
 **In This Repository:**
+
 - `docs/references/mcp/mcp-introduction.md` - MCP overview
 - `docs/references/mcp/mcp-server-builder.md` - Building servers
 - `docs/references/guidelines/team-conventions/third-party-security-guidelines.md` - Security
 
 **External:**
+
 - [Gemini CLI MCP Documentation](https://geminicli.com/docs/tools/mcp-server/)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [MCP Specification](https://spec.modelcontextprotocol.io/)

@@ -15,18 +15,23 @@ Claude Code connects to external tools and data sources through the **Model Cont
 With MCP servers connected, you can ask Claude Code to:
 
 ### Feature Implementation
+
 - **From issue trackers:** "Add the feature described in JIRA issue ENG-4521 and create a PR on GitHub."
 
 ### Data Analysis
+
 - **Monitoring data:** "Check Sentry and Statsig to check the usage of the feature described in ENG-4521."
 
 ### Database Operations
+
 - **Query databases:** "Find emails of 10 random users who used feature ENG-4521, based on our PostgreSQL database."
 
 ### Design Integration
+
 - **Integrate designs:** "Update our standard email template based on the new Figma designs that were posted in Slack"
 
 ### Workflow Automation
+
 - **Automate workflows:** "Create Gmail drafts inviting these 10 users to a feedback session about the new feature."
 
 ---
@@ -40,6 +45,7 @@ MCP servers can be configured in **three different ways** depending on transport
 HTTP servers are the recommended transport for cloud-based services.
 
 **Basic syntax:**
+
 ```bash
 claude mcp add --transport http <name> <url>
 ```
@@ -60,6 +66,7 @@ claude mcp add --transport http secure-api https://api.example.com/mcp \
 **Warning:** SSE (Server-Sent Events) transport is deprecated. Use HTTP servers instead.
 
 **Basic syntax:**
+
 ```bash
 claude mcp add --transport sse <name> <url>
 ```
@@ -80,6 +87,7 @@ claude mcp add --transport sse private-api https://api.company.com/sse \
 Stdio servers run as local processes. Ideal for tools needing direct system access or custom scripts.
 
 **Basic syntax:**
+
 ```bash
 claude mcp add [options] <name> -- <command> [args...]
 ```
@@ -99,6 +107,7 @@ All options (`--transport`, `--env`, `--scope`, `--header`) must come **before**
 The `--` (double dash) separates the server name from the command and arguments.
 
 **Examples:**
+
 - `claude mcp add --transport stdio myserver -- npx server` → runs `npx server`
 - `claude mcp add --transport stdio --env KEY=value myserver -- python server.py --port 8080` → runs `python server.py --port 8080` with `KEY=value`
 
@@ -156,6 +165,7 @@ MCP servers can be configured at **three scope levels**:
 **Applies to:** You only, within current project
 
 **Use for:**
+
 - Personal development servers
 - Experimental configurations
 - Sensitive credentials not to be shared
@@ -171,6 +181,7 @@ claude mcp add --transport http stripe --scope local https://mcp.stripe.com
 ```
 
 **Note:** MCP "local scope" differs from general local settings:
+
 - MCP local-scoped servers: `~/.claude.json` (home directory)
 - General local settings: `.claude/settings.local.json` (project directory)
 
@@ -181,6 +192,7 @@ claude mcp add --transport http stripe --scope local https://mcp.stripe.com
 **Applies to:** All team members in the project
 
 **Use for:**
+
 - Team-shared servers
 - Project-specific tools
 - Collaboration services
@@ -221,6 +233,7 @@ claude mcp reset-project-choices
 **Applies to:** You, across all projects
 
 **Use for:**
+
 - Personal utility servers
 - Development tools
 - Services used across multiple projects
@@ -247,6 +260,7 @@ Personal configurations override shared ones.
 Claude Code supports environment variable expansion in `.mcp.json` files.
 
 **Benefits:**
+
 - Share configurations while maintaining flexibility
 - Machine-specific paths
 - Sensitive values (API keys)
@@ -259,6 +273,7 @@ Claude Code supports environment variable expansion in `.mcp.json` files.
 ### Expansion Locations
 
 Variables can be expanded in:
+
 - `command` - Server executable path
 - `args` - Command-line arguments
 - `env` - Environment variables passed to server
@@ -476,6 +491,7 @@ claude
 ### Use Cases
 
 Useful for MCP servers that:
+
 - Query large datasets or databases
 - Generate detailed reports or documentation
 - Process extensive log files or debugging information
@@ -532,6 +548,7 @@ When you have many MCP servers, tool definitions can consume significant context
 **Automatic activation:** When MCP tool descriptions exceed 10% of context window
 
 **Process:**
+
 1. MCP tools deferred instead of preloaded
 2. Claude uses search tool to discover relevant MCP tools when needed
 3. Only needed tools loaded into context
@@ -542,6 +559,7 @@ When you have many MCP servers, tool definitions can consume significant context
 **Server instructions** become more useful with Tool Search.
 
 **Add clear instructions explaining:**
+
 - What category of tasks your tools handle
 - When Claude should search for your tools
 - Key capabilities your server provides
@@ -553,6 +571,7 @@ Similar to how skills work.
 **Default:** Auto mode (activates when tools exceed threshold)
 
 **Model support:** Requires models with `tool_reference` blocks:
+
 - Sonnet 4 and later
 - Opus 4 and later
 - Not supported: Haiku models
@@ -561,12 +580,12 @@ Similar to how skills work.
 
 `ENABLE_TOOL_SEARCH` options:
 
-| Value      | Behavior                                                    |
-|:-----------|:------------------------------------------------------------|
-| `auto`     | Activates when tools exceed 10% of context (default)        |
-| `auto:<N>` | Activates at custom threshold (e.g., `auto:5` for 5%)       |
-| `true`     | Always enabled                                              |
-| `false`    | Disabled, all MCP tools loaded upfront                      |
+| Value      | Behavior                                              |
+| :--------- | :---------------------------------------------------- |
+| `auto`     | Activates when tools exceed 10% of context (default)  |
+| `auto:<N>` | Activates at custom threshold (e.g., `auto:5` for 5%) |
+| `true`     | Always enabled                                        |
+| `false`    | Disabled, all MCP tools loaded upfront                |
 
 **Examples:**
 
@@ -699,10 +718,12 @@ For organizations needing centralized control over MCP servers.
 ### Two Configuration Options
 
 **Option 1: Exclusive control with `managed-mcp.json`**
+
 - Deploy fixed set of MCP servers
 - Users cannot modify or extend
 
 **Option 2: Policy-based control with allowlists/denylists**
+
 - Allow users to add servers
 - Restrict which ones are permitted
 
@@ -719,6 +740,7 @@ For organizations needing centralized control over MCP servers.
 When deployed, `managed-mcp.json` takes **exclusive control** over all MCP servers.
 
 **Users cannot:**
+
 - Add MCP servers
 - Modify MCP servers
 - Use servers other than defined ones
@@ -792,7 +814,9 @@ Each allowlist/denylist entry can restrict by:
     { "serverName": "sentry" },
 
     // Allow by exact command (stdio servers)
-    { "serverCommand": ["npx", "-y", "@modelcontextprotocol/server-filesystem"] },
+    {
+      "serverCommand": ["npx", "-y", "@modelcontextprotocol/server-filesystem"]
+    },
     { "serverCommand": ["python", "/usr/local/bin/approved-server.py"] },
 
     // Allow by URL pattern (remote servers)
@@ -815,15 +839,18 @@ Each allowlist/denylist entry can restrict by:
 ### Command-Based Restrictions
 
 **Exact matching:**
+
 - Command arrays must match **exactly** (command + all arguments in correct order)
 - `["npx", "-y", "server"]` will NOT match `["npx", "server"]` or `["npx", "-y", "server", "--flag"]`
 
 **Stdio server behavior:**
+
 - When allowlist contains **any** `serverCommand` entries, stdio servers **must** match one
 - Stdio servers cannot pass by name alone when command restrictions exist
 - Ensures administrators enforce which commands can run
 
 **Non-stdio server behavior:**
+
 - Remote servers (HTTP, SSE, WebSocket) use URL-based matching when `serverUrl` entries exist
 - If no URL entries, remote servers fall back to name-based matching
 - Command restrictions don't apply to remote servers
@@ -833,11 +860,13 @@ Each allowlist/denylist entry can restrict by:
 URL patterns support wildcards using `*` to match any sequence.
 
 **Wildcard examples:**
+
 - `https://mcp.company.com/*` - All paths on specific domain
 - `https://*.example.com/*` - Any subdomain of example.com
 - `http://localhost:*/*` - Any port on localhost
 
 **Remote server behavior:**
+
 - When allowlist contains **any** `serverUrl` entries, remote servers **must** match one
 - Remote servers cannot pass by name alone when URL restrictions exist
 - Ensures administrators enforce which remote endpoints allowed
@@ -938,12 +967,14 @@ MAX_MCP_OUTPUT_TOKENS=50000 claude
 ## Security Warnings
 
 **Third-party MCP servers:**
+
 - Use at your own risk
 - Anthropic has not verified correctness or security
 - Trust only servers you're installing
 - **Prompt injection risk:** Be careful with servers fetching untrusted content
 
 **Plugin MCP servers:**
+
 - Review plugin before installation
 - Check what tools and capabilities are provided
 - Understand data access granted
@@ -953,6 +984,7 @@ MAX_MCP_OUTPUT_TOKENS=50000 claude
 ## Popular MCP Servers
 
 **Documentation contains dynamically loaded list from:**
+
 - API endpoint: `https://api.anthropic.com/mcp-registry/v0/servers`
 - MCP Registry docs: `https://api.anthropic.com/mcp-registry/docs`
 
@@ -967,16 +999,19 @@ MAX_MCP_OUTPUT_TOKENS=50000 claude
 ### In This Repository
 
 **MCP:**
+
 - `mcp-introduction.md` - General MCP overview and concepts
 - `mcp-integration-claude-code.md` - MCP integration for plugins
 - `mcp-server-builder.md` - Building MCP servers (4-phase workflow)
 
 **Skills:**
+
 - `docs/references/skills/skills-claude-code.md` - Skills in Claude Code
 - `docs/references/skills/skill-creator.md` - Creating skills
 - `docs/references/skills/skills-ecosystem-overview.md` - Skills ecosystem
 
 **Other:**
+
 - `docs/references/hooks/` - Hooks for customization
 - `docs/references/agents/` - Agents and sub-agents
 

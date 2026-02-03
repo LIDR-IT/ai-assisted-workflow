@@ -23,6 +23,7 @@ Commands must be directives TO Claude about what to analyze and how, not descrip
 ## File Structure
 
 ### File Extension
+
 All commands use `.md` extension.
 
 ### Storage Locations
@@ -41,6 +42,7 @@ All commands use `.md` extension.
 ### Organization Strategies
 
 **Flat Structure (5-15 commands):**
+
 ```
 .claude/commands/
 ├── review-security.md
@@ -49,6 +51,7 @@ All commands use `.md` extension.
 ```
 
 **Namespaced (15+ commands):**
+
 ```
 .claude/commands/
 ├── review/
@@ -78,26 +81,31 @@ disable-model-invocation: true
 ### Field Details
 
 **`description`**
+
 - Brief summary shown in `/help` output
 - Maximum 60 characters
 - Helps users understand command purpose
 
 **`allowed-tools`**
+
 - Restricts which tools Claude can use
 - Supports wildcards: `Bash(git:*)` allows git commands only
 - Examples: `Read, Write, Bash(npm:*)`
 
 **`model`**
+
 - Specifies which Claude model to use
 - Options: `haiku`, `sonnet`, `opus`
 - Use `haiku` for simple tasks, `opus` for complex reasoning
 
 **`argument-hint`**
+
 - Documents expected arguments
 - Shown in autocomplete
 - Examples: `[file-path]`, `<directory>`, `[test-name]`
 
 **`disable-model-invocation`**
+
 - Prevents programmatic command execution
 - Useful for commands that should only run interactively
 
@@ -220,6 +228,7 @@ Plugin commands have access to `${CLAUDE_PLUGIN_ROOT}`, which resolves to the pl
 **Use Cases:**
 
 **1. Portable Script Execution**
+
 ```markdown
 Run validation:
 
@@ -229,16 +238,19 @@ node ${CLAUDE_PLUGIN_ROOT}/scripts/validate.js $1
 ```
 
 **2. Configuration Loading**
+
 ```markdown
 Load config from ${CLAUDE_PLUGIN_ROOT}/config/defaults.json
 ```
 
 **3. Template Access**
+
 ```markdown
 Use template from ${CLAUDE_PLUGIN_ROOT}/templates/component.tsx
 ```
 
 **4. Resource Management**
+
 ```markdown
 Read schema: @${CLAUDE_PLUGIN_ROOT}/schemas/api.json
 ```
@@ -246,17 +258,20 @@ Read schema: @${CLAUDE_PLUGIN_ROOT}/schemas/api.json
 ### Integration with Other Components
 
 **Commands + Agents:**
+
 ```markdown
 For complex refactoring, use the refactor-agent:
 /agent refactor-agent $ARGUMENTS
 ```
 
 **Commands + Skills:**
+
 ```markdown
 This command uses the testing-skill for generating comprehensive tests.
 ```
 
 **Commands + Hooks:**
+
 ```markdown
 This command triggers PreBashExecution hook for validation.
 ```
@@ -268,12 +283,14 @@ This command triggers PreBashExecution hook for validation.
 ### Command Design
 
 ✅ **DO:**
+
 - Single responsibility per command
 - Clear, descriptive names (verb-noun pattern)
 - Explicit tool dependencies in frontmatter
 - Consistent argument patterns
 
 ❌ **DON'T:**
+
 - Create catch-all commands doing too much
 - Use vague names like "helper" or "utility"
 - Leave tool permissions unrestricted
@@ -282,6 +299,7 @@ This command triggers PreBashExecution hook for validation.
 ### Naming Patterns
 
 **Verb-Noun Format:**
+
 ```
 review-security.md
 generate-tests.md
@@ -290,6 +308,7 @@ refactor-component.md
 ```
 
 **Namespaced:**
+
 ```
 review/security.md
 review/performance.md
@@ -300,12 +319,14 @@ generate/docs.md
 ### Argument Handling
 
 ✅ **DO:**
+
 - Validate inputs in command body
 - Provide sensible defaults
 - Document expected formats
 - Handle edge cases gracefully
 
 **Example:**
+
 ```markdown
 ---
 argument-hint: [file-path]
@@ -316,18 +337,20 @@ Review file: @$1
 If file doesn't exist, search for similar names:
 
 \`\`\`bash
-find . -name "*$1*"
+find . -name "_$1_"
 \`\`\`
 ```
 
 ### File References
 
 ✅ **DO:**
+
 - Use explicit paths when possible
 - Check file existence before referencing
 - Use relative paths for portability
 
 **Example:**
+
 ```markdown
 Check if file exists:
 
@@ -341,12 +364,14 @@ If exists, review @$1
 ### Bash Commands
 
 ✅ **DO:**
+
 - Limit scope with `allowed-tools`
 - Use safe, read-only operations when possible
 - Handle errors gracefully
 - Document bash commands with comments
 
 **Example:**
+
 ```yaml
 ---
 allowed-tools: Bash(git:*)
@@ -364,12 +389,14 @@ git diff HEAD~1
 ### Documentation
 
 ✅ **DO:**
+
 - Include usage comments in command
 - Explain non-obvious requirements
 - Document expected arguments
 - Note any dependencies
 
 **Example:**
+
 ```markdown
 <!--
 Usage: /review-pr [pr-number]
@@ -378,9 +405,11 @@ Example: /review-pr 123
 -->
 
 ---
+
 description: Review GitHub pull request
 argument-hint: [pr-number]
-allowed-tools: Bash(gh:*)
+allowed-tools: Bash(gh:\*)
+
 ---
 
 Review pull request #$1 using GitHub CLI...
@@ -405,17 +434,20 @@ argument-hint: [file-or-pattern]
 Analyze code in @$1 for:
 
 ## Critical Issues
+
 - SQL injection vulnerabilities
 - XSS attack vectors
 - Authentication bypass risks
 - Sensitive data exposure
 
 ## Medium Priority
+
 - Input validation gaps
 - Error handling improvements
 - Access control weaknesses
 
 ## Output Format
+
 - Issue severity (Critical/Medium/Low)
 - File and line number
 - Explanation
@@ -460,11 +492,13 @@ argument-hint: [directory]
 # Documentation Generator
 
 Scan directory $1 for:
+
 - Function exports
 - Type definitions
 - JSDoc comments
 
 Generate markdown documentation with:
+
 - Function signatures
 - Parameter descriptions
 - Return types
@@ -547,17 +581,21 @@ model: sonnet
 # Change Review
 
 ## Staged Changes
+
 \`\`\`bash
 git diff --cached --stat
 \`\`\`
 
 ## Unstaged Changes
+
 \`\`\`bash
 git diff --stat
 \`\`\`
 
 ## Analysis
+
 Review changes for:
+
 - Breaking changes
 - Missing tests
 - Documentation updates needed

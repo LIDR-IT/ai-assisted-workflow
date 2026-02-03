@@ -14,7 +14,7 @@ This is a copy-paste template for creating new commands within the `.agents/` sy
 
 ## Template Content
 
-```markdown
+````markdown
 ---
 description: [Brief description of what this command does]
 ---
@@ -48,9 +48,11 @@ description: [Brief description of what this command does]
 [Optional but recommended: Specify how output should be structured]
 
 ### [Section Name]
+
 [What this section should contain]
 
 ### [Another Section]
+
 [What this section should contain]
 
 ## Example Output
@@ -60,6 +62,7 @@ description: [Brief description of what this command does]
 ```[language]
 [Example output]
 ```
+````
 
 ## Guidelines
 
@@ -68,7 +71,8 @@ description: [Brief description of what this command does]
 - [Guideline 1]
 - [Guideline 2]
 - [Guideline 3]
-```
+
+````
 
 ---
 
@@ -108,9 +112,10 @@ For each issue, provide:
 - Line number
 - Description of vulnerability
 - Recommended fix with code example
-```
+````
 
 ❌ Poor:
+
 ```markdown
 Check for security problems.
 ```
@@ -118,21 +123,25 @@ Check for security problems.
 **Define output format:**
 
 ✅ Good:
+
 ```markdown
 ## Output Format
 
 ### Issues Found
+
 **Vulnerability:** [Name]
 **Severity:** [Critical/High/Medium/Low]
 **Line:** [number]
 **Fix:** [code example]
 
 ### Summary
+
 - Total issues: [count]
 - Critical: [count]
 ```
 
 ❌ Poor:
+
 ```markdown
 List the problems.
 ```
@@ -140,22 +149,27 @@ List the problems.
 **Use clear structure:**
 
 ✅ Good:
+
 ```markdown
 # Security Review
 
 ## Task
+
 Analyze code for security vulnerabilities.
 
 ## Checks
+
 1. SQL injection
 2. XSS attacks
 3. CSRF protection
 
 ## Output
+
 [Structured format]
 ```
 
 ❌ Poor:
+
 ```markdown
 Find security bugs.
 ```
@@ -176,7 +190,7 @@ Types: feat, fix, docs, refactor, test, chore
 
 ## Complete Command Example
 
-```markdown
+````markdown
 ---
 description: Review code for security vulnerabilities with severity ratings and fixes
 ---
@@ -230,6 +244,7 @@ For each vulnerability found:
 # After (secure)
 [fixed code]
 ```
+````
 
 ## Summary
 
@@ -239,6 +254,7 @@ For each vulnerability found:
 ## Recommendations
 
 [General security recommendations for this codebase]
+
 ```
 
 ## Platform Notes
@@ -268,3 +284,4 @@ See these commands in `.agents/commands/`:
 - ✅ Verification commands included
 
 Study existing commands to understand different styles and approaches.
+```

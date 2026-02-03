@@ -6,8 +6,10 @@ trigger: always_on
 ---
 
 ---
+
 description: Review UI code for Vercel Web Interface Guidelines compliance
 argument-hint: <file-or-pattern>
+
 ---
 
 # Web Interface Guidelines
@@ -149,6 +151,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 ### Documentation Color System
 
 **VitePress Theme Colors:**
+
 - Use documented color variables from `docs/.vitepress/theme/custom.css`
 - Primary brand: Gold (`oklch(0.72 0.16 85)` light, complementary dark)
 - Secondary: Slate gray for text and backgrounds
@@ -156,6 +159,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Reference: See `docs/guides/vitepress-theme-customization.md`
 
 **Color Usage:**
+
 - Use CSS custom properties: `var(--vp-c-brand-1)`, `var(--gold-primary)`
 - Support both light and dark modes (define in `:root` and `.dark`)
 - Use `oklch()` format for better color management

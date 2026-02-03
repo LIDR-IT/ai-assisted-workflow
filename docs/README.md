@@ -5,6 +5,7 @@ Documentación interna del equipo construida con [VitePress](https://vitepress.d
 ## Desarrollo Local
 
 ### Requisitos
+
 - Node.js 18+
 - npm
 
@@ -44,11 +45,13 @@ docs/
 ### Nueva Página
 
 1. Crea un archivo `.md` en la carpeta apropiada:
+
    ```bash
    touch docs/guides/nueva-guia.md
    ```
 
 2. Agrega frontmatter si necesitas layout especial:
+
    ```markdown
    ---
    title: Mi Guía
@@ -75,11 +78,13 @@ docs/
 ### Nueva Sección
 
 1. Crea directorio:
+
    ```bash
    mkdir docs/nueva-seccion
    ```
 
 2. Agrega `index.md`:
+
    ```bash
    touch docs/nueva-seccion/index.md
    ```
@@ -89,10 +94,12 @@ docs/
 ## Features
 
 ### Búsqueda
+
 - Búsqueda local integrada
 - Usa `Cmd/Ctrl + K` para buscar
 
 ### Mermaid
+
 Soporte para diagramas Mermaid:
 
 ````markdown
@@ -103,6 +110,7 @@ graph TD
 ````
 
 ### Code Blocks
+
 Syntax highlighting automático:
 
 ````markdown
@@ -116,6 +124,7 @@ const config = { ... }
 ````
 
 ### Containers
+
 Contenedores especiales:
 
 ```markdown
@@ -135,6 +144,7 @@ Esto es peligroso
 ## Deployment
 
 El sitio puede ser deployado en:
+
 - GitHub Pages
 - Netlify
 - Vercel

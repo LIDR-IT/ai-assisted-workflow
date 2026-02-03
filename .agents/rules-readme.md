@@ -7,12 +7,14 @@
 **Maximum:** 12,000 characters per rule file
 
 **Why?** Based on Cursor's recommendation of ~500 lines and cross-platform compatibility:
+
 - Cursor: 500 lines recommended
 - Claude Code: No hard limit, but concise is better
 - Gemini CLI: Performance degrades with large files
 - Antigravity: Focused rules work best
 
 **Check file size:**
+
 ```bash
 # Count characters in a rule
 wc -c .agents/rules/category/rule-name.md
@@ -27,15 +29,15 @@ find .agents/rules -name "*.md" -type f -exec wc -c {} + | awk '$1 > 12000 {prin
 
 All rules in `.agents/rules/` should use universal YAML frontmatter that works across all platforms:
 
-| Field | Cursor | Claude Code | Gemini CLI | Antigravity |
-|-------|--------|-------------|------------|-------------|
-| `name` | ✅ | ❌ | ❌ | ❌ |
-| `description` | ✅ | ✅ | ✅ | ❌ |
-| `alwaysApply` | ✅ | ❌ | ❌ | ❌ |
-| `globs` | ✅ | ❌ | ❌ | ❌ |
-| `trigger` | ❌ | ❌ | ❌ | ✅ |
-| `argument-hint` | ❌ | ✅ | ✅ | ❌ |
-| `paths` | ❌ | ✅ | ❌ | ❌ |
+| Field           | Cursor | Claude Code | Gemini CLI | Antigravity |
+| --------------- | ------ | ----------- | ---------- | ----------- |
+| `name`          | ✅     | ❌          | ❌         | ❌          |
+| `description`   | ✅     | ✅          | ✅         | ❌          |
+| `alwaysApply`   | ✅     | ❌          | ❌         | ❌          |
+| `globs`         | ✅     | ❌          | ❌         | ❌          |
+| `trigger`       | ❌     | ❌          | ❌         | ✅          |
+| `argument-hint` | ❌     | ✅          | ✅         | ❌          |
+| `paths`         | ❌     | ✅          | ❌         | ❌          |
 
 ### Universal Format (Recommended)
 
@@ -43,17 +45,18 @@ Use this format in `.agents/rules/` source files for maximum compatibility:
 
 ```yaml
 ---
-name: rule-name                      # Cursor
-description: Brief description       # All platforms
-alwaysApply: false                   # Cursor (optional, defaults to false)
-globs: ["**/*.ts"]                  # Cursor (optional)
-argument-hint: <file-pattern>        # Claude/Gemini (optional)
-paths: ["src/**/*.ts"]              # Claude (optional)
-trigger: always_on                   # Antigravity (optional)
+name: rule-name # Cursor
+description: Brief description # All platforms
+alwaysApply: false # Cursor (optional, defaults to false)
+globs: ["**/*.ts"] # Cursor (optional)
+argument-hint: <file-pattern> # Claude/Gemini (optional)
+paths: ["src/**/*.ts"] # Claude (optional)
+trigger: always_on # Antigravity (optional)
 ---
 ```
 
 **Example:**
+
 ```yaml
 ---
 name: react-components
@@ -64,7 +67,6 @@ argument-hint: <component-file>
 paths: ["src/components/**/*.tsx"]
 trigger: always_on
 ---
-
 # React Component Standards
 
 All components must use functional components...
@@ -73,18 +75,21 @@ All components must use functional components...
 ### Field Definitions
 
 **name** (Cursor only)
+
 - **Type:** String
 - **Required:** Yes for Cursor
 - **Description:** Unique identifier for the rule
 - **Example:** `"react-components"`
 
 **description**
+
 - **Type:** String
 - **Required:** Recommended for all platforms
 - **Description:** Brief summary shown in UI
 - **Example:** `"React component standards"`
 
 **alwaysApply** (Cursor only)
+
 - **Type:** Boolean
 - **Required:** No (defaults to `false`)
 - **Values:**
@@ -93,24 +98,28 @@ All components must use functional components...
 - **Example:** `false`
 
 **globs** (Cursor only)
+
 - **Type:** Array of strings
 - **Required:** No
 - **Description:** Glob patterns for file matching
 - **Example:** `["src/**/*.tsx", "src/**/*.ts"]`
 
 **argument-hint** (Claude/Gemini)
+
 - **Type:** String
 - **Required:** No
 - **Description:** Placeholder text shown in UI for file arguments
 - **Example:** `"<api-file>"`
 
 **paths** (Claude only)
+
 - **Type:** Array of strings
 - **Required:** No
 - **Description:** Path patterns for conditional rule application
 - **Example:** `["src/api/**/*.ts"]`
 
 **trigger** (Antigravity only)
+
 - **Type:** String
 - **Required:** No
 - **Description:** Trigger mode for rule activation
@@ -120,6 +129,7 @@ All components must use functional components...
 ### Platform-Specific Behavior
 
 **Cursor (.mdc format):**
+
 - ⚠️ **Extension MUST be `.mdc`** (sync script auto-converts .md → .mdc)
 - ⚠️ **NO subdirectories supported** - rules must be in flat structure
 - ⚠️ **`name` field REQUIRED** - rule won't appear in UI without it
@@ -129,16 +139,19 @@ All components must use functional components...
 - **Ignores:** `argument-hint`, `paths`, `trigger` (safe to include)
 
 **Claude Code (.md format):**
+
 - Uses symlinks to `.agents/rules/` (supports subdirectories)
 - Reads: `description`, `argument-hint`, `paths`
 - Ignores Cursor-specific fields
 
 **Gemini CLI:**
+
 - No native rules support
 - Index file (`.gemini/GEMINI.md`) generated with links to rules
 - See `.gemini/GEMINI.md` for categorized rule index
 
 **Antigravity (.md format):**
+
 - Uses symlinks to `.agents/rules/` (supports subdirectories)
 - Reads: `trigger`
 - Very minimal YAML requirements
@@ -146,31 +159,35 @@ All components must use functional components...
 ### YAML Best Practices
 
 **✅ Always include universal fields:**
+
 ```yaml
 ---
-name: my-rule                        # For Cursor
-description: Rule description        # For all platforms
-alwaysApply: false                   # For Cursor
-globs: ["**/*.ts"]                  # For Cursor
-argument-hint: <file>                # For Claude/Gemini
-paths: ["src/**/*.ts"]              # For Claude
-trigger: always_on                   # For Antigravity
+name: my-rule # For Cursor
+description: Rule description # For all platforms
+alwaysApply: false # For Cursor
+globs: ["**/*.ts"] # For Cursor
+argument-hint: <file> # For Claude/Gemini
+paths: ["src/**/*.ts"] # For Claude
+trigger: always_on # For Antigravity
 ---
 ```
 
 **✅ Keep descriptions consistent:**
+
 - Use the same `description` text across all fields
 - Make it concise (1-2 sentences max)
 - Focus on when the rule applies
 
 **✅ Test on all platforms:**
 After creating a rule, verify it works on:
+
 - [ ] Cursor (check in settings UI)
 - [ ] Claude Code (verify with `/memory`)
 - [ ] Gemini CLI (check `.gemini/GEMINI.md` index)
 - [ ] Antigravity (check in Customizations panel)
 
 **❌ Don't create platform-specific files:**
+
 - Avoid: `api-standards.cursor.md`, `api-standards.antigravity.md`
 - Instead: Use universal format with all fields
 
@@ -179,6 +196,7 @@ After creating a rule, verify it works on:
 ### ✅ One Topic Per File
 
 **Good:**
+
 ```
 .agents/rules/
 ├── code/
@@ -192,6 +210,7 @@ After creating a rule, verify it works on:
 ```
 
 **Bad:**
+
 ```
 .agents/rules/
 └── everything.md          # ❌ Mixed topics, hard to maintain
@@ -200,11 +219,13 @@ After creating a rule, verify it works on:
 ### ✅ Descriptive Naming
 
 **Good:**
+
 - `react-native.md` - Clear technology reference
 - `third-party-security.md` - Specific security scope
 - `copywriting.md` - Clear content focus
 
 **Bad:**
+
 - `misc.md` - ❌ Vague, unclear content
 - `stuff.md` - ❌ No indication of content
 - `temp.md` - ❌ Suggests temporary, confusing
@@ -212,6 +233,7 @@ After creating a rule, verify it works on:
 ### ✅ Organized by Category
 
 Group related rules in subdirectories:
+
 - `code/` - Code style and principles
 - `content/` - Copywriting and content guidelines
 - `design/` - Design and UI standards
@@ -226,16 +248,19 @@ Group related rules in subdirectories:
 ### ✅ Be Specific and Concrete
 
 **Good:**
+
 ```markdown
 ## Button States
 
 Buttons need visible focus states:
+
 - Use `focus-visible:ring-2 ring-blue-500`
 - Never `outline-none` without replacement
 - Test with keyboard navigation (Tab key)
 ```
 
 **Bad:**
+
 ```markdown
 ## Accessibility
 
@@ -245,22 +270,26 @@ Make things accessible. Follow best practices.
 ### ✅ Include Examples
 
 **Good:**
+
 ```markdown
 ## Commit Messages
 
 Format: `type: Brief summary (50 chars max)`
 
 **Good examples:**
+
 - `feat: Add user authentication`
 - `fix: Resolve memory leak in cache`
 - `docs: Update API reference`
 
 **Bad examples:**
+
 - `update` - ❌ No context
 - `fixed bug` - ❌ Not descriptive
 ```
 
 **Bad:**
+
 ```markdown
 ## Commit Messages
 
@@ -270,16 +299,19 @@ Follow conventional commits format.
 ### ✅ Avoid Ambiguity
 
 **Good:**
+
 ```markdown
 ## Image Optimization
 
 All images must include:
+
 1. Explicit `width` and `height` attributes
 2. `alt` text describing the image (or `alt=""` if decorative)
 3. `loading="lazy"` for below-fold images
 ```
 
 **Bad:**
+
 ```markdown
 ## Images
 
@@ -289,6 +321,7 @@ Images should be optimized and accessible.
 ### ✅ Use Active Voice
 
 **Good:**
+
 ```markdown
 - Create tests before implementing features
 - Use TypeScript for type safety
@@ -296,6 +329,7 @@ Images should be optimized and accessible.
 ```
 
 **Bad:**
+
 ```markdown
 - Tests should be created before features
 - Type safety can be achieved with TypeScript
@@ -305,6 +339,7 @@ Images should be optimized and accessible.
 ### ✅ Actionable Instructions
 
 **Good:**
+
 ```markdown
 ## Form Validation
 
@@ -315,6 +350,7 @@ Images should be optimized and accessible.
 ```
 
 **Bad:**
+
 ```markdown
 ## Forms
 
@@ -327,7 +363,7 @@ Forms are important and should work well. Make sure they're validated properly.
 
 All rule files should follow this template:
 
-```markdown
+````markdown
 ---
 name: rule-name
 description: Brief description
@@ -372,9 +408,11 @@ src/example.ts:34 - another issue
 
 ✓ pass
 ```
+````
 
 State issue + location. Skip explanation unless fix non-obvious. No preamble.
-```
+
+````
 
 ### ✅ Use Lists for Multiple Items
 
@@ -387,9 +425,10 @@ All API endpoints must include:
 - Error handling (try/catch)
 - Rate limiting (public endpoints)
 - OpenAPI documentation
-```
+````
 
 **Bad:**
+
 ```markdown
 ## Required Fields
 
@@ -399,6 +438,7 @@ All API endpoints must include input validation, error handling, rate limiting, 
 ### ✅ Code Blocks with Language
 
 **Good:**
+
 ````markdown
 ```typescript
 interface User {
@@ -409,6 +449,7 @@ interface User {
 ````
 
 **Bad:**
+
 ````markdown
 ```
 interface User {
@@ -469,6 +510,7 @@ Use hierarchical headers (H2, H3, H4) for scannable structure:
 ### Synchronization
 
 After editing rules:
+
 ```bash
 # Sync to all platforms
 ./.agents/rules/sync-rules.sh

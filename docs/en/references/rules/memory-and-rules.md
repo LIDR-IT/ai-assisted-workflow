@@ -12,13 +12,13 @@ Claude Code puede recordar tus preferencias a través de sesiones, incluyendo gu
 
 Claude Code ofrece cuatro ubicaciones de memoria en una estructura jerárquica, cada una con un propósito diferente:
 
-| Tipo de Memoria              | Ubicación                                                                                                                                                        | Propósito                                           | Ejemplos de Uso                                                      | Compartido Con                  |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------- |
-| **Managed policy**           | • macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md`<br />• Linux: `/etc/claude-code/CLAUDE.md`<br />• Windows: `C:\Program Files\ClaudeCode\CLAUDE.md` | Instrucciones organizacionales gestionadas por IT   | Estándares de código de la empresa, políticas de seguridad          | Todos los usuarios de la org    |
-| **Project memory**           | `./CLAUDE.md` o `./.claude/CLAUDE.md`                                                                                                                           | Instrucciones compartidas del equipo                | Arquitectura del proyecto, estándares de código, flujos de trabajo  | Miembros del equipo vía git     |
-| **Project rules**            | `./.claude/rules/*.md`                                                                                                                                          | Instrucciones modulares por tema                    | Guías específicas de lenguaje, convenciones de testing              | Miembros del equipo vía git     |
-| **User memory**              | `~/.claude/CLAUDE.md`                                                                                                                                           | Preferencias personales para todos los proyectos   | Preferencias de estilo, atajos de herramientas personales           | Solo tú (todos los proyectos)   |
-| **Project memory (local)**   | `./CLAUDE.local.md`                                                                                                                                             | Preferencias personales específicas del proyecto    | URLs de sandbox, datos de prueba preferidos                         | Solo tú (proyecto actual)       |
+| Tipo de Memoria            | Ubicación                                                                                                                                                       | Propósito                                         | Ejemplos de Uso                                                    | Compartido Con                |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------- |
+| **Managed policy**         | • macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md`<br />• Linux: `/etc/claude-code/CLAUDE.md`<br />• Windows: `C:\Program Files\ClaudeCode\CLAUDE.md` | Instrucciones organizacionales gestionadas por IT | Estándares de código de la empresa, políticas de seguridad         | Todos los usuarios de la org  |
+| **Project memory**         | `./CLAUDE.md` o `./.claude/CLAUDE.md`                                                                                                                           | Instrucciones compartidas del equipo              | Arquitectura del proyecto, estándares de código, flujos de trabajo | Miembros del equipo vía git   |
+| **Project rules**          | `./.claude/rules/*.md`                                                                                                                                          | Instrucciones modulares por tema                  | Guías específicas de lenguaje, convenciones de testing             | Miembros del equipo vía git   |
+| **User memory**            | `~/.claude/CLAUDE.md`                                                                                                                                           | Preferencias personales para todos los proyectos  | Preferencias de estilo, atajos de herramientas personales          | Solo tú (todos los proyectos) |
+| **Project memory (local)** | `./CLAUDE.local.md`                                                                                                                                             | Preferencias personales específicas del proyecto  | URLs de sandbox, datos de prueba preferidos                        | Solo tú (proyecto actual)     |
 
 ### Características Clave
 
@@ -34,6 +34,7 @@ Los archivos CLAUDE.md pueden importar archivos adicionales usando la sintaxis `
 Ver @README para descripción del proyecto y @package.json para comandos npm disponibles.
 
 # Instrucciones Adicionales
+
 - flujo de trabajo git @docs/git-instructions.md
 ```
 
@@ -41,10 +42,13 @@ Ver @README para descripción del proyecto y @package.json para comandos npm dis
 
 - Se permiten rutas **relativas y absolutas**
 - Los imports son útiles para instrucciones individuales no versionadas:
+
   ```markdown
   # Preferencias Individuales
+
   - @~/.claude/my-project-instructions.md
   ```
+
 - Los imports **no se evalúan** dentro de code spans y code blocks:
   ```markdown
   Este código no se tratará como import: `@anthropic-ai/claude-code`
@@ -89,12 +93,14 @@ Esto crea una estructura base que puedes personalizar según las necesidades de 
 ### Ubicaciones Posibles
 
 Puedes elegir entre:
+
 - `./CLAUDE.md` - En la raíz del proyecto
 - `./.claude/CLAUDE.md` - Dentro del directorio `.claude`
 
 ### Recomendaciones de Contenido
 
 **Incluye:**
+
 - ✅ Comandos frecuentemente usados (build, test, lint)
 - ✅ Preferencias de estilo de código y convenciones de nombres
 - ✅ Patrones arquitectónicos importantes específicos del proyecto
@@ -118,6 +124,7 @@ your-project/
 ```
 
 **Características:**
+
 - Todos los archivos `.md` en `.claude/rules/` se cargan automáticamente como memoria del proyecto
 - Misma prioridad que `.claude/CLAUDE.md`
 
@@ -139,17 +146,18 @@ paths:
 ```
 
 **Notas:**
+
 - Reglas sin `paths` se cargan incondicionalmente y aplican a todos los archivos
 - Solo se aplican cuando Claude trabaja con archivos que coinciden con los patrones
 
 ### Patrones Glob Soportados
 
-| Patrón                  | Coincide Con                                    |
-| ----------------------- | ----------------------------------------------- |
-| `**/*.ts`               | Todos los archivos TypeScript en cualquier dir |
-| `src/**/*`              | Todos los archivos bajo directorio `src/`      |
-| `*.md`                  | Archivos Markdown en la raíz del proyecto      |
-| `src/components/*.tsx`  | Componentes React en directorio específico     |
+| Patrón                 | Coincide Con                                   |
+| ---------------------- | ---------------------------------------------- |
+| `**/*.ts`              | Todos los archivos TypeScript en cualquier dir |
+| `src/**/*`             | Todos los archivos bajo directorio `src/`      |
+| `*.md`                 | Archivos Markdown en la raíz del proyecto      |
+| `src/components/*.tsx` | Componentes React en directorio específico     |
 
 **Múltiples patrones:**
 
@@ -204,6 +212,7 @@ ln -s ~/company-standards/security.md .claude/rules/security.md
 ```
 
 **Características:**
+
 - Symlinks se resuelven y su contenido se carga normalmente
 - Symlinks circulares se detectan y manejan correctamente
 
@@ -218,6 +227,7 @@ Crea reglas personales que aplican a todos tus proyectos en `~/.claude/rules/`:
 ```
 
 **Precedencia:**
+
 - Reglas de usuario se cargan **antes** que reglas del proyecto
 - Las reglas del proyecto tienen **mayor prioridad**
 
@@ -240,32 +250,38 @@ Esto asegura distribución consistente en todas las máquinas de desarrollo.
 ## Mejores Prácticas
 
 ### ✅ Ser Específico
+
 **Bien:** "Usar indentación de 2 espacios"
 **Mal:** "Formatear código apropiadamente"
 
 ### ✅ Usar Estructura para Organizar
+
 - Formatear cada memoria individual como un bullet point
 - Agrupar memorias relacionadas bajo encabezados markdown descriptivos
 
 ### ✅ Revisar Periódicamente
+
 - Actualizar memorias conforme el proyecto evoluciona
 - Asegurar que Claude use la información más actualizada
 
 ### ✅ Mantener Reglas Enfocadas
+
 - Cada archivo debe cubrir un tema (ej: `testing.md`, `api-design.md`)
 - Usar nombres de archivo descriptivos
 
 ### ✅ Usar Reglas Condicionales con Moderación
+
 - Solo agregar frontmatter `paths` cuando las reglas realmente aplican a tipos de archivo específicos
 
 ### ✅ Organizar con Subdirectorios
+
 - Agrupar reglas relacionadas (ej: `frontend/`, `backend/`)
 
 ## Ejemplos Prácticos
 
 ### Ejemplo 1: CLAUDE.md de Proyecto
 
-```markdown
+````markdown
 # Mi Proyecto Web
 
 ## Comandos Frecuentes
@@ -276,6 +292,7 @@ npm run build    # Build de producción
 npm test         # Ejecutar tests
 npm run lint     # Linter
 ```
+````
 
 ## Estilo de Código
 
@@ -295,7 +312,8 @@ npm run lint     # Linter
 
 - @docs/git-workflow.md
 - @~/.claude/personal-preferences.md
-```
+
+````
 
 ### Ejemplo 2: Regla Condicional
 
@@ -327,7 +345,7 @@ app.post('/users', async (req, res) => {
   const data = CreateUserSchema.parse(req.body);
   // ...
 });
-```
+````
 
 ## Manejo de Errores
 
@@ -342,28 +360,31 @@ Usar formato estándar de respuesta de error:
   }
 }
 ```
+
 ```
 
 ### Ejemplo 3: Estructura Completa
 
 ```
+
 mi-proyecto/
-├── CLAUDE.md                      # Memoria principal del proyecto
-├── CLAUDE.local.md                # Mis preferencias locales (gitignored)
+├── CLAUDE.md # Memoria principal del proyecto
+├── CLAUDE.local.md # Mis preferencias locales (gitignored)
 ├── .claude/
-│   ├── CLAUDE.md                  # Alternativa a raíz
-│   └── rules/
-│       ├── frontend/
-│       │   ├── react.md          # Reglas React
-│       │   └── styling.md        # Reglas CSS/Styling
-│       ├── backend/
-│       │   ├── api.md            # Reglas API
-│       │   └── database.md       # Reglas DB
-│       ├── testing.md            # Convenciones de testing
-│       └── security.md           # Políticas de seguridad
+│ ├── CLAUDE.md # Alternativa a raíz
+│ └── rules/
+│ ├── frontend/
+│ │ ├── react.md # Reglas React
+│ │ └── styling.md # Reglas CSS/Styling
+│ ├── backend/
+│ │ ├── api.md # Reglas API
+│ │ └── database.md # Reglas DB
+│ ├── testing.md # Convenciones de testing
+│ └── security.md # Políticas de seguridad
 └── docs/
-    ├── git-workflow.md            # Importado desde CLAUDE.md
-    └── deployment.md              # Importado desde CLAUDE.md
+├── git-workflow.md # Importado desde CLAUDE.md
+└── deployment.md # Importado desde CLAUDE.md
+
 ```
 
 ## Comandos Útiles
@@ -382,3 +403,4 @@ mi-proyecto/
 ---
 
 **Nota:** El sistema de memoria y reglas es fundamental para mantener consistencia en proyectos de equipo y personalización individual, permitiendo que Claude Code se adapte a las necesidades específicas de cada proyecto y desarrollador.
+```

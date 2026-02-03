@@ -5,6 +5,7 @@
 Esta nota documenta cómo instalar Skills universalmente y explica por qué MCP no tiene un estándar similar de instalación centralizada.
 
 **Estado del Proyecto:**
+
 - ✅ **Skills configuradas** - 7 skills en `.agents/skills/`
 - ✅ **MCP configuradas** - Context7 instalado en todos los agentes
 - 🔧 **Agentes activos:** Antigravity (`.agent`), Claude Code (`.claude`), Cursor (`.cursor`), Gemini CLI (`.gemini`)
@@ -20,6 +21,7 @@ Esta nota documenta cómo instalar Skills universalmente y explica por qué MCP 
 **Lanzamiento:** Enero 5, 2026
 
 **Agentes Soportados:**
+
 - Claude Code
 - Cursor
 - Windsurf
@@ -30,6 +32,7 @@ Esta nota documenta cómo instalar Skills universalmente y explica por qué MCP 
 - Cualquier agente que lea `AGENTS.md`
 
 **En este proyecto:**
+
 - ✅ Antigravity (`.agent/skills/`)
 - ✅ Claude Code (`.claude/skills/`)
 - ✅ Cursor (`.cursor/skills/`)
@@ -40,11 +43,13 @@ Esta nota documenta cómo instalar Skills universalmente y explica por qué MCP 
 #### OpenSkills
 
 **Instalar skill:**
+
 ```bash
 npx openskills install <owner/repo>
 ```
 
 **Ejemplos:**
+
 ```bash
 # Instalación básica (project-local)
 npx openskills install anthropics/skills
@@ -57,6 +62,7 @@ npx openskills install anthropics/skills --global
 ```
 
 **Otros comandos:**
+
 ```bash
 # Listar skills instaladas
 npx openskills list
@@ -74,6 +80,7 @@ npx openskills remove <skill-name>
 #### Vercel Labs Skills
 
 **Comandos principales:**
+
 ```bash
 # Agregar skill
 npx skills add <owner/repo>
@@ -88,13 +95,16 @@ npx skills
 ### Ubicaciones de Instalación
 
 **Por defecto (project-local):**
+
 - `./.claude/skills`
 - `./.agent/skills` (con `--universal`)
 
 **Global (con flag):**
+
 - `~/.claude/skills`
 
 **En este proyecto:**
+
 ```
 .agents/skills/                    # Source of truth
 ├── agent-development/
@@ -130,14 +140,15 @@ npx skills
 
 Cada plataforma requiere su propio archivo de configuración:
 
-| Plataforma | Archivo de Configuración | Formato | En Proyecto |
-|------------|-------------------------|---------|-------------|
-| **Cursor** | `.cursor/mcp.json` | JSON | ✅ Context7 |
-| **Claude Code** | `.claude/mcp.json` | JSON | ✅ Context7 |
-| **Gemini CLI** | `.gemini/settings.json` | JSON | ✅ Context7 |
-| **Antigravity** | `~/.gemini/antigravity/mcp_config.json` | JSON | ⚠️ Solo global |
+| Plataforma      | Archivo de Configuración                | Formato | En Proyecto    |
+| --------------- | --------------------------------------- | ------- | -------------- |
+| **Cursor**      | `.cursor/mcp.json`                      | JSON    | ✅ Context7    |
+| **Claude Code** | `.claude/mcp.json`                      | JSON    | ✅ Context7    |
+| **Gemini CLI**  | `.gemini/settings.json`                 | JSON    | ✅ Context7    |
+| **Antigravity** | `~/.gemini/antigravity/mcp_config.json` | JSON    | ⚠️ Solo global |
 
 **Estado del proyecto:**
+
 - ✅ **Context7** configurado en Cursor, Claude Code, Gemini CLI
 - ⚠️ **Antigravity** - NO soporta MCP a nivel de proyecto (solo global)
 - ✅ Sistema de sincronización centralizado (`.agents/mcp/sync-mcp.sh`)
@@ -160,12 +171,14 @@ Cada plataforma requiere su propio archivo de configuración:
 ### Futuro de MCP
 
 **MCPaaS (MCP-as-a-Service):**
+
 - Red Hat está desarrollando una capa de gestión centralizada
 - Hosting, observación y auditoría de MCP servers
 - Catálogo centralizado de servidores aprobados
 - **Estado:** En desarrollo, no es estándar aún
 
 **Gobernanza:**
+
 - Diciembre 2025: MCP donado a **Agentic AI Foundation (AAIF)**
 - Fundación bajo Linux Foundation
 - Co-fundada por Anthropic, Block y OpenAI
@@ -179,11 +192,13 @@ Dado que no existe estándar universal, la approach recomendada es:
 3. **Configs generados:** Por plataforma automáticamente
 
 **Estado actual en proyecto:**
+
 - ⚠️ Script de sincronización no implementado
 - ⚠️ MCP solo configurado a nivel de usuario
 - ✅ Documentación completa disponible en `docs/references/mcp/`
 
 **Para implementar en proyecto:**
+
 ```bash
 # 1. Crear estructura
 mkdir -p .mcp
@@ -211,16 +226,16 @@ EOF
 
 ## Comparación: Skills vs MCP
 
-| Característica | Skills | MCP | Estado en Proyecto |
-|:--------------|:-------|:----|:-------------------|
-| **Instalación Universal** | ✅ `npx openskills install` | ❌ Config manual | ✅ Skills implementadas |
-| **Formato Estándar** | ✅ SKILL.md | ⚠️ JSON/TOML variante | ✅ 7 skills en `.agents/skills/` |
-| **Sincronización** | ✅ Symlinks automáticos | ⚠️ Require scripts | ⚠️ Parcial (solo .gemini usa symlink) |
-| **Descubrimiento** | ✅ `npx skills find` | ❌ No hay búsqueda | ✅ `find-skills` instalada |
-| **Cross-Platform** | ✅ Todos los agentes | ⚠️ Config específico | ✅ 4 agentes configurados |
-| **Madurez** | ✅ Estándar establecido | ⚠️ En evolución | ✅ Skills / ❌ MCP |
-| **Gestión** | ✅ CLI integrado | ❌ Manual o scripts | ✅ Skills / ❌ MCP no config |
-| **En Proyecto** | ✅ Configurado | ❌ No configurado | - |
+| Característica            | Skills                      | MCP                   | Estado en Proyecto                    |
+| :------------------------ | :-------------------------- | :-------------------- | :------------------------------------ |
+| **Instalación Universal** | ✅ `npx openskills install` | ❌ Config manual      | ✅ Skills implementadas               |
+| **Formato Estándar**      | ✅ SKILL.md                 | ⚠️ JSON/TOML variante | ✅ 7 skills en `.agents/skills/`      |
+| **Sincronización**        | ✅ Symlinks automáticos     | ⚠️ Require scripts    | ⚠️ Parcial (solo .gemini usa symlink) |
+| **Descubrimiento**        | ✅ `npx skills find`        | ❌ No hay búsqueda    | ✅ `find-skills` instalada            |
+| **Cross-Platform**        | ✅ Todos los agentes        | ⚠️ Config específico  | ✅ 4 agentes configurados             |
+| **Madurez**               | ✅ Estándar establecido     | ⚠️ En evolución       | ✅ Skills / ❌ MCP                    |
+| **Gestión**               | ✅ CLI integrado            | ❌ Manual o scripts   | ✅ Skills / ❌ MCP no config          |
+| **En Proyecto**           | ✅ Configurado              | ❌ No configurado     | -                                     |
 
 ---
 
@@ -229,12 +244,14 @@ EOF
 ### Para Skills
 
 **✅ Instalación:**
+
 ```bash
 # Usar OpenSkills para instalación universal
 npx openskills install anthropics/skills --universal
 ```
 
 **✅ Descubrimiento:**
+
 ```bash
 # Buscar skills por funcionalidad
 npx skills find "code review"
@@ -242,6 +259,7 @@ npx skills find "testing"
 ```
 
 **✅ Gestión:**
+
 ```bash
 # Listar instaladas
 npx openskills list
@@ -251,6 +269,7 @@ npx openskills update
 ```
 
 **✅ Version Control:**
+
 - Commit `.agents/skills/` al repositorio
 - Usar symlinks para sincronización entre agentes
 - Documentar skills en README o AGENTS.md
@@ -258,16 +277,19 @@ npx openskills update
 ### Para MCP
 
 **✅ Configuración:**
+
 - Usar source of truth centralizado (`.agents/mcp/mcp-servers.json`)
 - Script de sincronización para generar configs por plataforma
 - Version control de configs generados
 
 **✅ Gestión:**
+
 - Documentar cada MCP server
 - Mantener sincronizados todos los archivos de config
 - Ejecutar sync script después de cambios
 
 **✅ Seguridad:**
+
 - Solo instalar MCPs de proveedores oficiales
 - Revisar código antes de instalar
 - Variables de entorno para credenciales
@@ -279,6 +301,7 @@ npx openskills update
 ### Caso 1: Nuevo Proyecto
 
 **Skills:**
+
 ```bash
 # Instalar skills básicas universalmente
 npx openskills install anthropics/skills --universal
@@ -286,6 +309,7 @@ npx openskills install vercel-labs/code-review --universal
 ```
 
 **MCP:**
+
 ```bash
 # Crear source of truth
 mkdir -p .mcp
@@ -297,6 +321,7 @@ mkdir -p .mcp
 ### Caso 2: Equipo Multi-Agente (Este Proyecto)
 
 **Skills (Implementado):**
+
 - ✅ Source of truth: `.agents/skills/`
 - ⚠️ Approach mixto:
   - `.gemini/skills` → symlink (Approach 1) ✅
@@ -305,6 +330,7 @@ mkdir -p .mcp
 - ✅ Commiteado a git
 
 **Mejora recomendada para Skills:**
+
 ```bash
 # Convertir todos a symlinks (Approach 1)
 rm -rf .agent/skills .claude/skills .cursor/skills
@@ -314,6 +340,7 @@ ln -s ../.agents/skills .cursor/skills
 ```
 
 **MCP (No implementado):**
+
 - ❌ No hay configuración a nivel de proyecto
 - ⚠️ Solo configurado a nivel de usuario
 - 📋 Para implementar:
@@ -324,10 +351,12 @@ ln -s ../.agents/skills .cursor/skills
 ### Caso 3: Solo Un Agente
 
 **Skills:**
+
 - Instalar directamente en directorio del agente
 - Ejemplo: `.claude/skills/` para Claude Code solamente
 
 **MCP:**
+
 - Configurar solo el archivo del agente usado
 - Ejemplo: Solo `.cursor/mcp.json` para Cursor
 
@@ -338,11 +367,13 @@ ln -s ../.agents/skills .cursor/skills
 ### Skills
 
 **Estado actual (2026):**
+
 - ✅ Estándar maduro y ampliamente adoptado
 - ✅ OpenSkills como instalador universal
 - ✅ Gran ecosistema de skills disponibles
 
 **Futuro:**
+
 - Mayor adopción en nuevos agentes
 - Más skills especializadas por industria
 - Mejoras en descubrimiento y marketplace
@@ -350,11 +381,13 @@ ln -s ../.agents/skills .cursor/skills
 ### MCP
 
 **Estado actual (2026):**
+
 - ⚠️ Estándar en evolución
 - ⚠️ Sin instalador universal
 - ⚠️ Requiere configuración manual por plataforma
 
 **Futuro:**
+
 - MCPaaS para gestión centralizada (Red Hat)
 - Posible estandarización bajo AAIF
 - Registro centralizado de MCP servers
@@ -367,6 +400,7 @@ ln -s ../.agents/skills .cursor/skills
 ### Skills: ✅ Configuradas y Funcionando
 
 **7 Skills Instaladas:**
+
 1. `agent-development` - Desarrollo de agentes
 2. `command-development` - Desarrollo de comandos
 3. `find-skills` - Búsqueda de skills
@@ -376,18 +410,21 @@ ln -s ../.agents/skills .cursor/skills
 7. `skill-development` - Desarrollo de skills
 
 **Agentes Configurados:**
+
 - ✅ Antigravity (`.agent/skills/`)
 - ✅ Claude Code (`.claude/skills/`)
 - ✅ Cursor (`.cursor/skills/`)
 - ✅ Gemini CLI (`.gemini/skills` → symlink)
 
 **Mejoras Pendientes:**
+
 - Convertir `.agent`, `.claude`, `.cursor` a symlinks (Approach 1)
 - Documentar skills en README
 
 ### MCP: ❌ No Configuradas a Nivel de Proyecto
 
 **Documentación Disponible:**
+
 - ✅ `docs/references/mcp/mcp-antigravity.md`
 - ✅ `docs/references/mcp/mcp-cursor.md`
 - ✅ `docs/references/mcp/mcp-gemini-cli.md`
@@ -395,12 +432,14 @@ ln -s ../.agents/skills .cursor/skills
 - ✅ `docs/references/mcp/mcp-openai-codex.md`
 
 **Para Implementar:**
+
 1. Crear estructura `.agents/mcp/`
 2. Definir `mcp-servers.json`
 3. Implementar script de sincronización
 4. Generar configs por plataforma
 
 **MCP Actualmente:**
+
 - ✅ **Implementado** - Sistema de sincronización centralizado
 - ✅ **Context7** configurado en todos los agentes
 - Source of truth: `.agents/mcp/mcp-servers.json`
@@ -411,20 +450,24 @@ ln -s ../.agents/skills .cursor/skills
 ## Conclusión
 
 **Skills tienen ventaja significativa:**
+
 - Instalación universal con OpenSkills
 - Sincronización automática entre agentes
 - Descubrimiento y gestión integrados
 
 **MCP requiere approach manual:**
+
 - Configuración específica por plataforma
 - Scripts custom para sincronización
 - Sin descubrimiento universal
 
 **Estrategia del proyecto:**
+
 - **Skills:** ✅ Implementadas con OpenSkills (mejorar sincronización a Approach 1)
 - **MCP:** ❌ Pendiente de implementar con script de sincronización centralizado
 
 **Próximos pasos:**
+
 1. Migrar skills de Approach 2 a Approach 1 (symlinks)
 2. Implementar configuración MCP a nivel de proyecto
 3. Crear script de sincronización MCP
@@ -434,20 +477,24 @@ ln -s ../.agents/skills .cursor/skills
 ## Referencias
 
 **OpenSkills:**
+
 - [GitHub](https://github.com/numman-ali/openskills)
 - [npm](https://www.npmjs.com/package/openskills)
 - [Launch Article](https://www.vibesparking.com/en/blog/ai/openskills/2025-12-24-openskills-universal-skills-loader-ai-coding-agents/)
 
 **Vercel Labs Skills:**
+
 - [GitHub](https://github.com/vercel-labs/skills)
 
 **MCP:**
+
 - [MCP Specification](https://modelcontextprotocol.io/specification/2025-11-25)
 - [Wikipedia](https://en.wikipedia.org/wiki/Model_Context_Protocol)
 - [Anthropic Announcement](https://www.anthropic.com/news/model-context-protocol)
 - [Red Hat MCP Article](https://developers.redhat.com/articles/2026/01/08/building-effective-ai-agents-mcp)
 
 **Related Documentation:**
+
 - `docs/notes/agents-vs-skills.md` - Conceptos fundamentales
 - `docs/references/skills/openskills.md` - OpenSkills detallado
 - `docs/references/mcp/*.md` - MCP por plataforma

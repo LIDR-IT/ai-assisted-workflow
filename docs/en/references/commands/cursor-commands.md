@@ -15,6 +15,7 @@
 ### Definition
 
 Commands are Markdown files that provide:
+
 - **Reusable workflows** - Standard processes accessible via `/` prefix
 - **Team standardization** - Consistent approaches across organization
 - **Quick access** - Common tasks triggered with simple shortcuts
@@ -35,11 +36,13 @@ Cursor detects and displays commands from three locations:
 **Location:** `.cursor/commands/` in your project root
 
 **Purpose:**
+
 - Project-specific workflows
 - Team-shared standards
 - Repository-specific processes
 
 **Example:**
+
 ```
 .cursor/commands/
 ├── address-github-pr-comments.md
@@ -54,6 +57,7 @@ Cursor detects and displays commands from three locations:
 **Location:** `~/.cursor/commands/` in your home directory
 
 **Purpose:**
+
 - Personal workflows across all projects
 - Individual productivity shortcuts
 - Cross-project standards
@@ -63,12 +67,14 @@ Cursor detects and displays commands from three locations:
 **Location:** Cursor Dashboard (Team/Enterprise plans only)
 
 **Purpose:**
+
 - Centralized management by admins
 - Automatic distribution to all members
 - Organization-wide standardization
 - Instant updates without manual sync
 
 **Features:**
+
 - ✅ Admin-controlled access
 - ✅ Automatic synchronization
 - ✅ Server-enforced consistency
@@ -95,6 +101,7 @@ Commands automatically appear when users type `/` in chat.
 **Organization Strategies:**
 
 **Flat Structure (recommended for 5-15 commands):**
+
 ```
 .cursor/commands/
 ├── review-security.md
@@ -105,6 +112,7 @@ Commands automatically appear when users type `/` in chat.
 ```
 
 **Namespaced Structure (15+ commands):**
+
 ```
 .cursor/commands/
 ├── review/
@@ -125,30 +133,35 @@ Commands automatically appear when users type `/` in chat.
 # Code Review Checklist
 
 ## Security
+
 - Check for SQL injection vulnerabilities
 - Verify input validation
 - Review authentication and authorization
 - Check for XSS attack vectors
 
 ## Performance
+
 - Identify unnecessary computations
 - Review database query efficiency
 - Check for memory leaks
 - Analyze algorithm complexity
 
 ## Code Quality
+
 - Verify naming conventions
 - Check function length and complexity
 - Look for code duplication
 - Review error handling
 
 ## Testing
+
 - Verify test coverage
 - Check for edge cases
 - Review test quality
 - Ensure integration tests exist
 
 ## Documentation
+
 - Check inline comments
 - Verify API documentation
 - Review README updates
@@ -162,6 +175,7 @@ Commands automatically appear when users type `/` in chat.
 ### Basic Usage
 
 **Trigger commands with `/` prefix:**
+
 ```
 /code-review-checklist
 /security-audit
@@ -173,6 +187,7 @@ Commands automatically appear when users type `/` in chat.
 Commands accept additional context after the command name:
 
 **Example:**
+
 ```
 /commit and /pr these changes to address DX-523
 ```
@@ -180,6 +195,7 @@ Commands accept additional context after the command name:
 The model includes these parameters in its prompt execution.
 
 **Multiple commands:**
+
 ```
 /review-security src/auth/ and /generate-tests
 ```
@@ -195,21 +211,25 @@ Team administrators can create server-enforced commands through the Cursor Team 
 ### Key Benefits
 
 **1. Centralized Management**
+
 - Single source of truth
 - Admin-only creation/modification
 - Organization-wide visibility
 
 **2. Automatic Synchronization**
+
 - Instant propagation to all members
 - No manual distribution needed
 - Always up-to-date
 
 **3. Standardization**
+
 - Consistent workflows across teams
 - Enforced best practices
 - Reduced onboarding time
 
 **4. Access Control**
+
 - Only administrators can create/modify
 - Team members use read-only
 - Prevents unauthorized changes
@@ -217,12 +237,14 @@ Team administrators can create server-enforced commands through the Cursor Team 
 ### Access
 
 **Creating Team Commands:**
+
 1. Log in to Cursor Dashboard
 2. Navigate to Team Content
 3. Create/edit commands
 4. Changes instantly available to all members
 
 **Using Team Commands:**
+
 - Automatically available when typing `/`
 - No configuration needed
 - Same usage as project/global commands
@@ -243,24 +265,28 @@ Team administrators can create server-enforced commands through the Cursor Team 
 Review the following code for:
 
 ## Security
+
 - SQL injection vulnerabilities
 - XSS attack vectors
 - Authentication bypass risks
 - Sensitive data exposure
 
 ## Performance
+
 - Unnecessary computations
 - Memory leaks
 - Database query efficiency
 - Algorithm complexity
 
 ## Code Quality
+
 - Naming conventions
 - Function length
 - Code duplication
 - Error handling
 
 ## Testing
+
 - Test coverage
 - Edge cases
 - Integration tests
@@ -279,24 +305,28 @@ Review the following code for:
 Perform a comprehensive security audit:
 
 ## Authentication & Authorization
+
 - Check authentication mechanisms
 - Verify authorization logic
 - Review session management
 - Check password handling
 
 ## Input Validation
+
 - Verify all user inputs validated
 - Check for injection vulnerabilities
 - Review file upload handling
 - Check API input validation
 
 ## Data Protection
+
 - Review encryption usage
 - Check sensitive data storage
 - Verify secure transmission
 - Review logging practices
 
 ## Dependencies
+
 - Check for vulnerable dependencies
 - Review third-party library usage
 - Verify security patches applied
@@ -316,29 +346,34 @@ Report findings with severity levels and remediation steps.
 Complete feature setup:
 
 ## 1. Planning
+
 - Review feature requirements
 - Identify affected components
 - Plan implementation approach
 - Consider edge cases
 
 ## 2. Branch Setup
+
 - Create feature branch
 - Update from main
 - Set up tracking
 
 ## 3. Implementation
+
 - Write feature code
 - Add unit tests
 - Add integration tests
 - Update documentation
 
 ## 4. Review
+
 - Self-review changes
 - Run all tests
 - Check code quality
 - Verify documentation
 
 ## 5. Preparation
+
 - Create pull request
 - Add description
 - Request reviewers
@@ -357,24 +392,28 @@ Complete feature setup:
 Prepare and create pull request:
 
 ## 1. Pre-Flight Checks
+
 - All tests pass
 - Code review checklist completed
 - Documentation updated
 - Changelog updated
 
 ## 2. Commit Review
+
 - Review all commits
 - Verify commit messages
 - Check for sensitive data
 - Ensure clean history
 
 ## 3. PR Description
+
 - Summarize changes
 - Link related issues
 - Add testing steps
 - Note breaking changes
 
 ## 4. Final Steps
+
 - Create pull request
 - Add appropriate labels
 - Request reviewers
@@ -393,24 +432,28 @@ Prepare and create pull request:
 Execute test suite and address failures:
 
 ## 1. Run Tests
+
 - Execute full test suite
 - Capture all failures
 - Note error messages
 - Identify patterns
 
 ## 2. Analyze Failures
+
 - Root cause analysis
 - Check recent changes
 - Review stack traces
 - Identify affected code
 
 ## 3. Fix Issues
+
 - Implement minimal fixes
 - Preserve test intent
 - Update tests if needed
 - Verify related tests
 
 ## 4. Verify
+
 - Re-run failed tests
 - Run full suite
 - Check coverage
@@ -429,30 +472,35 @@ Execute test suite and address failures:
 Complete onboarding process:
 
 ## 1. Environment Setup
+
 - Install required tools
 - Configure development environment
 - Set up credentials
 - Test local setup
 
 ## 2. Codebase Familiarization
+
 - Review architecture overview
 - Understand key components
 - Explore coding standards
 - Review contribution guidelines
 
 ## 3. First Tasks
+
 - Run test suite
 - Build project
 - Run development server
 - Make sample change
 
 ## 4. Team Integration
+
 - Join communication channels
 - Schedule team introductions
 - Review team processes
 - Access documentation
 
 ## 5. Verification
+
 - All tools installed correctly
 - Tests pass locally
 - Development server runs
@@ -466,12 +514,14 @@ Complete onboarding process:
 ### Command Design
 
 ✅ **DO:**
+
 - **Single responsibility** - Each command has one clear purpose
 - **Clear naming** - Use descriptive, verb-noun patterns
 - **Consistent format** - Follow team conventions
 - **Comprehensive content** - Include all necessary steps
 
 ❌ **DON'T:**
+
 - Create catch-all commands doing too much
 - Use vague names like "helper" or "utility"
 - Mix multiple unrelated concerns
@@ -480,6 +530,7 @@ Complete onboarding process:
 ### Naming Conventions
 
 **Verb-Noun Pattern:**
+
 ```
 review-security.md
 generate-tests.md
@@ -489,6 +540,7 @@ setup-feature.md
 ```
 
 **Namespaced (for large sets):**
+
 ```
 review/security.md
 review/performance.md
@@ -499,26 +551,31 @@ generate/docs.md
 ### Content Structure
 
 ✅ **DO:**
+
 - Use clear headers and sections
 - Include numbered or bulleted lists
 - Provide specific, actionable steps
 - Add context and rationale
 
 **Example:**
+
 ```markdown
 # Security Review
 
 ## 1. Authentication
+
 - Check login mechanisms
 - Verify session handling
 - Review password policies
 
 ## 2. Authorization
+
 - Verify access controls
 - Check permission logic
 - Review role assignments
 
 ## 3. Data Protection
+
 - Check encryption usage
 - Verify sensitive data handling
 - Review logging practices
@@ -527,12 +584,14 @@ generate/docs.md
 ### Version Control
 
 ✅ **DO:**
+
 - Commit project commands to repository
 - Document command purpose in README
 - Track changes with meaningful commits
 - Share useful commands with team
 
 ❌ **DON'T:**
+
 - Keep useful project commands local only
 - Skip documentation
 - Make breaking changes without notice
@@ -540,12 +599,14 @@ generate/docs.md
 ### Team Collaboration
 
 ✅ **DO:**
+
 - Discuss new commands with team
 - Use team commands for organization standards
 - Keep project commands relevant
 - Archive outdated commands
 
 **Example workflow:**
+
 ```bash
 # Add new command
 echo "# Review API Changes" > .cursor/commands/review-api.md
@@ -566,19 +627,24 @@ git commit -m "feat: add review-api command"
 **Purpose:** Systematic code analysis
 
 **Structure:**
+
 ```markdown
 # [Review Type] Review
 
 ## Critical Issues
+
 - [List critical items]
 
 ## Medium Priority
+
 - [List medium items]
 
 ## Low Priority
+
 - [List low priority items]
 
 ## Output Format
+
 - Issue severity
 - Location (file:line)
 - Explanation
@@ -590,19 +656,24 @@ git commit -m "feat: add review-api command"
 **Purpose:** Create boilerplate or documentation
 
 **Structure:**
+
 ```markdown
 # Generate [Artifact]
 
 ## 1. Analyze
+
 - [What to analyze]
 
 ## 2. Generate
+
 - [What to generate]
 
 ## 3. Verify
+
 - [What to verify]
 
 ## 4. Output
+
 - [Output format]
 ```
 
@@ -611,19 +682,24 @@ git commit -m "feat: add review-api command"
 **Purpose:** Multi-step processes
 
 **Structure:**
+
 ```markdown
 # [Workflow Name]
 
 ## Step 1: [Name]
+
 - [Actions]
 
 ## Step 2: [Name]
+
 - [Actions]
 
 ## Step 3: [Name]
+
 - [Actions]
 
 ## Verification
+
 - [Checkpoints]
 ```
 
@@ -632,18 +708,22 @@ git commit -m "feat: add review-api command"
 **Purpose:** Verification and validation
 
 **Structure:**
+
 ```markdown
 # [Task] Checklist
 
 ## Category 1
+
 - [ ] Item 1
 - [ ] Item 2
 
 ## Category 2
+
 - [ ] Item 1
 - [ ] Item 2
 
 ## Completion Criteria
+
 - All items checked
 - [Additional criteria]
 ```
@@ -663,17 +743,20 @@ git commit -m "feat: add review-api command"
 ### Choose Other Tools Instead For
 
 **Subagents:**
+
 - Complex multi-step autonomous work
 - Tasks requiring separate context windows
 - Independent verification
 - Parallel workstreams
 
 **Skills:**
+
 - Plugin-specific functionality
 - Advanced tool integrations
 - Specialized domain knowledge
 
 **Direct Chat:**
+
 - One-off requests
 - Exploratory conversations
 - Iterative refinement
@@ -693,19 +776,19 @@ git commit -m "feat: add review-api command"
 
 ### Differences
 
-| Feature | Cursor | Claude Code |
-|---------|--------|-------------|
-| **Project location** | `.cursor/commands/` | `.claude/commands/` |
-| **Global location** | `~/.cursor/commands/` | `~/.claude/commands/` |
-| **Team distribution** | Team Dashboard (Team/Enterprise) | Plugin system |
-| **Frontmatter** | Basic (not documented) | Extensive YAML (description, allowed-tools, model, etc.) |
-| **Arguments** | Parameters after command name | `$ARGUMENTS`, `$1`, `$2`, etc. |
-| **File references** | Not documented | `@` syntax for file inclusion |
-| **Tool restrictions** | Not documented | `allowed-tools` field with wildcards |
-| **Model selection** | Not documented | `model: haiku\|sonnet\|opus` |
-| **Plugin integration** | Not available | `${CLAUDE_PLUGIN_ROOT}` variable |
-| **Bash execution** | Not documented | Inline bash with tool restrictions |
-| **Admin control** | Team Dashboard (admins only) | Local/plugin-based |
+| Feature                | Cursor                           | Claude Code                                              |
+| ---------------------- | -------------------------------- | -------------------------------------------------------- |
+| **Project location**   | `.cursor/commands/`              | `.claude/commands/`                                      |
+| **Global location**    | `~/.cursor/commands/`            | `~/.claude/commands/`                                    |
+| **Team distribution**  | Team Dashboard (Team/Enterprise) | Plugin system                                            |
+| **Frontmatter**        | Basic (not documented)           | Extensive YAML (description, allowed-tools, model, etc.) |
+| **Arguments**          | Parameters after command name    | `$ARGUMENTS`, `$1`, `$2`, etc.                           |
+| **File references**    | Not documented                   | `@` syntax for file inclusion                            |
+| **Tool restrictions**  | Not documented                   | `allowed-tools` field with wildcards                     |
+| **Model selection**    | Not documented                   | `model: haiku\|sonnet\|opus`                             |
+| **Plugin integration** | Not available                    | `${CLAUDE_PLUGIN_ROOT}` variable                         |
+| **Bash execution**     | Not documented                   | Inline bash with tool restrictions                       |
+| **Admin control**      | Team Dashboard (admins only)     | Local/plugin-based                                       |
 
 ### Cursor Advantages
 
@@ -725,17 +808,20 @@ git commit -m "feat: add review-api command"
 ### Recommendation
 
 **Use Cursor Commands for:**
+
 - Team standardization with Enterprise plans
 - Simple, straightforward workflows
 - Quick access to common tasks
 
 **Use Claude Code Commands for:**
+
 - Advanced workflow automation
 - Complex argument handling
 - Strict tool permission control
 - Plugin-based extensibility
 
 **Use Both:**
+
 - Create compatible commands in both locations
 - Share common patterns across platforms
 - Maintain cross-platform documentation
@@ -747,12 +833,14 @@ git commit -m "feat: add review-api command"
 ### Commands Not Appearing
 
 **Check:**
+
 1. File extension is `.md`
 2. File is in correct location (`.cursor/commands/`)
 3. Cursor has been restarted
 4. No syntax errors in Markdown
 
 **Solution:**
+
 ```bash
 # Verify file location
 ls .cursor/commands/
@@ -766,12 +854,14 @@ file .cursor/commands/my-command.md
 ### Team Commands Not Syncing
 
 **Check:**
+
 1. Team/Enterprise plan active
 2. User is logged in to Cursor
 3. Network connectivity
 4. Team membership confirmed
 
 **Solution:**
+
 - Log out and back in to Cursor
 - Check Cursor Dashboard for team status
 - Contact Cursor support if issue persists
@@ -779,12 +869,14 @@ file .cursor/commands/my-command.md
 ### Commands Executing Incorrectly
 
 **Check:**
+
 1. Markdown syntax is correct
 2. Instructions are clear and specific
 3. No ambiguous language
 4. Steps are in logical order
 
 **Solution:**
+
 - Test command with simple cases first
 - Refine instructions iteratively
 - Get team feedback on clarity
@@ -794,16 +886,19 @@ file .cursor/commands/my-command.md
 ## Resources
 
 **Official Documentation:**
+
 - [Cursor Commands](https://cursor.com/docs/context/commands)
 - [Cursor Dashboard](https://cursor.com/settings/team)
 
 **In This Repository:**
+
 - `command-development.md` - Claude Code commands reference
 - `cursor-subagents.md` - Cursor subagents documentation
 - `sub-agents-claude-code.md` - Claude Code sub-agents
 - `.cursor/commands/` - Project commands directory
 
 **Related:**
+
 - [Cursor Subagents](https://cursor.com/docs/context/subagents)
 - [Cursor Context](https://cursor.com/docs/context)
 

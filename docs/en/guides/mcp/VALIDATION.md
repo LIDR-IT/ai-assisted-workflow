@@ -5,11 +5,13 @@ Este documento describe cómo validar que el sistema de sincronización MCP func
 ## Pre-requisitos
 
 1. **jq instalado:**
+
 ```bash
 brew install jq
 ```
 
 2. **Context7 API Key configurada:**
+
 ```bash
 # Agregar a ~/.zshrc o ~/.bashrc
 export CONTEXT7_API_KEY="tu-api-key"
@@ -35,12 +37,13 @@ jq '.servers.context7' .agents/mcp/mcp-servers.json
 ```
 
 **Expected output:**
+
 ```json
 {
   "type": "stdio",
   "command": "npx",
   "args": ["-y", "@upstash/context7-mcp"],
-  "env": {"CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"},
+  "env": { "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}" },
   "platforms": ["cursor", "claude", "gemini", "antigravity"],
   "description": "Context7 - Up-to-date documentation for popular frameworks and libraries"
 }
@@ -59,6 +62,7 @@ echo $?  # Debe mostrar 0
 ```
 
 **Expected output:**
+
 ```
 🔄 Sincronizando configuración MCP desde .agents/mcp/mcp-servers.json...
 
@@ -93,13 +97,14 @@ jq . .agent/settings.json
 ```
 
 **Expected:** Todos deben tener la misma estructura:
+
 ```json
 {
   "mcpServers": {
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
-      "env": {"CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"}
+      "env": { "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}" }
     }
   }
 }
@@ -120,6 +125,7 @@ cat .cursor/mcp.json | jq .
 ```
 
 **Test funcional:**
+
 - En Cursor chat: `@context7 What is React?`
 - Debe responder con documentación de React
 
@@ -133,11 +139,13 @@ claude mcp list
 ```
 
 **Expected output:**
+
 ```
 context7 - enabled
 ```
 
 **Test funcional:**
+
 ```bash
 # Usar en chat
 claude chat
@@ -194,6 +202,7 @@ jq '.mcpServers.test' .gemini/settings.json  # Debe ser null
 ```
 
 **Limpiar después del test:**
+
 ```bash
 # Remover server de prueba
 jq 'del(.servers.test)' .agents/mcp/mcp-servers.json > .agents/mcp/mcp-servers.json.tmp && mv .agents/mcp/mcp-servers.json.tmp .agents/mcp/mcp-servers.json
@@ -277,6 +286,7 @@ jq . .agents/mcp/mcp-servers.json
 Una vez validado:
 
 1. Commit configuración a git:
+
 ```bash
 git add .agents/mcp/ .cursor/mcp.json .claude/mcp.json .gemini/settings.json .agent/settings.json .gitignore
 git commit -m "feat: add Context7 MCP with sync system"

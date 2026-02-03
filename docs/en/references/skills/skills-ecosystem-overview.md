@@ -13,6 +13,7 @@
 ### What Are Skills?
 
 Skills are **reusable capabilities for AI agents** that provide:
+
 - **Procedural knowledge** - How to accomplish specific tasks
 - **Specialized expertise** - Domain-specific guidance
 - **Workflows** - Step-by-step processes
@@ -54,6 +55,7 @@ npx skills add username/custom-skills
 **Browse at:** [skills.sh](https://skills.sh)
 
 **Features:**
+
 - Search functionality
 - Category filtering
 - Installation counts
@@ -97,6 +99,7 @@ Skills.sh supports **20+ AI coding agents**, including:
 ### Universal Compatibility
 
 Skills follow standardized formats (SKILL.md) that work across different AI agents, enabling:
+
 - **Write once, use everywhere**
 - **Cross-platform compatibility**
 - **Community sharing**
@@ -111,6 +114,7 @@ Skills follow standardized formats (SKILL.md) that work across different AI agen
 **Focus:** Programming best practices, frameworks, languages
 
 **Popular Skills:**
+
 - **vercel-react-best-practices** (72.7K installs)
   - React optimization patterns
   - Performance best practices
@@ -136,6 +140,7 @@ Skills follow standardized formats (SKILL.md) that work across different AI agen
 **Focus:** UI/UX, visual design, user experience
 
 **Popular Skills:**
+
 - **web-design-guidelines** (55.1K installs)
   - Accessibility rules
   - Responsive design
@@ -156,6 +161,7 @@ Skills follow standardized formats (SKILL.md) that work across different AI agen
 **Focus:** DevOps, deployment, cloud platforms
 
 **Popular Skills:**
+
 - **Supabase integration**
   - Database setup
   - Authentication
@@ -176,6 +182,7 @@ Skills follow standardized formats (SKILL.md) that work across different AI agen
 **Focus:** SEO, content, copywriting
 
 **Popular Skills:**
+
 - **SEO audits**
   - Technical SEO
   - Content optimization
@@ -196,6 +203,7 @@ Skills follow standardized formats (SKILL.md) that work across different AI agen
 **Focus:** Strategy, planning, analysis
 
 **Popular Skills:**
+
 - **Pricing strategy**
   - Pricing models
   - Value-based pricing
@@ -216,6 +224,7 @@ Skills follow standardized formats (SKILL.md) that work across different AI agen
 **Focus:** File handling, automation, integrations
 
 **Popular Skills:**
+
 - **PDF/PPTX/XLSX handling**
   - Document generation
   - Data extraction
@@ -255,6 +264,7 @@ Skills follow standardized formats (SKILL.md) that work across different AI agen
 ### Trending Skills (24h)
 
 Skills with rapid recent growth in installations, indicating:
+
 - New releases gaining traction
 - Viral discovery
 - Community validation
@@ -263,6 +273,7 @@ Skills with rapid recent growth in installations, indicating:
 ### Hot Skills
 
 Skills with sustained high install velocity, showing:
+
 - Consistent value delivery
 - Strong community adoption
 - Essential capabilities
@@ -275,18 +286,21 @@ Skills with sustained high install velocity, showing:
 ### Installation Count
 
 **High installs (>50K):**
+
 - Community validated
 - Production ready
 - Well documented
 - Actively maintained
 
 **Medium installs (10K-50K):**
+
 - Growing adoption
 - Specialized use cases
 - Niche expertise
 - Emerging patterns
 
 **Low installs (<10K):**
+
 - New releases
 - Experimental
 - Highly specialized
@@ -295,16 +309,19 @@ Skills with sustained high install velocity, showing:
 ### Time-Based Metrics
 
 **All Time:**
+
 - Total lifetime installs
 - Long-term value
 - Sustained usefulness
 
 **Trending 24h:**
+
 - Recent popularity spike
 - New discoveries
 - Rapid adoption
 
 **Hot:**
+
 - High velocity
 - Consistent growth
 - Current relevance
@@ -338,18 +355,21 @@ Skills with sustained high install velocity, showing:
 ### Installation Best Practices
 
 **For General Use:**
+
 ```bash
 # Install globally for all projects
 npx skills add vercel-labs/skills --skill react-best-practices -g
 ```
 
 **For Project-Specific:**
+
 ```bash
 # Install locally for this project only
 npx skills add username/custom-skill
 ```
 
 **For Testing:**
+
 ```bash
 # Install without confirmation
 npx skills add skill-repo --skill test-skill -y
@@ -358,21 +378,25 @@ npx skills add skill-repo --skill test-skill -y
 ### Skill Management
 
 **List installed skills:**
+
 ```bash
 npx skills list
 ```
 
 **Update skills:**
+
 ```bash
 npx skills update
 ```
 
 **Remove skills:**
+
 ```bash
 npx skills remove skill-name
 ```
 
 **Check for updates:**
+
 ```bash
 npx skills check
 ```
@@ -404,6 +428,7 @@ npx skills check
 ### Skill Promotion
 
 **Increase adoption:**
+
 - Write clear descriptions
 - Provide concrete examples
 - Document use cases
@@ -464,6 +489,7 @@ Universal skills loader for multiple AI agents.
 Package manager for agent skills.
 
 **Commands:**
+
 - `npx skills find [query]` - Search skills
 - `npx skills add <package>` - Install skill
 - `npx skills check` - Check for updates
@@ -517,6 +543,7 @@ Skills can work with Model Context Protocol servers.
 ### Quick Start
 
 1. **Browse skills.sh**
+
    ```
    https://skills.sh
    ```
@@ -527,6 +554,7 @@ Skills can work with Model Context Protocol servers.
    - Check top skills
 
 3. **Install skill**
+
    ```bash
    npx skills add <owner/repo> --skill <skill-name>
    ```
@@ -579,6 +607,7 @@ Skills can work with Model Context Protocol servers.
 ### In This Repository
 
 **Skills:**
+
 - `npm-skills-package.md` - Skills package manager
 - `openskills.md` - Universal skills loader
 - `find-skills-vercel.md` - Skill discovery
@@ -586,11 +615,13 @@ Skills can work with Model Context Protocol servers.
 - `skill-development-claude-code.md` - Claude Code skills
 
 **MCP:**
+
 - `docs/references/mcp/mcp-introduction.md` - MCP overview
 - `docs/references/mcp/mcp-integration-claude-code.md` - MCP integration
 - `docs/references/mcp/mcp-server-builder.md` - Building MCP servers
 
 **Commands & Agents:**
+
 - `docs/references/commands/command-development.md` - Creating commands
 - `docs/references/agents/agent-development-claude-code.md` - Creating agents
 

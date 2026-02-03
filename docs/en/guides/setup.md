@@ -14,6 +14,7 @@ This guide walks through setting up the centralized AI agent configuration syste
 ## Quick Start
 
 **One-command setup:**
+
 ```bash
 # Clone and sync everything
 git clone <repo-url>
@@ -22,6 +23,7 @@ cd template-best-practices
 ```
 
 This runs all synchronization scripts:
+
 - Rules and skills → symlinks to `.agents/`
 - Commands → symlinks to `.agents/commands/`
 - Agents → symlinks to `.agents/agents/`
@@ -36,6 +38,7 @@ This runs all synchronization scripts:
   - [Gemini CLI](https://geminicli.com)
   - [Antigravity](https://antigravity.dev)
 - **jq** - JSON processor for MCP sync
+
   ```bash
   # macOS
   brew install jq
@@ -61,6 +64,7 @@ This runs all synchronization scripts:
 ### Platform Synchronization
 
 **Symlink Strategy** (Rules, Skills, Commands, Agents):
+
 ```
 .cursor/rules → ../.agents/rules
 .claude/rules → ../.agents/rules
@@ -68,6 +72,7 @@ This runs all synchronization scripts:
 ```
 
 **Generation Strategy** (MCP Configs):
+
 ```
 .agents/mcp/mcp-servers.json
     ↓ (sync-mcp.sh)
@@ -77,6 +82,7 @@ This runs all synchronization scripts:
 ```
 
 **Copy Strategy** (Cursor and Antigravity - no subdirectory support):
+
 ```
 .agents/rules/ → .cursor/rules/  (copied, flattened)
 .agents/rules/ → .agent/rules/   (copied, flattened)
@@ -91,6 +97,7 @@ This runs all synchronization scripts:
 Project-specific guidelines and coding standards synchronized to all agents.
 
 **Setup:**
+
 ```bash
 # Automatic
 ./.agents/rules/sync-rules.sh
@@ -103,6 +110,7 @@ ls -la .agent/rules     # Should show copied files (Antigravity)
 ```
 
 **Current rules structure:**
+
 ```
 .agents/rules/
 ├── code/              # principles.md, style.md
@@ -116,6 +124,7 @@ ls -la .agent/rules     # Should show copied files (Antigravity)
 ```
 
 **Adding new rules:**
+
 ```bash
 # Create rule
 echo "# New Rule" > .agents/rules/category/new-rule.md
@@ -133,6 +142,7 @@ cat .cursor/rules/category/new-rule.md
 Specialized capabilities that extend agent functionality with workflows and domain knowledge.
 
 **Setup:**
+
 ```bash
 # Automatic (included in sync-rules.sh)
 ./.agents/rules/sync-rules.sh
@@ -144,6 +154,7 @@ ls -la .gemini/skills
 ```
 
 **Current skills:**
+
 - `agent-development` - Create custom agents
 - `command-development` - Create slash commands
 - `commit-management` - Git commit workflows
@@ -154,6 +165,7 @@ ls -la .gemini/skills
 - `team-skill-creator` - Team-wide skill creation
 
 **Using skills:**
+
 ```bash
 # Invoke skill
 claude /skill-name
@@ -166,6 +178,7 @@ claude /find-skills
 ```
 
 **Creating skills:**
+
 ```bash
 # Use team skill creator
 claude /team-skill-creator
@@ -190,6 +203,7 @@ EOF
 Slash commands that provide quick access to common operations.
 
 **Setup:**
+
 ```bash
 # Commands sync with rules
 ./.agents/rules/sync-rules.sh
@@ -200,11 +214,13 @@ ls -la .claude/commands
 ```
 
 **Current commands:**
+
 - `/commit` - Create conventional commits
 - `/improve-docs` - Audit documentation
 - `/sync-setup` - Sync all configurations
 
 **Creating commands:**
+
 ```bash
 # Use command-development skill
 claude /command-development
@@ -227,6 +243,7 @@ EOF
 Custom subagents with specialized system prompts and tool access.
 
 **Setup:**
+
 ```bash
 # Agents sync with rules
 ./.agents/rules/sync-rules.sh
@@ -239,9 +256,11 @@ ls -la .claude/agents
 **Note:** Antigravity does NOT support the agents directory.
 
 **Current agents:**
+
 - `doc-improver` - Documentation improvement specialist
 
 **Creating agents:**
+
 ```bash
 # Use agent-development skill
 claude /agent-development
@@ -265,6 +284,7 @@ EOF
 Model Context Protocol - connects agents to external tools and services.
 
 **Setup:**
+
 ```bash
 # Generate platform configs
 ./.agents/mcp/sync-mcp.sh
@@ -276,9 +296,11 @@ cat .gemini/settings.json
 ```
 
 **Current MCP servers:**
+
 - **Context7** - Documentation and code examples
 
 **Adding MCP servers:**
+
 ```bash
 # Edit source of truth
 vim .agents/mcp/mcp-servers.json
@@ -307,6 +329,7 @@ git commit -m "feat: Add new MCP server"
 ```
 
 **Testing MCP:**
+
 ```bash
 # Claude Code
 claude mcp list
@@ -321,6 +344,7 @@ npx @modelcontextprotocol/inspector npx -y @context7/mcp-server
 ### Claude Code
 
 **Installation:**
+
 ```bash
 # Install CLI
 npm install -g @anthropic/claude-code
@@ -330,11 +354,13 @@ claude --version
 ```
 
 **Configuration:**
+
 - Rules: `.claude/rules/` (symlink)
 - Skills: `.claude/skills/` (symlink)
 - MCP: `.claude/mcp.json` (generated)
 
 **Verify setup:**
+
 ```bash
 claude skill list
 claude mcp list
@@ -347,11 +373,13 @@ ls -la .claude/
 Download from [cursor.com](https://cursor.com)
 
 **Configuration:**
+
 - Rules: `.cursor/rules/` (copied files, flattened - no subdirectories)
 - Skills: `.cursor/skills/` (symlink)
 - MCP: `.cursor/mcp.json` (generated)
 
 **Verify setup:**
+
 1. Open Cursor
 2. Check Settings → Features → MCP Servers
 3. Verify skills appear in command palette
@@ -359,6 +387,7 @@ Download from [cursor.com](https://cursor.com)
 ### Gemini CLI
 
 **Installation:**
+
 ```bash
 npm install -g gemini-cli
 
@@ -367,11 +396,13 @@ gemini --version
 ```
 
 **Configuration:**
+
 - Rules: `.gemini/rules/` (symlink)
 - Skills: `.gemini/skills/` (symlink)
 - MCP: `~/.gemini/settings.json` (generated)
 
 **Verify setup:**
+
 ```bash
 gemini mcp list
 gemini skill list
@@ -383,16 +414,19 @@ gemini skill list
 Follow [Antigravity documentation](https://antigravity.dev/docs)
 
 **Configuration:**
+
 - Rules: `.agent/rules/` (copied files, flattened - no subdirectories)
 - Skills: `.agent/skills/` (selective symlinks)
 - MCP: `~/.gemini/antigravity/mcp_config.json` (global only)
 
 **Important limitations:**
+
 - No project-level MCP support (global only)
 - No agents directory support
 - Rules must be copied and flattened (no subdirectory support)
 
 **Verify setup:**
+
 ```bash
 ls -la .agent/rules
 ls -la .agent/skills
@@ -400,6 +434,7 @@ cat ~/.gemini/antigravity/mcp_config.json
 ```
 
 **MCP global config:**
+
 ```bash
 # Edit global MCP config
 vim ~/.gemini/antigravity/mcp_config.json
@@ -457,6 +492,7 @@ jq empty .gemini/settings.json
 **Issue:** Symlinks not appearing after sync
 
 **Solution:**
+
 ```bash
 # Check Git symlink support
 git config core.symlinks  # Should be: true
@@ -471,6 +507,7 @@ ln -s ../.agents/skills .claude/skills
 **Issue:** Changes not propagating to agents
 
 **Solution:**
+
 ```bash
 # Re-run sync
 ./.agents/rules/sync-rules.sh
@@ -484,6 +521,7 @@ ln -s ../.agents/skills .claude/skills
 **Issue:** MCP servers not visible in agent
 
 **Solution:**
+
 ```bash
 # Validate source JSON
 jq empty .agents/mcp/mcp-servers.json
@@ -501,6 +539,7 @@ jq empty .agents/mcp/mcp-servers.json
 **Remember:** Antigravity only supports global MCP config
 
 **Solution:**
+
 ```bash
 # Edit global config (not project-level)
 vim ~/.gemini/antigravity/mcp_config.json
@@ -513,6 +552,7 @@ vim ~/.gemini/antigravity/mcp_config.json
 **Issue:** Permission denied when running sync scripts
 
 **Solution:**
+
 ```bash
 # Make scripts executable
 chmod +x .agents/sync-all.sh
@@ -544,6 +584,7 @@ ls -la .cursor/rules
 ### Adding New Resources
 
 **Adding rules:**
+
 ```bash
 # 1. Create rule
 vim .agents/rules/category/new-rule.md
@@ -557,6 +598,7 @@ git commit -m "docs: Add new rule for X"
 ```
 
 **Adding MCP servers:**
+
 ```bash
 # 1. Edit source
 vim .agents/mcp/mcp-servers.json
@@ -598,4 +640,4 @@ ls -la .cursor/rules .claude/skills
 
 ---
 
-*Maintained by LIDR Template Team | Last updated: 2026-02-01*
+_Maintained by LIDR Template Team | Last updated: 2026-02-01_

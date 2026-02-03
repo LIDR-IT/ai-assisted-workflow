@@ -5,6 +5,7 @@ The Gemini CLI implements a three-tier hierarchical context system that provides
 ## Overview
 
 GEMINI.md files define:
+
 - Coding standards and conventions
 - Project-specific requirements
 - Personas and communication style
@@ -37,12 +38,14 @@ The CLI loads context files in this order:
 **Scope:** Applies to ALL projects
 
 **Use for:**
+
 - Personal coding preferences
 - Universal conventions (e.g., "Always use semicolons")
 - Communication style (e.g., "Be concise in explanations")
 - Default personas (e.g., "Act as a senior engineer")
 
 **Example:**
+
 ```markdown
 # Global Gemini Configuration
 
@@ -71,12 +74,14 @@ You are an expert software engineer helping me write clean, maintainable code.
 **Scope:** Applies to entire project
 
 **Use for:**
+
 - Project-specific coding standards
 - Technology stack details
 - Architecture patterns
 - Team conventions
 
 **Example:**
+
 ```markdown
 # Project: E-commerce Platform
 
@@ -91,16 +96,19 @@ You are an expert software engineer helping me write clean, maintainable code.
 ## Coding Standards
 
 ### TypeScript
+
 - Use `interface` for public APIs, `type` for internal
 - Enable all strict flags
 - Prefer `const` over `let`, never use `var`
 
 ### React
+
 - Functional components only
 - Use React Server Components by default
 - Client components: explicit "use client" directive
 
 ### Testing
+
 - Write unit tests for all business logic
 - Use React Testing Library for components
 - Aim for 80% coverage minimum
@@ -108,14 +116,16 @@ You are an expert software engineer helping me write clean, maintainable code.
 ## Architecture
 
 ### Directory Structure
+
 \`\`\`
-app/           # Next.js App Router pages
-components/    # Shared React components
-lib/           # Utility functions and helpers
-prisma/        # Database schema and migrations
+app/ # Next.js App Router pages
+components/ # Shared React components
+lib/ # Utility functions and helpers
+prisma/ # Database schema and migrations
 \`\`\`
 
 ### API Conventions
+
 - REST endpoints in `app/api/`
 - Use Zod for request validation
 - Return standardized error responses
@@ -132,11 +142,13 @@ prisma/        # Database schema and migrations
 **Respects:** `.gitignore` and `.geminiignore` rules
 
 **Use for:**
+
 - Component-specific patterns
 - Module-level conventions
 - Special requirements for subsystems
 
 **Example:**
+
 ```markdown
 # Auth Module
 
@@ -152,11 +164,13 @@ This directory contains authentication and authorization logic.
 ## Module Patterns
 
 ### Token Service
+
 - Access tokens: 15-minute expiry
 - Refresh tokens: 7-day expiry
 - Implement token rotation on refresh
 
 ### Middleware
+
 - Authenticate all protected routes
 - Check permissions before allowing access
 - Return 401 for unauthenticated, 403 for unauthorized
@@ -183,6 +197,7 @@ my-project/
 When working in `app/api/auth/`:
 
 **Loaded context:**
+
 1. `~/.gemini/GEMINI.md` (Global)
 2. `my-project/GEMINI.md` (Project)
 3. `my-project/app/api/GEMINI.md` (Subdirectory)
@@ -194,6 +209,7 @@ When working in `app/api/auth/`:
 Import external files to avoid duplication:
 
 **Syntax:**
+
 ```markdown
 @./path/to/file.md
 @../shared/style-guide.md
@@ -202,6 +218,7 @@ Import external files to avoid duplication:
 **Example:**
 
 **Main GEMINI.md:**
+
 ```markdown
 # Project Configuration
 
@@ -215,6 +232,7 @@ Import external files to avoid duplication:
 ```
 
 **Referenced file (`docs/code-style.md`):**
+
 ```markdown
 # Code Style Guide
 
@@ -267,25 +285,31 @@ Customize context file names in `settings.json`:
 ### ✅ DO
 
 **Keep contexts focused:**
+
 - Global: Universal preferences
 - Project: Project-wide standards
 - Subdirectory: Module-specific rules
 
 **Be specific:**
+
 ```markdown
 # Good
+
 Use TypeScript strict mode with all checks enabled
 
 # Bad
+
 Use TypeScript
 ```
 
 **Update regularly:**
+
 - Remove outdated conventions
 - Add new patterns as they emerge
 - Keep technology versions current
 
 **Use imports for reusability:**
+
 ```markdown
 @../shared/typescript-config.md
 @./testing-standards.md
@@ -294,20 +318,24 @@ Use TypeScript
 ### ❌ DON'T
 
 **Don't duplicate:**
+
 - If a rule applies globally, put it in global GEMINI.md
 - Don't repeat project rules in subdirectories
 
 **Don't overload:**
+
 - Avoid massive context files (thousands of lines)
 - Split into modular imports instead
 
 **Don't store secrets:**
+
 - Never put API keys, passwords, or credentials
 - Use environment variables instead
 
 ## Example: TypeScript Project
 
 **Global (`~/.gemini/GEMINI.md`):**
+
 ```markdown
 # Luis's Coding Preferences
 
@@ -317,29 +345,35 @@ Use TypeScript
 ```
 
 **Project (`my-app/GEMINI.md`):**
+
 ```markdown
 # My App - Next.js E-commerce
 
 ## Tech Stack
+
 - Next.js 14, TypeScript, Tailwind CSS v4
 - Prisma with PostgreSQL
 - Deployed on Vercel
 
 ## Standards
+
 @./docs/typescript-standards.md
 @./docs/react-patterns.md
 
 ## Testing
+
 - Vitest for unit tests
 - Playwright for E2E tests
 - Minimum 80% coverage
 ```
 
 **Subdirectory (`my-app/components/GEMINI.md`):**
+
 ```markdown
 # UI Components
 
 All components in this directory:
+
 - Must be React Server Components by default
 - Add "use client" only when needed
 - Export as named exports (not default)
@@ -347,6 +381,7 @@ All components in this directory:
 ```
 
 **Result when working in `components/`:**
+
 ```
 Luis's preferences + App standards + Component rules = Full context
 ```
@@ -375,6 +410,7 @@ gemini> What coding style should I use?
 **Issue:** GEMINI.md not being read
 
 **Solutions:**
+
 1. Check filename: Must be exact (case-sensitive)
 2. Verify location: In project root or current directory
 3. Refresh context: `/memory refresh`
@@ -385,6 +421,7 @@ gemini> What coding style should I use?
 **Issue:** Context files too large, slowing down responses
 
 **Solutions:**
+
 1. Split into modular files with `@` imports
 2. Move rarely-used content to subdirectories
 3. Remove outdated sections
@@ -395,6 +432,7 @@ gemini> What coding style should I use?
 **Issue:** Global and project contexts contradict each other
 
 **Resolution:**
+
 - More specific context takes precedence (subdirectory > project > global)
 - Edit files to align or explicitly override:
   ```markdown
@@ -405,12 +443,12 @@ gemini> What coding style should I use?
 
 This project uses GEMINI.md alongside other agent configs:
 
-| Agent | Context File | Scope |
-|-------|--------------|-------|
-| Gemini CLI | `GEMINI.md` | Hierarchical (3-tier) |
-| Cursor | `.cursor/rules/` | Project-level symlinks |
+| Agent       | Context File     | Scope                  |
+| ----------- | ---------------- | ---------------------- |
+| Gemini CLI  | `GEMINI.md`      | Hierarchical (3-tier)  |
+| Cursor      | `.cursor/rules/` | Project-level symlinks |
 | Claude Code | `.claude/rules/` | Project-level symlinks |
-| Antigravity | `.agent/rules/` | Project-level copies |
+| Antigravity | `.agent/rules/`  | Project-level copies   |
 
 **Recommendation:** Keep GEMINI.md focused on Gemini-specific instructions. Shared rules go in `.agents/rules/` (see [Rules System](../../rules/rules-system.md)).
 

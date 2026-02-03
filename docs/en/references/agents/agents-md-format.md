@@ -15,6 +15,7 @@
 ### The Problem
 
 AI coding agents need project-specific context to work effectively:
+
 - How to build the project
 - Testing conventions
 - Code style guidelines
@@ -28,6 +29,7 @@ AGENTS.md provides a **standardized location** for this information, separate fr
 ### Key Benefit
 
 **"Give agents a clear, predictable place for instructions"** that:
+
 - Doesn't clutter README.md
 - Is easy for agents to find
 - Follows consistent format
@@ -42,6 +44,7 @@ AGENTS.md provides a **standardized location** for this information, separate fr
 **Different audiences, different purposes:**
 
 #### README.md (For Humans)
+
 - Quick start guides
 - Project description
 - Installation steps
@@ -50,6 +53,7 @@ AGENTS.md provides a **standardized location** for this information, separate fr
 - License information
 
 #### AGENTS.md (For AI Agents)
+
 - Detailed build steps
 - Testing procedures
 - Code style enforcement
@@ -84,6 +88,7 @@ project-root/
 ### Format
 
 **Standard Markdown** with flexible headings:
+
 - No required fields
 - No strict schema
 - Use headings for organization
@@ -98,6 +103,7 @@ project-root/
 **Purpose:** High-level context about the project
 
 **Example:**
+
 ```markdown
 # Project Overview
 
@@ -119,17 +125,22 @@ Uses App Router, Server Components, and TypeScript.
 **Purpose:** How to get the project running
 
 **Example:**
+
 ```markdown
 ## Setup
 
 \`\`\`bash
+
 # Install dependencies
+
 npm install
 
 # Set up database
+
 npm run db:setup
 
 # Run development server
+
 npm run dev
 \`\`\`
 
@@ -147,17 +158,22 @@ Copy `.env.example` to `.env.local` and configure:
 **Purpose:** Production build process
 
 **Example:**
+
 ```markdown
 ## Build
 
 \`\`\`bash
+
 # Type check
+
 npm run type-check
 
 # Build production bundle
+
 npm run build
 
 # Preview production build
+
 npm run start
 \`\`\`
 
@@ -169,24 +185,31 @@ Build artifacts in `.next/` directory.
 **Purpose:** How to run tests and what to test
 
 **Example:**
+
 ```markdown
 ## Testing
 
 \`\`\`bash
+
 # Run all tests
+
 npm test
 
 # Run tests in watch mode
+
 npm run test:watch
 
 # Run E2E tests
+
 npm run test:e2e
 
 # Check test coverage
+
 npm run test:coverage
 \`\`\`
 
 **Coverage Requirements:**
+
 - Minimum 80% coverage for new code
 - 100% coverage for utility functions
 - E2E tests for critical user flows
@@ -197,6 +220,7 @@ npm run test:coverage
 **Purpose:** Coding standards and conventions
 
 **Example:**
+
 ```markdown
 ## Code Style
 
@@ -232,6 +256,7 @@ npm run format
 **Purpose:** Security requirements and checks
 
 **Example:**
+
 ```markdown
 ## Security
 
@@ -246,10 +271,13 @@ npm run format
 ### Security Scanning
 
 \`\`\`bash
+
 # Check for known vulnerabilities
+
 npm audit
 
 # Run security linter
+
 npm run lint:security
 \`\`\`
 
@@ -265,6 +293,7 @@ npm run lint:security
 **Purpose:** Standardized commit messages
 
 **Example:**
+
 ```markdown
 ## Commit Messages
 
@@ -279,6 +308,7 @@ Follow Conventional Commits:
 \`\`\`
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -300,6 +330,7 @@ docs(readme): update installation instructions
 **Purpose:** PR requirements and checklist
 
 **Example:**
+
 ```markdown
 ## Pull Requests
 
@@ -314,6 +345,7 @@ docs(readme): update installation instructions
 ### PR Description Template
 
 \`\`\`markdown
+
 ## What
 
 [Brief description of changes]
@@ -341,32 +373,41 @@ docs(readme): update installation instructions
 **Purpose:** How to deploy to production
 
 **Example:**
+
 ```markdown
 ## Deployment
 
 ### Staging
 
 \`\`\`bash
+
 # Deploy to staging
+
 npm run deploy:staging
 
 # Verify deployment
+
 npm run verify:staging
 \`\`\`
 
 ### Production
 
 \`\`\`bash
+
 # Create production build
+
 npm run build
 
 # Run production tests
+
 npm run test:production
 
 # Deploy to production
+
 npm run deploy:production
 
 # Monitor deployment
+
 npm run monitor:production
 \`\`\`
 
@@ -382,6 +423,7 @@ npm run monitor:production
 **Purpose:** Troubleshooting guide
 
 **Example:**
+
 ```markdown
 ## Troubleshooting
 
@@ -395,6 +437,7 @@ NODE_OPTIONS=--max-old-space-size=4096 npm run build
 ### Database Connection Fails
 
 Check:
+
 1. PostgreSQL is running: `pg_isready`
 2. Correct DATABASE_URL in `.env.local`
 3. Database exists: `psql -l`
@@ -414,6 +457,7 @@ npm test -- --runInBand
 ### No Required Fields
 
 **Flexible format:**
+
 - Use any headings you need
 - Include what's relevant to your project
 - Skip sections that don't apply
@@ -425,9 +469,11 @@ npm test -- --runInBand
 # My Simple Project
 
 ## Setup
+
 npm install && npm run dev
 
 ## Testing
+
 npm test
 
 That's it!
@@ -436,12 +482,14 @@ That's it!
 ### Standard Markdown
 
 **Compatible with:**
+
 - All markdown renderers
 - Version control systems
 - Documentation tools
 - Text editors
 
 **Features:**
+
 - Code blocks with syntax highlighting
 - Lists (ordered and unordered)
 - Links and images
@@ -534,6 +582,7 @@ graph TD
 ### Supported AI Agents (25+)
 
 **Major Platforms:**
+
 - **Claude Code** (Anthropic)
 - **OpenAI Codex** (OpenAI)
 - **Google Jules** (Google)
@@ -543,6 +592,7 @@ graph TD
 - **Aider** (AI pair programming)
 
 **Additional Tools:**
+
 - Cline
 - Continue
 - Windsurf
@@ -554,6 +604,7 @@ graph TD
 ### Universal Compatibility
 
 **Benefits:**
+
 - Write once, works with all agents
 - Switch between agents seamlessly
 - Team members can use different tools
@@ -566,6 +617,7 @@ graph TD
 ### 1. Keep It Focused
 
 ✅ **DO:** Include agent-specific context
+
 ```markdown
 ## Before Committing
 
@@ -576,6 +628,7 @@ npm run lint && npm test
 ```
 
 ❌ **DON'T:** Duplicate README content
+
 ```markdown
 ## What is This Project?
 
@@ -585,22 +638,28 @@ npm run lint && npm test
 ### 2. Be Specific
 
 ✅ **DO:** Provide exact commands
+
 ```markdown
 ## Testing
 
 \`\`\`bash
+
 # Unit tests
+
 npm run test:unit
 
 # Integration tests
+
 npm run test:integration
 
 # E2E tests
+
 npm run test:e2e
 \`\`\`
 ```
 
 ❌ **DON'T:** Be vague
+
 ```markdown
 ## Testing
 
@@ -610,6 +669,7 @@ Run the tests somehow.
 ### 3. Include Context
 
 ✅ **DO:** Explain why
+
 ```markdown
 ## Database Migrations
 
@@ -620,6 +680,7 @@ Why: Enables safe rollbacks in production.
 ```
 
 ❌ **DON'T:** Just list commands
+
 ```markdown
 ## Migrations
 
@@ -633,6 +694,7 @@ npm run migrate
 ✅ **DO:** Keep AGENTS.md in sync with project changes
 
 **When to update:**
+
 - New build steps added
 - Testing procedures changed
 - Code style guidelines updated
@@ -643,6 +705,7 @@ npm run migrate
 ### 5. Use Code Blocks
 
 ✅ **DO:** Format commands properly
+
 ```markdown
 \`\`\`bash
 npm install
@@ -651,6 +714,7 @@ npm run dev
 ```
 
 ❌ **DON'T:** Use plain text
+
 ```markdown
 Run npm install then npm run dev
 ```
@@ -669,6 +733,7 @@ Run npm install then npm run dev
 Next.js 14 e-commerce platform with App Router, Server Components, and tRPC.
 
 Tech Stack:
+
 - Next.js 14 (App Router)
 - React 18 + TypeScript 5
 - Tailwind CSS
@@ -678,15 +743,21 @@ Tech Stack:
 ## Setup
 
 \`\`\`bash
+
 # Install dependencies
+
 npm install
 
 # Set up database
+
 cp .env.example .env.local
+
 # Edit .env.local with your DATABASE_URL
+
 npm run db:setup
 
 # Run development server
+
 npm run dev
 \`\`\`
 
@@ -697,26 +768,34 @@ Visit http://localhost:3000
 ### Before Starting Work
 
 \`\`\`bash
+
 # Pull latest changes
+
 git pull
 
 # Install any new dependencies
+
 npm install
 
 # Run database migrations
+
 npm run db:migrate
 \`\`\`
 
 ### While Coding
 
 \`\`\`bash
+
 # Type check
+
 npm run type-check
 
 # Lint
+
 npm run lint
 
 # Format
+
 npm run format
 \`\`\`
 
@@ -744,20 +823,26 @@ npm run format
 ## Testing
 
 \`\`\`bash
+
 # Run all tests
+
 npm test
 
 # Watch mode
+
 npm run test:watch
 
 # E2E tests
+
 npm run test:e2e
 
 # Coverage
+
 npm run test:coverage
 \`\`\`
 
 **Coverage Requirements:**
+
 - New code: 80% minimum
 - Utilities: 100%
 - Critical flows: E2E tests required
@@ -775,10 +860,13 @@ npm run test:coverage
 ### Security Commands
 
 \`\`\`bash
+
 # Vulnerability scan
+
 npm audit
 
 # Fix auto-fixable vulnerabilities
+
 npm audit fix
 \`\`\`
 
@@ -793,6 +881,7 @@ Use Conventional Commits:
 **Types:** feat, fix, docs, style, refactor, test, chore
 
 **Examples:**
+
 - `feat(cart): add quantity update functionality`
 - `fix(checkout): resolve payment confirmation issue`
 - `docs(api): update tRPC endpoint documentation`
@@ -810,6 +899,7 @@ Use Conventional Commits:
 ### PR Template
 
 \`\`\`markdown
+
 ## Changes
 
 [What changed]
@@ -839,10 +929,13 @@ npm run deploy:staging
 ### Production
 
 \`\`\`bash
+
 # Full production deployment
+
 npm run deploy:production
 
 # Monitor
+
 npm run monitor
 \`\`\`
 
@@ -864,17 +957,22 @@ NODE_OPTIONS=--max-old-space-size=4096 npm run build
 ### Database Issues
 
 \`\`\`bash
+
 # Reset database (development only!)
+
 npm run db:reset
 
 # Check connection
+
 npm run db:check
 \`\`\`
 
 ### Type Errors
 
 \`\`\`bash
+
 # Regenerate Prisma client
+
 npm run db:generate
 \`\`\`
 ```
@@ -889,6 +987,7 @@ npm run db:generate
 **Parent:** Linux Foundation
 
 **Purpose:**
+
 - Maintain specification
 - Ensure open standard
 - Foster community adoption
@@ -897,6 +996,7 @@ npm run db:generate
 ### Open Standard
 
 **Benefits:**
+
 - No single vendor control
 - Community-driven evolution
 - Long-term stability

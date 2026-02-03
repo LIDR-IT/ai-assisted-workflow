@@ -13,6 +13,7 @@
 ### Definition
 
 Subagents are autonomous AI assistants that:
+
 - Run in **separate context windows**
 - Work **independently** on delegated tasks
 - **Return results** to the parent Agent
@@ -32,6 +33,7 @@ When Cursor's Agent encounters a complex task, it can launch subagents that work
 Lengthy operations don't consume space in primary conversation.
 
 **Example:**
+
 - Research task generates 10,000 tokens
 - Only summary returns to main context
 - Main conversation stays focused
@@ -41,9 +43,11 @@ Lengthy operations don't consume space in primary conversation.
 Multiple subagents can run simultaneously on different codebase sections.
 
 **Example:**
+
 ```
 Review API changes and update documentation in parallel
 ```
+
 - API review subagent runs concurrently
 - Documentation subagent runs concurrently
 - Results merge when both complete
@@ -53,6 +57,7 @@ Review API changes and update documentation in parallel
 Configure custom prompts, tool access, and models for domain-specific responsibilities.
 
 **Example:**
+
 - Debugger with root cause analysis prompts
 - Test runner with strict test validation
 - Verifier with security focus
@@ -62,6 +67,7 @@ Configure custom prompts, tool access, and models for domain-specific responsibi
 Define custom subagents once, use across multiple projects.
 
 **Storage:**
+
 - **User-level:** `~/.cursor/agents/`
 - **Project-level:** `.cursor/agents/`
 
@@ -78,6 +84,7 @@ Cursor includes three automatic subagents designed based on analysis of Agent co
 **Rationale:** "Codebase exploration generates large intermediate output"
 
 **When used:**
+
 - Searching for files or patterns
 - Understanding code structure
 - Analyzing dependencies
@@ -92,6 +99,7 @@ Cursor includes three automatic subagents designed based on analysis of Agent co
 **Rationale:** "Command output isolation keeps parent focused on decisions"
 
 **When used:**
+
 - Running build scripts
 - Executing tests
 - Git operations
@@ -106,6 +114,7 @@ Cursor includes three automatic subagents designed based on analysis of Agent co
 **Rationale:** "DOM snapshots and screenshots filtered to relevant results"
 
 **When used:**
+
 - Web scraping
 - UI testing
 - Documentation browsing
@@ -130,16 +139,19 @@ Create Markdown files with YAML frontmatter:
 #### Required Fields
 
 **`name`** (optional but recommended)
+
 - Unique identifier
 - Lowercase letters and hyphens
 - Examples: `verifier`, `test-runner`, `debugger`
 
 **`description`** (optional but recommended)
+
 - Determines when Agent delegates to this subagent
 - Include concrete use cases
 - Use phrases like "use proactively" or "always use for"
 
 **Example:**
+
 ```yaml
 description: Independently validates completed work. Use proactively before marking tickets complete to verify features work end-to-end.
 ```
@@ -147,16 +159,19 @@ description: Independently validates completed work. Use proactively before mark
 #### Optional Fields
 
 **`model`**
+
 - Which model to use
 - Options: `fast`, `inherit`, or specific model ID
 - Default: `inherit` (uses parent's model)
 
 **`readonly`**
+
 - When `true`, restricts write permissions
 - Subagent cannot modify files
 - Good for verification and analysis tasks
 
 **`is_background`**
+
 - When `true`, runs in background without waiting
 - Returns immediately while working independently
 - Ideal for long-running or parallel workstreams
@@ -176,6 +191,7 @@ readonly: true
 You are an independent verifier that validates work completion.
 
 When invoked:
+
 1. Identify the claimed completed work
 2. Run relevant tests
 3. Search for edge cases
@@ -183,6 +199,7 @@ When invoked:
 5. Check for regressions
 
 Verification checklist:
+
 - All tests pass
 - Feature works as described
 - No obvious bugs or errors
@@ -191,6 +208,7 @@ Verification checklist:
 - Code quality is acceptable
 
 Report:
+
 - ✅ What works correctly
 - ❌ What's incomplete or broken
 - ⚠️ Potential issues or concerns
@@ -206,17 +224,20 @@ Be thorough and skeptical. Your job is to catch issues before they reach product
 ### Foreground Mode (Blocking)
 
 **Behavior:**
+
 - Blocks parent Agent until completion
 - Returns results immediately
 - Can ask clarifying questions
 - Can request permissions
 
 **Best for:**
+
 - Sequential tasks requiring immediate output
 - Tasks needing user interaction
 - Work dependent on results for next steps
 
 **Example:**
+
 ```
 Use the verifier to confirm the auth flow works
 [Agent waits for verifier to complete]
@@ -226,18 +247,21 @@ Use the verifier to confirm the auth flow works
 ### Background Mode (Non-blocking)
 
 **Behavior:**
+
 - Returns immediately while working independently
 - Runs concurrently with other work
 - Cannot ask clarifying questions
 - Cannot request additional permissions
 
 **Best for:**
+
 - Long-running tasks
 - Parallel workstreams
 - Independent research
 - Non-blocking operations
 
 **Example:**
+
 ```
 Have the test-runner check all tests in the background
 [Agent continues working]
@@ -245,6 +269,7 @@ Have the test-runner check all tests in the background
 ```
 
 **Configure via field:**
+
 ```yaml
 is_background: true
 ```
@@ -256,12 +281,14 @@ is_background: true
 ### Automatic Delegation
 
 Agent proactively delegates based on:
+
 - Task complexity
 - Custom subagent descriptions
 - Available tools
 - Context
 
 **Encourage automatic delegation:**
+
 ```yaml
 description: Use proactively after code changes to verify all tests pass.
 ```
@@ -269,11 +296,13 @@ description: Use proactively after code changes to verify all tests pass.
 ### Explicit Invocation
 
 **Slash syntax:**
+
 ```
 /verifier confirm the feature works
 ```
 
 **Natural language:**
+
 ```
 Have the debugger subagent investigate this error
 Use the test-runner to check all unit tests
@@ -282,6 +311,7 @@ Use the test-runner to check all unit tests
 ### Parallel Execution
 
 **Request multiple subagents:**
+
 ```
 Review API changes and update documentation in parallel
 Run tests while analyzing performance metrics
@@ -294,23 +324,27 @@ Run tests while analyzing performance metrics
 Subagent executions return agent IDs for resuming previous conversations.
 
 **Resume syntax:**
+
 ```
 Resume agent abc123 and analyze remaining test failures
 ```
 
 **When to resume:**
+
 - Continue incomplete work
 - Add follow-up analysis
 - Extend investigation
 - Build on previous results
 
 **Benefits:**
+
 - Preserves full context
 - Retains tool call history
 - Continues reasoning
 - Avoids redundant work
 
 **Background subagents:**
+
 - Write state continuously
 - Can be resumed after completion
 - Useful for long-running tasks
@@ -324,12 +358,14 @@ Resume agent abc123 and analyze remaining test failures
 **Purpose:** Independently validates work completion
 
 **Use case:**
+
 - Confirms features work end-to-end
 - Runs tests
 - Searches for edge cases
 - Identifies incomplete implementations
 
 **Example:**
+
 ```markdown
 ---
 name: verifier
@@ -341,6 +377,7 @@ model: fast
 You validate that claimed work is actually complete.
 
 Check:
+
 - Tests pass
 - Feature works as described
 - No regressions
@@ -354,11 +391,13 @@ Report what works, what's broken, and what's missing.
 **Purpose:** Parent agent coordinates multiple specialists
 
 **Workflow:**
+
 ```
 Planner (research) → Implementer (code) → Verifier (validate)
 ```
 
 **Benefits:**
+
 - Clear separation of concerns
 - Structured handoffs
 - Independent verification
@@ -369,6 +408,7 @@ Planner (research) → Implementer (code) → Verifier (validate)
 **Purpose:** Root cause analysis and minimal fixes
 
 **Workflow:**
+
 1. Capture stack traces
 2. Identify reproduction steps
 3. Isolate failure location
@@ -376,6 +416,7 @@ Planner (research) → Implementer (code) → Verifier (validate)
 5. Verify solution
 
 **Example:**
+
 ```markdown
 ---
 name: debugger
@@ -386,6 +427,7 @@ model: inherit
 You are an expert debugger focusing on root cause analysis.
 
 Process:
+
 1. Capture full error and stack trace
 2. Identify minimal reproduction steps
 3. Isolate exact failure location
@@ -393,6 +435,7 @@ Process:
 5. Verify solution resolves issue
 
 Provide:
+
 - Root cause explanation
 - Evidence supporting diagnosis
 - Specific code fix
@@ -404,6 +447,7 @@ Provide:
 **Purpose:** Proactively run and fix tests
 
 **Behavior:**
+
 - Detects code changes
 - Runs relevant tests
 - Analyzes failures
@@ -411,6 +455,7 @@ Provide:
 - Reports results
 
 **Example:**
+
 ```markdown
 ---
 name: test-runner
@@ -421,6 +466,7 @@ is_background: true
 You run tests and fix failures.
 
 When code changes:
+
 1. Identify affected tests
 2. Run test suite
 3. Analyze any failures
@@ -429,6 +475,7 @@ When code changes:
 6. Report results
 
 Report:
+
 - Tests run
 - Pass/fail status
 - Issues found
@@ -442,6 +489,7 @@ Report:
 ### Design
 
 ✅ **DO:**
+
 - Write **focused subagents** with single, clear responsibilities
 - **Invest heavily** in description fields (they drive delegation)
 - Keep prompts **concise and specific**
@@ -449,6 +497,7 @@ Report:
 - Add to **version control** for team benefits
 
 ❌ **DON'T:**
+
 - Create dozens of generic subagents
 - Write vague descriptions like "Use for general tasks"
 - Write overly long prompts (lengthy ≠ effective)
@@ -458,11 +507,13 @@ Report:
 ### Tool Access
 
 ✅ **DO:**
+
 - Use `readonly: true` for verification/analysis
 - Limit access to minimum tools needed
 - Test subagent behavior before deploying
 
 ❌ **DON'T:**
+
 - Grant all tools by default
 - Mix read and write without clear purpose
 - Allow dangerous operations without safeguards
@@ -470,12 +521,14 @@ Report:
 ### Collaboration
 
 ✅ **DO:**
+
 - **Version control** project subagents
 - **Document** tool requirements
 - **Share** successful patterns with team
 - **Let Agent help** draft initial configs
 
 ❌ **DON'T:**
+
 - Keep useful subagents local only
 - Skip documentation
 - Over-engineer before testing
@@ -514,11 +567,13 @@ Report:
 ### Token Usage
 
 **Each subagent maintains independent context:**
+
 - 5 parallel subagents ≈ 5× token consumption
 - Foreground subagents block parent
 - Background subagents run concurrently
 
 **Trade-offs:**
+
 - Context isolation vs. startup overhead
 - Parallel execution vs. higher token usage
 - Specialized focus vs. potential latency
@@ -568,12 +623,12 @@ Subagents **enabled by default**.
 
 Cursor reads subagents from multiple locations for compatibility:
 
-| Location | Scope | Platform |
-|----------|-------|----------|
-| `.cursor/agents/` | Project | Cursor |
-| `~/.cursor/agents/` | User | Cursor |
-| `.claude/agents/` | Project | Cross-platform |
-| `.codex/agents/` | Project | Cross-platform |
+| Location            | Scope   | Platform       |
+| ------------------- | ------- | -------------- |
+| `.cursor/agents/`   | Project | Cursor         |
+| `~/.cursor/agents/` | User    | Cursor         |
+| `.claude/agents/`   | Project | Cross-platform |
+| `.codex/agents/`    | Project | Cross-platform |
 
 **Recommendation:** Use `.cursor/agents/` for Cursor-specific subagents.
 
@@ -607,6 +662,7 @@ You are an independent verifier that validates work completion with a skeptical,
 ## Verification Checklist
 
 ### Functionality
+
 - ✅ Feature works exactly as described
 - ✅ All acceptance criteria met
 - ✅ Edge cases handled properly
@@ -614,18 +670,21 @@ You are an independent verifier that validates work completion with a skeptical,
 - ✅ No obvious bugs or crashes
 
 ### Testing
+
 - ✅ All existing tests still pass
 - ✅ New tests added for new functionality
 - ✅ Tests cover edge cases
 - ✅ No test failures or warnings
 
 ### Quality
+
 - ✅ Code follows project conventions
 - ✅ No code duplication introduced
 - ✅ Proper error messages
 - ✅ No performance regressions
 
 ### Regressions
+
 - ✅ Related features still work
 - ✅ No broken dependencies
 - ✅ No unexpected side effects
@@ -633,19 +692,24 @@ You are an independent verifier that validates work completion with a skeptical,
 ## Report Format
 
 ### ✅ What Works
+
 List features and tests that work correctly.
 
 ### ❌ What's Incomplete or Broken
+
 List specific issues found with:
+
 - File locations
 - Line numbers
 - Error messages
 - Reproduction steps
 
 ### ⚠️ Concerns
+
 List potential issues or areas needing attention.
 
 ### 📝 Recommendations
+
 Suggest improvements or fixes.
 
 ## Mindset
@@ -670,14 +734,14 @@ If something is incomplete or broken, be specific about what's wrong and how to 
 
 ### Differences
 
-| Feature | Cursor | Claude Code |
-|---------|--------|-------------|
-| **Foreground/Background** | `is_background` field | Automatic decision + Ctrl+B |
-| **Tool control** | `readonly` flag | `tools`, `disallowedTools` fields |
-| **Hooks** | Not documented | Full lifecycle hooks support |
-| **Skills integration** | Not documented | `skills` field in frontmatter |
-| **Permission modes** | Basic | Advanced (`acceptEdits`, `bypassPermissions`, etc.) |
-| **MCP tools** | Available | Foreground only |
+| Feature                   | Cursor                | Claude Code                                         |
+| ------------------------- | --------------------- | --------------------------------------------------- |
+| **Foreground/Background** | `is_background` field | Automatic decision + Ctrl+B                         |
+| **Tool control**          | `readonly` flag       | `tools`, `disallowedTools` fields                   |
+| **Hooks**                 | Not documented        | Full lifecycle hooks support                        |
+| **Skills integration**    | Not documented        | `skills` field in frontmatter                       |
+| **Permission modes**      | Basic                 | Advanced (`acceptEdits`, `bypassPermissions`, etc.) |
+| **MCP tools**             | Available             | Foreground only                                     |
 
 ### Recommendation
 
@@ -690,9 +754,11 @@ If something is incomplete or broken, be specific about what's wrong and how to 
 ## Resources
 
 **Official Documentation:**
+
 - [Cursor Subagents](https://cursor.com/docs/context/subagents)
 
 **In This Repository:**
+
 - `sub-agents-claude-code.md` - Claude Code sub-agents reference
 - `agent-development-claude-code.md` - Building agents in Claude Code
 - `agents-md-format.md` - AGENTS.md standard

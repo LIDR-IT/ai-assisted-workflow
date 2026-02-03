@@ -15,9 +15,11 @@ Plan Mode provides a structured 5-step process to ensure well-thought-out implem
 ## Activation
 
 **Keyboard Shortcut:**
+
 - Press **Shift+Tab** from the chat input to rotate to Plan Mode
 
 **Automatic Suggestion:**
+
 - Cursor suggests Plan Mode automatically when it detects keywords indicating complex tasks
 
 ## When to Use Plan Mode
@@ -31,6 +33,7 @@ Plan Mode is ideal for:
 - **Tasks requiring precise planning** before delegating to Agent
 
 **When NOT to use Plan Mode:**
+
 - Quick changes or bug fixes
 - Familiar, straightforward tasks
 - Simple refactoring with clear approach
@@ -38,9 +41,11 @@ Plan Mode is ideal for:
 ## Plan Storage
 
 **Ephemeral Files:**
+
 - Plans initially open as ephemeral virtual files (not saved to disk)
 
 **Saving Plans:**
+
 - Click **"Save to workspace"** to persist plans
 - Saved location: `.cursor/plans/`
 - Benefits:
@@ -55,6 +60,7 @@ Plan Mode is ideal for:
 The key insight: **"The hard part is often figuring out WHAT change should be made—a task suited well for humans."**
 
 For substantial changes:
+
 1. Invest time creating a precise, well-scoped plan
 2. Review and refine until you're confident
 3. Then delegate implementation to Agent
@@ -62,6 +68,7 @@ For substantial changes:
 ### Iterate on Plans, Not Code
 
 When Agent's output misses your intent:
+
 - ✅ **DO:** Revert changes and refine the plan
 - ❌ **DON'T:** Use follow-up prompts to fix code
 
@@ -70,6 +77,7 @@ When Agent's output misses your intent:
 ### Leverage Team Collaboration
 
 Saved plans in `.cursor/plans/` enable:
+
 - Code review before implementation
 - Team discussion on approach
 - Documentation of architectural decisions
@@ -81,35 +89,44 @@ Saved plans in `.cursor/plans/` enable:
 # Example: Adding Authentication System
 
 ## 1. Clarification Phase
+
 Agent: "What authentication method? (OAuth, JWT, session-based?)"
 User: "JWT with refresh tokens"
 
 ## 2. Research Phase
+
 Agent explores codebase:
+
 - Current user model structure
 - Existing middleware patterns
 - Database schema capabilities
 
 ## 3. Plan Creation
+
 Agent proposes:
+
 - New auth middleware
 - User model updates
 - Token service implementation
 - Protected route patterns
 
 ## 4. Review & Edit
+
 User refines plan:
+
 - Add rate limiting
 - Specify token expiration times
 - Include security headers
 
 ## 5. Build
+
 Click "Build" → Agent implements approved plan
 ```
 
 ## Integration with Agent Mode
 
 **Plan Mode + Agent Mode workflow:**
+
 1. Use Plan Mode for complex tasks requiring upfront design
 2. Review and approve plan
 3. Let Agent Mode execute the implementation

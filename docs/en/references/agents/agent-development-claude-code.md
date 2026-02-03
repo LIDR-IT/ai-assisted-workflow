@@ -31,7 +31,7 @@ You are a specialized agent for [purpose].
 
 1. [Primary responsibility]
 2. [Secondary responsibility]
-...
+   ...
 ```
 
 ---
@@ -43,12 +43,14 @@ You are a specialized agent for [purpose].
 #### name
 
 **Requirements:**
+
 - 3-50 characters
 - Lowercase with hyphens only
 - Start and end with alphanumeric
 - Unique within plugin/project
 
 **Valid Examples:**
+
 ```
 code-reviewer
 test-generator
@@ -57,6 +59,7 @@ doc-writer
 ```
 
 **Invalid Examples:**
+
 ```
 CodeReviewer    # uppercase
 code_reviewer   # underscores
@@ -70,11 +73,13 @@ cr              # too short
 **Most critical field** - defines when agent triggers.
 
 **Format:**
+
 ```yaml
 description: Use this agent when [conditions]. Examples:
 ```
 
 **Requirements:**
+
 - 10-5,000 characters
 - Start with "Use this agent when..."
 - Include 2-4 concrete `<example>` blocks
@@ -82,6 +87,7 @@ description: Use this agent when [conditions]. Examples:
 - Show both proactive and reactive scenarios
 
 **Example Structure:**
+
 ```yaml
 description: Use this agent when users need code review for quality and security. Examples:
 
@@ -109,6 +115,7 @@ test coverage, and documentation.
 #### model
 
 **Options:**
+
 - `inherit` (recommended) - Use host's default model
 - `sonnet` - Claude Sonnet (balanced)
 - `opus` - Claude Opus (most capable)
@@ -117,6 +124,7 @@ test coverage, and documentation.
 **Recommendation:** Use `inherit` unless agent needs specific model capabilities.
 
 **When to Override:**
+
 - `haiku` - Simple, fast tasks (file organization, formatting)
 - `sonnet` - Standard complexity (code review, testing)
 - `opus` - Complex reasoning (architecture design, refactoring)
@@ -126,6 +134,7 @@ test coverage, and documentation.
 **Purpose:** Visual identifier for agent in UI.
 
 **Options:**
+
 - `blue` - Analysis, review tasks
 - `cyan` - Data processing, transformation
 - `green` - Success operations, validation
@@ -134,6 +143,7 @@ test coverage, and documentation.
 - `red` - Security, critical tasks
 
 **Choose based on agent purpose:**
+
 ```yaml
 color: blue      # Code reviewer
 color: green     # Test validator
@@ -176,12 +186,14 @@ The markdown body becomes the agent's system prompt.
 ### Writing Style
 
 **Use second person** - Address the agent directly:
+
 ```markdown
 You are a code review specialist.
 You will analyze code for bugs and security issues.
 ```
 
 **Not third person:**
+
 ```markdown
 ❌ The agent analyzes code...
 ❌ This agent will review...
@@ -244,6 +256,7 @@ Provide findings in this format:
 ### Specificity
 
 ✅ **Be specific about:**
+
 - What to analyze
 - How to analyze
 - What to report
@@ -251,6 +264,7 @@ Provide findings in this format:
 - Edge cases
 
 ❌ **Avoid vague prompts:**
+
 ```markdown
 ❌ Review code for issues
 ✅ Check for SQL injection, XSS, authentication bypass, and insecure data handling
@@ -265,6 +279,7 @@ Provide findings in this format:
 **Minimum:** 2-4 examples in description
 
 **Each example should include:**
+
 - `<context>` - Situation/background
 - `<user>` - What user says
 - `<assistant>` - How agent responds
@@ -294,6 +309,7 @@ description: Use this agent when reviewing code. Examples:
 ### Proactive vs Reactive
 
 **Proactive Triggering:**
+
 ```yaml
 <example>
 <context>User just wrote new code</context>
@@ -304,6 +320,7 @@ description: Use this agent when reviewing code. Examples:
 ```
 
 **Reactive Triggering:**
+
 ```yaml
 <example>
 <context>User explicitly requests review</context>
@@ -336,6 +353,7 @@ Include negative examples:
 3. Convert to markdown with frontmatter
 
 **Template Prompt:**
+
 ```
 Create an agent for [purpose] that:
 - [Requirement 1]
@@ -350,6 +368,7 @@ Provide as JSON with: name, description, model, color, tools, and system_prompt
 **Steps:**
 
 1. **Choose identifier**
+
    ```
    security-reviewer
    test-generator
@@ -357,27 +376,32 @@ Provide as JSON with: name, description, model, color, tools, and system_prompt
    ```
 
 2. **Write description with examples**
+
    ```yaml
    description: Use this agent when [conditions]. Examples:
    [2-4 concrete examples]
    ```
 
 3. **Select model and color**
+
    ```yaml
    model: inherit
    color: blue
    ```
 
 4. **Define tools (if restricting)**
+
    ```yaml
    tools: [Read, Grep]
    ```
 
 5. **Write system prompt**
+
    ```markdown
    You are a [specialization].
 
    ## Responsibilities
+
    ...
    ```
 
@@ -390,6 +414,7 @@ Provide as JSON with: name, description, model, color, tools, and system_prompt
 ### Identifier Validation
 
 **Check:**
+
 - [ ] 3-50 characters
 - [ ] Lowercase only
 - [ ] Hyphens for word separation
@@ -400,6 +425,7 @@ Provide as JSON with: name, description, model, color, tools, and system_prompt
 ### Description Validation
 
 **Check:**
+
 - [ ] 10-5,000 characters
 - [ ] Starts with "Use this agent when..."
 - [ ] Contains 2-4 `<example>` blocks
@@ -410,6 +436,7 @@ Provide as JSON with: name, description, model, color, tools, and system_prompt
 ### System Prompt Validation
 
 **Check:**
+
 - [ ] 20-10,000 characters
 - [ ] Uses second person ("You are...")
 - [ ] Clear responsibilities listed
@@ -436,6 +463,7 @@ cc
 ```
 
 **Confirm:**
+
 - Agent triggers with similar phrasing
 - Agent doesn't trigger for unrelated tasks
 - Correct agent activates (if multiple agents exist)
@@ -579,27 +607,33 @@ Follow these steps for each review:
 ## Output Format
 
 Provide findings in this structure:
-
 ```
+
 ## Security Review: [File/Component Name]
 
 ### Critical Issues
+
 - **[Vulnerability Type]** (file:line)
   - Issue: [Description]
   - Risk: [Impact explanation]
   - Fix: [Specific remediation]
 
 ### High Priority
+
 - ...
 
 ### Medium Priority
+
 - ...
 
 ### Low Priority
+
 - ...
 
 ### Recommendations
+
 - [General security improvements]
+
 ```
 
 ## Edge Cases

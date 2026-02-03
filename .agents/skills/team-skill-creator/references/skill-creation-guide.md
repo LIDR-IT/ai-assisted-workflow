@@ -19,12 +19,14 @@ Complete process for creating skills within the `.agents/` system, adapted from 
 Skills extend AI agent capabilities with specialized knowledge that no model inherently possesses:
 
 **Good skill candidates:**
+
 - Domain expertise (company schemas, business logic, proprietary workflows)
 - Repetitive code patterns requiring templates or boilerplate
 - Multi-step procedures needing documentation
 - Tool integrations with specific file formats or APIs
 
 **Poor skill candidates:**
+
 - General knowledge already in model training
 - One-time operations (use commands instead)
 - Simple prompts without bundled resources
@@ -121,6 +123,7 @@ For reference files **>100 lines**, include table of contents at top:
 4. [Integration Testing](#integration-testing)
 
 ## Component Testing
+
 ...
 ```
 
@@ -131,12 +134,14 @@ For reference files **>100 lines**, include table of contents at top:
 **Purpose:** Clearly define how the skill will be used
 
 **Questions to answer:**
+
 - What functionality should this skill support?
 - Can you give concrete examples of usage?
 - What would trigger this skill?
 - What variations of usage exist?
 
 **Example for image-editor skill:**
+
 - "What should it support? Editing, rotating, anything else?"
 - "Examples: 'Remove red-eye from this image' or 'Rotate this image'"
 - "Other use cases?"
@@ -148,20 +153,24 @@ For reference files **>100 lines**, include table of contents at top:
 **Purpose:** Identify what bundled resources make the skill effective
 
 **Analysis for each example:**
+
 1. How would you execute this from scratch?
 2. What scripts, references, or assets would help when executing repeatedly?
 
 **Example decisions:**
 
 **PDF rotation skill:**
+
 - Analysis: Rotating PDFs requires re-writing same code each time
 - Decision: Add `scripts/rotate_pdf.py`
 
 **Frontend webapp builder skill:**
+
 - Analysis: Webapps need same HTML/React boilerplate each time
 - Decision: Add `assets/hello-world/` template with boilerplate files
 
 **BigQuery skill:**
+
 - Analysis: Queries require re-discovering table schemas each time
 - Decision: Add `references/schema.md` documenting schemas
 
@@ -189,21 +198,25 @@ mkdir -p .agents/skills/{skill-name}/scripts
 **Start with resources identified in Step 2:**
 
 **Scripts (`scripts/`):**
+
 - Executable code (Python/Bash/etc.) for deterministic operations
 - ✅ Test scripts by actually running them
 - ✅ Verify output matches expectations
 
 **References (`references/`):**
+
 - Documentation Claude should reference while working
 - Examples: schemas, API docs, policies, workflow guides
 - For large files (>10k words), include grep patterns in SKILL.md
 
 **Assets (`assets/`):**
+
 - Files used in output (not loaded into context)
 - Examples: templates, images, boilerplate code
 - Used by copying/modifying in final output
 
 **Examples (`examples/`):**
+
 - Working examples demonstrating skill usage
 - Concrete use cases for reference
 
@@ -222,12 +235,14 @@ version: 0.1.0
 ```
 
 **Critical requirements:**
+
 - **name**: lowercase, hyphens, 3-50 characters
 - **description**: MUST be in **third person** ("This skill should be used when...")
 - **description**: MUST include **specific trigger phrases** users would say
 - **description**: Include ALL "when to use" information HERE (body is only loaded after triggering)
 
 **Example description:**
+
 ```yaml
 description: This skill should be used when the user needs to "test React components", "write React tests", "test hooks", or "test async components". Provides testing patterns, templates, and boilerplate generation for React component and hook testing.
 ```
@@ -249,21 +264,27 @@ description: This skill should be used when the user needs to "test React compon
 # Skill Name
 
 ## Overview
+
 Brief description of what this skill does.
 
 ## Quick Start
+
 Minimal working example to get started.
 
 ## Usage Patterns
+
 Common use cases and workflows.
 
 ## Examples
+
 Concrete examples demonstrating usage.
 
 ## Advanced Features
+
 Links to references/ for deep dives.
 
 ## References
+
 - See references/details.md for...
 - See assets/template.tsx for...
 ```
@@ -275,11 +296,13 @@ Links to references/ for deep dives.
 ### Required Fields
 
 **name:**
+
 - Format: lowercase, hyphens only
 - Length: 3-50 characters
 - Example: `react-testing`, `database-queries`, `pdf-editor`
 
 **description:**
+
 - MUST use third person: "This skill should be used when..."
 - MUST include trigger phrases: Exact words users would say
 - MUST include context: What skill provides
@@ -288,16 +311,19 @@ Links to references/ for deep dives.
 ### Optional Fields
 
 **version:**
+
 - Semantic versioning recommended: `0.1.0`, `1.0.0`, `1.2.3`
 - Helps track skill evolution
 
 **license:**
+
 - If distributing externally
 - Example: `MIT`, `Complete terms in LICENSE.txt`
 
 ### Fields to AVOID
 
 Do NOT include in skill frontmatter (these are for agents):
+
 - ❌ `model`
 - ❌ `color`
 - ❌ `tools`
@@ -307,16 +333,19 @@ Do NOT include in skill frontmatter (these are for agents):
 ### Scripts (`scripts/`)
 
 **When to include:**
+
 - Same code being rewritten repeatedly
 - Deterministic reliability needed
 - Token efficiency important
 
 **Examples:**
+
 - `scripts/rotate_pdf.py` - PDF rotation
 - `scripts/extract_data.py` - Data extraction
 - `scripts/generate_boilerplate.sh` - Code generation
 
 **Best practices:**
+
 - ✅ Test all scripts before adding
 - ✅ Include usage documentation in SKILL.md
 - ✅ Make scripts executable: `chmod +x scripts/*.sh`
@@ -327,18 +356,21 @@ Do NOT include in skill frontmatter (these are for agents):
 ### References (`references/`)
 
 **When to include:**
+
 - Documentation Claude should reference while working
 - Domain knowledge (schemas, APIs, policies)
 - Detailed workflow guides
 - Examples and patterns
 
 **Examples:**
+
 - `references/schema.md` - Database schemas
 - `references/api_docs.md` - API specifications
 - `references/patterns.md` - Code patterns
 - `references/policies.md` - Company policies
 
 **Best practices:**
+
 - ✅ Keep SKILL.md lean, move details to references
 - ✅ Add table of contents for files >100 lines
 - ✅ Include grep patterns in SKILL.md for large files (>10k words)
@@ -347,18 +379,21 @@ Do NOT include in skill frontmatter (these are for agents):
 ### Assets (`assets/`)
 
 **When to include:**
+
 - Files used in output (not loaded into context)
 - Templates, boilerplate, starter code
 - Images, icons, fonts
 - Sample documents
 
 **Examples:**
+
 - `assets/logo.png` - Brand assets
 - `assets/template.tsx` - React component template
 - `assets/boilerplate/` - Project starter files
 - `assets/font.ttf` - Typography
 
 **Best practices:**
+
 - ✅ Files are copied/modified in output, not read into context
 - ✅ Keep assets focused and relevant
 - ✅ Document asset usage in SKILL.md
@@ -366,11 +401,13 @@ Do NOT include in skill frontmatter (these are for agents):
 ### Examples (`examples/`)
 
 **When to include:**
+
 - Working examples demonstrating skill usage
 - Concrete use cases for reference
 - Sample outputs
 
 **Best practices:**
+
 - ✅ Examples should be complete and functional
 - ✅ Show multiple variations if applicable
 - ✅ Keep examples concise but realistic
@@ -380,16 +417,19 @@ Do NOT include in skill frontmatter (these are for agents):
 ### Writing Effective Descriptions
 
 **Good description:**
+
 ```yaml
 description: This skill should be used when the user needs to "test React components", "write React tests", "test hooks", or "test async React code". Provides testing patterns, templates, and boilerplate for Jest and React Testing Library.
 ```
 
 **Poor description:**
+
 ```yaml
 description: React testing helper.
 ```
 
 **Why good is better:**
+
 - ✅ Includes specific trigger phrases
 - ✅ Lists multiple use cases
 - ✅ Describes what skill provides
@@ -433,6 +473,7 @@ This skill provides access to company database schemas and query patterns.
 ### Testing Skills
 
 **Before finalizing:**
+
 1. ✅ Run all scripts to verify they work
 2. ✅ Test skill triggers with expected phrases
 3. ✅ Verify bundled resources load correctly
@@ -440,6 +481,7 @@ This skill provides access to company database schemas and query patterns.
 5. ✅ Validate frontmatter structure
 
 **Testing workflow:**
+
 ```bash
 # Validate structure
 ./.agents/skills/team-skill-creator/scripts/validate-skill.sh {skill-name}
@@ -457,18 +499,22 @@ This skill provides access to company database schemas and query patterns.
 ### Differences from Generic skill-creator
 
 **No init_skill.py script:**
+
 - Generic: Use `scripts/init_skill.py skill-name --path .`
 - `.agents/`: Manually create directories with `mkdir -p`
 
 **Location:**
+
 - Generic: Can be anywhere
 - `.agents/`: Must be in `.agents/skills/{skill-name}/`
 
 **Synchronization:**
+
 - Generic: Manual installation
 - `.agents/`: Automatic via `sync-all.sh`
 
 **Platform awareness:**
+
 - Generic: Single platform
 - `.agents/`: 4 platforms (Cursor, Claude Code, Gemini CLI, Antigravity)
 
@@ -485,6 +531,7 @@ After creating skill, synchronization happens automatically:
 ```
 
 **Verification:**
+
 ```bash
 # Check symlinks created
 ls -la .cursor/skills/{skill-name}
@@ -497,17 +544,20 @@ cat .cursor/skills/{skill-name}/SKILL.md
 ### Platform Considerations
 
 **Cursor, Claude Code, Gemini CLI:**
+
 - ✅ Full directory symlinks
 - ✅ Instant propagation of edits
 - ✅ No re-sync needed after changes
 
 **Antigravity:**
+
 - ⚠️ Selective symlinks (per-skill)
 - ⚠️ Must re-sync after editing: `./.agents/sync-all.sh`
 
 ### Integration with Team Workflow
 
 **Creation workflow:**
+
 1. Use team-skill-creator for guidance
 2. Create directories in `.agents/skills/`
 3. Implement bundled resources
@@ -516,6 +566,7 @@ cat .cursor/skills/{skill-name}/SKILL.md
 6. Test in all platforms
 
 **Maintenance workflow:**
+
 1. Edit files in `.agents/skills/{skill-name}/`
 2. Changes propagate instantly (Cursor/Claude/Gemini)
 3. For Antigravity: Re-run `./.agents/sync-all.sh`

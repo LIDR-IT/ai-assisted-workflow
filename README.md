@@ -11,6 +11,7 @@
 **One source of truth.** Edit once in `.agents/`, automatically synchronized to Cursor, Claude Code, Gemini CLI, and Antigravity.
 
 **Stats:**
+
 - 📏 287 total files (40% reduction from 482)
 - 📋 14 rules across 8 categories
 - 🧩 9 reusable skill packages
@@ -49,6 +50,7 @@ ls -la .cursor/skills .claude/rules .gemini/commands
 **14 rules across 8 categories** provide intelligent context to all AI agents.
 
 **Categories:**
+
 - `code/` - principles.md, style.md
 - `content/` - copywriting.md
 - `design/` - web-design.md
@@ -63,15 +65,16 @@ ls -la .cursor/skills .claude/rules .gemini/commands
 **Autonomous Agent:** `doc-improver` audits documentation structure, identifies gaps, suggests improvements
 
 **Universal YAML frontmatter:**
+
 ```yaml
 ---
-name: web-design                     # Cursor
-description: Web interface design guidelines  # All platforms
-alwaysApply: false                  # Cursor
-globs: ["**/*.{tsx,jsx}"]          # Cursor
-argument-hint: <file-or-pattern>    # Claude/Gemini
-paths: ["src/**/*.{tsx,jsx}"]      # Claude
-trigger: always_on                  # Antigravity
+name: web-design # Cursor
+description: Web interface design guidelines # All platforms
+alwaysApply: false # Cursor
+globs: ["**/*.{tsx,jsx}"] # Cursor
+argument-hint: <file-or-pattern> # Claude/Gemini
+paths: ["src/**/*.{tsx,jsx}"] # Claude
+trigger: always_on # Antigravity
 ---
 ```
 
@@ -86,6 +89,7 @@ trigger: always_on                  # Antigravity
 **9 specialized skills** that teach agents how to create more agents, following progressive disclosure pattern.
 
 **Teaching Skills:**
+
 - `team-skill-creator` - Meta-skill for creating skills/commands/agents with auto-sync
 - `command-development` - Comprehensive command creation workflow
 - `agent-development` - Full agent development guide
@@ -97,6 +101,7 @@ trigger: always_on                  # Antigravity
 - `find-skills` - Skill discovery utility
 
 **Progressive Disclosure Pattern:**
+
 ```
 SKILL.md (essentials, always loaded)
     ↓
@@ -110,6 +115,7 @@ scripts/ (executable utilities)
 ```
 
 **Example Usage:**
+
 ```
 User: "Create a skill for React component testing with test templates"
 
@@ -130,6 +136,7 @@ User: "Create a skill for React component testing with test templates"
 **9 skill packages** with bundled resources (scripts, references, templates).
 
 **Structure Pattern:**
+
 ```
 .agents/skills/skill-name/
 ├── SKILL.md              # Core instructions (always loaded)
@@ -140,6 +147,7 @@ User: "Create a skill for React component testing with test templates"
 ```
 
 **Available Skills:**
+
 - `agent-development` - Agent creation patterns
 - `command-development` - Command creation workflows
 - `commit-management` - Git commit workflows
@@ -151,6 +159,7 @@ User: "Create a skill for React component testing with test templates"
 - `team-skill-creator` - Meta-skill for creating components
 
 **Why Progressive Disclosure?**
+
 - **Fast loading:** Only SKILL.md loaded initially
 - **Deep context:** references/ loaded on-demand when needed
 - **Examples ready:** Sample code accessible when implementing
@@ -165,16 +174,17 @@ User: "Create a skill for React component testing with test templates"
 **Context7 integration** providing up-to-date documentation for popular libraries and frameworks.
 
 **Current Servers:**
+
 - **Context7** - Framework/library documentation access (React, Next.js, TypeScript, etc.)
 
 **Platform Support:**
 
-| Platform | Project-Level | Global | Config Location |
-|----------|--------------|--------|----------------|
-| Cursor | ✅ | ✅ | `.cursor/mcp.json` |
-| Claude Code | ✅ | ✅ | `.claude/mcp.json` |
-| Gemini CLI | ✅ | ✅ | `.gemini/settings.json` |
-| Antigravity | ❌ | ✅ | `~/.gemini/antigravity/mcp_config.json` |
+| Platform    | Project-Level | Global | Config Location                         |
+| ----------- | ------------- | ------ | --------------------------------------- |
+| Cursor      | ✅            | ✅     | `.cursor/mcp.json`                      |
+| Claude Code | ✅            | ✅     | `.claude/mcp.json`                      |
+| Gemini CLI  | ✅            | ✅     | `.gemini/settings.json`                 |
+| Antigravity | ❌            | ✅     | `~/.gemini/antigravity/mcp_config.json` |
 
 **Add New MCP Server:**
 
@@ -216,6 +226,7 @@ git commit -m "feat: Add my-server MCP integration"
 **Git hooks patterns** documented for pre-commit, post-merge automation.
 
 **Available Patterns:**
+
 - **Pre-commit validation** - Check rules character count, validate JSON
 - **Post-merge sync** - Auto-run sync scripts after pulling changes
 - **Pre-push checks** - Verify sync status before pushing
@@ -256,11 +267,11 @@ echo "✅ Pre-commit checks passed"
 
 **Available Commands:**
 
-| Command | Purpose | Invokes |
-|---------|---------|---------|
-| `/commit` | Smart commit message generation | commit-management skill |
-| `/improve-docs` | Documentation audit and improvement | doc-improver agent |
-| `/sync-setup` | Synchronize all configurations | sync-all.sh script |
+| Command         | Purpose                             | Invokes                 |
+| --------------- | ----------------------------------- | ----------------------- |
+| `/commit`       | Smart commit message generation     | commit-management skill |
+| `/improve-docs` | Documentation audit and improvement | doc-improver agent      |
+| `/sync-setup`   | Synchronize all configurations      | sync-all.sh script      |
 
 **Command → Agent → Skill Pattern:**
 
@@ -318,6 +329,7 @@ Root symlinks:
 ```
 
 **Key principles:**
+
 - Edit once in `.agents/`, automatically synchronized to all platforms
 - One orchestrator, multiple subagents - edit any root symlink to update all
 - Bidirectional editing: changes to `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md` update the orchestrator source
@@ -332,6 +344,7 @@ Root symlinks:
 **Platforms:** Cursor, Claude Code, Gemini CLI
 
 **Technical implementation:**
+
 ```bash
 # Create full directory symlinks
 ln -s ../.agents/skills .cursor/skills
@@ -340,16 +353,19 @@ ln -s ../.agents/skills .gemini/skills
 ```
 
 **Advantages:**
+
 - Changes propagate instantly
 - Zero duplication
 - Filesystem-native
 - Git handles symlinks correctly
 
 **Limitations:**
+
 - Windows requires Developer Mode
 - Check with: `readlink .cursor/skills` (should output: `../.agents/skills`)
 
 **Verification:**
+
 ```bash
 # Verify symlink created
 ls -la .cursor/skills
@@ -367,6 +383,7 @@ cat .cursor/skills/team-skill-creator/SKILL.md
 **Why selective:** Cursor doesn't support subdirectories, Gemini has no native rules support
 
 **Technical implementation:**
+
 ```bash
 # Full directory symlink (supports nested structure)
 ln -s ../.agents/rules .claude/rules
@@ -374,12 +391,14 @@ ln -s ../.agents/rules .agent/rules
 ```
 
 **Platform-specific behavior:**
+
 - **Claude Code:** Supports nested subdirectories → can use symlink
 - **Antigravity:** Supports nested subdirectories → can use symlink
 - **Cursor:** No subdirectory support → requires copy+convert (Strategy #4)
 - **Gemini CLI:** No native rules → requires index file (Strategy #3)
 
 **Verification:**
+
 ```bash
 # Verify symlink target
 readlink .claude/rules
@@ -399,6 +418,7 @@ cat .claude/rules/code/principles.md
 **Technical details - MCP transformation:**
 
 **Source (universal format):**
+
 ```json
 {
   "servers": {
@@ -413,6 +433,7 @@ cat .claude/rules/code/principles.md
 ```
 
 **Generated (Cursor format):**
+
 ```json
 {
   "mcpServers": {
@@ -426,6 +447,7 @@ cat .claude/rules/code/principles.md
 ```
 
 **jq transformation:**
+
 ```bash
 # Extract server config and transform
 jq '.servers | to_entries | map({
@@ -435,6 +457,7 @@ jq '.servers | to_entries | map({
 ```
 
 **Gemini index generation:**
+
 ```bash
 # Generate GEMINI.md with categorized links
 cat > .gemini/GEMINI.md << 'EOF'
@@ -456,6 +479,7 @@ EOF
 **Reason:** Platform limitation - no subdirectories support, `.mdc` extension required
 
 **Technical details:**
+
 ```bash
 # Find all rules, copy to flat structure, convert to .mdc
 find .agents/rules -type f -name "*.md" | while read rule; do
@@ -471,6 +495,7 @@ done
 ```
 
 **Before sync:**
+
 ```
 .agents/rules/
 ├── code/
@@ -481,6 +506,7 @@ done
 ```
 
 **After sync:**
+
 ```
 .cursor/rules/
 ├── principles.mdc      # Flattened
@@ -492,13 +518,13 @@ done
 
 ### Platform Support Matrix
 
-| Component | Cursor | Claude Code | Gemini CLI | Antigravity |
-|-----------|--------|-------------|------------|-------------|
-| **Rules** | ✅ Copy (.mdc) | ✅ Symlink | ❌ Index only | ✅ Symlink |
-| **Skills** | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink |
-| **Commands** | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Copy |
-| **Agents** | ✅ Symlink | ✅ Symlink | ✅ Symlink | ❌ Not supported |
-| **MCP (Project)** | ✅ Generated | ✅ Generated | ✅ Generated | ❌ Global only |
+| Component         | Cursor         | Claude Code  | Gemini CLI    | Antigravity      |
+| ----------------- | -------------- | ------------ | ------------- | ---------------- |
+| **Rules**         | ✅ Copy (.mdc) | ✅ Symlink   | ❌ Index only | ✅ Symlink       |
+| **Skills**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ✅ Symlink       |
+| **Commands**      | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ✅ Copy          |
+| **Agents**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ❌ Not supported |
+| **MCP (Project)** | ✅ Generated   | ✅ Generated | ✅ Generated  | ❌ Global only   |
 
 ### Sync Execution Order
 
@@ -527,12 +553,14 @@ done
 ### File Watching Behavior
 
 **Antigravity caching:**
+
 - Loads rules into memory on startup
 - Detects changes via file modification timestamps
 - **Problem:** If Antigravity already open, sync updates files but app doesn't detect
 - **Solution:** Close and reopen project, or restart Antigravity
 
 **Workflow:**
+
 ```bash
 # Option 1: Sync BEFORE opening Antigravity (Recommended)
 ./.agents/sync-all.sh
@@ -547,24 +575,28 @@ done
 ### Design Decisions
 
 **Why centralized?**
+
 - **Eliminate drift:** Single update point prevents configuration inconsistencies across team
 - **Version control:** All changes tracked in one location
 - **Easy auditing:** Clear ownership and change history
 - **Team collaboration:** Everyone works on same configurations
 
 **Why hybrid sync?**
+
 - **Platform capabilities differ:** Some support symlinks, some don't; some support subdirectories, some don't
 - **Graceful degradation:** Handle limitations without breaking functionality
 - **Optimal strategy per component:** Use best approach for each (symlinks > generation > copy)
 - **Transparent handling:** Sync scripts hide complexity from users
 
 **Why `.agents/` directory?**
+
 - **[agents.md](https://agents.md) standard:** Universal convention for agent configurations
 - **Clear separation:** Distinct from `docs/` (documentation) and `src/` (code)
 - **Consistent across platforms:** All 4 platforms recognize this pattern
 - **Scalable:** Easy to add new components (agents, skills, commands, rules)
 
 **Trade-offs accepted:**
+
 - **Manual sync vs auto-watch:** Manual is safer (explicit, verifiable), can add git hooks if needed
 - **Duplication (Cursor rules):** Necessary due to platform limitation, mitigated with automated sync
 - **Learning curve:** Initial setup requires understanding sync strategies, but well-documented
@@ -580,6 +612,7 @@ done
 **Scenario:** Development team wants consistent code review criteria across all AI platforms
 
 **Solution:**
+
 1. Create rule: `.agents/rules/code/review-checklist.md`
 2. Add universal YAML frontmatter (works on all 4 platforms)
 3. Run sync: `./.agents/rules/sync-rules.sh`
@@ -588,7 +621,8 @@ done
 **Result:** Every code review follows same standards across Cursor, Claude Code, Gemini CLI, and Antigravity
 
 **Example rule:**
-```markdown
+
+````markdown
 ---
 name: review-checklist
 description: Code review standards
@@ -604,18 +638,21 @@ trigger: always_on
 Review these files for compliance: $ARGUMENTS
 
 ## Security
+
 - [ ] No hardcoded credentials
 - [ ] Input validation present
 - [ ] SQL injection protected
 - [ ] XSS prevention implemented
 
 ## Code Quality
+
 - [ ] Functions under 50 lines
 - [ ] No commented-out code
 - [ ] Meaningful variable names
 - [ ] Error handling present
 
 ## Testing
+
 - [ ] Unit tests included
 - [ ] Edge cases covered
 - [ ] Test coverage >80%
@@ -635,7 +672,9 @@ src/api/users.ts:89 - SQL query vulnerable to injection
 
 ✓ pass
 ```
-``````
+````
+
+````
 
 ---
 
@@ -2078,3 +2117,4 @@ See [git history](https://github.com/LIDR-IT/ai-assisted-workflow/commits/main) 
 **Ready to get started?** Jump to [Quick Start](#quick-start) or read the [Complete Setup Guide](docs/en/guides/setup.md)
 
 **Questions?** Open an [issue](https://github.com/LIDR-IT/ai-assisted-workflow/issues) or start a [discussion](https://github.com/LIDR-IT/ai-assisted-workflow/discussions)
+````

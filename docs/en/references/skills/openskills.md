@@ -12,6 +12,7 @@
 ## Core Purpose
 
 OpenSkills acts as a bridge that allows a single skill format (SKILL.md) to work seamlessly across different AI coding agents:
+
 - Claude Code
 - Cursor
 - Windsurf
@@ -24,22 +25,26 @@ This eliminates the need to maintain separate skill formats for different AI age
 ## Key Features
 
 ### Universal Compatibility
+
 - **Multi-agent support**: Works with multiple AI coding agents, not just Claude Code
 - **Identical format**: Uses the same prompt format and folder structure as Claude Code
 - **Progressive disclosure**: Loads skills on-demand to avoid context bloat
 
 ### Flexible Installation Options
+
 - **Project-local**: `./.claude/skills/` (default)
 - **Global**: `~/.claude/skills/` (system-wide)
 - **Universal mode**: `./.agent/skills/` (for multi-agent setups)
 
 ### Multiple Source Support
+
 - GitHub repositories
 - Local file paths
 - Private git repositories
 - Anthropic's official skills marketplace
 
 ### Storage & Management
+
 - Skills reside in your project for version control
 - Git-based skills can be updated
 - Interactive management interface
@@ -73,16 +78,19 @@ npx openskills
 #### Install Skills
 
 Install from Anthropic's marketplace:
+
 ```bash
 npx openskills install anthropics/skills
 ```
 
 Install from a GitHub repository:
+
 ```bash
 npx openskills install username/repo
 ```
 
 Install from a local path:
+
 ```bash
 npx openskills install ./path/to/skill
 ```
@@ -90,6 +98,7 @@ npx openskills install ./path/to/skill
 #### Sync Skills
 
 Update AGENTS.md with skill metadata:
+
 ```bash
 npx openskills sync
 ```
@@ -97,6 +106,7 @@ npx openskills sync
 #### Read a Skill
 
 Load skill content for agents:
+
 ```bash
 npx openskills read <skill-name>
 ```
@@ -104,6 +114,7 @@ npx openskills read <skill-name>
 #### List Installed Skills
 
 Display all installed skills:
+
 ```bash
 npx openskills list
 ```
@@ -111,6 +122,7 @@ npx openskills list
 #### Update Skills
 
 Refresh git-sourced skills:
+
 ```bash
 npx openskills update
 ```
@@ -118,22 +130,24 @@ npx openskills update
 #### Remove Skills
 
 Delete specific skills:
+
 ```bash
 npx openskills remove <skill-name>
 ```
 
 ### Command Flags
 
-| Flag | Description |
-|------|-------------|
-| `--global` | Install skills system-wide instead of project-local |
-| `--universal` | Use `.agent/skills/` instead of `.claude/skills/` |
-| `-y, --yes` | Skip confirmation prompts (auto-accept) |
-| `-o, --output` | Specify custom output file path |
+| Flag           | Description                                         |
+| -------------- | --------------------------------------------------- |
+| `--global`     | Install skills system-wide instead of project-local |
+| `--universal`  | Use `.agent/skills/` instead of `.claude/skills/`   |
+| `-y, --yes`    | Skip confirmation prompts (auto-accept)             |
+| `-o, --output` | Specify custom output file path                     |
 
 ### Example Workflows
 
 #### Project-Local Setup
+
 ```bash
 # Install skills for a specific project
 npx openskills install anthropics/skills
@@ -146,6 +160,7 @@ npx openskills list
 ```
 
 #### Global Setup
+
 ```bash
 # Install skills globally for all projects
 npx openskills install anthropics/skills --global
@@ -155,6 +170,7 @@ npx openskills sync --global
 ```
 
 #### Universal Multi-Agent Setup
+
 ```bash
 # Install for multiple AI agents
 npx openskills install anthropics/skills --universal
@@ -189,6 +205,7 @@ Any agent that can parse AGENTS.md can identify and invoke available skills with
 ### Progressive Disclosure
 
 Skills are loaded on-demand rather than all at once, preventing context window bloat. The agent:
+
 1. Reads AGENTS.md to see available skills
 2. Loads only the skills it needs for the current task
 3. Keeps context focused and efficient
@@ -219,6 +236,7 @@ Guidelines for effective skill usage...
 ### Skill Structure
 
 A skill can include:
+
 - **SKILL.md**: The main skill file (required)
 - **references/**: Supporting documentation
 - **scripts/**: Helper scripts
@@ -229,6 +247,7 @@ All these components are bundled together when the skill is installed.
 ## Folder Structure
 
 ### Project-Local (Default)
+
 ```
 your-project/
 ├── .claude/
@@ -242,6 +261,7 @@ your-project/
 ```
 
 ### Global Installation
+
 ```
 ~/.claude/
 └── skills/
@@ -250,6 +270,7 @@ your-project/
 ```
 
 ### Universal Multi-Agent
+
 ```
 your-project/
 ├── .agent/
@@ -261,14 +282,14 @@ your-project/
 
 ## Supported AI Agents
 
-| Agent | Support Level | Notes |
-|-------|---------------|-------|
-| Claude Code | ✅ Native | Uses the same format as OpenSkills |
-| Cursor | ✅ Full | Reads AGENTS.md |
-| Windsurf | ✅ Full | Reads AGENTS.md |
-| Aider | ✅ Full | Reads AGENTS.md |
-| Codex | ✅ Full | Reads AGENTS.md |
-| Others | ⚠️ Partial | Any agent that can parse AGENTS.md |
+| Agent       | Support Level | Notes                              |
+| ----------- | ------------- | ---------------------------------- |
+| Claude Code | ✅ Native     | Uses the same format as OpenSkills |
+| Cursor      | ✅ Full       | Reads AGENTS.md                    |
+| Windsurf    | ✅ Full       | Reads AGENTS.md                    |
+| Aider       | ✅ Full       | Reads AGENTS.md                    |
+| Codex       | ✅ Full       | Reads AGENTS.md                    |
+| Others      | ⚠️ Partial    | Any agent that can parse AGENTS.md |
 
 ## Advantages
 
@@ -282,6 +303,7 @@ your-project/
 ## Use Cases
 
 ### Team Collaboration
+
 ```bash
 # Developer A creates and installs a custom skill
 npx openskills install ./custom-skills/deploy-skill
@@ -296,6 +318,7 @@ git pull
 ```
 
 ### Multi-Project Consistency
+
 ```bash
 # Install common skills globally
 npx openskills install anthropics/skills --global
@@ -305,6 +328,7 @@ npx openskills install anthropics/skills --global
 ```
 
 ### Private Skills
+
 ```bash
 # Install from private repository
 npx openskills install git@github.com:company/private-skills.git
@@ -351,14 +375,14 @@ npx openskills sync
 
 ## Comparison with Claude Code Native Skills
 
-| Feature | Claude Code Native | OpenSkills |
-|---------|-------------------|------------|
-| Skill Format | SKILL.md | SKILL.md (identical) |
-| Installation | `/skills install` | `npx openskills install` |
-| Agent Support | Claude Code only | Multi-agent |
-| Storage | `.claude/skills/` | Configurable |
-| Sync Required | Automatic | Manual (`sync` command) |
-| Offline | ✅ Yes | ✅ Yes |
+| Feature       | Claude Code Native | OpenSkills               |
+| ------------- | ------------------ | ------------------------ |
+| Skill Format  | SKILL.md           | SKILL.md (identical)     |
+| Installation  | `/skills install`  | `npx openskills install` |
+| Agent Support | Claude Code only   | Multi-agent              |
+| Storage       | `.claude/skills/`  | Configurable             |
+| Sync Required | Automatic          | Manual (`sync` command)  |
+| Offline       | ✅ Yes             | ✅ Yes                   |
 
 ## Legal & Attribution
 

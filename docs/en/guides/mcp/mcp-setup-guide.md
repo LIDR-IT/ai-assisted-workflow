@@ -9,6 +9,7 @@ Este directorio contiene la configuración centralizada de MCP servers para el p
 ## Servers Configurados
 
 ### Context7
+
 - **Descripción:** Documentación actualizada para frameworks y librerías populares
 - **Package:** `@upstash/context7-mcp`
 - **Tipo:** stdio (NPX)
@@ -35,12 +36,14 @@ export CONTEXT7_API_KEY="tu-api-key"
 ```
 
 Esto genera los archivos de configuración específicos por plataforma:
+
 - `.cursor/mcp.json` - Cursor
 - `.claude/mcp.json` - Claude Code
 - `.gemini/settings.json` - Gemini CLI
 - `.gemini/mcp_config.json` - Antigravity (solo referencia)
 
 **Nota:** El directorio `.gemini/` contiene DOS archivos MCP:
+
 - `settings.json` es usado por **Gemini CLI** ✅
 - `mcp_config.json` es **solo referencia** para Antigravity ⚠️
 
@@ -48,21 +51,25 @@ Esto genera los archivos de configuración específicos por plataforma:
 Antigravity NO lee configuración MCP a nivel de proyecto. Solo usa `~/.gemini/antigravity/mcp_config.json` (global).
 
 📖 **Guías:**
+
 - `.agents/mcp/ANTIGRAVITY_SETUP.md` - Cómo configurar MCP en Antigravity
 - `.agents/mcp/ANTIGRAVITY_LIMITATION.md` - Por qué existe esta limitación
 
 ### 3. Verificar Instalación
 
 **Cursor:**
+
 - Abrir Cursor
 - Verificar que Context7 aparece en MCP servers
 
 **Claude Code:**
+
 ```bash
 claude mcp list
 ```
 
 **Gemini CLI:**
+
 ```bash
 gemini /mcp
 ```
@@ -70,6 +77,7 @@ gemini /mcp
 ## Agregar Nuevo MCP Server
 
 1. Editar `mcp-servers.json`:
+
 ```json
 {
   "servers": {
@@ -84,11 +92,13 @@ gemini /mcp
 ```
 
 2. Ejecutar sync:
+
 ```bash
 ./.agents/mcp/sync-mcp.sh
 ```
 
 3. Commit cambios:
+
 ```bash
 git add .agents/mcp/ .cursor/ .claude/ .gemini/ .agent/
 git commit -m "feat: add nuevo-server MCP"
@@ -99,6 +109,7 @@ git commit -m "feat: add nuevo-server MCP"
 Context7 proporciona documentación actualizada. Ejemplo:
 
 **En Cursor/Claude:**
+
 ```
 @context7 How do I use React hooks?
 @context7 What's new in Next.js 15?
@@ -108,6 +119,7 @@ Context7 proporciona documentación actualizada. Ejemplo:
 ## Troubleshooting
 
 **Server no aparece:**
+
 ```bash
 # Verificar que NPX funciona
 npx -y @upstash/context7-mcp --help
@@ -120,6 +132,7 @@ echo $CONTEXT7_API_KEY
 ```
 
 **Rate limit:**
+
 - Obtener API key gratis en context7.com/dashboard
 - Agregar a variables de entorno
 

@@ -7,12 +7,14 @@ Detailed technical documentation about systems, APIs, and architecture.
 Agent system documentation and platform-specific guides:
 
 ### Standards & Formats
+
 - **[Agent Format Standard](./agents/AGENT_FORMAT_STANDARD.md)** - Complete agent file format specification
 - **[Minimal Format Standard](./agents/MINIMAL_FORMAT_STANDARD.md)** - Minimal viable agent format
 - **[Platform Comparison](./agents/PLATFORM_COMPARISON.md)** - Agent capabilities across platforms
 - **[Agents.md Format](./agents/agents-md-format.md)** - AGENTS.md file format
 
 ### Platform-Specific
+
 - **[Claude Code Agent Development](./agents/agent-development-claude-code.md)** - Creating agents for Claude Code
 - **[Claude Code Sub-Agents](./agents/sub-agents-claude-code.md)** - Sub-agents in Claude Code
 - **[Cursor Subagents](./agents/cursor-subagents.md)** - Subagents in Cursor
@@ -25,6 +27,7 @@ Agent system documentation and platform-specific guides:
 - **[MCP Server Builder](./mcp/mcp-server-builder.md)** - Building custom MCP servers
 
 ### Platform Integration
+
 - **[Claude Code MCP Usage](./mcp/mcp-usage-claude-code.md)** - Using MCP in Claude Code
 - **[Claude Code MCP Integration](./mcp/mcp-integration-claude-code.md)** - Integrating MCP servers
 - **[Cursor MCP](./mcp/mcp-cursor.md)** - MCP in Cursor
@@ -40,12 +43,14 @@ Skills ecosystem and development:
 - **[Skills README](./skills/README.md)** - Skills documentation index
 
 ### Development & Tools
+
 - **[Claude Code Skill Development](./skills/skill-development-claude-code.md)** - Creating skills for Claude Code
 - **[Claude Code Skills](./skills/skills-claude-code.md)** - Using skills in Claude Code
 - **[Skill Creator](./skills/skill-creator.md)** - Skill creation guide
 - **[npm Skills Package](./skills/npm-skills-package.md)** - Publishing skills as npm packages
 
 ### Platform-Specific
+
 - **[Antigravity Skills](./skills/antigravity-skills.md)** - Skills in Antigravity
 - **[OpenSkills](./skills/openskills.md)** - Open source skills library
 - **[Find Skills (Vercel)](./skills/find-skills-vercel.md)** - Finding and installing skills
@@ -76,6 +81,7 @@ Project rules and memory management:
 - **[Memory and Rules](./rules/memory-and-rules.md)** - How rules and memory work
 
 ### Platform-Specific
+
 - **[Cursor Rules](./rules/cursor-rules.md)** - Rules in Cursor
 - **[Gemini.md](./rules/gemini-md.md)** - Gemini CLI memory system
 - **[Antigravity Rules](./rules/antigravity-rules.md)** - Rules in Antigravity
@@ -109,6 +115,7 @@ Documentation tools and standards:
 ## 📚 Additional Resources
 
 For practical guides, see:
+
 - [Guides](/en/guides/) - Step-by-step tutorials
 - [Modules](/en/modules/skills/) - In-depth learning modules
 - [Guidelines](/en/guidelines/) - Team standards and conventions

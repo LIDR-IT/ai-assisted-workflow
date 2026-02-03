@@ -16,6 +16,7 @@ This skill helps you discover and install skills from the open agent skills ecos
 ## When to Use find-skills
 
 Deploy this skill when users:
+
 - Ask **"how do I do X"** where X is a common task with existing skills
 - Request skill discovery: **"find a skill for X"**
 - Ask about specialized capabilities: **"is there a skill that can..."**
@@ -28,39 +29,51 @@ Deploy this skill when users:
 The underlying **Skills CLI** (`npx skills`) operates as a package manager with four primary commands:
 
 ### 1. Find Skills
+
 ```bash
 npx skills find [query]
 ```
+
 Search skills interactively or by keyword
 
 ### 2. Add Skills
+
 ```bash
 npx skills add <package>
 ```
+
 Install from GitHub or other sources
 
 ### 3. Check Updates
+
 ```bash
 npx skills check
 ```
+
 Check for updates to installed skills
 
 ### 4. Update Skills
+
 ```bash
 npx skills update
 ```
+
 Update all installed skills
 
 ## Usage Workflow
 
 ### Step 1: Identify User Needs
+
 Determine:
+
 - The user's domain (web dev, DevOps, testing, etc.)
 - Specific task they want to accomplish
 - Likelihood that a skill exists for this need
 
 ### Step 2: Search with Targeted Queries
+
 Run focused searches:
+
 ```bash
 npx skills find react performance
 npx skills find docker deployment
@@ -68,24 +81,30 @@ npx skills find testing e2e
 ```
 
 ### Step 3: Present Results
+
 Show users:
+
 - **Skill name** and description
 - **Install command** ready to copy
 - **skills.sh link** for more details
 
 ### Step 4: Install the Skill
+
 Execute installation:
+
 ```bash
 npx skills add <owner/repo@skill> -g -y
 ```
 
 **Flags:**
+
 - `-g` — Global installation
 - `-y` — Auto-accept (skip confirmation)
 
 ## Common Skill Categories
 
 ### Web Development
+
 - React best practices and optimization
 - Next.js patterns and performance
 - TypeScript configurations
@@ -93,6 +112,7 @@ npx skills add <owner/repo@skill> -g -y
 - Tailwind CSS utilities
 
 ### Testing & Quality
+
 - Jest configuration and patterns
 - Playwright E2E testing
 - Unit testing strategies
@@ -100,6 +120,7 @@ npx skills add <owner/repo@skill> -g -y
 - Test coverage optimization
 
 ### DevOps & Infrastructure
+
 - Docker containerization
 - Kubernetes deployment
 - CI/CD pipelines
@@ -107,6 +128,7 @@ npx skills add <owner/repo@skill> -g -y
 - Infrastructure as Code
 
 ### Documentation
+
 - API documentation generation
 - Changelog automation
 - README templates
@@ -114,6 +136,7 @@ npx skills add <owner/repo@skill> -g -y
 - Code commenting standards
 
 ### Code Quality
+
 - ESLint configurations
 - Code refactoring patterns
 - Pull request reviews
@@ -121,6 +144,7 @@ npx skills add <owner/repo@skill> -g -y
 - Automated formatting
 
 ### Design & UX
+
 - UI/UX best practices
 - Accessibility (a11y) guidelines
 - Design system implementation
@@ -128,6 +152,7 @@ npx skills add <owner/repo@skill> -g -y
 - Responsive design patterns
 
 ### Productivity & Automation
+
 - Git workflow automation
 - Task automation scripts
 - Development tooling
@@ -141,6 +166,7 @@ npx skills add <owner/repo@skill> -g -y
 **User Query:** "How can I optimize my React app's performance?"
 
 **Workflow:**
+
 ```bash
 # Step 1: Search for React performance skills
 npx skills find react performance
@@ -160,6 +186,7 @@ npx skills add vercel-labs/skills@react-performance -g -y
 **User Query:** "I need to set up end-to-end testing"
 
 **Workflow:**
+
 ```bash
 # Search for E2E testing skills
 npx skills find e2e testing
@@ -173,6 +200,7 @@ npx skills add vercel-labs/skills@playwright-e2e -g -y
 **User Query:** "Help me containerize my application"
 
 **Workflow:**
+
 ```bash
 # Search for Docker skills
 npx skills find docker deployment
@@ -194,6 +222,7 @@ npx skills add vercel-labs/skills@docker-best-practices -g -y
 ### Proactive Suggestions
 
 The agent can proactively suggest skills when:
+
 - Detecting repetitive manual tasks
 - Identifying common patterns that have skill support
 - User struggles with a problem that has a known solution
@@ -204,6 +233,7 @@ The agent can proactively suggest skills when:
 ### What is skills.sh?
 
 skills.sh is the official registry and discovery platform for agent skills. It serves as:
+
 - **Central repository** for community and official skills
 - **Discovery interface** for browsing available skills
 - **Documentation hub** for skill usage and examples
@@ -224,6 +254,7 @@ https://skills.sh/<owner>/<repo>/<skill-name>
 ```
 
 **Example:**
+
 ```
 https://skills.sh/vercel-labs/skills/find-skills
 ```
@@ -233,11 +264,13 @@ https://skills.sh/vercel-labs/skills/find-skills
 ### Installation Locations
 
 **Global Skills:**
+
 ```
 ~/.claude/skills/
 ```
 
 **Project Skills:**
+
 ```
 project-dir/.claude/skills/
 ```
@@ -245,6 +278,7 @@ project-dir/.claude/skills/
 ### Metadata Storage
 
 Installed skills are registered in:
+
 - `AGENTS.md` — Skill discovery metadata
 - `package.json` — Dependency tracking (if npm-based)
 - `.claude/skills/` — Skill content and files

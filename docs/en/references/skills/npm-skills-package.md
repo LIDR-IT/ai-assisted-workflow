@@ -27,6 +27,7 @@ npx skills add
 ```
 
 This command allows you to install skills for various domains including:
+
 - Front-end development
 - Back-end development
 - DevOps
@@ -49,6 +50,7 @@ This command allows you to install skills for various domains including:
 **Purpose:** Universal skills loader for AI coding agents
 
 Brings Anthropic's skills system to multiple AI coding agents:
+
 - Claude Code
 - Cursor
 - Windsurf
@@ -66,6 +68,7 @@ Described as "the universal installer for SKILL.md"
 **Purpose:** Framework-agnostic skill discovery and export for AI coding agents
 
 Provides contextual documentation that AI coding assistants load automatically, delivering accurate guidance on:
+
 - APIs
 - Patterns
 - Best practices
@@ -106,6 +109,7 @@ AI agent skills can propagate hallucinated npx commands, which creates real secu
 ## Future Considerations
 
 As the agent skills ecosystem evolves, consider:
+
 - Skill versioning and compatibility
 - Community vetting and quality standards
 - Integration with existing development workflows

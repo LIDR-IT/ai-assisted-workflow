@@ -20,6 +20,7 @@ trigger: always_on
 ### What to Test
 
 **DO test:**
+
 - Critical business logic
 - Complex algorithms
 - Error handling paths
@@ -28,6 +29,7 @@ trigger: always_on
 - Scripts and automation
 
 **DON'T test:**
+
 - Trivial getters/setters
 - Framework internals
 - Third-party libraries (trust their tests)
@@ -67,6 +69,7 @@ trigger: always_on
 ### Testing Across All Agents
 
 **Cursor:**
+
 ```bash
 # Manual verification
 # 1. Open Cursor
@@ -76,6 +79,7 @@ trigger: always_on
 ```
 
 **Claude Code:**
+
 ```bash
 # CLI verification
 claude mcp list
@@ -86,6 +90,7 @@ claude /find-skills
 ```
 
 **Gemini CLI:**
+
 ```bash
 # CLI verification
 gemini mcp list
@@ -96,6 +101,7 @@ gemini /find-skills
 ```
 
 **Antigravity:**
+
 ```bash
 # Verify rules copied (flattened)
 ls -la .agent/rules/
@@ -113,6 +119,7 @@ cat ~/.gemini/antigravity/mcp_config.json
 ### Write Testable Scripts
 
 **Use functions:**
+
 ```bash
 # Good - testable
 create_symlink() {
@@ -129,6 +136,7 @@ test_create_symlink() {
 ```
 
 **Use exit codes:**
+
 ```bash
 # Good - testable
 if validate_sources; then
@@ -142,6 +150,7 @@ fi
 ```
 
 **Make scripts idempotent:**
+
 ```bash
 # Script can be run multiple times safely
 if [ -L "$link" ]; then
@@ -158,30 +167,37 @@ ln -s "$target" "$link"
 # Test Plan: sync-rules.sh
 
 ## Scope
+
 Test synchronization of rules and skills across all agent platforms.
 
 ## Test Cases
 
 ### TC-001: Dry Run Mode
+
 **Description:** Verify dry-run mode makes no changes
 **Steps:**
+
 1. Run `.agents/rules/sync-rules.sh --dry-run`
 2. Check no files created/modified
-**Expected:** Script completes with dry-run messages, no changes made
+   **Expected:** Script completes with dry-run messages, no changes made
 
 ### TC-002: File Creation (Cursor/Antigravity)
+
 **Description:** Verify files copied correctly
 **Steps:**
+
 1. Run `.agents/rules/sync-rules.sh`
 2. Check `.cursor/rules/` and `.agent/rules/` contain .md files
-**Expected:** All rules flattened in both directories
+   **Expected:** All rules flattened in both directories
 
 ### TC-003: Symlink Creation (Claude/Gemini)
+
 **Description:** Verify symlinks created correctly
 **Steps:**
+
 1. Run `.agents/rules/sync-rules.sh`
 2. Check `.claude/rules`, `.gemini/rules`
-**Expected:** Both are symlinks pointing to `../.agents/rules`
+   **Expected:** Both are symlinks pointing to `../.agents/rules`
 
 ## Coverage
 
@@ -192,11 +208,11 @@ Test synchronization of rules and skills across all agent platforms.
 
 ## Test Results
 
-| Test Case | Status | Notes |
-|-----------|--------|-------|
-| TC-001 | ✅ Pass | Dry run works correctly |
-| TC-002 | ✅ Pass | Files copied (flattened) |
-| TC-003 | ✅ Pass | Symlinks created |
+| Test Case | Status  | Notes                    |
+| --------- | ------- | ------------------------ |
+| TC-001    | ✅ Pass | Dry run works correctly  |
+| TC-002    | ✅ Pass | Files copied (flattened) |
+| TC-003    | ✅ Pass | Symlinks created         |
 ```
 
 ## Continuous Testing
@@ -263,6 +279,7 @@ verify_sync
 ## References
 
 For bash script testing examples and integration tests, see:
+
 - `.agents/rules/quality/testing-scripts.md` - Detailed bash testing patterns
 - [Bash Automated Testing System](https://github.com/bats-core/bats-core)
 - [ShellCheck](https://www.shellcheck.net/) - Shell script analyzer

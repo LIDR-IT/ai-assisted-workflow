@@ -15,6 +15,7 @@
 ### Definition
 
 Rules are:
+
 - **Continuous guidance** - Always active throughout agent operation
 - **System-level directives** - Shape fundamental agent behavior
 - **Persistent guidelines** - Applied to all agent actions
@@ -33,27 +34,32 @@ Rules function as **passive, always-on guardrails** that ensure the agent follow
 **Location:** `~/.gemini/GEMINI.md`
 
 **Purpose:**
+
 - Cross-project standards
 - Personal coding preferences
 - Universal guidelines
 - Consistent behavior across all work
 
 **Example:**
+
 ```markdown
 # Global Development Rules
 
 ## Code Style
+
 - Use 2-space indentation for all languages
 - Prefer const over let in JavaScript/TypeScript
 - Always use explicit return types in TypeScript
 - Follow language-specific conventions (PEP 8, PSR, etc.)
 
 ## Documentation
+
 - Add JSDoc/docstrings for all public functions
 - Include usage examples in documentation
 - Keep comments concise and relevant
 
 ## Testing
+
 - Write unit tests for all new functions
 - Maintain minimum 80% code coverage
 - Use descriptive test names
@@ -64,12 +70,14 @@ Rules function as **passive, always-on guardrails** that ensure the agent follow
 **Location:** `<workspace-root>/.agent/rules/`
 
 **Purpose:**
+
 - Project-specific standards
 - Team conventions
 - Framework-specific guidelines
 - Codebase-specific requirements
 
 **Example structure:**
+
 ```
 .agent/rules/
 ├── code-style.md
@@ -80,6 +88,7 @@ Rules function as **passive, always-on guardrails** that ensure the agent follow
 ```
 
 **In This Project:**
+
 ```
 .agent/rules/           # Project-specific rules
 ```
@@ -98,12 +107,14 @@ Rules function as **passive, always-on guardrails** that ensure the agent follow
 ### Method 2: Via File System
 
 **Global rule:**
+
 ```bash
 # Edit global rules
 vi ~/.gemini/GEMINI.md
 ```
 
 **Workspace rules:**
+
 ```bash
 # Create project rules directory
 mkdir -p .agent/rules
@@ -133,15 +144,18 @@ EOF
 Rules are written in **plain Markdown** with directives:
 
 **Structure:**
+
 ```markdown
 # [Rule Category]
 
 ## [Subcategory]
+
 - Directive 1
 - Directive 2
 - Directive 3
 
 ## [Another Subcategory]
+
 - Directive 4
 - Directive 5
 ```
@@ -160,19 +174,22 @@ Rules are written in **plain Markdown** with directives:
 # Code Style Guidelines
 
 ## General Principles
+
 - Write self-documenting code with clear variable names
 - Keep functions small and focused (max 50 lines)
 - Avoid deep nesting (max 3 levels)
 - Use early returns to reduce complexity
 
 ## Python
-* Make sure all code follows PEP 8 style guide
-* Make sure all code is properly commented
-* Use type hints for function parameters and return values
-* Prefer f-strings over .format() or % formatting
-* Use descriptive variable names (no single letters except iterators)
+
+- Make sure all code follows PEP 8 style guide
+- Make sure all code is properly commented
+- Use type hints for function parameters and return values
+- Prefer f-strings over .format() or % formatting
+- Use descriptive variable names (no single letters except iterators)
 
 ## JavaScript/TypeScript
+
 - Use ES6+ features (arrow functions, destructuring, template literals)
 - Prefer const over let, never use var
 - Use async/await over Promise chains
@@ -180,6 +197,7 @@ Rules are written in **plain Markdown** with directives:
 - Use strict null checks
 
 ## CSS
+
 - Use BEM naming convention
 - Mobile-first approach
 - Avoid !important
@@ -194,25 +212,29 @@ Rules are written in **plain Markdown** with directives:
 # Testing Standards
 
 ## Unit Testing
+
 - Write tests for all new functions
-- Use descriptive test names following pattern: should_[expected behavior]_when_[condition]
+- Use descriptive test names following pattern: should*[expected behavior]\_when*[condition]
 - Arrange-Act-Assert pattern for test structure
 - One assertion per test when possible
 - Mock external dependencies
 
 ## Test Coverage
+
 - Minimum 80% code coverage required
 - 100% coverage for critical business logic
 - Test edge cases and error conditions
 - Include regression tests for fixed bugs
 
 ## Test Organization
-* Generate unit tests for each file and each method
-* Make sure unit tests are named similar to files but with test_ prefix
-* Keep test files next to source files
-* Use test fixtures for shared setup
+
+- Generate unit tests for each file and each method
+- Make sure unit tests are named similar to files but with test\_ prefix
+- Keep test files next to source files
+- Use test fixtures for shared setup
 
 ## Test Documentation
+
 - Document complex test scenarios
 - Include examples of expected input/output
 - Explain why specific mocks are used
@@ -226,6 +248,7 @@ Rules are written in **plain Markdown** with directives:
 # Documentation Standards
 
 ## Code Documentation
+
 - Add JSDoc/docstrings for all public functions
 - Include parameter descriptions
 - Document return values
@@ -233,6 +256,7 @@ Rules are written in **plain Markdown** with directives:
 - Note any side effects
 
 ## README Files
+
 - Include project purpose and overview
 - Setup instructions with prerequisites
 - Usage examples
@@ -241,12 +265,14 @@ Rules are written in **plain Markdown** with directives:
 - License information
 
 ## Inline Comments
+
 - Explain WHY, not WHAT
 - Document non-obvious decisions
 - Flag temporary solutions with TODO
 - Keep comments up-to-date with code changes
 
 ## API Documentation
+
 - Document all endpoints
 - Include request/response examples
 - Note authentication requirements
@@ -262,12 +288,14 @@ Rules are written in **plain Markdown** with directives:
 # Security Guidelines
 
 ## Input Validation
+
 - Validate all user input
 - Sanitize data before database queries
 - Use parameterized queries (never string concatenation)
 - Validate file uploads (type, size, content)
 
 ## Authentication & Authorization
+
 - Never store passwords in plain text
 - Use bcrypt or similar for password hashing
 - Implement rate limiting on auth endpoints
@@ -275,6 +303,7 @@ Rules are written in **plain Markdown** with directives:
 - Use secure session management
 
 ## Data Protection
+
 - Never commit secrets to version control
 - Use environment variables for sensitive config
 - Encrypt sensitive data at rest
@@ -282,6 +311,7 @@ Rules are written in **plain Markdown** with directives:
 - Implement proper CORS policies
 
 ## Dependencies
+
 - Keep dependencies up-to-date
 - Review security advisories regularly
 - Use lock files (package-lock.json, Pipfile.lock)
@@ -296,6 +326,7 @@ Rules are written in **plain Markdown** with directives:
 # Git Conventions
 
 ## Commit Messages
+
 - Use Conventional Commits format
 - Format: type(scope): description
 - Types: feat, fix, docs, style, refactor, test, chore
@@ -304,6 +335,7 @@ Rules are written in **plain Markdown** with directives:
 - Include ticket number if applicable
 
 ## Branching
+
 - main/master: production-ready code
 - develop: integration branch
 - feature/[name]: new features
@@ -311,6 +343,7 @@ Rules are written in **plain Markdown** with directives:
 - hotfix/[name]: urgent production fixes
 
 ## Pull Requests
+
 - One feature/fix per PR
 - Write descriptive PR titles and descriptions
 - Include test results
@@ -326,6 +359,7 @@ Rules are written in **plain Markdown** with directives:
 ### Writing Effective Rules
 
 ✅ **DO:**
+
 - **Be specific** - Concrete directives are better than vague guidance
 - **Use bullet points** - Clear, scannable format
 - **Organize by category** - Group related guidelines
@@ -334,6 +368,7 @@ Rules are written in **plain Markdown** with directives:
 - **Keep updated** - Review and refine regularly
 
 ❌ **DON'T:**
+
 - Write overly generic rules ("write good code")
 - Create conflicting rules
 - Make rules too restrictive (prevent innovation)
@@ -343,6 +378,7 @@ Rules are written in **plain Markdown** with directives:
 ### Rule Organization
 
 **Flat Structure (5-10 rules):**
+
 ```
 .agent/rules/
 ├── code-style.md
@@ -353,6 +389,7 @@ Rules are written in **plain Markdown** with directives:
 ```
 
 **Categorized Structure (10+ rules):**
+
 ```
 .agent/rules/
 ├── code/
@@ -372,6 +409,7 @@ Rules are written in **plain Markdown** with directives:
 ### Rule Granularity
 
 **Good granularity:**
+
 ```markdown
 # Python Type Hints
 
@@ -382,20 +420,26 @@ Rules are written in **plain Markdown** with directives:
 ```
 
 **Too granular:**
+
 ```markdown
 # Python Type Hints for Functions
+
 - Use type hints for function parameters
 
 # Python Type Hints for Return Values
+
 - Use return type annotations
 
 # Python Type Hints for Complex Types
+
 - Use typing module
 ```
 
 **Too broad:**
+
 ```markdown
 # All Python Rules
+
 - Follow PEP 8
 - Use type hints
 - Write tests
@@ -410,16 +454,17 @@ Rules are written in **plain Markdown** with directives:
 
 ### Rules vs Workflows
 
-| Feature | Rules | Workflows |
-|:--------|:------|:----------|
-| **Activation** | Always active | User-triggered with `/` |
-| **Scope** | Continuous guidance | On-demand tasks |
-| **Purpose** | Behavior guidelines | Saved prompts |
-| **Location** | `.agent/rules/` | `.agent/workflows/` |
-| **Example** | "Use PEP 8" | "Generate tests" |
-| **Type** | System instructions | Executable commands |
+| Feature        | Rules               | Workflows               |
+| :------------- | :------------------ | :---------------------- |
+| **Activation** | Always active       | User-triggered with `/` |
+| **Scope**      | Continuous guidance | On-demand tasks         |
+| **Purpose**    | Behavior guidelines | Saved prompts           |
+| **Location**   | `.agent/rules/`     | `.agent/workflows/`     |
+| **Example**    | "Use PEP 8"         | "Generate tests"        |
+| **Type**       | System instructions | Executable commands     |
 
 **Use Rules for:**
+
 - Code style standards
 - Testing requirements
 - Documentation standards
@@ -427,6 +472,7 @@ Rules are written in **plain Markdown** with directives:
 - Git conventions
 
 **Use Workflows for:**
+
 - Generate unit tests
 - Create pull request
 - Run security audit
@@ -434,20 +480,22 @@ Rules are written in **plain Markdown** with directives:
 
 ### Rules vs Skills
 
-| Feature | Rules | Skills |
-|:--------|:------|:-------|
-| **Activation** | Always active | Agent-triggered (intent match) |
-| **Visibility** | Always loaded | Progressive disclosure |
-| **Complexity** | Simple directives | Can include scripts, templates |
-| **Scope** | Behavior guidelines | Specialized capabilities |
-| **Format** | Markdown only | SKILL.md + scripts + resources |
+| Feature        | Rules               | Skills                         |
+| :------------- | :------------------ | :----------------------------- |
+| **Activation** | Always active       | Agent-triggered (intent match) |
+| **Visibility** | Always loaded       | Progressive disclosure         |
+| **Complexity** | Simple directives   | Can include scripts, templates |
+| **Scope**      | Behavior guidelines | Specialized capabilities       |
+| **Format**     | Markdown only       | SKILL.md + scripts + resources |
 
 **Use Rules for:**
+
 - General coding standards
 - Universal best practices
 - Project conventions
 
 **Use Skills for:**
+
 - Complex workflows with scripts
 - Specialized domain knowledge
 - Conditional tool usage
@@ -462,12 +510,14 @@ Rules are written in **plain Markdown** with directives:
 # Language Style Guide
 
 ## Python
+
 - PEP 8 compliance
 - Type hints required
 - Docstrings for all public functions
 - Black formatter (88 char limit)
 
 ## TypeScript
+
 - Strict mode enabled
 - Explicit return types
 - No implicit any
@@ -480,18 +530,21 @@ Rules are written in **plain Markdown** with directives:
 # React Conventions
 
 ## Component Structure
+
 - Functional components with hooks
 - One component per file
 - Props interface at top of file
 - Organize imports: external, internal, types, styles
 
 ## State Management
+
 - Use useState for local state
 - Use useReducer for complex state
 - Context for shared global state
 - Avoid prop drilling (max 2 levels)
 
 ## Naming
+
 - Components: PascalCase
 - Hooks: camelCase with "use" prefix
 - Event handlers: "handle" prefix
@@ -504,6 +557,7 @@ Rules are written in **plain Markdown** with directives:
 # Testing Philosophy
 
 ## Principles
+
 - Test behavior, not implementation
 - Write tests before fixing bugs
 - Keep tests simple and focused
@@ -511,6 +565,7 @@ Rules are written in **plain Markdown** with directives:
 - Mock external dependencies
 
 ## Coverage Goals
+
 - Critical paths: 100%
 - Business logic: 90%
 - UI components: 70%
@@ -523,6 +578,7 @@ Rules are written in **plain Markdown** with directives:
 # Code Review Standards
 
 ## Reviewer Checklist
+
 - Code follows style guide
 - Tests pass and cover changes
 - Documentation updated
@@ -532,6 +588,7 @@ Rules are written in **plain Markdown** with directives:
 - Security implications reviewed
 
 ## Author Checklist
+
 - Self-review completed
 - Tests written and passing
 - Documentation updated
@@ -551,18 +608,21 @@ Rules are written in **plain Markdown** with directives:
 # Development Workflow
 
 ## Before Starting Work
+
 - Pull latest from main branch
 - Create feature branch from develop
 - Review related issues/tickets
 - Plan implementation approach
 
 ## During Development
+
 - Follow code style guidelines
 - Write tests alongside code
 - Commit frequently with meaningful messages
 - Keep PR scope focused
 
 ## Before Committing
+
 - Run full test suite
 - Check code coverage
 - Run linter and formatter
@@ -570,6 +630,7 @@ Rules are written in **plain Markdown** with directives:
 - Update documentation
 
 ## Pull Request Process
+
 - Write descriptive PR description
 - Link related issues
 - Request appropriate reviewers
@@ -584,11 +645,13 @@ Rules are written in **plain Markdown** with directives:
 ### Rules Not Being Applied
 
 **Symptoms:**
+
 - Agent ignores style guidelines
 - Code doesn't follow conventions
 - Standards not enforced
 
 **Solutions:**
+
 ```bash
 # Verify rule file location
 ls -la .agent/rules/
@@ -603,11 +666,13 @@ cat .agent/rules/code-style.md
 ### Conflicting Rules
 
 **Symptoms:**
+
 - Agent receives mixed signals
 - Inconsistent behavior
 - Code style varies
 
 **Solutions:**
+
 - Review all active rules (global + workspace)
 - Remove duplicates
 - Ensure workspace rules override global when needed
@@ -616,11 +681,13 @@ cat .agent/rules/code-style.md
 ### Rules Too Restrictive
 
 **Symptoms:**
+
 - Agent struggles with creative solutions
 - Development feels constrained
 - Frequent rule violations needed
 
 **Solutions:**
+
 - Review rules for necessity
 - Make guidelines instead of hard rules
 - Allow exceptions with justification
@@ -633,6 +700,7 @@ cat .agent/rules/code-style.md
 ### Committing Rules
 
 ✅ **DO commit project rules to git:**
+
 ```bash
 # Project rules should be shared
 git add .agent/rules/
@@ -640,6 +708,7 @@ git commit -m "docs: add code style rules"
 ```
 
 ❌ **DON'T commit global rules:**
+
 ```bash
 # Global rules are personal
 # ~/.gemini/GEMINI.md stays local
@@ -648,6 +717,7 @@ git commit -m "docs: add code style rules"
 ### Sharing Rules with Team
 
 **Best practices:**
+
 1. Document rules in `.agent/rules/`
 2. Commit to repository
 3. Include in onboarding docs
@@ -655,6 +725,7 @@ git commit -m "docs: add code style rules"
 5. Update based on team feedback
 
 **Example workflow:**
+
 ```bash
 # Create new rule
 cat > .agent/rules/api-design.md << 'EOF'
@@ -691,12 +762,14 @@ git push
 # Environment-Specific Rules
 
 ## Development Environment
+
 - Verbose logging enabled
 - Debug mode allowed
 - Mock external services
 - Relaxed rate limits
 
 ## Production Environment
+
 - Minimal logging (errors only)
 - No debug code
 - Real external services
@@ -710,16 +783,19 @@ git push
 # Rule Priority
 
 ## Critical (Must Follow)
+
 - Security guidelines
 - Data protection rules
 - Legal compliance requirements
 
 ## Important (Should Follow)
+
 - Code style conventions
 - Testing standards
 - Documentation requirements
 
 ## Recommended (Nice to Have)
+
 - Performance optimizations
 - Code organization preferences
 - Comment style

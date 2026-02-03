@@ -20,6 +20,7 @@ trigger: always_on
 ### When to Document
 
 **DO document:**
+
 - Architecture decisions and rationale
 - Setup and installation procedures
 - Non-obvious workarounds or limitations
@@ -28,6 +29,7 @@ trigger: always_on
 - Complex algorithms or business logic
 
 **DON'T document:**
+
 - Obvious code that's self-explanatory
 - Implementation details better suited for code comments
 - Rapidly changing details (document the pattern, not the specifics)
@@ -66,24 +68,28 @@ docs/
 ### Document Types
 
 **Guidelines** (`docs/guidelines/`)
+
 - Purpose: Define standards and best practices
 - Audience: Team members writing code
 - Example: `code-style.md`, `copywriting-guidelines.md`
 - Format: Prescriptive rules with examples
 
 **Guides** (`docs/guides/`)
+
 - Purpose: Step-by-step instructions for tasks
 - Audience: Users performing specific operations
 - Example: `mcp-setup-guide.md`, `ANTIGRAVITY_SETUP.md`
 - Format: Numbered steps with verification
 
 **Notes** (`docs/notes/`)
+
 - Purpose: Research, explorations, decision logs
 - Audience: Team making decisions
 - Example: `skills-installation-and-mcp-comparison.md`
 - Format: Informal, exploratory, comparative
 
 **References** (`docs/references/`)
+
 - Purpose: Technical specifications and API docs
 - Audience: Developers integrating systems
 - Example: `mcp/README.md`, `skills/README.md`
@@ -94,6 +100,7 @@ docs/
 ### Purpose of READMEs
 
 Every major directory should have a README that answers:
+
 - **What:** What is this directory/project?
 - **Why:** Why does it exist?
 - **How:** How do I use it?
@@ -101,7 +108,7 @@ Every major directory should have a README that answers:
 
 ### README Structure
 
-```markdown
+````markdown
 # Directory/Project Name
 
 Brief one-sentence description.
@@ -122,12 +129,14 @@ Brief one-sentence description.
 # Basic usage example
 ./script.sh
 ```
+````
 
 ## Related Documentation
 
 - [Related Doc 1](path/to/doc1.md)
 - [Related Doc 2](path/to/doc2.md)
-```
+
+````
 
 ### Root README (`README.md`)
 
@@ -151,7 +160,7 @@ npm install
 
 # Usage
 npm start
-```
+````
 
 ## Documentation
 
@@ -171,7 +180,8 @@ project/
 ## License
 
 [License Type]
-```
+
+````
 
 ## Writing Effective Documentation
 
@@ -186,9 +196,10 @@ project/
 ### H3: Subsections
 
 #### H4: Deep Details (use sparingly)
-```
+````
 
 **Code Blocks:**
+
 ````markdown
 ```bash
 # Always specify language
@@ -203,57 +214,69 @@ echo "Hello World"
 ````
 
 **Links:**
+
 ```markdown
 # Internal (relative paths)
+
 See [Setup Guide](../guides/setup.md)
 
 # External (absolute URLs)
+
 Visit [Website](https://example.com)
 
 # Anchors (for long docs)
+
 Jump to [Section](#section-name)
 ```
 
 **Lists:**
+
 ```markdown
 # Unordered (non-sequential)
+
 - First item
 - Second item
   - Nested item
 
 # Ordered (sequential steps)
+
 1. First step
 2. Second step
 3. Third step
 
 # Definition lists
+
 **Term:** Definition here
 **Another:** Another definition
 ```
 
 **Emphasis:**
+
 ```markdown
-*Italic* or _italic_
-**Bold** or __bold__
-***Bold italic***
+_Italic_ or _italic_
+**Bold** or **bold**
+**_Bold italic_**
 `code`
 ```
 
 **Tables:**
+
 ```markdown
 | Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
+| -------- | -------- | -------- |
 | Value 1  | Value 2  | Value 3  |
 | Value 4  | Value 5  | Value 6  |
 ```
 
 **Blockquotes:**
+
 ```markdown
 > Important note or callout
 > Continues on next line
 ```
 
 **Horizontal Rules:**
+
 ```markdown
 ---
 ```
@@ -261,34 +284,45 @@ Jump to [Section](#section-name)
 ### Writing Style
 
 **Clear and Concise:**
+
 ```markdown
 # Good
+
 Run the sync script to update configurations.
 
 # Bad
+
 You should probably consider running the synchronization script
 in order to update the various configuration files across the project.
 ```
 
 **Active Voice:**
+
 ```markdown
 # Good
+
 Create a new file in `.agents/rules/`.
 
 # Bad
+
 A new file should be created in `.agents/rules/`.
 ```
 
 **Specific Examples:**
-```markdown
+
+````markdown
 # Good
+
 ```bash
 ./.agents/rules/sync-rules.sh
 ```
+````
 
 # Bad
+
 Run the sync script.
-```
+
+````
 
 **Consistent Terminology:**
 - Use same term throughout (e.g., "sync script" not "synchronization tool")
@@ -324,9 +358,10 @@ Run the sync script.
 
 # TODO: Future improvement needed
 # FIXME: Known issue to address
-```
+````
 
 **Markdown (HTML comments):**
+
 ```markdown
 <!-- Internal note not shown to readers -->
 <!-- TODO: Add more examples -->
@@ -341,12 +376,12 @@ Always document Antigravity constraints clearly:
 ```markdown
 ## Platform Support
 
-| Platform | MCP Project | Rules |
-|----------|-------------|-------|
-| Cursor | ✅ | ✅ |
-| Claude | ✅ | ✅ |
-| Gemini | ✅ | ✅ |
-| Antigravity | ❌ | ✅ Copy |
+| Platform    | MCP Project | Rules   |
+| ----------- | ----------- | ------- |
+| Cursor      | ✅          | ✅      |
+| Claude      | ✅          | ✅      |
+| Gemini      | ✅          | ✅      |
+| Antigravity | ❌          | ✅ Copy |
 
 **Note:** Antigravity does NOT support project-level MCP configurations.
 See [ANTIGRAVITY_LIMITATION.md](docs/guides/mcp/ANTIGRAVITY_LIMITATION.md).
@@ -369,10 +404,12 @@ Link to related documentation:
 ### Good Examples
 
 **Include context:**
-```markdown
+
+````markdown
 ### Example: Adding a New MCP Server
 
 1. Edit `.agents/mcp/mcp-servers.json`:
+
 ```json
 {
   "servers": {
@@ -384,16 +421,20 @@ Link to related documentation:
   }
 }
 ```
+````
 
 2. Run sync script:
+
 ```bash
 ./.agents/mcp/sync-mcp.sh
 ```
 
 3. Verify:
+
 ```bash
 claude mcp list
 ```
+
 ````
 
 **Show expected output:**
@@ -412,10 +453,12 @@ lrwxr-xr-x  1 user  staff  16 Jan 31 12:00 .cursor/rules -> ../.agents/rules
 ````
 
 **Include error handling:**
-```markdown
+
+````markdown
 ### Troubleshooting
 
 **Symlink not created:**
+
 ```bash
 # Check source exists
 ls -la .agents/rules
@@ -426,6 +469,8 @@ ls -la .agents/rules
 # Manual creation
 ln -s ../.agents/rules .cursor/rules
 ```
+````
+
 ````
 
 ## Maintenance
@@ -562,3 +607,4 @@ Configuration options and examples.
 - [GitHub Flavored Markdown](https://github.github.com/gfm/)
 - [Write the Docs](https://www.writethedocs.org/)
 - [Divio Documentation System](https://documentation.divio.com/)
+````

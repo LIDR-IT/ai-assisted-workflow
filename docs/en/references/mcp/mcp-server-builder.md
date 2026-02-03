@@ -12,6 +12,7 @@
 ## Purpose
 
 The mcp-builder skill helps developers:
+
 - Create MCP servers that expose external services to LLMs
 - Design well-structured tools with proper schemas
 - Implement best practices for error handling and documentation
@@ -27,6 +28,7 @@ MCP server development follows a **four-phase workflow**:
 ### Phase 1: Research & Planning
 
 **Objectives:**
+
 - Understand the MCP protocol
 - Study target API/service
 - Plan implementation approach
@@ -34,12 +36,14 @@ MCP server development follows a **four-phase workflow**:
 #### Step 1.1: Study MCP Protocol
 
 **Resources:**
+
 - Read MCP documentation at [modelcontextprotocol.io](https://modelcontextprotocol.io)
 - Understand core concepts: tools, resources, prompts
 - Review JSON-RPC 2.0 message format
 - Learn about transport options (stdio vs HTTP)
 
 **Key Concepts to Understand:**
+
 - **Tools**: Executable functions the LLM can invoke
 - **Resources**: Data sources for context
 - **Prompts**: Reusable interaction templates
@@ -49,22 +53,26 @@ MCP server development follows a **four-phase workflow**:
 #### Step 1.2: Review Framework Documentation
 
 **Recommended Stack:**
+
 - **Language**: TypeScript (preferred) or Python
 - **Transport**: Streamable HTTP (remote) or stdio (local)
 
 **Why TypeScript?**
+
 - High-quality SDK support
 - Broad AI model familiarity with the language
 - Strong typing with Zod schemas
 - Better developer experience
 
 **Framework Documentation:**
+
 - TypeScript SDK: [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
 - Python SDK: [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
 
 #### Step 1.3: Analyze Target API
 
 **Questions to Answer:**
+
 - What are the API endpoints?
 - What authentication is required?
 - What rate limits exist?
@@ -72,6 +80,7 @@ MCP server development follows a **four-phase workflow**:
 - What data formats are used?
 
 **Documentation to Review:**
+
 - API reference documentation
 - Authentication guides (OAuth, API keys, tokens)
 - Rate limiting policies
@@ -82,6 +91,7 @@ MCP server development follows a **four-phase workflow**:
 **Best Practice:** Prioritize comprehensive API coverage over specialized workflow tools.
 
 **Approach:**
+
 ```
 ✅ Good: Expose all major API endpoints as individual tools
 - create_issue
@@ -95,6 +105,7 @@ MCP server development follows a **four-phase workflow**:
 ```
 
 **Why?**
+
 - LLMs are better at composing simple tools into workflows
 - Simpler tools are easier to understand and debug
 - More flexible for different use cases
@@ -105,6 +116,7 @@ MCP server development follows a **four-phase workflow**:
 ### Phase 2: Implementation
 
 **Objectives:**
+
 - Set up project structure
 - Create shared utilities
 - Implement tools with schemas
@@ -113,6 +125,7 @@ MCP server development follows a **four-phase workflow**:
 #### Step 2.1: Set Up Project Structure
 
 **TypeScript Project Structure:**
+
 ```
 my-mcp-server/
 ├── package.json
@@ -135,6 +148,7 @@ my-mcp-server/
 ```
 
 **Python Project Structure:**
+
 ```
 my_mcp_server/
 ├── pyproject.toml
@@ -160,6 +174,7 @@ my_mcp_server/
 **Initial Setup:**
 
 TypeScript:
+
 ```bash
 npm init -y
 npm install @modelcontextprotocol/sdk zod
@@ -168,6 +183,7 @@ npx tsc --init
 ```
 
 Python:
+
 ```bash
 python -m venv venv
 source venv/bin/activate
@@ -179,6 +195,7 @@ pip install mcp pydantic
 **API Client Wrapper:**
 
 TypeScript:
+
 ```typescript
 // src/client.ts
 export class APIClient {
@@ -190,24 +207,18 @@ export class APIClient {
     this.baseUrl = baseUrl;
   }
 
-  async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       ...options,
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+        "Content-Type": "application/json",
         ...options.headers,
       },
     });
 
     if (!response.ok) {
-      throw new APIError(
-        `API request failed: ${response.statusText}`,
-        response.status
-      );
+      throw new APIError(`API request failed: ${response.statusText}`, response.status);
     }
 
     return response.json();
@@ -218,6 +229,7 @@ export class APIClient {
 **Error Handling:**
 
 TypeScript:
+
 ```typescript
 // src/utils/errors.ts
 export class APIError extends Error {
@@ -227,19 +239,19 @@ export class APIError extends Error {
     public response?: any
   ) {
     super(message);
-    this.name = 'APIError';
+    this.name = "APIError";
   }
 
   toActionableMessage(): string {
     switch (this.statusCode) {
       case 401:
-        return 'Authentication failed. Check your API key in environment variables.';
+        return "Authentication failed. Check your API key in environment variables.";
       case 403:
-        return 'Permission denied. Ensure your API key has required permissions.';
+        return "Permission denied. Ensure your API key has required permissions.";
       case 404:
-        return 'Resource not found. Verify the ID or endpoint.';
+        return "Resource not found. Verify the ID or endpoint.";
       case 429:
-        return 'Rate limit exceeded. Wait before retrying.';
+        return "Rate limit exceeded. Wait before retrying.";
       default:
         return `API error: ${this.message}`;
     }
@@ -250,6 +262,7 @@ export class APIError extends Error {
 **Pagination Helper:**
 
 TypeScript:
+
 ```typescript
 // src/utils/pagination.ts
 export interface PaginatedResponse<T> {
@@ -271,9 +284,7 @@ export async function* paginate<T>(
       ...(cursor && { cursor }),
     });
 
-    const response: PaginatedResponse<T> = await client.request(
-      `${endpoint}?${params}`
-    );
+    const response: PaginatedResponse<T> = await client.request(`${endpoint}?${params}`);
 
     for (const item of response.data) {
       yield item;
@@ -290,6 +301,7 @@ export async function* paginate<T>(
 Use consistent prefixes: `service_action`
 
 **Examples:**
+
 - `github_create_issue`
 - `github_list_repositories`
 - `database_execute_query`
@@ -299,38 +311,35 @@ Use consistent prefixes: `service_action`
 
 ```typescript
 // src/tools/create-issue.ts
-import { z } from 'zod';
+import { z } from "zod";
 
 // Input schema
 export const CreateIssueInputSchema = z.object({
-  repository: z.string().describe('Repository in format owner/repo'),
-  title: z.string().describe('Issue title'),
-  body: z.string().optional().describe('Issue description'),
-  labels: z.array(z.string()).optional().describe('Labels to add'),
-  assignees: z.array(z.string()).optional().describe('Users to assign'),
+  repository: z.string().describe("Repository in format owner/repo"),
+  title: z.string().describe("Issue title"),
+  body: z.string().optional().describe("Issue description"),
+  labels: z.array(z.string()).optional().describe("Labels to add"),
+  assignees: z.array(z.string()).optional().describe("Users to assign"),
 });
 
 export type CreateIssueInput = z.infer<typeof CreateIssueInputSchema>;
 
 // Tool definition
 export const createIssueTool = {
-  name: 'github_create_issue',
-  description: 'Create a new issue in a GitHub repository',
+  name: "github_create_issue",
+  description: "Create a new issue in a GitHub repository",
   inputSchema: CreateIssueInputSchema,
   annotations: {
-    destructiveHint: true,  // Creates new data
-    idempotentHint: false,  // Not idempotent
+    destructiveHint: true, // Creates new data
+    idempotentHint: false, // Not idempotent
   },
 };
 
 // Tool handler
-export async function createIssue(
-  client: APIClient,
-  input: CreateIssueInput
-) {
+export async function createIssue(client: APIClient, input: CreateIssueInput) {
   try {
-    const issue = await client.request('/repos/{owner}/{repo}/issues', {
-      method: 'POST',
+    const issue = await client.request("/repos/{owner}/{repo}/issues", {
+      method: "POST",
       body: JSON.stringify({
         title: input.title,
         body: input.body,
@@ -343,14 +352,14 @@ export async function createIssue(
     return {
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `Created issue #${issue.number}: ${issue.title}\nURL: ${issue.html_url}`,
         },
         {
-          type: 'resource',
+          type: "resource",
           resource: {
             uri: `github://issues/${issue.id}`,
-            mimeType: 'application/json',
+            mimeType: "application/json",
             text: JSON.stringify(issue, null, 2),
           },
         },
@@ -478,27 +487,27 @@ async def create_issue(client: APIClient, input: CreateIssueInput):
 
 ```typescript
 // src/index.ts
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { createIssueTool, createIssue } from './tools/create-issue.js';
-import { APIClient } from './client.js';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { createIssueTool, createIssue } from "./tools/create-issue.js";
+import { APIClient } from "./client.js";
 
-const server = new Server({
-  name: 'github-mcp-server',
-  version: '1.0.0',
-}, {
-  capabilities: {
-    tools: {},
+const server = new Server(
+  {
+    name: "github-mcp-server",
+    version: "1.0.0",
   },
-});
-
-const client = new APIClient(
-  process.env.GITHUB_TOKEN!,
-  'https://api.github.com'
+  {
+    capabilities: {
+      tools: {},
+    },
+  }
 );
 
+const client = new APIClient(process.env.GITHUB_TOKEN!, "https://api.github.com");
+
 // List available tools
-server.setRequestHandler('tools/list', async () => ({
+server.setRequestHandler("tools/list", async () => ({
   tools: [
     createIssueTool,
     // ... other tools
@@ -506,11 +515,11 @@ server.setRequestHandler('tools/list', async () => ({
 }));
 
 // Handle tool calls
-server.setRequestHandler('tools/call', async (request) => {
+server.setRequestHandler("tools/call", async (request) => {
   const { name, arguments: args } = request.params;
 
   switch (name) {
-    case 'github_create_issue':
+    case "github_create_issue":
       return await createIssue(client, args);
     // ... other tools
     default:
@@ -527,29 +536,32 @@ await server.connect(transport);
 
 ```typescript
 // src/index.ts
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
-import express from 'express';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+import express from "express";
 
 const app = express();
-const server = new Server({
-  name: 'github-mcp-server',
-  version: '1.0.0',
-}, {
-  capabilities: {
-    tools: {},
+const server = new Server(
+  {
+    name: "github-mcp-server",
+    version: "1.0.0",
   },
-});
+  {
+    capabilities: {
+      tools: {},
+    },
+  }
+);
 
 // ... tool handlers ...
 
-app.post('/mcp', async (req, res) => {
-  const transport = new SSEServerTransport('/mcp/sse', res);
+app.post("/mcp", async (req, res) => {
+  const transport = new SSEServerTransport("/mcp/sse", res);
   await server.connect(transport);
 });
 
 app.listen(3000, () => {
-  console.log('MCP server listening on port 3000');
+  console.log("MCP server listening on port 3000");
 });
 ```
 
@@ -558,6 +570,7 @@ app.listen(3000, () => {
 ### Phase 3: Review & Testing
 
 **Objectives:**
+
 - Verify code quality
 - Test functionality
 - Validate with MCP Inspector
@@ -565,18 +578,21 @@ app.listen(3000, () => {
 #### Step 3.1: Code Review Checklist
 
 **DRY Principle (Don't Repeat Yourself):**
+
 - [ ] Shared utilities for common operations
 - [ ] Reusable error handling
 - [ ] Consistent API client usage
 - [ ] No duplicated validation logic
 
 **Error Handling:**
+
 - [ ] Actionable error messages
 - [ ] Proper status code handling
 - [ ] Graceful fallbacks
 - [ ] User-friendly error responses
 
 **Type Coverage:**
+
 - [ ] Input schemas for all tools
 - [ ] Response type definitions
 - [ ] No `any` types in critical paths
@@ -590,7 +606,7 @@ try {
   const result = await api.call();
   return result;
 } catch (e) {
-  return { error: 'Failed' };
+  return { error: "Failed" };
 }
 
 // ✅ Good error handling
@@ -608,6 +624,7 @@ try {
 #### Step 3.2: Build and Syntax Check
 
 **TypeScript:**
+
 ```bash
 # Build the project
 npm run build
@@ -620,6 +637,7 @@ npx eslint src/
 ```
 
 **Python:**
+
 ```bash
 # Check syntax
 python -m py_compile src/**/*.py
@@ -636,11 +654,13 @@ ruff check src/
 **MCP Inspector** is the official tool for testing MCP servers.
 
 **Installation:**
+
 ```bash
 npm install -g @modelcontextprotocol/inspector
 ```
 
 **Launch Inspector:**
+
 ```bash
 # For stdio servers
 mcp-inspector npx tsx src/index.ts
@@ -697,6 +717,7 @@ echo '{
 ### Phase 4: Evaluation Creation
 
 **Objectives:**
+
 - Create comprehensive test questions
 - Validate server capabilities
 - Ensure realistic scenarios
@@ -704,6 +725,7 @@ echo '{
 #### Step 4.1: Generate Test Questions
 
 **Requirements:**
+
 - **10 complex questions** minimum
 - **Read-only operations** (safe for evaluation)
 - **Independent questions** (can be answered in any order)
@@ -741,12 +763,14 @@ echo '{
 #### Step 4.2: Evaluation Best Practices
 
 **Good Questions:**
+
 - Require multiple tool calls
 - Test different capabilities
 - Cover edge cases
 - Realistic scenarios
 
 **Bad Questions:**
+
 - Too simple (single tool call)
 - Ambiguous requirements
 - Non-deterministic answers
@@ -787,6 +811,7 @@ echo '{
 ### Tool Design
 
 ✅ **DO:**
+
 - Use consistent naming: `service_action`
 - Prioritize comprehensive API coverage
 - Provide actionable error messages
@@ -796,6 +821,7 @@ echo '{
 - Validate inputs with schemas
 
 ❌ **DON'T:**
+
 - Create overly complex workflow tools
 - Use vague error messages
 - Ignore error handling
@@ -809,13 +835,13 @@ echo '{
 
 ```typescript
 // ❌ Not actionable
-throw new Error('Invalid token');
+throw new Error("Invalid token");
 
 // ✅ Actionable
 throw new Error(
-  'Authentication failed: Invalid API token. ' +
-  'Generate a new token at https://github.com/settings/tokens ' +
-  'and set it in the GITHUB_TOKEN environment variable.'
+  "Authentication failed: Invalid API token. " +
+    "Generate a new token at https://github.com/settings/tokens " +
+    "and set it in the GITHUB_TOKEN environment variable."
 );
 ```
 
@@ -828,31 +854,33 @@ return {
   content: [
     // Human-readable text
     {
-      type: 'text',
-      text: 'Created issue #123: Bug in login flow'
+      type: "text",
+      text: "Created issue #123: Bug in login flow",
     },
     // Structured data for modern SDKs
     {
-      type: 'resource',
+      type: "resource",
       resource: {
-        uri: 'github://issues/123',
-        mimeType: 'application/json',
-        text: JSON.stringify(issue, null, 2)
-      }
-    }
-  ]
+        uri: "github://issues/123",
+        mimeType: "application/json",
+        text: JSON.stringify(issue, null, 2),
+      },
+    },
+  ],
 };
 ```
 
 ### Transport Selection
 
 **Stdio Transport:**
+
 - Local servers only
 - Single client connection
 - Simple setup
 - No authentication needed
 
 **Streamable HTTP:**
+
 - Remote servers
 - Multiple clients
 - Requires authentication
@@ -867,6 +895,7 @@ return {
 ### TypeScript (Recommended)
 
 **Pros:**
+
 - High-quality SDK support
 - AI models familiar with TypeScript
 - Strong typing with Zod
@@ -874,18 +903,21 @@ return {
 - Rich ecosystem
 
 **Cons:**
+
 - Build step required
 - More verbose than Python
 
 ### Python
 
 **Pros:**
+
 - Simpler syntax
 - Quick prototyping
 - Pydantic for validation
 - Large data science ecosystem
 
 **Cons:**
+
 - SDK less mature than TypeScript
 - Type hints less enforced
 - Async can be complex
@@ -898,46 +930,51 @@ return {
 
 ```typescript
 // src/index.ts
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { z } from 'zod';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
 
-const server = new Server({
-  name: 'github-mcp-server',
-  version: '1.0.0',
-}, {
-  capabilities: {
-    tools: {},
+const server = new Server(
+  {
+    name: "github-mcp-server",
+    version: "1.0.0",
   },
-});
+  {
+    capabilities: {
+      tools: {},
+    },
+  }
+);
 
 const ListIssuesSchema = z.object({
-  repository: z.string().describe('Repository in format owner/repo'),
-  state: z.enum(['open', 'closed', 'all']).default('open'),
+  repository: z.string().describe("Repository in format owner/repo"),
+  state: z.enum(["open", "closed", "all"]).default("open"),
 });
 
-server.setRequestHandler('tools/list', async () => ({
-  tools: [{
-    name: 'github_list_issues',
-    description: 'List issues in a GitHub repository',
-    inputSchema: ListIssuesSchema,
-    annotations: {
-      readOnlyHint: true,
-      idempotentHint: true,
+server.setRequestHandler("tools/list", async () => ({
+  tools: [
+    {
+      name: "github_list_issues",
+      description: "List issues in a GitHub repository",
+      inputSchema: ListIssuesSchema,
+      annotations: {
+        readOnlyHint: true,
+        idempotentHint: true,
+      },
     },
-  }],
+  ],
 }));
 
-server.setRequestHandler('tools/call', async (request) => {
+server.setRequestHandler("tools/call", async (request) => {
   const { name, arguments: args } = request.params;
 
-  if (name === 'github_list_issues') {
+  if (name === "github_list_issues") {
     const input = ListIssuesSchema.parse(args);
     const response = await fetch(
       `https://api.github.com/repos/${input.repository}/issues?state=${input.state}`,
       {
         headers: {
-          'Authorization': `token ${process.env.GITHUB_TOKEN}`,
+          Authorization: `token ${process.env.GITHUB_TOKEN}`,
         },
       }
     );
@@ -949,11 +986,14 @@ server.setRequestHandler('tools/call', async (request) => {
     const issues = await response.json();
 
     return {
-      content: [{
-        type: 'text',
-        text: `Found ${issues.length} issues:\n` +
-          issues.map((i: any) => `#${i.number}: ${i.title}`).join('\n'),
-      }],
+      content: [
+        {
+          type: "text",
+          text:
+            `Found ${issues.length} issues:\n` +
+            issues.map((i: any) => `#${i.number}: ${i.title}`).join("\n"),
+        },
+      ],
     };
   }
 

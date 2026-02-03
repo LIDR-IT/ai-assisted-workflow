@@ -8,23 +8,25 @@ Agents are autonomous subprocesses that handle complex, multi-step tasks indepen
 
 ## Platform Support
 
-| Platform | Agents Support | Method | Location |
-|----------|---------------|--------|----------|
-| **Cursor** | ✅ Full | Symlink | `.cursor/agents → ../.agents/agents` |
-| **Claude Code** | ✅ Full | Symlink | `.claude/agents → ../.agents/agents` |
-| **Gemini CLI** | ✅ Full | Symlink | `.gemini/agents → ../.agents/agents` |
-| **Antigravity** | ❌ **NOT Supported** | N/A | N/A |
+| Platform        | Agents Support       | Method  | Location                             |
+| --------------- | -------------------- | ------- | ------------------------------------ |
+| **Cursor**      | ✅ Full              | Symlink | `.cursor/agents → ../.agents/agents` |
+| **Claude Code** | ✅ Full              | Symlink | `.claude/agents → ../.agents/agents` |
+| **Gemini CLI**  | ✅ Full              | Symlink | `.gemini/agents → ../.agents/agents` |
+| **Antigravity** | ❌ **NOT Supported** | N/A     | N/A                                  |
 
 ### Important: Antigravity Limitation
 
 **Antigravity does NOT support project-level agents directory.**
 
 This is a platform limitation. While Antigravity supports:
+
 - ✅ Rules (via copy to `.agent/rules/`)
 - ✅ Skills (via selective symlinks to `.agent/skills/`)
 - ✅ Commands (via selective symlinks to `.agent/workflows/`)
 
 It does **NOT** support:
+
 - ❌ Agents directory
 
 Agents will only work in Cursor, Claude Code, and Gemini CLI.
@@ -50,6 +52,7 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 **Location:** `.agents/agents/sync-agents.sh`
 
 **What it does:**
+
 1. Validates `.agents/agents/` source directory exists
 2. Creates symlinks for Cursor, Claude Code, Gemini CLI
 3. Skips Antigravity (not supported)
@@ -81,6 +84,7 @@ Agents are automatically synchronized when using:
 ```
 
 The sync order is:
+
 1. Rules
 2. Skills
 3. Commands
@@ -103,15 +107,19 @@ color: blue
 You are [agent role]...
 
 ## Phase 1: Discovery
+
 [Workflow steps]
 
 ## Phase 2: Analysis
+
 [Analysis steps]
 
 ## Phase 3: Reporting
+
 [Reporting format]
 
 ## Phase 4: Implementation
+
 [Implementation process]
 ```
 
@@ -122,10 +130,12 @@ You are [agent role]...
 **Purpose:** Audits and improves project documentation
 
 **Triggered by:**
+
 - `/improve-docs` command
 - User asks to review/audit documentation
 
 **What it does:**
+
 1. Reads `.agents/rules/process/documentation.md`
 2. Analyzes docs structure and content
 3. Identifies gaps and issues
@@ -133,6 +143,7 @@ You are [agent role]...
 5. Implements approved improvements
 
 **Example:**
+
 ```bash
 /improve-docs docs/guides
 ```
@@ -144,27 +155,30 @@ See: [doc-improver.md](../../../.agents/agents/doc-improver.md)
 ### Quick Steps
 
 1. **Create agent file:**
+
 ```bash
 touch .agents/agents/your-agent.md
 ```
 
 2. **Add frontmatter and system prompt:**
+
 ```yaml
 ---
 name: your-agent
 description: Use when [triggering conditions]
 tools: ["Read", "Write"]
 ---
-
 You are [agent role]...
 ```
 
 3. **Run sync:**
+
 ```bash
 ./.agents/agents/sync-agents.sh
 ```
 
 4. **Verify:**
+
 ```bash
 ls -la .cursor/agents/your-agent.md
 ls -la .claude/agents/your-agent.md
@@ -172,6 +186,7 @@ ls -la .gemini/agents/your-agent.md
 ```
 
 5. **Create invoking command (optional):**
+
 ```bash
 touch .agents/commands/your-command.md
 ```
@@ -238,6 +253,7 @@ cat .gemini/agents/doc-improver.md
 **Issue:** Agent symlinks missing after sync
 
 **Solution:**
+
 ```bash
 # Re-run sync script
 ./.agents/agents/sync-agents.sh
@@ -253,6 +269,7 @@ ln -s ../.agents/agents .gemini/agents
 **Issue:** Symlink exists but points to incorrect target
 
 **Solution:**
+
 ```bash
 # Remove incorrect symlinks
 rm .cursor/agents
@@ -268,6 +285,7 @@ rm .gemini/agents
 **Issue:** Platform can't find agent after creating
 
 **Solution:**
+
 ```bash
 # 1. Verify agent exists in source
 ls .agents/agents/your-agent.md
@@ -309,6 +327,7 @@ Agents should always read project rules:
 
 ```markdown
 ## Phase 1: Discovery
+
 1. Read `.agents/rules/relevant-rule.md`
 2. Understand project standards
 3. Execute workflow
@@ -322,8 +341,9 @@ Agents can invoke skills for specialized knowledge:
 
 ```markdown
 ## When to use skill:
+
 If complex API documentation needed:
-  Use Skill("api-doc-generator")
+Use Skill("api-doc-generator")
 ```
 
 See: [Skills Sync Setup](./SKILLS_SYNC_SETUP.md)
@@ -360,6 +380,7 @@ Agents must respect project standards:
 
 ```markdown
 ## Phase 1: Discovery
+
 1. Read `.agents/rules/process/documentation.md`
 2. Read `.agents/rules/code/style.md`
 3. Proceed with understanding of standards
@@ -371,6 +392,7 @@ Never modify files without user consent:
 
 ```markdown
 ## Recommendations
+
 1. Fix broken links
 2. Update examples
 
@@ -383,8 +405,11 @@ Break agent work into clear phases:
 
 ```markdown
 ## Phase 1: Discovery
+
 ## Phase 2: Analysis
+
 ## Phase 3: Reporting
+
 ## Phase 4: Implementation
 ```
 

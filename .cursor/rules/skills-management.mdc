@@ -2,7 +2,14 @@
 name: skills-management
 description: Review project for skills structure and compliance
 alwaysApply: false
-globs: [".agents/skills/**/*", ".claude/skills", ".cursor/skills", ".gemini/skills", ".agent/skills"]
+globs:
+  [
+    ".agents/skills/**/*",
+    ".claude/skills",
+    ".cursor/skills",
+    ".gemini/skills",
+    ".agent/skills",
+  ]
 argument-hint: <project-root>
 paths: [".agents/skills/**/*"]
 trigger: always_on
@@ -56,6 +63,7 @@ ln -s ../../.agents/skills/universal-skill .cursor/skills/universal-skill
 ### Directory Structure
 
 **Approach 1:**
+
 ```
 project-root/
 ├── .agents/skills/skill-one/SKILL.md    # ← Source of truth
@@ -66,6 +74,7 @@ project-root/
 ```
 
 **Approach 2:**
+
 ```
 project-root/
 ├── .agents/skills/
@@ -103,6 +112,7 @@ git commit -m "feat: initialize skills structure"
 ## Installing Skills
 
 **Project scope:**
+
 ```bash
 # Via CLI
 claude plugin install skill-name@marketplace --scope project
@@ -119,6 +129,7 @@ EOF
 ```
 
 **Never user/global:**
+
 ```bash
 # ❌ WRONG
 claude plugin install skill-name --scope user
@@ -139,39 +150,49 @@ npx skills add skill-name -g
 ## Anti-Patterns
 
 ### ❌ User-Level Skills
+
 ```bash
 # Wrong - inconsistent across team
 npx skills add skill-name -g
 claude plugin install skill-name --scope user
 ```
+
 **Fix:** Install to `.agents/skills/`
 
 ### ❌ Duplicate Copies
+
 ```
 .agents/skills/skill-one/
 .claude/skills/skill-one/    # ❌ Duplicate
 ```
+
 **Fix:** Use symlinks
 
 ### ❌ Hardcoded Paths
+
 ```yaml
 # Wrong - won't work for team
 Read /Users/john/project/config.json
 ```
+
 **Fix:** Use relative: "Read config.json in project root"
 
 ### ❌ Broken Symlinks
+
 ```bash
 # Wrong - creates broken link
 cd .claude && ln -s .agents/skills skills
 ```
+
 **Fix:** From project root: `ln -s ../.agents/skills .claude/skills`
 
 ### ❌ Not Version Controlled
+
 ```bash
 # Wrong - team can't access
 echo ".agents/" >> .gitignore
 ```
+
 **Fix:** Commit skills to git
 
 ## Verification Checklist
@@ -189,6 +210,7 @@ echo ".agents/" >> .gitignore
 ## Troubleshooting
 
 **Skill not found:**
+
 ```bash
 ls -la .claude/skills
 rm .claude/skills
@@ -196,6 +218,7 @@ ln -s ../.agents/skills .claude/skills
 ```
 
 **Skills not syncing:**
+
 ```bash
 # Verify symlinks, not directories
 file .claude/skills .cursor/skills .gemini/skills
@@ -208,6 +231,7 @@ ln -s ../.agents/skills .gemini/skills
 ```
 
 **Broken symlink:**
+
 ```bash
 readlink .claude/skills
 ls -la .agents/skills
@@ -218,6 +242,7 @@ ln -s ../.agents/skills .claude/skills
 ## Migration
 
 **User-level to project:**
+
 ```bash
 mkdir -p .agents/skills
 cp -r ~/.claude/skills/* .agents/skills/

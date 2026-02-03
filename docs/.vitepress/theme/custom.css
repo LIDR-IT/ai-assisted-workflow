@@ -10,7 +10,7 @@
   --gold-primary: oklch(0.72 0.16 85); /* Slightly darker gold for light mode legibility */
   --gold-soft: oklch(0.95 0.05 90);
   --gold-dark: oklch(0.6 0.18 80);
-  
+
   --vp-c-bg: #ffffff;
   --vp-c-bg-alt: #f8fafc;
   --vp-c-bg-elv: #ffffff;
@@ -46,7 +46,7 @@
   --gold-primary: oklch(0.86 0.14 88);
   --gold-soft: oklch(0.92 0.08 90);
   --gold-dark: oklch(0.75 0.15 85);
-  
+
   --charcoal-bg: oklch(0.12 0.02 250);
   --charcoal-card: oklch(0.14 0.02 250);
   --charcoal-muted: oklch(0.25 0.03 250);
@@ -102,12 +102,14 @@
 }
 
 /* Smooth Transitions for interactive elements */
-.vp-button, .nav-bar, .sidebar {
+.vp-button,
+.nav-bar,
+.sidebar {
   transition: all 0.3s ease-in-out;
 }
 
 /* Enhanced code block styling */
-div[class*='language-'] {
+div[class*="language-"] {
   border-radius: 8px;
   margin: 16px 0;
 }
@@ -138,13 +140,27 @@ div[class*='language-'] {
 /* --- Premium Animations & Effects --- */
 
 @keyframes aurora {
-  from { background-position: 50% 50%, 50% 50%; }
-  to { background-position: 350% 50%, 350% 50%; }
+  from {
+    background-position:
+      50% 50%,
+      50% 50%;
+  }
+  to {
+    background-position:
+      350% 50%,
+      350% 50%;
+  }
 }
 
 @keyframes spotlight {
-  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
-  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
 }
 
 /* Apply subtle aurora effect to the hero background */

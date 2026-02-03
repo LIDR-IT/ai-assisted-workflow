@@ -21,6 +21,7 @@ save_memory(fact="Your fact here.")
 ```
 
 **Required Argument:**
+
 - `fact` (string, required) - A clear, self-contained piece of information
 
 ## Memory Commands
@@ -154,6 +155,7 @@ vim ~/.gemini/GEMINI.md
 ```
 
 After editing, refresh memory:
+
 ```bash
 /memory refresh
 ```
@@ -162,14 +164,15 @@ After editing, refresh memory:
 
 **Memory Tool vs GEMINI.md Files:**
 
-| Feature | Global Memory (`save_memory`) | Project GEMINI.md |
-|---------|-------------------------------|-------------------|
-| Scope | All projects | Current project only |
-| Storage | `~/.gemini/GEMINI.md` | `<project>/GEMINI.md` |
-| Best for | Personal preferences | Project-specific rules |
-| Updates | Agent can write | Manual editing only |
+| Feature  | Global Memory (`save_memory`) | Project GEMINI.md      |
+| -------- | ----------------------------- | ---------------------- |
+| Scope    | All projects                  | Current project only   |
+| Storage  | `~/.gemini/GEMINI.md`         | `<project>/GEMINI.md`  |
+| Best for | Personal preferences          | Project-specific rules |
+| Updates  | Agent can write               | Manual editing only    |
 
 **Recommended Strategy:**
+
 - Use `save_memory` for personal preferences and workflow patterns
 - Use project GEMINI.md for project-specific coding standards and architecture
 - See [GEMINI.md Hierarchy](gemini-md-hierarchy.md) for multi-level context
@@ -227,6 +230,7 @@ gemini> Do you remember my indentation preference?
 **Issue:** Facts not saved across sessions
 
 **Solutions:**
+
 1. Check file exists: `ls -la ~/.gemini/GEMINI.md`
 2. Check permissions: `chmod 644 ~/.gemini/GEMINI.md`
 3. Manually refresh: `/memory refresh`
@@ -236,6 +240,7 @@ gemini> Do you remember my indentation preference?
 **Issue:** GEMINI.md file becoming bloated
 
 **Solutions:**
+
 1. Edit file directly: `code ~/.gemini/GEMINI.md`
 2. Remove outdated facts
 3. Organize into sections
@@ -246,6 +251,7 @@ gemini> Do you remember my indentation preference?
 **Issue:** Memory commands not working
 
 **Solutions:**
+
 1. Update Gemini CLI: `npm update -g @google/generative-ai-cli`
 2. Check settings: `gemini config list`
 3. Verify context enabled in settings.json

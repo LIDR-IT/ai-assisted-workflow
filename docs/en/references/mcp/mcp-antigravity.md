@@ -13,11 +13,13 @@ Google Antigravity is an Agentic development platform that changes how software 
 ## What is Antigravity?
 
 Antigravity enables AI agents to:
+
 - **Plan**: Break down complex tasks
 - **Code**: Generate complete implementations
 - **Validate**: Test and verify solutions
 
 With MCP integration, agents can securely connect to:
+
 - Google Cloud services (AlloyDB, BigQuery, Spanner, Cloud SQL, Looker)
 - External tools and APIs
 - Custom development workflows
@@ -27,6 +29,7 @@ With MCP integration, agents can securely connect to:
 ## Configuration File Locations
 
 ### User-Level (Global)
+
 ```
 ~/.gemini/antigravity/mcp_config.json
 ```
@@ -34,6 +37,7 @@ With MCP integration, agents can securely connect to:
 All Antigravity sessions use these servers.
 
 ### Project-Level
+
 ```
 <project-root>/.gemini/mcp_config.json
 ```
@@ -43,6 +47,7 @@ Specific to the current project (recommended for team collaboration).
 ### Alternative: settings.json
 
 MCP servers can also be configured in:
+
 ```
 ~/.gemini/settings.json
 ```
@@ -56,11 +61,13 @@ Under the `mcpServers` key.
 ### 1. MCP Store (Recommended)
 
 **Access:**
+
 1. Click on Agent session
 2. Select "…" dropdown at top of editor's side panel
 3. Select **MCP Servers** to open MCP Store
 
 **Install:**
+
 1. Search for service (e.g., "BigQuery", "AlloyDB")
 2. Click **Install**
 3. Follow setup process
@@ -68,6 +75,7 @@ Under the `mcpServers` key.
 ### 2. Manual Configuration
 
 **Edit config file:**
+
 1. Open MCP Store
 2. Select **Manage MCP Servers** at top
 3. Click **View raw config** in main tab
@@ -120,12 +128,7 @@ Install extensions that bundle MCP servers automatically.
   "mcpServers": {
     "supabase": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@supabase/mcp-server-supabase@latest",
-        "--access-token",
-        "your-token"
-      ],
+      "args": ["-y", "@supabase/mcp-server-supabase@latest", "--access-token", "your-token"],
       "env": {}
     }
   }
@@ -155,10 +158,7 @@ Install extensions that bundle MCP servers automatically.
   "mcpServers": {
     "remote-server": {
       "command": "npx",
-      "args": [
-        "mcp-remote",
-        "http://127.0.0.1:3845/sse"
-      ],
+      "args": ["mcp-remote", "http://127.0.0.1:3845/sse"],
       "env": {}
     }
   }
@@ -183,11 +183,11 @@ Install extensions that bundle MCP servers automatically.
 
 ## Configuration Fields
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `command` | Yes | Executable path or command |
-| `args` | No | Array of command-line arguments |
-| `env` | No | Environment variables object |
+| Field     | Required | Description                     |
+| --------- | -------- | ------------------------------- |
+| `command` | Yes      | Executable path or command      |
+| `args`    | No       | Array of command-line arguments |
+| `env`     | No       | Environment variables object    |
 
 **Note:** For HTTP-based servers, Antigravity uses `serverUrl` instead of `url` (different from other platforms).
 
@@ -221,6 +221,7 @@ Antigravity MCP Store includes official Google Cloud servers:
 ### Setup for Team Collaboration
 
 **Create project config:**
+
 ```bash
 mkdir -p .gemini
 cat > .gemini/mcp_config.json << 'EOF'
@@ -237,6 +238,7 @@ EOF
 ```
 
 **Commit to version control:**
+
 ```bash
 git add .gemini/
 git commit -m "feat: add project MCP configuration"
@@ -252,6 +254,7 @@ Create `AGENTS.md` in project root for Antigravity-specific instructions:
 ## MCP Servers
 
 This project uses the following MCP servers:
+
 - **project-server**: Custom project tools
 - **bigquery**: Data analysis
 
@@ -268,11 +271,13 @@ Run setup script to configure MCP:
 ## Performance Considerations
 
 **Tool Limit:**
+
 - Antigravity recommends **< 50 total enabled tools** for optimal performance
 - Disable unused servers to improve response time
 - Use tool filtering when needed
 
 **Startup:**
+
 - Servers start on-demand when accessed
 - First use may have slight delay
 - Subsequent uses are faster
@@ -284,6 +289,7 @@ Run setup script to configure MCP:
 ### Enable/Disable Servers
 
 **Via UI:**
+
 1. Open MCP Store
 2. Click **Manage MCP Servers**
 3. Toggle servers on/off
@@ -291,6 +297,7 @@ Run setup script to configure MCP:
 **Via Config:**
 
 Remove or comment out server in `mcp_config.json`:
+
 ```json
 {
   "mcpServers": {
@@ -304,6 +311,7 @@ Remove or comment out server in `mcp_config.json`:
 ### Update Servers
 
 **NPX-based servers:**
+
 ```bash
 # Update to latest
 # Remove @latest version specifier, clear cache
@@ -312,6 +320,7 @@ npm cache clean --force
 ```
 
 **Local servers:**
+
 - Update source code
 - Restart Antigravity
 
@@ -322,13 +331,14 @@ npm cache clean --force
 ### Credentials Management
 
 **Never hardcode secrets:**
+
 ```json
 {
   "mcpServers": {
     "secure-server": {
       "command": "server",
       "env": {
-        "API_KEY": "${env:API_KEY}"  // ✅ Reference env var
+        "API_KEY": "${env:API_KEY}" // ✅ Reference env var
       }
     }
   }
@@ -338,10 +348,12 @@ npm cache clean --force
 ### Authentication
 
 **OAuth Personal (Recommended):**
+
 - Configured in `~/.gemini/settings.json`
 - `"auth": {"selectedType": "oauth-personal"}`
 
 **Environment Variables:**
+
 - Store sensitive data in shell profile
 - Never commit credentials to git
 
@@ -363,29 +375,34 @@ npm cache clean --force
 ### Check Server Status
 
 **Via UI:**
+
 1. Open MCP Store
 2. Select **Manage MCP Servers**
 3. View server status and errors
 
 **Via Logs:**
+
 - Check Antigravity console output
 - Review server-specific logs if available
 
 ### Common Issues
 
 **Server won't start:**
+
 - Verify command path is correct
 - Check dependencies are installed
 - Ensure environment variables are set
 - Test command manually in terminal
 
 **Tools not appearing:**
+
 - Confirm server is enabled
 - Check MCP Store for errors
 - Verify server implements MCP protocol correctly
 - Restart Antigravity
 
 **Authentication failures:**
+
 - Verify credentials in environment
 - Check OAuth configuration
 - Review server-specific auth requirements
@@ -420,10 +437,7 @@ npm cache clean --force
   "mcpServers": {
     "figma": {
       "command": "npx",
-      "args": [
-        "mcp-remote",
-        "http://127.0.0.1:3845/sse"
-      ],
+      "args": ["mcp-remote", "http://127.0.0.1:3845/sse"],
       "env": {}
     }
   }
@@ -511,6 +525,7 @@ npm cache clean --force
 ### From Cursor mcp.json
 
 **Cursor format:**
+
 ```json
 {
   "mcpServers": {
@@ -523,6 +538,7 @@ npm cache clean --force
 ```
 
 **Antigravity format (same):**
+
 ```json
 {
   "mcpServers": {
@@ -541,11 +557,13 @@ npm cache clean --force
 ## Related Resources
 
 **In This Repository:**
+
 - `docs/references/mcp/mcp-introduction.md` - MCP overview
 - `docs/references/mcp/mcp-server-builder.md` - Building servers
 - `docs/references/guidelines/team-conventions/third-party-security-guidelines.md` - Security
 
 **External:**
+
 - [Antigravity MCP Documentation](https://antigravity.google/docs/mcp)
 - [Google Cloud MCP Integration](https://cloud.google.com/blog/products/data-analytics/connect-google-antigravity-ide-to-googles-data-cloud-services)
 - [Composio: MCP with Antigravity](https://composio.dev/blog/howto-mcp-antigravity)

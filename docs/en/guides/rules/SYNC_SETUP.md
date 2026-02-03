@@ -5,6 +5,7 @@ This guide explains how to set up and use the centralized rules and skills synch
 ## Overview
 
 The `.agents/rules/sync-rules.sh` script synchronizes:
+
 - **Rules** - Project guidelines and standards (`.agents/rules/*.md`)
 - **Skills** - Agent capabilities and extensions (`.agents/skills/`)
 
@@ -15,12 +16,12 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 
 ### Synchronization Strategy
 
-| Platform | Rules | Skills | Method |
-|----------|-------|--------|--------|
-| Cursor | ✅ | ✅ | Full directory symlinks |
-| Claude Code | ✅ | ✅ | Full directory symlinks |
-| Gemini CLI | ✅ | ✅ | Full directory symlinks |
-| Antigravity | ✅ | ✅ | Copy (rules), Selective (skills) |
+| Platform    | Rules | Skills | Method                           |
+| ----------- | ----- | ------ | -------------------------------- |
+| Cursor      | ✅    | ✅     | Full directory symlinks          |
+| Claude Code | ✅    | ✅     | Full directory symlinks          |
+| Gemini CLI  | ✅    | ✅     | Full directory symlinks          |
+| Antigravity | ✅    | ✅     | Copy (rules), Selective (skills) |
 
 ### Directory Structure
 
@@ -75,22 +76,26 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 ### Initial Setup
 
 1. **Verify source directories exist:**
+
    ```bash
    ls -la .agents/rules
    ls -la .agents/skills
    ```
 
 2. **Make script executable (if not already):**
+
    ```bash
    chmod +x .agents/rules/sync-rules.sh
    ```
 
 3. **Test with dry-run:**
+
    ```bash
    ./.agents/rules/sync-rules.sh --dry-run
    ```
 
 4. **Run actual sync:**
+
    ```bash
    ./.agents/rules/sync-rules.sh
    ```
@@ -107,16 +112,19 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 ### Running the Sync Script
 
 **Basic usage:**
+
 ```bash
 ./.agents/rules/sync-rules.sh
 ```
 
 **Dry-run mode (preview changes):**
+
 ```bash
 ./.agents/rules/sync-rules.sh --dry-run
 ```
 
 **Expected output:**
+
 ```
 🔄 Synchronizing rules and skills from .agents/ to all agent directories...
 
@@ -155,6 +163,7 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 ### Adding New Rules
 
 1. **Create rule file in source:**
+
    ```bash
    # Create new rule
    cat > .agents/rules/security.md << 'EOF'
@@ -168,6 +177,7 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
    ```
 
 2. **Run sync (for Antigravity only):**
+
    ```bash
    # Cursor, Claude, Gemini see changes immediately via symlinks
    # Antigravity needs sync to copy files
@@ -188,6 +198,7 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 Skills use the same synchronization approach:
 
 1. **Create skill in source:**
+
    ```bash
    mkdir -p .agents/skills/my-skill
    cat > .agents/skills/my-skill/SKILL.md << 'EOF'
@@ -203,6 +214,7 @@ Skills use the same synchronization approach:
    ```
 
 2. **Changes propagate automatically:**
+
    ```bash
    # Symlinks mean instant propagation for Cursor, Claude, Gemini
    ls .cursor/skills/my-skill
@@ -221,6 +233,7 @@ Skills use the same synchronization approach:
 ### Verify Symlinks
 
 **Check symlink targets:**
+
 ```bash
 readlink .cursor/rules    # Should output: ../.agents/rules
 readlink .cursor/skills   # Should output: ../.agents/skills
@@ -231,6 +244,7 @@ readlink .gemini/skills   # Should output: ../.agents/skills
 ```
 
 **Visual verification:**
+
 ```bash
 ls -la .cursor/rules .cursor/skills
 # Output should show symlinks:
@@ -241,6 +255,7 @@ ls -la .cursor/rules .cursor/skills
 ### Verify File Access
 
 **Test reading files through symlinks:**
+
 ```bash
 # Read rule through Cursor symlink
 cat .cursor/rules/core-principles.md
@@ -258,11 +273,13 @@ ls .agent/rules/*.md
 ### Verify in Agents
 
 **Cursor:**
+
 1. Open Cursor
 2. Check Settings → MCP/Skills
 3. Verify skills appear
 
 **Claude Code:**
+
 ```bash
 # List installed skills
 claude mcp list
@@ -272,6 +289,7 @@ claude /find-skills
 ```
 
 **Gemini CLI:**
+
 ```bash
 # List MCP servers and skills
 gemini mcp list
@@ -281,6 +299,7 @@ gemini /find-skills
 ```
 
 **Antigravity:**
+
 ```bash
 # Verify rules copied
 ls ~/.gemini/antigravity/.agent/rules/
@@ -296,12 +315,14 @@ ls ~/.gemini/antigravity/.agent/skills/
 **Symptoms:** Directories instead of symlinks
 
 **Diagnosis:**
+
 ```bash
 ls -la .cursor/rules
 # If it shows 'd' instead of 'l', it's a directory not symlink
 ```
 
 **Solution:**
+
 ```bash
 # Re-run sync script
 ./.agents/rules/sync-rules.sh
@@ -316,12 +337,14 @@ ln -s ../.agents/rules .cursor/rules
 **Symptoms:** Broken symlinks or wrong targets
 
 **Diagnosis:**
+
 ```bash
 readlink .cursor/rules
 # Should output: ../.agents/rules
 ```
 
 **Solution:**
+
 ```bash
 # Remove and recreate
 rm .cursor/rules
@@ -334,6 +357,7 @@ ln -s ../.agents/rules .cursor/rules
 ### Changes Not Propagating
 
 **For Cursor/Claude/Gemini:**
+
 ```bash
 # Verify symlink exists
 ls -la .cursor/rules
@@ -346,6 +370,7 @@ readlink .cursor/rules
 ```
 
 **For Antigravity:**
+
 ```bash
 # Antigravity uses copies, not symlinks
 # Re-run sync to copy updated files
@@ -358,11 +383,13 @@ ls .agent/rules/
 ### Script Fails with Errors
 
 **Missing source directory:**
+
 ```
 ❌ Rules source directory not found: .agents/rules
 ```
 
 **Solution:**
+
 ```bash
 # Check if source exists
 ls -la .agents/rules
@@ -373,11 +400,13 @@ git clone <repo-url>
 ```
 
 **Permission denied:**
+
 ```
 ❌ Failed to create symlink
 ```
 
 **Solution:**
+
 ```bash
 # Check permissions
 ls -la .cursor/
@@ -396,6 +425,7 @@ chmod +x .agents/rules/sync-rules.sh
 Antigravity does NOT support project-level MCP configurations. Must be configured globally.
 
 **Solution:**
+
 ```bash
 # Edit global config
 vim ~/.gemini/antigravity/mcp_config.json
@@ -409,6 +439,7 @@ cat docs/guides/mcp/ANTIGRAVITY_SETUP.md
 Antigravity uses copied files, not symlinks.
 
 **Solution:**
+
 ```bash
 # Re-run sync to copy updated rules
 ./.agents/rules/sync-rules.sh
@@ -462,6 +493,7 @@ ln -s ../.agents/skills .cursor/skills
 ### What Gets Committed
 
 **Committed:**
+
 - `.agents/rules/*.md` - Source rules
 - `.agents/skills/` - Source skills
 - `.agents/rules/sync-rules.sh` - Sync script
@@ -469,6 +501,7 @@ ln -s ../.agents/skills .cursor/skills
 - `.agent/rules/*.md` - Copied files for Antigravity
 
 **Not committed:**
+
 - Symlink contents (Git stores symlinks, not contents)
 - Temporary files
 - Personal IDE settings
@@ -476,6 +509,7 @@ ln -s ../.agents/skills .cursor/skills
 ### Cloning Behavior
 
 When cloning the repository:
+
 ```bash
 git clone <repo-url>
 cd <repo>
@@ -489,14 +523,14 @@ ls -la .cursor/rules  # Shows symlink
 
 ## Comparison with MCP Sync
 
-| Feature | MCP Sync | Rules Sync |
-|---------|----------|------------|
-| Script | `.agents/mcp/sync-mcp.sh` | `.agents/rules/sync-rules.sh` |
-| Source | `.agents/mcp/mcp-servers.json` | `.agents/rules/*.md`, `.agents/skills/` |
-| Method | Generate configs | Create symlinks + copy |
-| Platforms | Cursor, Claude, Gemini, Antigravity | Same |
-| Run Frequency | After editing source JSON | After adding rules (Antigravity only) |
-| Idempotent | ✅ Yes | ✅ Yes |
+| Feature       | MCP Sync                            | Rules Sync                              |
+| ------------- | ----------------------------------- | --------------------------------------- |
+| Script        | `.agents/mcp/sync-mcp.sh`           | `.agents/rules/sync-rules.sh`           |
+| Source        | `.agents/mcp/mcp-servers.json`      | `.agents/rules/*.md`, `.agents/skills/` |
+| Method        | Generate configs                    | Create symlinks + copy                  |
+| Platforms     | Cursor, Claude, Gemini, Antigravity | Same                                    |
+| Run Frequency | After editing source JSON           | After adding rules (Antigravity only)   |
+| Idempotent    | ✅ Yes                              | ✅ Yes                                  |
 
 ## Best Practices
 
@@ -535,12 +569,14 @@ ls -la .cursor/rules  # Shows symlink
 ## Support
 
 **Issues:**
+
 - Check [Troubleshooting](#troubleshooting) section above
 - Review related documentation
 - Verify source directories exist
 - Try dry-run mode first
 
 **Questions:**
+
 - See `.agents/rules/core-principles.md` for architecture
 - See `docs/references/rules/` for technical details
 - See `docs/guidelines/team-conventions/skills-management-guidelines.md` for skills

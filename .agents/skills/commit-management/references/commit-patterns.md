@@ -9,12 +9,14 @@ Common commit scenarios and recommended patterns for this project.
 **Scenario:** Building a new feature with multiple components
 
 **Anti-pattern:**
+
 ```
 ❌ feat: add user management feature
    (one huge commit with API, UI, tests, docs)
 ```
 
 **Best practice:**
+
 ```
 ✅ feat(api): add user endpoints
 ✅ feat(ui): add user management page
@@ -24,6 +26,7 @@ Common commit scenarios and recommended patterns for this project.
 ```
 
 **Rationale:**
+
 - Each commit is independently revertable
 - Clear progression of work
 - Easier code review
@@ -34,12 +37,14 @@ Common commit scenarios and recommended patterns for this project.
 **Scenario:** Fixing a bug that requires multiple file changes
 
 **Anti-pattern:**
+
 ```
 ❌ fix: various bug fixes
    (multiple unrelated fixes in one commit)
 ```
 
 **Best practice:**
+
 ```
 ✅ fix(auth): resolve session timeout issue
 
@@ -50,6 +55,7 @@ Fixes: #234
 ```
 
 **Rationale:**
+
 - Single, focused fix
 - Clear cause and solution
 - Links to issue tracker
@@ -60,18 +66,21 @@ Fixes: #234
 **Scenario:** Improving code structure
 
 **Anti-pattern:**
+
 ```
 ❌ refactor: improve code and add new feature
    (mixing refactor with feature)
 ```
 
 **Best practice:**
+
 ```
 ✅ refactor(auth): extract token validation logic
 ✅ feat(auth): add token refresh endpoint
 ```
 
 **Rationale:**
+
 - Separate behavioral changes from structure changes
 - Easier to review
 - Can revert refactor without losing feature
@@ -81,6 +90,7 @@ Fixes: #234
 **Scenario:** API change that breaks backward compatibility
 
 **Pattern:**
+
 ```
 feat(api): redesign authentication endpoints
 
@@ -101,6 +111,7 @@ Closes: #567
 ```
 
 **Key elements:**
+
 - `BREAKING CHANGE:` footer (triggers major version bump)
 - Clear explanation of what changed
 - Migration instructions or documentation link
@@ -111,12 +122,14 @@ Closes: #567
 **Scenario:** Large feature requiring multiple phases
 
 **Anti-pattern:**
+
 ```
 ❌ Create one massive commit
 ❌ Create many tiny WIP commits
 ```
 
 **Best practice:**
+
 ```
 Phase 1: Foundation
 ✅ feat(database): add user preferences schema
@@ -137,6 +150,7 @@ Phase 4: Polish
 ```
 
 **Rationale:**
+
 - Logical progression
 - Each commit builds on previous
 - Can release incrementally if needed
@@ -249,6 +263,7 @@ Refs: #345
 ### When to Commit
 
 **DO commit when:**
+
 - ✅ Completed a logical unit of work
 - ✅ Tests are passing
 - ✅ Code compiles/runs successfully
@@ -256,6 +271,7 @@ Refs: #345
 - ✅ End of work session
 
 **DON'T commit when:**
+
 - ❌ Code doesn't compile
 - ❌ Tests are failing (unless explicitly WIP)
 - ❌ In the middle of refactoring
@@ -264,6 +280,7 @@ Refs: #345
 ### Frequency
 
 **Too frequent:**
+
 ```
 ❌ feat: add file
 ❌ feat: add another file
@@ -272,11 +289,13 @@ Refs: #345
 ```
 
 **Too infrequent:**
+
 ```
 ❌ feat: complete entire feature (500 files changed)
 ```
 
 **Just right:**
+
 ```
 ✅ feat(api): add user endpoint structure
 ✅ feat(api): add validation logic
@@ -302,6 +321,7 @@ Co-Authored-By: Alice Smith <alice@example.com>
 ### Pattern: AI Assistance
 
 **Project standard:**
+
 ```
 feat(commands): add /commit command for conventional commits
 
@@ -312,11 +332,13 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 **When to include:**
+
 - Significant AI-generated code
 - AI-designed architecture
 - Complex AI-assisted refactoring
 
 **Optional for:**
+
 - Minor AI suggestions
 - Code completion
 - Simple fixes
@@ -345,6 +367,7 @@ Co-Authored-By: Charlie Brown <charlie@example.com>
 Define and use consistent scopes across project:
 
 **Technology scopes:**
+
 ```
 api      - Backend API
 ui       - Frontend UI
@@ -353,6 +376,7 @@ auth     - Authentication
 ```
 
 **Feature scopes:**
+
 ```
 users    - User management
 posts    - Post features
@@ -360,6 +384,7 @@ comments - Comment features
 ```
 
 **Infrastructure scopes:**
+
 ```
 ci       - Continuous integration
 deploy   - Deployment
@@ -369,16 +394,19 @@ config   - Configuration
 ### Scope Granularity
 
 **Too broad:**
+
 ```
 ❌ feat(app): add feature
 ```
 
 **Too specific:**
+
 ```
 ❌ feat(LoginButtonComponent): change color
 ```
 
 **Just right:**
+
 ```
 ✅ feat(auth): add login functionality
 ✅ style(ui): update button colors
@@ -412,11 +440,13 @@ git push --force-with-lease
 ### Merge Commits
 
 **When to use:**
+
 - Integration of long-lived feature branches
 - Preserving exact history of parallel development
 - Team preference for merge commits
 
 **Pattern:**
+
 ```
 Merge branch 'feature/user-management' into main
 
@@ -438,6 +468,7 @@ git revert abc123
 ```
 
 **Commit message:**
+
 ```
 Revert "feat(auth): add SSO integration"
 
@@ -456,6 +487,7 @@ git revert def456  # def456 is the revert commit
 ```
 
 **Commit message:**
+
 ```
 Revert "Revert "feat(auth): add SSO integration""
 
@@ -474,6 +506,7 @@ Refs: #890, #891
 **Scenario:** Clean up feature branch before merging
 
 **Original commits:**
+
 ```
 feat(api): add endpoint
 WIP: debugging
@@ -484,6 +517,7 @@ fix: address review comments
 ```
 
 **Squashed:**
+
 ```
 feat(api): add user management endpoints
 
@@ -499,6 +533,7 @@ Refs: #456
 ```
 
 **Command:**
+
 ```bash
 git rebase -i HEAD~6
 # Mark all but first as 'squash'
@@ -513,6 +548,7 @@ git rebase -i HEAD~5
 ```
 
 **Editor:**
+
 ```
 pick a1b2c3d feat(api): add endpoints
 fixup d4e5f6g fix typo

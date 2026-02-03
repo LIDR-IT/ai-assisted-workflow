@@ -35,12 +35,12 @@
     ],
     "BeforeTool": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Write|write_file|replace",
         "hooks": [
           {
             "name": "protect-secrets",
             "type": "command",
-            "command": "bash ${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/protect-secrets.sh",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/protect-secrets.sh\"",
             "timeout": 10000
           }
         ]
@@ -48,12 +48,12 @@
     ],
     "AfterTool": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Write|write_file|replace",
         "hooks": [
           {
             "name": "auto-format",
             "type": "command",
-            "command": "bash ${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/auto-format.sh",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/auto-format.sh\"",
             "timeout": 30000
           }
         ]

@@ -9,6 +9,7 @@ Commands in the `.agents/` system work differently across the four supported pla
 **Source Format:** All commands start as Markdown (`.md`) files in `.agents/commands/`
 
 **Platform Handling:**
+
 - **Cursor & Claude Code:** Use Markdown files directly via symlinks
 - **Gemini CLI:** Converts Markdown to TOML format
 - **Antigravity:** Uses Markdown files via symlinks to `.agent/workflows/` (not `.agent/commands/`)
@@ -20,6 +21,7 @@ Commands in the `.agents/` system work differently across the four supported pla
 **Mechanism:** Full directory symlink
 
 **Implementation:**
+
 ```bash
 # sync-commands.sh lines 49-54
 create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.cursor/commands"
@@ -27,6 +29,7 @@ create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands"
 ```
 
 **How it works:**
+
 - Creates a single symlink pointing entire directory
 - `.cursor/commands/` → `../.agents/commands/`
 - `.claude/commands/` → `../.agents/commands/`
@@ -34,6 +37,7 @@ create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands"
 - Changes propagate immediately (no sync needed)
 
 **File structure:**
+
 ```
 .cursor/commands → ../.agents/commands/
   ├── sync-setup.md
@@ -42,6 +46,7 @@ create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands"
 ```
 
 **Invocation:**
+
 ```bash
 # In Cursor or Claude Code
 /sync-setup
@@ -49,6 +54,7 @@ create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands"
 ```
 
 **Format:** Standard Markdown with optional YAML frontmatter
+
 ```markdown
 ---
 description: Brief description of command
@@ -64,6 +70,7 @@ Your instructions here...
 **Mechanism:** Markdown-to-TOML conversion
 
 **Implementation:**
+
 ```bash
 # sync-commands.sh lines 78-124
 convert_md_to_toml() {
@@ -81,6 +88,7 @@ convert_md_to_toml() {
 ```
 
 **Why conversion is needed:**
+
 - Gemini CLI expects `.toml` format, not `.md`
 - Different variable syntax: `$ARGUMENTS` → `{{args}}`
 - TOML has different escaping rules (triple backticks conflict)
@@ -89,6 +97,7 @@ convert_md_to_toml() {
 **Conversion steps:**
 
 1. **Extract YAML frontmatter description:**
+
 ```bash
 description=$(sed -n '/^---$/,/^---$/p' "$md_file" | \
   grep "^description:" | \
@@ -98,27 +107,31 @@ description=$(sed -n '/^---$/,/^---$/p' "$md_file" | \
 ```
 
 2. **Extract prompt content (everything after frontmatter):**
+
 ```bash
 prompt_content=$(awk '/^---$/{flag=!flag; next} flag' "$md_file" | \
   awk '/^---$/{flag=1; next} flag')
 ```
 
 3. **Convert variable syntax:**
+
 ```bash
 # $ARGUMENTS → {{args}}
 prompt_content=$(echo "$prompt_content" | sed 's/\$ARGUMENTS/{{args}}/g')
 ```
 
 4. **Handle TOML conflicts:**
-```bash
+
+````bash
 # Remove triple backticks (conflict with TOML multiline strings)
 prompt_content=$(echo "$prompt_content" | sed 's/```//g')
 
 # Escape backslashes for TOML
 prompt_content=$(echo "$prompt_content" | sed 's/\\/\\\\/g')
-```
+````
 
 5. **Generate TOML file:**
+
 ```bash
 cat > "$toml_file" << EOF
 description = "$description"
@@ -131,7 +144,8 @@ EOF
 **Example transformation:**
 
 **Input** (`.agents/commands/security-review.md`):
-```markdown
+
+````markdown
 ---
 description: Review code for security vulnerabilities
 ---
@@ -139,13 +153,16 @@ description: Review code for security vulnerabilities
 # Security Review
 
 Analyze the code in $ARGUMENTS for:
+
 - SQL injection
 - XSS attacks
 
 ```bash
 npm run security-scan
 ```
-```
+````
+
+````
 
 **Output** (`.gemini/commands/security-review.toml`):
 ```toml
@@ -162,9 +179,10 @@ bash
 npm run security-scan
 
 '''
-```
+````
 
 **File structure:**
+
 ```
 .gemini/commands/
   ├── sync-setup.toml
@@ -173,6 +191,7 @@ npm run security-scan
 ```
 
 **Invocation:**
+
 ```bash
 # In Gemini CLI
 gemini /sync-setup
@@ -184,6 +203,7 @@ gemini /security-review file.js
 **Mechanism:** Selective file symlinks to `.agent/workflows/`
 
 **Implementation:**
+
 ```bash
 # sync-commands.sh lines 148-164
 mkdir -p "$PROJECT_ROOT/.agent/workflows"
@@ -203,17 +223,20 @@ done
 ```
 
 **Why `.agent/workflows/` not `.agent/commands/`:**
+
 - Antigravity platform uses "workflows" terminology
 - Commands are invoked as workflows in Antigravity
 - Technical limitation: Must use this specific directory structure
 
 **How it works:**
+
 - Creates individual symlink per command file
 - `.agent/workflows/sync-setup` → `../../.agents/commands/sync-setup.md`
 - `.agent/workflows/security-review` → `../../.agents/commands/security-review.md`
 - Each command is a separate symlink (not full directory)
 
 **File structure:**
+
 ```
 .agent/workflows/
   ├── sync-setup → ../../.agents/commands/sync-setup.md
@@ -222,6 +245,7 @@ done
 ```
 
 **Invocation:**
+
 ```bash
 # In Antigravity
 /sync-setup
@@ -229,6 +253,7 @@ done
 ```
 
 **Format:** Standard Markdown (same as source)
+
 ```markdown
 ---
 description: Brief description
@@ -239,16 +264,16 @@ description: Brief description
 
 ## Platform Comparison Table
 
-| Aspect | Cursor | Claude Code | Gemini CLI | Antigravity |
-|--------|--------|-------------|------------|-------------|
-| **Format** | Markdown (.md) | Markdown (.md) | TOML (.toml) | Markdown (.md) |
-| **Sync Method** | Full dir symlink | Full dir symlink | Convert + generate | Selective symlinks |
-| **Location** | `.cursor/commands/` | `.claude/commands/` | `.gemini/commands/` | `.agent/workflows/` |
-| **Variable Syntax** | `$ARGUMENTS` | `$ARGUMENTS` | `{{args}}` | `$ARGUMENTS` |
-| **Frontmatter** | YAML | YAML | Extracted to TOML | YAML |
-| **Changes Propagate** | Instant | Instant | Re-sync required | Instant |
-| **Triple Backticks** | Allowed | Allowed | Removed | Allowed |
-| **Backslash Escaping** | None | None | Doubled | None |
+| Aspect                 | Cursor              | Claude Code         | Gemini CLI          | Antigravity         |
+| ---------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| **Format**             | Markdown (.md)      | Markdown (.md)      | TOML (.toml)        | Markdown (.md)      |
+| **Sync Method**        | Full dir symlink    | Full dir symlink    | Convert + generate  | Selective symlinks  |
+| **Location**           | `.cursor/commands/` | `.claude/commands/` | `.gemini/commands/` | `.agent/workflows/` |
+| **Variable Syntax**    | `$ARGUMENTS`        | `$ARGUMENTS`        | `{{args}}`          | `$ARGUMENTS`        |
+| **Frontmatter**        | YAML                | YAML                | Extracted to TOML   | YAML                |
+| **Changes Propagate**  | Instant             | Instant             | Re-sync required    | Instant             |
+| **Triple Backticks**   | Allowed             | Allowed             | Removed             | Allowed             |
+| **Backslash Escaping** | None                | None                | Doubled             | None                |
 
 ## Technical Challenges
 
@@ -257,6 +282,7 @@ description: Brief description
 **Problem:** Gemini CLI expects TOML, but source is Markdown
 
 **Solution:** Automated conversion in sync script
+
 - Extract frontmatter description
 - Convert prompt to TOML multiline string
 - Transform variable syntax
@@ -265,10 +291,12 @@ description: Brief description
 ### Challenge 2: Variable Syntax Differences
 
 **Problem:** Different placeholder syntax across platforms
+
 - Cursor/Claude/Antigravity: `$ARGUMENTS`
 - Gemini CLI: `{{args}}`
 
 **Solution:** Regex replacement during conversion
+
 ```bash
 sed 's/\$ARGUMENTS/{{args}}/g'
 ```
@@ -278,6 +306,7 @@ sed 's/\$ARGUMENTS/{{args}}/g'
 **Problem:** Triple backticks in Markdown conflict with TOML multiline strings
 
 **Markdown:**
+
 ````markdown
 ```bash
 echo "example"
@@ -285,6 +314,7 @@ echo "example"
 ````
 
 **TOML uses triple quotes for multiline:**
+
 ```toml
 prompt = '''
 content here
@@ -292,9 +322,10 @@ content here
 ```
 
 **Solution:** Strip triple backticks during conversion
-```bash
+
+````bash
 sed 's/```//g'
-```
+````
 
 **Impact:** Code blocks lose syntax highlighting markers in Gemini, but remain readable
 
@@ -303,6 +334,7 @@ sed 's/```//g'
 **Problem:** Antigravity uses "workflows" not "commands"
 
 **Solution:** Symlink to `.agent/workflows/` instead of `.agent/commands/`
+
 ```bash
 ln -s "../../.agents/commands/$command_name.md" ".agent/workflows/$command_name"
 ```
@@ -325,9 +357,11 @@ ln -s "../../.agents/commands/$command_name.md" ".agent/workflows/$command_name"
 ### After Adding New Command
 
 **Steps:**
+
 1. Create `.agents/commands/new-command.md`
 2. Run `./.agents/commands/sync-commands.sh`
 3. Verify:
+
    ```bash
    # Cursor/Claude (instant via symlink)
    ls -la .cursor/commands/new-command.md
@@ -342,10 +376,12 @@ ln -s "../../.agents/commands/$command_name.md" ".agent/workflows/$command_name"
 ### After Editing Existing Command
 
 **Cursor/Claude/Antigravity:**
+
 - Changes propagate instantly (symlinks)
 - No sync needed
 
 **Gemini:**
+
 - Re-run sync to regenerate TOML:
   ```bash
   ./.agents/commands/sync-commands.sh
@@ -377,7 +413,7 @@ create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands"
 
 ### Markdown-to-TOML Conversion (Gemini)
 
-```bash
+````bash
 # Lines 78-124
 convert_md_to_toml() {
   local md_file=$1
@@ -419,7 +455,7 @@ EOF
 for command_file in "$PROJECT_ROOT/.agents/commands"/*.md; do
   convert_md_to_toml "$command_file"
 done
-```
+````
 
 ### Selective Symlinks (Antigravity)
 
@@ -452,6 +488,7 @@ done
 ### Writing Cross-Platform Commands
 
 **Use compatible syntax:**
+
 ```markdown
 ---
 description: Single-line description without special characters
@@ -467,11 +504,13 @@ Avoid excessive triple backticks (stripped in Gemini conversion).
 ```
 
 **Avoid:**
+
 - Multi-line descriptions in frontmatter
 - Complex escaping (backslashes, quotes)
 - Relying on triple-backtick syntax highlighting
 
 **Test across platforms:**
+
 ```bash
 # After creating/editing command
 ./.agents/commands/sync-commands.sh
@@ -483,6 +522,7 @@ Avoid excessive triple backticks (stripped in Gemini conversion).
 ### Debugging Command Issues
 
 **Cursor/Claude command not found:**
+
 ```bash
 # Check symlink exists
 ls -la .cursor/commands
@@ -494,6 +534,7 @@ ls -la .cursor/commands
 ```
 
 **Gemini command not working:**
+
 ```bash
 # Check TOML generated
 cat .gemini/commands/your-command.toml
@@ -508,6 +549,7 @@ cat .gemini/commands/your-command.toml
 ```
 
 **Antigravity command not found:**
+
 ```bash
 # Check symlink in workflows
 ls -la .agent/workflows/your-command

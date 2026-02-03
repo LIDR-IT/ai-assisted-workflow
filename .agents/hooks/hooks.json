@@ -17,16 +17,16 @@
     },
     "auto-format": {
       "event": "PostToolUse",
-      "matcher": "Edit|Write",
-      "command": "bash ${PLUGIN_ROOT}/hooks/scripts/auto-format.sh",
+      "matcher": "Edit|Write|write_file|replace",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/auto-format.sh\"",
       "timeout": 30,
       "platforms": ["claude", "gemini", "cursor"],
       "description": "Auto-format files with prettier after edits (Cursor: best-effort, Husky guarantees)"
     },
     "protect-secrets": {
       "event": "PreToolUse",
-      "matcher": "Edit|Write",
-      "command": "bash ${PLUGIN_ROOT}/hooks/scripts/protect-secrets.sh",
+      "matcher": "Edit|Write|write_file|replace",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/protect-secrets.sh\"",
       "timeout": 10,
       "platforms": ["claude", "gemini"],
       "description": "Block edits to sensitive files (.env, .key, .pem, etc.)"

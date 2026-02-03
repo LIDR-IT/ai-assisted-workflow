@@ -10,16 +10,19 @@ trigger: always_on
 ## General Principles
 
 ### Consistency Over Preference
+
 - Follow existing patterns in the codebase
 - Consistency within a file/module is paramount
 - When in doubt, match surrounding code style
 
 ### Readability Over Cleverness
+
 - Write code for humans first, machines second
 - Prefer explicit over implicit
 - Use descriptive names over short abbreviations
 
 ### Simplicity Over Optimization
+
 - Clear code beats clever code
 - Optimize only when necessary (after profiling)
 - Document why when breaking this rule
@@ -49,16 +52,19 @@ project-root/
 ### File Naming
 
 **Markdown Files:**
+
 - Use kebab-case: `code-style.md`, `mcp-setup-guide.md`
 - Be descriptive: `antigravity-limitation.md` not `limit.md`
 - Use `.md` extension for all markdown
 
 **Scripts:**
+
 - Use kebab-case: `sync-mcp.sh`, `sync-rules.sh`
 - Include `.sh` extension for bash scripts
 - Make executable: `chmod +x script.sh`
 
 **Config Files:**
+
 - Use platform conventions:
   - `mcp.json` (Cursor/Claude)
   - `settings.json` (Gemini)
@@ -100,6 +106,7 @@ main
 ### Bash Best Practices
 
 **Error Handling:**
+
 ```bash
 # Exit on error
 set -e
@@ -118,6 +125,7 @@ fi
 ```
 
 **Path Resolution:**
+
 ```bash
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -130,6 +138,7 @@ CONFIG="$PROJECT_ROOT/.agents/mcp/mcp-servers.json"
 ```
 
 **Output Formatting:**
+
 ```bash
 # Use emoji for visual clarity
 echo "🔄 Processing..."
@@ -144,6 +153,7 @@ echo "    Detail"
 ```
 
 **Dry Run Support:**
+
 ```bash
 DRY_RUN=false
 
@@ -179,16 +189,19 @@ Use sparingly for deep nesting.
 ### Code Blocks
 
 **Always specify language:**
-```markdown
+
+````markdown
 ```bash
 echo "Good example"
 ```
+````
 
 ```json
 {
   "key": "value"
 }
 ```
+
 ````
 
 **Use syntax highlighting:**
@@ -444,3 +457,4 @@ PATH="/Users/user/project/file.txt"
 - [Markdown Guide](https://www.markdownguide.org/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - `.agents/mcp/sync-mcp.sh` - Reference implementation
+````

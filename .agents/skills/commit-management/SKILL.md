@@ -11,6 +11,7 @@ Comprehensive guidance for managing git commits following conventional commit st
 ## Overview
 
 This skill helps you:
+
 - ✅ **Create well-formatted commits** following conventional commit standards
 - ✅ **Fix and amend commits** when mistakes happen
 - ✅ **Manage commit history** with rebase and squash
@@ -36,6 +37,7 @@ The `/commit` command is optimized for single-commit workflows with validation a
 ### For Advanced Commit Workflows
 
 Use **this skill** when you need:
+
 - Multiple related commits (atomic commit strategy)
 - Commit history management (amend, rebase, squash)
 - Complex commit messages with body and footer
@@ -45,11 +47,13 @@ Use **this skill** when you need:
 ## When to Use This Skill
 
 **Use `/commit` command when:**
+
 - ✅ Creating a single, straightforward commit
 - ✅ You want AI to suggest a commit message
 - ✅ Quick validation of commit format
 
 **Use this skill when:**
+
 - ✅ Managing multiple related commits
 - ✅ Fixing or amending previous commits
 - ✅ Rewriting commit history
@@ -74,6 +78,7 @@ footer
 ### Components
 
 **Type** (required):
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation only
@@ -84,22 +89,26 @@ footer
 - `style` - Code formatting
 
 **Scope** (optional):
+
 - Component, module, or area affected
 - Examples: `api`, `auth`, `ui`, `database`
 
 **Subject** (required):
+
 - Brief description (< 50 characters)
 - Imperative mood: "add" not "added"
 - No period at the end
 - Lowercase after type
 
 **Body** (optional):
+
 - Detailed explanation
 - Wrap at 72 characters
 - Explain WHAT and WHY, not HOW
 - Separate from subject with blank line
 
 **Footer** (optional):
+
 - Breaking changes: `BREAKING CHANGE: description`
 - Issue references: `Refs: #123`, `Closes: #456`
 - Co-authors: `Co-Authored-By: Name <email>`
@@ -107,11 +116,13 @@ footer
 ### Examples
 
 **Simple commit:**
+
 ```
 feat(auth): add JWT token validation
 ```
 
 **With body:**
+
 ```
 feat(auth): add JWT token validation
 
@@ -121,6 +132,7 @@ Expired tokens are rejected with 401 status.
 ```
 
 **With breaking change:**
+
 ```
 feat(api): change user endpoint response format
 
@@ -131,6 +143,7 @@ Refs: #234
 ```
 
 **Full example:**
+
 ```
 fix(database): resolve connection pool exhaustion
 
@@ -167,6 +180,7 @@ git commit -m "test(auth): add authentication tests"
 ```
 
 **Best practices:**
+
 - One logical change per commit
 - Each commit should be revertable independently
 - Keep commits focused and small
@@ -229,6 +243,7 @@ git rebase -i HEAD~3
 ```
 
 **Example rebase:**
+
 ```
 pick a1b2c3d feat(auth): add login
 fixup d4e5f6g fix typo in login
@@ -284,6 +299,7 @@ git commit -m "test(api): add endpoint tests"
 ### Writing Good Commit Messages
 
 **DO:**
+
 - ✅ Use imperative mood: "Add feature" not "Added feature"
 - ✅ Keep subject under 50 characters
 - ✅ Explain WHY, not HOW (code shows how)
@@ -292,6 +308,7 @@ git commit -m "test(api): add endpoint tests"
 - ✅ Use conventional commit format
 
 **DON'T:**
+
 - ❌ Use vague messages: "fix stuff", "updates", "WIP"
 - ❌ Combine unrelated changes in one commit
 - ❌ Write commit messages in past tense
@@ -316,6 +333,7 @@ git commit -m "test(api): add endpoint tests"
    - Each commit builds upon the previous
 
 **Example progression:**
+
 ```
 1. feat(database): add user schema
 2. feat(database): add user repository
@@ -327,6 +345,7 @@ git commit -m "test(api): add endpoint tests"
 ### Breaking Changes
 
 **Format:**
+
 ```
 feat(api): change authentication flow
 
@@ -340,6 +359,7 @@ Refs: #789
 ```
 
 **Guidelines:**
+
 - Always use `BREAKING CHANGE:` footer
 - Explain what changed and why
 - Provide migration instructions
@@ -348,6 +368,7 @@ Refs: #789
 ### Co-Authoring
 
 **Format:**
+
 ```
 feat(feature): add collaborative feature
 
@@ -358,11 +379,13 @@ Co-Authored-By: Bob Jones <bob@example.com>
 ```
 
 **When to use:**
+
 - Pair programming sessions
 - Significant contributions from multiple people
 - AI-assisted development (optional)
 
 **Project standard:**
+
 ```
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
@@ -536,6 +559,7 @@ This skill provides **knowledge and context** for commit workflows, while the co
 ### Project Git Workflow
 
 This skill follows project standards defined in:
+
 - `.agents/rules/process/git-workflow.md` - Git workflow guidelines
 - `.agents/rules/code/principles.md` - Core project principles
 
@@ -579,6 +603,7 @@ git rebase -i HEAD~N
 ### Validation Checklist
 
 Before committing, verify:
+
 - [ ] Type is valid (feat, fix, docs, etc.)
 - [ ] Subject is under 50 characters
 - [ ] Imperative mood used ("Add" not "Added")

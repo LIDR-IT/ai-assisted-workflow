@@ -589,6 +589,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 **Better:**
+
 ```
 ✅ fix(auth): resolve session timeout issue
 ✅ feat(api): add user authentication
@@ -604,6 +605,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 **Better:**
+
 ```
 ✅ feat: add login feature
 ✅ fix: resolve the bug
@@ -617,6 +619,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 **Better:** Separate commits
+
 ```
 ✅ feat(auth): add login feature
 ✅ fix(docs): correct typo in README
@@ -630,6 +633,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 **Better:** Use body for details
+
 ```
 ✅ feat(auth): add user authentication system
 

@@ -23,6 +23,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
 ### Primary Types
 
 **`feat`** - New feature
+
 - Adds new functionality
 - User-facing improvements
 - API additions
@@ -31,6 +32,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
   - `feat: implement dark mode`
 
 **`fix`** - Bug fix
+
 - Fixes broken functionality
 - Patches security vulnerabilities
 - Resolves errors
@@ -39,6 +41,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
   - `fix: prevent memory leak in event listeners`
 
 **`docs`** - Documentation
+
 - Documentation-only changes
 - README updates
 - Code comments
@@ -50,6 +53,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
 ### Supporting Types
 
 **`refactor`** - Code restructuring
+
 - No behavior change
 - Code cleanup
 - Performance improvements (without user-facing changes)
@@ -58,6 +62,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
   - `refactor: extract common utility functions`
 
 **`test`** - Tests
+
 - Adding tests
 - Updating tests
 - Test infrastructure
@@ -66,6 +71,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
   - `test: improve test coverage for utils`
 
 **`chore`** - Maintenance
+
 - Dependency updates
 - Build configuration
 - Tool configuration
@@ -75,6 +81,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
   - `chore(ci): add GitHub Actions workflow`
 
 **`perf`** - Performance
+
 - User-facing performance improvements
 - Optimization
 - Examples:
@@ -82,6 +89,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
   - `perf: reduce bundle size by 30%`
 
 **`style`** - Formatting
+
 - Code style/formatting only
 - No logic changes
 - Whitespace, semicolons, etc.
@@ -96,6 +104,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
 ### Common Scopes
 
 **Component/Module:**
+
 - `auth` - Authentication module
 - `api` - API layer
 - `database` - Database layer
@@ -103,16 +112,19 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
 - `config` - Configuration
 
 **Feature Area:**
+
 - `login` - Login feature
 - `signup` - Signup feature
 - `profile` - User profile
 
 **Technology:**
+
 - `react` - React components
 - `express` - Express backend
 - `postgres` - PostgreSQL database
 
 **Project Area:**
+
 - `docs` - Documentation
 - `ci` - Continuous integration
 - `deps` - Dependencies
@@ -201,6 +213,7 @@ style(auth): apply consistent formatting
 ### When to Include Body
 
 Include body when:
+
 - Change needs explanation beyond subject
 - Context is important
 - Impact is significant
@@ -250,11 +263,13 @@ Performance testing shows 40% improvement under concurrent load.
 ### Breaking Changes
 
 **Format:**
+
 ```
 BREAKING CHANGE: description
 ```
 
 **Full example:**
+
 ```
 feat(api): change user endpoint response format
 
@@ -263,6 +278,7 @@ direct user object. Update all API clients to access user.data.
 ```
 
 **Multiple breaking changes:**
+
 ```
 BREAKING CHANGE: Authentication now requires API key in header
 BREAKING CHANGE: User endpoint response format changed
@@ -271,6 +287,7 @@ BREAKING CHANGE: User endpoint response format changed
 ### Issue References
 
 **Formats:**
+
 ```
 Refs: #123
 Closes: #456
@@ -279,6 +296,7 @@ Resolves: #101
 ```
 
 **Examples:**
+
 ```
 fix(api): resolve timeout on user endpoint
 
@@ -289,6 +307,7 @@ Refs: #567
 ```
 
 **GitHub keywords** (auto-close issues):
+
 - `Closes: #123`
 - `Fixes: #123`
 - `Resolves: #123`
@@ -296,11 +315,13 @@ Refs: #567
 ### Co-Authors
 
 **Format:**
+
 ```
 Co-Authored-By: Name <email@example.com>
 ```
 
 **Example:**
+
 ```
 feat(feature): implement collaborative feature
 
@@ -311,6 +332,7 @@ Co-Authored-By: Bob Jones <bob@example.com>
 ```
 
 **Project standard for AI assistance:**
+
 ```
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
@@ -398,6 +420,7 @@ Co-Authored-By: Alice Smith <alice@example.com>
 ```
 
 **Instead:**
+
 ```
 ✅ feat(auth): add password reset flow
 ✅ fix(api): handle null user in endpoint
@@ -411,6 +434,7 @@ Co-Authored-By: Alice Smith <alice@example.com>
 ```
 
 **Instead:** Create separate commits
+
 ```
 ✅ feat(auth): add login endpoint
 ✅ docs(api): update authentication guide
@@ -426,6 +450,7 @@ Co-Authored-By: Alice Smith <alice@example.com>
 ```
 
 **Instead:**
+
 ```
 ✅ feat: add login
 ✅ fix: resolve bug
@@ -439,6 +464,7 @@ Co-Authored-By: Alice Smith <alice@example.com>
 ```
 
 **Instead:** Use body for details
+
 ```
 ✅ feat(auth): add user authentication system
 
@@ -473,6 +499,7 @@ Before committing, verify:
 ### Commitlint
 
 Check commit message format:
+
 ```bash
 npm install --save-dev @commitlint/cli @commitlint/config-conventional
 echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
@@ -481,6 +508,7 @@ echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitl
 ### Commitizen
 
 Interactive commit message builder:
+
 ```bash
 npm install --save-dev commitizen cz-conventional-changelog
 npx commitizen init cz-conventional-changelog --save-dev --save-exact
@@ -489,6 +517,7 @@ npx commitizen init cz-conventional-changelog --save-dev --save-exact
 ### Git Hooks
 
 Validate commits automatically:
+
 ```bash
 npm install --save-dev husky
 npx husky add .husky/commit-msg 'npx --no -- commitlint --edit "$1"'

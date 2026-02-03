@@ -24,6 +24,7 @@ Provides Gherkin syntax reference and BDD scenario patterns for writing effectiv
 ## Pattern Templates
 
 ### Happy Path
+
 ```gherkin
 Scenario: [Action] with valid [input]
   Given [precondition with concrete values]
@@ -32,6 +33,7 @@ Scenario: [Action] with valid [input]
 ```
 
 ### Error Case
+
 ```gherkin
 Scenario: [Action] with invalid [input]
   Given [precondition]
@@ -41,6 +43,7 @@ Scenario: [Action] with invalid [input]
 ```
 
 ### Authentication Example
+
 ```gherkin
 Feature: User Authentication
 

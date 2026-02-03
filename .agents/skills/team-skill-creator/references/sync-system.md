@@ -17,6 +17,7 @@ Technical details of how the `.agents/` synchronization system works, including 
 The synchronization system ensures configurations in `.agents/` propagate to all platform-specific directories.
 
 **Key scripts:**
+
 - `.agents/sync-all.sh` - Orchestrates all syncs
 - `.agents/rules/sync-rules.sh` - Syncs rules
 - `.agents/skills/sync-skills.sh` - Syncs skills
@@ -24,6 +25,7 @@ The synchronization system ensures configurations in `.agents/` propagate to all
 - `.agents/mcp/sync-mcp.sh` - Generates MCP configs
 
 **Execution order:**
+
 1. Rules
 2. Skills
 3. Commands
@@ -74,16 +76,19 @@ echo "╚═══════════════════════�
 ### Usage
 
 **Basic sync:**
+
 ```bash
 ./.agents/sync-all.sh
 ```
 
 **Dry-run (preview without changes):**
+
 ```bash
 ./.agents/sync-all.sh --dry-run
 ```
 
 **Output:**
+
 ```
 ╔═══════════════════════════════════════════════════════════════════╗
 ║  🔄 SYNCHRONIZING ALL COMPONENTS                                  ║
@@ -123,12 +128,14 @@ echo "╚═══════════════════════�
 **Purpose:** Sync rules from `.agents/rules/` to all platforms.
 
 **Process:**
+
 1. Validate source directory exists
 2. Create symlinks for Cursor, Claude, Gemini
 3. Copy files for Antigravity
 4. Verify symlinks created
 
 **Example:**
+
 ```bash
 #!/bin/bash
 
@@ -163,12 +170,14 @@ cp -r .agents/rules/*.md .agent/rules/
 **Purpose:** Sync skills from `.agents/skills/` to all platforms.
 
 **Process:**
+
 1. Validate source directory
 2. Create full directory symlinks (Cursor, Claude, Gemini)
 3. Create selective symlinks for Antigravity (per-skill)
 4. Verify all symlinks
 
 **Antigravity selective symlinks:**
+
 ```bash
 # For each skill in .agents/skills/
 for skill in .agents/skills/*/; do
@@ -184,12 +193,14 @@ done
 **Purpose:** Sync commands from `.agents/commands/` to all platforms.
 
 **Process:**
+
 1. Validate source directory
 2. Create symlinks for Cursor, Claude, Gemini
 3. Copy to `.agent/workflows/` for Antigravity (not `.agent/commands/`)
 4. Verify synchronization
 
 **Antigravity special handling:**
+
 ```bash
 # Commands go to workflows/ for Antigravity
 mkdir -p .agent/workflows
@@ -205,6 +216,7 @@ cp -r .agents/commands/*.md .agent/workflows/
 **Source:** `.agents/mcp/mcp-servers.json`
 
 **Process:**
+
 1. Read source JSON
 2. For each platform, extract relevant servers
 3. Generate platform-specific format
@@ -212,6 +224,7 @@ cp -r .agents/commands/*.md .agent/workflows/
 5. Write to platform config files
 
 **Example generation:**
+
 ```bash
 #!/bin/bash
 
@@ -237,6 +250,7 @@ jq '.servers |
 ```
 
 **Validation:**
+
 ```bash
 # Validate each generated config
 for file in .cursor/mcp.json .claude/mcp.json .gemini/settings.json; do
@@ -255,6 +269,7 @@ done
 **Platforms:** Cursor, Claude Code, Gemini CLI
 
 **Implementation:**
+
 ```bash
 create_directory_symlink() {
   local source=$1
@@ -287,6 +302,7 @@ create_directory_symlink "../.agents/skills" ".cursor/skills"
 **Platform:** Antigravity
 
 **Implementation:**
+
 ```bash
 # Create parent directory
 mkdir -p .agent/skills
@@ -313,6 +329,7 @@ done
 **Platform:** Antigravity
 
 **Implementation:**
+
 ```bash
 # Create destination directory
 mkdir -p .agent/rules
@@ -333,6 +350,7 @@ echo "  ✅ Copied $file_count files to .agent/rules/"
 **Platforms:** All (except Antigravity project-level)
 
 **Implementation:**
+
 ```bash
 # Read source
 SOURCE=".agents/mcp/mcp-servers.json"
@@ -366,11 +384,13 @@ generate_platform_config "claude" ".claude/mcp.json"
 All sync scripts support `--dry-run` mode for preview without changes.
 
 **Usage:**
+
 ```bash
 ./.agents/sync-all.sh --dry-run
 ```
 
 **Output:**
+
 ```
 [DRY RUN] Would create symlink: .cursor/skills → ../.agents/skills
 [DRY RUN] Would create symlink: .claude/skills → ../.agents/skills
@@ -378,6 +398,7 @@ All sync scripts support `--dry-run` mode for preview without changes.
 ```
 
 **Implementation:**
+
 ```bash
 DRY_RUN=false
 
@@ -400,18 +421,21 @@ ln -s "$source" "$target"
 ### Verify Symlinks
 
 **Check symlink exists:**
+
 ```bash
 ls -la .cursor/skills
 # Output: lrwxr-xr-x ... .cursor/skills -> ../.agents/skills
 ```
 
 **Check symlink target:**
+
 ```bash
 readlink .cursor/skills
 # Output: ../.agents/skills
 ```
 
 **Verify for all platforms:**
+
 ```bash
 #!/bin/bash
 
@@ -441,6 +465,7 @@ verify_symlinks
 ### Verify File Access
 
 **Test reading through symlink:**
+
 ```bash
 # Should work
 cat .cursor/skills/team-skill-creator/SKILL.md | head -5
@@ -453,18 +478,21 @@ diff .cursor/skills/team-skill-creator/SKILL.md .agents/skills/team-skill-creato
 ### Verify Antigravity
 
 **Check rules copied:**
+
 ```bash
 ls -la .agent/rules/*.md
 # Should show files (not symlinks)
 ```
 
 **Check skills symlinked:**
+
 ```bash
 ls -la .agent/skills/ | grep "\->"
 # Should show symlinks to ../../.agents/skills/
 ```
 
 **Check commands in workflows:**
+
 ```bash
 ls -la .agent/workflows/*.md
 # Should show command files
@@ -475,12 +503,14 @@ ls -la .agent/workflows/*.md
 ### Issue: Symlink Not Created
 
 **Symptoms:**
+
 ```bash
 ls .cursor/skills
 # Shows directory, not symlink
 ```
 
 **Diagnosis:**
+
 ```bash
 # Check if it's a symlink
 if [ -L ".cursor/skills" ]; then
@@ -491,6 +521,7 @@ fi
 ```
 
 **Solution:**
+
 ```bash
 # Remove and re-create
 rm -rf .cursor/skills
@@ -500,11 +531,13 @@ rm -rf .cursor/skills
 ### Issue: Permission Denied
 
 **Symptoms:**
+
 ```
 Permission denied when running sync scripts
 ```
 
 **Solution:**
+
 ```bash
 # Make scripts executable
 chmod +x .agents/sync-all.sh
@@ -520,16 +553,19 @@ chmod +x .agents/mcp/sync-mcp.sh
 ### Issue: Source Directory Missing
 
 **Symptoms:**
+
 ```
 ❌ Source directory not found: .agents/skills
 ```
 
 **Diagnosis:**
+
 ```bash
 ls -la .agents/
 ```
 
 **Solution:**
+
 ```bash
 # Create missing directory
 mkdir -p .agents/skills
@@ -541,17 +577,20 @@ pwd  # Should be in project root
 ### Issue: Invalid JSON in MCP Config
 
 **Symptoms:**
+
 ```
 ❌ Invalid JSON: .cursor/mcp.json
 ```
 
 **Diagnosis:**
+
 ```bash
 jq . .cursor/mcp.json
 # Shows syntax error
 ```
 
 **Solution:**
+
 ```bash
 # Check source
 jq . .agents/mcp/mcp-servers.json
@@ -570,6 +609,7 @@ vim .agents/mcp/mcp-servers.json
 **Cause:** Files are copied (not symlinked), need re-sync
 
 **Solution:**
+
 ```bash
 # Re-run sync
 ./.agents/sync-all.sh
@@ -583,21 +623,25 @@ cat .agent/rules/core-principles.md
 The synchronization system:
 
 **✅ Automatic:**
+
 - Triggered after creating skills/commands via team-skill-creator
 - Runs all syncs in correct order
 - Validates results
 
 **🔄 Strategies:**
+
 - Symlinks for instant propagation (Cursor/Claude/Gemini)
 - Copies for Antigravity constraints
 - Generation for platform-specific configs
 
 **🔍 Verification:**
+
 - Check symlinks exist: `ls -la`
 - Verify targets: `readlink`
 - Test file access: `cat`
 
 **🛠️ Troubleshooting:**
+
 - Re-run sync if issues
 - Check permissions
 - Validate source exists

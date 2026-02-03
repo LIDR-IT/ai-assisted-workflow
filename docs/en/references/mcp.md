@@ -14,36 +14,43 @@ Model Context Protocol (MCP) enables AI agents to connect to external tools and 
 ## Official Documentation
 
 **Core Resources:**
+
 - [MCP Specification](https://modelcontextprotocol.io/specification) - Protocol specification and architecture
 - [MCP Introduction](https://modelcontextprotocol.io/introduction) - Getting started guide
 - [MCP Quickstart](https://modelcontextprotocol.io/quickstart) - Quick setup tutorial
 
 **SDKs:**
+
 - [TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) - Official TypeScript implementation
 - [Python SDK](https://github.com/modelcontextprotocol/python-sdk) - Official Python implementation
 
 **Tools:**
+
 - [MCP Inspector](https://github.com/modelcontextprotocol/inspector) - Debug and test MCP servers
 - [MCP Registry](https://github.com/modelcontextprotocol/servers) - Community MCP servers
 
 ## Platform Setup Guides
 
 ### Claude Code
+
 - [MCP Integration Guide](https://docs.anthropic.com/en/docs/build-with-claude/mcp)
 - CLI: `claude mcp add <server-name>`
 - Config: `.claude/mcp.json`
 
 ### Cursor
+
 - [MCP in Cursor](https://docs.cursor.com/context/mcp)
 - Config: `.cursor/mcp.json`
 - Settings UI: Cursor Settings → Features → MCP Servers
 
 ### Gemini CLI
+
 - [MCP Servers Documentation](https://geminicli.com/docs/tools/mcp-server)
 - Config: `~/.gemini/settings.json`
 - CLI: `gemini mcp list`
 
 ### Antigravity
+
 - **Note:** Antigravity only supports **global** MCP configuration
 - Config: `~/.gemini/antigravity/mcp_config.json`
 - See: [Antigravity Limitations](../guides/mcp/ANTIGRAVITY_LIMITATION.md)
@@ -61,9 +68,11 @@ This project uses centralized MCP configuration in `.agents/mcp/`:
 ```
 
 **Current MCP Servers:**
+
 - **Context7** - Documentation and code examples access
 
 **To add a new MCP server:**
+
 1. Edit `.agents/mcp/mcp-servers.json`
 2. Run `.agents/mcp/sync-mcp.sh`
 3. Verify with `claude mcp list` or platform-specific command
@@ -71,6 +80,7 @@ This project uses centralized MCP configuration in `.agents/mcp/`:
 ## Quick Start
 
 **Install Context7 MCP:**
+
 ```bash
 # Automatic (via sync script)
 .agents/mcp/sync-mcp.sh
@@ -80,6 +90,7 @@ claude mcp add context7
 ```
 
 **Test MCP server:**
+
 ```bash
 # Claude Code
 claude mcp list
@@ -92,20 +103,24 @@ npx @modelcontextprotocol/inspector npx -y @context7/mcp-server
 ## Common Use Cases
 
 **Documentation Access:**
+
 - Query up-to-date library docs via Context7
 - Access API references without leaving IDE
 
 **Tool Integration:**
+
 - Connect to databases, APIs, file systems
 - Extend agent capabilities with external services
 
 **Development Workflows:**
+
 - Automate repetitive tasks
 - Access project-specific tools
 
 ## Troubleshooting
 
 **MCP server not appearing:**
+
 ```bash
 # Verify config syntax
 cat .claude/mcp.json | jq .
@@ -118,11 +133,13 @@ npx @modelcontextprotocol/inspector npx -y <package-name>
 ```
 
 **Antigravity MCP not working:**
+
 - Remember: Antigravity uses global config only
 - Edit: `~/.gemini/antigravity/mcp_config.json`
 - Restart Antigravity after changes
 
 **Environment variables not loaded:**
+
 - Use `${VARIABLE_NAME}` syntax in configs
 - Set in shell profile or `.env` file
 - Verify with `echo $VARIABLE_NAME`
@@ -130,19 +147,23 @@ npx @modelcontextprotocol/inspector npx -y <package-name>
 ## Key Concepts
 
 **Transports:**
+
 - **stdio** - Standard input/output (most common)
 - **HTTP** - REST API endpoints
 - **SSE** - Server-Sent Events
 
 **Resources:**
+
 - Files, databases, APIs exposed to agents
 - Accessed via URI scheme
 
 **Tools:**
+
 - Functions agents can call
 - Defined with JSON schemas
 
 **Prompts:**
+
 - Pre-defined prompt templates
 - Reusable conversation starters
 
@@ -168,4 +189,4 @@ npx @modelcontextprotocol/inspector npx -y <package-name>
 
 ---
 
-*Maintained by LIDR Template Team | Last updated: 2026-02-01*
+_Maintained by LIDR Template Team | Last updated: 2026-02-01_

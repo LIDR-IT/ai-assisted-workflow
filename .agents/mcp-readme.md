@@ -25,6 +25,7 @@ gemini mcp list
 ## Servers Configurados
 
 ### Context7
+
 Documentación actualizada para frameworks y librerías populares.
 
 **Comando:** `npx -y @upstash/context7-mcp`
@@ -38,12 +39,12 @@ Documentación actualizada para frameworks y librerías populares.
 
 ## Plataformas Soportadas
 
-| Plataforma | Config | Soporte Proyecto |
-|------------|--------|------------------|
-| **Cursor** | `.cursor/mcp.json` | ✅ |
-| **Claude Code** | `.claude/mcp.json` | ✅ |
-| **Gemini CLI** | `.gemini/settings.json` | ✅ |
-| **Antigravity** | `~/.gemini/antigravity/mcp_config.json` | ⚠️ Solo global |
+| Plataforma      | Config                                  | Soporte Proyecto |
+| --------------- | --------------------------------------- | ---------------- |
+| **Cursor**      | `.cursor/mcp.json`                      | ✅               |
+| **Claude Code** | `.claude/mcp.json`                      | ✅               |
+| **Gemini CLI**  | `.gemini/settings.json`                 | ✅               |
+| **Antigravity** | `~/.gemini/antigravity/mcp_config.json` | ⚠️ Solo global   |
 
 ## Documentación
 
@@ -55,6 +56,7 @@ Documentación actualizada para frameworks y librerías populares.
 ## Troubleshooting
 
 **Server no aparece:**
+
 ```bash
 # Re-sincronizar
 ./.agents/mcp/sync-mcp.sh

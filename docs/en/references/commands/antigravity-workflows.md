@@ -15,6 +15,7 @@
 ### Definition
 
 Workflows are:
+
 - **Saved prompts** - Reusable task definitions
 - **User-triggered** - Activated with `/` command
 - **On-demand execution** - Run only when explicitly invoked
@@ -33,12 +34,14 @@ Unlike Rules (which are always active), Workflows require **specific user comman
 **Location:** `~/.gemini/antigravity/global_workflows/`
 
 **Purpose:**
+
 - Cross-project utilities
 - Personal productivity shortcuts
 - Universal tasks
 - Reusable across all workspaces
 
 **Example:**
+
 ```
 ~/.gemini/antigravity/global_workflows/
 ├── format-json.md
@@ -52,12 +55,14 @@ Unlike Rules (which are always active), Workflows require **specific user comman
 **Location:** `<workspace-root>/.agent/workflows/`
 
 **Purpose:**
+
 - Project-specific tasks
 - Team-shared workflows
 - Framework-specific operations
 - Codebase-specific utilities
 
 **Example structure:**
+
 ```
 .agent/workflows/
 ├── generate-tests.md
@@ -68,6 +73,7 @@ Unlike Rules (which are always active), Workflows require **specific user comman
 ```
 
 **In This Project:**
+
 ```
 .agent/workflows/       # Project-specific workflows
 ```
@@ -86,6 +92,7 @@ Unlike Rules (which are always active), Workflows require **specific user comman
 ### Method 2: Via File System
 
 **Global workflow:**
+
 ```bash
 # Create global workflows directory if needed
 mkdir -p ~/.gemini/antigravity/global_workflows
@@ -104,6 +111,7 @@ EOF
 ```
 
 **Workspace workflow:**
+
 ```bash
 # Create workflows directory
 mkdir -p .agent/workflows
@@ -129,17 +137,20 @@ EOF
 Workflows are written in **plain Markdown** with task directives:
 
 **Structure:**
+
 ```markdown
 # [Workflow Name]
 
 [Brief description of what this workflow does]
 
 ## Steps/Requirements
+
 - Step 1 or requirement 1
 - Step 2 or requirement 2
 - Step 3 or requirement 3
 
 ## Output Format (optional)
+
 - Expected output description
 ```
 
@@ -152,11 +163,13 @@ Workflows are written in **plain Markdown** with task directives:
 ### Invoking Workflows
 
 **Syntax:**
+
 ```
 /[workflow-name]
 ```
 
 **Examples:**
+
 ```
 /generate-tests
 /create-pr
@@ -165,6 +178,7 @@ Workflows are written in **plain Markdown** with task directives:
 ```
 
 **With context:**
+
 ```
 /generate-tests for the user authentication module
 /create-pr addressing issue #123
@@ -174,6 +188,7 @@ Workflows are written in **plain Markdown** with task directives:
 ### Workflow Discovery
 
 **View available workflows:**
+
 - Type `/` in chat
 - Antigravity displays available workflows
 - Both global and workspace workflows appear
@@ -192,24 +207,27 @@ Workflows are written in **plain Markdown** with task directives:
 Generate comprehensive unit tests for the selected code.
 
 ## Requirements
-* Generate unit tests for each file and each method
-* Make sure the unit tests are named similar to files but with test_ prefix
-* Include test cases for:
+
+- Generate unit tests for each file and each method
+- Make sure the unit tests are named similar to files but with test\_ prefix
+- Include test cases for:
   - Normal operation
   - Edge cases
   - Error conditions
   - Boundary values
-* Follow project testing standards from .agent/rules/testing-standards.md
-* Achieve minimum 80% code coverage
-* Use appropriate mocking for external dependencies
+- Follow project testing standards from .agent/rules/testing-standards.md
+- Achieve minimum 80% code coverage
+- Use appropriate mocking for external dependencies
 
 ## Test Structure
+
 - Arrange-Act-Assert pattern
-- Descriptive test names (should_[expected]_when_[condition])
+- Descriptive test names (should*[expected]\_when*[condition])
 - One assertion per test when possible
 - Clear setup and teardown
 
 ## Output
+
 - Create test file in appropriate location
 - Run tests to verify they pass
 - Report coverage percentage
@@ -225,6 +243,7 @@ Generate comprehensive unit tests for the selected code.
 Prepare and create a pull request for current changes.
 
 ## Pre-Flight Checks
+
 - All tests pass
 - Code follows style guidelines
 - Documentation updated
@@ -232,7 +251,9 @@ Prepare and create a pull request for current changes.
 - Commit messages follow conventions
 
 ## PR Description
+
 Include:
+
 - Summary of changes
 - Related issues (Fixes #123)
 - Testing performed
@@ -241,6 +262,7 @@ Include:
 - Migration steps (if needed)
 
 ## Steps
+
 1. Review uncommitted changes
 2. Ensure all changes are committed
 3. Push branch to remote
@@ -262,31 +284,37 @@ Perform comprehensive security review of the codebase.
 ## Areas to Review
 
 ### Authentication & Authorization
+
 - Check authentication mechanisms
 - Verify authorization logic
 - Review session management
 - Validate token handling
 
 ### Input Validation
+
 - Verify all user inputs are validated
 - Check for SQL injection vulnerabilities
 - Review XSS prevention
 - Validate file upload handling
 
 ### Data Protection
+
 - Review encryption usage
 - Check sensitive data storage
 - Verify secure data transmission
 - Review logging (no sensitive data logged)
 
 ### Dependencies
+
 - Check for known vulnerabilities
 - Review third-party libraries
 - Verify security patches applied
 - Check outdated dependencies
 
 ## Output Format
+
 For each issue found:
+
 - Severity: Critical/High/Medium/Low
 - Location: file:line
 - Description: what the issue is
@@ -304,20 +332,25 @@ For each issue found:
 Complete workflow for setting up a new feature branch and structure.
 
 ## 1. Branch Setup
+
 - Create feature branch from develop
 - Format: feature/[feature-name]
 - Push and set upstream tracking
 
 ## 2. Directory Structure
+
 Create necessary directories:
+
 - src/features/[feature-name]/
 - src/features/[feature-name]/components/
-- src/features/[feature-name]/__tests__/
+- src/features/[feature-name]/**tests**/
 - src/features/[feature-name]/hooks/
 - src/features/[feature-name]/utils/
 
 ## 3. Boilerplate Files
+
 Create:
+
 - index.ts (barrel export)
 - README.md (feature documentation)
 - [Feature].tsx (main component)
@@ -325,12 +358,14 @@ Create:
 - types.ts (TypeScript types)
 
 ## 4. Update Project Files
+
 - Add feature to routing
 - Update main exports
 - Add to documentation
 - Update changelog (Unreleased section)
 
 ## 5. Initial Commit
+
 - Commit structure with message: "feat: setup [feature-name] structure"
 - Push to remote
 ```
@@ -345,6 +380,7 @@ Create:
 Perform thorough code review of changes.
 
 ## Code Quality
+
 - Naming conventions followed
 - Functions are focused (single responsibility)
 - No code duplication
@@ -352,6 +388,7 @@ Perform thorough code review of changes.
 - Edge cases handled
 
 ## Best Practices
+
 - Follows project style guide
 - Uses appropriate design patterns
 - Efficient algorithms
@@ -359,6 +396,7 @@ Perform thorough code review of changes.
 - SOLID principles applied
 
 ## Testing
+
 - Adequate test coverage
 - Tests are meaningful
 - Edge cases tested
@@ -366,6 +404,7 @@ Perform thorough code review of changes.
 - Tests actually pass
 
 ## Security
+
 - Input validation present
 - No SQL injection risks
 - XSS prevention implemented
@@ -373,6 +412,7 @@ Perform thorough code review of changes.
 - Sensitive data protected
 
 ## Documentation
+
 - Public APIs documented
 - Complex logic explained
 - README updated if needed
@@ -380,7 +420,9 @@ Perform thorough code review of changes.
 - Breaking changes noted
 
 ## Output Format
+
 For each file reviewed:
+
 - ✅ What's good
 - ⚠️ Concerns or suggestions
 - ❌ Issues that must be fixed
@@ -397,6 +439,7 @@ For each file reviewed:
 Execute deployment workflow with safety checks.
 
 ## Pre-Deployment Checks
+
 - All tests passing on CI
 - No failing checks on GitHub
 - Version number updated
@@ -407,31 +450,37 @@ Execute deployment workflow with safety checks.
 ## Deployment Steps
 
 ### 1. Prepare Release
+
 - Create release branch
 - Update version in package.json
 - Tag release with semantic version
 - Generate release notes
 
 ### 2. Build
+
 - Run production build
 - Verify build artifacts
 - Check bundle sizes
 - Test production build locally
 
 ### 3. Deploy
+
 - Deploy to production environment
 - Run smoke tests
 - Monitor error logs
 - Check performance metrics
 
 ### 4. Post-Deployment
+
 - Verify deployment successful
 - Monitor for errors (15 minutes)
 - Notify team in Slack
 - Update deployment log
 
 ### 5. Rollback Plan
+
 If issues detected:
+
 - Revert to previous version
 - Investigate issue
 - Create hotfix if needed
@@ -447,6 +496,7 @@ If issues detected:
 Execute database migrations safely.
 
 ## Pre-Migration Checks
+
 - Backup database created
 - Migration scripts reviewed
 - Rollback plan documented
@@ -456,31 +506,37 @@ Execute database migrations safely.
 ## Migration Steps
 
 ### 1. Preparation
+
 - Review migration SQL
 - Check for breaking changes
 - Verify rollback script exists
 - Estimate migration time
 
 ### 2. Execution
+
 - Put application in maintenance mode (if needed)
 - Run migrations
 - Verify migration success
 - Check data integrity
 
 ### 3. Verification
+
 - Test affected features
 - Check database indexes
 - Verify foreign key constraints
 - Review query performance
 
 ### 4. Completion
+
 - Remove maintenance mode
 - Monitor application logs
 - Notify team of completion
 - Document migration in changelog
 
 ## Rollback Procedure
+
 If migration fails:
+
 1. Stop application
 2. Run rollback script
 3. Restore from backup if needed
@@ -495,6 +551,7 @@ If migration fails:
 ### Writing Effective Workflows
 
 ✅ **DO:**
+
 - **Be specific** - Clear, actionable steps
 - **Use structure** - Headers, bullets, numbered lists
 - **Include verification** - How to check success
@@ -503,6 +560,7 @@ If migration fails:
 - **Provide context** - Why this workflow exists
 
 ❌ **DON'T:**
+
 - Write vague instructions
 - Assume context
 - Skip error handling
@@ -513,6 +571,7 @@ If migration fails:
 ### Workflow Organization
 
 **Flat Structure (5-15 workflows):**
+
 ```
 .agent/workflows/
 ├── generate-tests.md
@@ -523,6 +582,7 @@ If migration fails:
 ```
 
 **Categorized Structure (15+ workflows):**
+
 ```
 .agent/workflows/
 ├── development/
@@ -542,6 +602,7 @@ If migration fails:
 ### Naming Conventions
 
 **Verb-Noun Pattern:**
+
 ```
 generate-tests.md
 create-pr.md
@@ -551,6 +612,7 @@ review-security.md
 ```
 
 **Clear and Descriptive:**
+
 ```
 ✅ generate-unit-tests.md
 ✅ create-pull-request.md
@@ -567,16 +629,17 @@ review-security.md
 
 ### Workflows vs Rules
 
-| Feature | Workflows | Rules |
-|:--------|:----------|:------|
-| **Activation** | User-triggered (`/command`) | Always active |
-| **Scope** | On-demand tasks | Continuous guidance |
-| **Purpose** | Execute specific tasks | Guide behavior |
-| **Location** | `.agent/workflows/` | `.agent/rules/` |
-| **Example** | `/generate-tests` | "Use PEP 8" |
-| **Type** | Executable prompts | System instructions |
+| Feature        | Workflows                   | Rules               |
+| :------------- | :-------------------------- | :------------------ |
+| **Activation** | User-triggered (`/command`) | Always active       |
+| **Scope**      | On-demand tasks             | Continuous guidance |
+| **Purpose**    | Execute specific tasks      | Guide behavior      |
+| **Location**   | `.agent/workflows/`         | `.agent/rules/`     |
+| **Example**    | `/generate-tests`           | "Use PEP 8"         |
+| **Type**       | Executable prompts          | System instructions |
 
 **Use Workflows for:**
+
 - Generate unit tests
 - Create pull requests
 - Run deployments
@@ -584,6 +647,7 @@ review-security.md
 - Setup features
 
 **Use Rules for:**
+
 - Code style standards
 - Testing requirements
 - Documentation standards
@@ -591,20 +655,22 @@ review-security.md
 
 ### Workflows vs Skills
 
-| Feature | Workflows | Skills |
-|:--------|:----------|:-------|
-| **Activation** | Explicit `/command` | Agent-triggered (intent) |
-| **Discovery** | User knows command | Agent matches description |
-| **Complexity** | Instructions only | Can include scripts, templates |
-| **Visibility** | Always known to user | Progressive disclosure |
-| **Format** | Markdown only | SKILL.md + scripts + resources |
+| Feature        | Workflows            | Skills                         |
+| :------------- | :------------------- | :----------------------------- |
+| **Activation** | Explicit `/command`  | Agent-triggered (intent)       |
+| **Discovery**  | User knows command   | Agent matches description      |
+| **Complexity** | Instructions only    | Can include scripts, templates |
+| **Visibility** | Always known to user | Progressive disclosure         |
+| **Format**     | Markdown only        | SKILL.md + scripts + resources |
 
 **Use Workflows for:**
+
 - Known, repeatable tasks
 - User-controlled execution
 - Simple instruction-based tasks
 
 **Use Skills for:**
+
 - Complex workflows with automation
 - Agent-determined relevance
 - Heavy procedural knowledge
@@ -612,6 +678,7 @@ review-security.md
 ### Workflows vs Commands (Other Platforms)
 
 Antigravity Workflows are equivalent to:
+
 - **Cursor Commands** (`.cursor/commands/`)
 - **Claude Code Commands** (`.claude/commands/`)
 
@@ -631,13 +698,16 @@ All serve the same purpose: reusable, user-triggered prompts.
 Generate [artifact type] following project standards.
 
 ## Requirements
+
 - Requirement 1
 - Requirement 2
 
 ## Structure
+
 - Expected structure details
 
 ## Verification
+
 - How to verify output
 ```
 
@@ -651,10 +721,12 @@ Generate [artifact type] following project standards.
 Perform thorough review of [aspect].
 
 ## Areas to Check
+
 - Area 1
 - Area 2
 
 ## Output Format
+
 - Issue severity
 - Location
 - Description
@@ -671,18 +743,22 @@ Perform thorough review of [aspect].
 Execute deployment with safety checks.
 
 ## Pre-Deployment
+
 - Check 1
 - Check 2
 
 ## Deployment Steps
+
 1. Step 1
 2. Step 2
 
 ## Post-Deployment
+
 - Verification 1
 - Verification 2
 
 ## Rollback
+
 - Rollback procedure
 ```
 
@@ -696,15 +772,19 @@ Execute deployment with safety checks.
 Initialize new [feature] with structure.
 
 ## Directory Structure
+
 - Create directories
 
 ## Boilerplate Files
+
 - Create files
 
 ## Configuration
+
 - Update configs
 
 ## Initial Commit
+
 - Commit message
 ```
 
@@ -747,10 +827,12 @@ Initialize new [feature] with structure.
 ### Workflow Not Found
 
 **Symptoms:**
+
 - `/workflow-name` doesn't trigger
 - Workflow doesn't appear in autocomplete
 
 **Solutions:**
+
 ```bash
 # Verify file location
 ls -la .agent/workflows/
@@ -764,10 +846,12 @@ ls -la .agent/workflows/
 ### Workflow Executes Incorrectly
 
 **Symptoms:**
+
 - Agent doesn't follow workflow instructions
 - Missing steps or unexpected behavior
 
 **Solutions:**
+
 - Review workflow clarity
 - Make instructions more specific
 - Add examples
@@ -777,11 +861,13 @@ ls -la .agent/workflows/
 ### Workflows Too Complex
 
 **Symptoms:**
+
 - Agent gets confused
 - Partial execution
 - Errors midway
 
 **Solutions:**
+
 - Split into multiple smaller workflows
 - Use Rules for continuous guidance
 - Consider creating a Skill instead (for complex scripts)
@@ -794,6 +880,7 @@ ls -la .agent/workflows/
 ### Committing Workflows
 
 ✅ **DO commit project workflows to git:**
+
 ```bash
 # Project workflows should be shared
 git add .agent/workflows/
@@ -801,6 +888,7 @@ git commit -m "feat: add deployment workflow"
 ```
 
 ❌ **DON'T commit global workflows:**
+
 ```bash
 # Global workflows are personal
 # ~/.gemini/antigravity/global_workflows/ stays local
@@ -809,6 +897,7 @@ git commit -m "feat: add deployment workflow"
 ### Sharing Workflows with Team
 
 **Best practices:**
+
 1. Document workflows in `.agent/workflows/`
 2. Commit to repository
 3. Include usage in README
@@ -816,6 +905,7 @@ git commit -m "feat: add deployment workflow"
 5. Update based on team feedback
 
 **Example:**
+
 ```bash
 # Create team workflow
 cat > .agent/workflows/onboard-developer.md << 'EOF'
@@ -862,9 +952,11 @@ While workflows don't have formal parameters, you can write them to expect conte
 Deploy application to specified environment.
 
 ## Instructions
+
 The user will specify the target environment (staging, production, etc.)
 
 ## Steps
+
 1. Verify environment is valid
 2. Run environment-specific pre-checks
 3. Execute deployment to specified environment
@@ -872,6 +964,7 @@ The user will specify the target environment (staging, production, etc.)
 ```
 
 **Usage:**
+
 ```
 /deploy-to-environment staging
 /deploy-to-environment production
@@ -887,6 +980,7 @@ Reference other workflows within a workflow:
 Execute full feature release process.
 
 ## Steps
+
 1. Run /generate-tests to ensure test coverage
 2. Run /code-review to verify code quality
 3. Run /security-audit to check for vulnerabilities

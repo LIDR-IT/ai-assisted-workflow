@@ -57,6 +57,7 @@ Show the user what files and changes are staged for commit.
 Follow the project standards from `.agents/rules/process/git-workflow.md`:
 
 **Format:**
+
 ```
 type(scope): Brief summary (50 chars or less)
 
@@ -71,6 +72,7 @@ Refs: #123
 ```
 
 **Commit Types:**
+
 - `feat:` New feature or functionality
 - `fix:` Bug fix
 - `docs:` Documentation only changes
@@ -81,6 +83,7 @@ Refs: #123
 - `style:` Code formatting (no logic change)
 
 **Best Practices:**
+
 - Use **imperative mood**: "Add feature" not "Added feature"
 - Explain **WHY**, not just WHAT
 - Keep subject line **under 50 characters**
@@ -116,11 +119,13 @@ Show the user the created commit and current git status.
 ### Example 1: With full message (quick mode)
 
 **User input:**
+
 ```
 /commit feat(api): add user authentication endpoint
 ```
 
 **Your response:**
+
 ```
 ✅ Checking staged changes...
 
@@ -148,11 +153,13 @@ Current status: working tree clean
 ### Example 2: Invalid format correction
 
 **User input:**
+
 ```
 /commit added new sync script
 ```
 
 **Your response:**
+
 ```
 ⚠️  Commit message format needs correction
 
@@ -172,11 +179,13 @@ Which would you prefer, or would you like to provide a different message?
 ### Example 3: Guided mode (no arguments)
 
 **User input:**
+
 ```
 /commit
 ```
 
 **Your response:**
+
 ```
 📋 Analyzing staged changes...
 
@@ -234,6 +243,7 @@ Before creating any commit, ensure:
 If any errors occur:
 
 1. **No staged changes:**
+
    ```
    ❌ Error: No changes staged for commit
 
@@ -245,6 +255,7 @@ If any errors occur:
    ```
 
 2. **Git command fails:**
+
    ```
    ❌ Error: Failed to create commit
 
@@ -254,6 +265,7 @@ If any errors occur:
    ```
 
 3. **Invalid commit type:**
+
    ```
    ❌ Error: Invalid commit type "xyz"
 

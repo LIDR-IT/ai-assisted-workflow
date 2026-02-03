@@ -26,7 +26,7 @@ npm run docs:preview
 ### Synchronization
 
 ```bash
-# Sync all configurations (rules, skills, commands, agents, MCP)
+# Sync all configurations (rules, skills, commands, agents, MCP, hooks)
 ./.agents/sync-all.sh
 
 # Sync only rules and skills
@@ -35,9 +35,13 @@ npm run docs:preview
 # Sync only MCP configurations
 ./.agents/mcp/sync-mcp.sh
 
+# Sync only hooks
+./.agents/hooks/sync-hooks.sh
+
 # Dry run (preview without applying)
 ./.agents/rules/sync-rules.sh --dry-run
 ./.agents/mcp/sync-mcp.sh --dry-run
+./.agents/hooks/sync-hooks.sh --dry-run
 ```
 
 ### Verification
@@ -48,6 +52,12 @@ readlink .cursor/rules    # Should: ../.agents/rules
 readlink .claude/rules    # Should: ../.agents/rules
 readlink .gemini/rules    # Should: ../.agents/rules
 
+# Check hooks
+ls -la .claude/hooks/
+ls -la .gemini/hooks/
+jq .hooks .claude/settings.json
+jq .hooks .gemini/settings.json
+
 # Check generated MCP configs
 jq . .cursor/mcp.json
 jq . .claude/mcp.json
@@ -55,6 +65,8 @@ jq . .gemini/settings.json
 
 # Validate JSON files
 jq empty .agents/mcp/mcp-servers.json
+jq empty .claude/settings.json
+jq empty .gemini/settings.json
 ```
 
 ## Architecture & Design Decisions
@@ -68,44 +80,67 @@ All AI agent configurations live in `.agents/` and are synchronized to platform-
 - **`.agents/commands/`** - Slash commands (workflow automation)
 - **`.agents/subagents/`** - Subagents (specialized assistants)
 - **`.agents/mcp/`** - MCP server configurations (external tool integrations)
+- **`.agents/hooks/`** - Git workflow automation hooks (event-driven scripts)
 - **`orchestrator/`** - Orchestrator documentation (this file)
 
 ### Synchronization Strategies
 
 **Symlinks (Preferred):**
+
 - Used for: Skills, Commands, Agents
 - Platforms: Cursor, Claude Code, Gemini CLI, Antigravity
 - Advantage: Changes propagate instantly, zero duplication
 - Note: Antigravity does NOT support `.agents/subagents/` directory
 
 **Symlinks (Rules - Selective):**
+
 - Used for: Rules distribution
 - Platforms: Claude Code, Antigravity ONLY
 - Note: Cursor requires copy/conversion (see below)
 
 **Script Generation:**
-- Used for: MCP configurations, Gemini rules index
-- Scripts: `sync-mcp.sh`, `sync-rules.sh`
+
+- Used for: MCP configurations, Gemini rules index, hooks configurations
+- Scripts: `sync-mcp.sh`, `sync-rules.sh`, `sync-hooks.sh`
 - Why: Each platform requires different JSON structure/format
 
+**Hybrid Approach (Hooks):**
+
+- Used for: Git workflow automation hooks
+- **3 simple, practical hooks:** notify.sh, auto-format.sh, protect-secrets.sh
+- **576 lines total** (59% reduction vs 1,390 lines previously)
+- Symlink scripts (shared code across platforms)
+- Generate configs (platform-specific JSON formats)
+- Platforms: **Claude Code, Gemini CLI, Cursor** (Antigravity global only)
+- **Note:** Cursor does NOT support Notification events (notify.sh excluded from Cursor)
+
 **Copy + Convert (Cursor Limitation):**
+
 - Used for: Cursor rules only
 - Process: `.md` → `.mdc`, flattened structure (no subdirectories)
 - Triggered by: `sync-rules.sh`
 
 ### Platform Support Matrix
 
-| Component | Cursor | Claude Code | Gemini CLI | Antigravity |
-|-----------|--------|-------------|------------|-------------|
-| Rules | ✅ Copy (.mdc) | ✅ Symlink | ❌ Index only | ✅ Symlink |
-| Skills | ✅ Symlink | ✅ Symlink | ✅ Symlink | ✅ Symlink |
-| Commands | ✅ Symlink (.md) | ✅ Symlink (.md) | ✅ Generated (.toml) | ✅ Symlink (as workflows) |
-| Agents | ✅ Symlink | ✅ Symlink | ✅ Symlink | ❌ Not supported |
-| MCP (Project) | ✅ Generated | ✅ Generated | ✅ Generated | ❌ Global only |
+| Component     | Cursor                                  | Claude Code           | Gemini CLI            | Antigravity               |
+| ------------- | --------------------------------------- | --------------------- | --------------------- | ------------------------- |
+| Rules         | ✅ Copy (.mdc)                          | ✅ Symlink            | ❌ Index only         | ✅ Symlink                |
+| Skills        | ✅ Symlink                              | ✅ Symlink            | ✅ Symlink            | ✅ Symlink                |
+| Commands      | ✅ Symlink (.md)                        | ✅ Symlink (.md)      | ✅ Generated (.toml)  | ✅ Symlink (as workflows) |
+| Agents        | ✅ Symlink                              | ✅ Symlink            | ✅ Symlink            | ❌ Not supported          |
+| MCP (Project) | ✅ Generated                            | ✅ Generated          | ✅ Generated          | ❌ Global only            |
+| Hooks         | ✅ Partial (2/3 hooks, NO Notification) | ✅ Full (all 3 hooks) | ✅ Full (all 3 hooks) | ❌ Global only            |
 
 **Key Details:**
+
 - **Gemini Commands:** Auto-converted `.md` → `.toml` (Gemini requires TOML format, not symlinks)
 - **Antigravity Commands:** Directory symlink `.agent/workflows` → `.agents/commands` (single symlink for all commands)
+- **Hooks:** Scripts symlinked, configs generated (each platform has different JSON format/location)
+  - **Current hooks (3):** notify.sh, auto-format.sh, protect-secrets.sh
+  - **Cursor:** `.cursor/hooks.json` (camelCase events, version: 1, **NO Notification event** - only 2/3 hooks)
+  - **Claude Code:** `.claude/settings.json` (PascalCase events - all 3 hooks)
+  - **Gemini CLI:** `.gemini/settings.json` (BeforeTool/AfterTool/Notification - all 3 hooks)
+  - **Statistics:** 576 lines (59% reduction from 1,390 lines)
 - **Visual Note:** File explorers display symlinks as regular directories (this is normal behavior)
 
 ## Critical Workflows
@@ -199,6 +234,7 @@ See `.agents/skills/team-skill-creator/` for templates and validation scripts.
    - Other fields optional but recommended
 
 **Verification:**
+
 ```bash
 # Check Cursor rules are flat .mdc files
 ls .cursor/rules/
@@ -284,6 +320,7 @@ ls .cursor/rules/
 4. Verify with `ls -la .cursor/skills .claude/skills .gemini/skills`
 
 **Command Sync Behavior:**
+
 - **Cursor/Claude/Antigravity:** Symlinks to `.agents/commands/` (instant sync)
 - **Gemini CLI:** Conversion `.md` → `.toml` (regenerated on sync)
 
@@ -293,17 +330,18 @@ All rules must include universal YAML frontmatter supporting all platforms:
 
 ```yaml
 ---
-name: rule-name                      # Cursor only
-description: Brief description       # All platforms
-alwaysApply: false                   # Cursor only (optional)
-globs: ["**/*.ext"]                 # Cursor only (optional)
-argument-hint: <file-pattern>        # Claude/Gemini (optional)
-paths: ["src/**/*.ext"]             # Claude only (optional)
-trigger: always_on                   # Antigravity only (optional)
+name: rule-name # Cursor only
+description: Brief description # All platforms
+alwaysApply: false # Cursor only (optional)
+globs: ["**/*.ext"] # Cursor only (optional)
+argument-hint: <file-pattern> # Claude/Gemini (optional)
+paths: ["src/**/*.ext"] # Claude only (optional)
+trigger: always_on # Antigravity only (optional)
 ---
 ```
 
 **⚠️ CRITICAL WARNINGS:**
+
 - **Missing fields = Rule ignored:** Cursor requires `name` field or rule won't appear in UI
 - **Platform-specific fields:** Each platform ignores fields it doesn't recognize (safe to include all)
 - **Never create platform-specific files:** Use one file with all fields for all platforms
@@ -314,6 +352,7 @@ trigger: always_on                   # Antigravity only (optional)
 ### Committing Sync Changes
 
 **When changing rules/skills (symlinked):**
+
 ```bash
 # Only commit source
 git add .agents/rules/my-rule.md
@@ -321,6 +360,7 @@ git commit -m "docs: Add my-rule for code standards"
 ```
 
 **When changing MCP configs (generated):**
+
 ```bash
 # Commit BOTH source and generated
 git add .agents/mcp/mcp-servers.json
@@ -331,6 +371,7 @@ git commit -m "feat: Add new MCP server"
 ### Commit Message Format
 
 Use conventional commits:
+
 - `feat:` New feature or functionality
 - `fix:` Bug fix
 - `docs:` Documentation changes
@@ -342,12 +383,14 @@ Use conventional commits:
 ### Changes Not Propagating
 
 **Cursor rules:**
+
 ```bash
 # Re-run sync (rules are copied)
 ./.agents/rules/sync-rules.sh
 ```
 
 **Claude/Gemini/Antigravity:**
+
 ```bash
 # Check symlink target
 readlink .claude/rules
@@ -355,6 +398,7 @@ readlink .claude/rules
 ```
 
 **Antigravity specifically:**
+
 ```bash
 # Close and reopen project (rules are cached)
 ```
@@ -385,6 +429,7 @@ ln -s ../.agents/commands .agent/workflows
 ### MCP Not Working
 
 **Cursor/Claude/Gemini:**
+
 ```bash
 # Regenerate configs
 ./.agents/mcp/sync-mcp.sh
@@ -395,6 +440,7 @@ jq empty .claude/mcp.json
 ```
 
 **Antigravity:**
+
 ```bash
 # Check GLOBAL config (project-level not supported)
 cat ~/.gemini/antigravity/mcp_config.json
@@ -405,6 +451,7 @@ cat ~/.gemini/antigravity/mcp_config.json
 VitePress-powered documentation with bilingual support (EN/ES). Configuration lives in `docs/.vitepress/config.js`.
 
 **Structure:**
+
 - `docs/en/` - English documentation
 - `docs/es/` - Spanish documentation (WIP)
 - Modules organized by concept (Skills, MCP, etc.)
@@ -417,12 +464,14 @@ VitePress-powered documentation with bilingual support (EN/ES). Configuration li
 **Symptom:** Rule file exists but doesn't show in Cursor settings
 
 **Causes:**
+
 1. Missing `name` field in YAML frontmatter ❌
 2. File is `.md` instead of `.mdc` ❌
 3. Rule in subdirectory instead of flat structure ❌
 4. YAML frontmatter malformed ❌
 
 **Solution:**
+
 ```bash
 # 1. Check file has .mdc extension
 ls .cursor/rules/*.md
@@ -444,10 +493,12 @@ head -10 .agents/rules/my-rule.md
 **Symptom:** Rule works on Claude but not on Cursor (or vice versa)
 
 **Causes:**
+
 1. Platform-specific YAML field missing
 2. Field ignored by target platform (expected behavior)
 
 **Check:**
+
 ```yaml
 # Cursor needs:
 name: rule-name           # REQUIRED
@@ -468,6 +519,7 @@ trigger: always_on        # Optional
 **Cause:** Cursor does NOT support subdirectories
 
 **Solution:**
+
 ```bash
 # Don't create subdirectories in .cursor/rules/
 # Instead, let sync script flatten structure automatically
@@ -484,6 +536,7 @@ trigger: always_on        # Optional
 **Symptom:** Edited rule in `.agents/rules/` but platforms don't see changes
 
 **Solutions by platform:**
+
 ```bash
 # Cursor: Re-run sync (rules are copied)
 ./.agents/rules/sync-rules.sh

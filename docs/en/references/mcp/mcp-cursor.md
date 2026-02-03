@@ -12,11 +12,11 @@ MCP enables Cursor to connect with external tools and data sources. Rather than 
 
 Cursor supports three transport approaches:
 
-| Method | Environment | Deployment | Users | Input | Auth |
-|--------|-------------|------------|-------|-------|------|
-| **stdio** | Local | Cursor-managed | Single | Shell command | Manual |
-| **SSE** | Local/Remote | Custom server | Multiple | SSE endpoint URL | OAuth |
-| **Streamable HTTP** | Local/Remote | Custom server | Multiple | HTTP endpoint URL | OAuth |
+| Method              | Environment  | Deployment     | Users    | Input             | Auth   |
+| ------------------- | ------------ | -------------- | -------- | ----------------- | ------ |
+| **stdio**           | Local        | Cursor-managed | Single   | Shell command     | Manual |
+| **SSE**             | Local/Remote | Custom server  | Multiple | SSE endpoint URL  | OAuth  |
+| **Streamable HTTP** | Local/Remote | Custom server  | Multiple | HTTP endpoint URL | OAuth  |
 
 ---
 
@@ -143,13 +143,13 @@ Use variables in `mcp.json`:
 
 ## STDIO Server Configuration Fields
 
-| Field | Required | Description | Examples |
-|-------|----------|-------------|----------|
-| **type** | Yes | Connection type | `"stdio"` |
-| **command** | Yes | Server executable command | `"npx"`, `"python"`, `"docker"` |
-| **args** | No | Command arguments | `["server.py", "--port", "3000"]` |
-| **env** | No | Environment variables | `{"API_KEY": "${env:api-key}"}` |
-| **envFile** | No | Environment file path | `".env"`, `"${workspaceFolder}/.env"` |
+| Field       | Required | Description               | Examples                              |
+| ----------- | -------- | ------------------------- | ------------------------------------- |
+| **type**    | Yes      | Connection type           | `"stdio"`                             |
+| **command** | Yes      | Server executable command | `"npx"`, `"python"`, `"docker"`       |
+| **args**    | No       | Command arguments         | `["server.py", "--port", "3000"]`     |
+| **env**     | No       | Environment variables     | `{"API_KEY": "${env:api-key}"}`       |
+| **envFile** | No       | Environment file path     | `".env"`, `"${workspaceFolder}/.env"` |
 
 **Note:** `envFile` is STDIO-only; remote servers require environment configuration via shell profile or system settings.
 
@@ -228,11 +228,13 @@ Through Settings (<kbd>Cmd+Shift+J</kbd>) → Features → Model Context Protoco
 ## Updating MCP Servers
 
 **For npm-based servers:**
+
 1. Remove the server
 2. Run `npm cache clean --force`
 3. Reinstall for latest version
 
 **For custom servers:**
+
 1. Update local files
 2. Restart Cursor
 
@@ -272,12 +274,14 @@ Through Settings (<kbd>Cmd+Shift+J</kbd>) → Features → Model Context Protoco
 ### Server Won't Connect
 
 **Check:**
+
 - Command path is correct
 - Required dependencies installed
 - Environment variables set
 - Network connectivity (for remote servers)
 
 **Solution:**
+
 - Review MCP logs in Output panel
 - Test command manually in terminal
 - Verify server is running (for remote)
@@ -285,11 +289,13 @@ Through Settings (<kbd>Cmd+Shift+J</kbd>) → Features → Model Context Protoco
 ### Tools Not Appearing
 
 **Check:**
+
 - Server is enabled in settings
 - No errors in MCP logs
 - Server implements tool discovery correctly
 
 **Solution:**
+
 - Restart Cursor
 - Disable/re-enable server
 - Check server documentation
@@ -297,11 +303,13 @@ Through Settings (<kbd>Cmd+Shift+J</kbd>) → Features → Model Context Protoco
 ### Authentication Failures
 
 **Check:**
+
 - API keys are valid
 - OAuth credentials correct
 - Network access to auth endpoints
 
 **Solution:**
+
 - Verify environment variables
 - Re-authenticate OAuth flow
 - Check redirect URL configuration
@@ -311,11 +319,13 @@ Through Settings (<kbd>Cmd+Shift+J</kbd>) → Features → Model Context Protoco
 ## Related Resources
 
 **In This Repository:**
+
 - `docs/references/mcp/mcp-introduction.md` - MCP overview
 - `docs/references/mcp/mcp-server-builder.md` - Building MCP servers
 - `docs/references/guidelines/team-conventions/third-party-security-guidelines.md` - Security guidelines
 
 **External:**
+
 - [Cursor MCP Documentation](https://cursor.com/es/docs/context/mcp)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [MCP Specification](https://spec.modelcontextprotocol.io/)

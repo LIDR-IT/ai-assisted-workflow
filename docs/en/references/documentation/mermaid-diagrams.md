@@ -14,6 +14,7 @@
 ### Purpose
 
 Mermaid allows you to create diagrams using text syntax instead of graphical tools, enabling:
+
 - **Version control** - Diagrams stored in git alongside code
 - **Easy updates** - Edit text instead of dragging boxes
 - **Maintainability** - Keep diagrams in sync with code
@@ -81,6 +82,7 @@ graph TD
 **Purpose:** Domain modeling, OOP design, entity relationships
 
 **Use Cases:**
+
 - Object-oriented design
 - Domain models
 - System architecture
@@ -106,6 +108,7 @@ classDiagram
 ```
 
 **Key Elements:**
+
 - Class definitions with attributes and methods
 - Relationships: `-->` (association), `--o` (aggregation), `--*` (composition), `--|>` (inheritance)
 - Multiplicity: `"1"`, `"0..*"`, `"1..*"`
@@ -116,6 +119,7 @@ classDiagram
 **Purpose:** Temporal interactions and message flows
 
 **Use Cases:**
+
 - API interactions
 - Authentication flows
 - Method call sequences
@@ -139,6 +143,7 @@ sequenceDiagram
 ```
 
 **Key Elements:**
+
 - Participants: `participant`, `actor`
 - Messages: `->>` (sync), `-->>` (response), `--)` (async)
 - Activation: `activate`/`deactivate`
@@ -150,6 +155,7 @@ sequenceDiagram
 **Purpose:** Processes, algorithms, decision trees
 
 **Use Cases:**
+
 - Business processes
 - Algorithm logic
 - Decision flows
@@ -169,6 +175,7 @@ flowchart TD
 ```
 
 **Key Elements:**
+
 - Node shapes: `[]` (rectangle), `()` (rounded), `{}` (diamond), `[()]` (stadium), `[()])` (database)
 - Arrows: `-->` (solid), `-.->` (dotted), `==>` (thick)
 - Labels: `-->|text|`
@@ -179,6 +186,7 @@ flowchart TD
 **Purpose:** Database schemas and table relationships
 
 **Use Cases:**
+
 - Database design
 - Data modeling
 - Schema documentation
@@ -215,6 +223,7 @@ erDiagram
 ```
 
 **Key Elements:**
+
 - Entities with attributes
 - Relationships: `||--||` (one-to-one), `||--o{` (one-to-many), `}o--o{` (many-to-many)
 - Keys: `PK` (primary key), `FK` (foreign key), `UK` (unique key)
@@ -224,6 +233,7 @@ erDiagram
 **Purpose:** Multi-level software architecture
 
 **Use Cases:**
+
 - System context
 - Container diagrams
 - Component diagrams
@@ -236,6 +246,7 @@ See `c4-architecture.md` for complete reference.
 **Purpose:** State machines and lifecycle states
 
 **Use Cases:**
+
 - Object lifecycles
 - Workflow states
 - Game states
@@ -256,6 +267,7 @@ stateDiagram-v2
 ```
 
 **Key Elements:**
+
 - States: Simple names
 - Transitions: `-->` with labels
 - Start/end: `[*]`
@@ -266,6 +278,7 @@ stateDiagram-v2
 **Purpose:** Version control branching strategies
 
 **Use Cases:**
+
 - Git workflow documentation
 - Branch strategy explanation
 - Release planning
@@ -293,6 +306,7 @@ gitGraph
 ```
 
 **Key Elements:**
+
 - `commit` - Create commit
 - `branch` - Create branch
 - `checkout` - Switch branch
@@ -304,6 +318,7 @@ gitGraph
 **Purpose:** Project timelines and scheduling
 
 **Use Cases:**
+
 - Project planning
 - Sprint planning
 - Release schedules
@@ -327,6 +342,7 @@ gantt
 ```
 
 **Key Elements:**
+
 - `dateFormat` - Date format specification
 - Sections for grouping
 - Tasks with IDs, start, duration
@@ -338,6 +354,7 @@ gantt
 **Purpose:** Data visualization
 
 **Use Cases:**
+
 - Metrics display
 - Distribution visualization
 - Statistical reports
@@ -358,42 +375,49 @@ pie title Browser Usage
 ## When to Use Each Diagram Type
 
 ### Choose Class Diagram When:
+
 - Designing object-oriented systems
 - Documenting domain models
 - Showing inheritance hierarchies
 - Modeling data structures
 
 ### Choose Sequence Diagram When:
+
 - Documenting API flows
 - Explaining authentication
 - Showing temporal interactions
 - Debugging distributed systems
 
 ### Choose Flowchart When:
+
 - Documenting algorithms
 - Showing decision logic
 - Explaining business processes
 - Creating user flows
 
 ### Choose ERD When:
+
 - Designing databases
 - Planning migrations
 - Documenting schemas
 - Showing data relationships
 
 ### Choose State Diagram When:
+
 - Modeling object lifecycles
 - Documenting workflows
 - Designing state machines
 - Showing status transitions
 
 ### Choose Git Graph When:
+
 - Explaining branching strategy
 - Documenting release process
 - Planning merges
 - Training team on git workflow
 
 ### Choose Gantt Chart When:
+
 - Planning sprints
 - Scheduling releases
 - Showing timelines
@@ -406,6 +430,7 @@ pie title Browser Usage
 ### 1. Start Simple, Add Complexity
 
 ✅ **Good Approach:**
+
 ```mermaid
 %% Version 1: Simple
 graph TD
@@ -429,6 +454,7 @@ graph TD
 ### 2. Use Meaningful Names
 
 ✅ **Good:**
+
 ```mermaid
 flowchart TD
     authenticateUser[Authenticate User]
@@ -437,6 +463,7 @@ flowchart TD
 ```
 
 ❌ **Bad:**
+
 ```mermaid
 flowchart TD
     A[Step 1]
@@ -447,6 +474,7 @@ flowchart TD
 ### 3. Add Comments for Context
 
 ✅ **Good:**
+
 ```mermaid
 sequenceDiagram
     %% Authentication flow for OAuth 2.0
@@ -456,6 +484,7 @@ sequenceDiagram
 ```
 
 ❌ **Bad:**
+
 ```mermaid
 sequenceDiagram
     User->>App: Click
@@ -465,6 +494,7 @@ sequenceDiagram
 ### 4. Keep Diagrams Focused
 
 ✅ **Good:** One diagram per concept
+
 - `auth-flow.md` - Authentication
 - `checkout-flow.md` - Checkout process
 - `payment-flow.md` - Payment handling
@@ -474,6 +504,7 @@ sequenceDiagram
 ### 5. Store with Code
 
 ✅ **Good Structure:**
+
 ```
 project/
 ├── docs/
@@ -488,6 +519,7 @@ project/
 ### 6. Use Titles and Notes
 
 ✅ **Good:**
+
 ```mermaid
 sequenceDiagram
     title User Authentication Flow
@@ -510,7 +542,7 @@ sequenceDiagram
 config:
   theme: default
   themeVariables:
-    primaryColor: '#ff0000'
+    primaryColor: "#ff0000"
 ---
 ```
 
@@ -556,12 +588,14 @@ graph TD
 ### 1. Breaking Characters in Comments
 
 ❌ **Problem:**
+
 ```mermaid
 graph TD
     A[Process] %% Uses {} for config
 ```
 
 ✅ **Solution:**
+
 ```mermaid
 graph TD
     A[Process] %% Uses braces for config
@@ -570,12 +604,14 @@ graph TD
 ### 2. Misspelled Syntax
 
 ❌ **Problem:** Silently fails
+
 ```mermaid
 sequenceDiagarm  %% Typo: Diagarm
     User->>API: Request
 ```
 
 ✅ **Solution:** Double-check spelling
+
 ```mermaid
 sequenceDiagram
     User->>API: Request
@@ -586,6 +622,7 @@ sequenceDiagram
 ❌ **Problem:** 50+ nodes in one diagram
 
 ✅ **Solution:** Split into multiple focused diagrams
+
 - `overview.md` - High-level
 - `module-a.md` - Module A details
 - `module-b.md` - Module B details
@@ -593,6 +630,7 @@ sequenceDiagram
 ### 4. Undocumented Relationships
 
 ❌ **Problem:**
+
 ```mermaid
 classDiagram
     A --> B
@@ -600,6 +638,7 @@ classDiagram
 ```
 
 ✅ **Solution:**
+
 ```mermaid
 classDiagram
     Customer "1" --> "0..*" Order : places
@@ -625,11 +664,11 @@ OAuth 2.0 authentication flow for the application.
 
 \`\`\`mermaid
 sequenceDiagram
-    actor User
-    participant App
-    participant AuthServer
-    participant API
-    participant Database
+actor User
+participant App
+participant AuthServer
+participant API
+participant Database
 
     %% Initial authentication request
     User->>App: Click "Login"
@@ -658,6 +697,7 @@ sequenceDiagram
     Database-->>API: User data
     API-->>App: Protected resource
     App-->>User: Show dashboard
+
 \`\`\`
 
 ## Key Points
@@ -683,13 +723,13 @@ E-commerce database schema with entities and relationships.
 
 \`\`\`mermaid
 erDiagram
-    CUSTOMER ||--o{ ORDER : places
-    CUSTOMER {
-        int id PK
-        string email UK
-        string name
-        datetime created_at
-    }
+CUSTOMER ||--o{ ORDER : places
+CUSTOMER {
+int id PK
+string email UK
+string name
+datetime created_at
+}
 
     ORDER ||--|{ ORDER_ITEM : contains
     ORDER {
@@ -733,6 +773,7 @@ erDiagram
         string slug UK
         int parent_id FK
     }
+
 \`\`\`
 
 ## Key Points
@@ -759,8 +800,8 @@ CI/CD pipeline for application deployment.
 
 \`\`\`mermaid
 flowchart TD
-    Start([Developer Push]) --> PR[Create Pull Request]
-    PR --> Tests{Tests Pass?}
+Start([Developer Push]) --> PR[Create Pull Request]
+PR --> Tests{Tests Pass?}
 
     Tests -->|No| Fix[Fix Issues]
     Fix --> PR
@@ -804,6 +845,7 @@ flowchart TD
     style End fill:#FFB6C1
     style Production fill:#FFD700
     style ProdRollback fill:#FF6347
+
 \`\`\`
 
 ## Key Points
@@ -831,7 +873,7 @@ Order lifecycle states and transitions.
 
 \`\`\`mermaid
 stateDiagram-v2
-    [*] --> Draft : Create order
+[*] --> Draft : Create order
 
     Draft --> PendingPayment : Submit
     Draft --> Cancelled : Cancel
@@ -872,6 +914,7 @@ stateDiagram-v2
         Inventory released,
         customer notified
     end note
+
 \`\`\`
 
 ## Key States

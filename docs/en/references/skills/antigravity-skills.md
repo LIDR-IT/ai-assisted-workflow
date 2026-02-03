@@ -5,6 +5,7 @@
 **Skills** in Antigravity are modular, discoverable capability packages that extend AI agent functionality with specialized knowledge and workflows through progressive disclosure.
 
 **Official Documentation:**
+
 - [antigravity.google/docs/knowledge](https://antigravity.google/docs/knowledge)
 - [Authoring Antigravity Skills Codelab](https://codelabs.developers.google.com/getting-started-with-antigravity-skills)
 
@@ -17,6 +18,7 @@
 ### Definition
 
 Skills are:
+
 - **Modular capability packages** - Self-contained units of expertise
 - **Progressive disclosure** - Load only when intent matches
 - **Agent-triggered** - Automatically activated based on user request
@@ -45,6 +47,7 @@ Skills solve **context saturation** by implementing **progressive disclosure**: 
 5. **On complete:** Skill unloads to free context
 
 **Benefits:**
+
 - ✅ Prevents context saturation
 - ✅ Reduces token costs
 - ✅ Lowers latency
@@ -52,6 +55,7 @@ Skills solve **context saturation** by implementing **progressive disclosure**: 
 - ✅ Scales to many skills
 
 **Example:**
+
 ```
 User: "Generate unit tests for this component"
       ↓
@@ -73,12 +77,14 @@ Agent: Executes using testing expertise
 **Location:** `~/.gemini/antigravity/skills/`
 
 **Purpose:**
+
 - Cross-project tools
 - Personal utilities
 - Universal workflows
 - Reusable across all workspaces
 
 **Example:**
+
 ```
 ~/.gemini/antigravity/skills/
 ├── json-formatter/
@@ -92,12 +98,14 @@ Agent: Executes using testing expertise
 **Location:** `<workspace-root>/.agent/skills/`
 
 **Purpose:**
+
 - Project-specific capabilities
 - Framework-specific workflows
 - Team-shared knowledge
 - Codebase-specific automation
 
 **Example structure:**
+
 ```
 .agent/skills/
 ├── deployment-automation/
@@ -107,6 +115,7 @@ Agent: Executes using testing expertise
 ```
 
 **In This Project:**
+
 ```
 .agents/skills/          # Source of truth
 ├── agent-development/
@@ -181,15 +190,19 @@ description: Detailed trigger phrase explaining when/why to use this skill
 # Skill Name
 
 ## Goal
+
 What this skill accomplishes
 
 ## Instructions
+
 Step-by-step process
 
 ## Examples
+
 Few-shot examples
 
 ## Constraints
+
 Rules and limitations
 ```
 
@@ -198,6 +211,7 @@ Rules and limitations
 The description determines when the skill loads. It must be specific, not vague.
 
 **❌ Bad descriptions:**
+
 ```yaml
 description: Database tools
 description: Helps with code
@@ -205,6 +219,7 @@ description: General utilities
 ```
 
 **✅ Good descriptions:**
+
 ```yaml
 description: Executes read-only SQL queries against PostgreSQL databases for data analysis and debugging
 description: Generates React functional components with TypeScript, hooks, and test files following project conventions
@@ -220,6 +235,7 @@ description: Enforces Conventional Commits specification for git commit messages
 **Purpose:** Guide agent behavior with pure instructions
 
 **Structure:**
+
 ```
 git-commit-formatter/
 └── SKILL.md
@@ -234,19 +250,19 @@ git-commit-formatter/
 name: git-commit-formatter
 description: Enforces Conventional Commits specification for git commit messages, ensuring consistent format with type, scope, and description
 ---
-
 # Git Commit Formatter
 
 ## Goal
 Ensure all commit messages follow Conventional Commits specification.
-
 ## Format
 ```
+
 type(scope): description
 
 [optional body]
 
 [optional footer]
+
 ```
 
 ## Types
@@ -267,9 +283,11 @@ type(scope): description
 
 ## Examples
 ```
+
 feat(auth): add OAuth2 login support
 fix(api): resolve race condition in user update
 docs(readme): update installation instructions
+
 ```
 
 ## Constraints
@@ -285,6 +303,7 @@ docs(readme): update installation instructions
 **Purpose:** Reference static files to prevent token waste
 
 **Structure:**
+
 ```
 license-header-adder/
 ├── SKILL.md
@@ -355,6 +374,7 @@ furnished to do so, subject to the following conditions:
 **Purpose:** Demonstrate expected transformations with examples
 
 **Structure:**
+
 ```
 json-to-pydantic/
 ├── SKILL.md
@@ -437,6 +457,7 @@ class User(BaseModel):
 **Purpose:** Deterministic validation/computation via scripts
 
 **Structure:**
+
 ```
 database-schema-validator/
 ├── SKILL.md
@@ -449,7 +470,7 @@ database-schema-validator/
 
 **File:** `database-schema-validator/SKILL.md`
 
-```yaml
+````yaml
 ---
 name: database-schema-validator
 description: Validates database schema migrations for consistency, safety, and best practices before applying to production
@@ -478,15 +499,18 @@ Ensure database migrations are safe and follow best practices.
 ## Script Usage
 ```bash
 python scripts/validate.py path/to/migration.sql
-```
+````
 
 Exit codes:
+
 - 0: Valid migration
 - 1: Errors found
 - 2: Warnings only
 
 ## Output Interpretation
+
 Script returns JSON:
+
 ```json
 {
   "valid": true,
@@ -497,10 +521,12 @@ Script returns JSON:
 ```
 
 ## Constraints
+
 - Never execute migrations, only validate
 - Report all errors before suggesting fixes
 - Explain why each check matters
-```
+
+````
 
 **File:** `scripts/validate.py`
 
@@ -554,7 +580,7 @@ if __name__ == "__main__":
         sys.exit(2)
 
     sys.exit(validate_migration(sys.argv[1]))
-```
+````
 
 **Use when:** Deterministic logic is better than LLM judgment
 
@@ -563,6 +589,7 @@ if __name__ == "__main__":
 **Purpose:** Multi-step workflows with scripts + templates + examples
 
 **Structure:**
+
 ```
 adk-tool-scaffold/
 ├── SKILL.md
@@ -581,7 +608,7 @@ adk-tool-scaffold/
 
 **File:** `adk-tool-scaffold/SKILL.md`
 
-```yaml
+````yaml
 ---
 name: adk-tool-scaffold
 description: Generates complete Agent Development Kit tool classes with validation, configuration, and tests for custom agent capabilities
@@ -616,36 +643,44 @@ python scripts/generate.py \
   --name ToolName \
   --description "Tool description" \
   --params param1:str,param2:int
-```
+````
 
 ### 3. Generate Config
+
 Creates config from resources/config-template.json
 
 ### 4. Validate
+
 ```bash
 bash scripts/validate.sh ToolName
 ```
 
 ### 5. Generate Tests
+
 Create test file with:
+
 - Happy path tests
 - Error case tests
 - Edge case tests
 
 ## Templates
+
 - resources/tool-template.py: Base tool class
 - resources/config-template.json: Configuration structure
 
 ## Examples
+
 See examples/ for complete tool implementations.
 
 ## Constraints
+
 - Follow ADK best practices
 - Include type hints
 - Add docstrings
 - Implement error handling
 - Generate comprehensive tests
-```
+
+````
 
 **Use when:** Complex workflows need orchestration of multiple steps and artifacts
 
@@ -663,9 +698,10 @@ Run validation:
 \`\`\`bash
 python scripts/validator.py --file $1
 \`\`\`
-```
+````
 
 Agent uses `run_command` tool to execute, then interprets:
+
 - **stdout** - Script output
 - **stderr** - Error messages
 - **Exit code** - Success (0) or failure (non-zero)
@@ -673,6 +709,7 @@ Agent uses `run_command` tool to execute, then interprets:
 ### Script Best Practices
 
 ✅ **DO:**
+
 - Return meaningful exit codes
 - Output structured data (JSON)
 - Write errors to stderr
@@ -680,6 +717,7 @@ Agent uses `run_command` tool to execute, then interprets:
 - Handle missing dependencies gracefully
 
 ❌ **DON'T:**
+
 - Assume environment setup
 - Use interactive prompts
 - Modify files without confirmation
@@ -713,40 +751,41 @@ if __name__ == "__main__":
 
 ### Skills vs MCP
 
-| Feature | Skills | MCP |
-|:--------|:-------|:----|
-| **Purpose** | Task definitions ("brains") | Infrastructure connections ("hands") |
-| **Activation** | Agent-triggered | Always available |
-| **Lifespan** | Ephemeral (load/unload) | Persistent |
-| **Complexity** | Can include scripts | Protocol-based servers |
-| **Example** | "Generate tests" | "Query database" |
+| Feature        | Skills                      | MCP                                  |
+| :------------- | :-------------------------- | :----------------------------------- |
+| **Purpose**    | Task definitions ("brains") | Infrastructure connections ("hands") |
+| **Activation** | Agent-triggered             | Always available                     |
+| **Lifespan**   | Ephemeral (load/unload)     | Persistent                           |
+| **Complexity** | Can include scripts         | Protocol-based servers               |
+| **Example**    | "Generate tests"            | "Query database"                     |
 
 **Analogy:**
+
 - **MCP:** Gives agent hands to use tools
 - **Skills:** Gives agent brains to know when/how to use tools
 
 ### Skills vs Rules
 
-| Feature | Skills | Rules |
-|:--------|:-------|:------|
-| **Activation** | Agent-triggered (intent match) | Always active |
-| **Visibility** | Progressive disclosure | Always loaded |
-| **Purpose** | Specialized capabilities | General guidelines |
-| **Complexity** | Can include scripts | Instructions only |
-| **Example** | "Database migration" | "Use PEP 8" |
+| Feature        | Skills                         | Rules              |
+| :------------- | :----------------------------- | :----------------- |
+| **Activation** | Agent-triggered (intent match) | Always active      |
+| **Visibility** | Progressive disclosure         | Always loaded      |
+| **Purpose**    | Specialized capabilities       | General guidelines |
+| **Complexity** | Can include scripts            | Instructions only  |
+| **Example**    | "Database migration"           | "Use PEP 8"        |
 
 **Use Skills for:** Complex, conditional expertise
 **Use Rules for:** Continuous, universal standards
 
 ### Skills vs Workflows
 
-| Feature | Skills | Workflows |
-|:--------|:-------|:----------|
-| **Activation** | Automatic (description match) | Manual (`/command`) |
-| **Discovery** | Agent determines | User invokes |
-| **Complexity** | Scripts + templates + examples | Instructions only |
-| **Purpose** | Agent-driven expertise | User-driven tasks |
-| **Example** | Auto-loads on "validate schema" | `/generate-tests` |
+| Feature        | Skills                          | Workflows           |
+| :------------- | :------------------------------ | :------------------ |
+| **Activation** | Automatic (description match)   | Manual (`/command`) |
+| **Discovery**  | Agent determines                | User invokes        |
+| **Complexity** | Scripts + templates + examples  | Instructions only   |
+| **Purpose**    | Agent-driven expertise          | User-driven tasks   |
+| **Example**    | Auto-loads on "validate schema" | `/generate-tests`   |
 
 **Use Skills for:** Agent should decide when to use
 **Use Workflows for:** User explicitly wants to run
@@ -758,6 +797,7 @@ if __name__ == "__main__":
 ### Writing Effective Skills
 
 ✅ **DO:**
+
 - **Precise descriptions** - Concrete, specific trigger phrases
 - **Offload heavy content** - Use resources/ for static text
 - **Show, don't tell** - Use examples/ for patterns
@@ -765,6 +805,7 @@ if __name__ == "__main__":
 - **Separate concerns** - Logic (scripts), instruction (SKILL.md), knowledge (resources)
 
 ❌ **DON'T:**
+
 - Write vague descriptions ("Database tools")
 - Inline large templates in SKILL.md
 - Rely on English for patterns examples can show
@@ -776,6 +817,7 @@ if __name__ == "__main__":
 **Formula:** `[Action] [Target] [Method/Context] [Quality/Constraint]`
 
 **Examples:**
+
 ```yaml
 # Good
 description: Executes read-only SQL queries against PostgreSQL databases for data analysis and debugging
@@ -811,6 +853,7 @@ my-skill/
 ### Testing Skills
 
 **Test activation:**
+
 ```
 # Should activate skill
 User: "I need to validate this database migration"
@@ -823,6 +866,7 @@ User: "What is React?"
 ```
 
 **Test execution:**
+
 - Scripts run successfully
 - Exit codes correct
 - Output parseable
@@ -835,12 +879,14 @@ User: "What is React?"
 ### Development Tools
 
 **Component Generator:**
+
 ```yaml
 name: react-component-generator
 description: Creates complete React functional components with TypeScript, styled-components, tests, and storybook stories following project architecture
 ```
 
 **API Endpoint Creator:**
+
 ```yaml
 name: api-endpoint-creator
 description: Generates REST API endpoints with Express routes, validation middleware, error handling, and integration tests following OpenAPI spec
@@ -849,12 +895,14 @@ description: Generates REST API endpoints with Express routes, validation middle
 ### Code Quality
 
 **Linter Custom Rules:**
+
 ```yaml
 name: eslint-rule-creator
 description: Creates custom ESLint rules with AST manipulation, test cases, and documentation for enforcing team-specific code standards
 ```
 
 **Code Review Automation:**
+
 ```yaml
 name: code-review-checklist
 description: Performs automated code review checking for security issues, performance problems, test coverage, and adherence to style guide
@@ -863,12 +911,14 @@ description: Performs automated code review checking for security issues, perfor
 ### Database Operations
 
 **Migration Generator:**
+
 ```yaml
 name: database-migration-generator
 description: Creates safe database migrations with up/down scripts, data preservation, index creation, and rollback procedures for PostgreSQL
 ```
 
 **Schema Documenter:**
+
 ```yaml
 name: schema-documenter
 description: Generates comprehensive database schema documentation with entity relationships, column descriptions, and index explanations from existing database
@@ -877,12 +927,14 @@ description: Generates comprehensive database schema documentation with entity r
 ### Deployment & DevOps
 
 **Docker Configuration:**
+
 ```yaml
 name: docker-compose-generator
 description: Creates production-ready docker-compose files with multi-stage builds, environment configuration, networking, and volume management
 ```
 
 **CI/CD Pipeline:**
+
 ```yaml
 name: github-actions-workflow
 description: Generates GitHub Actions workflows with testing, building, deployment, and notifications following security best practices
@@ -900,6 +952,7 @@ Skills can reference other skills:
 # Complex Feature Generator
 
 ## Process
+
 1. Use react-component-generator for UI
 2. Use api-endpoint-creator for backend
 3. Use database-migration-generator for schema
@@ -929,10 +982,12 @@ Different descriptions ensure correct version loads.
 ### Skill Not Activating
 
 **Symptoms:**
+
 - Request matches intent but skill doesn't load
 - Agent doesn't use skill knowledge
 
 **Solutions:**
+
 - Review description specificity
 - Test with exact phrasing
 - Check skill location (global vs workspace)
@@ -942,11 +997,13 @@ Different descriptions ensure correct version loads.
 ### Script Execution Fails
 
 **Symptoms:**
+
 - Script errors
 - Exit code non-zero
 - Missing dependencies
 
 **Solutions:**
+
 - Test script independently
 - Check shebang line (#!/usr/bin/env python3)
 - Verify file permissions (chmod +x)
@@ -956,10 +1013,12 @@ Different descriptions ensure correct version loads.
 ### Skill Conflicts
 
 **Symptoms:**
+
 - Wrong skill activates
 - Multiple skills triggered
 
 **Solutions:**
+
 - Make descriptions more specific
 - Differentiate similar skills clearly
 - Consider merging overlapping skills

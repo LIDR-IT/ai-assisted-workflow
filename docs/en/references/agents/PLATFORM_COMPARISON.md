@@ -4,49 +4,54 @@ Comparación completa de formatos de agents/subagents entre Claude Code, Gemini 
 
 ## Matriz de Campos Soportados
 
-| Campo | Claude Code | Gemini CLI | Cursor | Descripción |
-|-------|-------------|------------|--------|-------------|
-| **name** | ✅ Required | ✅ Required | ⚠️ Optional (defaults to filename) | Identificador único del agent |
-| **description** | ✅ Required | ✅ Required | ⚠️ Optional | Cuándo invocar este agent |
-| **model** | ✅ `sonnet`/`opus`/`haiku`/`inherit` | ✅ Model ID / `inherit` | ✅ `fast`/`inherit`/custom | Modelo AI a usar |
-| **tools** | ✅ Array | ✅ Array | ❌ | Lista de tools permitidas |
-| **disallowedTools** | ✅ Array | ❌ | ❌ | Tools denegadas (denylist) |
-| **temperature** | ❌ | ✅ Number (0.0-2.0) | ❌ | Control de creatividad |
-| **max_turns** | ❌ | ✅ Number | ❌ | Máximo de turnos autónomos |
-| **timeout_mins** | ❌ | ✅ Number | ❌ | Timeout de ejecución |
-| **skills** | ✅ Array ⭐ | ❌ | ❌ | **IMPORTANTE:** Preload skills en contexto |
-| **hooks** | ✅ Object | ❌ | ❌ | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
-| **permissionMode** | ✅ Enum | ❌ | ❌ | Modo de permisos |
-| **color** | ✅ String | ❌ | ❌ | Color UI |
-| **kind** | ❌ | ✅ `local`/`remote` | ❌ | Tipo de agent |
-| **readonly** | ❌ | ❌ | ✅ Boolean | Restricción write |
-| **is_background** | ❌ | ❌ | ✅ Boolean | Ejecución async |
+| Campo               | Claude Code                          | Gemini CLI              | Cursor                             | Descripción                                     |
+| ------------------- | ------------------------------------ | ----------------------- | ---------------------------------- | ----------------------------------------------- |
+| **name**            | ✅ Required                          | ✅ Required             | ⚠️ Optional (defaults to filename) | Identificador único del agent                   |
+| **description**     | ✅ Required                          | ✅ Required             | ⚠️ Optional                        | Cuándo invocar este agent                       |
+| **model**           | ✅ `sonnet`/`opus`/`haiku`/`inherit` | ✅ Model ID / `inherit` | ✅ `fast`/`inherit`/custom         | Modelo AI a usar                                |
+| **tools**           | ✅ Array                             | ✅ Array                | ❌                                 | Lista de tools permitidas                       |
+| **disallowedTools** | ✅ Array                             | ❌                      | ❌                                 | Tools denegadas (denylist)                      |
+| **temperature**     | ❌                                   | ✅ Number (0.0-2.0)     | ❌                                 | Control de creatividad                          |
+| **max_turns**       | ❌                                   | ✅ Number               | ❌                                 | Máximo de turnos autónomos                      |
+| **timeout_mins**    | ❌                                   | ✅ Number               | ❌                                 | Timeout de ejecución                            |
+| **skills**          | ✅ Array ⭐                          | ❌                      | ❌                                 | **IMPORTANTE:** Preload skills en contexto      |
+| **hooks**           | ✅ Object                            | ❌                      | ❌                                 | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
+| **permissionMode**  | ✅ Enum                              | ❌                      | ❌                                 | Modo de permisos                                |
+| **color**           | ✅ String                            | ❌                      | ❌                                 | Color UI                                        |
+| **kind**            | ❌                                   | ✅ `local`/`remote`     | ❌                                 | Tipo de agent                                   |
+| **readonly**        | ❌                                   | ❌                      | ✅ Boolean                         | Restricción write                               |
+| **is_background**   | ❌                                   | ❌                      | ✅ Boolean                         | Ejecución async                                 |
 
 ## Campos Transversales (Todas las Plataformas)
 
 Estos campos funcionan en **todas las plataformas** y deben ser parte del estándar:
 
 ### 1. name ✅
+
 ```yaml
 name: doc-improver
 ```
 
 **Reglas:**
+
 - Lowercase + hyphens
 - Único por proyecto
 - Sin espacios ni caracteres especiales
 
 ### 2. description ✅
+
 ```yaml
 description: Specialized agent for auditing and improving project documentation
 ```
 
 **Reglas:**
+
 - Una línea concisa
 - Sin ejemplos XML (compatibilidad Gemini)
 - Describe cuándo invocar
 
 ### 3. model ✅
+
 ```yaml
 # Claude Code
 model: inherit    # sonnet, opus, haiku, inherit
@@ -61,6 +66,7 @@ model: inherit    # fast, inherit, custom
 **Valor recomendado:** `inherit` (funciona en todas)
 
 ### 4. tools ✅
+
 ```yaml
 tools:
   - Read
@@ -87,28 +93,30 @@ skills:
 ```
 
 **Qué hace:**
+
 - Precarga el contenido completo de skills en el contexto del agent
 - El agent tiene acceso inmediato a ese conocimiento
 - No necesita invocar skills durante ejecución
 
 **Caso de uso:**
+
 ```yaml
 ---
 name: api-developer
 description: Implement API endpoints following team conventions
 skills:
-  - api-conventions      # Siempre disponible
-  - security-patterns    # Siempre disponible
+  - api-conventions # Siempre disponible
+  - security-patterns # Siempre disponible
 tools:
   - Read
   - Write
   - Edit
 ---
-
 Implement API endpoints. Follow the conventions from preloaded skills.
 ```
 
 **Por qué es importante:**
+
 - Agents pueden tener conocimiento especializado sin buscarlo
 - Mejora consistencia (siempre usa mismas conventions)
 - Reduce turnos (no necesita invocar skill)
@@ -122,6 +130,7 @@ temperature: 0.2
 **Gemini también lo soporta!** Deberíamos incluirlo en estándar.
 
 **Valores recomendados:**
+
 - `0.0-0.2` - Análisis, code review (determinístico)
 - `0.3-0.5` - Code generation
 - `0.6-0.8` - Creative writing, ideation
@@ -135,6 +144,7 @@ max_turns: 10
 **Gemini también lo soporta!** Deberíamos incluirlo en estándar.
 
 **Valores recomendados:**
+
 - `5` - Tareas simples (quick review)
 - `10` - Tareas normales (doc improvement)
 - `20` - Workflows complejos (multi-step refactor)
@@ -156,11 +166,13 @@ hooks:
 ```
 
 **Qué hace:**
+
 - Valida tool usage antes de ejecutar
 - Ejecuta acciones después de tool calls
 - Permite control granular
 
 **Caso de uso:**
+
 ```yaml
 ---
 name: db-reader
@@ -200,17 +212,17 @@ tools:
 # ═══════════════════════════════════════════════
 # CAMPOS IMPORTANTES (Claude + Gemini)
 # ═══════════════════════════════════════════════
-temperature: 0.2        # Claude: ❌ | Gemini: ✅ | Cursor: ❌
-max_turns: 10           # Claude: ❌ | Gemini: ✅ | Cursor: ❌
+temperature: 0.2 # Claude: ❌ | Gemini: ✅ | Cursor: ❌
+max_turns: 10 # Claude: ❌ | Gemini: ✅ | Cursor: ❌
 
 # ═══════════════════════════════════════════════
 # CAMPOS ESPECÍFICOS CLAUDE (alta valor)
 # ═══════════════════════════════════════════════
-skills:                 # Claude: ✅ | Gemini: ❌ | Cursor: ❌
+skills: # Claude: ✅ | Gemini: ❌ | Cursor: ❌
   - skill-name-1
   - skill-name-2
 
-hooks:                  # Claude: ✅ | Gemini: ❌ | Cursor: ❌
+hooks: # Claude: ✅ | Gemini: ❌ | Cursor: ❌
   PreToolUse:
     - matcher: "Bash"
       hooks:
@@ -240,13 +252,13 @@ skills:
   - documentation-standards
   - markdown-best-practices
 ---
-
 You are a Documentation Quality Agent...
 ```
 
 ## Comportamiento por Plataforma
 
 ### Claude Code
+
 ```yaml
 # ✅ Usa todos los campos
 # ✅ Skills precargadas en contexto
@@ -256,6 +268,7 @@ You are a Documentation Quality Agent...
 ```
 
 ### Gemini CLI
+
 ```yaml
 # ✅ Usa name, description, model, tools
 # ✅ Usa temperature, max_turns (propios)
@@ -265,6 +278,7 @@ You are a Documentation Quality Agent...
 ```
 
 ### Cursor
+
 ```yaml
 # ✅ Usa name, description, model
 # ⚠️ Ignora tools (no soportado)
@@ -276,12 +290,14 @@ You are a Documentation Quality Agent...
 ## Estrategia de Sincronización
 
 ### Para Claude Code (Symlink)
+
 ```bash
 # Mantener todos los campos
 .claude/agents → ../.agents/agents
 ```
 
 ### Para Gemini CLI (Copy)
+
 ```bash
 # Copiar pero filtrar campos incompatibles
 .gemini/agents/doc-improver.md
@@ -289,6 +305,7 @@ You are a Documentation Quality Agent...
 ```
 
 ### Para Cursor (Symlink)
+
 ```bash
 # Mantener todos los campos (ignora lo que no entiende)
 .cursor/agents → ../.agents/agents
@@ -300,20 +317,21 @@ You are a Documentation Quality Agent...
 
 ```yaml
 ---
-name: agent-name           # Todas ✅
-description: Brief desc    # Todas ✅
-model: inherit             # Todas ✅
-tools:                     # Claude ✅, Gemini ✅, Cursor ignora
+name: agent-name # Todas ✅
+description: Brief desc # Todas ✅
+model: inherit # Todas ✅
+tools: # Claude ✅, Gemini ✅, Cursor ignora
   - Read
   - Write
-temperature: 0.2           # Claude ignora, Gemini ✅, Cursor ignora
-max_turns: 10              # Claude ignora, Gemini ✅, Cursor ignora
-skills:                    # Claude ✅, otros ignoran - IMPORTANTE!
+temperature: 0.2 # Claude ignora, Gemini ✅, Cursor ignora
+max_turns: 10 # Claude ignora, Gemini ✅, Cursor ignora
+skills: # Claude ✅, otros ignoran - IMPORTANTE!
   - skill-name
 ---
 ```
 
 **Razones:**
+
 1. **temperature** y **max_turns**: Gemini los usa, otros ignoran sin error
 2. **skills**: MUY importante en Claude, otros ignoran sin error
 3. **tools**: Claude y Gemini usan, Cursor ignora sin error
@@ -321,23 +339,24 @@ skills:                    # Claude ✅, otros ignoran - IMPORTANTE!
 ### ⚠️ OPCIONAL (caso por caso)
 
 ```yaml
-hooks:                     # Solo Claude, muy específico
+hooks: # Solo Claude, muy específico
   PreToolUse: [...]
 
-disallowedTools: [...]     # Solo Claude
+disallowedTools: [...] # Solo Claude
 
-permissionMode: default    # Solo Claude
+permissionMode: default # Solo Claude
 
-color: blue                # Solo Claude (UI)
+color: blue # Solo Claude (UI)
 
-kind: local                # Solo Gemini
+kind: local # Solo Gemini
 
-readonly: true             # Solo Cursor
+readonly: true # Solo Cursor
 
-is_background: true        # Solo Cursor
+is_background: true # Solo Cursor
 ```
 
 **Usar cuando:**
+
 - Necesitas funcionalidad específica de la plataforma
 - Documentar claramente que es específico
 
@@ -389,6 +408,7 @@ Examples in body (not frontmatter)
 ### Actualizar doc-improver.md
 
 **Antes:**
+
 ```yaml
 ---
 name: doc-improver
@@ -401,6 +421,7 @@ tools: [Read, Write]
 ```
 
 **Después (con skills):**
+
 ```yaml
 ---
 name: doc-improver
@@ -432,20 +453,22 @@ skills:
 ## Conclusiones
 
 ### Campos Obligatorios (Estándar Mínimo)
+
 ```yaml
 name: agent-name
 description: Brief description
 ```
 
 ### Campos Recomendados (Máxima Compatibilidad + Valor)
+
 ```yaml
 name: agent-name
 description: Brief description
 model: inherit
 tools: [Read, Write, ...]
-temperature: 0.2          # Gemini lo usa
-max_turns: 10             # Gemini lo usa
-skills: [skill-1, ...]    # Claude lo usa - MUY IMPORTANTE!
+temperature: 0.2 # Gemini lo usa
+max_turns: 10 # Gemini lo usa
+skills: [skill-1, ...] # Claude lo usa - MUY IMPORTANTE!
 ```
 
 ### Ventajas del Estándar Mejorado

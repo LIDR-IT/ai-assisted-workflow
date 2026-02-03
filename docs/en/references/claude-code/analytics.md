@@ -13,7 +13,7 @@ Claude Code provides analytics dashboards to help organizations understand devel
 ## Analytics Dashboards by Plan
 
 | Plan                          | Dashboard URL                                                              | Includes                                                                              |
-|:------------------------------|:---------------------------------------------------------------------------|:--------------------------------------------------------------------------------------|
+| :---------------------------- | :------------------------------------------------------------------------- | :------------------------------------------------------------------------------------ |
 | Claude for Teams / Enterprise | [claude.ai/analytics/claude-code](https://claude.ai/analytics/claude-code) | Usage metrics, contribution metrics with GitHub integration, leaderboard, data export |
 | API (Claude Console)          | [platform.claude.com/claude-code](https://platform.claude.com/claude-code) | Usage metrics, spend tracking, team insights                                          |
 
@@ -30,18 +30,22 @@ Claude Code provides analytics dashboards to help organizations understand devel
 ### Dashboard Includes
 
 **Usage metrics:**
+
 - Lines of code accepted
 - Suggestion accept rate
 - Daily active users and sessions
 
 **Contribution metrics:**
+
 - PRs and lines of code shipped with Claude Code assistance
 - Requires GitHub integration
 
 **Leaderboard:**
+
 - Top contributors ranked by Claude Code usage
 
 **Data export:**
+
 - Download contribution data as CSV for custom reporting
 
 ---
@@ -53,6 +57,7 @@ Claude Code provides analytics dashboards to help organizations understand devel
 **Coverage:** Users within your claude.ai organization only (excludes API and third-party integrations)
 
 **Requirements:**
+
 - Owner role to configure analytics settings
 - GitHub admin to install GitHub app
 
@@ -79,20 +84,24 @@ Enable "Claude Code analytics" feature
 **Step 4: Authenticate with GitHub**
 
 **Action:**
+
 - Complete GitHub authentication flow
 - Select which GitHub organizations to include
 
 ### Data Availability
 
 **Timing:**
+
 - Data typically appears within 24 hours
 - Daily updates thereafter
 
 **Possible messages if no data:**
+
 - **"GitHub app required"** - Install GitHub app to view contribution metrics
 - **"Data processing in progress"** - Check back in few days, confirm GitHub app installed
 
 **Support:**
+
 - GitHub Cloud
 - GitHub Enterprise Server
 
@@ -105,21 +114,26 @@ Enable "Claude Code analytics" feature
 ### Available Metrics
 
 **PRs with CC**
+
 - Total count of merged pull requests containing at least one Claude Code-written line
 
 **Lines of code with CC**
+
 - Total lines across all merged PRs written with Claude Code assistance
 - Only "effective lines" counted: >3 characters after normalization
 - Excludes empty lines, lines with only brackets or trivial punctuation
 
 **PRs with Claude Code (%)**
+
 - Percentage of all merged PRs containing Claude Code-assisted code
 
 **Suggestion accept rate**
+
 - Percentage of times users accept Claude Code's code editing suggestions
 - Includes Edit, Write, NotebookEdit tool usage
 
 **Lines of code accepted**
+
 - Total lines written by Claude Code that users accepted in sessions
 - Excludes rejected suggestions
 - Does not track subsequent deletions
@@ -133,6 +147,7 @@ Enable "Claude Code analytics" feature
 **Shows:** Daily usage trends
 
 **Metrics:**
+
 - **users** - Daily active users
 - **sessions** - Active Claude Code sessions per day
 
@@ -143,6 +158,7 @@ Enable "Claude Code analytics" feature
 **Shows:** Individual developer activity over time
 
 **Metrics:**
+
 - **PRs per user** - Total merged PRs per day ÷ daily active users
 - **users** - Daily active users
 
@@ -153,6 +169,7 @@ Enable "Claude Code analytics" feature
 **Shows:** Daily breakdown of merged PRs
 
 **Metrics:**
+
 - **PRs with CC** - Pull requests containing Claude Code-assisted code
 - **PRs without CC** - Pull requests without Claude Code-assisted code
 
@@ -163,6 +180,7 @@ Enable "Claude Code analytics" feature
 **Shows:** Top 10 users ranked by contribution volume
 
 **Toggle between:**
+
 - **Pull requests** - PRs with CC vs All PRs per user
 - **Lines of code** - Lines with CC vs All lines per user
 
@@ -177,6 +195,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 ### Tagging Criteria
 
 **Tagged as "with Claude Code" if:**
+
 - PR contains at least one line written during Claude Code session
 - Conservative matching: Only high-confidence involvement counted
 
@@ -187,17 +206,21 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **1. Extract added lines** from PR diff
 
 **2. Identify matching sessions**
+
 - Sessions that edited matching files
 - Within time window
 
 **3. Match PR lines** against Claude Code output
+
 - Multiple strategies used
 
 **4. Calculate metrics**
+
 - AI-assisted lines
 - Total lines
 
 **Line normalization before comparison:**
+
 - Whitespace trimmed
 - Multiple spaces collapsed
 - Quotes standardized
@@ -214,33 +237,39 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Automatically excluded (auto-generated):**
 
 **Lock files:**
+
 - package-lock.json
 - yarn.lock
 - Cargo.lock
 - Similar
 
 **Generated code:**
+
 - Protobuf outputs
 - Build artifacts
 - Minified files
 
 **Build directories:**
+
 - dist/
 - build/
 - node_modules/
 - target/
 
 **Test fixtures:**
+
 - Snapshots
 - Cassettes
 - Mock data
 
 **Other exclusions:**
+
 - Lines over 1,000 characters (likely minified/generated)
 
 ### Attribution Notes
 
 **Keep in mind:**
+
 - Code substantially rewritten by developers (>20% difference) NOT attributed to Claude Code
 - Sessions outside 21-day window NOT considered
 - Algorithm does NOT consider PR source or destination branch
@@ -254,6 +283,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Track:** Adoption chart and user counts
 
 **Identify:**
+
 - Active users who can share best practices
 - Overall adoption trends across organization
 - Dips in usage indicating friction or issues
@@ -263,6 +293,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Answer:** "Is this tool worth the investment?"
 
 **Use contribution metrics to:**
+
 - Track changes in PRs per user over time as adoption increases
 - Compare PRs and lines shipped with vs without Claude Code
 - Use alongside DORA metrics, sprint velocity, or engineering KPIs
@@ -272,6 +303,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 ### Identify Power Users
 
 **Use leaderboard to find:**
+
 - Team members with high Claude Code adoption
 - People who can share prompting techniques and workflows
 - Feedback providers on what's working
@@ -280,6 +312,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 ### Access Data Programmatically
 
 **Query via GitHub:**
+
 - Search for PRs labeled with `claude-code-assisted`
 
 ---
@@ -293,6 +326,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Permissions:** UsageView permission required
 
 **Roles with permission:**
+
 - Developer
 - Billing
 - Admin
@@ -304,19 +338,23 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 ### Console Dashboard Metrics
 
 **Lines of code accepted**
+
 - Total lines written by Claude Code that users accepted
 - Excludes rejected suggestions
 - Does not track subsequent deletions
 
 **Suggestion accept rate**
+
 - Percentage of times users accept code editing tool usage
 - Includes Edit, Write, NotebookEdit tools
 
 **Activity chart**
+
 - Daily active users
 - Sessions
 
 **Spend chart**
+
 - Daily API costs in dollars
 - User count
 
@@ -325,14 +363,17 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Shows per-user metrics:**
 
 **Members**
+
 - All users who authenticated to Claude Code
 - API key users: Display by key identifier
 - OAuth users: Display by email address
 
 **Spend this month**
+
 - Per-user total API costs for current month
 
 **Lines this month**
+
 - Per-user total accepted code lines for current month
 
 **Note:** Spend figures are **estimates for analytics purposes**. For actual costs, refer to billing page.
@@ -344,11 +385,13 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 ### Data Coverage
 
 **Teams/Enterprise analytics:**
+
 - Only users within your claude.ai organization
 - Excludes API usage
 - Excludes third-party integrations
 
 **API analytics:**
+
 - All API-based usage
 - Both API key and OAuth users
 
@@ -371,6 +414,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Problem:** "Is Claude Code worth the investment?"
 
 **Solution:**
+
 - Show PRs per user trend over time
 - Compare code shipped with vs without Claude Code
 - Correlate with sprint velocity or DORA metrics
@@ -381,6 +425,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Problem:** "How many developers are actually using Claude Code?"
 
 **Solution:**
+
 - Monitor daily active users
 - Track session counts
 - Identify adoption dips
@@ -391,6 +436,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Problem:** "Who can help onboard new users?"
 
 **Solution:**
+
 - Check leaderboard for top users
 - Find team members with high adoption
 - Connect new users with power users
@@ -401,6 +447,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Problem:** "Is Claude Code making us faster?"
 
 **Solution:**
+
 - Track PRs per user over time
 - Compare lines of code shipped
 - Monitor suggestion accept rate
@@ -411,6 +458,7 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Problem:** "Need data in our existing dashboards"
 
 **Solution:**
+
 - Export CSV data
 - Query GitHub for `claude-code-assisted` label
 - Integrate with existing analytics stack
@@ -483,18 +531,22 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Possible causes:**
 
 **1. GitHub app not installed**
+
 - **Check:** Is GitHub app installed on your org?
 - **Fix:** Install at [github.com/apps/claude](https://github.com/apps/claude)
 
 **2. Analytics not enabled**
+
 - **Check:** Is Claude Code analytics feature enabled?
 - **Fix:** Go to [claude.ai/admin-settings/claude-code](https://claude.ai/admin-settings/claude-code)
 
 **3. GitHub analytics not enabled**
+
 - **Check:** Is GitHub analytics toggle on?
 - **Fix:** Enable on admin settings page
 
 **4. Data still processing**
+
 - **Check:** Have you waited 24 hours?
 - **Message:** "Data processing in progress"
 - **Fix:** Wait a few days, verify GitHub app installed
@@ -504,14 +556,17 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Possible causes:**
 
 **1. Users rejecting suggestions**
+
 - **Check:** Are suggestions low quality?
 - **Fix:** Train users on effective prompting
 
 **2. Users not reviewing edits**
+
 - **Check:** Are users accepting/rejecting edits?
 - **Fix:** Educate on Edit tool workflow
 
 **3. Complex changes**
+
 - **Check:** Are tasks too large?
 - **Fix:** Break down into smaller changes
 
@@ -520,14 +575,17 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 **Possible causes:**
 
 **1. No data available**
+
 - **Check:** Is contribution metrics enabled?
 - **Fix:** Enable GitHub integration
 
 **2. Browser blocking download**
+
 - **Check:** Are pop-ups blocked?
 - **Fix:** Allow downloads from claude.ai
 
 **3. Insufficient permissions**
+
 - **Check:** Are you Admin or Owner?
 - **Fix:** Request proper role
 
@@ -538,12 +596,15 @@ When contribution metrics enabled, Claude Code analyzes merged PRs to determine 
 ### In This Repository
 
 **Monitoring:**
+
 - OpenTelemetry documentation (when available)
 
 **Cost Management:**
+
 - Cost optimization documentation (when available)
 
 **Access Control:**
+
 - IAM documentation (when available)
 
 ### External Resources

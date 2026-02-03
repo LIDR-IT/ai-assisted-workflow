@@ -12,10 +12,12 @@ trigger: always_on
 ### Branch Types
 
 **Main Branches:**
+
 - `main` - Production-ready code
 - `develop` - Integration branch (if using Git Flow)
 
 **Feature Branches:**
+
 ```
 feature/descriptive-name
 feature/add-mcp-sync
@@ -23,6 +25,7 @@ feature/implement-rules-system
 ```
 
 **Fix Branches:**
+
 ```
 fix/descriptive-name
 fix/symlink-creation-error
@@ -30,6 +33,7 @@ fix/antigravity-path-resolution
 ```
 
 **Documentation Branches:**
+
 ```
 docs/descriptive-name
 docs/update-setup-guide
@@ -37,6 +41,7 @@ docs/add-troubleshooting
 ```
 
 **Refactor Branches:**
+
 ```
 refactor/descriptive-name
 refactor/consolidate-sync-scripts
@@ -83,6 +88,7 @@ Co-authored-by: Name <email@example.com>
 ### Examples
 
 **Good commits:**
+
 ```
 feat: Add centralized rules synchronization script
 
@@ -116,6 +122,7 @@ Refs: #48
 ```
 
 **Bad commits:**
+
 ```
 # Too vague
 fix: Update script
@@ -133,16 +140,19 @@ Add documentation for sync process
 ### Commit Best Practices
 
 **Atomic commits:**
+
 - One logical change per commit
 - Should be revertable independently
 - Should pass tests when applied
 
 **Clear messages:**
+
 - Start with verb (Add, Fix, Update, Remove)
 - Use imperative mood ("Add feature" not "Added feature")
 - Explain WHY, not just WHAT
 
 **Commit frequency:**
+
 - Commit after completing a logical unit
 - Before switching contexts
 - Before potentially breaking changes
@@ -152,6 +162,7 @@ Add documentation for sync process
 ### Creating Pull Requests
 
 **PR Title:**
+
 ```
 type: Brief description of changes
 
@@ -162,6 +173,7 @@ docs: Update MCP setup guide with Antigravity limitations
 ```
 
 **PR Description Template:**
+
 ```markdown
 ## Description
 
@@ -202,6 +214,7 @@ Refs #456
 ### PR Review Process
 
 **Before requesting review:**
+
 - [ ] All tests pass
 - [ ] Documentation updated
 - [ ] Self-reviewed changes
@@ -209,6 +222,7 @@ Refs #456
 - [ ] Verified no secrets committed
 
 **Reviewer guidelines:**
+
 - Check for code quality and consistency
 - Verify documentation is clear
 - Test locally if needed
@@ -220,6 +234,7 @@ Refs #456
 ### What to Commit
 
 **DO commit:**
+
 - Source code
 - Configuration files
 - Documentation
@@ -228,6 +243,7 @@ Refs #456
 - Generated configs (e.g., `.cursor/mcp.json`)
 
 **DON'T commit:**
+
 - Secrets or API keys
 - Personal IDE settings (use global gitignore)
 - Build artifacts (unless necessary)
@@ -263,6 +279,7 @@ node_modules/
 ```
 
 **Note:** Some agent configs ARE committed:
+
 - `.cursor/mcp.json` ✅ (generated)
 - `.claude/mcp.json` ✅ (generated)
 - `.gemini/settings.json` ✅ (generated)
@@ -270,6 +287,7 @@ node_modules/
 ### Symlink Handling
 
 **Committing symlinks:**
+
 ```bash
 # Git automatically handles symlinks correctly
 git add .cursor/rules  # Commits as symlink, not contents
@@ -280,6 +298,7 @@ git ls-files -s .cursor/rules
 ```
 
 **Cloning with symlinks:**
+
 ```bash
 # Symlinks are restored on clone
 git clone repo.git
@@ -436,6 +455,7 @@ git commit -m "chore: Add rules symlink for Cursor"
 **Issue:** Symlinks appear as directories after clone
 
 **Solution:**
+
 ```bash
 # Check Git config
 git config core.symlinks
@@ -451,6 +471,7 @@ git clone repo.git
 **Issue:** Merge conflict in `.cursor/mcp.json`
 
 **Solution:**
+
 ```bash
 # 1. Accept either version
 git checkout --ours .cursor/mcp.json
@@ -470,6 +491,7 @@ git commit -m "merge: Resolve MCP config conflict"
 ### Accidentally Committed Secrets
 
 **Solution:**
+
 ```bash
 # 1. Remove from current commit
 git reset HEAD~1

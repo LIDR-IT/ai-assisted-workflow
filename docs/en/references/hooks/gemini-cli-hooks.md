@@ -4,6 +4,15 @@ Hooks are scripts or programs that Gemini CLI executes at specific points in the
 agentic loop, allowing you to intercept and customize behavior without modifying
 the CLI's source code.
 
+> **Multi-Platform Note:** This project implements hooks across Claude Code, Gemini CLI, and Cursor. Key differences:
+>
+> - **Timeout:** Gemini uses milliseconds (×1000 vs Claude/Cursor seconds)
+> - **Events:** BeforeTool/AfterTool (vs PreToolUse/PostToolUse in Claude, preToolUse/postToolUse in Cursor)
+> - **Stdout:** Gemini requires PURE JSON ONLY (critical difference from other platforms)
+> - **Notification:** Supported (unlike Cursor which doesn't support Notification events)
+>
+> See [Platform Support Guide](../../guides/hooks/HOOKS_PLATFORM_SUPPORT.md) for detailed comparison.
+
 ## What are hooks?
 
 Hooks run synchronously as part of the agent loop—when a hook event fires,

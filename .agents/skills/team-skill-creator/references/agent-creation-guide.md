@@ -23,6 +23,7 @@ Agents are **autonomous subprocesses** that Claude Code spawns to handle complex
 - Long-running operations
 
 **Key characteristics:**
+
 - Autonomous operation (work independently)
 - Multi-step workflows
 - Access to specific tools (Read, Edit, Grep, Bash, etc.)
@@ -31,19 +32,20 @@ Agents are **autonomous subprocesses** that Claude Code spawns to handle complex
 
 **Comparison to skills and commands:**
 
-| Aspect | Agent | Skill | Command |
-|--------|-------|-------|---------|
-| Autonomy | High | None | None |
-| Complexity | High | Medium-High | Low |
-| Use case | Multi-step tasks | Knowledge/workflows | Quick prompts |
-| Decision-making | Yes | No | No |
-| Platform | Claude Code only | All 4 | All 4 |
+| Aspect          | Agent            | Skill               | Command       |
+| --------------- | ---------------- | ------------------- | ------------- |
+| Autonomy        | High             | None                | None          |
+| Complexity      | High             | Medium-High         | Low           |
+| Use case        | Multi-step tasks | Knowledge/workflows | Quick prompts |
+| Decision-making | Yes              | No                  | No            |
+| Platform        | Claude Code only | All 4               | All 4         |
 
 ## When to Use Agents
 
 ### Good Agent Candidates
 
 **Use agents when:**
+
 - ✅ Multi-step workflows requiring decisions
 - ✅ Deep codebase analysis or refactoring
 - ✅ Autonomous operation needed
@@ -51,6 +53,7 @@ Agents are **autonomous subprocesses** that Claude Code spawns to handle complex
 - ✅ Long-running tasks
 
 **Examples:**
+
 - Code reviewer (analyze multiple files, identify patterns, suggest improvements)
 - Test generator (explore code, determine test cases, write tests)
 - Security auditor (scan codebase, identify vulnerabilities, prioritize fixes)
@@ -60,6 +63,7 @@ Agents are **autonomous subprocesses** that Claude Code spawns to handle complex
 ### Poor Agent Candidates
 
 **Don't use agents when:**
+
 - ❌ Simple, single-turn tasks (use commands)
 - ❌ Needs bundled resources like templates (use skills)
 - ❌ No decision-making required
@@ -67,11 +71,13 @@ Agents are **autonomous subprocesses** that Claude Code spawns to handle complex
 - ❌ Platform compatibility needed (agents are Claude Code only)
 
 **Use commands instead:**
+
 - Security review checklist
 - Commit message generation
 - Code formatting prompts
 
 **Use skills instead:**
+
 - React testing patterns (needs templates)
 - Database queries (needs schema docs)
 - API integration (needs API reference)
@@ -85,11 +91,13 @@ Agents are **autonomous subprocesses** that Claude Code spawns to handle complex
 ```
 
 **Important:** Agents are **platform-specific** to Claude Code:
+
 - Location: `.claude/agents/` NOT `.agents/`
 - No synchronization needed (not in `.agents/` source of truth)
 - Only works in Claude Code
 
 **Naming conventions:**
+
 - Lowercase, hyphens
 - Descriptive: `code-reviewer.md`, `test-generator.md`
 - Action-oriented names
@@ -130,10 +138,12 @@ You should autonomously decide...
 ### Required Fields
 
 **name:**
+
 - Format: lowercase, hyphens
 - Example: `code-reviewer`, `test-generator`
 
 **description:**
+
 - Brief description of agent purpose
 - Triggering conditions (when agent should be used)
 - Example: "Autonomous code reviewer for analyzing code quality and suggesting improvements"
@@ -141,18 +151,21 @@ You should autonomously decide...
 ### Optional Fields
 
 **tools:**
+
 - List of tools agent can use
 - Available tools: `Read`, `Edit`, `Write`, `Grep`, `Glob`, `Bash`, `Task`, etc.
 - Example: `[Read, Edit, Grep, Bash]`
 - Default: All tools available if not specified
 
 **model:**
+
 - AI model to use
 - Options: `sonnet`, `opus`, `haiku`
 - Example: `sonnet` (recommended for most agents)
 - Default: Inherits from parent if not specified
 
 **color:**
+
 - Visual identifier in Claude Code UI
 - Options: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `pink`
 - Example: `blue`
@@ -161,6 +174,7 @@ You should autonomously decide...
 ### Example Frontmatter
 
 **Simple agent:**
+
 ```yaml
 ---
 name: code-reviewer
@@ -170,6 +184,7 @@ tools: [Read, Grep, Bash]
 ```
 
 **Complex agent:**
+
 ```yaml
 ---
 name: test-generator
@@ -194,6 +209,7 @@ Brief introduction: "You are an agent specialized in [task]."
 ## Your Capabilities
 
 List what the agent can do:
+
 - Capability 1: Description
 - Capability 2: Description
 - Capability 3: Description
@@ -201,6 +217,7 @@ List what the agent can do:
 ## Your Workflow
 
 Define the step-by-step process:
+
 1. **Step 1**: What to do first
 2. **Step 2**: What to do next
 3. **Step 3**: How to conclude
@@ -208,12 +225,14 @@ Define the step-by-step process:
 ## Autonomous Decision-Making
 
 Describe what decisions the agent can make independently:
+
 - Decision area 1
 - Decision area 2
 
 ## Guidelines
 
 Provide specific guidelines for agent behavior:
+
 - Guideline 1
 - Guideline 2
 
@@ -227,6 +246,7 @@ Specify how agent should present results.
 **1. Define clear role and purpose**
 
 ✅ Good:
+
 ```markdown
 # Code Reviewer Agent
 
@@ -234,6 +254,7 @@ You are an autonomous agent specialized in comprehensive code review and quality
 ```
 
 ❌ Poor:
+
 ```markdown
 You review code.
 ```
@@ -241,6 +262,7 @@ You review code.
 **2. List specific capabilities**
 
 ✅ Good:
+
 ```markdown
 ## Your Capabilities
 
@@ -252,6 +274,7 @@ You review code.
 ```
 
 ❌ Poor:
+
 ```markdown
 ## Capabilities
 
@@ -261,10 +284,12 @@ You can review code.
 **3. Define autonomous decision-making**
 
 ✅ Good:
+
 ```markdown
 ## Decision-Making
 
 You autonomously decide:
+
 - Which files to analyze based on change impact
 - Severity of issues (Critical/High/Medium/Low)
 - Whether to suggest refactoring or accept current implementation
@@ -272,6 +297,7 @@ You autonomously decide:
 ```
 
 ❌ Poor:
+
 ```markdown
 Make decisions about the code.
 ```
@@ -279,6 +305,7 @@ Make decisions about the code.
 **4. Specify clear workflow**
 
 ✅ Good:
+
 ```markdown
 ## Workflow
 
@@ -290,6 +317,7 @@ Make decisions about the code.
 ```
 
 ❌ Poor:
+
 ```markdown
 ## Workflow
 
@@ -303,12 +331,14 @@ Make decisions about the code.
 ### Step 1: Define Agent Purpose
 
 **Answer these questions:**
+
 - What complex task needs autonomous handling?
 - What decisions will the agent make?
 - What tools does it need?
 - What's the expected workflow?
 
 **Example:**
+
 - **Purpose:** Autonomous code review and quality analysis
 - **Decisions:** Issue severity, refactoring suggestions, priority
 - **Tools:** Read, Grep, Bash (for testing)
@@ -317,6 +347,7 @@ Make decisions about the code.
 ### Step 2: Design System Prompt
 
 Write comprehensive system prompt covering:
+
 - Role and capabilities
 - Step-by-step workflow
 - Decision-making autonomy
@@ -330,9 +361,9 @@ See [System Prompt Design](#system-prompt-design) section.
 ---
 name: agent-name
 description: Clear description and triggering condition
-tools: [Read, Edit, Grep, Bash]  # Tools agent needs
-model: sonnet                     # Recommended for most agents
-color: blue                       # Visual identifier
+tools: [Read, Edit, Grep, Bash] # Tools agent needs
+model: sonnet # Recommended for most agents
+color: blue # Visual identifier
 ---
 ```
 
@@ -351,12 +382,14 @@ vim .claude/agents/{agent-name}.md
 ### Step 5: Test Agent
 
 **In Claude Code:**
+
 1. Trigger agent with appropriate context
 2. Observe autonomous behavior
 3. Verify decisions and workflow
 4. Check output quality
 
 **Iteration:**
+
 - Adjust system prompt based on behavior
 - Refine decision-making guidelines
 - Add or remove tools as needed
@@ -364,6 +397,7 @@ vim .claude/agents/{agent-name}.md
 ### Step 6: Document Usage
 
 Add agent documentation to project:
+
 - When to use the agent
 - What it does autonomously
 - Expected results
@@ -376,16 +410,19 @@ Add agent documentation to project:
 **1. Clear autonomy boundaries**
 
 Define what agent decides independently:
+
 ```markdown
 ## Decision-Making
 
 You autonomously decide:
+
 - Which files to analyze (based on impact)
 - Issue severity ratings
 - Refactoring approach
 - Priority of recommendations
 
 You should ask user for:
+
 - Architectural changes
 - Breaking changes
 - Deployment decisions
@@ -394,6 +431,7 @@ You should ask user for:
 **2. Specific tool selection**
 
 Only include tools agent actually uses:
+
 ```yaml
 # Code reviewer needs Read and Grep
 tools: [Read, Grep]
@@ -408,6 +446,7 @@ tools: [Read, Write, Bash]
 **3. Defined workflow**
 
 Provide clear step-by-step process:
+
 ```markdown
 ## Workflow
 
@@ -422,10 +461,12 @@ Provide clear step-by-step process:
 **4. Output structure**
 
 Specify how agent presents results:
+
 ```markdown
 ## Output Format
 
 ### Summary
+
 - Total issues: [count]
 - Critical: [count]
 - High: [count]
@@ -443,11 +484,13 @@ Specify how agent presents results:
 ### Naming Conventions
 
 **Good agent names:**
+
 - `code-reviewer` - Clear, action-oriented
 - `test-generator` - Describes what it creates
 - `refactorer` - Simple, descriptive
 
 **Poor agent names:**
+
 - `cr` - Too abbreviated
 - `agent1` - Not descriptive
 - `helper` - Too vague
@@ -455,16 +498,19 @@ Specify how agent presents results:
 ### Model Selection
 
 **Use `sonnet` (default) for:**
+
 - Most agents
 - Balanced performance and quality
 - General-purpose tasks
 
 **Use `opus` for:**
+
 - Complex reasoning required
 - Critical analysis
 - High-stakes decisions
 
 **Use `haiku` for:**
+
 - Simple, fast operations
 - Cost-sensitive tasks
 - Lightweight agents
@@ -487,11 +533,13 @@ Use colors to visually distinguish agent types:
 **Important:** Agents currently only work in **Claude Code**.
 
 **Not supported:**
+
 - ❌ Cursor - No agent support
 - ❌ Gemini CLI - No agent support
 - ❌ Antigravity - No agent support
 
 **Implications:**
+
 - Agents live in `.claude/agents/` (not `.agents/`)
 - No synchronization to other platforms
 - Team members must use Claude Code for agents
@@ -499,6 +547,7 @@ Use colors to visually distinguish agent types:
 ### Future Considerations
 
 If other platforms add agent support:
+
 - Consider moving to `.agents/agents/` for synchronization
 - Update sync scripts to handle agents
 - Document platform compatibility
@@ -509,7 +558,7 @@ If other platforms add agent support:
 
 **File:** `.claude/agents/code-reviewer.md`
 
-```markdown
+````markdown
 ---
 name: code-reviewer
 description: Autonomous code review for quality, security, and best practices
@@ -548,6 +597,7 @@ You are an autonomous agent specialized in comprehensive code review and quality
 ## Autonomous Decision-Making
 
 You autonomously decide:
+
 - Which files to analyze based on change impact and dependencies
 - Severity ratings for identified issues
 - Whether to suggest refactoring or accept current implementation
@@ -565,11 +615,13 @@ You autonomously decide:
 ## Output Format
 
 ### Summary
+
 - Files analyzed: [count]
 - Total issues: [count]
 - Critical: [count] | High: [count] | Medium: [count] | Low: [count]
 
 ### Critical Issues
+
 [List critical issues first]
 
 ### Detailed Findings
@@ -581,6 +633,7 @@ You autonomously decide:
 **Impact**: [Why it matters]
 **Recommendation**: [How to fix]
 **Example**:
+
 ```[language]
 # Before
 [current code]
@@ -588,10 +641,13 @@ You autonomously decide:
 # After
 [improved code]
 ```
+````
 
 ### Additional Observations
+
 [Optional insights about code quality, patterns, etc.]
-```
+
+````
 
 ### Example 2: Test Generator Agent
 
@@ -664,7 +720,7 @@ You autonomously decide:
 
 ### Coverage Gaps
 [Areas still needing tests, if any]
-```
+````
 
 ## Validation
 
@@ -675,6 +731,7 @@ After creating an agent, validate its structure:
 ```
 
 **Checks performed:**
+
 - ✅ File exists at `.claude/agents/{agent-name}.md`
 - ✅ YAML frontmatter present
 - ✅ Required fields: `name`, `description`
@@ -687,6 +744,7 @@ After creating an agent, validate its structure:
 **Symptoms:** Agent doesn't activate when expected
 
 **Solutions:**
+
 - Verify file location: `.claude/agents/` (not `.agents/`)
 - Check frontmatter has required fields: `name`, `description`
 - Restart Claude Code
@@ -697,6 +755,7 @@ After creating an agent, validate its structure:
 **Symptoms:** Agent doesn't follow expected workflow
 
 **Solutions:**
+
 - Review system prompt clarity
 - Add more specific decision-making guidelines
 - Refine workflow steps
@@ -707,6 +766,7 @@ After creating an agent, validate its structure:
 **Symptoms:** Agent fails when using tools
 
 **Solutions:**
+
 - Verify tools listed in frontmatter match tools used
 - Check tool syntax in system prompt
 - Ensure agent has necessary permissions
@@ -717,17 +777,20 @@ After creating an agent, validate its structure:
 Agents in `.agents/` system (Claude Code only):
 
 **✅ Use agents for:**
+
 - Multi-step autonomous workflows
 - Complex decision-making tasks
 - Deep codebase analysis
 - Long-running operations
 
 **❌ Don't use agents for:**
+
 - Simple prompts (use commands)
 - Bundled resources needed (use skills)
 - Cross-platform compatibility (agents are Claude Code only)
 
 **Creation steps:**
+
 1. Define agent purpose and autonomy
 2. Design system prompt with capabilities and workflow
 3. Configure frontmatter (name, description, tools, model, color)

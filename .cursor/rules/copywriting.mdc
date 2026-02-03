@@ -85,26 +85,31 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 ### Page-Specific Rules
 
 **Homepage:**
+
 - Serve multiple audiences without being generic
 - Lead with broadest value proposition
 - Clear navigation paths to specific use cases
 
 **Landing Page:**
+
 - Single message, single CTA
 - Match headline to traffic source (ad/email/social)
 - Complete argument on one page, no navigation away
 
 **Pricing Page:**
+
 - Help select right plan: "which fits me?" anxiety
 - Make recommended option obvious (highlight/badge)
 - Compare plans clearly, feature-by-feature
 
 **Feature Page:**
+
 - Feature → Benefit → Outcome chain
 - Show use cases, not just capabilities
 - Clear path to try or buy
 
 **About Page:**
+
 - Origin story connecting mission to customer benefit
 - Include CTA (not just company history)
 - Humanize brand with team/values

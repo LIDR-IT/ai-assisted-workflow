@@ -24,6 +24,7 @@ Provides comprehensive patterns and checklists for validating ticket structure, 
 ### YAML Frontmatter
 
 **Required fields:**
+
 - [ ] `id` present and matches TICK-### pattern
 - [ ] `title` present, <80 chars, descriptive
 - [ ] `status` is valid enum (backlog|todo|in-progress|review|done|archived)
@@ -36,6 +37,7 @@ Provides comprehensive patterns and checklists for validating ticket structure, 
 - [ ] `updated_at` in ISO date format (YYYY-MM-DD)
 
 **Field-specific validation:**
+
 ```yaml
 # ID validation
 id: TICK-123  ✓ (matches pattern)
@@ -65,6 +67,7 @@ external_link: null  ✗ (provider set but no link)
 ### Acceptance Criteria
 
 **Quality checks:**
+
 - [ ] At least 2-3 criteria defined (1 is usually insufficient)
 - [ ] Each criterion is specific and measurable
 - [ ] Criteria use checkbox format (`- [ ] ...`)
@@ -75,6 +78,7 @@ external_link: null  ✗ (provider set but no link)
 **Examples:**
 
 **Good criteria:**
+
 ```markdown
 - [ ] User can login with valid email and password
 - [ ] Page load time is less than 2 seconds
@@ -83,14 +87,16 @@ external_link: null  ✗ (provider set but no link)
 ```
 
 **Bad criteria:**
+
 ```markdown
-- [ ] Improve performance  ✗ (vague - by how much?)
-- [ ] Make it better      ✗ (unmeasurable)
-- [ ] Works correctly     ✗ (not specific)
-- [ ] Fast response       ✗ (no metric)
+- [ ] Improve performance ✗ (vague - by how much?)
+- [ ] Make it better ✗ (unmeasurable)
+- [ ] Works correctly ✗ (not specific)
+- [ ] Fast response ✗ (no metric)
 ```
 
 **Conversion patterns:**
+
 - "Improve performance" → "Page load time < 2 seconds"
 - "Better error handling" → "Display error message 'Invalid input' for empty fields"
 - "Fast API" → "API response time < 500ms for 95th percentile"
@@ -99,6 +105,7 @@ external_link: null  ✗ (provider set but no link)
 ### Definition of Done
 
 **Standard items (all tickets must have):**
+
 - [ ] All acceptance criteria met
 - [ ] Tests written and passing
 - [ ] Documentation updated
@@ -110,38 +117,45 @@ external_link: null  ✗ (provider set but no link)
 **Type-specific additions:**
 
 **Feature tickets:**
+
 - [ ] API reference updated (if backend changes)
 - [ ] Frontend validation complete (if UI changes)
 
 **Bug tickets:**
+
 - [ ] Root cause identified and documented
 - [ ] Tests prevent regression
 
 **Refactor tickets:**
+
 - [ ] No behavior change (tests prove equivalence)
 - [ ] Performance measured (before/after)
 
 **Docs tickets:**
+
 - [ ] Examples included and tested
 - [ ] Links verified (no 404s)
 
 **Missing item patterns:**
+
 ```markdown
 # Incomplete DoD
+
 - [ ] All acceptance criteria met
 - [ ] Tests written
-✗ Missing: "and passing"
+      ✗ Missing: "and passing"
 
 - [ ] Documentation updated
-✗ Missing: specific docs (README, API reference, guides)
+      ✗ Missing: specific docs (README, API reference, guides)
 
 - [ ] Code reviewed
-✗ Missing: "and approved"
+      ✗ Missing: "and approved"
 ```
 
 ### BDD Scenarios
 
 **Structure validation:**
+
 - [ ] Gherkin format correct (Feature/Scenario/Given/When/Then)
 - [ ] At least 1 scenario per ticket (2-3 recommended)
 - [ ] Each scenario has Given (precondition)
@@ -155,6 +169,7 @@ external_link: null  ✗ (provider set but no link)
 **Example validation:**
 
 **Complete scenario:**
+
 ```gherkin
 Scenario: User logs in with valid credentials  ✓
   Given a registered user with email "user@example.com"  ✓ (concrete)
@@ -165,6 +180,7 @@ Scenario: User logs in with valid credentials  ✓
 ```
 
 **Incomplete scenario:**
+
 ```gherkin
 Scenario: Login works  ✗ (vague title)
   Given user exists    ✗ (not concrete - which user?)
@@ -173,6 +189,7 @@ Scenario: Login works  ✗ (vague title)
 ```
 
 **Missing clauses:**
+
 ```gherkin
 Scenario: User authentication
   Given a registered user
@@ -187,6 +204,7 @@ Scenario: Login error
 ### Tasks Section
 
 **Validation:**
+
 - [ ] At least 1 task defined
 - [ ] Each task has "Assigned to:" with name
 - [ ] Tasks are specific and actionable
@@ -194,6 +212,7 @@ Scenario: Login error
 - [ ] Tasks cover all work needed for ticket
 
 **Good tasks:**
+
 ```markdown
 - [ ] Implement JWT service - Assigned to: developer-name
 - [ ] Write unit tests - Assigned to: developer-name
@@ -201,10 +220,11 @@ Scenario: Login error
 ```
 
 **Bad tasks:**
+
 ```markdown
-- [ ] Do the work  ✗ (vague)
-- [ ] Implement feature - Assigned to:  ✗ (no assignee)
-- [ ] Fix it  ✗ (not specific)
+- [ ] Do the work ✗ (vague)
+- [ ] Implement feature - Assigned to: ✗ (no assignee)
+- [ ] Fix it ✗ (not specific)
 ```
 
 ## Validation Workflow
@@ -233,6 +253,7 @@ Scenario: Login error
 ### Phase 4: Reporting
 
 Generate report with file:line references:
+
 ```text
 TICK-123:12 - Missing acceptance criterion for error handling
 TICK-123:23 - Definition of Done incomplete (tests section empty)
@@ -249,11 +270,13 @@ TICK-123:45 - Vague criterion: "improve" → specify outcome
 ### Issue: Vague acceptance criteria
 
 **Problem:**
+
 ```markdown
 - [ ] Improve performance
 ```
 
 **Fix:**
+
 ```markdown
 - [ ] Page load time < 2 seconds for 95th percentile
 ```
@@ -261,6 +284,7 @@ TICK-123:45 - Vague criterion: "improve" → specify outcome
 ### Issue: Incomplete BDD scenario
 
 **Problem:**
+
 ```gherkin
 Scenario: Login
   Given user
@@ -268,6 +292,7 @@ Scenario: Login
 ```
 
 **Fix:**
+
 ```gherkin
 Scenario: User logs in with valid credentials
   Given a registered user with email "user@example.com"
@@ -280,15 +305,19 @@ Scenario: User logs in with valid credentials
 ### Issue: Missing DoD items
 
 **Problem:**
+
 ```markdown
 ## Definition of Done
+
 - [ ] Tests written
 - [ ] Code reviewed
 ```
 
 **Fix:**
+
 ```markdown
 ## Definition of Done
+
 - [ ] All acceptance criteria met
 - [ ] Tests written and passing (unit, integration, e2e as needed)
 - [ ] Documentation updated (README, API reference, guides)
@@ -301,12 +330,14 @@ Scenario: User logs in with valid credentials
 ### Issue: Unassigned tasks
 
 **Problem:**
+
 ```markdown
 - [ ] Implement authentication
 - [ ] Write tests
 ```
 
 **Fix:**
+
 ```markdown
 - [ ] Implement authentication - Assigned to: developer-name
 - [ ] Write tests - Assigned to: test-runner agent
@@ -320,6 +351,7 @@ This skill is used by:
 2. **pr-validator agent:** Checks ticket completeness before PR creation
 
 **Usage pattern:**
+
 ```markdown
 1. Load ticket-validation skill
 2. Parse ticket YAML and content

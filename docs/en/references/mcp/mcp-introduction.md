@@ -46,16 +46,19 @@ Think of MCP like a **USB-C port for AI applications**. Just as USB-C provides a
 ### Benefits by Stakeholder
 
 #### For Developers
+
 - **Reduced development time** when building or integrating with AI applications
 - **Reduced complexity** through standardized interfaces
 - **Reusable components** that work across different AI applications
 
 #### For AI Applications & Agents
+
 - **Access to ecosystem** of data sources, tools, and apps
 - **Enhanced capabilities** through external integrations
 - **Improved end-user experience** with richer functionality
 
 #### For End-Users
+
 - **More capable AI** applications and agents
 - **Data access** - AI can access your data when needed
 - **Action taking** - AI can take actions on your behalf
@@ -69,26 +72,32 @@ Think of MCP like a **USB-C port for AI applications**. Just as USB-C provides a
 MCP follows a **client-server architecture** with three key participants:
 
 #### 1. MCP Host
+
 The AI application that coordinates and manages one or multiple MCP clients.
 
 **Examples:**
+
 - Claude Code
 - Claude Desktop
 - Visual Studio Code with MCP extension
 - Custom AI applications
 
 #### 2. MCP Client
+
 A component that maintains a connection to an MCP server and obtains context from it for the MCP host to use.
 
 **Characteristics:**
+
 - One client per server connection
 - Dedicated connection to its corresponding server
 - Managed by the MCP host
 
 #### 3. MCP Server
+
 A program that provides context to MCP clients.
 
 **Types:**
+
 - **Local servers**: Run on the same machine (e.g., filesystem server)
 - **Remote servers**: Run on remote platforms (e.g., Sentry MCP server)
 
@@ -110,6 +119,7 @@ A program that provides context to MCP clients.
 ```
 
 **Example:**
+
 - Visual Studio Code acts as MCP host
 - Connects to Sentry MCP server → creates MCP Client 1
 - Connects to filesystem server → creates MCP Client 2
@@ -126,6 +136,7 @@ MCP consists of two layers:
 Defines the JSON-RPC based protocol for client-server communication.
 
 **Includes:**
+
 - **Lifecycle management**: Connection initialization, capability negotiation, termination
 - **Server features**: Tools, resources, prompts
 - **Client features**: Sampling, elicitation, logging
@@ -138,6 +149,7 @@ Defines the JSON-RPC based protocol for client-server communication.
 Manages communication channels and authentication.
 
 **Includes:**
+
 - Connection establishment
 - Message framing
 - Secure communication
@@ -146,12 +158,14 @@ Manages communication channels and authentication.
 **Supported Transports:**
 
 #### Stdio Transport
+
 - Uses standard input/output streams
 - Direct process communication
 - Local processes on same machine
 - Optimal performance, no network overhead
 
 #### Streamable HTTP Transport
+
 - Uses HTTP POST for client-to-server messages
 - Optional Server-Sent Events for streaming
 - Enables remote server communication
@@ -168,15 +182,18 @@ MCP primitives define what clients and servers can offer each other. They specif
 What **MCP servers** can expose to clients:
 
 #### 1. Tools
+
 **Executable functions** that AI applications can invoke to perform actions.
 
 **Examples:**
+
 - File operations (read, write, delete)
 - API calls (REST, GraphQL)
 - Database queries (SQL, NoSQL)
 - System commands
 
 **Methods:**
+
 - `tools/list` - Discover available tools
 - `tools/call` - Execute a tool
 
@@ -184,15 +201,18 @@ What **MCP servers** can expose to clients:
 A database MCP server exposes tools for querying, inserting, updating, and deleting records.
 
 #### 2. Resources
+
 **Data sources** that provide contextual information to AI applications.
 
 **Examples:**
+
 - File contents
 - Database records
 - API responses
 - Configuration data
 
 **Methods:**
+
 - `resources/list` - Discover available resources
 - `resources/read` - Retrieve resource content
 
@@ -200,15 +220,18 @@ A database MCP server exposes tools for querying, inserting, updating, and delet
 A database MCP server provides a resource containing the database schema, allowing the AI to understand table structures before generating queries.
 
 #### 3. Prompts
+
 **Reusable templates** that help structure interactions with language models.
 
 **Examples:**
+
 - System prompts
 - Few-shot examples
 - Interaction templates
 - Query patterns
 
 **Methods:**
+
 - `prompts/list` - Discover available prompts
 - `prompts/get` - Retrieve prompt content
 
@@ -220,42 +243,51 @@ A database MCP server includes a prompt with few-shot examples showing how to us
 What **MCP clients** can expose to servers:
 
 #### 1. Sampling
+
 Allows servers to request language model completions from the client's AI application.
 
 **Purpose:**
+
 - Server authors want access to a language model
 - Stay model-independent
 - Don't include language model SDK in MCP server
 
 **Method:**
+
 - `sampling/complete` - Request LLM completion from client
 
 **Use Case:**
 An MCP server needs to generate natural language responses but doesn't want to depend on a specific LLM provider.
 
 #### 2. Elicitation
+
 Allows servers to request additional information from users.
 
 **Purpose:**
+
 - Get more information from the user
 - Ask for confirmation of an action
 - Gather required parameters interactively
 
 **Method:**
+
 - `elicitation/request` - Request user input
 
 **Use Case:**
 Before executing a destructive database operation, the server requests user confirmation through the client.
 
 #### 3. Logging
+
 Enables servers to send log messages to clients for debugging and monitoring.
 
 **Purpose:**
+
 - Debugging server operations
 - Monitoring server health
 - Tracking execution flow
 
 **Methods:**
+
 - Various log levels (debug, info, warn, error)
 
 **Use Case:**
@@ -266,14 +298,17 @@ A server logs detailed execution information to help developers debug integratio
 Cross-cutting features that augment how requests are executed:
 
 #### Tasks (Experimental)
+
 Durable execution wrappers for long-running operations.
 
 **Capabilities:**
+
 - Deferred result retrieval
 - Status tracking
 - Progress monitoring
 
 **Use Cases:**
+
 - Expensive computations
 - Workflow automation
 - Batch processing
@@ -524,14 +559,17 @@ async def handle_tools_changed_notification(session):
 The Model Context Protocol project includes:
 
 ### 1. MCP Specification
+
 Outlines implementation requirements for clients and servers.
 
 **URL:** [modelcontextprotocol.io/specification/latest](https://modelcontextprotocol.io/specification/latest)
 
 ### 2. MCP SDKs
+
 Language-specific implementations of MCP.
 
 **Available SDKs:**
+
 - TypeScript/JavaScript
 - Python
 - More languages in development
@@ -539,18 +577,22 @@ Language-specific implementations of MCP.
 **Documentation:** [modelcontextprotocol.io/docs/sdk](https://modelcontextprotocol.io/docs/sdk)
 
 ### 3. MCP Development Tools
+
 Tools for developing MCP servers and clients.
 
 **Key Tool:**
+
 - **MCP Inspector**: Debug and test MCP servers
 - **Repository:** [github.com/modelcontextprotocol/inspector](https://github.com/modelcontextprotocol/inspector)
 
 ### 4. Reference Server Implementations
+
 Example implementations of MCP servers.
 
 **Repository:** [github.com/modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers)
 
 **Examples:**
+
 - Filesystem server (local file access)
 - Database servers (PostgreSQL, SQLite)
 - API integrations (GitHub, Sentry, etc.)
@@ -582,11 +624,13 @@ Example implementations of MCP servers.
 ### For Developers
 
 #### Build MCP Servers
+
 Create MCP servers to expose your data and tools.
 
 **Start:** [modelcontextprotocol.io/docs/develop/build-server](https://modelcontextprotocol.io/docs/develop/build-server)
 
 #### Build MCP Clients
+
 Develop applications that connect to MCP servers.
 
 **Start:** [modelcontextprotocol.io/docs/develop/build-client](https://modelcontextprotocol.io/docs/develop/build-client)
@@ -594,6 +638,7 @@ Develop applications that connect to MCP servers.
 ### Learn More
 
 #### Understand Concepts
+
 Learn core concepts and architecture of MCP.
 
 **Documentation:** [modelcontextprotocol.io/docs/learn/architecture](https://modelcontextprotocol.io/docs/learn/architecture)

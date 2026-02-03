@@ -15,6 +15,7 @@
 ### What Are Plugins?
 
 Plugins are **prebuilt extensions** that provide:
+
 - **Skills** - Specialized knowledge and workflows
 - **Agents** - Autonomous task executors
 - **Hooks** - Lifecycle customizations
@@ -23,6 +24,7 @@ Plugins are **prebuilt extensions** that provide:
 ### What Are Marketplaces?
 
 Marketplaces are **catalogs of plugins** that enable:
+
 - **Discovery** - Browse available plugins
 - **Installation** - Install with single command
 - **Updates** - Automatic or manual updates
@@ -33,11 +35,13 @@ Marketplaces are **catalogs of plugins** that enable:
 **Two-step process:**
 
 **Step 1: Add marketplace**
+
 - Registers catalog with Claude Code
 - Browse what's available
 - No plugins installed yet
 
 **Step 2: Install plugins**
+
 - Choose specific plugins from catalog
 - Install to desired scope
 
@@ -74,6 +78,7 @@ Go to **Discover** tab to browse.
 Enable Claude Code's built-in LSP tool for language-specific features.
 
 **What they provide:**
+
 - Jump to definitions
 - Find references
 - Type error detection immediately after edits
@@ -82,7 +87,7 @@ Enable Claude Code's built-in LSP tool for language-specific features.
 **Available plugins:**
 
 | Language   | Plugin              | Binary Required              |
-|:-----------|:--------------------|:-----------------------------|
+| :--------- | :------------------ | :--------------------------- |
 | C/C++      | `clangd-lsp`        | `clangd`                     |
 | C#         | `csharp-lsp`        | `csharp-ls`                  |
 | Go         | `gopls-lsp`         | `gopls`                      |
@@ -104,6 +109,7 @@ Enable Claude Code's built-in LSP tool for language-specific features.
 Once installed and binary available:
 
 **1. Automatic diagnostics (no configuration needed):**
+
 - After every file edit, language server analyzes changes
 - Reports errors and warnings automatically
 - Claude sees type errors, missing imports, syntax issues
@@ -112,6 +118,7 @@ Once installed and binary available:
 - View diagnostics: Press **Ctrl+O** when "diagnostics found" indicator appears
 
 **2. Code navigation:**
+
 - Jump to definitions
 - Find references
 - Get type info on hover
@@ -126,27 +133,33 @@ Once installed and binary available:
 Pre-configured MCP servers for external services (no manual setup needed).
 
 **Source control:**
+
 - `github`
 - `gitlab`
 
 **Project management:**
+
 - `atlassian` (Jira/Confluence)
 - `asana`
 - `linear`
 - `notion`
 
 **Design:**
+
 - `figma`
 
 **Infrastructure:**
+
 - `vercel`
 - `firebase`
 - `supabase`
 
 **Communication:**
+
 - `slack`
 
 **Monitoring:**
+
 - `sentry`
 
 ### 3. Development Workflows
@@ -154,6 +167,7 @@ Pre-configured MCP servers for external services (no manual setup needed).
 Commands and agents for common development tasks.
 
 **Available plugins:**
+
 - `commit-commands` - Git commit workflows (commit, push, PR creation)
 - `pr-review-toolkit` - Specialized agents for reviewing pull requests
 - `agent-sdk-dev` - Tools for building with Claude Agent SDK
@@ -164,6 +178,7 @@ Commands and agents for common development tasks.
 Customize how Claude responds.
 
 **Available plugins:**
+
 - `explanatory-output-style` - Educational insights about implementation choices
 - `learning-output-style` - Interactive learning mode for skill building
 
@@ -226,6 +241,7 @@ After installing, commands immediately available.
 ```
 
 **What it does:**
+
 1. Stages your changes
 2. Generates commit message
 3. Creates the commit
@@ -239,6 +255,7 @@ After installing, commands immediately available.
 Use `/plugin marketplace add` to add marketplaces from different sources.
 
 **Shortcuts:**
+
 - `/plugin market` instead of `/plugin marketplace`
 - `rm` instead of `remove`
 
@@ -343,17 +360,21 @@ Once marketplaces added, install plugins directly.
 **Scope options:**
 
 **User scope** (default)
+
 - Install for yourself across all projects
 
 **Project scope**
+
 - Install for all collaborators on repository
 - Adds to `.claude/settings.json`
 
 **Local scope**
+
 - Install for yourself in repository only
 - Not shared with collaborators
 
 **Managed scope**
+
 - Installed by administrators via managed settings
 - Cannot be modified
 
@@ -366,6 +387,7 @@ Once marketplaces added, install plugins directly.
 ## Manage Installed Plugins
 
 Run `/plugin` and go to **Installed** tab to:
+
 - View plugins
 - Enable plugins
 - Disable plugins
@@ -409,6 +431,7 @@ claude plugin uninstall formatter@your-org --scope project
 ### Interactive Interface
 
 Run `/plugin`, go to **Marketplaces** tab to:
+
 - View all added marketplaces with sources and status
 - Add new marketplaces
 - Update marketplace listings (fetch latest plugins)
@@ -445,6 +468,7 @@ Claude Code can automatically update marketplaces and installed plugins at start
 ### How Auto-Update Works
 
 **When enabled for marketplace:**
+
 1. Claude Code refreshes marketplace data at startup
 2. Updates installed plugins to latest versions
 3. If plugins updated, notification suggests restarting Claude Code
@@ -452,12 +476,14 @@ Claude Code can automatically update marketplaces and installed plugins at start
 ### Toggle Auto-Update (Interactive UI)
 
 **Steps:**
+
 1. Run `/plugin`
 2. Select **Marketplaces**
 3. Choose marketplace from list
 4. Select **Enable auto-update** or **Disable auto-update**
 
 **Defaults:**
+
 - Official Anthropic marketplaces: Auto-update **enabled**
 - Third-party and local development marketplaces: Auto-update **disabled**
 
@@ -515,11 +541,13 @@ Plugins require **version 1.0.33 or later**.
 **2. Update Claude Code:**
 
 **Homebrew:**
+
 ```bash
 brew upgrade claude-code
 ```
 
 **npm:**
+
 ```bash
 npm update -g @anthropic-ai/claude-code
 ```
@@ -538,12 +566,14 @@ After updating, restart terminal and run `claude` again.
 ### Marketplace Not Loading
 
 **Check:**
+
 - URL is accessible
 - `.claude-plugin/marketplace.json` exists at the path
 
 ### Plugin Installation Failures
 
 **Check:**
+
 - Plugin source URLs are accessible
 - Repositories are public (or you have access)
 
@@ -556,6 +586,7 @@ After updating, restart terminal and run `claude` again.
 ### Plugin Skills Not Appearing
 
 **Solution:**
+
 1. Clear cache: `rm -rf ~/.claude/plugins/cache`
 2. Restart Claude Code
 3. Reinstall plugin
@@ -571,6 +602,7 @@ After updating, restart terminal and run `claude` again.
 ### Language Server Not Starting
 
 **Check:**
+
 - Binary is installed
 - Binary available in `$PATH`
 - Check `/plugin` Errors tab for details
@@ -604,6 +636,7 @@ brew install pyright
 **Note:** These don't affect Claude's ability to edit code.
 
 **Solutions:**
+
 - Configure language server workspace settings
 - Add workspace configuration files (e.g., `tsconfig.json`, `Cargo.toml` workspace)
 - Disable diagnostics for specific paths
@@ -619,6 +652,7 @@ brew install pyright
 **Applies to:** All projects for this user
 
 **Use for:**
+
 - Personal development tools
 - Utilities used across multiple projects
 - Personal preferences
@@ -636,6 +670,7 @@ brew install pyright
 **Applies to:** All collaborators on this repository
 
 **Use for:**
+
 - Team-shared plugins
 - Project-specific workflows
 - Collaboration tools
@@ -655,6 +690,7 @@ brew install pyright
 **Applies to:** You only, in this repository
 
 **Use for:**
+
 - Experimental plugins
 - Personal workflow in specific project
 - Testing before team adoption
@@ -674,6 +710,7 @@ brew install pyright
 **Managed by:** IT administrators
 
 **Use for:**
+
 - Organization policies
 - Required security tools
 - Compliance plugins
@@ -764,6 +801,7 @@ Plugins use namespaced commands to prevent conflicts.
 ### Plugin Trust Model
 
 **Warning:** Plugins can:
+
 - Execute code on your system
 - Access your files and data
 - Connect to external services
@@ -772,6 +810,7 @@ Plugins use namespaced commands to prevent conflicts.
 ### Before Installing
 
 **Check:**
+
 1. **Plugin source** - Verify repository is trustworthy
 2. **MCP servers** - Review what external services are accessed
 3. **Permissions** - Understand what capabilities plugin has
@@ -780,11 +819,13 @@ Plugins use namespaced commands to prevent conflicts.
 ### Official vs Third-Party
 
 **Official Anthropic plugins:**
+
 - Maintained by Anthropic
 - Vetted and tested
 - Recommended for general use
 
 **Third-party plugins:**
+
 - Created by community
 - Varying quality and maintenance
 - Review before installing
@@ -793,6 +834,7 @@ Plugins use namespaced commands to prevent conflicts.
 ### Managed Plugins
 
 **Organization policies:**
+
 - IT administrators control which plugins available
 - Managed plugins cannot be uninstalled
 - May be required for compliance
@@ -806,6 +848,7 @@ Plugins use namespaced commands to prevent conflicts.
 **See:** Plugins documentation to create skills, agents, and hooks
 
 **Plugin components:**
+
 - Skills (SKILL.md files)
 - Agents (custom agents)
 - Hooks (lifecycle customizations)
@@ -816,6 +859,7 @@ Plugins use namespaced commands to prevent conflicts.
 **See:** Create a plugin marketplace documentation
 
 **Distribution options:**
+
 - GitHub repositories
 - Git hosting (GitLab, Bitbucket)
 - Self-hosted URLs
@@ -826,6 +870,7 @@ Plugins use namespaced commands to prevent conflicts.
 **See:** Plugins reference for complete specifications
 
 **Covers:**
+
 - Plugin structure
 - Marketplace format
 - LSP server configuration
@@ -838,17 +883,20 @@ Plugins use namespaced commands to prevent conflicts.
 ### In This Repository
 
 **Plugins:**
+
 - Plugin creation documentation (when available)
 - Plugin marketplace creation (when available)
 - Plugins reference (when available)
 
 **Related Features:**
+
 - `docs/references/skills/skills-claude-code.md` - Skills in Claude Code
 - `docs/references/mcp/mcp-usage-claude-code.md` - MCP in Claude Code
 - `docs/references/hooks/hooks-guide-claude-code.md` - Hooks in Claude Code
 - `docs/references/agents/sub-agents-claude-code.md` - Sub-agents
 
 **Settings:**
+
 - Settings documentation for configuration scopes and plugin settings
 
 ### External Resources

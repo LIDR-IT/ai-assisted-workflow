@@ -12,12 +12,14 @@ Esta carpeta contiene patrones arquitectónicos reutilizables para desarrollo co
 Separación de responsabilidades entre interfaz de usuario (commands), lógica autónoma (agents), y conocimiento especializado (skills).
 
 **Cuándo usarlo:**
+
 - Workflows complejos multi-paso
 - Tareas que requieren decisiones autónomas
 - Necesidad de reutilizar lógica entre comandos
 - Conocimiento profundo que se invoca on-demand
 
 **Ejemplo implementado:**
+
 ```bash
 /improve-docs docs/
   ↓
@@ -30,18 +32,21 @@ Audit + Report + Implement
 ```
 
 **Componentes:**
+
 - **Command:** `.agents/commands/improve-docs.md`
 - **Agent:** `.agents/agents/doc-improver.md`
 - **Rules:** `.agents/rules/process/documentation.md`
 - **Skills:** `.agents/skills/*` (opcionales)
 
 **Ventajas:**
+
 - ✅ Reutilización de lógica
 - ✅ Separación de responsabilidades
 - ✅ Mantenibilidad
 - ✅ Transversal a cualquier proyecto
 
 **Ejemplo de uso:**
+
 ```bash
 # User invoca
 /improve-docs docs/guides
@@ -128,6 +133,7 @@ Todos los Agents   → Mismas Rules
 ### 4. Transversalidad
 
 Los patrones funcionan en **cualquier proyecto** porque:
+
 - ✅ No dependen de tecnología específica
 - ✅ Rules definen convenciones del proyecto
 - ✅ Agents implementan workflows universales
@@ -136,48 +142,60 @@ Los patrones funcionan en **cualquier proyecto** porque:
 ## Cuándo Usar Cada Componente
 
 ### Command
+
 **Crear cuando:**
+
 - Necesitas interfaz invocable (`/nombre`)
 - Quieres aceptar argumentos del usuario
 - Deseas documentar uso para el equipo
 
 **Ejemplos:**
+
 - `/improve-docs [path]`
 - `/review-code [file]`
 - `/generate-tests [module]`
 
 ### Agent
+
 **Crear cuando:**
+
 - Workflow multi-paso autónomo
 - Lógica compleja con decisiones
 - Necesita múltiples tools
 - Proceso que toma tiempo
 
 **Ejemplos:**
+
 - `doc-improver` - Audita documentación
 - `code-reviewer` - Revisa código
 - `test-generator` - Genera tests
 
 ### Rule
+
 **Crear cuando:**
+
 - Debe estar SIEMPRE disponible
 - Define convenciones del proyecto
 - Restricciones arquitectónicas
 - Estándares de código/docs
 
 **Ejemplos:**
+
 - `documentation.md` - Estándares docs
 - `code-style.md` - Estilo código
 - `git-workflow.md` - Flujo Git
 
 ### Skill
+
 **Crear cuando:**
+
 - Conocimiento especializado profundo
 - Muy grande para estar siempre en contexto
 - Reutilizable en múltiples agents
 - Incluye ejemplos/templates/scripts
 
 **Ejemplos:**
+
 - `doc-generator` - Generación de docs
 - `test-patterns` - Patrones de testing
 - `security-audit` - Auditoría seguridad
@@ -247,26 +265,31 @@ ls .agents/rules/process/documentation.md
 ## Casos de Uso Transversales
 
 ### 1. Code Review
+
 ```
 /review-code → code-reviewer → reads code-style.md
 ```
 
 ### 2. Test Generation
+
 ```
 /generate-tests → test-generator → reads testing.md → uses test-patterns skill
 ```
 
 ### 3. API Documentation
+
 ```
 /document-api → api-documenter → reads documentation.md → uses api-doc-generator skill
 ```
 
 ### 4. Dependency Audit
+
 ```
 /audit-deps → dependency-auditor → reads security.md → uses vulnerability-scanner skill
 ```
 
 ### 5. Refactoring Assistant
+
 ```
 /refactor → refactoring-agent → reads code-style.md + principles.md
 ```

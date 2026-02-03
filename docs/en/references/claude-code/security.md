@@ -17,6 +17,7 @@ Claude Code is built with security at its core, developed according to Anthropic
 Claude Code developed according to **comprehensive security program**.
 
 **Resources available:**
+
 - SOC 2 Type 2 report
 - ISO 27001 certificate
 - Additional compliance documentation
@@ -26,16 +27,19 @@ Claude Code developed according to **comprehensive security program**.
 ### Core Principles
 
 **1. Security by default**
+
 - Built with security at core
 - Strict read-only permissions by default
 - Transparent operations
 
 **2. User control**
+
 - Explicit permission requests for actions
 - Approve once or allow automatically
 - Direct permission configuration
 
 **3. Defense in depth**
+
 - Multiple layers of protection
 - Built-in safeguards
 - User responsibility
@@ -49,6 +53,7 @@ Claude Code developed according to **comprehensive security program**.
 **Read-only by default:** Claude Code starts with minimal permissions
 
 **Actions requiring permission:**
+
 - Editing files
 - Running tests
 - Executing commands
@@ -58,6 +63,7 @@ Claude Code developed according to **comprehensive security program**.
 **Explicit requests:** Claude Code requests permission when additional actions needed
 
 **User control:**
+
 - **Approve once** - Single action approval
 - **Allow automatically** - Ongoing approval for pattern
 
@@ -76,6 +82,7 @@ Claude Code developed according to **comprehensive security program**.
 **Purpose:** Filesystem and network isolation for bash commands
 
 **Benefits:**
+
 - Reduces permission prompts
 - Maintains security
 - Autonomous work in defined boundaries
@@ -99,6 +106,7 @@ Claude Code developed according to **comprehensive security program**.
 ### 3. Prompt Fatigue Mitigation
 
 **Allowlisting support:**
+
 - Frequently used safe commands
 - Per-user configuration
 - Per-codebase configuration
@@ -121,6 +129,7 @@ Claude Code developed according to **comprehensive security program**.
 **Critical:** Claude Code only has permissions you grant it
 
 **Your responsibility:**
+
 - Review proposed code before approval
 - Review proposed commands before approval
 - Verify safety of operations
@@ -136,17 +145,21 @@ Claude Code developed according to **comprehensive security program**.
 ### Core Protections
 
 **Permission system**
+
 - Sensitive operations require explicit approval
 
 **Context-aware analysis**
+
 - Detects potentially harmful instructions
 - Analyzes full request
 
 **Input sanitization**
+
 - Prevents command injection
 - Processes user inputs
 
 **Command blocklist**
+
 - Blocks risky commands by default
 - Examples: `curl`, `wget` (fetch arbitrary web content)
 - When explicitly allowed, be aware of permission pattern limitations
@@ -158,17 +171,21 @@ Claude Code developed according to **comprehensive security program**.
 **Data protection:**
 
 **Limited retention periods**
+
 - Sensitive information retention limited
 - See Privacy Center for details: [privacy.anthropic.com](https://privacy.anthropic.com/en/articles/10023548-how-long-do-you-store-my-data)
 
 **Restricted access**
+
 - User session data access restricted
 
 **User control**
+
 - Data training preferences controllable
 - Consumer users can change privacy settings anytime: [claude.ai/settings/privacy](https://claude.ai/settings/privacy)
 
 **Legal documentation:**
+
 - **Team/Enterprise/API:** [Commercial Terms of Service](https://www.anthropic.com/legal/commercial-terms)
 - **Free/Pro/Max:** [Consumer Terms](https://www.anthropic.com/legal/consumer-terms)
 - **All users:** [Privacy Policy](https://www.anthropic.com/legal/privacy)
@@ -176,29 +193,36 @@ Claude Code developed according to **comprehensive security program**.
 ### Additional Safeguards
 
 **Network request approval**
+
 - Tools making network requests require user approval by default
 
 **Isolated context windows**
+
 - Web fetch uses separate context window
 - Avoids injecting potentially malicious prompts
 
 **Trust verification**
+
 - First-time codebase runs require trust verification
 - New MCP servers require trust verification
 - **Note:** Disabled when running non-interactively with `-p` flag
 
 **Command injection detection**
+
 - Suspicious bash commands require manual approval
 - Even if previously allowlisted
 
 **Fail-closed matching**
+
 - Unmatched commands default to requiring manual approval
 
 **Natural language descriptions**
+
 - Complex bash commands include explanations
 - User understanding before approval
 
 **Secure credential storage**
+
 - API keys and tokens encrypted
 - See Credential Management in IAM documentation
 
@@ -210,7 +234,7 @@ Claude Code developed according to **comprehensive security program**.
 
 **Recommendation:** Against enabling WebDAV or allowing Claude Code to access paths like `\\*` containing WebDAV subdirectories
 
-**Reason:** [WebDAV deprecated by Microsoft](https://learn.microsoft.com/en-us/windows/whats-new/deprecated-features#:~:text=The%20Webclient%20\(WebDAV\)%20service%20is%20deprecated) due to security risks
+**Reason:** [WebDAV deprecated by Microsoft](<https://learn.microsoft.com/en-us/windows/whats-new/deprecated-features#:~:text=The%20Webclient%20(WebDAV)%20service%20is%20deprecated>) due to security risks
 
 **Risk:** Enabling WebDAV may allow Claude Code to trigger network requests to remote hosts, bypassing permission system
 
@@ -221,22 +245,27 @@ Claude Code developed according to **comprehensive security program**.
 **When working with untrusted content:**
 
 **1. Review suggested commands** before approval
+
 - Don't blindly approve
 - Understand what command does
 
 **2. Avoid piping untrusted content** directly to Claude
+
 - Sanitize input first
 - Verify source
 
 **3. Verify proposed changes** to critical files
+
 - Double-check modifications
 - Understand impact
 
 **4. Use virtual machines (VMs)** to run scripts and make tool calls
+
 - Especially when interacting with external web services
 - Additional isolation layer
 
 **5. Report suspicious behavior** with `/bug`
+
 - Help improve security
 - Alert Anthropic to issues
 
@@ -269,6 +298,7 @@ Claude Code developed according to **comprehensive security program**.
 **VS Code integration:** See VS Code security and privacy documentation for details
 
 **Additional considerations:**
+
 - IDE extensions run with user permissions
 - Review extension security before installing
 - Keep VS Code and extensions updated
@@ -284,6 +314,7 @@ Claude Code developed according to **comprehensive security program**.
 ### 1. Isolated Virtual Machines
 
 **Each cloud session runs in:**
+
 - Isolated VM
 - Anthropic-managed environment
 
@@ -294,12 +325,14 @@ Claude Code developed according to **comprehensive security program**.
 **Default:** Network access limited
 
 **Configuration options:**
+
 - Disable entirely
 - Allow only specific domains
 
 ### 3. Credential Protection
 
 **Authentication handling:**
+
 - Secure proxy
 - Scoped credential inside sandbox
 - Translated to actual GitHub token
@@ -315,6 +348,7 @@ Claude Code developed according to **comprehensive security program**.
 ### 5. Audit Logging
 
 **All operations logged for:**
+
 - Compliance
 - Audit purposes
 
@@ -323,6 +357,7 @@ Claude Code developed according to **comprehensive security program**.
 ### 6. Automatic Cleanup
 
 **Cloud environments:**
+
 - Automatically terminated after session completion
 
 **Benefit:** No lingering resources or data
@@ -336,18 +371,22 @@ Claude Code developed according to **comprehensive security program**.
 ### Working with Sensitive Code
 
 **1. Review all suggested changes** before approval
+
 - Don't auto-approve for sensitive repos
 - Understand each change
 
 **2. Use project-specific permission settings** for sensitive repositories
+
 - Stricter controls for critical code
 - Custom allowlists/denylists
 
 **3. Consider using devcontainers** for additional isolation
+
 - Container-based development
 - Extra security layer
 
 **4. Regularly audit permission settings** with `/permissions`
+
 - Review what's allowed
 - Remove unnecessary permissions
 - Update as needed
@@ -357,21 +396,25 @@ Claude Code developed according to **comprehensive security program**.
 ### Team Security
 
 **1. Use managed settings** to enforce organizational standards
+
 - Centralized control
 - Consistent policies
 - Mandatory configurations
 
 **2. Share approved permission configurations** through version control
+
 - Team consistency
 - Reviewed configurations
 - Track changes
 
 **3. Train team members** on security best practices
+
 - Security awareness
 - Proper usage patterns
 - Incident reporting
 
 **4. Monitor Claude Code usage** through OpenTelemetry metrics
+
 - Track operations
 - Detect anomalies
 - Audit activity
@@ -389,20 +432,24 @@ Claude Code developed according to **comprehensive security program**.
 ### Responsible Disclosure
 
 **1. Do NOT disclose publicly**
+
 - Private disclosure only
 - Protect other users
 
 **2. Report through HackerOne**
+
 - **URL:** [hackerone.com/anthropic-vdp/reports/new](https://hackerone.com/anthropic-vdp/reports/new?type=team&report_type=vulnerability)
 - Official vulnerability disclosure program
 
 **3. Include detailed reproduction steps**
+
 - Clear description
 - Steps to reproduce
 - Expected vs actual behavior
 - Environment details
 
 **4. Allow time to address**
+
 - Give Anthropic time to fix
 - Coordinate disclosure timing
 - Work collaboratively
@@ -414,6 +461,7 @@ Claude Code developed according to **comprehensive security program**.
 ### Layer 1: Permission System
 
 **First line of defense:**
+
 - Read-only by default
 - Explicit approval required
 - User control
@@ -421,6 +469,7 @@ Claude Code developed according to **comprehensive security program**.
 ### Layer 2: Built-in Protections
 
 **Automated safeguards:**
+
 - Sandboxed execution
 - Write access restrictions
 - Command blocklisting
@@ -429,6 +478,7 @@ Claude Code developed according to **comprehensive security program**.
 ### Layer 3: User Vigilance
 
 **Human oversight:**
+
 - Review proposed changes
 - Verify commands
 - Report suspicious behavior
@@ -436,6 +486,7 @@ Claude Code developed according to **comprehensive security program**.
 ### Layer 4: Organizational Controls
 
 **Enterprise security:**
+
 - Managed settings
 - Team policies
 - Audit logging
@@ -450,26 +501,31 @@ Claude Code developed according to **comprehensive security program**.
 **Claude Code protects against:**
 
 **Unauthorized file access**
+
 - Read-only default
 - Write restrictions
 - Permission checks
 
 **Malicious command execution**
+
 - Approval required
 - Command blocklist
 - Injection detection
 
 **Prompt injection attacks**
+
 - Context isolation
 - Input sanitization
 - Suspicious pattern detection
 
 **Credential exposure**
+
 - Encrypted storage
 - Scoped credentials
 - Secure proxy
 
 **Network-based attacks**
+
 - Network access controls
 - Approval required
 - Domain restrictions
@@ -479,18 +535,22 @@ Claude Code developed according to **comprehensive security program**.
 **Claude Code cannot protect against:**
 
 **User approval of malicious actions**
+
 - User responsibility to review
 - Cannot prevent deliberate approval
 
 **Vulnerabilities in user code**
+
 - Code review still necessary
 - Not a security scanner
 
 **Social engineering of users**
+
 - User training required
 - Security awareness
 
 **Compromised dependencies**
+
 - Dependency scanning separate
 - Supply chain security
 
@@ -501,14 +561,17 @@ Claude Code developed according to **comprehensive security program**.
 ### Available Certifications
 
 **SOC 2 Type 2**
+
 - Security controls audit
 - Operational effectiveness
 
 **ISO 27001**
+
 - Information security management
 - International standard
 
 **Additional resources:**
+
 - Compliance documentation
 - Security whitepapers
 - Penetration test summaries
@@ -518,15 +581,18 @@ Claude Code developed according to **comprehensive security program**.
 ### Data Handling
 
 **Encryption:**
+
 - In transit (TLS)
 - At rest (encrypted storage)
 
 **Access controls:**
+
 - Role-based access
 - Audit logging
 - Limited retention
 
 **Compliance:**
+
 - GDPR
 - SOC 2
 - ISO 27001
@@ -572,6 +638,7 @@ Claude Code developed according to **comprehensive security program**.
 ### In This Repository
 
 **Security-Related:**
+
 - Sandboxing documentation (when available)
 - IAM documentation (when available)
 - Monitoring usage documentation (when available)

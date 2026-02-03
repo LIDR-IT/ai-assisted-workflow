@@ -29,6 +29,7 @@ Complete guides for configuring MCP on different platforms:
 ## 📚 Additional Resources
 
 For more technical documentation, see:
+
 - [References](/en/references/) - Technical documentation and API references
 - [Modules](/en/modules/skills/) - In-depth learning modules
 - [Guidelines](/en/guidelines/) - Team standards and conventions

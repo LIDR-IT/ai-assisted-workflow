@@ -17,6 +17,7 @@ Complete process for creating commands within the `.agents/` system. Commands ar
 Commands are **frequently-used prompts** stored as Markdown files in `.agents/commands/`. They're invoked via `/{command-name}` in AI agents.
 
 **Key characteristics:**
+
 - Single `.md` file (no bundled resources)
 - Text-based instructions
 - Quick, single-turn actions
@@ -24,19 +25,20 @@ Commands are **frequently-used prompts** stored as Markdown files in `.agents/co
 
 **Comparison to skills:**
 
-| Aspect | Command | Skill |
-|--------|---------|-------|
-| Format | Single .md file | Directory with resources |
-| Resources | No | Yes (scripts/references/assets) |
-| Complexity | Low | High |
-| Use case | Quick prompts | Reusable knowledge |
-| Invocation | `/{name}` | Auto-triggered by phrases |
+| Aspect     | Command         | Skill                           |
+| ---------- | --------------- | ------------------------------- |
+| Format     | Single .md file | Directory with resources        |
+| Resources  | No              | Yes (scripts/references/assets) |
+| Complexity | Low             | High                            |
+| Use case   | Quick prompts   | Reusable knowledge              |
+| Invocation | `/{name}`       | Auto-triggered by phrases       |
 
 ## When to Use Commands
 
 ### Good Command Candidates
 
 **Use commands when:**
+
 - ✅ Quick, repetitive prompts
 - ✅ Single-turn actions
 - ✅ No bundled resources needed
@@ -44,6 +46,7 @@ Commands are **frequently-used prompts** stored as Markdown files in `.agents/co
 - ✅ Frequently used by team
 
 **Examples:**
+
 - Code review checklist
 - Security vulnerability scan
 - Performance optimization suggestions
@@ -53,17 +56,20 @@ Commands are **frequently-used prompts** stored as Markdown files in `.agents/co
 ### Poor Command Candidates
 
 **Don't use commands when:**
+
 - ❌ Needs scripts, templates, or documentation
 - ❌ Multi-step workflows
 - ❌ Requires bundled resources
 - ❌ Complex domain knowledge
 
 **Use skills instead:**
+
 - Database queries (needs schema docs)
 - React testing (needs test templates)
 - API integration (needs API reference docs)
 
 **Use agents instead:**
+
 - Autonomous refactoring
 - Multi-file analysis
 - Complex decision-making workflows
@@ -77,6 +83,7 @@ Commands are **frequently-used prompts** stored as Markdown files in `.agents/co
 ```
 
 **Naming conventions:**
+
 - Lowercase only
 - Use hyphens for spaces: `security-review.md`
 - Descriptive: `optimize-performance.md` not `opt.md`
@@ -84,11 +91,13 @@ Commands are **frequently-used prompts** stored as Markdown files in `.agents/co
 ### Basic Format
 
 **Minimal command (no frontmatter):**
+
 ```markdown
 Review this code for common bugs and suggest improvements.
 ```
 
 **Command with frontmatter:**
+
 ```markdown
 ---
 description: Review code for bugs and improvements
@@ -129,12 +138,14 @@ Specify desired output format.
 ### Step 1: Define Command Purpose
 
 **Answer these questions:**
+
 - What prompt is frequently repeated?
 - What should the AI do?
 - What output is expected?
 - Who will use this command?
 
 **Example:**
+
 - **Purpose:** Review code for security issues
 - **Action:** Scan for vulnerabilities
 - **Output:** List of vulnerabilities with severity and fixes
@@ -146,22 +157,27 @@ Specify desired output format.
 
 ```markdown
 # Main instruction
+
 Review the code for security vulnerabilities.
 
 # Specific checks
+
 - SQL injection
 - XSS attacks
 - Authentication bypass
 - CSRF vulnerabilities
 
 # Output format
+
 For each issue:
+
 - Severity: Critical/High/Medium/Low
 - Description: What the vulnerability is
 - Fix: How to resolve it
 ```
 
 **Best practices:**
+
 - ✅ Be specific and actionable
 - ✅ Include expected output format
 - ✅ List explicit checks or criteria
@@ -179,11 +195,13 @@ description: Brief description of what command does
 ```
 
 **When to include frontmatter:**
+
 - When command needs a description for discoverability
 - When using command in automated workflows
 - When command has multiple variations
 
 **When to skip frontmatter:**
+
 - Simple, self-explanatory commands
 - Commands only used by specific team members
 - Experimental or temporary commands
@@ -206,11 +224,13 @@ vim .agents/commands/{command-name}.md
 Sync happens automatically after command creation.
 
 **Manual (when creating directly):**
+
 ```bash
 ./.agents/sync-all.sh
 ```
 
 **Verification:**
+
 ```bash
 # Check command exists
 ls .agents/commands/{command-name}.md
@@ -226,11 +246,13 @@ cat .cursor/commands/{command-name}.md
 ### Step 6: Test Command
 
 **In AI agent:**
+
 ```
 /{command-name}
 ```
 
 **Verify:**
+
 - ✅ Command triggers correctly
 - ✅ Prompt displays as expected
 - ✅ Output format matches intent
@@ -247,6 +269,7 @@ description: Brief description of command
 ```
 
 **Field details:**
+
 - **description**: Short summary (1 sentence, ~50-100 chars)
 - Optional but recommended for discoverability
 
@@ -289,20 +312,24 @@ Types: feat, fix, docs, refactor, test, chore
 **1. Be specific and actionable**
 
 ✅ Good:
+
 ```markdown
 Review this code for the following security issues:
+
 - SQL injection in database queries
 - XSS vulnerabilities in user inputs
 - Missing authentication checks
 - CSRF token validation
 
 For each issue found, provide:
+
 1. Line number
 2. Vulnerability description
 3. Recommended fix with code example
 ```
 
 ❌ Poor:
+
 ```markdown
 Check for security problems.
 ```
@@ -310,18 +337,22 @@ Check for security problems.
 **2. Define expected output format**
 
 ✅ Good:
+
 ```markdown
 Generate a performance optimization report:
 
 ## Performance Issues
+
 - [Issue]: [Description]
 - [Suggested fix]: [Code example]
 
 ## Estimated Impact
+
 - [Metric]: [Improvement estimate]
 ```
 
 ❌ Poor:
+
 ```markdown
 Find performance problems and fix them.
 ```
@@ -329,23 +360,29 @@ Find performance problems and fix them.
 **3. Use clear structure**
 
 ✅ Good:
+
 ```markdown
 # Task
+
 Analyze the codebase for unused dependencies.
 
 # Steps
+
 1. Check package.json dependencies
 2. Search codebase for import statements
 3. Identify unused packages
 
 # Output
+
 List each unused dependency with:
+
 - Package name
 - Last used (if found in git history)
 - Safe to remove: Yes/No
 ```
 
 ❌ Poor:
+
 ```markdown
 Find unused dependencies.
 ```
@@ -353,11 +390,13 @@ Find unused dependencies.
 ### Naming Conventions
 
 **Good names:**
+
 - `security-review.md` - Clear, descriptive
 - `optimize-performance.md` - Action-oriented
 - `generate-commit.md` - Specific purpose
 
 **Poor names:**
+
 - `sr.md` - Too abbreviated
 - `command1.md` - Not descriptive
 - `test.md` - Too vague
@@ -368,18 +407,21 @@ Find unused dependencies.
 **Maximum:** ~200 lines
 
 If command approaches 200 lines:
+
 - Consider splitting into multiple commands
 - Or convert to a skill with bundled resources
 
 ### Version Control
 
 **Include in Git:**
+
 ```bash
 git add .agents/commands/{command-name}.md
 git commit -m "feat: Add {command-name} command"
 ```
 
 **Why commit commands:**
+
 - Team collaboration
 - Version history
 - Sync across machines
@@ -442,6 +484,7 @@ For each vulnerability found:
 ```
 
 **Usage:**
+
 ```
 /security-review
 ```
@@ -458,13 +501,14 @@ description: Generate commit message following conventional commits format
 Generate a concise commit message for the staged changes.
 
 ## Format
-
 ```
+
 type(scope): description
 
 [optional body]
 
 [optional footer]
+
 ```
 
 ## Types
@@ -497,6 +541,7 @@ type(scope): description
 ## Example Output
 
 ```
+
 feat(auth): Add JWT token refresh mechanism
 
 Implement automatic token refresh before expiration
@@ -507,10 +552,13 @@ to improve user experience and reduce re-login frequency.
 - Add token expiry check middleware
 
 Refs: #456
+
 ```
+
 ```
 
 **Usage:**
+
 ```
 /generate-commit
 ```
@@ -563,6 +611,7 @@ Analyze the code for performance optimization opportunities.
 ```
 
 **Usage:**
+
 ```
 /optimize-performance
 ```
@@ -571,7 +620,7 @@ Analyze the code for performance optimization opportunities.
 
 **File:** `.agents/commands/generate-docs.md`
 
-```markdown
+````markdown
 ---
 description: Generate documentation for code following project standards
 ---
@@ -618,6 +667,7 @@ Brief description of the component and its purpose.
 Brief description of what the function does.
 
 **Parameters:**
+
 - `param1` (Type): Description
 - `param2` (Type): Description
 
@@ -629,9 +679,11 @@ Brief description of what the function does.
 ## Usage
 
 ### Basic Usage
+
 [example]
 
 ### Advanced Usage
+
 [example]
 
 ## Notes
@@ -639,12 +691,16 @@ Brief description of what the function does.
 - Note 1
 - Note 2
 ```
+````
+
 ```
 
 **Usage:**
 ```
+
 /generate-docs
-```
+
+````
 
 ## Platform-Specific Notes
 
@@ -669,9 +725,10 @@ After creating a command, validate it:
 
 ```bash
 ./.agents/skills/team-skill-creator/scripts/validate-command.sh {command-name}
-```
+````
 
 **Checks performed:**
+
 - ✅ File exists at `.agents/commands/{command-name}.md`
 - ✅ File is readable
 - ✅ Content is valid Markdown
@@ -684,6 +741,7 @@ After creating a command, validate it:
 **Symptoms:** `/{command-name}` doesn't work
 
 **Solutions:**
+
 ```bash
 # 1. Check file exists
 ls .agents/commands/{command-name}.md
@@ -703,6 +761,7 @@ cat .agents/commands/{command-name}.md
 **Symptoms:** Command exists but doesn't execute
 
 **Solutions:**
+
 - Check file extension is `.md`
 - Verify file is in `.agents/commands/` not elsewhere
 - Re-sync: `./.agents/sync-all.sh`
@@ -713,17 +772,20 @@ cat .agents/commands/{command-name}.md
 Commands in `.agents/` system:
 
 **✅ Use commands for:**
+
 - Quick, repetitive prompts
 - Single-turn actions
 - Simple text instructions
 - Frequently-used by team
 
 **❌ Don't use commands for:**
+
 - Complex workflows (use skills)
 - Bundled resources needed (use skills)
 - Autonomous tasks (use agents)
 
 **Creation steps:**
+
 1. Define purpose and prompt
 2. Write command content
 3. Add frontmatter (optional)

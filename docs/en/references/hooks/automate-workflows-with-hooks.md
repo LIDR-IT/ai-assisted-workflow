@@ -1,4 +1,5 @@
 > ## Documentation Index
+>
 > Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
@@ -15,6 +16,14 @@ For other ways to extend Claude Code, see [skills](/en/skills) for giving Claude
 <Tip>
   This guide covers common use cases and how to get started. For full event schemas, JSON input/output formats, and advanced features like async hooks and MCP tool hooks, see the [Hooks reference](/en/hooks).
 </Tip>
+
+> **Multi-Platform Implementation:** This project implements these hooks across Claude Code, Gemini CLI, and Cursor with a simplified 3-hook system (576 lines, 59% reduction):
+>
+> - **notify.sh** - Desktop notifications (Claude, Gemini) - Cursor does NOT support Notification events
+> - **auto-format.sh** - Auto-format with prettier (all 3 platforms)
+> - **protect-secrets.sh** - Block sensitive file edits (all 3 platforms)
+>
+> See `.agents/hooks-readme.md` for implementation details and [Platform Support Guide](../../guides/hooks/HOOKS_PLATFORM_SUPPORT.md) for cross-platform differences.
 
 ## Set up your first hook
 
@@ -57,6 +66,7 @@ The fastest way to create a hook is through the `/hooks` interactive menu in Cla
         ```
       </Tab>
     </Tabs>
+
   </Step>
 
   <Step title="Choose a storage location">
@@ -74,10 +84,10 @@ Hooks let you run code at key points in Claude Code's lifecycle: format files af
 
 Each example includes a ready-to-use configuration block that you add to a [settings file](#configure-hook-location). The most common patterns:
 
-* [Get notified when Claude needs input](#get-notified-when-claude-needs-input)
-* [Auto-format code after edits](#auto-format-code-after-edits)
-* [Block edits to protected files](#block-edits-to-protected-files)
-* [Re-inject context after compaction](#re-inject-context-after-compaction)
+- [Get notified when Claude needs input](#get-notified-when-claude-needs-input)
+- [Auto-format code after edits](#auto-format-code-after-edits)
+- [Block edits to protected files](#block-edits-to-protected-files)
+- [Re-inject context after compaction](#re-inject-context-after-compaction)
 
 ### Get notified when Claude needs input
 
@@ -203,6 +213,7 @@ This example uses a separate script file that the hook calls. The script checks 
 
     exit 0
     ```
+
   </Step>
 
   <Step title="Make the script executable (macOS/Linux)">
@@ -211,6 +222,7 @@ This example uses a separate script file that the hook calls. The script checks 
     ```bash
     chmod +x .claude/hooks/protect-files.sh
     ```
+
   </Step>
 
   <Step title="Register the hook">
@@ -233,6 +245,7 @@ This example uses a separate script file that the hook calls. The script checks 
       }
     }
     ```
+
   </Step>
 </Steps>
 
@@ -293,12 +306,13 @@ Every event includes common fields like `session_id` and `cwd`, but each event t
 
 ```json
 {
-  "session_id": "abc123",          // unique ID for this session
+  "session_id": "abc123", // unique ID for this session
   "cwd": "/Users/sarah/myproject", // working directory when the event fired
   "hook_event_name": "PreToolUse", // which event triggered this hook
-  "tool_name": "Bash",             // the tool Claude is about to use
-  "tool_input": {                  // the arguments Claude passed to the tool
-    "command": "npm test"          // for Bash, this is the shell command
+  "tool_name": "Bash", // the tool Claude is about to use
+  "tool_input": {
+    // the arguments Claude passed to the tool
+    "command": "npm test" // for Bash, this is the shell command
   }
 }
 ```
@@ -324,9 +338,9 @@ exit 0  # exit 0 = let it proceed
 
 The exit code determines what happens next:
 
-* **Exit 0**: the action proceeds. For `UserPromptSubmit` and `SessionStart` hooks, anything you write to stdout is added to Claude's context.
-* **Exit 2**: the action is blocked. Write a reason to stderr, and Claude receives it as feedback so it can adjust.
-* **Any other exit code**: the action proceeds. Stderr is logged but not shown to Claude. Toggle verbose mode with `Ctrl+O` to see these messages in the transcript.
+- **Exit 0**: the action proceeds. For `UserPromptSubmit` and `SessionStart` hooks, anything you write to stdout is added to Claude's context.
+- **Exit 2**: the action is blocked. Write a reason to stderr, and Claude receives it as feedback so it can adjust.
+- **Any other exit code**: the action proceeds. Stderr is logged but not shown to Claude. Toggle verbose mode with `Ctrl+O` to see these messages in the transcript.
 
 #### Structured JSON output
 
@@ -350,9 +364,9 @@ For example, a `PreToolUse` hook can deny a tool call and tell Claude why, or es
 
 Claude Code reads `permissionDecision` and cancels the tool call, then feeds `permissionDecisionReason` back to Claude as feedback. The three options are:
 
-* `"allow"`: proceed without showing a permission prompt
-* `"deny"`: cancel the tool call and send the reason to Claude
-* `"ask"`: show the permission prompt to the user as normal
+- `"allow"`: proceed without showing a permission prompt
+- `"deny"`: cancel the tool call and send the reason to Claude
+- `"ask"`: show the permission prompt to the user as normal
 
 For `UserPromptSubmit` hooks, use `additionalContext` instead to inject text into Claude's context. See [Control behavior with JSON output](/en/hooks#json-output) in the reference for the full JSON schema. Prompt-based hooks (`type: "prompt"`) handle output differently: see [Prompt-based hooks](#prompt-based-hooks).
 
@@ -366,9 +380,7 @@ Without a matcher, a hook fires on every occurrence of its event. Matchers let y
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
-        "hooks": [
-          { "type": "command", "command": "prettier --write ..." }
-        ]
+        "hooks": [{ "type": "command", "command": "prettier --write ..." }]
       }
     ]
   }
@@ -413,6 +425,7 @@ A few more examples showing matchers on different event types:
       }
     }
     ```
+
   </Tab>
 
   <Tab title="Match MCP tools">
@@ -437,6 +450,7 @@ A few more examples showing matchers on different event types:
       }
     }
     ```
+
   </Tab>
 
   <Tab title="Clean up on session end">
@@ -459,6 +473,7 @@ A few more examples showing matchers on different event types:
       }
     }
     ```
+
   </Tab>
 </Tabs>
 
@@ -487,8 +502,8 @@ For decisions that require judgment rather than deterministic rules, use `type: 
 
 The model's only job is to return a yes/no decision as JSON:
 
-* `"ok": true`: the action proceeds
-* `"ok": false`: the action is blocked. The model's `"reason"` is fed back to Claude so it can adjust.
+- `"ok": true`: the action proceeds
+- `"ok": false`: the action is blocked. The model's `"reason"` is fed back to Claude so it can adjust.
 
 This example uses a `Stop` hook to ask the model whether all requested tasks are complete. If the model returns `"ok": false`, Claude keeps working and uses the `reason` as its next instruction:
 
@@ -545,41 +560,41 @@ For full configuration options, see [Agent-based hooks](/en/hooks#agent-based-ho
 
 ### Limitations
 
-* Hooks communicate through stdout, stderr, and exit codes only. They cannot trigger slash commands or tool calls directly.
-* Hook timeout is 10 minutes by default, configurable per hook with the `timeout` field (in seconds).
-* `PostToolUse` hooks cannot undo actions since the tool has already executed.
-* `PermissionRequest` hooks do not fire in [non-interactive mode](/en/headless) (`-p`). Use `PreToolUse` hooks for automated permission decisions.
-* `Stop` hooks fire whenever Claude finishes responding, not only at task completion. They do not fire on user interrupts.
+- Hooks communicate through stdout, stderr, and exit codes only. They cannot trigger slash commands or tool calls directly.
+- Hook timeout is 10 minutes by default, configurable per hook with the `timeout` field (in seconds).
+- `PostToolUse` hooks cannot undo actions since the tool has already executed.
+- `PermissionRequest` hooks do not fire in [non-interactive mode](/en/headless) (`-p`). Use `PreToolUse` hooks for automated permission decisions.
+- `Stop` hooks fire whenever Claude finishes responding, not only at task completion. They do not fire on user interrupts.
 
 ### Hook not firing
 
 The hook is configured but never executes.
 
-* Run `/hooks` and confirm the hook appears under the correct event
-* Check that the matcher pattern matches the tool name exactly (matchers are case-sensitive)
-* Verify you're triggering the right event type (e.g., `PreToolUse` fires before tool execution, `PostToolUse` fires after)
-* If using `PermissionRequest` hooks in non-interactive mode (`-p`), switch to `PreToolUse` instead
+- Run `/hooks` and confirm the hook appears under the correct event
+- Check that the matcher pattern matches the tool name exactly (matchers are case-sensitive)
+- Verify you're triggering the right event type (e.g., `PreToolUse` fires before tool execution, `PostToolUse` fires after)
+- If using `PermissionRequest` hooks in non-interactive mode (`-p`), switch to `PreToolUse` instead
 
 ### Hook error in output
 
 You see a message like "PreToolUse hook error: ..." in the transcript.
 
-* Your script exited with a non-zero code unexpectedly. Test it manually by piping sample JSON:
+- Your script exited with a non-zero code unexpectedly. Test it manually by piping sample JSON:
   ```bash
   echo '{"tool_name":"Bash","tool_input":{"command":"ls"}}' | ./my-hook.sh
   echo $?  # Check the exit code
   ```
-* If you see "command not found", use absolute paths or `$CLAUDE_PROJECT_DIR` to reference scripts
-* If you see "jq: command not found", install `jq` or use Python/Node.js for JSON parsing
-* If the script isn't running at all, make it executable: `chmod +x ./my-hook.sh`
+- If you see "command not found", use absolute paths or `$CLAUDE_PROJECT_DIR` to reference scripts
+- If you see "jq: command not found", install `jq` or use Python/Node.js for JSON parsing
+- If the script isn't running at all, make it executable: `chmod +x ./my-hook.sh`
 
 ### `/hooks` shows no hooks configured
 
 You edited a settings file but the hooks don't appear in the menu.
 
-* Restart your session or open `/hooks` to reload. Hooks added through the `/hooks` menu take effect immediately, but manual file edits require a reload.
-* Verify your JSON is valid (trailing commas and comments are not allowed)
-* Confirm the settings file is in the correct location: `.claude/settings.json` for project hooks, `~/.claude/settings.json` for global hooks
+- Restart your session or open `/hooks` to reload. Hooks added through the `/hooks` menu take effect immediately, but manual file edits require a reload.
+- Verify your JSON is valid (trailing commas and comments are not allowed)
+- Confirm the settings file is in the correct location: `.claude/settings.json` for project hooks, `~/.claude/settings.json` for global hooks
 
 ### Stop hook runs forever
 
@@ -624,6 +639,6 @@ Toggle verbose mode with `Ctrl+O` to see hook output in the transcript, or run `
 
 ## Learn more
 
-* [Hooks reference](/en/hooks): full event schemas, JSON output format, async hooks, and MCP tool hooks
-* [Security considerations](/en/hooks#security-considerations): review before deploying hooks in shared or production environments
-* [Bash command validator example](https://github.com/anthropics/claude-code/blob/main/examples/hooks/bash_command_validator_example.py): complete reference implementation
+- [Hooks reference](/en/hooks): full event schemas, JSON output format, async hooks, and MCP tool hooks
+- [Security considerations](/en/hooks#security-considerations): review before deploying hooks in shared or production environments
+- [Bash command validator example](https://github.com/anthropics/claude-code/blob/main/examples/hooks/bash_command_validator_example.py): complete reference implementation

@@ -15,6 +15,7 @@
 ### What Are Skills?
 
 Skills are **modular capabilities** that:
+
 - Extend Claude's knowledge with domain expertise
 - Provide step-by-step workflows for specific tasks
 - Can be invoked manually (`/skill-name`) or automatically by Claude
@@ -26,10 +27,12 @@ Skills are **modular capabilities** that:
 **Custom slash commands have been merged into skills.**
 
 **Legacy behavior still works:**
+
 - File at `.claude/commands/review.md` creates `/review` command
 - File at `.claude/skills/review/SKILL.md` creates `/review` skill
 
 **Skills add new features:**
+
 - Directory for supporting files (templates, examples, scripts)
 - Frontmatter to control invocation behavior
 - Automatic loading by Claude when relevant
@@ -43,12 +46,12 @@ Skills are **modular capabilities** that:
 
 Where you store a skill determines its scope:
 
-| Location   | Path                                     | Applies to                     |
-|:-----------|:-----------------------------------------|:-------------------------------|
-| Enterprise | See managed settings                     | All users in organization      |
-| Personal   | `~/.claude/skills/<name>/SKILL.md`       | All your projects              |
-| Project    | `.claude/skills/<name>/SKILL.md`         | This project only              |
-| Plugin     | `<plugin>/skills/<name>/SKILL.md`        | Where plugin is enabled        |
+| Location   | Path                               | Applies to                |
+| :--------- | :--------------------------------- | :------------------------ |
+| Enterprise | See managed settings               | All users in organization |
+| Personal   | `~/.claude/skills/<name>/SKILL.md` | All your projects         |
+| Project    | `.claude/skills/<name>/SKILL.md`   | This project only         |
+| Plugin     | `<plugin>/skills/<name>/SKILL.md`  | Where plugin is enabled   |
 
 **Resolution priority:** Enterprise > Personal > Project
 
@@ -59,6 +62,7 @@ Where you store a skill determines its scope:
 When editing files in subdirectories, Claude Code discovers skills from nested `.claude/skills/` directories.
 
 **Example (monorepo):**
+
 ```
 packages/frontend/
 ├── .claude/skills/
@@ -68,6 +72,7 @@ packages/frontend/
 ```
 
 When working in `packages/frontend/src/components/`, Claude finds both:
+
 - Root `.claude/skills/`
 - `packages/frontend/.claude/skills/`
 
@@ -90,6 +95,7 @@ my-skill/
 **Required:** `SKILL.md` with YAML frontmatter + markdown content
 
 **Optional supporting files:**
+
 - Templates for Claude to fill in
 - Example outputs showing expected format
 - Scripts Claude can execute
@@ -141,18 +147,18 @@ Keep Y in mind. Avoid Z.
 
 All fields are **optional**. Only `description` is recommended.
 
-| Field                      | Type    | Description |
-|:---------------------------|:--------|:------------|
-| `name`                     | string  | Display name for the skill. If omitted, uses directory name. Lowercase letters, numbers, hyphens only (max 64 chars). |
+| Field                      | Type    | Description                                                                                                                                                        |
+| :------------------------- | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                     | string  | Display name for the skill. If omitted, uses directory name. Lowercase letters, numbers, hyphens only (max 64 chars).                                              |
 | `description`              | string  | What the skill does and when to use it. Claude uses this to decide when to apply the skill. If omitted, uses first paragraph of markdown content. **Recommended.** |
-| `argument-hint`            | string  | Hint shown during autocomplete. Examples: `[issue-number]`, `[filename] [format]` |
-| `disable-model-invocation` | boolean | Set to `true` to prevent Claude from auto-loading. Use for workflows you trigger manually. Default: `false` |
-| `user-invocable`           | boolean | Set to `false` to hide from `/` menu. Use for background knowledge users shouldn't invoke directly. Default: `true` |
-| `allowed-tools`            | string  | Tools Claude can use without permission when this skill is active. Example: `Read, Grep, Bash(npm *)` |
-| `model`                    | string  | Model to use when this skill is active. Options: `sonnet`, `opus`, `haiku` |
-| `context`                  | string  | Set to `fork` to run in a forked subagent context. |
-| `agent`                    | string  | Which subagent type to use when `context: fork` is set. Options: built-in agents (`Explore`, `Plan`, `general-purpose`) or custom agents from `.claude/agents/` |
-| `hooks`                    | object  | Hooks scoped to this skill's lifecycle. See Hooks documentation for format. |
+| `argument-hint`            | string  | Hint shown during autocomplete. Examples: `[issue-number]`, `[filename] [format]`                                                                                  |
+| `disable-model-invocation` | boolean | Set to `true` to prevent Claude from auto-loading. Use for workflows you trigger manually. Default: `false`                                                        |
+| `user-invocable`           | boolean | Set to `false` to hide from `/` menu. Use for background knowledge users shouldn't invoke directly. Default: `true`                                                |
+| `allowed-tools`            | string  | Tools Claude can use without permission when this skill is active. Example: `Read, Grep, Bash(npm *)`                                                              |
+| `model`                    | string  | Model to use when this skill is active. Options: `sonnet`, `opus`, `haiku`                                                                                         |
+| `context`                  | string  | Set to `fork` to run in a forked subagent context.                                                                                                                 |
+| `agent`                    | string  | Which subagent type to use when `context: fork` is set. Options: built-in agents (`Explore`, `Plan`, `general-purpose`) or custom agents from `.claude/agents/`    |
+| `hooks`                    | object  | Hooks scoped to this skill's lifecycle. See Hooks documentation for format.                                                                                        |
 
 ---
 
@@ -160,12 +166,12 @@ All fields are **optional**. Only `description` is recommended.
 
 Skills support dynamic value injection:
 
-| Variable               | Description |
-|:-----------------------|:------------|
+| Variable               | Description                                                                                    |
+| :--------------------- | :--------------------------------------------------------------------------------------------- |
 | `$ARGUMENTS`           | All arguments passed when invoking. If not present, arguments appended as `ARGUMENTS: <value>` |
-| `$ARGUMENTS[N]`        | Access specific argument by 0-based index. `$ARGUMENTS[0]` = first argument |
-| `$N`                   | Shorthand for `$ARGUMENTS[N]`. `$0` = first, `$1` = second, etc. |
-| `${CLAUDE_SESSION_ID}` | Current session ID. Useful for logging, session-specific files, or correlating output |
+| `$ARGUMENTS[N]`        | Access specific argument by 0-based index. `$ARGUMENTS[0]` = first argument                    |
+| `$N`                   | Shorthand for `$ARGUMENTS[N]`. `$0` = first, `$1` = second, etc.                               |
+| `${CLAUDE_SESSION_ID}` | Current session ID. Useful for logging, session-specific files, or correlating output          |
 
 **Example:**
 
@@ -187,7 +193,6 @@ $ARGUMENTS
 name: migrate-component
 description: Migrate a component from one framework to another
 ---
-
 Migrate the $0 component from $1 to $2.
 Preserve all existing behavior and tests.
 ```
@@ -205,6 +210,7 @@ Preserve all existing behavior and tests.
 Adds knowledge Claude applies to current work. Runs inline in conversation.
 
 **Use for:**
+
 - Code conventions
 - Style guides
 - Architecture patterns
@@ -217,12 +223,11 @@ Adds knowledge Claude applies to current work. Runs inline in conversation.
 name: api-conventions
 description: API design patterns for this codebase
 ---
-
 When writing API endpoints:
-- Use RESTful naming conventions
-- Return consistent error formats
-- Include request validation
-- Add rate limiting to auth endpoints
+  - Use RESTful naming conventions
+  - Return consistent error formats
+  - Include request validation
+  - Add rate limiting to auth endpoints
 ```
 
 ### Task Content
@@ -230,6 +235,7 @@ When writing API endpoints:
 Step-by-step instructions for specific actions. Often manually invoked.
 
 **Use for:**
+
 - Deployments
 - Commits
 - Code generation
@@ -263,22 +269,24 @@ By default, **both you and Claude** can invoke any skill.
 ### Two Control Fields
 
 **1. `disable-model-invocation: true`**
+
 - Only you can invoke (manual `/skill-name` only)
 - Use for workflows with side effects or requiring timing control
 - Examples: `/commit`, `/deploy`, `/send-slack-message`
 
 **2. `user-invocable: false`**
+
 - Only Claude can invoke (hidden from `/` menu)
 - Use for background knowledge not actionable as a command
 - Example: `legacy-system-context` skill
 
 ### Invocation Matrix
 
-| Frontmatter                      | You invoke | Claude invokes | Context loading |
-|:---------------------------------|:-----------|:---------------|:----------------|
-| (default)                        | Yes        | Yes            | Description in context, full skill loads when invoked |
+| Frontmatter                      | You invoke | Claude invokes | Context loading                                              |
+| :------------------------------- | :--------- | :------------- | :----------------------------------------------------------- |
+| (default)                        | Yes        | Yes            | Description in context, full skill loads when invoked        |
 | `disable-model-invocation: true` | Yes        | No             | Description NOT in context, full skill loads when you invoke |
-| `user-invocable: false`          | No         | Yes            | Description in context, full skill loads when invoked |
+| `user-invocable: false`          | No         | Yes            | Description in context, full skill loads when invoked        |
 
 **Note:** In regular sessions, only skill **descriptions** load into context. Full skill content loads **only when invoked**. Subagents with preloaded skills work differently.
 
@@ -321,6 +329,7 @@ Claude loads these files **only when needed**, keeping context usage efficient.
 The `` !`command` `` syntax runs shell commands **before** Claude sees the skill content.
 
 **How it works:**
+
 1. Each `` !`command` `` executes immediately (preprocessing)
 2. Output replaces the placeholder
 3. Claude receives the fully-rendered prompt with actual data
@@ -355,11 +364,13 @@ Summarize this pull request focusing on:
 Add `context: fork` to run a skill in isolation (no conversation history).
 
 **When to use:**
+
 - Skill contains explicit instructions for a complete task
 - You want isolated execution (no cross-contamination)
 - Task should run independently
 
 **When NOT to use:**
+
 - Skill contains only guidelines without a task
 - Subagent receives guidelines but no actionable prompt
 - Returns without meaningful output
@@ -385,12 +396,14 @@ Focus on understanding the overall architecture and key design decisions.
 ```
 
 **Execution flow:**
+
 1. New isolated context created
 2. Subagent receives skill content as its prompt
 3. `agent` field determines execution environment (model, tools, permissions)
 4. Results summarized and returned to main conversation
 
 **Agent options:**
+
 - Built-in: `Explore`, `Plan`, `general-purpose`
 - Custom: Any agent from `.claude/agents/`
 - Default (if omitted): `general-purpose`
@@ -399,16 +412,18 @@ Focus on understanding the overall architecture and key design decisions.
 
 Two directions for combining skills and subagents:
 
-| Approach                     | System prompt                             | Task                        | Also loads       |
-|:-----------------------------|:------------------------------------------|:----------------------------|:-----------------|
-| Skill with `context: fork`   | From agent type (`Explore`, `Plan`, etc.) | SKILL.md content            | CLAUDE.md        |
+| Approach                     | System prompt                             | Task                        | Also loads                   |
+| :--------------------------- | :---------------------------------------- | :-------------------------- | :--------------------------- |
+| Skill with `context: fork`   | From agent type (`Explore`, `Plan`, etc.) | SKILL.md content            | CLAUDE.md                    |
 | Subagent with `skills` field | Subagent's markdown body                  | Claude's delegation message | Preloaded skills + CLAUDE.md |
 
 **Skill with `context: fork`:**
+
 - You write the task in skill
 - You pick agent type to execute it
 
 **Subagent with skills:**
+
 - You define custom subagent
 - Skills serve as reference material
 - See Sub-agents documentation
@@ -448,7 +463,6 @@ name: safe-reader
 description: Read files without making changes
 allowed-tools: Read, Grep, Glob
 ---
-
 Explore the codebase to answer questions. You cannot modify files.
 ```
 
@@ -479,6 +493,7 @@ Skill(deploy *)
 ```
 
 **Permission syntax:**
+
 - `Skill(name)` - Exact match
 - `Skill(name *)` - Prefix match with any arguments
 
@@ -511,6 +526,7 @@ Keep explanations conversational. For complex concepts, use multiple analogies.
 ```
 
 **Usage:**
+
 - Auto: "How does this code work?"
 - Manual: `/explain-code src/auth/login.ts`
 
@@ -584,7 +600,7 @@ codebase-visualizer/
 
 **File:** `~/.claude/skills/codebase-visualizer/SKILL.md`
 
-```yaml
+````yaml
 ---
 name: codebase-visualizer
 description: Generate an interactive collapsible tree visualization of your codebase. Use when exploring a new repo, understanding project structure, or identifying large files.
@@ -601,7 +617,7 @@ Run the visualization script from your project root:
 
 ```bash
 python ~/.claude/skills/codebase-visualizer/scripts/visualize.py .
-```
+````
 
 This creates `codebase-map.html` in the current directory and opens it in your browser.
 
@@ -611,7 +627,8 @@ This creates `codebase-map.html` in the current directory and opens it in your b
 - **File sizes**: Displayed next to each file
 - **Colors**: Different colors for different file types
 - **Directory totals**: Shows aggregate size of each folder
-```
+
+````
 
 **File:** `~/.claude/skills/codebase-visualizer/scripts/visualize.py`
 
@@ -639,7 +656,7 @@ Skills can be distributed at different scopes:
 git add .claude/skills/
 git commit -m "Add project-specific skills"
 git push
-```
+````
 
 ### Plugin Skills
 
@@ -716,6 +733,7 @@ See [reference.md](reference.md) for complete API documentation.
 ```
 
 **Claude loads files only when:**
+
 - Referenced in SKILL.md
 - Relevant to current task
 
@@ -870,6 +888,7 @@ agent: Explore
 ### In This Repository
 
 **Skills:**
+
 - `npm-skills-package.md` - Skills package manager
 - `openskills.md` - Universal skills loader
 - `find-skills-vercel.md` - Skill discovery tool
@@ -878,11 +897,13 @@ agent: Explore
 - `skills-ecosystem-overview.md` - Skills ecosystem general overview
 
 **MCP:**
+
 - `docs/references/mcp/mcp-introduction.md` - MCP overview
 - `docs/references/mcp/mcp-integration-claude-code.md` - MCP integration
 - `docs/references/mcp/mcp-server-builder.md` - Building MCP servers
 
 **Commands & Agents:**
+
 - `docs/references/commands/command-development.md` - Creating commands
 - `docs/references/agents/agent-development-claude-code.md` - Creating agents
 - `docs/references/agents/sub-agents-claude-code.md` - Sub-agents guide

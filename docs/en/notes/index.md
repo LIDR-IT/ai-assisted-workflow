@@ -40,6 +40,7 @@ If you have research or analysis to share, add it here with the date and context
 ## 📚 Related Documentation
 
 For more structured content, see:
+
 - [References](/en/references/) - Technical documentation and API references
 - [Guides](/en/guides/) - Step-by-step tutorials
 - [Modules](/en/modules/skills/) - In-depth learning modules

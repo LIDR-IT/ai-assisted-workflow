@@ -43,6 +43,7 @@ This command launches the doc-improver agent to audit and enhance your project d
 ## Agent Behavior
 
 The doc-improver agent will:
+
 - Read your documentation standards from rules
 - Explore the specified path
 - Identify documentation issues
@@ -52,16 +53,19 @@ The doc-improver agent will:
 ## Examples
 
 **Example 1: Audit project root**
+
 ```bash
 /improve-docs
 ```
 
 **Example 2: Improve guides directory**
+
 ```bash
 /improve-docs docs/guides
 ```
 
 **Example 3: Review specific README**
+
 ```bash
 /improve-docs src/README.md
 ```

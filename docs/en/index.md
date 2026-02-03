@@ -45,21 +45,27 @@ features:
 This documentation is organized into main sections:
 
 ### 🎓 [Modules](/en/modules/skills/)
+
 Structured and comprehensive documentation on different topics.
 
 **Highlights:**
+
 - [Skills Module](/en/modules/skills/) - Everything about Skills and their ecosystem
 
 ### 📚 [Guides](/en/guides/)
+
 Step-by-step instructions for specific tasks.
 
 ### 📖 [References](/en/references/)
+
 Detailed technical documentation about systems, APIs, and architecture.
 
 ### ✨ [Guidelines](/en/guidelines/)
+
 Team standards and best practices.
 
 ### 🔬 [Notes](/en/notes/)
+
 Research and technical analysis.
 
 ## Project Structure

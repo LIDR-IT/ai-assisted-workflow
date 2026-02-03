@@ -53,10 +53,12 @@ You are a **Documentation Quality Agent** specialized in auditing, analyzing, an
 This agent should be triggered in these scenarios:
 
 **Example 1: Direct Command**
+
 - User: `/improve-docs`
 - Action: Launch agent to audit project documentation
 
 **Example 2: Specific Directory**
+
 - User: "Review docs/guides"
 - Action: Analyze guides documentation
 
@@ -65,7 +67,7 @@ This agent should be triggered in these scenarios:
 1. Audit documentation quality
 2. Identify gaps
 3. Suggest improvements
-...
+   ...
 ```
 
 ## Reglas del Formato Estándar
@@ -86,6 +88,7 @@ tools:
 ```
 
 **Por qué:**
+
 - Compatible con todos los parsers YAML
 - Sin caracteres especiales problemáticos
 - Descripción concisa en una línea
@@ -106,6 +109,7 @@ assistant: "response"
 ```
 
 **Por qué:**
+
 - Tags XML confunden parser YAML de Gemini
 - Causa error: "multiline key may not be an implicit key"
 
@@ -122,11 +126,13 @@ System prompt...
 ## When You Are Invoked
 
 **Example 1:**
+
 - User: "command"
 - Action: What agent does
 ```
 
 **Por qué:**
+
 - Compatible con todas las plataformas
 - Más legible
 - Parte del system prompt (ayuda al agent)
@@ -145,6 +151,7 @@ tools:
 ```
 
 **Por qué:**
+
 - Formato YAML estándar
 - Compatible con Gemini
 - Fácil de parsear
@@ -157,6 +164,7 @@ tools: ["Read", "Write", "Glob"]
 ```
 
 **Por qué:**
+
 - Aunque válido en YAML, preferir formato lista
 - Más legible con múltiples tools
 
@@ -164,24 +172,25 @@ tools: ["Read", "Write", "Glob"]
 
 ### Campos Obligatorios
 
-| Campo | Tipo | Descripción | Ejemplo |
-|-------|------|-------------|---------|
-| `name` | string | Identificador único del agent | `doc-improver` |
+| Campo         | Tipo   | Descripción                   | Ejemplo                        |
+| ------------- | ------ | ----------------------------- | ------------------------------ |
+| `name`        | string | Identificador único del agent | `doc-improver`                 |
 | `description` | string | Descripción breve (una línea) | `Audits project documentation` |
-| `tools` | array | Lista de tools disponibles | `[Read, Write]` |
+| `tools`       | array  | Lista de tools disponibles    | `[Read, Write]`                |
 
 ### Campos Opcionales
 
-| Campo | Tipo | Default | Descripción |
-|-------|------|---------|-------------|
-| `model` | string | inherit | Modelo a usar (`inherit`, `sonnet`, `haiku`) |
-| `temperature` | number | 0.5 | Creatividad (0.0-1.0) |
-| `max_turns` | number | 5 | Máximo de turnos autónomos |
-| `color` | string | blue | Color UI (solo Claude Code) |
+| Campo         | Tipo   | Default | Descripción                                  |
+| ------------- | ------ | ------- | -------------------------------------------- |
+| `model`       | string | inherit | Modelo a usar (`inherit`, `sonnet`, `haiku`) |
+| `temperature` | number | 0.5     | Creatividad (0.0-1.0)                        |
+| `max_turns`   | number | 5       | Máximo de turnos autónomos                   |
+| `color`       | string | blue    | Color UI (solo Claude Code)                  |
 
 ### Ejemplos de Campos
 
 **Model:**
+
 ```yaml
 model: inherit      # Usa el modelo del parent
 model: sonnet       # Claude Sonnet
@@ -189,6 +198,7 @@ model: haiku        # Claude Haiku (rápido)
 ```
 
 **Temperature:**
+
 ```yaml
 temperature: 0.0    # Determinístico (análisis)
 temperature: 0.2    # Poco creativo (code)
@@ -196,6 +206,7 @@ temperature: 0.7    # Creativo (writing)
 ```
 
 **Max Turns:**
+
 ```yaml
 max_turns: 5        # Tareas simples
 max_turns: 10       # Tareas complejas
@@ -208,21 +219,21 @@ max_turns: 20       # Workflows largos
 
 ```yaml
 tools:
-  - Read          # Leer archivos
-  - Write         # Escribir archivos
-  - Edit          # Editar archivos existentes
-  - Glob          # Buscar archivos por patrón
-  - Grep          # Buscar en contenido
-  - Bash          # Ejecutar comandos bash
+  - Read # Leer archivos
+  - Write # Escribir archivos
+  - Edit # Editar archivos existentes
+  - Glob # Buscar archivos por patrón
+  - Grep # Buscar en contenido
+  - Bash # Ejecutar comandos bash
 ```
 
 ### Special Tools
 
 ```yaml
 tools:
-  - Skill         # Invocar skills
-  - Task          # Lanzar subagents
-  - AskUserQuestion  # Preguntar al usuario
+  - Skill # Invocar skills
+  - Task # Lanzar subagents
+  - AskUserQuestion # Preguntar al usuario
 ```
 
 ### Ejemplo Completo
@@ -258,15 +269,19 @@ You are a [ROLE] specialized in [PURPOSE].
 ## Working Process
 
 ### Phase 1: Discovery
+
 [Steps]
 
 ### Phase 2: Analysis
+
 [Steps]
 
 ### Phase 3: Reporting
+
 [Steps]
 
 ### Phase 4: Implementation
+
 [Steps]
 
 ## Rules You MUST Follow
@@ -282,6 +297,7 @@ You are a [ROLE] specialized in [PURPOSE].
 ### Mejores Prácticas
 
 **✅ DO:**
+
 - Rol claro al inicio
 - Ejemplos de cuándo se invoca
 - Proceso estructurado en fases
@@ -289,6 +305,7 @@ You are a [ROLE] specialized in [PURPOSE].
 - Formato de output definido
 
 **❌ DON'T:**
+
 - Prompt demasiado largo (>5000 palabras)
 - Instrucciones ambiguas
 - Ejemplos contradictorios
@@ -299,38 +316,45 @@ You are a [ROLE] specialized in [PURPOSE].
 ### Cursor
 
 **Soporte:**
+
 - ✅ Frontmatter YAML estándar
 - ✅ Tools como lista
 - ✅ Symlinks desde `.agents/agents/`
 
 **Peculiaridades:**
+
 - Ninguna diferencia significativa con estándar
 
 ### Claude Code
 
 **Soporte:**
+
 - ✅ Frontmatter YAML estándar
 - ✅ Tools como lista
 - ✅ Campo `color` adicional
 - ✅ Symlinks desde `.agents/agents/`
 
 **Peculiaridades:**
+
 - Puede usar `color` para UI
 - Soporta ejemplos XML en description (pero evitar por compatibilidad)
 
 ### Gemini CLI
 
 **Soporte:**
+
 - ✅ Frontmatter YAML estándar
 - ✅ Tools como lista
 - ✅ **Requiere copias** (no symlinks)
 
 **Restricciones:**
+
 - ❌ NO soporta ejemplos XML en frontmatter
 - ❌ NO soporta symlinks (usa copias)
 - ⚠️ Parser YAML más estricto
 
 **Por qué copias:**
+
 - Gemini requiere formato YAML puro
 - Evita errores con archivos que tienen README.md
 - Permite filtrar archivos no-agent
@@ -338,6 +362,7 @@ You are a [ROLE] specialized in [PURPOSE].
 ### Antigravity
 
 **Soporte:**
+
 - ❌ NO soporta agents a nivel de proyecto
 
 ## Sincronización entre Plataformas
@@ -360,6 +385,7 @@ You are a [ROLE] specialized in [PURPOSE].
 ```
 
 **Archivos Excluidos de Gemini:**
+
 - `README.md` (documentación, no agent)
 - `sync-*.sh` (scripts, no agent)
 - Cualquier archivo que no sea `*.md` agent
@@ -367,11 +393,13 @@ You are a [ROLE] specialized in [PURPOSE].
 ### Flujo de Trabajo
 
 1. **Editar source of truth:**
+
 ```bash
 vim .agents/agents/doc-improver.md
 ```
 
 2. **Sincronizar:**
+
 ```bash
 ./.agents/agents/sync-agents.sh
 # O
@@ -379,6 +407,7 @@ vim .agents/agents/doc-improver.md
 ```
 
 3. **Resultado:**
+
 - Cursor: Ve cambios inmediatamente (symlink)
 - Claude: Ve cambios inmediatamente (symlink)
 - Gemini: Copia actualizada del agent
@@ -412,6 +441,7 @@ grep -A 10 "^tools:" .agents/agents/doc-improver.md
 ### Si tienes agents con ejemplos XML en frontmatter:
 
 **Antes:**
+
 ```yaml
 ---
 name: agent
@@ -424,6 +454,7 @@ user: "command"
 ```
 
 **Después:**
+
 ```yaml
 ---
 name: agent

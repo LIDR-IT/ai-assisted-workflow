@@ -33,6 +33,7 @@ The `.agents/` directory serves as the **single source of truth** for all AI age
 **Key principle:** Edit once in `.agents/`, automatically synchronized to all platforms.
 
 **Supported platforms:**
+
 - **Cursor** - Full symlink support
 - **Claude Code** - Full symlink support
 - **Gemini CLI** - Full symlink support
@@ -41,6 +42,7 @@ The `.agents/` directory serves as the **single source of truth** for all AI age
 ### Automatic Synchronization
 
 After creating any component, this skill automatically runs `./.agents/sync-all.sh` to:
+
 1. Create symlinks for Cursor, Claude Code, Gemini CLI
 2. Create selective symlinks/copies for Antigravity
 3. Generate platform-specific MCP configs
@@ -53,6 +55,7 @@ After creating any component, this skill automatically runs `./.agents/sync-all.
 **Definition:** Modular packages containing specialized knowledge, workflows, and bundled resources (scripts, references, assets).
 
 **When to use:**
+
 - Reusable across multiple projects or contexts
 - Requires documentation, templates, or scripts
 - Provides domain expertise (e.g., database schemas, testing patterns, API docs)
@@ -61,6 +64,7 @@ After creating any component, this skill automatically runs `./.agents/sync-all.
 **Location:** `.agents/skills/{skill-name}/`
 
 **Structure:**
+
 ```
 .agents/skills/react-testing/
 ├── SKILL.md          # Main instructions
@@ -81,6 +85,7 @@ After creating any component, this skill automatically runs `./.agents/sync-all.
 **Definition:** Frequently-used prompts stored as Markdown files, accessible via `/{command-name}`.
 
 **When to use:**
+
 - Quick, single-turn actions
 - Reusable prompts without complex logic
 - No bundled resources needed
@@ -89,13 +94,14 @@ After creating any component, this skill automatically runs `./.agents/sync-all.
 **Location:** `.agents/commands/{command-name}.md`
 
 **Structure:**
+
 ```markdown
-.agents/commands/security-review.md
----
-description: Review code for security issues
----
+## .agents/commands/security-review.md
+
+## description: Review code for security issues
 
 Review this code for common security vulnerabilities:
+
 - SQL injection
 - XSS attacks
 - Authentication bypass
@@ -111,6 +117,7 @@ Review this code for common security vulnerabilities:
 **Definition:** Autonomous subprocesses that handle complex, multi-step tasks independently with decision-making capabilities.
 
 **When to use:**
+
 - Multi-step workflows requiring autonomy
 - Tasks needing decision-making logic
 - Complex analysis or refactoring
@@ -119,14 +126,16 @@ Review this code for common security vulnerabilities:
 **Location:** `.claude/agents/{agent-name}.md` (platform-specific, Claude Code only)
 
 **Structure:**
+
 ```markdown
-.claude/agents/refactorer.md
----
+## .claude/agents/refactorer.md
+
 name: refactorer
 description: Autonomous code refactoring agent
 tools: [Read, Edit, Grep, Bash]
 model: sonnet
 color: blue
+
 ---
 
 Analyze codebase structure and perform autonomous refactoring...
@@ -168,27 +177,30 @@ What do you need to create?
 
 ### Comparison Table
 
-| Aspect          | Skill                  | Command                | Agent                      |
-|-----------------|------------------------|------------------------|----------------------------|
-| **Complexity**  | High                   | Low                    | High                       |
-| **Autonomy**    | No                     | No                     | Yes                        |
-| **Resources**   | Yes (scripts/refs/etc) | No                     | No                         |
-| **Location**    | `.agents/skills/`      | `.agents/commands/`    | `.claude/agents/`          |
-| **Format**      | Directory with files   | Single `.md` file      | Single `.md` file          |
-| **Platforms**   | All 4                  | All 4                  | Claude Code only           |
-| **Sync needed** | Yes (automatic)        | Yes (automatic)        | No (platform-specific)     |
+| Aspect          | Skill                  | Command             | Agent                  |
+| --------------- | ---------------------- | ------------------- | ---------------------- |
+| **Complexity**  | High                   | Low                 | High                   |
+| **Autonomy**    | No                     | No                  | Yes                    |
+| **Resources**   | Yes (scripts/refs/etc) | No                  | No                     |
+| **Location**    | `.agents/skills/`      | `.agents/commands/` | `.claude/agents/`      |
+| **Format**      | Directory with files   | Single `.md` file   | Single `.md` file      |
+| **Platforms**   | All 4                  | All 4               | Claude Code only       |
+| **Sync needed** | Yes (automatic)        | Yes (automatic)     | No (platform-specific) |
 
 ### Decision Examples
 
 **Scenario 1:** "I need to teach AI how to write database queries with our schema"
+
 - **Analysis:** Reusable knowledge + needs schema documentation
 - **Decision:** SKILL (with `references/schema.md`)
 
 **Scenario 2:** "I want a quick prompt to review code for bugs"
+
 - **Analysis:** Simple prompt, no resources needed
 - **Decision:** COMMAND
 
 **Scenario 3:** "I need AI to analyze and refactor an entire module autonomously"
+
 - **Analysis:** Multi-step, autonomous, decision-making
 - **Decision:** AGENT
 
@@ -208,11 +220,13 @@ What do you need to create?
    - Templates? (`assets/` or `examples/`)
 
 3. **Create directory structure**
+
    ```bash
    mkdir -p .agents/skills/{skill-name}/{references,examples,assets,scripts}
    ```
 
 4. **Create SKILL.md with frontmatter**
+
    ```markdown
    ---
    name: skill-name
@@ -234,6 +248,7 @@ What do you need to create?
    - Symlinks created for all platforms
 
 7. **Verify synchronization**
+
    ```bash
    ls -la .cursor/skills/{skill-name}
    ls -la .claude/skills/{skill-name}
@@ -282,11 +297,13 @@ What do you need to create?
    - Prompt: What should the AI do?
 
 2. **Create file**
+
    ```bash
    touch .agents/commands/{command-name}.md
    ```
 
 3. **Write frontmatter (optional) and content**
+
    ```markdown
    ---
    description: Brief description of command
@@ -302,6 +319,7 @@ What do you need to create?
    - Symlinks created for all platforms
 
 5. **Verify synchronization**
+
    ```bash
    ls -la .cursor/commands/{command-name}.md
    ls -la .claude/commands/{command-name}.md
@@ -314,14 +332,14 @@ What do you need to create?
 **Quick example:**
 
 ```markdown
-.agents/commands/security-review.md
----
-description: Review code for security vulnerabilities
----
+## .agents/commands/security-review.md
+
+## description: Review code for security vulnerabilities
 
 Review the provided code for common security issues:
 
 **Check for:**
+
 - SQL injection vulnerabilities
 - XSS (Cross-Site Scripting) attacks
 - Authentication and authorization bypass
@@ -330,6 +348,7 @@ Review the provided code for common security issues:
 - Hardcoded secrets or credentials
 
 **Provide:**
+
 - List of vulnerabilities found
 - Severity rating (Critical/High/Medium/Low)
 - Recommended fixes
@@ -348,11 +367,13 @@ Review the provided code for common security issues:
    - Purpose: What autonomous task will it perform?
 
 2. **Create file** (Claude Code specific)
+
    ```bash
    touch .claude/agents/{agent-name}.md
    ```
 
 3. **Write frontmatter with agent config**
+
    ```markdown
    ---
    name: agent-name
@@ -379,13 +400,14 @@ Review the provided code for common security issues:
 **Quick example:**
 
 ```markdown
-.claude/agents/refactorer.md
----
+## .claude/agents/refactorer.md
+
 name: refactorer
 description: Autonomous code refactoring for improving code quality and maintainability
 tools: [Read, Edit, Grep, Bash]
 model: sonnet
 color: purple
+
 ---
 
 # Code Refactoring Agent
@@ -411,6 +433,7 @@ You are an autonomous agent specialized in code refactoring and quality improvem
 ## Autonomous Decision-Making
 
 Make independent decisions about:
+
 - Which refactoring patterns to apply
 - How to structure improved code
 - When refactoring provides sufficient value
@@ -429,12 +452,14 @@ Make independent decisions about:
 The `.agents/sync-all.sh` script orchestrates synchronization of all components across platforms:
 
 **What it does:**
+
 1. Syncs rules from `.agents/rules/` → All platforms
 2. Syncs skills from `.agents/skills/` → All platforms
 3. Syncs commands from `.agents/commands/` → All platforms
 4. Generates MCP configs from `.agents/mcp/` → Platform-specific files
 
 **Synchronization strategies:**
+
 - **Cursor, Claude Code, Gemini CLI:** Full directory symlinks (instant propagation)
 - **Antigravity:** Selective symlinks per-item (platform limitation)
 - **MCP configs:** Generated platform-specific files
@@ -442,10 +467,12 @@ The `.agents/sync-all.sh` script orchestrates synchronization of all components 
 ### When Sync Happens
 
 **Automatic:**
+
 - After creating a skill via this skill
 - After creating a command via this skill
 
 **Manual (when needed):**
+
 - After manually editing existing skills/commands
 - After modifying rules or MCP configs
 - When troubleshooting sync issues
@@ -488,11 +515,13 @@ cat .cursor/skills/team-skill-creator/SKILL.md | head -20
 ### Platform-Specific Notes
 
 **Cursor, Claude Code, Gemini CLI:**
+
 - ✅ Full directory symlinks
 - ✅ Instant propagation of changes
 - ✅ No re-sync needed after edits
 
 **Antigravity:**
+
 - ⚠️ Selective symlinks (per-skill/command)
 - ⚠️ Must re-run sync after editing existing components
 - ⚠️ Commands go to `.agent/workflows/` not `.agent/commands/`
@@ -511,6 +540,7 @@ After creating a skill, validate its structure:
 ```
 
 **Checks performed:**
+
 - ✅ Directory exists at `.agents/skills/{skill-name}/`
 - ✅ SKILL.md file exists
 - ✅ YAML frontmatter is present
@@ -519,6 +549,7 @@ After creating a skill, validate its structure:
 - ✅ Directory structure is valid
 
 **Example:**
+
 ```bash
 $ ./.agents/skills/team-skill-creator/scripts/validate-skill.sh react-testing
 🔍 Validating skill: react-testing
@@ -537,6 +568,7 @@ $ ./.agents/skills/team-skill-creator/scripts/validate-skill.sh react-testing
 ```
 
 **Checks performed:**
+
 - ✅ File exists at `.agents/commands/{command-name}.md`
 - ✅ File is readable
 - ✅ Content is valid Markdown
@@ -548,6 +580,7 @@ $ ./.agents/skills/team-skill-creator/scripts/validate-skill.sh react-testing
 ```
 
 **Checks performed:**
+
 - ✅ File exists at `.claude/agents/{agent-name}.md`
 - ✅ YAML frontmatter present
 - ✅ Required fields: `name`, `description`
@@ -560,6 +593,7 @@ $ ./.agents/skills/team-skill-creator/scripts/validate-skill.sh react-testing
 **Symptoms:** Created skill doesn't show up or trigger in AI agent
 
 **Diagnosis:**
+
 ```bash
 # Check skill exists in source
 ls .agents/skills/{skill-name}/
@@ -572,6 +606,7 @@ readlink .cursor/skills/{skill-name}
 ```
 
 **Solution:**
+
 ```bash
 # Re-run sync manually
 ./.agents/sync-all.sh
@@ -588,6 +623,7 @@ cat .cursor/skills/{skill-name}/SKILL.md
 **Symptoms:** `/{command-name}` doesn't work
 
 **Diagnosis:**
+
 ```bash
 # Check command file exists
 ls .agents/commands/{command-name}.md
@@ -597,6 +633,7 @@ ls -la .cursor/commands/{command-name}.md
 ```
 
 **Solution:**
+
 ```bash
 # Re-sync
 ./.agents/sync-all.sh
@@ -610,11 +647,13 @@ ls .cursor/commands/ | grep {command-name}
 **Symptoms:** Agent doesn't trigger or execute
 
 **Possible causes:**
+
 1. **Platform:** Agents only work in Claude Code, not other platforms
 2. **File location:** Must be in `.claude/agents/`, not `.agents/`
 3. **Frontmatter:** Missing required fields
 
 **Solution:**
+
 ```bash
 # Verify file location
 ls .claude/agents/{agent-name}.md
@@ -631,10 +670,12 @@ cat .claude/agents/{agent-name}.md | head -10
 **Symptoms:** Edited skill/command but changes not visible
 
 **For Cursor, Claude Code, Gemini CLI:**
+
 - Changes should propagate instantly (symlinks)
 - If not: Check symlink is valid: `readlink .cursor/skills`
 
 **For Antigravity:**
+
 - Changes require re-sync (files are copied, not symlinked)
 - Solution: `./.agents/sync-all.sh`
 
@@ -643,11 +684,13 @@ cat .claude/agents/{agent-name}.md | head -10
 **Symptoms:** sync-all.sh exits with error
 
 **Common causes:**
+
 1. Source directory missing
 2. Permissions issues
 3. Invalid JSON in MCP configs
 
 **Solution:**
+
 ```bash
 # Check source exists
 ls -la .agents/rules .agents/skills .agents/commands
@@ -667,6 +710,7 @@ chmod +x .agents/sync-all.sh
 For detailed understanding of the `.agents/` system, see: `references/architecture-overview.md`
 
 **Key concepts:**
+
 - **Source of truth:** `.agents/` directory
 - **Synchronization:** Symlinks for instant propagation
 - **Platform support:** 4 platforms with varying capabilities
@@ -674,18 +718,19 @@ For detailed understanding of the `.agents/` system, see: `references/architectu
 
 **Platform support matrix:**
 
-| Platform    | MCP Project | Skills | Commands | Agents | Rules |
-|-------------|-------------|--------|----------|--------|-------|
-| Cursor      | ✅          | ✅ Sym | ✅ Sym   | ✅*    | ✅ Sym|
-| Claude Code | ✅          | ✅ Sym | ✅ Sym   | ✅     | ✅ Sym|
-| Gemini CLI  | ✅          | ✅ Sym | ✅ Sym   | ❌     | ✅ Sym|
-| Antigravity | ❌ Global   | ✅ Sel | ✅ Copy  | ❌     | ✅ Copy|
+| Platform    | MCP Project | Skills | Commands | Agents | Rules   |
+| ----------- | ----------- | ------ | -------- | ------ | ------- |
+| Cursor      | ✅          | ✅ Sym | ✅ Sym   | ✅\*   | ✅ Sym  |
+| Claude Code | ✅          | ✅ Sym | ✅ Sym   | ✅     | ✅ Sym  |
+| Gemini CLI  | ✅          | ✅ Sym | ✅ Sym   | ❌     | ✅ Sym  |
+| Antigravity | ❌ Global   | ✅ Sel | ✅ Copy  | ❌     | ✅ Copy |
 
 **Legend:**
+
 - Sym = Full directory symlink
 - Sel = Selective (per-item) symlinks
 - Copy = Files copied during sync
-- *Agents may have limited support in Cursor
+- \*Agents may have limited support in Cursor
 
 ## References & Resources
 
@@ -712,6 +757,7 @@ For detailed understanding of the `.agents/` system, see: `references/architectu
 ### Related Skills
 
 For specialized creation workflows, see:
+
 - **skill-development** - Deep dive into skill creation (637 lines)
 - **command-development** - Comprehensive command creation (834 lines)
 - **agent-development** - Detailed agent creation (415 lines)

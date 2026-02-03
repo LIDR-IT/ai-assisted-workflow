@@ -5,6 +5,7 @@
 Esta nota documenta los modos de agente y configuraciones disponibles en **Google Antigravity**, la plataforma de desarrollo agéntica de Google.
 
 **Estado del Proyecto:**
+
 - ✅ Antigravity instalado y configurado
 - ✅ MCP configurado a nivel global (`~/.gemini/antigravity/mcp_config.json`)
 - 📝 Skills sincronizadas con `.agents/skills/`
@@ -22,9 +23,11 @@ Antigravity ofrece dos modos principales de ejecución que controlan cómo el ag
 ### Planning Mode (Modo de Planificación)
 
 **Descripción:**
+
 > "An Agent can plan before executing tasks. Use for deep research, complex tasks, or collaborative work."
 
 **Comportamiento:**
+
 - ✅ Planifica antes de actuar
 - ✅ Organiza trabajo en grupos de tareas
 - ✅ Produce **Artifacts** para revisión
@@ -32,6 +35,7 @@ Antigravity ofrece dos modos principales de ejecución que controlan cómo el ag
 - ✅ Permite feedback iterativo
 
 **Cuándo usar:**
+
 - ✅ Tareas complejas y multi-paso
 - ✅ Investigación profunda
 - ✅ Trabajo colaborativo
@@ -39,6 +43,7 @@ Antigravity ofrece dos modos principales de ejecución que controlan cómo el ag
 - ✅ Cuando la calidad > velocidad
 
 **Ejemplo de uso:**
+
 - Refactorizar arquitectura completa
 - Implementar nueva feature con múltiples componentes
 - Análisis de seguridad comprehensivo
@@ -47,15 +52,18 @@ Antigravity ofrece dos modos principales de ejecución que controlan cómo el ag
 ### Fast Mode (Modo Rápido)
 
 **Descripción:**
+
 > "An Agent will execute tasks directly. Use for simple tasks that can be completed faster."
 
 **Comportamiento:**
+
 - ⚡ Ejecución directa sin planificación extensa
 - ⚡ Mínima planificación
 - ⚡ Resultados inmediatos
 - ⚡ Sin artifacts preliminares
 
 **Cuándo usar:**
+
 - ✅ Tareas simples y directas
 - ✅ Cambios localizados
 - ✅ Renombrar variables
@@ -63,6 +71,7 @@ Antigravity ofrece dos modos principales de ejecución que controlan cómo el ag
 - ✅ Cuando velocidad > deliberación
 
 **Ejemplo de uso:**
+
 - Renombrar variable
 - Formatear código
 - Ejecutar comando simple
@@ -77,18 +86,21 @@ Antigravity combina **Terminal Execution** y **Review Policies** en cuatro perfi
 ### 1. Agent-driven Development
 
 **Características:**
+
 - 🤖 **Autonomía máxima**
 - 🤖 El agente **nunca** pide revisión
 - 🤖 Auto-ejecuta todas las acciones
 - 🤖 Velocidad máxima
 
 **Cuándo usar:**
+
 - ✅ Tareas repetitivas y bien definidas
 - ✅ Prototipos rápidos
 - ✅ Exploración inicial
 - ⚠️ Solo cuando confías completamente en el agente
 
 **Riesgos:**
+
 - ❌ Cambios no revisados
 - ❌ Potencial para errores no detectados
 - ❌ Menor control
@@ -96,18 +108,21 @@ Antigravity combina **Terminal Execution** y **Review Policies** en cuatro perfi
 ### 2. Review-driven Development
 
 **Características:**
+
 - 👤 **Control máximo del usuario**
 - 👤 El agente **frecuentemente** pide revisión
 - 👤 Aprobación manual necesaria
 - 👤 Velocidad reducida, calidad aumentada
 
 **Cuándo usar:**
+
 - ✅ Código de producción
 - ✅ Cambios críticos
 - ✅ Proyectos nuevos
 - ✅ Cuando aprendes a usar Antigravity
 
 **Beneficios:**
+
 - ✅ Control total
 - ✅ Aprendizaje del proceso
 - ✅ Prevención de errores
@@ -116,18 +131,21 @@ Antigravity combina **Terminal Execution** y **Review Policies** en cuatro perfi
 ### 3. Agent-assisted Development (Recomendado)
 
 **Características:**
+
 - ⚖️ **Balance equilibrado**
 - ⚖️ Agente **decide** cuándo pedir revisión
 - ⚖️ Autonomía con checkpoints
 - ⚖️ Velocidad + Control
 
 **Cuándo usar:**
+
 - ✅ **Default recomendado** para la mayoría de casos
 - ✅ Desarrollo general
 - ✅ Features estándar
 - ✅ Cuando confías en el agente pero quieres supervisión
 
 **Beneficios:**
+
 - ✅ Mejor de ambos mundos
 - ✅ Agente trabaja de forma autónoma en pasos simples
 - ✅ Regresa al usuario para decisiones importantes
@@ -136,12 +154,14 @@ Antigravity combina **Terminal Execution** y **Review Policies** en cuatro perfi
 ### 4. Custom Configuration
 
 **Características:**
+
 - 🎛️ **Control total granular**
 - 🎛️ Usuario configura cada política individualmente
 - 🎛️ Máxima flexibilidad
 - 🎛️ Para usuarios avanzados
 
 **Cuándo usar:**
+
 - ✅ Necesidades específicas del equipo
 - ✅ Políticas de seguridad estrictas
 - ✅ Workflows especializados
@@ -158,18 +178,21 @@ Controla cómo el agente ejecuta comandos de terminal:
 #### Always Proceed (Turbo Mode)
 
 **Comportamiento:**
+
 - Auto-ejecuta **todos** los comandos
 - Excepto los de la **Deny List**
 - Velocidad máxima
 - Riesgo aumentado
 
 **Configuración:**
+
 ```
 Terminal Auto Execution: Always Proceed
 Deny List: rm, sudo, curl, wget, npm install
 ```
 
 **Cuándo usar:**
+
 - Comandos git (status, diff, log)
 - Comandos de lectura (ls, cat, grep)
 - Comandos de desarrollo (npm run, pytest)
@@ -177,12 +200,14 @@ Deny List: rm, sudo, curl, wget, npm install
 #### Request Review
 
 **Comportamiento:**
+
 - Requiere aprobación manual para **cada** comando
 - Usuario ve comando antes de ejecución
 - Control máximo
 - Velocidad reducida
 
 **Cuándo usar:**
+
 - Comandos destructivos (rm, mv)
 - Comandos de sistema (sudo, apt)
 - Comandos de red (curl, wget)
@@ -191,12 +216,14 @@ Deny List: rm, sudo, curl, wget, npm install
 #### Off (Allow List Only)
 
 **Comportamiento:**
+
 - **Solo** ejecuta comandos de la Allow List
 - Todo lo demás requiere revisión
 - Seguridad máxima
 - Whitelist approach
 
 **Configuración:**
+
 ```
 Terminal Auto Execution: Off
 Allow List:
@@ -208,6 +235,7 @@ Allow List:
 ```
 
 **Cuándo usar:**
+
 - Entornos de producción
 - Proyectos críticos
 - Compliance estricto
@@ -220,34 +248,40 @@ Controla cuándo el agente pide revisión de planes, código y resultados:
 #### Always Proceed
 
 **Comportamiento:**
+
 - Agente **nunca** pide revisión
 - Implementa directamente
 - Sin artifacts intermedios
 - Velocidad máxima
 
 **Resultado:**
+
 - No hay oportunidad de feedback antes de implementación
 
 #### Agent Decides (Recomendado)
 
 **Comportamiento:**
+
 - Agente **determina** cuándo es necesaria revisión
 - Usa juicio basado en complejidad
 - Pide revisión para cambios significativos
 - Auto-procede en cambios simples
 
 **Resultado:**
+
 - Balance automático entre velocidad y control
 
 #### Request Review
 
 **Comportamiento:**
+
 - Agente **siempre** pide aprobación
 - Genera artifacts para cada cambio
 - Usuario aprueba cada paso
 - Control total
 
 **Resultado:**
+
 - Feedback en cada etapa
 - Iteración frecuente
 
@@ -258,17 +292,20 @@ Controla cómo el browser subagent ejecuta JavaScript:
 #### Always Proceed
 
 **Comportamiento:**
+
 - Máxima autonomía del browser
 - Auto-ejecuta JavaScript
 - **Mayor exposición de seguridad**
 
 **Riesgos:**
+
 - Potencial ejecución de código malicioso
 - Prompt injection desde sitios comprometidos
 
 #### Request Review
 
 **Comportamiento:**
+
 - Requiere permiso para cada ejecución JavaScript
 - Usuario ve código antes de ejecución
 - Control fino
@@ -276,6 +313,7 @@ Controla cómo el browser subagent ejecuta JavaScript:
 #### Disabled
 
 **Comportamiento:**
+
 - Browser JavaScript **nunca** se ejecuta
 - Máxima seguridad
 - Funcionalidad limitada del browser subagent
@@ -287,12 +325,14 @@ Controla cómo el browser subagent ejecuta JavaScript:
 ### Secure Mode
 
 **Descripción:**
+
 - Restricciones mejoradas de seguridad
 - Limita acceso a recursos externos
 - Bloquea operaciones sensibles
 - Perfil de seguridad máxima
 
 **Configuración incluye:**
+
 - Terminal Execution: Off (Allow List only)
 - Review Policies: Request Review
 - JavaScript Execution: Disabled
@@ -303,6 +343,7 @@ Controla cómo el browser subagent ejecuta JavaScript:
 **Approach:** Seguridad positiva - solo lo permitido se ejecuta
 
 **Configuración:**
+
 ```
 Terminal Auto Execution: Off
 
@@ -317,12 +358,14 @@ cat
 ```
 
 **Beneficios:**
+
 - ✅ Seguridad máxima
 - ✅ Control explícito
 - ✅ Compliance-friendly
 - ✅ Auditoría clara
 
 **Desventajas:**
+
 - ❌ Requiere mantenimiento
 - ❌ Puede bloquear comandos legítimos
 - ❌ Menor flexibilidad
@@ -332,6 +375,7 @@ cat
 **Approach:** Seguridad negativa - todo permitido excepto lo bloqueado
 
 **Configuración:**
+
 ```
 Terminal Auto Execution: Always Proceed (Turbo)
 
@@ -346,11 +390,13 @@ apt-get
 ```
 
 **Beneficios:**
+
 - ✅ Mayor flexibilidad
 - ✅ Menor mantenimiento
 - ✅ Velocidad de desarrollo
 
 **Desventajas:**
+
 - ❌ Posible ejecución de comandos no previstos
 - ❌ Requiere conocer amenazas de antemano
 - ❌ Menor seguridad
@@ -360,11 +406,13 @@ apt-get
 **Ubicación:** `~/.gemini/antigravity/browserAllowlist.txt`
 
 **Propósito:**
+
 - Restringe dominios que el agente puede visitar
 - Previene prompt injection desde sitios comprometidos
 - Protege contra ataques web
 
 **Ejemplo:**
+
 ```
 # browserAllowlist.txt
 github.com
@@ -375,6 +423,7 @@ pypi.org
 ```
 
 **Beneficios:**
+
 - ✅ Previene prompt injection attacks
 - ✅ Control de información externa
 - ✅ Compliance con políticas corporativas
@@ -390,11 +439,13 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 #### 1. Pre-Coding Artifacts
 
 **Task Lists:**
+
 - Lista de tareas a completar
 - Organización del trabajo
 - Prioridades y dependencias
 
 **Implementation Plans:**
+
 - Estrategia de implementación
 - Decisiones arquitectónicas
 - Trade-offs y justificaciones
@@ -402,12 +453,14 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 #### 2. Coding Artifacts
 
 **Code Diffs:**
+
 - Cambios propuestos vs código actual
 - Estilo Google Docs con comentarios
 - Review interactivo
 - Capacidad de comentar líneas específicas
 
 **Features:**
+
 - ✅ Comentar líneas específicas
 - ✅ Sugerir cambios alternativos
 - ✅ Aprobar o rechazar secciones
@@ -416,17 +469,20 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 #### 3. Post-Coding Artifacts
 
 **Walkthroughs:**
+
 - Screenshots de la aplicación
 - Grabaciones de browser
 - Demostraciones visuales
 - Evidencia de funcionalidad
 
 **Architecture Diagrams:**
+
 - Visualización de sistemas
 - Flujos de datos
 - Dependencias
 
 **Images:**
+
 - Resultados visuales
 - UI/UX generado
 - Gráficos y charts
@@ -462,21 +518,25 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 ### Rules (Reglas)
 
 **Descripción:**
+
 - Guías a nivel de sistema
 - Aplicación continua
 - Contexto siempre presente
 
 **Scope:**
+
 - **Global:** `~/.gemini/antigravity/rules/`
 - **Workspace:** `.agent/rules/`
 
 **Uso:**
+
 - Estilo de código (indentación, naming)
 - Estándares de documentación
 - Principios de modularidad
 - Convenciones del equipo
 
 **Ejemplo:**
+
 ```markdown
 # .agent/rules/code-style.md
 
@@ -490,6 +550,7 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 ```
 
 **Características:**
+
 - ✅ Siempre activas
 - ✅ Guían todo el trabajo del agente
 - ✅ Compartibles en equipo (via git)
@@ -498,21 +559,25 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 ### Workflows (Flujos de Trabajo)
 
 **Descripción:**
+
 - Prompts guardados
 - Activación bajo demanda
 - Ejecutados con comando `/`
 
 **Scope:**
+
 - **Global:** `~/.gemini/antigravity/workflows/`
 - **Workspace:** `.agent/workflows/`
 
 **Uso:**
+
 - Generación de tests unitarios
 - Code review checklist
 - Feature setup
 - Deploy procedures
 
 **Ejemplo:**
+
 ```markdown
 # .agent/workflows/review-security.md
 
@@ -527,11 +592,13 @@ Provide specific line numbers and fixes.
 ```
 
 **Invocación:**
+
 ```
 /review-security
 ```
 
 **Características:**
+
 - ✅ Activación manual
 - ✅ Reusables
 - ✅ Parametrizables
@@ -539,14 +606,14 @@ Provide specific line numbers and fixes.
 
 ### Rules vs Workflows: Comparación
 
-| Característica | Rules | Workflows |
-|:--------------|:------|:----------|
-| **Activación** | Automática (siempre) | Manual (comando `/`) |
-| **Scope** | Global (todo el trabajo) | Específico (tarea) |
-| **Propósito** | Guías continuas | Tareas on-demand |
-| **Ubicación** | `.agent/rules/` | `.agent/workflows/` |
-| **Ejemplo** | "Usar 2 spaces" | "Generar tests" |
-| **Frecuencia** | Siempre aplicada | Solo cuando se invoca |
+| Característica | Rules                    | Workflows             |
+| :------------- | :----------------------- | :-------------------- |
+| **Activación** | Automática (siempre)     | Manual (comando `/`)  |
+| **Scope**      | Global (todo el trabajo) | Específico (tarea)    |
+| **Propósito**  | Guías continuas          | Tareas on-demand      |
+| **Ubicación**  | `.agent/rules/`          | `.agent/workflows/`   |
+| **Ejemplo**    | "Usar 2 spaces"          | "Generar tests"       |
+| **Frecuencia** | Siempre aplicada         | Solo cuando se invoca |
 
 ---
 
@@ -555,6 +622,7 @@ Provide specific line numbers and fixes.
 ### Descripción
 
 Skills son paquetes especializados que:
+
 - Se cargan solo cuando se necesitan (**progressive disclosure**)
 - Proveen conocimiento especializado
 - Extienden capacidades del agente
@@ -562,16 +630,19 @@ Skills son paquetes especializados que:
 ### Scope
 
 **Global:**
+
 ```
 ~/.gemini/antigravity/skills/
 ```
 
 **Workspace:**
+
 ```
 <root>/.agent/skills/
 ```
 
 **En este proyecto:**
+
 ```
 .agents/skills/          # Source of truth
 .agent/skills/           # Antigravity (enlaces selectivos)
@@ -582,17 +653,20 @@ Skills son paquetes especializados que:
 #### 1. Instruction-only Skills
 
 **Contenido:**
+
 - Solo `SKILL.md` con metadata y guidelines
 - Sin archivos adicionales
 - Conocimiento puro
 
 **Ejemplo:**
+
 ```
 testing-best-practices/
 └── SKILL.md
 ```
 
 **Uso:**
+
 - Guías de estilo
 - Best practices
 - Metodologías
@@ -600,11 +674,13 @@ testing-best-practices/
 #### 2. Template-based Skills
 
 **Contenido:**
+
 - `SKILL.md` con metadata
 - `resources/` con templates
 - Bloques de contenido reutilizables
 
 **Ejemplo:**
+
 ```
 component-generator/
 ├── SKILL.md
@@ -615,6 +691,7 @@ component-generator/
 ```
 
 **Uso:**
+
 - Generación de código boilerplate
 - Estructuras estándar
 - Templates de proyecto
@@ -622,11 +699,13 @@ component-generator/
 #### 3. Script-based Skills
 
 **Contenido:**
+
 - `SKILL.md` con metadata
 - `scripts/` con ejecutables Python/Bash
 - Automatización compleja
 
 **Ejemplo:**
+
 ```
 deployment-automation/
 ├── SKILL.md
@@ -637,6 +716,7 @@ deployment-automation/
 ```
 
 **Uso:**
+
 - CI/CD automation
 - Build processes
 - Testing pipelines
@@ -645,12 +725,14 @@ deployment-automation/
 ### Progressive Disclosure
 
 **Concepto:**
+
 - Skills solo se cargan cuando request coincide con su descripción
 - Evita cluttering del contexto
 - Performance mejorado
 - Especialización bajo demanda
 
 **Ejemplo:**
+
 ```
 User: "Generate unit tests for this component"
        ↓
@@ -665,12 +747,14 @@ Antigravity: Carga skill "testing-skill"
 ### Selección de Modo
 
 ✅ **DO:**
+
 - Usar **Planning Mode** para tareas complejas
 - Usar **Fast Mode** para cambios simples
 - Empezar con **Agent-assisted** (preset recomendado)
 - Evaluar resultados y ajustar modo según sea necesario
 
 ❌ **DON'T:**
+
 - Usar Fast Mode para refactoring complejo
 - Usar Planning Mode para renombrar variables
 - Saltar directamente a Agent-driven sin experiencia
@@ -678,12 +762,14 @@ Antigravity: Carga skill "testing-skill"
 ### Configuración de Seguridad
 
 ✅ **DO:**
+
 - Empezar con **Review-driven** o **Secure Mode**
 - Implementar **Deny List** con comandos peligrosos
 - Usar **Browser URL Allowlist** en producción
 - Revisar y actualizar listas regularmente
 
 ❌ **DON'T:**
+
 - Usar Agent-driven sin entender riesgos
 - Permitir `rm -rf` en Turbo mode
 - Deshabilitar todas las revisiones en código de producción
@@ -691,12 +777,14 @@ Antigravity: Carga skill "testing-skill"
 ### Uso de Artifacts
 
 ✅ **DO:**
+
 - Revisar Implementation Plans antes de aprobar
 - Comentar específicamente en Code Diffs
 - Solicitar Walkthroughs para features visuales
 - Iterar basado en feedback
 
 ❌ **DON'T:**
+
 - Aprobar sin revisar
 - Dar feedback vago
 - Saltar artifacts en cambios complejos
@@ -704,12 +792,14 @@ Antigravity: Carga skill "testing-skill"
 ### Rules y Workflows
 
 ✅ **DO:**
+
 - Crear Rules para estándares del equipo
 - Compartir Rules vía git (`.agent/rules/`)
 - Usar Workflows para tareas repetitivas
 - Documentar claramente cada Rule/Workflow
 
 ❌ **DON'T:**
+
 - Duplicar Rules en Workflows
 - Crear Rules demasiado restrictivas
 - Ignorar Rules existentes
@@ -717,12 +807,14 @@ Antigravity: Carga skill "testing-skill"
 ### Skills
 
 ✅ **DO:**
+
 - Instalar Skills relevantes para tu stack
 - Usar `.agents/skills/` como source of truth
 - Sincronizar con enlaces simbólicos
 - Mantener Skills actualizadas
 
 ❌ **DON'T:**
+
 - Instalar todas las Skills "por si acaso"
 - Duplicar Skills entre directorios
 - Ignorar Skills del equipo
@@ -766,16 +858,19 @@ Antigravity: Carga skill "testing-skill"
 ### Configuración Actual
 
 **Antigravity:**
+
 - ✅ Instalado y funcionando
 - ✅ MCP configurado globalmente
 - ✅ Skills sincronizadas (approach mixto)
 
 **MCP:**
+
 - ✅ Context7 configurado en `~/.gemini/antigravity/mcp_config.json`
 - ⚠️ Solo a nivel global (limitación de plataforma)
 - ✅ Documentado en `docs/references/mcp/mcp-antigravity.md`
 
 **Skills:**
+
 - ✅ 7 skills en `.agents/skills/`
 - ⚠️ `.agent/skills/` usa enlaces selectivos (Approach 2)
 - ✅ Funcionando correctamente
@@ -783,17 +878,20 @@ Antigravity: Carga skill "testing-skill"
 ### Configuración Recomendada
 
 **Modo de Agente:**
+
 - ✅ **Agent-assisted Development** (default recomendado)
 - ✅ Planning Mode para tareas complejas
 - ✅ Fast Mode para cambios simples
 
 **Seguridad:**
+
 - ✅ Terminal Execution: Request Review o Deny List
 - ✅ Review Policies: Agent Decides
 - ✅ JavaScript Execution: Request Review
 - ✅ Browser URL Allowlist configurado
 
 **Listas de Control:**
+
 ```bash
 # Deny List recomendada
 ~/.gemini/antigravity/denyList.txt:
@@ -813,18 +911,18 @@ wget
 
 ### Antigravity vs Cursor vs Claude Code
 
-| Característica | Antigravity | Cursor | Claude Code |
-|:--------------|:-----------|:-------|:------------|
-| **Agent Modes** | Planning/Fast | N/A | N/A |
-| **Review Policies** | 3 niveles (Always/Agent/Request) | Built-in | Via hooks |
-| **Terminal Control** | 3 modos + Lists | Basic | Via hooks |
-| **Artifacts** | ✅ Nativos (Plans, Diffs, Walkthroughs) | Limited | Limited |
-| **Rules** | ✅ `.agent/rules/` | N/A | N/A |
-| **Workflows** | ✅ `.agent/workflows/` | Commands (`.cursor/commands/`) | Commands (`.claude/commands/`) |
-| **Skills** | ✅ `.agent/skills/` | Skills (`.cursor/skills/`) | Skills (`.claude/skills/`) |
-| **MCP Support** | ⚠️ Solo global | ✅ Project-level | ✅ Project-level |
-| **Subagents** | ✅ Built-in (Browser, Terminal) | ✅ Custom | ✅ Custom |
-| **Security** | ✅ Allow/Deny Lists nativos | Basic | Via hooks |
+| Característica       | Antigravity                             | Cursor                         | Claude Code                    |
+| :------------------- | :-------------------------------------- | :----------------------------- | :----------------------------- |
+| **Agent Modes**      | Planning/Fast                           | N/A                            | N/A                            |
+| **Review Policies**  | 3 niveles (Always/Agent/Request)        | Built-in                       | Via hooks                      |
+| **Terminal Control** | 3 modos + Lists                         | Basic                          | Via hooks                      |
+| **Artifacts**        | ✅ Nativos (Plans, Diffs, Walkthroughs) | Limited                        | Limited                        |
+| **Rules**            | ✅ `.agent/rules/`                      | N/A                            | N/A                            |
+| **Workflows**        | ✅ `.agent/workflows/`                  | Commands (`.cursor/commands/`) | Commands (`.claude/commands/`) |
+| **Skills**           | ✅ `.agent/skills/`                     | Skills (`.cursor/skills/`)     | Skills (`.claude/skills/`)     |
+| **MCP Support**      | ⚠️ Solo global                          | ✅ Project-level               | ✅ Project-level               |
+| **Subagents**        | ✅ Built-in (Browser, Terminal)         | ✅ Custom                      | ✅ Custom                      |
+| **Security**         | ✅ Allow/Deny Lists nativos             | Basic                          | Via hooks                      |
 
 ### Antigravity Strengths
 
@@ -847,10 +945,12 @@ wget
 ### Agente No Respeta Rules
 
 **Síntomas:**
+
 - Agente ignora estándares definidos
 - Código no sigue convenciones
 
 **Solución:**
+
 ```bash
 # Verificar ubicación de rules
 ls .agent/rules/
@@ -865,10 +965,12 @@ cat .agent/rules/code-style.md
 ### Comandos Bloqueados Incorrectamente
 
 **Síntomas:**
+
 - Comandos legítimos requieren revisión
 - Workflow interrumpido frecuentemente
 
 **Solución:**
+
 ```bash
 # Revisar Allow List
 cat ~/.gemini/antigravity/allowList.txt
@@ -884,10 +986,12 @@ echo "npm test" >> ~/.gemini/antigravity/allowList.txt
 ### Artifacts No Se Generan
 
 **Síntomas:**
+
 - No hay Implementation Plans
 - Code Diffs no aparecen
 
 **Solución:**
+
 - Verificar Review Policy: debe ser "Request Review" o "Agent Decides"
 - Cambiar a Planning Mode para tareas complejas
 - Settings → Review Policies → Agent Decides
@@ -895,10 +999,12 @@ echo "npm test" >> ~/.gemini/antigravity/allowList.txt
 ### MCP No Funciona
 
 **Síntomas:**
+
 - Context7 no responde
 - MCP tools no disponibles
 
 **Solución:**
+
 ```bash
 # Verificar configuración global
 cat ~/.gemini/antigravity/mcp_config.json
@@ -968,12 +1074,14 @@ echo $CONTEXT7_API_KEY
 ### Recomendaciones Generales
 
 **Empezar con:**
+
 - ✅ Review-driven Development o Agent-assisted
 - ✅ Planning Mode activado
 - ✅ Terminal Execution: Request Review
 - ✅ Review Policies: Agent Decides
 
 **Gradualmente moverse a:**
+
 - ✅ Agent-assisted Development
 - ✅ Fast Mode para tareas simples
 - ✅ Deny List approach (con lista comprehensiva)

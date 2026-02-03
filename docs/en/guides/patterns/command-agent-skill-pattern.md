@@ -66,6 +66,7 @@ This command launches the doc-improver agent...
 ```
 
 **Propósito:**
+
 - ✅ Documenta qué hace el comando
 - ✅ Define argumentos aceptados
 - ✅ Explica uso y ejemplos
@@ -92,11 +93,13 @@ tools: ["Read", "Glob", "Grep", "Edit", "Write", "Skill"]
 You are a Documentation Quality Agent...
 
 ## Phase 1: Discovery
+
 1. Read `.agents/rules/process/documentation.md`
 2. Explore target with Glob
 3. Map documentation structure
 
 ## Phase 2: Analysis
+
 1. Content quality checks
 2. Coverage checks
 3. Standards compliance
@@ -105,6 +108,7 @@ You are a Documentation Quality Agent...
 ```
 
 **Propósito:**
+
 - ✅ Contiene la lógica del workflow
 - ✅ Define cuándo se activa (description + examples)
 - ✅ Especifica qué tools puede usar
@@ -120,17 +124,20 @@ You are a Documentation Quality Agent...
 # Documentation Standards
 
 ## README Structure
+
 - Use H1 for title
 - Include What, Why, How, Where sections
-...
+  ...
 
 ## File Naming
+
 - Use kebab-case: setup-guide.md
 - Markdown extension: .md
-...
+  ...
 ```
 
 **Propósito:**
+
 - ✅ **Siempre disponibles** en contexto del agente
 - ✅ Define estándares del proyecto
 - ✅ Restricciones que DEBE seguir el agente
@@ -151,17 +158,20 @@ description: Use when generating API documentation from code
 ## Patterns for Different Languages
 
 ### JavaScript/TypeScript
+
 - Use JSDoc comments
 - Extract from function signatures
-...
+  ...
 
 ### Python
+
 - Use docstrings
 - Follow PEP 257
-...
+  ...
 ```
 
 **Propósito:**
+
 - ✅ Conocimiento profundo sobre dominio específico
 - ✅ Invocable on-demand (no siempre en contexto)
 - ✅ Puede incluir ejemplos, templates, scripts
@@ -182,6 +192,7 @@ El comando `improve-docs.md` se ejecuta y su contenido se pasa al sistema.
 ### 2. Agent Layer (Lógica)
 
 El agente `doc-improver` se activa porque:
+
 - User invocó `/improve-docs` (detectado en examples)
 - O preguntó por documentación (detectado en description)
 
@@ -243,11 +254,13 @@ El agente `doc-improver` se activa porque:
 ### Command (Siempre)
 
 Crea un command cuando:
+
 - ✅ Quieres interfaz invocable (`/nombre`)
 - ✅ Necesitas aceptar argumentos del usuario
 - ✅ Quieres documentar uso para el equipo
 
 **Ejemplos:**
+
 - `/improve-docs [path]`
 - `/review-code [file]`
 - `/generate-tests [module]`
@@ -255,12 +268,14 @@ Crea un command cuando:
 ### Agent (Para Lógica Compleja)
 
 Crea un agent cuando:
+
 - ✅ Workflow multi-paso autónomo
 - ✅ Necesita tomar decisiones
 - ✅ Requiere múltiples tools
 - ✅ Lógica de negocio compleja
 
 **Ejemplos:**
+
 - `doc-improver` - Audita y mejora docs
 - `code-reviewer` - Revisa código vs estándares
 - `test-generator` - Genera tests automáticamente
@@ -268,12 +283,14 @@ Crea un agent cuando:
 ### Skill (Para Conocimiento Profundo)
 
 Crea un skill cuando:
+
 - ✅ Conocimiento especializado reutilizable
 - ✅ Muy grande para estar siempre en contexto
 - ✅ Múltiples agentes necesitan ese conocimiento
 - ✅ Incluye ejemplos, templates, scripts
 
 **Ejemplos:**
+
 - `api-doc-generator` - Cómo documentar APIs
 - `test-patterns` - Patrones de testing por framework
 - `deployment-procedures` - Procedimientos de deploy
@@ -281,12 +298,14 @@ Crea un skill cuando:
 ### Rule (Para Restricciones del Proyecto)
 
 Crea un rule cuando:
+
 - ✅ **Debe estar siempre disponible**
 - ✅ Convenciones del proyecto
 - ✅ Estándares de código
 - ✅ Restricciones arquitectónicas
 
 **Ejemplos:**
+
 - `documentation.md` - Estándares de docs
 - `code-style.md` - Estilo de código
 - `git-workflow.md` - Flujo de Git
@@ -324,6 +343,7 @@ tools: ["Read", "Grep", "Skill"]
 You are a Code Quality Reviewer...
 
 ## Process:
+
 1. Read `.agents/rules/code/style.md`
 2. Read target file
 3. Check against standards:
@@ -341,10 +361,11 @@ You are a Code Quality Reviewer...
 # Code Style Guidelines
 
 ## Naming Conventions
+
 - Functions: camelCase
 - Classes: PascalCase
 - Constants: UPPER_SNAKE_CASE
-...
+  ...
 ```
 
 ### Skills (opcional): `.agents/skills/security-patterns/skill.md`
@@ -358,10 +379,11 @@ description: Security best practices and vulnerability patterns
 # Security Patterns
 
 ## Common Vulnerabilities
+
 - SQL Injection
 - XSS
 - CSRF
-...
+  ...
 ```
 
 ## Ventajas de Este Patrón
@@ -399,6 +421,7 @@ Skills     → Conocimiento (cómo hacerlo bien)
 ### 4. Transversalidad
 
 Este patrón funciona para **cualquier proyecto** porque:
+
 - ✅ No depende de tecnología específica
 - ✅ Rules definen las convenciones del proyecto
 - ✅ Agents implementan workflows universales
@@ -443,6 +466,7 @@ You are [agent role]...
 ### 3. Referencia Rules Existentes
 
 El agente debe leer:
+
 - `.agents/rules/code/style.md`
 - `.agents/rules/process/documentation.md`
 - `.agents/rules/quality/testing.md`

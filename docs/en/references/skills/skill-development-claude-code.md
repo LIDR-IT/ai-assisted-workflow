@@ -35,29 +35,34 @@ version: 0.1.0
 ### Frontmatter Fields
 
 **`name`** (required)
+
 - Skill identifier
 - Clear, descriptive name
 - Used for discovery and reference
 
 **`description`** (required)
+
 - **Critical for triggering**
 - Use third-person: "This skill should be used when..."
 - Include concrete trigger phrases users would say
 - 2-4 specific examples
 
 **`version`** (optional)
+
 - Semantic versioning: `0.1.0`
 - Helps track changes
 
 ### Description Best Practices
 
 ✅ **Good:**
+
 ```yaml
 description: This skill should be used when the user asks to "create a hook",
 "add a PreToolUse hook", "validate tool use", or "implement hook validation"
 ```
 
 ❌ **Bad:**
+
 ```yaml
 description: Provides guidance for working with hooks
 ```
@@ -69,6 +74,7 @@ description: Provides guidance for working with hooks
 **Length:** 1,500-2,000 words (maximum 5,000)
 
 **Writing Style:**
+
 - Use imperative/infinitive form: "Start by...", "To accomplish X, do Y"
 - **Never use second person:** Avoid "You should", "You need to", "You will"
 - Be direct and actionable
@@ -76,6 +82,7 @@ description: Provides guidance for working with hooks
 **Example:**
 
 ✅ **Correct:**
+
 ```markdown
 Start by reading the configuration file.
 Validate the schema against the expected format.
@@ -83,6 +90,7 @@ Generate hooks based on the template.
 ```
 
 ❌ **Incorrect:**
+
 ```markdown
 You should start by reading the configuration file.
 You need to validate the schema.
@@ -101,6 +109,7 @@ See **`references/patterns.md`** for comprehensive hook patterns.
 ## Examples
 
 Working examples are in **`examples/`** directory:
+
 - `examples/pre-tool-use.js` - PreToolUse hook
 - `examples/post-bash.js` - PostBash hook
 
@@ -118,17 +127,20 @@ Use **`scripts/validate-hook.sh`** to validate hook implementations.
 **Purpose:** Executable code for deterministic, repeatable tasks.
 
 **When to Include:**
+
 - Code that gets rewritten repeatedly
 - Validation scripts
 - Utility functions
 - Common operations
 
 **Benefits:**
+
 - Token-efficient
 - Deterministic execution
 - May execute without loading into context
 
 **Examples:**
+
 ```
 scripts/
 ├── validate-hook.sh
@@ -141,6 +153,7 @@ scripts/
 **Purpose:** Documentation loaded as-needed into context.
 
 **When to Include:**
+
 - Detailed patterns and techniques
 - API documentation
 - Configuration schemas
@@ -150,6 +163,7 @@ scripts/
 **Size:** Each file can be 2,000-5,000+ words
 
 **Examples:**
+
 ```
 references/
 ├── hook-patterns.md
@@ -164,11 +178,13 @@ references/
 **Purpose:** Working code examples.
 
 **When to Include:**
+
 - Complete, runnable examples
 - Different use case demonstrations
 - Template implementations
 
 **Examples:**
+
 ```
 examples/
 ├── basic-hook.js
@@ -181,12 +197,14 @@ examples/
 **Purpose:** Files for output generation, **not** context loading.
 
 **When to Include:**
+
 - Templates
 - Images/icons
 - Boilerplate code
 - Brand assets
 
 **Examples:**
+
 ```
 assets/
 ├── logo.png
@@ -201,7 +219,9 @@ assets/
 Skills use a three-level loading system:
 
 ### Level 1: Metadata (~100 words)
+
 **Always loaded**
+
 - Skill name
 - Description
 - Version
@@ -209,7 +229,9 @@ Skills use a three-level loading system:
 **Purpose:** Skill discovery and triggering
 
 ### Level 2: SKILL.md Body (<5,000 words)
+
 **Loaded when skill triggers**
+
 - Main instructions
 - Process workflows
 - References to resources
@@ -217,7 +239,9 @@ Skills use a three-level loading system:
 **Purpose:** Primary guidance for task execution
 
 ### Level 3: Bundled Resources (Variable size)
+
 **Loaded as Claude determines necessary**
+
 - Detailed documentation
 - Complex examples
 - Utility scripts
@@ -231,11 +255,13 @@ Skills use a three-level loading system:
 ### Step 1: Understand Use Cases
 
 **Identify concrete examples:**
+
 - What specific tasks will this skill handle?
 - What phrases would users say?
 - What are common variations?
 
 **Ask clarifying questions** (don't overwhelm):
+
 - "What's the primary use case?"
 - "What triggers should activate this skill?"
 - "Are there related tasks to include?"
@@ -245,6 +271,7 @@ Skills use a three-level loading system:
 For each use case, determine what resources help:
 
 **Analysis Questions:**
+
 - Is code repeatedly rewritten? → `scripts/`
 - Do users need detailed docs? → `references/`
 - Are working examples helpful? → `examples/`
@@ -252,6 +279,7 @@ For each use case, determine what resources help:
 
 **Example:**
 For a PDF editing skill:
+
 - Rotating PDFs → `scripts/rotate_pdf.py` (deterministic)
 - Format specifications → `references/pdf-spec.md` (detailed)
 - Sample workflows → `examples/batch-process.js` (complete)
@@ -260,12 +288,14 @@ For a PDF editing skill:
 ### Step 3: Create Structure
 
 **For plugin skills:**
+
 ```bash
 mkdir -p plugin-name/skills/skill-name/{references,examples,scripts,assets}
 touch plugin-name/skills/skill-name/SKILL.md
 ```
 
 **For personal skills:**
+
 ```bash
 mkdir -p ~/.claude/skills/skill-name/{references,examples,scripts}
 touch ~/.claude/skills/skill-name/SKILL.md
@@ -278,18 +308,21 @@ touch ~/.claude/skills/skill-name/SKILL.md
 **Answer these questions:**
 
 1. **What's the purpose?** (few sentences)
+
    ```markdown
    This skill provides guidance for creating and managing Git hooks
    in Claude Code plugins.
    ```
 
 2. **When should it be used?** (specific triggers in description)
+
    ```yaml
    description: This skill should be used when asking to "create a hook",
    "add a PreToolUse hook", "implement hook validation"
    ```
 
 3. **How should Claude use it?** (reference resources)
+
    ```markdown
    ## Hook Patterns
 
@@ -320,6 +353,7 @@ chmod +x scripts/validate-hook.sh
 ### Step 6: Validate
 
 **Structure Checklist:**
+
 - [ ] Skill in correct location (`plugin-name/skills/skill-name/` or `~/.claude/skills/`)
 - [ ] SKILL.md has required frontmatter (name, description)
 - [ ] Description includes specific trigger phrases
@@ -333,6 +367,7 @@ chmod +x scripts/validate-hook.sh
 ### Step 7: Test
 
 **Test triggering:**
+
 ```bash
 # Start Claude Code
 cc
@@ -343,6 +378,7 @@ cc
 ```
 
 **Verify:**
+
 - Skill activates correctly
 - Referenced files load as needed
 - Scripts execute properly
@@ -351,6 +387,7 @@ cc
 ### Step 8: Iterate
 
 **After testing, improve based on:**
+
 - Strengthen trigger phrases if skill doesn't activate
 - Move long SKILL.md sections to `references/`
 - Add missing examples or scripts
@@ -388,18 +425,22 @@ cc
 ## Skill Complexity Levels
 
 ### Minimal Skill
+
 **Structure:** SKILL.md only
 
 **When:** Simple knowledge or guidance
+
 ```
 skill-name/
 └── SKILL.md
 ```
 
 ### Standard Skill (Recommended)
+
 **Structure:** SKILL.md + references/ + examples/
 
 **When:** Most use cases
+
 ```
 skill-name/
 ├── SKILL.md
@@ -410,9 +451,11 @@ skill-name/
 ```
 
 ### Complete Skill
+
 **Structure:** All components
 
 **When:** Complex domains with validation
+
 ```
 skill-name/
 ├── SKILL.md
@@ -434,6 +477,7 @@ skill-name/
 ### Auto-Discovery
 
 Claude Code automatically:
+
 1. Scans `skills/` directory in plugins
 2. Finds subdirectories with `SKILL.md`
 3. Loads skill metadata (always in context)
@@ -443,6 +487,7 @@ Claude Code automatically:
 ### Distribution
 
 **Plugin skills distribute with the plugin:**
+
 - No separate packaging needed
 - Users get skills automatically with plugin
 - Updates deploy with plugin updates
@@ -517,12 +562,13 @@ For comprehensive patterns and advanced techniques, see **`references/hook-patte
 ### Supporting Files
 
 **examples/pre-tool-use.js:**
+
 ```javascript
 // PreToolUse hook example
 export default async function preToolUse({ toolName, toolInput }) {
   // Validate tool input
-  if (toolName === 'Bash' && !toolInput.command) {
-    throw new Error('Bash command required');
+  if (toolName === "Bash" && !toolInput.command) {
+    throw new Error("Bash command required");
   }
 
   return { approved: true };
@@ -530,6 +576,7 @@ export default async function preToolUse({ toolName, toolInput }) {
 ```
 
 **scripts/validate-hook.sh:**
+
 ```bash
 #!/bin/bash
 # Validate hook implementation
@@ -537,13 +584,16 @@ node -c "$1" && echo "✓ Valid hook" || echo "✗ Invalid hook"
 ```
 
 **references/hook-patterns.md:**
+
 ```markdown
 # Hook Patterns
 
 ## Validation Pattern
+
 ...detailed patterns...
 
 ## Transformation Pattern
+
 ...detailed patterns...
 ```
 

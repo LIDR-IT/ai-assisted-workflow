@@ -20,23 +20,27 @@
 ## Key Capabilities
 
 ### External Service Integration
+
 - **Databases**: Connect to SQL, NoSQL, and other database systems
 - **APIs**: Integrate with REST, GraphQL, and custom APIs
 - **File Systems**: Access local or remote file systems
 - **Cloud Services**: Connect to AWS, Google Cloud, Azure, etc.
 
 ### Multi-Tool Support
+
 - Expose multiple related tools from a single MCP server
 - Group related functionality under one service connection
 - Reduce configuration overhead
 
 ### Authentication Management
+
 - **OAuth Flows**: Handle complex OAuth 2.0 authentication
 - **Token Management**: Secure token storage and refresh
 - **API Keys**: Support for API key authentication
 - **Custom Auth**: Implement custom authentication schemes
 
 ### Automatic Setup
+
 - Bundle MCP servers with plugins
 - Automatic installation and configuration
 - Seamless user experience
@@ -48,12 +52,14 @@
 Create a separate configuration file at the plugin root.
 
 **Advantages:**
+
 - Clear separation of concerns
 - Easier maintenance
 - Better support for multiple servers
 - Cleaner plugin.json structure
 
 **File Structure:**
+
 ```
 my-plugin/
 ├── plugin.json
@@ -63,6 +69,7 @@ my-plugin/
 ```
 
 **Example .mcp.json:**
+
 ```json
 {
   "mcpServers": {
@@ -89,15 +96,18 @@ my-plugin/
 Add `mcpServers` field directly to plugin.json.
 
 **Advantages:**
+
 - Simpler for single-server plugins
 - All configuration in one file
 - Quick setup
 
 **Disadvantages:**
+
 - Less scalable for multiple servers
 - Mixes plugin metadata with MCP config
 
 **Example plugin.json:**
+
 ```json
 {
   "name": "database-plugin",
@@ -121,12 +131,14 @@ Add `mcpServers` field directly to plugin.json.
 Execute local MCP servers as child processes.
 
 **Best For:**
+
 - File systems
 - Local databases
 - Custom servers
 - Tools requiring local execution
 
 **Configuration Example:**
+
 ```json
 {
   "mcpServers": {
@@ -140,6 +152,7 @@ Execute local MCP servers as child processes.
 ```
 
 **Characteristics:**
+
 - Process spawned locally
 - Direct stdin/stdout communication
 - Full control over execution
@@ -150,12 +163,14 @@ Execute local MCP servers as child processes.
 Connect to hosted MCP servers with OAuth support.
 
 **Best For:**
+
 - Cloud services
 - OAuth-protected APIs
 - Hosted MCP servers
 - Services requiring persistent connections
 
 **Configuration Example:**
+
 ```json
 {
   "mcpServers": {
@@ -171,6 +186,7 @@ Connect to hosted MCP servers with OAuth support.
 ```
 
 **Characteristics:**
+
 - Server-sent events for updates
 - OAuth flow support
 - Remote server connectivity
@@ -181,12 +197,14 @@ Connect to hosted MCP servers with OAuth support.
 Connect to RESTful servers with token authentication.
 
 **Best For:**
+
 - Stateless API interactions
 - REST endpoints
 - Simple token authentication
 - Request/response patterns
 
 **Configuration Example:**
+
 ```json
 {
   "mcpServers": {
@@ -203,6 +221,7 @@ Connect to RESTful servers with token authentication.
 ```
 
 **Characteristics:**
+
 - Standard HTTP requests
 - Token-based auth
 - Stateless communication
@@ -213,12 +232,14 @@ Connect to RESTful servers with token authentication.
 Enable bidirectional communication for streaming data.
 
 **Best For:**
+
 - Streaming data
 - Real-time updates
 - Persistent connections
 - Bidirectional communication
 
 **Configuration Example:**
+
 ```json
 {
   "mcpServers": {
@@ -234,6 +255,7 @@ Enable bidirectional communication for streaming data.
 ```
 
 **Characteristics:**
+
 - Full-duplex communication
 - Real-time data streaming
 - Persistent connection
@@ -246,11 +268,13 @@ All configurations support environment variable substitution for security and po
 ### Built-in Variables
 
 **`${CLAUDE_PLUGIN_ROOT}`**
+
 - Points to the plugin's root directory
 - Ensures portability across installations
 - Use for relative paths within plugin
 
 **Example:**
+
 ```json
 {
   "mcpServers": {
@@ -301,11 +325,13 @@ mcp__plugin_<plugin-name>_<server-name>__<tool-name>
 ### Example
 
 If you have:
+
 - Plugin name: `database-tools`
 - Server name: `postgres`
 - Tool name: `query`
 
 The full tool name becomes:
+
 ```
 mcp__plugin_database-tools_postgres__query
 ```
@@ -327,15 +353,20 @@ Query the database using the provided SQL statement.
 ```
 
 **Avoid wildcards** for security:
+
 ```markdown
 # ❌ Don't do this
+
 allowed_tools:
-  - mcp__plugin_database-tools_*
+
+- mcp\__plugin_database-tools_\*
 
 # ✅ Do this instead
+
 allowed_tools:
-  - mcp__plugin_database-tools_postgres__query
-  - mcp__plugin_database-tools_postgres__execute
+
+- mcp**plugin_database-tools_postgres**query
+- mcp**plugin_database-tools_postgres**execute
 ```
 
 ## Implementation Workflow
@@ -343,6 +374,7 @@ allowed_tools:
 ### Step 1: Select Server Type
 
 Choose the appropriate MCP server type based on your integration needs:
+
 - **stdio**: Local processes, file systems
 - **SSE**: Cloud services, OAuth
 - **HTTP**: REST APIs, simple auth
@@ -416,10 +448,12 @@ Implement error handling:
 ## Troubleshooting
 
 **Error: Missing API token**
+
 - Set the `MY_SERVICE_TOKEN` environment variable
 - Get your token from https://myservice.com/settings
 
 **Error: Connection refused**
+
 - Check your internet connection
 - Verify the service is accessible
 ```
@@ -427,6 +461,7 @@ Implement error handling:
 ### Step 7: Document Integration
 
 Update README with:
+
 - Overview of MCP integration
 - Required environment variables
 - Setup instructions
@@ -442,7 +477,7 @@ Update README with:
 {
   "mcpServers": {
     "secure-api": {
-      "url": "https://api.example.com",  // ✅ HTTPS
+      "url": "https://api.example.com", // ✅ HTTPS
       "transport": "http"
     }
   }
@@ -453,7 +488,7 @@ Update README with:
 {
   "mcpServers": {
     "secure-ws": {
-      "url": "wss://api.example.com",  // ✅ WSS (secure WebSocket)
+      "url": "wss://api.example.com", // ✅ WSS (secure WebSocket)
       "transport": "websocket"
     }
   }
@@ -509,11 +544,11 @@ Add validation in your plugin:
 
 ```javascript
 // Validate required environment variables
-const requiredVars = ['API_TOKEN', 'DATABASE_URL'];
-const missing = requiredVars.filter(v => !process.env[v]);
+const requiredVars = ["API_TOKEN", "DATABASE_URL"];
+const missing = requiredVars.filter((v) => !process.env[v]);
 
 if (missing.length > 0) {
-  throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+  throw new Error(`Missing required environment variables: ${missing.join(", ")}`);
 }
 ```
 
@@ -529,6 +564,7 @@ if (missing.length > 0) {
 ### Example 1: PostgreSQL Database Integration
 
 **Plugin Structure:**
+
 ```
 postgres-plugin/
 ├── plugin.json
@@ -538,6 +574,7 @@ postgres-plugin/
 ```
 
 **.mcp.json:**
+
 ```json
 {
   "mcpServers": {
@@ -553,11 +590,13 @@ postgres-plugin/
 ```
 
 **.env.example:**
+
 ```bash
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 ```
 
 **Command (commands/query.md):**
+
 ```markdown
 ---
 name: query-db
@@ -572,6 +611,7 @@ Execute the provided SQL query on the PostgreSQL database.
 ### Example 2: GitHub API Integration
 
 **.mcp.json:**
+
 ```json
 {
   "mcpServers": {
@@ -587,6 +627,7 @@ Execute the provided SQL query on the PostgreSQL database.
 ```
 
 **Available Tools:**
+
 - `mcp__plugin_github_github__list_repos`
 - `mcp__plugin_github_github__create_issue`
 - `mcp__plugin_github_github__get_pr`
@@ -595,22 +636,20 @@ Execute the provided SQL query on the PostgreSQL database.
 ### Example 3: File System Integration
 
 **.mcp.json:**
+
 ```json
 {
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "${CLAUDE_PLUGIN_ROOT}/workspace"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${CLAUDE_PLUGIN_ROOT}/workspace"]
     }
   }
 }
 ```
 
 **Available Tools:**
+
 - `mcp__plugin_fs_filesystem__read_file`
 - `mcp__plugin_fs_filesystem__write_file`
 - `mcp__plugin_fs_filesystem__list_directory`
@@ -619,39 +658,44 @@ Execute the provided SQL query on the PostgreSQL database.
 ### Example 4: Custom MCP Server
 
 **Custom Server (server/index.js):**
+
 ```javascript
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 const server = new Server({
-  name: 'my-custom-server',
-  version: '1.0.0',
+  name: "my-custom-server",
+  version: "1.0.0",
 });
 
 // Define tools
-server.setRequestHandler('tools/list', async () => ({
-  tools: [{
-    name: 'custom_tool',
-    description: 'My custom tool',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        input: { type: 'string' }
-      }
-    }
-  }]
+server.setRequestHandler("tools/list", async () => ({
+  tools: [
+    {
+      name: "custom_tool",
+      description: "My custom tool",
+      inputSchema: {
+        type: "object",
+        properties: {
+          input: { type: "string" },
+        },
+      },
+    },
+  ],
 }));
 
 // Handle tool calls
-server.setRequestHandler('tools/call', async (request) => {
+server.setRequestHandler("tools/call", async (request) => {
   const { name, arguments: args } = request.params;
 
-  if (name === 'custom_tool') {
+  if (name === "custom_tool") {
     return {
-      content: [{
-        type: 'text',
-        text: `Processed: ${args.input}`
-      }]
+      content: [
+        {
+          type: "text",
+          text: `Processed: ${args.input}`,
+        },
+      ],
     };
   }
 });
@@ -661,6 +705,7 @@ await server.connect(transport);
 ```
 
 **.mcp.json:**
+
 ```json
 {
   "mcpServers": {
@@ -679,6 +724,7 @@ await server.connect(transport);
 **Symptom:** Server fails to start or connect
 
 **Solutions:**
+
 ```bash
 # Check MCP server logs
 /mcp logs my-server
@@ -698,6 +744,7 @@ ps aux | grep mcp
 **Symptom:** MCP tools not showing up in Claude Code
 
 **Solutions:**
+
 ```bash
 # List MCP servers
 /mcp list
@@ -716,6 +763,7 @@ ps aux | grep mcp
 **Symptom:** 401 Unauthorized or 403 Forbidden errors
 
 **Solutions:**
+
 - Verify API token is set correctly
 - Check token has required permissions
 - Test token with curl or API client
@@ -727,6 +775,7 @@ ps aux | grep mcp
 **Symptom:** Variables appear as literal `${VAR}` strings
 
 **Solutions:**
+
 - Ensure variable is exported in shell
 - Restart Claude Code after setting variables
 - Check variable name spelling
@@ -737,13 +786,13 @@ ps aux | grep mcp
 
 Popular MCP servers from the community:
 
-| Server | Purpose | Package |
-|--------|---------|---------|
-| PostgreSQL | Database queries | `@modelcontextprotocol/server-postgres` |
-| GitHub | GitHub API access | `@modelcontextprotocol/server-github` |
-| File System | File operations | `@modelcontextprotocol/server-filesystem` |
-| Google Drive | Drive integration | `@modelcontextprotocol/server-gdrive` |
-| Slack | Slack messaging | `@modelcontextprotocol/server-slack` |
+| Server       | Purpose           | Package                                   |
+| ------------ | ----------------- | ----------------------------------------- |
+| PostgreSQL   | Database queries  | `@modelcontextprotocol/server-postgres`   |
+| GitHub       | GitHub API access | `@modelcontextprotocol/server-github`     |
+| File System  | File operations   | `@modelcontextprotocol/server-filesystem` |
+| Google Drive | Drive integration | `@modelcontextprotocol/server-gdrive`     |
+| Slack        | Slack messaging   | `@modelcontextprotocol/server-slack`      |
 
 ## Resources
 

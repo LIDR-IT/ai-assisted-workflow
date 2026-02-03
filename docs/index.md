@@ -3,7 +3,7 @@
 Select your language / Selecciona tu idioma:
 
 - [🇬🇧 English](/en/)
-- [🇪🇸 Español](/es/) *(Coming soon / Próximamente)*
+- [🇪🇸 Español](/es/) _(Coming soon / Próximamente)_
 
 ---
 

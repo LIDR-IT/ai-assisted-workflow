@@ -1,5 +1,5 @@
 ---
-description: Sincroniza toda la configuración de AI (rules, skills, commands, agents, MCP)
+description: Sincroniza toda la configuración de AI (rules, skills, commands, agents, MCP, hooks)
 allowed-tools: Bash
 model: sonnet
 ---
@@ -17,6 +17,9 @@ Ejecuta el proceso completo de sincronización de la configuración multi-agente
    - Sincroniza commands desde `.agents/commands/`
    - Sincroniza subagents desde `.agents/subagents/`
    - Sincroniza MCP configs desde `.agents/mcp/`
+   - Sincroniza hooks desde `.agents/hooks/` (workflow automation)
+     - **Cursor:** `protect-secrets-post.sh` (primero) + `auto-format.sh` (segundo)
+     - **Claude/Gemini:** `protect-secrets.sh` + `auto-format.sh` + `notify.sh`
 
 2. **Verificar sincronización**
    - Verificar symlinks de Cursor, Claude, Gemini
@@ -51,9 +54,24 @@ ls -la .agent/workflows/ | grep "\->"
 
 # 5. Verificar MCP configs existen
 ls -la .cursor/mcp.json .claude/mcp.json .gemini/settings.json
+
+# 6. Verificar hooks (git workflow automation)
+ls -la .cursor/hooks/
+ls -la .claude/hooks/
+ls -la .gemini/hooks/
+
+# 7. Validar configuraciones de hooks
+jq . .cursor/hooks.json
+jq .hooks .claude/settings.json
+jq .hooks .gemini/settings.json
+
+# 8. Verificar orden de hooks en Cursor (protect-secrets-post DEBE ser primero)
+echo "Cursor hook order (should be protect-secrets-post first):"
+jq '.hooks.afterFileEdit[0].command' .cursor/hooks.json
 ```
 
 Presenta un resumen claro del resultado con:
+
 - ✅ Componentes sincronizados exitosamente
 - ⚠️ Advertencias si las hay
 - ❌ Errores que requieran atención
@@ -65,8 +83,140 @@ Si estás usando Antigravity, **cierra y reabre el proyecto** después del sync 
 
 **Por qué:** Antigravity carga las rules en memoria al inicio y solo detecta cambios en archivos que se modifican DESPUÉS de haberlos cargado. El sync actualiza timestamps, pero Antigravity ya tiene las rules cacheadas.
 
+**Limitaciones de Antigravity:**
+
+- Hooks solo soportados a nivel global (`~/.gemini/antigravity/hooks/`), no a nivel proyecto
+- Subagents no soportados (directorio `.agents/subagents/` no se sincroniza)
+
 **Workflow recomendado:**
+
 1. Ejecutar sync: `./.agents/sync-all.sh`
 2. Cerrar proyecto en Antigravity
 3. Reabrir proyecto
 4. Las rules actualizadas se cargarán automáticamente
+
+## 🔑 IMPORTANTE - Cursor Hook Order
+
+El orden de los hooks en Cursor es **CRÍTICO**:
+
+```json
+{
+  "afterFileEdit": [
+    { "command": "protect-secrets-post.sh" }, // ← PRIMERO
+    { "command": "auto-format.sh" } // ← SEGUNDO
+  ]
+}
+```
+
+**Por qué:** Si `auto-format.sh` se ejecuta primero y modifica el archivo, `protect-secrets-post.sh` no podrá detectar correctamente el patrón sensible para revertir con git.
+
+**El sync-hooks.sh ya maneja este orden automáticamente.**
+
+## Hooks por Plataforma
+
+| Hook                        | Claude Code     | Gemini CLI      | Cursor               |
+| --------------------------- | --------------- | --------------- | -------------------- |
+| **protect-secrets.sh**      | ✅ PreToolUse   | ✅ BeforeTool   | ❌ No beforeFileEdit |
+| **protect-secrets-post.sh** | ❌ N/A          | ❌ N/A          | ✅ afterFileEdit     |
+| **auto-format.sh**          | ✅ PostToolUse  | ✅ AfterTool    | ✅ afterFileEdit     |
+| **notify.sh**               | ✅ Notification | ✅ Notification | ❌ No soportado      |
+
+## 🛡️ Husky - Backup a Nivel de Proyecto
+
+**Husky + lint-staged** funcionan como **backup para TODAS las plataformas**, no solo para Cursor:
+
+- **Nivel:** Git hooks (proyecto completo)
+- **Garantiza:** Formateo y validación antes de commit
+- **Plataformas afectadas:** Cursor, Claude Code, Gemini CLI, Antigravity
+- **Ventaja:** Funciona incluso si los hooks de la plataforma fallan
+
+**Estrategia multi-capa:**
+
+1. **Hooks de plataforma** (Claude/Gemini/Cursor) - Primera línea de defensa, ejecutan en tiempo real
+2. **Husky pre-commit** - Segunda línea de defensa, garantiza formateo antes de commit
+3. **protect-secrets** - Bloquea commits con archivos sensibles (.env, .key, .pem)
+
+**Configuración:**
+
+- `.husky/pre-commit` - Ejecuta lint-staged automáticamente
+- `package.json` - Define qué archivos formatear con Prettier
+- Funciona para **cualquier desarrollador** usando git, independiente de su IDE/herramienta AI
+
+## ⚠️ Limitaciones Conocidas por Plataforma
+
+### Antigravity (4 limitaciones)
+
+1. ❌ **Hooks a nivel proyecto:** Solo soporta hooks globales en `~/.gemini/antigravity/hooks/`
+   - **Impacto:** No puede usar los hooks del proyecto
+   - **Workaround:** Configurar hooks globalmente (afecta todos los proyectos)
+
+2. ❌ **Subagents:** No soporta el directorio `.agents/subagents/`
+   - **Impacto:** No puede usar doc-improver, ticket-enricher, pr-validator
+   - **Workaround:** Ninguno disponible
+
+3. ❌ **MCP a nivel proyecto:** Solo configuración global
+   - **Impacto:** MCP servers deben configurarse en `~/.gemini/antigravity/mcp_config.json`
+   - **Workaround:** Configuración manual global (ver `docs/guides/mcp/ANTIGRAVITY_LIMITATION.md`)
+
+4. ⚠️ **Rules caching:** Cachea rules en memoria al inicio
+   - **Impacto:** Cambios en rules no se detectan sin reload
+   - **Workaround:** Cerrar y reabrir proyecto después del sync
+
+### Gemini CLI (1 limitación)
+
+1. ⚠️ **Rules nativas:** No tiene soporte nativo para rules
+   - **Impacto:** Funcionalidad limitada comparada con otras plataformas
+   - **Workaround:** Se genera `GEMINI.md` como índice (workaround parcial)
+
+### Cursor (4 limitaciones)
+
+1. ❌ **Evento Notification:** No soporta eventos de notificación
+   - **Impacto:** `notify.sh` no funciona en Cursor
+   - **Workaround:** Ninguno disponible
+
+2. ❌ **PreToolUse/BeforeTool:** Solo tiene `afterFileEdit`, no `beforeFileEdit`
+   - **Impacto:** `protect-secrets.sh` no puede bloquear ANTES de editar
+   - **Workaround:** Husky pre-commit como segunda línea de defensa
+
+3. ⚠️ **Formato de rules:** Requiere extensión `.mdc` en lugar de `.md`
+   - **Impacto:** Rules deben convertirse
+   - **Workaround:** `sync-rules.sh` auto-convierte `.md` → `.mdc`
+
+4. ⚠️ **Estructura de rules:** No soporta subdirectorios
+   - **Impacto:** Rules deben estar en estructura plana
+   - **Workaround:** `sync-rules.sh` auto-flatten la estructura
+
+### Claude Code (0 limitaciones)
+
+✅ **Soporte completo** de todas las características del sistema multi-agente
+
+## 📊 Resumen de Limitaciones
+
+**Total: 9 limitaciones conocidas**
+
+- Antigravity: 4 limitaciones (2 críticas, 2 workarounds)
+- Gemini CLI: 1 limitación (workaround parcial)
+- Cursor: 4 limitaciones (2 críticas, 2 con workarounds)
+- Claude Code: 0 limitaciones ✅
+
+### Matriz de Workarounds
+
+| Limitación        | Plataforma  | Workaround          | Estado             |
+| ----------------- | ----------- | ------------------- | ------------------ |
+| No rules nativo   | Gemini CLI  | GEMINI.md índice    | ⚠️ Parcial         |
+| Rules flat        | Cursor      | Auto-flatten + .mdc | ✅ Automático      |
+| No PreToolUse     | Cursor      | Husky pre-commit    | ✅ Backup efectivo |
+| No Notification   | Cursor      | N/A                 | ❌ No disponible   |
+| MCP global        | Antigravity | Setup manual global | ⚠️ Manual          |
+| Rules caching     | Antigravity | Reload proyecto     | ⚠️ Manual          |
+| No hooks proyecto | Antigravity | Hooks globales      | ⚠️ Afecta todos    |
+| No subagents      | Antigravity | N/A                 | ❌ No disponible   |
+
+### Recomendaciones por Plataforma
+
+**Para máxima funcionalidad:**
+
+- **Claude Code** - Plataforma recomendada (soporte completo)
+- **Gemini CLI** - Buena opción (1 limitación menor)
+- **Cursor** - Funcional con workarounds (hooks limitados)
+- **Antigravity** - Limitaciones significativas (requiere configuración manual)

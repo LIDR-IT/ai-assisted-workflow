@@ -17,6 +17,7 @@ Comprehensive guide to the `.agents/` centralized source-of-truth architecture f
 The `.agents/` system provides **centralized configuration management** for AI agents across 4 platforms:
 
 **Supported Platforms:**
+
 1. **Cursor** - Full support with symlinks
 2. **Claude Code** - Full support with symlinks
 3. **Gemini CLI** - Full support with symlinks
@@ -27,16 +28,19 @@ The `.agents/` system provides **centralized configuration management** for AI a
 ### Key Benefits
 
 **Consistency:**
+
 - Single source of truth
 - No configuration drift between platforms
 - Uniform team experience
 
 **Efficiency:**
+
 - Edit once, propagate everywhere
 - Instant updates via symlinks
 - Reduced maintenance burden
 
 **Scalability:**
+
 - Add platforms easily
 - Centralized updates
 - Team-wide synchronization
@@ -95,6 +99,7 @@ Platform-specific directories receive synced configurations:
 **Purpose:** Project-wide coding standards and best practices.
 
 **Contents:**
+
 ```
 .agents/rules/
 ├── core-principles.md    # Architecture decisions
@@ -106,6 +111,7 @@ Platform-specific directories receive synced configurations:
 ```
 
 **Sync strategy:**
+
 - Cursor, Claude, Gemini: Full directory symlink
 - Antigravity: Files copied
 
@@ -114,6 +120,7 @@ Platform-specific directories receive synced configurations:
 **Purpose:** Modular packages with specialized knowledge and bundled resources.
 
 **Contents:**
+
 ```
 .agents/skills/
 ├── skill-creator/
@@ -130,6 +137,7 @@ Platform-specific directories receive synced configurations:
 ```
 
 **Sync strategy:**
+
 - Cursor, Claude, Gemini: Full directory symlink
 - Antigravity: Selective symlinks per-skill
 
@@ -138,6 +146,7 @@ Platform-specific directories receive synced configurations:
 **Purpose:** Frequently-used prompts as Markdown files.
 
 **Contents:**
+
 ```
 .agents/commands/
 ├── sync-setup.md
@@ -145,6 +154,7 @@ Platform-specific directories receive synced configurations:
 ```
 
 **Sync strategy:**
+
 - Cursor, Claude, Gemini: Full directory symlink
 - Antigravity: Files copied to `.agent/workflows/`
 
@@ -153,6 +163,7 @@ Platform-specific directories receive synced configurations:
 **Purpose:** MCP (Model Context Protocol) server configurations.
 
 **Contents:**
+
 ```
 .agents/mcp/
 ├── mcp-servers.json      # Source of truth
@@ -160,6 +171,7 @@ Platform-specific directories receive synced configurations:
 ```
 
 **Sync strategy:**
+
 - All platforms: Generated platform-specific configs from source
 - Antigravity: Global config only (project-level not supported)
 
@@ -171,17 +183,20 @@ Platform-specific directories receive synced configurations:
 **Platforms:** Cursor, Claude Code, Gemini CLI
 
 **Mechanism:**
+
 ```bash
 ln -s ../.agents/skills .cursor/skills
 ```
 
 **Advantages:**
+
 - ✅ Instant propagation of changes
 - ✅ Zero duplication
 - ✅ Filesystem-native
 - ✅ No manual sync needed
 
 **Example:**
+
 ```
 .cursor/skills → ../.agents/skills
 .claude/skills → ../.agents/skills
@@ -194,6 +209,7 @@ ln -s ../.agents/skills .cursor/skills
 **Platforms:** All (except Antigravity project-level)
 
 **Mechanism:**
+
 ```bash
 # Source: .agents/mcp/mcp-servers.json
 # Script: .agents/mcp/sync-mcp.sh
@@ -204,6 +220,7 @@ ln -s ../.agents/skills .cursor/skills
 ```
 
 **Advantages:**
+
 - ✅ Platform-specific formatting
 - ✅ Validation during generation
 - ✅ Preprocessing/transformation
@@ -215,12 +232,14 @@ ln -s ../.agents/skills .cursor/skills
 **Platform:** Antigravity only
 
 **Mechanism:**
+
 ```bash
 cp -r .agents/rules/*.md .agent/rules/
 cp -r .agents/commands/*.md .agent/workflows/
 ```
 
 **Limitations:**
+
 - ⚠️ Manual sync required after edits
 - ⚠️ No instant propagation
 - ⚠️ Platform limitation (no directory symlink support)
@@ -233,51 +252,58 @@ cp -r .agents/commands/*.md .agent/workflows/
 **Platform:** Antigravity only
 
 **Mechanism:**
+
 ```bash
 ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 ```
 
 **Advantages:**
+
 - ✅ Works within Antigravity constraints
 - ✅ Instant propagation for skills
 - ⚠️ Each skill requires individual symlink
 
 ## Platform Support Matrix
 
-| Platform    | MCP Project | MCP Global | Skills | Commands | Agents | Rules |
-|-------------|-------------|------------|--------|----------|--------|-------|
-| Cursor      | ✅          | ✅         | ✅ Sym | ✅ Sym   | ✅*    | ✅ Sym|
-| Claude Code | ✅          | ✅         | ✅ Sym | ✅ Sym   | ✅     | ✅ Sym|
-| Gemini CLI  | ✅          | ✅         | ✅ Sym | ✅ Sym   | ❌     | ✅ Sym|
-| Antigravity | ❌ Global   | ✅         | ✅ Sel | ✅ Copy  | ❌     | ✅ Copy|
+| Platform    | MCP Project | MCP Global | Skills | Commands | Agents | Rules   |
+| ----------- | ----------- | ---------- | ------ | -------- | ------ | ------- |
+| Cursor      | ✅          | ✅         | ✅ Sym | ✅ Sym   | ✅\*   | ✅ Sym  |
+| Claude Code | ✅          | ✅         | ✅ Sym | ✅ Sym   | ✅     | ✅ Sym  |
+| Gemini CLI  | ✅          | ✅         | ✅ Sym | ✅ Sym   | ❌     | ✅ Sym  |
+| Antigravity | ❌ Global   | ✅         | ✅ Sel | ✅ Copy  | ❌     | ✅ Copy |
 
 **Legend:**
+
 - ✅ = Fully supported
 - ✅ Sym = Full directory symlink
 - ✅ Sel = Selective (per-item) symlinks
 - ✅ Copy = Files copied during sync
 - ❌ = Not supported
-- *May have limited support
+- \*May have limited support
 
 ### Platform-Specific Notes
 
 **Cursor:**
+
 - Full symlink support for all component types
 - MCP servers work at project level
 - Agents may have limited support (verify in current version)
 
 **Claude Code:**
+
 - Full symlink support for all component types
 - MCP servers work at project level
 - **Only platform with full agent support**
 - Agents live in `.claude/agents/` (platform-specific)
 
 **Gemini CLI:**
+
 - Full symlink support for rules, skills, commands
 - MCP servers work at project level
 - No agent support
 
 **Antigravity:**
+
 - **MCP project-level NOT supported** (must use global config)
 - Skills: Selective symlinks work
 - Commands: Copied to `.agent/workflows/` (not `.agent/commands/`)
@@ -291,6 +317,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Definition:** Project-wide coding standards and workflows.
 
 **Purpose:**
+
 - Define code style and conventions
 - Document architecture decisions
 - Specify testing requirements
@@ -299,6 +326,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Always loaded:** Rules are always available to AI agents.
 
 **Examples:**
+
 - `core-principles.md` - Architecture patterns
 - `code-style.md` - Formatting conventions
 - `git-workflow.md` - Commit and branching standards
@@ -308,6 +336,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Definition:** Modular packages with specialized knowledge and bundled resources.
 
 **Purpose:**
+
 - Provide domain expertise
 - Include scripts, references, templates
 - Enable reusable workflows
@@ -315,6 +344,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Loaded when:** Skill triggers based on description phrases.
 
 **Examples:**
+
 - `skill-creator` - Generic skill creation guide
 - `team-skill-creator` - Team-specific component creation
 - `react-testing` - React component testing patterns
@@ -324,6 +354,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Definition:** Frequently-used prompts accessible via `/{command-name}`.
 
 **Purpose:**
+
 - Quick, single-turn actions
 - Reusable prompt templates
 - Simple text-based instructions
@@ -331,6 +362,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Invocation:** Manual via `/{command-name}`
 
 **Examples:**
+
 - `/sync-setup` - Synchronize all configurations
 - `/security-review` - Security vulnerability checklist
 - `/generate-commit` - Commit message generation
@@ -340,6 +372,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Definition:** Autonomous subprocesses for complex, multi-step tasks.
 
 **Purpose:**
+
 - Handle complex workflows autonomously
 - Make decisions independently
 - Perform deep analysis
@@ -349,6 +382,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Location:** `.claude/agents/` (not synced)
 
 **Examples:**
+
 - `code-reviewer` - Autonomous code quality analysis
 - `test-generator` - Generate comprehensive test suites
 - `refactorer` - Autonomous refactoring
@@ -358,6 +392,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Definition:** External tool integrations via Model Context Protocol.
 
 **Purpose:**
+
 - Connect to external APIs
 - Access databases
 - Integrate third-party services
@@ -365,6 +400,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Configuration:** `.agents/mcp/mcp-servers.json`
 
 **Examples:**
+
 - Context7 - Documentation lookup
 - Database connectors
 - API integrations
@@ -508,6 +544,7 @@ User creates/edits in .agents/
 The `.agents/` architecture provides:
 
 **✅ Benefits:**
+
 - Single source of truth
 - Automatic synchronization
 - Multi-platform support
@@ -515,11 +552,13 @@ The `.agents/` architecture provides:
 - Centralized management
 
 **⚠️ Constraints:**
+
 - Antigravity limitations (no project MCP, copied rules/commands)
 - Agents only in Claude Code
 - Platform-specific behaviors
 
 **🔧 Components:**
+
 - Rules (coding standards)
 - Skills (knowledge packages)
 - Commands (prompt templates)
@@ -527,6 +566,7 @@ The `.agents/` architecture provides:
 - MCP (external integrations)
 
 **🔄 Sync methods:**
+
 - Symlinks (instant, preferred)
 - Generation (platform-specific configs)
 - Copies (Antigravity constraints)

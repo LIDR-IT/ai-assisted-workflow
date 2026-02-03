@@ -80,6 +80,7 @@ fi
 ```
 
 **Running tests:**
+
 ```bash
 # Make test executable
 chmod +x test_sync_rules.sh
@@ -93,6 +94,7 @@ chmod +x test_sync_rules.sh
 ### Symlink Verification
 
 **Test symlinks point to correct targets:**
+
 ```bash
 #!/bin/bash
 
@@ -126,6 +128,7 @@ verify_symlink ".gemini/skills" "../.agents/skills"
 ### File Accessibility Testing
 
 **Test files are readable:**
+
 ```bash
 #!/bin/bash
 
@@ -154,6 +157,7 @@ test_file_access ".agent/rules/copywriting.md"
 ### JSON Validation
 
 **Test generated JSON is valid:**
+
 ```bash
 #!/bin/bash
 
@@ -184,6 +188,7 @@ validate_json ".gemini/settings.json"
 ### End-to-End Workflow Tests
 
 **Test: Add new rule and sync**
+
 ```bash
 #!/bin/bash
 
@@ -210,6 +215,7 @@ rm .agents/rules/test-rule.md
 ```
 
 **Test: Add MCP server and generate configs**
+
 ```bash
 #!/bin/bash
 
@@ -247,6 +253,7 @@ mv .agents/mcp/mcp-servers.json.bak .agents/mcp/mcp-servers.json
 ### Testing Failure Cases
 
 **Test: Missing source directory**
+
 ```bash
 #!/bin/bash
 
@@ -267,6 +274,7 @@ mv .agents/rules.tmp .agents/rules
 ```
 
 **Test: Invalid JSON**
+
 ```bash
 #!/bin/bash
 

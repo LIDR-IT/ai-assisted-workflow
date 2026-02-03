@@ -12,10 +12,12 @@
 Antigravity actualmente **NO lee archivos de configuración MCP a nivel de proyecto**.
 
 **No funciona:**
+
 - `.gemini/mcp_config.json` (proyecto)
 - Ningún archivo en el directorio del proyecto
 
 **Sí funciona:**
+
 - `~/.gemini/antigravity/mcp_config.json` (global/usuario)
 
 ---
@@ -23,6 +25,7 @@ Antigravity actualmente **NO lee archivos de configuración MCP a nivel de proye
 ## Por Qué Sucede Esto
 
 Según la arquitectura actual de Antigravity:
+
 - MCP servers se configuran SOLO a nivel de usuario
 - No existe API para configuración por workspace
 - Está en [discusión en el foro oficial](https://discuss.ai.google.dev/t/support-for-per-workspace-mcp-config-on-antigravity/111952)
@@ -45,16 +48,19 @@ Según la arquitectura actual de Antigravity:
 Edita directamente el archivo:
 
 **macOS/Linux:**
+
 ```bash
 ~/.gemini/antigravity/mcp_config.json
 ```
 
 **Windows:**
+
 ```
 C:\Users\<USER_NAME>\.gemini\antigravity\mcp_config.json
 ```
 
 **Ejemplo - Context7:**
+
 ```json
 {
   "mcpServers": {
@@ -74,11 +80,13 @@ C:\Users\<USER_NAME>\.gemini\antigravity\mcp_config.json
 ## Impacto en el Proyecto
 
 ### Lo que SÍ funciona con sync:
+
 - ✅ Cursor (`.cursor/mcp.json`)
 - ✅ Claude Code (`.claude/mcp.json`)
 - ✅ Gemini CLI (`.gemini/settings.json`)
 
 ### Lo que NO funciona:
+
 - ❌ Antigravity - requiere configuración manual global
 
 ---
@@ -86,6 +94,7 @@ C:\Users\<USER_NAME>\.gemini\antigravity\mcp_config.json
 ## Script de Sync Actualizado
 
 El script `.agents/mcp/sync-mcp.sh` ahora:
+
 - ✅ Genera configuraciones para Cursor, Claude, Gemini CLI
 - ⚠️ **Genera `.gemini/mcp_config.json` como referencia**
 - ⚠️ Antigravity NO lo lee (solo para documentación)
@@ -95,10 +104,12 @@ El script `.agents/mcp/sync-mcp.sh` ahora:
 ## Estado de la Funcionalidad
 
 **Actual (Enero 2026):**
+
 - ❌ No soportado a nivel de proyecto
 - ✅ Disponible solo a nivel global
 
 **Futuro:**
+
 - 🔄 En discusión en foros de Google
 - 📝 Sin timeline confirmado
 

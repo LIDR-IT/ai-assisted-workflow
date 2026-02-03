@@ -35,22 +35,26 @@ C4 provides a consistent way to think about and communicate software architectur
 **Audience:** Everyone (technical and non-technical)
 
 **Shows:**
+
 - Your system (as a box)
 - External actors (people and systems)
 - Relationships between them
 
 **Example Use Case:**
+
 - Executive presentation
 - Project kickoff
 - System boundary definition
 
 **What to Include:**
+
 - System name and description
 - Users/personas interacting with system
 - External systems being integrated
 - High-level relationships
 
 **Elements:**
+
 - `Person` - Users of the system
 - `System` - Your system
 - `System_Ext` - External systems
@@ -63,6 +67,7 @@ C4 provides a consistent way to think about and communicate software architectur
 **Audience:** Technical teams (developers, architects, operations)
 
 **Shows:**
+
 - Applications
 - Databases
 - Microservices
@@ -70,11 +75,13 @@ C4 provides a consistent way to think about and communicate software architectur
 - Message queues
 
 **Example Use Case:**
+
 - Deployment planning
 - Technology stack overview
 - Integration architecture
 
 **What to Include:**
+
 - Web applications
 - Mobile apps
 - Databases
@@ -83,6 +90,7 @@ C4 provides a consistent way to think about and communicate software architectur
 - Technology choices
 
 **Elements:**
+
 - `Container` - Deployable unit
 - `ContainerDb` - Database
 - `ContainerQueue` - Message queue
@@ -95,17 +103,20 @@ C4 provides a consistent way to think about and communicate software architectur
 **Audience:** Developers working on the specific container
 
 **Shows:**
+
 - Internal components
 - Component responsibilities
 - Component interactions
 - Key abstractions
 
 **Example Use Case:**
+
 - Detailed design documentation
 - Onboarding new developers
 - Refactoring planning
 
 **What to Include:**
+
 - Controllers
 - Services
 - Repositories
@@ -113,6 +124,7 @@ C4 provides a consistent way to think about and communicate software architectur
 - Internal boundaries
 
 **Elements:**
+
 - `Component` - Logical grouping of code
 - `ComponentDb` - Data component
 - `Component_Boundary` - Module boundary
@@ -126,17 +138,20 @@ C4 provides a consistent way to think about and communicate software architectur
 **Audience:** DevOps, operations teams
 
 **Shows:**
+
 - Infrastructure nodes
 - Network topology
 - Deployment units
 - Hardware/VM configuration
 
 **Example Use Case:**
+
 - Infrastructure provisioning
 - Deployment automation
 - Disaster recovery planning
 
 **What to Include:**
+
 - Servers/VMs
 - Load balancers
 - Firewalls
@@ -144,6 +159,7 @@ C4 provides a consistent way to think about and communicate software architectur
 - Availability zones
 
 **Elements:**
+
 - `Deployment_Node` - Infrastructure node
 - `Container` - Deployed instances
 - Network boundaries
@@ -155,12 +171,14 @@ C4 provides a consistent way to think about and communicate software architectur
 **Audience:** Developers understanding complex workflows
 
 **Shows:**
+
 - Numbered sequence of interactions
 - Request/response flows
 - Multi-step processes
 - Event chains
 
 **Example Use Case:**
+
 - API workflow documentation
 - Event-driven architecture
 - Complex business processes
@@ -190,29 +208,34 @@ C4Context
 ### Elements
 
 #### Person
+
 ```mermaid
 Person(alias, "Name", "Description")
 ```
 
 **Example:**
+
 ```mermaid
 Person(customer, "Customer", "A customer of the system")
 Person(admin, "Administrator", "System administrator")
 ```
 
 #### System
+
 ```mermaid
 System(alias, "Name", "Description")
 System_Ext(alias, "Name", "Description")  # External system
 ```
 
 **Example:**
+
 ```mermaid
 System(webapp, "Web Application", "Main customer-facing app")
 System_Ext(payment, "Payment Gateway", "Stripe payment processor")
 ```
 
 #### Container
+
 ```mermaid
 Container(alias, "Name", "Technology", "Description")
 ContainerDb(alias, "Name", "Technology", "Description")
@@ -220,6 +243,7 @@ ContainerQueue(alias, "Name", "Technology", "Description")
 ```
 
 **Example:**
+
 ```mermaid
 Container(api, "API Application", "Node.js", "REST API")
 ContainerDb(db, "Database", "PostgreSQL", "Stores user data")
@@ -227,12 +251,14 @@ ContainerQueue(queue, "Message Queue", "RabbitMQ", "Async processing")
 ```
 
 #### Component
+
 ```mermaid
 Component(alias, "Name", "Technology", "Description")
 ComponentDb(alias, "Name", "Technology", "Description")
 ```
 
 **Example:**
+
 ```mermaid
 Component(controller, "User Controller", "Express", "Handles user requests")
 Component(service, "User Service", "TypeScript", "Business logic")
@@ -242,6 +268,7 @@ ComponentDb(repo, "User Repository", "TypeORM", "Data access")
 ### Boundaries
 
 #### Enterprise Boundary
+
 ```mermaid
 Enterprise_Boundary(alias, "Name") {
     # Elements inside boundary
@@ -249,6 +276,7 @@ Enterprise_Boundary(alias, "Name") {
 ```
 
 #### System Boundary
+
 ```mermaid
 System_Boundary(alias, "Name") {
     # Elements inside boundary
@@ -256,6 +284,7 @@ System_Boundary(alias, "Name") {
 ```
 
 #### Container Boundary
+
 ```mermaid
 Container_Boundary(alias, "Name") {
     # Elements inside boundary
@@ -263,6 +292,7 @@ Container_Boundary(alias, "Name") {
 ```
 
 **Example:**
+
 ```mermaid
 Enterprise_Boundary(company, "Company Systems") {
     System_Boundary(ecommerce, "E-commerce Platform") {
@@ -279,12 +309,14 @@ Rel(from, to, "Label", "Technology")
 ```
 
 **Parameters:**
+
 - `from` - Source element alias
 - `to` - Target element alias
 - `Label` - What happens (action verb)
 - `Technology` - How it happens (protocol/format)
 
 **Examples:**
+
 ```mermaid
 Rel(user, webapp, "Uses", "HTTPS")
 Rel(webapp, api, "Makes API calls to", "JSON/HTTPS")
@@ -299,17 +331,20 @@ Rel(service, queue, "Publishes messages to", "AMQP")
 ### Rule 1: Complete Element Information
 
 Every element MUST have:
+
 - **Name**: What it's called
 - **Type**: Person/System/Container/Component
 - **Technology**: How it's built (for technical elements)
 - **Description**: What it does
 
 ✅ **Good:**
+
 ```mermaid
 Container(api, "API Application", "Node.js/Express", "Provides REST API for mobile and web clients")
 ```
 
 ❌ **Bad:**
+
 ```mermaid
 Container(api, "API", "", "API")
 ```
@@ -319,12 +354,14 @@ Container(api, "API", "", "API")
 Use unidirectional arrows to avoid ambiguity.
 
 ✅ **Good:**
+
 ```mermaid
 Rel(webapp, api, "Sends requests to", "JSON/HTTPS")
 Rel(api, webapp, "Returns responses to", "JSON/HTTPS")
 ```
 
 ❌ **Bad:**
+
 ```mermaid
 BiRel(webapp, api, "Communicates with", "HTTPS")
 ```
@@ -334,6 +371,7 @@ BiRel(webapp, api, "Communicates with", "HTTPS")
 Label arrows with **action verbs** describing what happens.
 
 ✅ **Good:**
+
 ```mermaid
 Rel(user, webapp, "Uses", "HTTPS")
 Rel(webapp, api, "Sends requests to", "JSON/HTTPS")
@@ -342,6 +380,7 @@ Rel(service, email, "Sends email using", "SMTP")
 ```
 
 ❌ **Bad:**
+
 ```mermaid
 Rel(user, webapp, "uses", "")
 Rel(webapp, api, "connects", "")
@@ -352,6 +391,7 @@ Rel(webapp, api, "connects", "")
 Always specify the technology/protocol used.
 
 ✅ **Good:**
+
 ```mermaid
 Rel(mobile, api, "Makes API calls to", "JSON/HTTPS")
 Rel(api, cache, "Reads from and writes to", "Redis Protocol")
@@ -359,6 +399,7 @@ Rel(worker, queue, "Consumes messages from", "AMQP")
 ```
 
 ❌ **Bad:**
+
 ```mermaid
 Rel(mobile, api, "Calls")
 Rel(api, cache, "Uses")
@@ -369,12 +410,14 @@ Rel(api, cache, "Uses")
 **Maximum elements per diagram: ~20**
 
 If exceeding 20 elements:
+
 - Split into multiple diagrams
 - Focus on specific subsystems
 - Create separate views for different concerns
 
 **Example:**
 Instead of one massive Container diagram:
+
 - `c4-containers-overview.md` - High-level
 - `c4-containers-frontend.md` - Frontend containers
 - `c4-containers-backend.md` - Backend containers
@@ -442,9 +485,10 @@ docs/architecture/
 
 \`\`\`mermaid
 C4[Context/Container/Component]
-    title [Diagram Title]
+title [Diagram Title]
 
     [Elements and relationships]
+
 \`\`\`
 
 ## Key Points
@@ -483,7 +527,7 @@ All stakeholders (technical and non-technical)
 
 \`\`\`mermaid
 C4Context
-    title System Context diagram for E-commerce Platform
+title System Context diagram for E-commerce Platform
 
     Person(customer, "Customer", "A customer shopping online")
     Person(admin, "Administrator", "Manages products and orders")
@@ -500,6 +544,7 @@ C4Context
     Rel(ecommerce, payment, "Processes payments via", "JSON/HTTPS")
     Rel(ecommerce, email, "Sends notifications using", "SMTP")
     Rel(ecommerce, shipping, "Creates shipments via", "JSON/HTTPS")
+
 \`\`\`
 
 ## Key Points
@@ -530,7 +575,7 @@ Technical teams (developers, architects, operations)
 
 \`\`\`mermaid
 C4Container
-    title Container diagram for E-commerce Platform
+title Container diagram for E-commerce Platform
 
     Person(customer, "Customer", "Shopping online")
 
@@ -556,6 +601,7 @@ C4Container
 
     Rel(api, payment, "Processes payments via", "JSON/HTTPS")
     Rel(worker, email, "Sends emails via", "SMTP")
+
 \`\`\`
 
 ## Key Points
@@ -587,7 +633,7 @@ Developers working on the API
 
 \`\`\`mermaid
 C4Component
-    title Component diagram for API Application
+title Component diagram for API Application
 
     Container(web, "Web Application", "React", "Customer UI")
     ContainerDb(db, "Database", "PostgreSQL", "Data store")
@@ -625,6 +671,7 @@ C4Component
     Rel(productRepo, db, "Reads/writes", "JDBC")
     Rel(orderRepo, db, "Reads/writes", "JDBC")
     Rel(userRepo, db, "Reads/writes", "JDBC")
+
 \`\`\`
 
 ## Key Points
@@ -654,7 +701,7 @@ Developers implementing checkout flow
 
 \`\`\`mermaid
 C4Dynamic
-    title Dynamic diagram for Checkout Process
+title Dynamic diagram for Checkout Process
 
     Person(customer, "Customer", "")
     Container(web, "Web App", "React", "")
@@ -672,6 +719,7 @@ C4Dynamic
     Rel(api, queue, "7. Publish order.confirmed", "AMQP")
     Rel(api, web, "8. Return success", "JSON/HTTPS")
     Rel(web, customer, "9. Show confirmation", "")
+
 \`\`\`
 
 ## Key Points
@@ -690,11 +738,13 @@ C4Dynamic
 ### Always Create
 
 **Level 1: Context**
+
 - Required for every project
 - First diagram to create
 - Keep updated as external dependencies change
 
 **Level 2: Container**
+
 - Required for every project
 - Second diagram to create
 - Update when deployment architecture changes
@@ -702,17 +752,20 @@ C4Dynamic
 ### Conditionally Create
 
 **Level 3: Component**
+
 - Only when genuinely valuable
 - For complex containers with many responsibilities
 - When onboarding developers to specific areas
 - Skip if container is simple/straightforward
 
 **Level 4: Code/Deployment**
+
 - For complex infrastructure
 - When multiple deployment environments exist
 - For DevOps/SRE documentation
 
 **Dynamic Diagrams**
+
 - For complex workflows
 - When sequence matters
 - For API documentation

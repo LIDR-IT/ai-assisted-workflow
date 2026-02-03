@@ -67,12 +67,14 @@ You are an autonomous agent specialized in [specific task or domain].
 [Define what decisions the agent makes independently]
 
 You autonomously decide:
+
 - [Decision area 1]: [What agent decides]
 - [Decision area 2]: [Another area of autonomy]
 - [Decision area 3]: [Another autonomous decision]
 - [Decision area 4]: [More autonomy]
 
 You should ask the user for:
+
 - [Decision requiring user input 1]
 - [Decision requiring user input 2]
 - [Decision requiring user input 3]
@@ -82,16 +84,19 @@ You should ask the user for:
 [Specific guidelines for agent behavior]
 
 **Quality standards:**
+
 - [Guideline 1]
 - [Guideline 2]
 - [Guideline 3]
 
 **Constraints:**
+
 - [Constraint 1]
 - [Constraint 2]
 - [Constraint 3]
 
 **Best practices:**
+
 - [Practice 1]
 - [Practice 2]
 - [Practice 3]
@@ -101,12 +106,15 @@ You should ask the user for:
 [Specify how agent should present results]
 
 ### [Section 1 Name]
+
 [What this section contains]
 
 ### [Section 2 Name]
+
 [What this section contains]
 
 ### [Section 3 Name]
+
 [What this section contains]
 
 ## Examples
@@ -116,6 +124,7 @@ You should ask the user for:
 [Description of scenario]
 
 **Expected behavior:**
+
 1. [What agent should do first]
 2. [What agent should do next]
 3. [Final action]
@@ -128,6 +137,7 @@ You should ask the user for:
 [Another scenario]
 
 **Expected behavior:**
+
 1. [Action 1]
 2. [Action 2]
 3. [Action 3]
@@ -143,17 +153,20 @@ You should ask the user for:
 ### Frontmatter Fields
 
 **name (required):**
+
 - Format: lowercase, hyphens
 - Example: `code-reviewer`, `test-generator`, `refactorer`
 - Must be unique
 
 **description (required):**
+
 - Brief description of agent purpose
 - Include triggering conditions
 - Example: `"Autonomous code reviewer for quality analysis and best practices"`
 - Length: 1-2 sentences
 
 **tools (optional):**
+
 - List of tools agent can use
 - Available: `Read`, `Edit`, `Write`, `Grep`, `Glob`, `Bash`, `Task`
 - Only include tools agent actually needs
@@ -161,6 +174,7 @@ You should ask the user for:
 - Default: All tools if not specified
 
 **model (optional):**
+
 - AI model to use
 - Options: `sonnet` (recommended), `opus`, `haiku`
 - Default: Inherits from parent
@@ -169,6 +183,7 @@ You should ask the user for:
 - Use `haiku` for simple, fast operations
 
 **color (optional):**
+
 - Visual identifier in Claude Code UI
 - Options: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `pink`
 - Use for easy agent distinction
@@ -185,6 +200,7 @@ You should ask the user for:
 **Define clear role:**
 
 ✅ Good:
+
 ```markdown
 # Code Review Agent
 
@@ -193,6 +209,7 @@ focusing on code quality, security, and best practices.
 ```
 
 ❌ Poor:
+
 ```markdown
 You review code.
 ```
@@ -200,6 +217,7 @@ You review code.
 **List specific capabilities:**
 
 ✅ Good:
+
 ```markdown
 ## Your Capabilities
 
@@ -212,6 +230,7 @@ You review code.
 ```
 
 ❌ Poor:
+
 ```markdown
 ## Capabilities
 
@@ -221,6 +240,7 @@ You can look at code and find problems.
 **Specify clear workflow:**
 
 ✅ Good:
+
 ```markdown
 ## Workflow
 
@@ -234,6 +254,7 @@ You can look at code and find problems.
 ```
 
 ❌ Poor:
+
 ```markdown
 ## Workflow
 
@@ -245,10 +266,12 @@ You can look at code and find problems.
 **Define autonomy clearly:**
 
 ✅ Good:
+
 ```markdown
 ## Decision-Making
 
 You autonomously decide:
+
 - Which files to analyze (based on change impact and dependencies)
 - Severity ratings for identified issues (Critical/High/Medium/Low)
 - Whether to suggest refactoring or accept current implementation
@@ -256,12 +279,14 @@ You autonomously decide:
 - Depth of analysis (surface-level vs deep dive)
 
 You should ask user for:
+
 - Approval for breaking changes
 - Architectural decisions
 - Deployment timing
 ```
 
 ❌ Poor:
+
 ```markdown
 Make decisions about the code.
 ```
@@ -270,7 +295,7 @@ Make decisions about the code.
 
 ### Example 1: Code Reviewer
 
-```markdown
+````markdown
 ---
 name: code-reviewer
 description: Autonomous code review for quality, security, and best practices analysis
@@ -307,6 +332,7 @@ You are an autonomous agent specialized in comprehensive code review.
 ## Autonomous Decision-Making
 
 You autonomously decide:
+
 - Which files to analyze based on change impact
 - Issue severity ratings
 - Whether to suggest refactoring
@@ -322,20 +348,24 @@ You autonomously decide:
 ## Output Format
 
 ### Summary
+
 - Files analyzed: [count]
 - Total issues: [count]
 - Breakdown: Critical/High/Medium/Low
 
 ### Critical Issues
+
 [List critical issues first]
 
 ### Detailed Findings
+
 **Issue**: [Name]
 **Severity**: [Level]
 **File**: [filename:line]
 **Description**: [What's wrong]
 **Fix**: [How to resolve]
 **Example**:
+
 ```[language]
 # Before
 [code]
@@ -343,7 +373,9 @@ You autonomously decide:
 # After
 [improved]
 ```
-```
+````
+
+````
 
 ### Example 2: Test Generator
 
@@ -405,13 +437,14 @@ You autonomously decide:
 
 ### Execution Results
 [Pass/fail]
-```
+````
 
 ## Platform Limitation
 
 **Important:** Agents only work in **Claude Code**.
 
 **Not supported:**
+
 - ❌ Cursor
 - ❌ Gemini CLI
 - ❌ Antigravity
@@ -429,6 +462,7 @@ After creating agent:
 ```
 
 Checks:
+
 - ✅ File exists at `.claude/agents/[agent-name].md`
 - ✅ YAML frontmatter present
 - ✅ Required fields: name, description
@@ -437,6 +471,7 @@ Checks:
 ## Testing Tips
 
 **Test workflow:**
+
 1. Create agent with clear triggers
 2. Trigger in Claude Code
 3. Observe autonomous behavior
@@ -445,6 +480,7 @@ Checks:
 6. Iterate on system prompt
 
 **Common adjustments:**
+
 - Refine workflow steps for clarity
 - Add more specific decision-making guidelines
 - Adjust tool selection

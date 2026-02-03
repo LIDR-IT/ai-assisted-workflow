@@ -20,11 +20,11 @@ El sistema GEMINI.md permite:
 
 Gemini CLI usa un sistema jerárquico de tres niveles:
 
-| Nivel | Ubicación | Alcance | Uso |
-|-------|-----------|---------|-----|
-| **1. Global Context** | `~/.gemini/GEMINI.md` | Todos los proyectos del usuario | Preferencias personales globales |
-| **2. Project-Level** | `GEMINI.md` en directorio actual o padres hasta raíz `.git` | Todo el proyecto | Convenciones del equipo, estándares del proyecto |
-| **3. Sub-directory Context** | `GEMINI.md` en subdirectorios | Componente o módulo específico | Guías específicas por módulo/componente |
+| Nivel                        | Ubicación                                                   | Alcance                         | Uso                                              |
+| ---------------------------- | ----------------------------------------------------------- | ------------------------------- | ------------------------------------------------ |
+| **1. Global Context**        | `~/.gemini/GEMINI.md`                                       | Todos los proyectos del usuario | Preferencias personales globales                 |
+| **2. Project-Level**         | `GEMINI.md` en directorio actual o padres hasta raíz `.git` | Todo el proyecto                | Convenciones del equipo, estándares del proyecto |
+| **3. Sub-directory Context** | `GEMINI.md` en subdirectorios                               | Componente o módulo específico  | Guías específicas por módulo/componente          |
 
 ### Características de la Jerarquía
 
@@ -68,11 +68,13 @@ Los archivos GEMINI.md suelen incluir:
 Este es un proyecto de e-commerce en React + TypeScript.
 
 **Stack:**
+
 - Frontend: React 18, TypeScript, Vite
 - Backend: Node.js, Express, PostgreSQL
 - Testing: Vitest, React Testing Library
 
 **Arquitectura:**
+
 - Componentes en `src/components/`
 - Hooks en `src/hooks/`
 - Servicios API en `src/services/`
@@ -90,19 +92,20 @@ Este es un proyecto de e-commerce en React + TypeScript.
 **Formato JSDoc:**
 
 \`\`\`typescript
-/**
- * Calcula el precio total con impuestos.
- * @param subtotal - Precio sin impuestos
- * @param taxRate - Tasa de impuesto (ej: 0.16 para 16%)
- * @returns Precio total incluyendo impuestos
- * @throws {Error} Si taxRate es negativo
- * @example
- * calculateTotal(100, 0.16) // 116
- */
-function calculateTotal(subtotal: number, taxRate: number): number {
+/\*\*
+
+- Calcula el precio total con impuestos.
+- @param subtotal - Precio sin impuestos
+- @param taxRate - Tasa de impuesto (ej: 0.16 para 16%)
+- @returns Precio total incluyendo impuestos
+- @throws {Error} Si taxRate es negativo
+- @example
+- calculateTotal(100, 0.16) // 116
+  \*/
+  function calculateTotal(subtotal: number, taxRate: number): number {
   // ...
-}
-\`\`\`
+  }
+  \`\`\`
 ```
 
 ## Comandos de Gestión
@@ -110,6 +113,7 @@ function calculateTotal(subtotal: number, taxRate: number): number {
 El comando `/memory` controla el contexto:
 
 ### `/memory show`
+
 Muestra el contenido concatenado de todos los archivos de contexto activos.
 
 ```bash
@@ -117,6 +121,7 @@ Muestra el contenido concatenado de todos los archivos de contexto activos.
 ```
 
 **Salida:**
+
 ```
 === Global Context (~/. gemini/GEMINI.md) ===
 [contenido del archivo global]
@@ -129,6 +134,7 @@ Muestra el contenido concatenado de todos los archivos de contexto activos.
 ```
 
 ### `/memory refresh`
+
 Recarga todos los archivos GEMINI.md desde el disco.
 
 ```bash
@@ -136,11 +142,13 @@ Recarga todos los archivos GEMINI.md desde el disco.
 ```
 
 Útil cuando:
+
 - Has editado archivos GEMINI.md fuera del CLI
 - Cambiaste de directorio y quieres actualizar el contexto
 - Agregaste nuevos archivos GEMINI.md
 
 ### `/memory add <text>`
+
 Agrega texto al archivo GEMINI.md global.
 
 ```bash
@@ -157,15 +165,19 @@ Los archivos GEMINI.md grandes pueden dividirse usando sintaxis de importación 
 # Mi Proyecto
 
 ## Documentación General
+
 @./docs/overview.md
 
 ## Estándares de Código
+
 @./docs/code-standards.md
 
 ## Arquitectura
+
 @./docs/architecture.md
 
 ## Guías Específicas
+
 @./docs/api-guidelines.md
 @./docs/testing-guidelines.md
 ```
@@ -182,6 +194,7 @@ Los archivos GEMINI.md grandes pueden dividirse usando sintaxis de importación 
 El nombre de archivo por defecto puede personalizarse en `settings.json`:
 
 ### Ubicación
+
 `~/.gemini/settings.json`
 
 ### Configuración de Nombre de Archivo
@@ -195,6 +208,7 @@ El nombre de archivo por defecto puede personalizarse en `settings.json`:
 ```
 
 **Características:**
+
 - Acepta **array de nombres**: El CLI buscará cualquiera de los nombres especificados
 - **Orden de precedencia**: El primer archivo encontrado se usa
 - **Flexibilidad**: Permite migración desde otros sistemas (AGENTS.md, CONTEXT.md, etc.)
@@ -236,23 +250,23 @@ Esto permite usar el mismo archivo de contexto para múltiples CLIs de IA.
 ## Comandos Comunes
 
 \`\`\`bash
-npm run dev          # Servidor de desarrollo
-npm run build        # Build de producción
-npm test             # Tests
-npm run lint         # Linter
-npm run type-check   # TypeScript check
+npm run dev # Servidor de desarrollo
+npm run build # Build de producción
+npm test # Tests
+npm run lint # Linter
+npm run type-check # TypeScript check
 \`\`\`
 
 ## Estructura del Proyecto
 
 \`\`\`
 src/
-├── components/      # Componentes React
-├── hooks/           # Custom hooks
-├── services/        # API services
-├── utils/           # Utilidades
-├── types/           # Type definitions
-└── __tests__/       # Tests
+├── components/ # Componentes React
+├── hooks/ # Custom hooks
+├── services/ # API services
+├── utils/ # Utilidades
+├── types/ # Type definitions
+└── **tests**/ # Tests
 \`\`\`
 
 ## Convenciones
@@ -284,22 +298,22 @@ import { FC } from 'react';
 
 // Types
 interface IButtonProps {
-  label: string;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
+label: string;
+onClick: () => void;
+variant?: 'primary' | 'secondary';
 }
 
 // Component
 export const Button: FC<IButtonProps> = ({
-  label,
-  onClick,
-  variant = 'primary'
+label,
+onClick,
+variant = 'primary'
 }) => {
-  return (
-    <button className={variant} onClick={onClick}>
-      {label}
-    </button>
-  );
+return (
+<button className={variant} onClick={onClick}>
+{label}
+</button>
+);
 };
 \`\`\`
 
@@ -315,19 +329,23 @@ export const Button: FC<IButtonProps> = ({
 ### ✅ Organización Clara
 
 **Bien:**
+
 ```markdown
 # Estilo de Código
 
 ## JavaScript
+
 - Usar const/let, no var
 - Preferir arrow functions
 
 ## CSS
+
 - Usar BEM naming
 - Mobile-first approach
 ```
 
 **Mal:**
+
 ```markdown
 Usa const y let. También arrow functions. Para CSS usa BEM y piensa en mobile primero.
 ```
@@ -335,12 +353,14 @@ Usa const y let. También arrow functions. Para CSS usa BEM y piensa en mobile p
 ### ✅ Especificidad
 
 **Bien:**
+
 ```markdown
 - Máximo 80 caracteres por línea
 - Indentación de 2 espacios
 ```
 
 **Mal:**
+
 ```markdown
 - Código limpio y legible
 ```
@@ -348,6 +368,7 @@ Usa const y let. También arrow functions. Para CSS usa BEM y piensa en mobile p
 ### ✅ Ejemplos Cuando Sea Útil
 
 **Bien:**
+
 ```markdown
 ## Manejo de Errores
 
@@ -355,11 +376,11 @@ Siempre envolver API calls en try-catch:
 
 \`\`\`typescript
 try {
-  const data = await fetchUser(id);
-  return data;
+const data = await fetchUser(id);
+return data;
 } catch (error) {
-  logger.error('Failed to fetch user', error);
-  throw new UserFetchError(error);
+logger.error('Failed to fetch user', error);
+throw new UserFetchError(error);
 }
 \`\`\`
 ```
@@ -379,6 +400,7 @@ En lugar de un GEMINI.md gigante:
 ```
 
 **GEMINI.md:**
+
 ```markdown
 # Mi Proyecto
 
@@ -396,14 +418,14 @@ En lugar de un GEMINI.md gigante:
 
 ## Comparación con Otros Sistemas
 
-| Característica | Gemini CLI (GEMINI.md) | Claude Code (CLAUDE.md) |
-|----------------|------------------------|-------------------------|
-| **Jerarquía** | Global → Proyecto → Subdirectorio | Managed → Project → Project Rules → User → Local |
-| **Modularización** | `@./path` imports | `@path` imports + `.claude/rules/` |
-| **Comandos** | `/memory show/refresh/add` | `/memory`, `/init` |
-| **Configuración** | `settings.json` - array de nombres | Nombres fijos por tipo |
-| **Reglas condicionales** | No mencionado | YAML frontmatter con `paths` |
-| **Gitignore** | Respeta `.gitignore` y `.geminiignore` | `CLAUDE.local.md` auto-gitignored |
+| Característica           | Gemini CLI (GEMINI.md)                 | Claude Code (CLAUDE.md)                          |
+| ------------------------ | -------------------------------------- | ------------------------------------------------ |
+| **Jerarquía**            | Global → Proyecto → Subdirectorio      | Managed → Project → Project Rules → User → Local |
+| **Modularización**       | `@./path` imports                      | `@path` imports + `.claude/rules/`               |
+| **Comandos**             | `/memory show/refresh/add`             | `/memory`, `/init`                               |
+| **Configuración**        | `settings.json` - array de nombres     | Nombres fijos por tipo                           |
+| **Reglas condicionales** | No mencionado                          | YAML frontmatter con `paths`                     |
+| **Gitignore**            | Respeta `.gitignore` y `.geminiignore` | `CLAUDE.local.md` auto-gitignored                |
 
 ## Flujo de Trabajo Recomendado
 
@@ -459,6 +481,7 @@ El footer del CLI muestra cuántos archivos de contexto están activos:
 ```
 
 Esto indica:
+
 - 1 archivo global (`~/.gemini/GEMINI.md`)
 - 1 archivo de proyecto (`./GEMINI.md`)
 - 1 archivo de subdirectorio (ej: `./src/components/GEMINI.md`)
@@ -474,6 +497,7 @@ A diferencia de Claude Code que soporta YAML frontmatter con `paths`, Gemini CLI
 ### ⚠️ Orden de Carga
 
 El orden exacto de precedencia cuando hay múltiples archivos no está documentado explícitamente. Se asume que es:
+
 1. Global
 2. Proyecto (de raíz hacia subdirectorio)
 3. Subdirectorio actual
@@ -481,6 +505,7 @@ El orden exacto de precedencia cuando hay múltiples archivos no está documenta
 ### ⚠️ Límites de Tamaño
 
 No hay límites documentados sobre el tamaño de archivos GEMINI.md, pero archivos muy grandes pueden:
+
 - Consumir tokens del contexto
 - Afectar rendimiento
 - Reducir espacio para conversación
@@ -512,21 +537,26 @@ my-react-app/
 ```
 
 **./GEMINI.md:**
+
 ```markdown
 # My React App
 
 E-commerce application built with React, TypeScript, and Vite.
 
 ## Project Commands
+
 @./docs/commands.md
 
 ## Code Standards
+
 @./docs/code-standards.md
 
 ## Architecture
+
 @./docs/architecture.md
 
 ## Stack
+
 - React 18
 - TypeScript 5
 - Vite
@@ -535,6 +565,7 @@ E-commerce application built with React, TypeScript, and Vite.
 ```
 
 **./src/components/GEMINI.md:**
+
 ```markdown
 # React Components
 
@@ -546,6 +577,7 @@ E-commerce application built with React, TypeScript, and Vite.
 ```
 
 **./src/hooks/GEMINI.md:**
+
 ```markdown
 # Custom Hooks
 

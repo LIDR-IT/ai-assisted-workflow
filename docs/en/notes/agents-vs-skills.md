@@ -14,14 +14,14 @@ Son **herramientas modulares, reutilizables y empaquetadas** que el agente utili
 
 ## Tabla Comparativa: Skills vs Agentes
 
-| Característica | Agentes (Agents) | Skills (Habilidades) |
-|:--------------|:-----------------|:---------------------|
-| **Rol** | "El trabajador/Orquestador" | "La herramienta/Procedimiento" |
-| **Función** | Piensa, planifica, toma decisiones | Ejecuta acciones concretas |
-| **Autonomía** | Alta; opera autónomamente | Nula; necesita ser invocada por un agente |
-| **Contexto** | Gestiona el objetivo general | Proporciona conocimiento específico |
-| **Estructura** | Perfil, prompt de sistema, herramientas | Carpetas con SKILL.md, scripts, etc. |
-| **Uso principal** | Lograr un objetivo final | Reutilizar procedimientos de trabajo |
+| Característica    | Agentes (Agents)                        | Skills (Habilidades)                      |
+| :---------------- | :-------------------------------------- | :---------------------------------------- |
+| **Rol**           | "El trabajador/Orquestador"             | "La herramienta/Procedimiento"            |
+| **Función**       | Piensa, planifica, toma decisiones      | Ejecuta acciones concretas                |
+| **Autonomía**     | Alta; opera autónomamente               | Nula; necesita ser invocada por un agente |
+| **Contexto**      | Gestiona el objetivo general            | Proporciona conocimiento específico       |
+| **Estructura**    | Perfil, prompt de sistema, herramientas | Carpetas con SKILL.md, scripts, etc.      |
+| **Uso principal** | Lograr un objetivo final                | Reutilizar procedimientos de trabajo      |
 
 ## Detalles Principales
 
@@ -40,6 +40,7 @@ Se les considera **"empleados" digitales** que pueden conectarse entre sí.
 Una "skill" o habilidad de agente es un formato ligero y abierto (a menudo basado en estándares como `SKILL.md`) que le enseña al agente cómo hacer algo específico.
 
 **Contenido:**
+
 - Instrucciones
 - Ejemplos
 - Recursos
@@ -50,9 +51,11 @@ Una "skill" o habilidad de agente es un formato ligero y abierto (a menudo basad
 ### 3. Diferencias Clave (Ejemplos)
 
 **Agente:**
+
 - Un "Asistente de Ventas" (IA) que busca aumentar ventas en un 20%
 
 **Skills:**
+
 - Una habilidad para "analizar la transcripción de una llamada"
 - Una habilidad para "enriquecer datos de una empresa"
 
@@ -63,11 +66,13 @@ El agente utiliza estas skills para lograr su objetivo.
 La tendencia actual es **"Agentes equipados con habilidades"** (Agents with a license to skill).
 
 **Usa un Agente:**
+
 - Cuando necesites orquestación compleja
 - Toma de decisiones en varios pasos
 - Gestión de estado (estado del trabajo)
 
 **Usa una Skill:**
+
 - Cuando tengas un procedimiento repetitivo (ej. rellenar un PDF)
 - Debe ser portátil y reutilizable entre diferentes agentes
 

@@ -9,11 +9,13 @@ Antigravity **NO soporta** configuración MCP a nivel de proyecto. Solo lee la c
 ## Ubicación del Archivo
 
 **macOS/Linux:**
+
 ```
 ~/.gemini/antigravity/mcp_config.json
 ```
 
 **Windows:**
+
 ```
 C:\Users\<USER_NAME>\.gemini\antigravity\mcp_config.json
 ```
@@ -37,6 +39,7 @@ C:\Users\<USER_NAME>\.gemini\antigravity\mcp_config.json
 ### Para agregar Context7
 
 1. Abre el archivo de configuración:
+
 ```bash
 # macOS/Linux
 vim ~/.gemini/antigravity/mcp_config.json
@@ -46,6 +49,7 @@ code ~/.gemini/antigravity/mcp_config.json
 ```
 
 2. Agrega Context7 al objeto `mcpServers`:
+
 ```json
 {
   "mcpServers": {
@@ -61,6 +65,7 @@ code ~/.gemini/antigravity/mcp_config.json
 ```
 
 3. Si ya tienes otros servers, agrégalo como un nuevo entry:
+
 ```json
 {
   "mcpServers": {
@@ -84,11 +89,13 @@ code ~/.gemini/antigravity/mcp_config.json
 ## Verificación
 
 Ejecuta el comando:
+
 ```bash
 gemini mcp list
 ```
 
 Deberías ver:
+
 ```
 ✓ context7: npx -y @upstash/context7-mcp (stdio) - Connected
 ```
@@ -100,6 +107,7 @@ Deberías ver:
 Context7 funciona sin API key, pero se recomienda configurarla para límites más altos.
 
 **Agrega a tu `~/.zshrc` o `~/.bashrc`:**
+
 ```bash
 export CONTEXT7_API_KEY="tu-api-key-aqui"
 ```
@@ -108,6 +116,7 @@ export CONTEXT7_API_KEY="tu-api-key-aqui"
 https://context7.com/dashboard
 
 **Recarga el shell:**
+
 ```bash
 source ~/.zshrc  # o ~/.bashrc
 ```
@@ -129,6 +138,7 @@ Una vez configurado, puedes usarlo en tus sesiones:
 ## Otros MCP Servers Útiles
 
 ### Supabase
+
 ```json
 "supabase-mcp-server": {
   "command": "npx",
@@ -143,6 +153,7 @@ Una vez configurado, puedes usarlo en tus sesiones:
 ```
 
 ### Filesystem
+
 ```json
 "filesystem": {
   "command": "npx",
@@ -156,7 +167,9 @@ Una vez configurado, puedes usarlo en tus sesiones:
 ## Troubleshooting
 
 ### Server no aparece
+
 1. Verifica que el JSON sea válido:
+
 ```bash
 jq '.' ~/.gemini/antigravity/mcp_config.json
 ```
@@ -164,17 +177,21 @@ jq '.' ~/.gemini/antigravity/mcp_config.json
 2. Reinicia Antigravity completamente
 
 3. Verifica que NPX funcione:
+
 ```bash
 npx -y @upstash/context7-mcp --help
 ```
 
 ### Error de conexión
+
 1. Verifica la variable de entorno:
+
 ```bash
 echo $CONTEXT7_API_KEY
 ```
 
 2. Verifica permisos del archivo:
+
 ```bash
 ls -la ~/.gemini/antigravity/mcp_config.json
 ```

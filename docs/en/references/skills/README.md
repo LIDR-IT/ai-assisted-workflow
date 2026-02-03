@@ -13,15 +13,18 @@ La arquitectura se compone de tres elementos principales que trabajan juntos:
 El agente se configura con tres componentes clave:
 
 **Core System Prompt**
+
 - Instrucciones fundamentales que definen el comportamiento del agente
 - Personalidad, objetivos y reglas de operación
 
 **Equipped Skills (Habilidades Equipadas)**
+
 - Paquetes modulares de conocimiento procedimental
 - Ejemplos: `bigquery`, `docx`, `nda-review`, `pdf`, `pptx`, `xlsx`
 - Cada skill enseña al agente cómo ejecutar tareas específicas
 
 **Equipped MCP Servers (Servidores MCP Equipados)**
+
 - Model Context Protocol servers que extienden las capacidades del agente
 - Pueden ser locales o remotos (en internet)
 - Proporcionan acceso a sistemas externos, APIs y herramientas
@@ -31,17 +34,20 @@ El agente se configura con tres componentes clave:
 El agente opera dentro de un entorno computacional que incluye:
 
 **Entornos de Ejecución**
+
 - **Bash**: Shell scripting y comandos del sistema
 - **Python**: Scripts y herramientas Python
 - **Node.js**: Aplicaciones y scripts JavaScript/TypeScript
 
 **File System (Sistema de Archivos)**
+
 - Los directorios de skills viven en el sistema de archivos del agente
 - Estructura organizada: `skills/skill-name/`
 - Cada skill contiene:
   - `SKILL.md`: Archivo principal con instrucciones
   - Recursos adicionales: especificaciones, reglas, scripts
   - Ejemplos de estructura:
+
     ```
     skills/bigquery/
     ├── SKILL.md
@@ -64,6 +70,7 @@ El agente opera dentro de un entorno computacional que incluye:
 ### 3. Use Computer (Uso de Herramientas Computacionales)
 
 El agente puede:
+
 - Ejecutar comandos bash
 - Correr scripts Python/Node.js
 - Leer archivos del sistema
@@ -81,22 +88,27 @@ El agente puede:
 ## Beneficios de esta Arquitectura
 
 ### Modularidad
+
 - Skills son paquetes independientes y reutilizables
 - Fácil agregar, actualizar o remover skills
 
 ### Escalabilidad
+
 - MCP servers pueden estar en cualquier parte (local o remoto)
 - El agente puede escalar horizontalmente con más skills
 
 ### Portabilidad
+
 - Skills son archivos estándar que funcionan en cualquier agente compatible
 - Compartibles entre equipos y proyectos
 
 ### Eficiencia
+
 - Skills no saturan la memoria de trabajo del agente
 - Se cargan bajo demanda desde el sistema de archivos
 
 ### Extensibilidad
+
 - MCP servers permiten integración con sistemas externos sin modificar el agente
 - Skills pueden incluir código ejecutable (Python, scripts)
 

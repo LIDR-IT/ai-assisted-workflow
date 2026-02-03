@@ -11,6 +11,7 @@ model: inherit
 **Command:** `/validate-pr`
 
 **Direct requests:**
+
 - "Validate this PR"
 - "Check if I'm ready to create PR"
 - "Review PR readiness"
@@ -32,11 +33,13 @@ model: inherit
 ## Working Process
 
 ### Phase 1: Load Skills
+
 ```markdown
 Load ticket-validation skill for DoD checklist
 ```
 
 ### Phase 2: Identify Ticket
+
 ```bash
 git rev-parse --abbrev-ref HEAD
 # Extract TICK-ID from branch name
@@ -44,34 +47,40 @@ git rev-parse --abbrev-ref HEAD
 ```
 
 ### Phase 3: Load Ticket
+
 ```markdown
 Read .agents/tickets/active/TICK-{id}.md
 Parse acceptance criteria and Definition of Done
 ```
 
 ### Phase 4: Run Checks
+
 ```markdown
 For each acceptance criterion:
-  ✓ Check if marked complete (- [x])
-  
+✓ Check if marked complete (- [x])
+
 For each Definition of Done item:
-  ✓ Check if marked complete
-  ✓ Verify actual state (tests exist, docs updated, etc.)
+✓ Check if marked complete
+✓ Verify actual state (tests exist, docs updated, etc.)
 ```
 
 ### Phase 5: Generate Report
+
 ```markdown
 ## PR Validation Report: {branch-name}
 
 **Acceptance Criteria:** ✓ PASS | ✗ FAIL
+
 - ✓ Criterion 1
 - ✗ Criterion 2 (not checked off)
 
-**Definition of Done:** ✓ PASS | ✗ FAIL  
+**Definition of Done:** ✓ PASS | ✗ FAIL
+
 - ✓ Tests written and passing
 - ✗ Documentation not updated (README unchanged since X)
 
 **Files requiring attention:**
+
 - path/to/file:line - Issue description
 
 **Recommendation:** PASS | FIX ISSUES
@@ -85,6 +94,7 @@ For each Definition of Done item:
 **User:** `/validate-pr`
 
 **Agent:**
+
 ```markdown
 Loading ticket-validation skill...
 
@@ -96,11 +106,13 @@ Loading .agents/tickets/active/TICK-123.md...
 ## PR Validation Report: feature/TICK-123-add-user-auth
 
 **Acceptance Criteria:** ✓ PASS
+
 - ✓ User can login with email and password
 - ✓ JWT tokens generated correctly
 - ✓ Token validation working
 
 **Definition of Done:** ✗ FAIL (2 issues)
+
 - ✓ All acceptance criteria met
 - ✗ Tests written and passing (0 tests found)
 - ✗ Documentation updated (README unchanged since 2026-01-15)
@@ -109,6 +121,7 @@ Loading .agents/tickets/active/TICK-123.md...
 - ✓ Conventional commit created with TICK-ID
 
 **Files requiring attention:**
+
 - README.md:45 - Add authentication section documenting JWT usage
 - tests/ - No test files found for authentication service
 - src/services/auth.ts - No corresponding test file
@@ -116,10 +129,12 @@ Loading .agents/tickets/active/TICK-123.md...
 **Recommendation:** FIX ISSUES before creating PR
 
 **Blocking issues:**
+
 1. No tests found for authentication service
 2. Documentation not updated (README last modified 2026-01-15)
 
 **Non-blocking warnings:**
+
 - Consider adding rate limiting to auth endpoint
 - Token expiry could be configurable via environment variable
 ```
@@ -127,6 +142,7 @@ Loading .agents/tickets/active/TICK-123.md...
 ## Validation Checklist
 
 **Always check:**
+
 - [ ] All acceptance criteria checkboxes marked
 - [ ] Tests exist and passing
 - [ ] Documentation files modified within ticket timeframe
@@ -136,6 +152,7 @@ Loading .agents/tickets/active/TICK-123.md...
 - [ ] Branch naming follows pattern
 
 **Optional checks (if configured):**
+
 - [ ] Code coverage meets threshold
 - [ ] Performance benchmarks pass
 - [ ] Security scan clean
@@ -166,6 +183,7 @@ Loading .agents/tickets/active/TICK-123.md...
 [List with ✓/✗]
 
 **Files requiring attention:**
+
 - file:line - Description
 
 **Recommendation:** PASS | FIX ISSUES
