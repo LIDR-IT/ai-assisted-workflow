@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/notify.sh\"",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.agents/hooks/scripts/notify.sh\"",
             "timeout": 5
           }
         ]
@@ -14,11 +14,11 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Write|write_file|replace",
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/protect-secrets.sh",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.agents/hooks/scripts/protect-secrets.sh\"",
             "timeout": 10
           }
         ]
@@ -26,11 +26,11 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Write|write_file|replace",
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/auto-format.sh",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.agents/hooks/scripts/auto-format.sh\"",
             "timeout": 30
           }
         ]
