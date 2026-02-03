@@ -3,13 +3,7 @@ name: skills-management
 description: Review project for skills structure and compliance
 alwaysApply: false
 globs:
-  [
-    ".agents/skills/**/*",
-    ".claude/skills",
-    ".cursor/skills",
-    ".gemini/skills",
-    ".agent/skills",
-  ]
+  [".agents/skills/**/*", ".claude/skills", ".cursor/skills", ".gemini/skills", ".agent/skills"]
 argument-hint: <project-root>
 paths: [".agents/skills/**/*"]
 trigger: always_on

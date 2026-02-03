@@ -100,8 +100,8 @@ El orden de los hooks en Cursor es **CRÍTICO**:
 json
 {
   "afterFileEdit": [
-    { "command": "protect-secrets-post.sh" },  // ← PRIMERO
-    { "command": "auto-format.sh" }            // ← SEGUNDO
+    { "command": "protect-secrets-post.sh" }, // ← PRIMERO
+    { "command": "auto-format.sh" } // ← SEGUNDO
   ]
 }
 
@@ -135,6 +135,7 @@ json
 3. **protect-secrets** - Bloquea commits con archivos sensibles (.env, .key, .pem)
 
 **Configuración:**
+
 - `.husky/pre-commit` - Ejecuta lint-staged automáticamente
 - `package.json` - Define qué archivos formatear con Prettier
 - Funciona para **cualquier desarrollador** usando git, independiente de su IDE/herramienta AI
@@ -190,6 +191,7 @@ json
 ## 📊 Resumen de Limitaciones
 
 **Total: 9 limitaciones conocidas**
+
 - Antigravity: 4 limitaciones (2 críticas, 2 workarounds)
 - Gemini CLI: 1 limitación (workaround parcial)
 - Cursor: 4 limitaciones (2 críticas, 2 con workarounds)
@@ -197,20 +199,21 @@ json
 
 ### Matriz de Workarounds
 
-| Limitación | Plataforma | Workaround | Estado |
-|------------|------------|------------|--------|
-| No rules nativo | Gemini CLI | GEMINI.md índice | ⚠️ Parcial |
-| Rules flat | Cursor | Auto-flatten + .mdc | ✅ Automático |
-| No PreToolUse | Cursor | Husky pre-commit | ✅ Backup efectivo |
-| No Notification | Cursor | N/A | ❌ No disponible |
-| MCP global | Antigravity | Setup manual global | ⚠️ Manual |
-| Rules caching | Antigravity | Reload proyecto | ⚠️ Manual |
-| No hooks proyecto | Antigravity | Hooks globales | ⚠️ Afecta todos |
-| No subagents | Antigravity | N/A | ❌ No disponible |
+| Limitación        | Plataforma  | Workaround          | Estado             |
+| ----------------- | ----------- | ------------------- | ------------------ |
+| No rules nativo   | Gemini CLI  | GEMINI.md índice    | ⚠️ Parcial         |
+| Rules flat        | Cursor      | Auto-flatten + .mdc | ✅ Automático      |
+| No PreToolUse     | Cursor      | Husky pre-commit    | ✅ Backup efectivo |
+| No Notification   | Cursor      | N/A                 | ❌ No disponible   |
+| MCP global        | Antigravity | Setup manual global | ⚠️ Manual          |
+| Rules caching     | Antigravity | Reload proyecto     | ⚠️ Manual          |
+| No hooks proyecto | Antigravity | Hooks globales      | ⚠️ Afecta todos    |
+| No subagents      | Antigravity | N/A                 | ❌ No disponible   |
 
 ### Recomendaciones por Plataforma
 
 **Para máxima funcionalidad:**
+
 - **Claude Code** - Plataforma recomendada (soporte completo)
 - **Gemini CLI** - Buena opción (1 limitación menor)
 - **Cursor** - Funcional con workarounds (hooks limitados)

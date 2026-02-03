@@ -108,16 +108,13 @@ Ready to execute? (yes/skip)
 
 javascript
 // Create test file with bad formatting
-Write(
-  "test-format.json",
-  `{"name":"test","value":123,"nested":{"key":"value"}}`,
-);
+Write("test-format.json", `{"name":"test","value":123,"nested":{"key":"value"}}`);
 
 // Use Edit to trigger the hook
 Edit(
   "test-format.json",
   `{"name":"test","value":123,"nested":{"key":"value"}}`,
-  `{"name":"test-updated","value":123,"nested":{"key":"value"}}`,
+  `{"name":"test-updated","value":123,"nested":{"key":"value"}}`
 );
 
 // Read the result
@@ -183,7 +180,7 @@ Ready to execute? (yes/skip)
 javascript
 Write(
   "test-format.md",
-  `#Header\\nNo space after hash.   Extra spaces.  \\n\\n\\n\\nToo many newlines.`,
+  `#Header\\nNo space after hash.   Extra spaces.  \\n\\n\\n\\nToo many newlines.`
 );
 Edit("test-format.md", "No space", "Fixed spacing");
 Read("test-format.md");
@@ -270,10 +267,7 @@ try {
   result = "❌ Hook did NOT block the edit!";
 } catch (error) {
   // Hook should block with error
-  if (
-    error.includes("Cannot edit sensitive file") ||
-    error.includes("Blocked")
-  ) {
+  if (error.includes("Cannot edit sensitive file") || error.includes("Blocked")) {
     result = "✅ Hook correctly blocked the edit";
   } else {
     result = "⚠️ Edit blocked but with unexpected error";
@@ -316,14 +310,8 @@ Ready to execute? (yes/skip)
 
 javascript
 // Create sensitive files
-Write(
-  "test.key",
-  "-----BEGIN PRIVATE KEY-----\\nKEY_DATA_HERE\\n-----END PRIVATE KEY-----",
-);
-Write(
-  "test.pem",
-  "-----BEGIN CERTIFICATE-----\\nCERT_DATA_HERE\\n-----END CERTIFICATE-----",
-);
+Write("test.key", "-----BEGIN PRIVATE KEY-----\\nKEY_DATA_HERE\\n-----END PRIVATE KEY-----");
+Write("test.pem", "-----BEGIN CERTIFICATE-----\\nCERT_DATA_HERE\\n-----END CERTIFICATE-----");
 
 // Try to edit (both should be blocked)
 results = [];
