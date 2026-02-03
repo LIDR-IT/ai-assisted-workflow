@@ -15,48 +15,80 @@ Review these files: $ARGUMENTS. Check against workflow stages and ticket structu
 ## Workflow: Create → Enrich → Plan → Implement → Validate → Hook Check → Commit → PR → Archive
 
 ### 1. Ticket Creation
-- Manual: Copy `.agents/tickets/templates/{type}.md` → `backlog/TICK-{id}.md`
-- Automated: `/create-ticket [type]`
+
+- Manual: Copy template → `backlog/TICK-{id}-start-dd-mm-yyyy/ticket.md`
+- Automated: `/create-ticket [type]` (creates full folder structure)
+- Folder structure:
+  ```
+  TICK-{id}-start-dd-mm-yyyy/                  # No end date (not completed yet)
+  ├── ticket.md                                 # Main ticket file
+  ├── plan.md                                   # Implementation plan
+  └── resources/                                # All supporting files (flat)
+      ├── README.md                             # Naming conventions
+      ├── wireframe-[context].png               # UI wireframes
+      ├── final-[platform]-ui-[context].png     # Final designs
+      ├── diagram-[type].mmd                    # Architecture diagrams
+      └── api-[endpoint].json                   # API data/configs
+  ```
+- **File naming:** Follow conventions in `resources/README.md`
+  - Type prefix: `wireframe-`, `final-`, `diagram-`, `api-`, `config-`
+  - Platform (optional): `desktop`, `mobile`, `tablet`
+  - Context: Descriptive name
+  - Version (optional): `v1`, `v2`, `v3`
 - Branch: `{type}/TICK-{id}-{brief-description}`
+- **Note:** Only archived tickets have `end-dd-mm-yyyy` in folder name
 
 ### 2. Ticket Enrichment
+
 - Command: `/enrich-ticket TICK-{id}`
 - Agent: ticket-enricher validates completeness using ticket-validation skill
 - Checks: YAML, acceptance criteria, DoD, BDD scenarios, tasks
 
 ### 3. Planning
-- Break ticket into tasks with assignments
-- Move backlog/ → active/
-- Update YAML: `status: in-progress`
+
+- Break ticket into tasks with assignments in `plan.md`
+- Add resources (wireframes, diagrams, etc.) to `resources/` folder
+- Move `backlog/TICK-XXX-*/` → `active/TICK-XXX-*/`
+- Update YAML in `ticket.md`: `status: in-progress`
+- Update `updated_at` with current timestamp
 
 ### 4. Implementation
+
 - Complete assigned tasks
 - Commit with: `feat(TICK-123): description`
 - Update ticket notes
 
 ### 5. PR Validation
+
 - Command: `/validate-pr`
 - Agent: pr-validator checks DoD, tests, docs
 - Pre-commit hook: Validates on `git commit`
 
 ### 6. Hook Check
+
 - Runs before `git commit`
 - Extracts TICK-ID from branch
 - If ticket not found: DENY
 - If found: ASK user to run /validate-pr
 
 ### 7. Commit
+
 - Format: `type(TICK-id): Brief description`
 - Types: feat, fix, refactor, docs, test, chore
 
 ### 8. Pull Request
+
 - Title matches ticket
 - Link to ticket
 - All DoD checkboxes marked
 
 ### 9. Archive
-- Move active/ → archived/{YYYY-QX}/
-- Update YAML: `status: done`
+
+- Rename folder to add end date: `TICK-XXX-start-dd-mm-yyyy/` → `TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/`
+- Move to archive: `active/TICK-XXX-*/` → `archived/{YYYY-QX}/TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/`
+- Update YAML in `ticket.md`: `status: done`
+- Update `updated_at` with completion timestamp
+- All resources preserved in ticket folder
 - Delete branch
 
 ## Ticket YAML Required Fields
@@ -71,18 +103,22 @@ assignee: department|person|agent
 type: feature|bug|refactor|docs
 provider: none|github|jira|notion|trello|linear
 external_link: null|URL
-created_at: YYYY-MM-DD
-updated_at: YYYY-MM-DD
+created_at: YYYY-MM-DD HH:MM
+updated_at: YYYY-MM-DD HH:MM
 ---
 ```
+
+**Note:** Dates include hour and minutes (24-hour format, no seconds)
 
 ## Ticket Sections
 
 ### Description
+
 - Detailed explanation
 - Context, scope, impact
 
 ### Acceptance Criteria
+
 ```markdown
 - [ ] Specific, measurable criterion
 - [ ] Observable outcome
@@ -95,6 +131,7 @@ updated_at: YYYY-MM-DD
 ### Definition of Done
 
 **Standard (all tickets):**
+
 - [ ] All acceptance criteria met
 - [ ] Tests written and passing
 - [ ] Documentation updated
@@ -104,12 +141,14 @@ updated_at: YYYY-MM-DD
 - [ ] PR created
 
 **Type-specific:**
+
 - Feature: API reference updated, frontend validation
 - Bug: Root cause identified, regression tests
 - Refactor: No behavior change, performance measured
 - Docs: Examples included, links verified
 
 ### BDD Scenarios
+
 ```gherkin
 Feature: Feature name
 
@@ -127,11 +166,13 @@ Feature: Feature name
 **Complete scenario needs:** Given, When, Then, concrete values, observable outcomes
 
 ### Tasks
+
 ```markdown
 - [ ] Task description - Assigned to: name
 ```
 
 ### Notes
+
 Implementation decisions, trade-offs, references
 
 ## Branch Naming
@@ -139,12 +180,14 @@ Implementation decisions, trade-offs, references
 **Pattern:** `{type}/{TICK-id}-{description}`
 
 **Rules:**
+
 - type: feature, fix, refactor, docs
 - TICK-id: Exact ticket ID
 - description: Kebab-case, 2-5 words
 - Total: <50 characters
 
 **Examples:**
+
 - feature/TICK-123-add-auth
 - fix/TICK-456-memory-leak
 - refactor/TICK-789-extract-validators
@@ -152,12 +195,14 @@ Implementation decisions, trade-offs, references
 ## Agent Coordination
 
 ### ticket-enricher
+
 - Invocation: `/enrich-ticket TICK-123`
 - Uses: ticket-validation, bdd-gherkin-patterns skills
 - Validates: YAML, criteria, DoD, BDD, tasks
 - Output: file:line issues with suggested fixes
 
 ### pr-validator
+
 - Invocation: `/validate-pr`
 - Uses: ticket-validation skill
 - Checks: All acceptance criteria met, DoD complete, tests pass, docs updated
@@ -168,15 +213,18 @@ Implementation decisions, trade-offs, references
 **File:** `.agents/hooks/hooks.json`
 
 **Behavior:**
+
 1. Check if command is `git commit`
 2. Extract TICK-ID from branch
 3. If no TICK-ID: ALLOW
 4. If TICK-ID:
-   - Check ticket exists (active/ or backlog/)
+   - Check ticket folder exists (`active/TICK-XXX-*/` or `backlog/TICK-XXX-*/`)
+   - Look for `ticket.md` inside folder
    - If not found: DENY
    - If found: ASK user to run /validate-pr
 
 **Permissions:**
+
 - allow: Commit proceeds
 - ask: Prompt user
 - deny: Block with error
@@ -201,7 +249,9 @@ TICK-123:45 - Vague: "improve" → specify outcome
 ## Anti-Patterns
 
 **Flag these:**
+
 - YAML field missing (id, title, status, priority, assignee, type)
+- Date format incorrect (missing HH:MM or wrong format)
 - Status invalid (not enum)
 - Branch doesn't match pattern
 - Acceptance criteria vague ("better", "improved", "faster")
@@ -212,6 +262,10 @@ TICK-123:45 - Vague: "improve" → specify outcome
 - Provider set but no external_link
 - Ticket in backlog/ but branch created (should be active/)
 - Ticket archived but branch exists
+- Folder name in backlog/active has end date (should be TICK-XXX-start-dd-mm-yyyy only)
+- Folder name in archived missing end date (should be TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy)
+- Missing required files (ticket.md, plan.md)
+- Missing resources/ structure
 
 ## References
 

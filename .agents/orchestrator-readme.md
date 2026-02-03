@@ -101,11 +101,13 @@ All paths update the same source file due to symlinks.
 ### Why Orchestrator?
 
 **Problem:** Different platforms expect agent docs in different locations
+
 - Cursor: Prefers `CLAUDE.md` at root
 - Gemini CLI: Expects `GEMINI.md` or `.gemini/` directory
 - Standards: `AGENTS.md` follows [agents.md](https://agents.md) spec
 
 **Solution:** One source, multiple access points via symlinks
+
 - Single `.agents/orchestrator/AGENTS.md` source
 - Platform-specific symlinks at root
 - Edit anywhere, updates everywhere
@@ -113,12 +115,14 @@ All paths update the same source file due to symlinks.
 ### Why Symlinks?
 
 **Advantages:**
+
 - Instant propagation of changes
 - Zero duplication
 - Filesystem-native (Git handles correctly)
 - Bidirectional editing support
 
 **Verification:**
+
 - Symlinks committed to Git
 - Restored automatically on clone
 - Work across macOS/Linux (Windows requires Developer Mode)
@@ -126,11 +130,13 @@ All paths update the same source file due to symlinks.
 ### Why Centralized?
 
 **Consistency:**
+
 - One source of truth prevents drift
 - Changes synchronized automatically
 - Clear ownership and maintenance
 
 **Simplicity:**
+
 - Edit once, available everywhere
 - No manual copying or transformation
 - Standard sync workflow
@@ -170,6 +176,7 @@ ls -la .agents/orchestrator/AGENTS.md
 
 **Cause:** `core.symlinks` is false
 **Solution:**
+
 ```bash
 # Enable symlink support
 git config core.symlinks true

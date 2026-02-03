@@ -7,8 +7,8 @@ assignee: [department|person|agent-name]
 type: feature
 provider: none
 external_link: null
-created_at: YYYY-MM-DD
-updated_at: YYYY-MM-DD
+created_at: YYYY-MM-DD HH:MM
+updated_at: YYYY-MM-DD HH:MM
 ---
 
 # [Feature Title]
@@ -44,6 +44,7 @@ Avoid vague criteria like:
 ## Definition of Done
 
 **Standard checklist:**
+
 - [ ] All acceptance criteria met
 - [ ] Tests written and passing (unit, integration, e2e as needed)
 - [ ] Documentation updated (README, API reference, guides)
@@ -53,6 +54,7 @@ Avoid vague criteria like:
 - [ ] PR created with proper template
 
 **Feature-specific:**
+
 - [ ] API reference updated (if backend changes)
 - [ ] Frontend validation complete (if UI changes)
 
@@ -102,12 +104,15 @@ Task assignment patterns:
 [Implementation notes, decisions, trade-offs]
 
 **Decision log:**
+
 - Decision 1: Rationale
 - Decision 2: Rationale
 
 **Trade-offs:**
+
 - What was prioritized vs what was deferred
 
 **References:**
+
 - Related documentation or tickets
 - External resources or specs

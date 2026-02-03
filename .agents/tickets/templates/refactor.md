@@ -7,8 +7,8 @@ assignee: [department|person|agent-name]
 type: refactor
 provider: none
 external_link: null
-created_at: YYYY-MM-DD
-updated_at: YYYY-MM-DD
+created_at: YYYY-MM-DD HH:MM
+updated_at: YYYY-MM-DD HH:MM
 ---
 
 # [Refactor Title]
@@ -18,12 +18,14 @@ updated_at: YYYY-MM-DD
 [Why this refactoring is needed]
 
 **Motivation:**
+
 - Technical debt to address
 - Performance improvement opportunity
 - Code quality enhancement
 - Maintainability improvement
 
 **Benefits:**
+
 - Benefit 1
 - Benefit 2
 - Benefit 3
@@ -33,11 +35,13 @@ updated_at: YYYY-MM-DD
 [Describe current implementation and its issues]
 
 **Problems with current approach:**
+
 - Problem 1
 - Problem 2
 - Problem 3
 
 **Affected files:**
+
 - `path/to/file1.ts`
 - `path/to/file2.ts`
 
@@ -46,11 +50,13 @@ updated_at: YYYY-MM-DD
 [Describe desired implementation after refactoring]
 
 **Improvements:**
+
 - Improvement 1
 - Improvement 2
 - Improvement 3
 
 **New structure:**
+
 ```
 [Outline new file/module structure if relevant]
 ```
@@ -76,6 +82,7 @@ updated_at: YYYY-MM-DD
 ## Definition of Done
 
 **Standard checklist:**
+
 - [ ] All acceptance criteria met
 - [ ] Tests written and passing (unit, integration, e2e as needed)
 - [ ] Documentation updated (README, API reference, guides)
@@ -85,6 +92,7 @@ updated_at: YYYY-MM-DD
 - [ ] PR created with proper template
 
 **Refactor-specific:**
+
 - [ ] No behavior change (all tests pass without modification)
 - [ ] Performance measured (before/after benchmarks)
 - [ ] Migration completed (no old code remaining)
@@ -109,16 +117,19 @@ Copy scenarios from existing tests to verify no behavior change.
 ## Performance Benchmarks
 
 **Before refactoring:**
+
 ```
 [Benchmark results - execution time, memory usage, etc.]
 ```
 
 **After refactoring:**
+
 ```
 [Target benchmark results]
 ```
 
 **Measurement method:**
+
 ```bash
 [Command or script to reproduce benchmarks]
 ```
@@ -144,5 +155,6 @@ Copy scenarios from existing tests to verify no behavior change.
 [Any API changes, even if internal]
 
 **References:**
+
 - Design pattern: [Link or name]
 - Related refactorings: [Other tickets]

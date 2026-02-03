@@ -7,8 +7,8 @@ assignee: [department|person|agent-name]
 type: bug
 provider: none
 external_link: null
-created_at: YYYY-MM-DD
-updated_at: YYYY-MM-DD
+created_at: YYYY-MM-DD HH:MM
+updated_at: YYYY-MM-DD HH:MM
 ---
 
 # [Bug Title]
@@ -18,6 +18,7 @@ updated_at: YYYY-MM-DD
 [Brief description of the bug]
 
 **Environment:**
+
 - Platform: [Browser, OS, Device]
 - Version: [App version or commit hash]
 - Conditions: [Specific conditions when bug occurs]
@@ -39,6 +40,7 @@ updated_at: YYYY-MM-DD
 ## Impact
 
 **Severity:** [Critical|High|Medium|Low]
+
 - Critical: Production down, data loss, security vulnerability
 - High: Major feature broken, affects many users
 - Medium: Minor feature broken, workaround exists
@@ -60,6 +62,7 @@ updated_at: YYYY-MM-DD
 ## Definition of Done
 
 **Standard checklist:**
+
 - [ ] All acceptance criteria met
 - [ ] Tests written and passing (unit, integration, e2e as needed)
 - [ ] Documentation updated (README, API reference, guides)
@@ -69,6 +72,7 @@ updated_at: YYYY-MM-DD
 - [ ] PR created with proper template
 
 **Bug-specific:**
+
 - [ ] Root cause identified and documented
 - [ ] Tests prevent regression (bug cannot reoccur)
 - [ ] Related edge cases tested

@@ -15,6 +15,7 @@
 ### What Are Hooks?
 
 Hooks are **user-defined shell commands** that provide:
+
 - **Deterministic control** - Actions execute automatically, not at LLM discretion
 - **Lifecycle integration** - Run at specific points in Claude's workflow
 - **Customization** - Tailor Claude Code behavior to your needs
@@ -23,11 +24,13 @@ Hooks are **user-defined shell commands** that provide:
 ### Why Use Hooks Instead of Prompts?
 
 **Prompts (unreliable):**
+
 - "Please run prettier on all TypeScript files"
 - Depends on LLM decision-making
 - May forget or skip
 
 **Hooks (deterministic):**
+
 - Automatically runs prettier after every file edit
 - Always executes at defined lifecycle point
 - No LLM discretion required
@@ -39,25 +42,30 @@ By encoding rules as hooks, you turn suggestions into app-level code.
 ## Use Cases
 
 ### Notifications
+
 - Customize notifications when Claude awaits input or permission
 - Desktop notifications, sounds, custom alerts
 
 ### Automatic Formatting
+
 - Run `prettier` on .ts files after edits
 - Run `gofmt` on .go files after edits
 - Run `black` on .py files after edits
 
 ### Logging
+
 - Track and count executed commands
 - Compliance tracking
 - Debugging assistance
 
 ### Feedback
+
 - Automated feedback when code doesn't follow conventions
 - Linting checks
 - Style enforcement
 
 ### Custom Permissions
+
 - Block modifications to production files
 - Protect sensitive directories
 - Prevent destructive operations
@@ -68,19 +76,19 @@ By encoding rules as hooks, you turn suggestions into app-level code.
 
 Claude Code provides **11 hook events** that run at different workflow points:
 
-| Event                 | When It Runs                                               | Can Block |
-|:----------------------|:-----------------------------------------------------------|:----------|
-| `PreToolUse`          | Before tool calls                                          | Yes       |
-| `PermissionRequest`   | When permission dialog shown                               | Yes       |
-| `PostToolUse`         | After tool calls complete                                  | No        |
-| `UserPromptSubmit`    | When user submits prompt, before Claude processes          | No        |
-| `Notification`        | When Claude Code sends notifications                       | No        |
-| `Stop`                | When Claude Code finishes responding                       | No        |
-| `SubagentStop`        | When subagent tasks complete                               | No        |
-| `PreCompact`          | Before Claude Code runs compact operation                  | No        |
-| `Setup`               | When Claude Code invoked with `--init`, `--init-only`, `--maintenance` | No |
-| `SessionStart`        | When Claude Code starts new session or resumes existing    | No        |
-| `SessionEnd`          | When Claude Code session ends                              | No        |
+| Event               | When It Runs                                                           | Can Block |
+| :------------------ | :--------------------------------------------------------------------- | :-------- |
+| `PreToolUse`        | Before tool calls                                                      | Yes       |
+| `PermissionRequest` | When permission dialog shown                                           | Yes       |
+| `PostToolUse`       | After tool calls complete                                              | No        |
+| `UserPromptSubmit`  | When user submits prompt, before Claude processes                      | No        |
+| `Notification`      | When Claude Code sends notifications                                   | No        |
+| `Stop`              | When Claude Code finishes responding                                   | No        |
+| `SubagentStop`      | When subagent tasks complete                                           | No        |
+| `PreCompact`        | Before Claude Code runs compact operation                              | No        |
+| `Setup`             | When Claude Code invoked with `--init`, `--init-only`, `--maintenance` | No        |
+| `SessionStart`      | When Claude Code starts new session or resumes existing                | No        |
+| `SessionEnd`        | When Claude Code session ends                                          | No        |
 
 **Blocking hooks:** `PreToolUse` and `PermissionRequest` can block operations and provide feedback to Claude.
 
@@ -245,6 +253,7 @@ Automatically format TypeScript files after editing:
 ```
 
 **How it works:**
+
 1. Triggers after Edit or Write tool calls
 2. Extracts file path from JSON
 3. Checks if file is TypeScript (.ts)
@@ -276,7 +285,7 @@ Automatically fix missing language tags and formatting in markdown files.
 
 **Script:** `.claude/hooks/markdown_formatter.py`
 
-```python
+````python
 #!/usr/bin/env python3
 """
 Markdown formatter for Claude Code output.
@@ -360,7 +369,7 @@ try:
 except Exception as e:
     print(f"Error formatting markdown: {e}", file=sys.stderr)
     sys.exit(1)
-```
+````
 
 **Make script executable:**
 
@@ -369,6 +378,7 @@ chmod +x .claude/hooks/markdown_formatter.py
 ```
 
 **What it does:**
+
 - Detects programming languages in unlabeled code blocks
 - Adds appropriate language tags for syntax highlighting
 - Fixes excessive blank lines
@@ -439,12 +449,14 @@ Block edits to sensitive files:
 ```
 
 **How it works:**
+
 1. Triggers before Edit or Write operations
 2. Checks if file path contains sensitive patterns
 3. Exits with code 2 to block operation if sensitive file detected
 4. Allows operation (exit code 0) otherwise
 
 **Protected files:**
+
 - `.env` files
 - `package-lock.json`
 - `.git/` directory
@@ -454,6 +466,7 @@ Block edits to sensitive files:
 **Complete example implementation:** [bash_command_validator_example.py](https://github.com/anthropics/claude-code/blob/main/examples/hooks/bash_command_validator_example.py)
 
 **Features:**
+
 - Validates bash commands before execution
 - Blocks dangerous operations
 - Provides feedback to Claude on what to do differently
@@ -465,11 +478,11 @@ Block edits to sensitive files:
 
 Hooks use exit codes to communicate results to Claude Code:
 
-| Exit Code | Meaning                                              | Applicable Events          |
-|:----------|:-----------------------------------------------------|:---------------------------|
-| 0         | Success - Allow operation to proceed                 | All events                 |
-| 1         | Error - Log warning but allow operation              | All events                 |
-| 2         | Block - Prevent operation and provide feedback       | PreToolUse, PermissionRequest |
+| Exit Code | Meaning                                        | Applicable Events             |
+| :-------- | :--------------------------------------------- | :---------------------------- |
+| 0         | Success - Allow operation to proceed           | All events                    |
+| 1         | Error - Log warning but allow operation        | All events                    |
+| 2         | Block - Prevent operation and provide feedback | PreToolUse, PermissionRequest |
 
 ### Example: Blocking Hook
 
@@ -490,6 +503,7 @@ sys.exit(0)
 ```
 
 **Result:** When Claude tries to edit a production file:
+
 1. Hook exits with code 2
 2. Operation is blocked
 3. Claude receives message: "Cannot modify production files. Use staging instead."
@@ -557,6 +571,7 @@ Hooks receive event data via stdin as JSON. Format varies by event type.
 ### Security Risks
 
 **Malicious hooks can:**
+
 - Exfiltrate your data
 - Modify files without permission
 - Execute arbitrary commands
@@ -565,26 +580,31 @@ Hooks receive event data via stdin as JSON. Format varies by event type.
 ### Security Best Practices
 
 **1. Review all hooks before registration**
+
 - Understand what each hook does
 - Verify hook source is trusted
 - Check for suspicious commands
 
 **2. Use least privilege**
+
 - Only grant necessary permissions
 - Avoid running hooks as root/admin
 - Limit file system access
 
 **3. Validate hook inputs**
+
 - Sanitize data from JSON
 - Check file paths for traversal attacks
 - Validate commands before execution
 
 **4. Audit hook execution**
+
 - Log hook activity
 - Monitor for unexpected behavior
 - Review logs regularly
 
 **5. Test in safe environment**
+
 - Test new hooks in isolated environment
 - Verify behavior before production use
 - Check for unintended side effects
@@ -638,18 +658,31 @@ except Exception as e:
 ### Common Issues
 
 **Hook not triggering:**
+
 1. Check matcher pattern matches tool name
 2. Verify hook is saved in correct settings file
 3. Confirm event type is correct
 4. Check if hook is enabled
 
 **Hook fails silently:**
+
 1. Add logging to hook script
 2. Check exit codes
 3. Verify JSON parsing works
 4. Test hook command manually
 
+**Hook fails with "file not found" or "command not found":**
+
+1. Verify hook uses `${CLAUDE_PROJECT_DIR}` for absolute paths
+2. Check that hook command starts with correct variable
+3. Test hook manually with environment variable set:
+   ```bash
+   CLAUDE_PROJECT_DIR=$(pwd) bash .agents/hooks/scripts/your-hook.sh
+   ```
+4. Ensure hook scripts are in `.agents/hooks/scripts/` directory
+
 **Permission errors:**
+
 1. Make script executable (`chmod +x`)
 2. Check file permissions
 3. Verify script shebang is correct
@@ -709,6 +742,7 @@ Hooks can be configured at different scopes:
 **Applies to:** All projects for this user
 
 **Use for:**
+
 - Personal preferences
 - Cross-project rules
 - User-specific notifications
@@ -720,6 +754,7 @@ Hooks can be configured at different scopes:
 **Applies to:** This project only
 
 **Use for:**
+
 - Project-specific formatting
 - Team conventions
 - Project workflows
@@ -731,6 +766,7 @@ Hooks can be configured at different scopes:
 **Applies to:** All users in organization
 
 **Use for:**
+
 - Organization policies
 - Security requirements
 - Compliance rules
@@ -826,9 +862,12 @@ Use project-specific paths:
 ```
 
 **Available variables:**
-- `$CLAUDE_PROJECT_DIR` - Current project directory
+
+- `$CLAUDE_PROJECT_DIR` - Current project directory (root of project)
 - `$CLAUDE_SESSION_ID` - Current session ID
 - Other environment variables from your shell
+
+**Important Note:** Use `$CLAUDE_PROJECT_DIR` for absolute paths to ensure hooks work from any working directory. This variable is set by Claude Code during hook execution and points to the project root.
 
 ---
 
@@ -886,7 +925,7 @@ except Exception as e:
 
 ```json
 {
-  "matcher": "*"  // Runs for ALL tools
+  "matcher": "*" // Runs for ALL tools
 }
 ```
 
@@ -932,14 +971,17 @@ if not file_path or not os.path.exists(file_path):
 ### In This Repository
 
 **Hooks:**
+
 - For reference documentation, see official Hooks reference
 
 **Related Features:**
+
 - `docs/references/skills/skills-claude-code.md` - Skills in Claude Code
 - `docs/references/mcp/mcp-usage-claude-code.md` - MCP in Claude Code
 - `docs/references/agents/sub-agents-claude-code.md` - Sub-agents
 
 **Settings:**
+
 - Settings documentation for configuration paths
 
 ### External Resources

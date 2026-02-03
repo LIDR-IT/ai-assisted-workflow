@@ -7,8 +7,8 @@ assignee: [department|person|agent-name]
 type: docs
 provider: none
 external_link: null
-created_at: YYYY-MM-DD
-updated_at: YYYY-MM-DD
+created_at: YYYY-MM-DD HH:MM
+updated_at: YYYY-MM-DD HH:MM
 ---
 
 # [Documentation Title]
@@ -18,47 +18,56 @@ updated_at: YYYY-MM-DD
 [What documentation is being created or updated, and why]
 
 **Motivation:**
+
 - Knowledge gap to fill
 - New feature needs documentation
 - Existing docs outdated
 - User feedback/confusion
 
 **Impact:**
+
 - Who will benefit from this documentation
 - What problems it solves
 
 ## Documentation Scope
 
 **Included:**
+
 - Topic 1
 - Topic 2
 - Topic 3
 
 **Excluded:**
+
 - Out-of-scope topic 1
 - Out-of-scope topic 2
 
 ## Target Audience
 
 **Primary audience:**
+
 - [Developer, User, Admin, etc.]
 - [Experience level: Beginner, Intermediate, Advanced]
 
 **Assumed knowledge:**
+
 - Prerequisite 1
 - Prerequisite 2
 
 ## Content Outline
 
 ### Section 1: [Section name]
+
 - Subsection 1.1
 - Subsection 1.2
 
 ### Section 2: [Section name]
+
 - Subsection 2.1
 - Subsection 2.2
 
 ### Section 3: [Section name]
+
 - Subsection 3.1
 - Subsection 3.2
 
@@ -91,6 +100,7 @@ Code examples should be tested and working.
 ## Definition of Done
 
 **Standard checklist:**
+
 - [ ] All acceptance criteria met
 - [ ] Documentation reviewed for clarity and accuracy
 - [ ] Code reviewed and approved
@@ -99,6 +109,7 @@ Code examples should be tested and working.
 - [ ] PR created with proper template
 
 **Docs-specific:**
+
 - [ ] Examples included and tested
 - [ ] Links verified (no broken links)
 - [ ] Screenshots up-to-date (if applicable)
@@ -134,18 +145,21 @@ For documentation tickets, BDD scenarios describe user navigation and findabilit
 ## Style Guidelines
 
 **Follow project standards:**
+
 - Documentation Standards: `.agents/rules/process/documentation.md`
 - Markdown style: Use proper headers, code blocks with language tags
 - Tone: Clear, concise, professional
 - Active voice: "Run the command" not "The command should be run"
 
 **Document type:**
+
 - [ ] Guideline (prescriptive rules)
 - [ ] Guide (step-by-step tutorial)
 - [ ] Reference (technical specification)
 - [ ] Note (research or comparison)
 
 **Location:**
+
 ```
 docs/
 ├── guidelines/    # Prescriptive standards
@@ -157,10 +171,12 @@ docs/
 ## Cross-References
 
 **Related documentation:**
+
 - [Link to related doc 1]
 - [Link to related doc 2]
 
 **Referenced from:**
+
 - [Where this doc should be linked]
 - [Navigation breadcrumbs]
 

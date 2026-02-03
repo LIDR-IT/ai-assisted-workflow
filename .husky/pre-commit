@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# =============================================================================
+# Pre-commit Hook - Husky
+# =============================================================================
+# This hook runs before every commit to ensure code quality:
+# 1. Format staged files with prettier (via lint-staged)
+# 2. Block commits containing sensitive files
+# =============================================================================
+
+# Run lint-staged for formatting
+npx lint-staged
+
+# Check for sensitive files in staged changes
+SENSITIVE_PATTERNS=".env .pem .key secrets/ credentials/"
+
+for pattern in $SENSITIVE_PATTERNS; do
+  if git diff --cached --name-only | grep -q "$pattern"; then
+    echo "❌ ERROR: Attempting to commit sensitive file matching pattern: $pattern"
+    echo "   Remove the file from staging with: git reset HEAD <file>"
+    echo "   Or add it to .gitignore if it shouldn't be tracked"
+    exit 1
+  fi
+done
+
+echo "✅ Pre-commit checks passed"

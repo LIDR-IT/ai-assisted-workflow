@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "bash .cursor/hooks/scripts/auto-format.sh",
+        "timeout": 30
+      }
+    ],
+    "afterTabFileEdit": [
+      {
+        "command": "bash .cursor/hooks/scripts/auto-format.sh",
+        "timeout": 30
+      }
+    ]
+  }
+}

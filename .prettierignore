@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.vitepress/dist/
+.vitepress/cache/
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Generated files
+*.min.js
+*.min.css
+
+# Sensitive files (should never be formatted)
+.env*
+*.pem
+*.key
+secrets/
+credentials/
+
+# Git
+.git/
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# Cache
+.cache/
+*.log

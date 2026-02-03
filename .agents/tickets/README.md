@@ -14,40 +14,70 @@ Code-resident ticket management with BDD patterns and automated validation.
 
 ```
 .agents/tickets/
-├── README.md              # This file
-├── templates/             # Ticket templates by type
-│   ├── feature.md         # New feature template
-│   ├── bug.md             # Bug fix template
-│   ├── refactor.md        # Code refactoring template
-│   └── docs.md            # Documentation template
-├── backlog/               # Tickets not yet started (status: backlog|todo)
-├── active/                # Tickets in progress (status: in-progress|review)
-└── archived/              # Completed tickets (status: done|archived)
-    ├── 2026-Q1/           # Organized by quarter
-    ├── 2026-Q2/
-    └── .gitkeep
+├── README.md                      # This file
+├── templates/                     # Ticket templates by type
+│   ├── feature.md                 # New feature template
+│   ├── bug.md                     # Bug fix template
+│   ├── refactor.md                # Code refactoring template
+│   └── docs.md                    # Documentation template
+├── backlog/                       # Tickets not yet started
+│   └── TICK-XXX-start-dd-mm-yyyy/
+│       ├── ticket.md              # Main ticket file
+│       ├── plan.md                # Implementation plan
+│       └── resources/             # All supporting files (flat structure)
+│           ├── README.md          # Naming conventions guide
+│           ├── wireframe-auth-login.png
+│           ├── final-desktop-ui-dashboard.png
+│           ├── diagram-architecture.mmd
+│           └── api-response-users.json
+├── active/                        # Tickets in progress
+│   └── TICK-XXX-start-dd-mm-yyyy/
+│       ├── ticket.md
+│       ├── plan.md
+│       └── resources/             # All files (wireframes, designs, diagrams, etc.)
+└── archived/                      # Completed tickets
+    └── 2026-Q1/                   # Organized by quarter
+        └── TICK-XXX-start-dd-mm-yyyy-end-dd-mm-yyyy/
+            ├── ticket.md
+            ├── plan.md
+            └── resources/         # Preserved artifacts
 ```
+
+**Folder Naming:**
+
+- **Backlog/Active:** `TICK-{id}-start-{dd-mm-yyyy}/`
+  - Example: `TICK-002-start-02-02-2026/`
+  - Only start date (no end date until completed)
+- **Archived:** `TICK-{id}-start-{dd-mm-yyyy}-end-{dd-mm-yyyy}/`
+  - Example: `TICK-001-start-02-02-2026-end-09-02-2026/`
+  - Includes end date when archived
 
 ## Ticket Lifecycle
 
 ### 1. Backlog
+
 - **Status:** `backlog` or `todo`
-- **Location:** `.agents/tickets/backlog/TICK-{id}.md`
+- **Location:** `.agents/tickets/backlog/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/`
 - **Purpose:** Tickets awaiting prioritization or start
-- **Transition:** Move to `active/` when work begins
+- **Files:** `ticket.md`, `plan.md` (draft), `resources/` (empty or with specs)
+- **Transition:** Move entire folder to `active/` when work begins
 
 ### 2. Active
+
 - **Status:** `in-progress` or `review`
-- **Location:** `.agents/tickets/active/TICK-{id}.md`
+- **Location:** `.agents/tickets/active/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/`
 - **Purpose:** Tickets being actively worked on
 - **Branch:** Create branch `{type}/TICK-{id}-{description}`
-- **Transition:** Move to `archived/` when PR merged
+- **Files:** Update `plan.md`, add resources as needed
+- **Transition:** Move entire folder to `archived/{YYYY-QX}/` when PR merged
 
 ### 3. Archived
+
 - **Status:** `done` or `archived`
-- **Location:** `.agents/tickets/archived/{YYYY-QX}/TICK-{id}.md`
+- **Location:** `.agents/tickets/archived/{YYYY-QX}/TICK-{id}-start-dd-mm-yyyy-end-dd-mm-yyyy/`
 - **Purpose:** Completed work for historical reference
 - **Organization:** Group by quarter for easy browsing
+- **Preserved:** All ticket files, plan, and resources remain intact
 
 ## YAML Metadata
 
@@ -55,27 +85,31 @@ Code-resident ticket management with BDD patterns and automated validation.
 
 ```yaml
 ---
-id: TICK-001                           # Sequential ID, auto-assigned
-title: Brief ticket title              # <80 chars, descriptive
+id: TICK-001 # Sequential ID, auto-assigned
+title: Brief ticket title # <80 chars, descriptive
 status: backlog|todo|in-progress|review|done|archived
 priority: critical|high|medium|low
-assignee: department|person|agent      # Who owns this
-type: feature|bug|refactor|docs        # Ticket category
-provider: none|github|jira|notion|trello|linear  # External sync (optional)
-external_link: null|URL                # Link if provider set
-created_at: YYYY-MM-DD                 # ISO date
-updated_at: YYYY-MM-DD                 # ISO date
+assignee: department|person|agent # Who owns this
+type: feature|bug|refactor|docs # Ticket category
+provider: none|github|jira|notion|trello|linear # External sync (optional)
+external_link: null|URL # Link if provider set
+created_at: YYYY-MM-DD HH:MM # ISO date with time (24h format)
+updated_at: YYYY-MM-DD HH:MM # ISO date with time (24h format)
 ---
 ```
+
+**Note:** Timestamps use 24-hour format without seconds (e.g., `2026-02-02 14:30`)
 
 ### Field Definitions
 
 **id:** Ticket identifier
+
 - Format: `TICK-###` (sequential numbers)
 - Auto-assigned by `/create-ticket` command
 - Manual creation: Check highest ID in all directories
 
 **status:** Workflow state
+
 - `backlog`: Not prioritized yet
 - `todo`: Prioritized, ready to start
 - `in-progress`: Currently being worked on
@@ -84,18 +118,21 @@ updated_at: YYYY-MM-DD                 # ISO date
 - `archived`: Moved to historical archive
 
 **priority:** Urgency/importance
+
 - `critical`: Blocking issue, production down
 - `high`: Important feature, affects many users
 - `medium`: Standard work
 - `low`: Nice-to-have, non-urgent
 
 **type:** Work category
+
 - `feature`: New functionality
 - `bug`: Fix broken behavior
 - `refactor`: Code improvement without behavior change
 - `docs`: Documentation update
 
 **provider:** External ticket system (optional)
+
 - `none`: Default, code-resident only
 - `github`: Sync with GitHub Issues
 - `jira`: Sync with Jira tickets
@@ -108,24 +145,30 @@ updated_at: YYYY-MM-DD                 # ISO date
 ## Ticket Sections
 
 ### Description
+
 Detailed explanation of the work, context, scope, and impact.
 
 ### Acceptance Criteria
+
 Specific, measurable conditions that must be met for ticket to be complete.
 
 **Good criteria:**
+
 - ✓ "User can login with email and password"
 - ✓ "Page load time < 2 seconds"
 - ✓ "All unit tests passing"
 
 **Bad criteria:**
+
 - ✗ "Improve performance" (vague)
 - ✗ "Make it better" (unmeasurable)
 
 ### Definition of Done
+
 Checklist of quality gates before ticket can be closed.
 
 **Standard items (all tickets):**
+
 - All acceptance criteria met
 - Tests written and passing
 - Documentation updated
@@ -135,15 +178,18 @@ Checklist of quality gates before ticket can be closed.
 - PR created with template
 
 **Type-specific additions:**
+
 - Feature: API reference updated, frontend validation
 - Bug: Root cause identified, regression tests
 - Refactor: No behavior change proven, performance measured
 - Docs: Examples included, links verified
 
 ### BDD Scenarios
+
 Gherkin-formatted scenarios for acceptance testing.
 
 **Format:**
+
 ```gherkin
 Feature: Feature name
 
@@ -154,24 +200,29 @@ Feature: Feature name
 ```
 
 **Purpose:**
+
 - Clarify expected behavior
 - Enable automated test generation
 - Serve as living documentation
 
 ### Tasks
+
 Breakdown of implementation work with assignments.
 
 **Format:**
+
 ```markdown
 - [ ] Task description - Assigned to: name
 ```
 
 **Assignment patterns:**
+
 - Developers: Implementation, design decisions
 - Agents: Test generation, documentation, validation
 - Specialists: Security review, performance optimization
 
 ### Notes
+
 Implementation decisions, trade-offs, references.
 
 ## Creating Tickets
@@ -280,6 +331,7 @@ Feature: High-level feature description
 ### Writing Effective Scenarios
 
 **Good scenarios:**
+
 ```gherkin
 Scenario: User logs in with valid credentials
   Given a registered user with email "user@example.com"
@@ -290,6 +342,7 @@ Scenario: User logs in with valid credentials
 ```
 
 **Bad scenarios:**
+
 ```gherkin
 Scenario: Login works
   Given user exists
@@ -298,6 +351,7 @@ Scenario: Login works
 ```
 
 **Why bad:**
+
 - Too vague (which user? what credentials?)
 - No specific actions (how to login?)
 - Unclear outcome (success = what?)
@@ -305,6 +359,7 @@ Scenario: Login works
 ### Scenario Completeness
 
 **Every scenario must have:**
+
 - ✓ Given (setup)
 - ✓ When (action)
 - ✓ Then (outcome)
@@ -413,6 +468,7 @@ Check PR readiness before creation.
 **Purpose:** Validates ticket completeness
 
 **Checks:**
+
 - YAML frontmatter complete
 - Acceptance criteria specific
 - Definition of Done includes all items
@@ -420,6 +476,7 @@ Check PR readiness before creation.
 - Tasks assigned
 
 **Usage:**
+
 ```bash
 /enrich-ticket TICK-123
 ```
@@ -431,6 +488,7 @@ Check PR readiness before creation.
 **Purpose:** Checks PR readiness
 
 **Checks:**
+
 - All acceptance criteria met
 - Definition of Done complete
 - Tests written and passing
@@ -439,6 +497,7 @@ Check PR readiness before creation.
 - Conventional commits
 
 **Usage:**
+
 ```bash
 /validate-pr
 ```
@@ -450,6 +509,7 @@ Check PR readiness before creation.
 **Hook:** Validates on `git commit`
 
 **Behavior:**
+
 - If branch has TICK-ID: Ask user to run /validate-pr
 - If ticket not found: Deny commit (create ticket first)
 - If no TICK-ID: Allow commit (no validation)
@@ -461,6 +521,7 @@ Check PR readiness before creation.
 ### Complete Feature Ticket
 
 See `.agents/tickets/templates/feature.md` for complete example with:
+
 - Proper YAML frontmatter
 - Detailed description
 - Specific acceptance criteria
