@@ -115,4 +115,4 @@ Rules are synchronized across agents using:
 
 ---
 
-_Last synchronized: 2026-02-03 17:57:19_
+_Last synchronized: 2026-02-05 17:48:23_

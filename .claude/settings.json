@@ -14,7 +14,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Edit|Write|write_file|replace",
+        "matcher": "Read|read_file|Edit|Write|write_file|replace",
         "hooks": [
           {
             "type": "command",
