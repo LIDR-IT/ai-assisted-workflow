@@ -15,7 +15,7 @@ applyTo: "docs/**/*.md,  README.md"
 - **Agents:** 3 specialized agents (doc-improver, ticket-enricher ✅, pr-validator)
 - **Hooks:** Husky pre-commit + 3 cross-platform AI hooks (notify, auto-format, protect-secrets) ✅
 - **MCP Integration:** Context7 server configured across all platforms
-- **Synchronization:** sync-all.sh orchestrator with platform-specific sync scripts
+- **Synchronization:** sync.sh unified CLI with --only= flags for component-specific sync
 
 ### Platform Support
 
@@ -285,7 +285,7 @@ Original plan: Complex post-merge/pre-push bash scripts (377 lines)
 ### 1. Setup Time: <5 minutes (vs 2-4 hours)
 
 ```bash
-time (git clone repo && cd repo && ./.agents/sync-all.sh)
+time (git clone repo && cd repo && ./.agents/sync.sh)
 # Expected: <5 minutes
 ```
 
@@ -300,7 +300,7 @@ git log --all --since="30 days ago" | grep "Author:" | sort -u | wc -l
 ### 3. Configuration Consistency: 99.9% accuracy
 
 ```bash
-./.agents/sync-all.sh --dry-run
+./.agents/sync.sh --dry-run
 # Expected: "No changes needed"
 ```
 

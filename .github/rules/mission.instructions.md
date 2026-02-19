@@ -81,7 +81,7 @@ applyTo: "docs/**/*.md,  README.md"
 
 **Target:** <5 minutes vs 2-4 hours baseline (95%+ reduction)
 **Measurement:** Time from `git clone` to fully configured environment
-**Validation:** `time (./.agents/sync-all.sh)` completes in <5 minutes
+**Validation:** `time (./.agents/sync.sh)` completes in <5 minutes
 
 ### 2. Team Adoption Rate
 
@@ -93,7 +93,7 @@ applyTo: "docs/**/*.md,  README.md"
 
 **Target:** 99.9% synchronization accuracy across platforms
 **Measurement:** Zero drift detected in periodic validation checks
-**Validation:** `./.agents/sync-all.sh --dry-run` reports "No changes needed"
+**Validation:** `./.agents/sync.sh --dry-run` reports "No changes needed"
 
 ### 4. Developer Productivity
 

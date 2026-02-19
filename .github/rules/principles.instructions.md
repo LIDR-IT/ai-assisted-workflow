@@ -45,14 +45,14 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 **3. Script Generation (MCP Configs, Gemini Index)**
 
 - **Used for:** MCP server configurations, Gemini rules index, Copilot instructions index
-- **Scripts:** `.agents/mcp/sync-mcp.sh`, `.agents/rules/sync-rules.sh`
+- **Scripts:** `.agents/sync.sh --only=mcp`, `.agents/sync.sh --only=rules`
 - **Mechanism:** Generates platform-specific configs, GEMINI.md, and copilot-instructions.md
 - **Advantages:** Platform-specific formatting, validation, preprocessing
 
 **4. Copy + Rename (Cursor, Copilot Rules; Gemini Commands; Copilot Prompts/Agents)**
 
 - **Used for:** Cursor rules (.mdc), Copilot rules (.instructions.md), Gemini commands (.toml), Copilot prompts (.prompt.md), Copilot agents (.agent.md)
-- **Script:** `.agents/rules/sync-rules.sh`, `.agents/commands/sync-commands.sh`, `.agents/subagents/sync-agents.sh`
+- **Script:** `.agents/sync.sh --only=rules`, `.agents/sync.sh --only=commands`, `.agents/sync.sh --only=agents`
 - **Mechanism:** Copy + rename with frontmatter transformation as needed
 
 ### Platform Support Matrix
@@ -144,20 +144,20 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 **Skills:**
 
 1. Create in `.agents/skills/{skill-name}/`
-2. Run `.agents/rules/sync-rules.sh` (handles skills too)
+2. Run `.agents/sync.sh --only=rules` (handles skills too)
 3. Verify with `ls -la .cursor/skills .claude/skills`
 
 **Rules:**
 
 1. Create in `.agents/rules/{rule-name}.md`
-2. Run `.agents/rules/sync-rules.sh`
+2. Run `.agents/sync.sh --only=rules`
 3. Verify with `ls -la .cursor/rules .claude/rules`
 
 **MCP Servers:**
 
 1. Edit `.agents/mcp/mcp-servers.json`
 2. Add platform array: `["cursor", "claude", "gemini"]`
-3. Run `.agents/mcp/sync-mcp.sh`
+3. Run `.agents/sync.sh --only=mcp`
 4. Commit generated configs
 
 ### Verification Process
@@ -184,7 +184,7 @@ ls .claude/skills/
 **Symlinks not working:**
 
 1. Check source exists: `ls -la .agents/rules .agents/skills`
-2. Re-run sync: `.agents/rules/sync-rules.sh`
+2. Re-run sync: `.agents/sync.sh --only=rules`
 3. Manual creation: `ln -s ../.agents/rules .cursor/rules`
 
 **Antigravity MCP not working:**
@@ -201,7 +201,7 @@ ls .claude/skills/
 
 ## References
 
-- `.agents/mcp/sync-mcp.sh` - MCP synchronization script
-- `.agents/rules/sync-rules.sh` - Rules/skills synchronization script
+- `.agents/sync.sh --only=mcp` - MCP synchronization script
+- `.agents/sync.sh --only=rules` - Rules/skills synchronization script
 - `docs/guides/mcp/ANTIGRAVITY_LIMITATION.md` - Antigravity constraints
 - `docs/guidelines/team-conventions/skills-management-guidelines.md` - Skills guidelines

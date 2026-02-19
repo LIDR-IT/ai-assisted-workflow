@@ -1,6 +1,6 @@
 ---
 name: pr-validator
-description: "Validates PR readiness. Invoke with: /validate-pr or 'validate this PR before I create it'"
+description: "Validates PR readiness. Invoke with: /validate-pr or 'validate this PR before I create it"
 tools:
   - codebase
   - editFiles

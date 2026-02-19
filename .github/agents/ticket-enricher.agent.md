@@ -1,6 +1,6 @@
 ---
 name: ticket-enricher
-description: "Validates ticket completeness. Invoke with: /enrich-ticket TICK-123 or 'enrich this ticket'"
+description: "Validates ticket completeness. Invoke with: /enrich-ticket TICK-123 or 'enrich this ticket"
 tools:
   - codebase
   - editFiles

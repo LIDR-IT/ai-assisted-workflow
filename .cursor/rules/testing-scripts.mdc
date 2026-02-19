@@ -25,7 +25,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SYNC_SCRIPT="$SCRIPT_DIR/../.agents/rules/sync-rules.sh"
+SYNC_SCRIPT="$SCRIPT_DIR/../.agents/sync.sh"
 
 # Test counter
 TESTS_RUN=0
@@ -198,7 +198,7 @@ echo "Test: Add new rule and verify propagation"
 echo "# Test Rule" > .agents/rules/test-rule.md
 
 # 2. Run sync
-./.agents/rules/sync-rules.sh > /dev/null 2>&1
+./.agents/sync.sh --only=rules > /dev/null 2>&1
 
 # 3. Verify in all agents (Cursor gets .mdc, others get symlinks)
 if [ -f ".cursor/rules/test-rule.mdc" ] &&
@@ -211,7 +211,7 @@ fi
 
 # 4. Cleanup
 rm .agents/rules/test-rule.md
-./.agents/rules/sync-rules.sh > /dev/null 2>&1
+./.agents/sync.sh --only=rules > /dev/null 2>&1
 ```
 
 **Test: Add MCP server and generate configs**
@@ -232,7 +232,7 @@ jq '.servers.test = {
 }' .agents/mcp/mcp-servers.json.bak > .agents/mcp/mcp-servers.json
 
 # 3. Run sync
-./.agents/mcp/sync-mcp.sh > /dev/null 2>&1
+./.agents/sync.sh --only=mcp > /dev/null 2>&1
 
 # 4. Verify in generated configs
 if jq -e '.mcpServers.test' .cursor/mcp.json > /dev/null &&
@@ -245,7 +245,7 @@ fi
 
 # 5. Restore original
 mv .agents/mcp/mcp-servers.json.bak .agents/mcp/mcp-servers.json
-./.agents/mcp/sync-mcp.sh > /dev/null 2>&1
+./.agents/sync.sh --only=mcp > /dev/null 2>&1
 ```
 
 ## Error Handling Tests
@@ -263,7 +263,7 @@ echo "Test: Handle missing source directory"
 mv .agents/rules .agents/rules.tmp
 
 # 2. Run script (should fail gracefully)
-if ./.agents/rules/sync-rules.sh 2>&1 | grep -q "❌"; then
+if ./.agents/sync.sh --only=rules 2>&1 | grep -q "❌"; then
   echo "✅ Error handled correctly"
 else
   echo "❌ Error not handled properly"
@@ -285,7 +285,7 @@ cp .agents/mcp/mcp-servers.json .agents/mcp/mcp-servers.json.bak
 echo "{ invalid json }" > .agents/mcp/mcp-servers.json
 
 # 2. Run script (should fail)
-if ! ./.agents/mcp/sync-mcp.sh 2>&1; then
+if ! ./.agents/sync.sh --only=mcp 2>&1; then
   echo "✅ Invalid JSON rejected"
 else
   echo "❌ Invalid JSON not caught"
@@ -304,13 +304,13 @@ mv .agents/mcp/mcp-servers.json.bak .agents/mcp/mcp-servers.json
 
 echo "Test: Script execution time"
 
-# Measure sync-rules.sh
+# Measure sync.sh --only=rules
 start=$(date +%s%N)
-./.agents/rules/sync-rules.sh > /dev/null 2>&1
+./.agents/sync.sh --only=rules > /dev/null 2>&1
 end=$(date +%s%N)
 
 duration=$(( (end - start) / 1000000 ))
-echo "sync-rules.sh took ${duration}ms"
+echo "sync.sh --only=rules took ${duration}ms"
 
 if [ $duration -lt 1000 ]; then
   echo "✅ Performance acceptable (<1s)"
@@ -332,7 +332,7 @@ echo "Running regression tests..."
 # Issue #1: Files not overwriting existing directories
 test_file_overwrite() {
   mkdir -p .cursor/rules
-  ./.agents/rules/sync-rules.sh > /dev/null 2>&1
+  ./.agents/sync.sh --only=rules > /dev/null 2>&1
   if [ -d ".cursor/rules" ] && [ ! -L ".cursor/rules" ]; then
     echo "✅ Directory replaced with files"
   else
@@ -342,7 +342,7 @@ test_file_overwrite() {
 
 # Issue #2: Antigravity workflows symlink created
 test_antigravity_workflows() {
-  ./.agents/commands/sync-commands.sh > /dev/null 2>&1
+  ./.agents/sync.sh --only=commands > /dev/null 2>&1
   if [ -L ".agents/workflows" ]; then
     echo "✅ Antigravity workflows symlink exists"
   else
@@ -400,7 +400,7 @@ scripts/validate.sh:23 - Missing JSON validation with `jq empty`
 scripts/validate.sh:56 - No dry-run mode support
 scripts/validate.sh:78 - Using `grep` → prefer `Grep` tool
 
-## sync-mcp.sh
+## sync.sh --only=mcp
 
 ✓ pass
 ```

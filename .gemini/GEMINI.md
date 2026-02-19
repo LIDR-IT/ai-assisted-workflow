@@ -97,7 +97,7 @@ Guidelines for using Context7 MCP for library/API documentation.
 Rules are synchronized across agents using:
 
 ```bash
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh
 ```
 
 **Platform Support:**
@@ -105,7 +105,8 @@ Rules are synchronized across agents using:
 - **Cursor:** Rules copied as .mdc files (flattened)
 - **Claude Code:** Rules symlinked with subdirectories
 - **Gemini CLI:** Index file (this document) - no native rules support
-- **Antigravity:** Rules symlinked with subdirectories
+- **Copilot (VSCode):** Rules copied as .instructions.md (flattened)
+- **Antigravity:** Rules read natively from .agents/rules/
 
 ---
 
@@ -115,4 +116,4 @@ Rules are synchronized across agents using:
 
 ---
 
-_Last synchronized: 2026-02-19 23:57:12_
+_Last synchronized: 2026-02-20 00:46:10_

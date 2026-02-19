@@ -89,7 +89,7 @@ Co-authored-by: Name <email@example.com>
 ```
 feat: Add centralized rules synchronization script
 
-Implement .agents/rules/sync-rules.sh to synchronize rules
+Implement .agents/sync.sh --only=rules to synchronize rules
 and skills across all agent platforms using symlinks.
 
 - Cursor, Claude, Gemini use full directory symlinks
@@ -112,7 +112,7 @@ Refs: #52
 ```
 docs: Add SYNC_SETUP guide for rules synchronization
 
-Create comprehensive guide for using sync-rules.sh
+Create comprehensive guide for using sync.sh --only=rules
 including setup, usage, verification, and troubleshooting.
 
 Refs: #48
@@ -128,7 +128,7 @@ fix: Update script
 feat: New feature
 
 # Too much detail in summary
-feat: Add sync-rules.sh script that creates symlinks for cursor claude gemini and copies for antigravity
+feat: Add sync.sh CLI that creates symlinks for cursor claude gemini and copies for antigravity
 
 # Missing type
 Add documentation for sync process
@@ -395,7 +395,7 @@ git push -u origin docs/update-guide
 vim .agents/mcp/mcp-servers.json
 
 # 2. Run sync script
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 3. Review generated files
 git diff .cursor/mcp.json
@@ -426,7 +426,7 @@ Refs: #101"
 echo "# New Rule" > .agents/rules/new-rule.md
 
 # 2. Run sync (creates symlinks)
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # 3. Verify symlinks work
 cat .cursor/rules/new-rule.md
@@ -478,7 +478,7 @@ vim .agents/mcp/mcp-servers.json
 # Resolve conflicts in source
 
 # 3. Regenerate
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 4. Commit
 git add .agents/mcp/mcp-servers.json .cursor/mcp.json

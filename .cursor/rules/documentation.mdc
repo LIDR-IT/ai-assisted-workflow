@@ -314,7 +314,7 @@ A new file should be created in `.agents/rules/`.
 # Good
 
 ```bash
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 ```
 ````
 
@@ -426,7 +426,7 @@ Link to related documentation:
 2. Run sync script:
 
 ```bash
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 ```
 
 3. Verify:
@@ -464,7 +464,7 @@ lrwxr-xr-x  1 user  staff  16 Jan 31 12:00 .cursor/rules -> ../.agents/rules
 ls -la .agents/rules
 
 # Re-run sync
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # Manual creation
 ln -s ../.agents/rules .cursor/rules
