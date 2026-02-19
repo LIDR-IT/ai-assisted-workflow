@@ -8,6 +8,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 _No unreleased changes._
 
+## [0.7.0] - 2026-02-20
+
+### Added
+
+- **Unified Sync CLI** (`sync.sh`) — Single entry point replacing 8 individual scripts with powerful filtering:
+  - `--platform=copilot,cursor` — Sync only specific platforms
+  - `--only=rules,mcp` — Sync only specific components
+  - `--dry-run` — Preview changes without applying
+  - `--verbose` — Debug output for troubleshooting
+  - `--help` — Full usage documentation
+- **Adapter-Plugin Architecture** — SOLID-principled sync system:
+  - `adapters/` — Platform-specific adapters (cursor, claude, gemini, copilot, antigravity)
+  - `sync/` — Component orchestrators (rules, skills, commands, agents, mcp, hooks)
+  - `lib/` — Shared libraries (core.sh, symlink.sh, frontmatter.sh, registry.sh)
+  - `platforms.json` — Central registry of platform capabilities
+- **Dynamic Dispatch** — Orchestrators discover adapter functions via `{platform}_{component}()` convention
+- **Platform Registry** — JSON-driven platform definitions; adding a new platform requires only 1 adapter file + 1 registry entry (previously required modifying 7+ files)
+
+### Changed
+
+- Sync system reduced from 2,456 lines (8 scripts) to ~2,100 lines (18 files) with zero code duplication
+- All 60+ documentation files updated to reference new unified `sync.sh` CLI
+- README.md updated with new architecture, commands, and directory structure
+- Skills references (sync-system.md, architecture-overview.md) rewritten for new architecture
+- Platform configs regenerated via new sync system
+
+### Removed
+
+- `sync-all.sh` — Replaced by `sync.sh`
+- `rules/sync-rules.sh` — Replaced by `sync.sh --only=rules`
+- `skills/sync-skills.sh` — Replaced by `sync.sh --only=skills`
+- `commands/sync-commands.sh` — Replaced by `sync.sh --only=commands`
+- `subagents/sync-agents.sh` — Replaced by `sync.sh --only=agents`
+- `mcp/sync-mcp.sh` — Replaced by `sync.sh --only=mcp`
+- `hooks/sync-hooks.sh` — Replaced by `sync.sh --only=hooks`
+- `orchestrator/sync-orchestrator.sh` — Replaced by `sync.sh --only=orchestrator`
+- 200+ lines of duplicated code (4 copies of `create_symlink()`, 4 YAML parser implementations)
+
+### Migration
+
+| Old Command                             | New Command                              |
+| --------------------------------------- | ---------------------------------------- |
+| `.agents/sync-all.sh`                   | `.agents/sync.sh`                        |
+| `.agents/rules/sync-rules.sh`           | `.agents/sync.sh --only=rules`           |
+| `.agents/mcp/sync-mcp.sh`               | `.agents/sync.sh --only=mcp`             |
+| `.agents/hooks/sync-hooks.sh`           | `.agents/sync.sh --only=hooks`           |
+| `.agents/rules/sync-rules.sh --dry-run` | `.agents/sync.sh --only=rules --dry-run` |
+
 ## [0.6.0] - 2026-02-20
 
 ### Added
