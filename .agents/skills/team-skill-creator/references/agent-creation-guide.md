@@ -38,7 +38,7 @@ Agents are **autonomous subprocesses** that Claude Code spawns to handle complex
 | Complexity      | High             | Medium-High         | Low           |
 | Use case        | Multi-step tasks | Knowledge/workflows | Quick prompts |
 | Decision-making | Yes              | No                  | No            |
-| Platform        | Claude Code only | All 4               | All 4         |
+| Platform        | Claude Code only | All 5               | All 5         |
 
 ## When to Use Agents
 

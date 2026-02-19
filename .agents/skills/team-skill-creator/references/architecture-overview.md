@@ -14,14 +14,15 @@ Comprehensive guide to the `.agents/` centralized source-of-truth architecture f
 
 ## System Overview
 
-The `.agents/` system provides **centralized configuration management** for AI agents across 4 platforms:
+The `.agents/` system provides **centralized configuration management** for AI agents across 5 platforms:
 
 **Supported Platforms:**
 
 1. **Cursor** - Full support with symlinks
 2. **Claude Code** - Full support with symlinks
 3. **Gemini CLI** - Full support with symlinks
-4. **Antigravity** - Limited support (selective symlinks/copies)
+4. **Antigravity** - Native detection from `.agents/` (no sync needed)
+5. **Copilot (VSCode)** - Copy+rename with symlinks for skills
 
 **Core principle:** Edit once in `.agents/`, automatically synchronized to all platforms.
 
@@ -83,10 +84,10 @@ Platform-specific directories receive synced configurations:
 ├── commands → ../.agents/commands
 └── settings.json (generated)
 
-.agent/           # Antigravity
-├── rules/ (copied files)
-├── skills/ (selective symlinks)
-├── workflows/ (commands copied)
+.agents/          # Antigravity (native detection)
+├── rules/ (read natively)
+├── skills/ (read natively)
+├── workflows → commands (symlink inside .agents/)
 └── (MCP global only)
 ```
 
@@ -113,7 +114,7 @@ Platform-specific directories receive synced configurations:
 **Sync strategy:**
 
 - Cursor, Claude, Gemini: Full directory symlink
-- Antigravity: Files copied
+- Antigravity: Native detection from `.agents/rules/` (no sync needed)
 
 ### .agents/skills/
 
@@ -139,7 +140,7 @@ Platform-specific directories receive synced configurations:
 **Sync strategy:**
 
 - Cursor, Claude, Gemini: Full directory symlink
-- Antigravity: Selective symlinks per-skill
+- Antigravity: Native detection from `.agents/skills/` (no sync needed)
 
 ### .agents/commands/
 
@@ -156,7 +157,7 @@ Platform-specific directories receive synced configurations:
 **Sync strategy:**
 
 - Cursor, Claude, Gemini: Full directory symlink
-- Antigravity: Files copied to `.agent/workflows/`
+- Antigravity: Native detection via `.agents/workflows → commands` symlink inside `.agents/`
 
 ### .agents/mcp/
 
@@ -226,51 +227,32 @@ ln -s ../.agents/skills .cursor/skills
 - ✅ Preprocessing/transformation
 - ✅ Single source, multiple targets
 
-### Strategy 3: File Copies
+### Strategy 3: File Copies (Legacy - No Longer Used for Antigravity)
 
-**Used for:** Antigravity rules and commands
-**Platform:** Antigravity only
+**Previously used for:** Antigravity rules and commands
+**Status:** No longer needed. Antigravity now reads natively from `.agents/`.
 
-**Mechanism:**
+**Note:** Antigravity detects rules and skills directly from `.agents/rules/` and
+`.agents/skills/`. Commands are accessible via the `.agents/workflows → commands`
+symlink inside `.agents/`. No file copies or manual syncs are required.
 
-```bash
-cp -r .agents/rules/*.md .agent/rules/
-cp -r .agents/commands/*.md .agent/workflows/
-```
+### Strategy 4: Selective Symlinks (Legacy - No Longer Used for Antigravity)
 
-**Limitations:**
+**Previously used for:** Antigravity skills
+**Status:** No longer needed. Antigravity now reads natively from `.agents/skills/`.
 
-- ⚠️ Manual sync required after edits
-- ⚠️ No instant propagation
-- ⚠️ Platform limitation (no directory symlink support)
-
-**Note:** Must re-run sync after editing rules or commands for Antigravity.
-
-### Strategy 4: Selective Symlinks
-
-**Used for:** Antigravity skills
-**Platform:** Antigravity only
-
-**Mechanism:**
-
-```bash
-ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
-```
-
-**Advantages:**
-
-- ✅ Works within Antigravity constraints
-- ✅ Instant propagation for skills
-- ⚠️ Each skill requires individual symlink
+**Note:** No per-skill symlinks are required for Antigravity. All skills in
+`.agents/skills/` are detected automatically.
 
 ## Platform Support Matrix
 
-| Platform    | MCP Project | MCP Global | Skills | Commands | Agents | Rules   |
-| ----------- | ----------- | ---------- | ------ | -------- | ------ | ------- |
-| Cursor      | ✅          | ✅         | ✅ Sym | ✅ Sym   | ✅\*   | ✅ Sym  |
-| Claude Code | ✅          | ✅         | ✅ Sym | ✅ Sym   | ✅     | ✅ Sym  |
-| Gemini CLI  | ✅          | ✅         | ✅ Sym | ✅ Sym   | ❌     | ✅ Sym  |
-| Antigravity | ❌ Global   | ✅         | ✅ Sel | ✅ Copy  | ❌     | ✅ Copy |
+| Platform         | MCP Project | MCP Global | Skills    | Commands  | Agents  | Rules       |
+| ---------------- | ----------- | ---------- | --------- | --------- | ------- | ----------- |
+| Cursor           | ✅          | ✅         | ✅ Sym    | ✅ Sym    | ✅\*    | ✅ Copy     |
+| Claude Code      | ✅          | ✅         | ✅ Sym    | ✅ Sym    | ✅      | ✅ Sym      |
+| Gemini CLI       | ✅          | ✅         | ✅ Sym    | ✅ Gen    | ✅ Sym  | ❌ Index    |
+| Antigravity      | ❌ Global   | ✅         | ✅ Native | ✅ Native | ❌      | ✅ Native   |
+| Copilot (VSCode) | ✅          | ✅         | ✅ Sym    | ✅ Copy   | ✅ Copy | ✅ Copy+Idx |
 
 **Legend:**
 
@@ -278,6 +260,7 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 - ✅ Sym = Full directory symlink
 - ✅ Sel = Selective (per-item) symlinks
 - ✅ Copy = Files copied during sync
+- ✅ Native = Natively detected from `.agents/` (no sync required)
 - ❌ = Not supported
 - \*May have limited support
 
@@ -305,9 +288,9 @@ ln -s ../../.agents/skills/skill-name .agent/skills/skill-name
 **Antigravity:**
 
 - **MCP project-level NOT supported** (must use global config)
-- Skills: Selective symlinks work
-- Commands: Copied to `.agent/workflows/` (not `.agent/commands/`)
-- Rules: Files copied (no directory symlink support)
+- Skills: Natively detected from `.agents/skills/` (no symlink needed)
+- Commands: Natively detected via `.agents/workflows → commands` symlink inside `.agents/`
+- Rules: Natively detected from `.agents/rules/` (no copy needed)
 - No agent support
 
 ## Component Types
@@ -422,8 +405,8 @@ Step 3: Symlinks created
   .claude/skills → ../.agents/skills
   .gemini/skills → ../.agents/skills
 
-Step 4: Antigravity selective symlink
-  .agent/skills/new-skill → ../../.agents/skills/new-skill
+Step 4: Antigravity native detection
+  .agents/skills/new-skill (no extra step needed - read directly)
 
 Step 5: Available in all agents
   All platforms can now access the skill
@@ -444,8 +427,8 @@ Step 3: Symlinks created
   .claude/commands → ../.agents/commands
   .gemini/commands → ../.agents/commands
 
-Step 4: Antigravity copy
-  cp .agents/commands/new-command.md .agent/workflows/
+Step 4: Antigravity native detection
+  .agents/workflows/new-command.md (via .agents/workflows → commands symlink)
 
 Step 5: Available via /{command-name}
   All platforms can invoke: /new-command
@@ -503,10 +486,10 @@ Step 4: Antigravity manual config
     ┌─────▼──────────────▼──────────────▼──────────────▼────┐
     │        Agent-Specific Directories (Consumers)          │
     ├────────────────────────────────────────────────────────┤
-    │  .cursor/   .claude/   .gemini/   .agent/              │
-    │  ├─ rules → ├─ rules → ├─ rules → ├─ rules (copy)     │
-    │  ├─ skills→ ├─ skills→ ├─ skills→ ├─ skills (select)  │
-    │  ├─ cmds  → ├─ cmds  → ├─ cmds  → ├─ workflows (copy) │
+    │  .cursor/   .claude/   .gemini/   .agents/ (Antigravity)│
+    │  ├─ rules → ├─ rules → ├─ rules → ├─ rules (native)   │
+    │  ├─ skills→ ├─ skills→ ├─ skills→ ├─ skills (native)  │
+    │  ├─ cmds  → ├─ cmds  → ├─ cmds  → ├─ workflows→cmds   │
     │  └─ mcp.json└─ mcp.json└─settings └─ (global only)    │
     └────────────────────────────────────────────────────────┘
 ```
@@ -521,15 +504,15 @@ User creates/edits in .agents/
        │
        ├─── sync-rules.sh
        │      └─ Creates symlinks (Cursor/Claude/Gemini)
-       │      └─ Copies files (Antigravity)
+       │      └─ Antigravity: reads natively from .agents/rules/
        │
        ├─── sync-skills.sh
        │      └─ Creates symlinks (Cursor/Claude/Gemini)
-       │      └─ Selective symlinks (Antigravity)
+       │      └─ Antigravity: reads natively from .agents/skills/
        │
        ├─── sync-commands.sh
        │      └─ Creates symlinks (Cursor/Claude/Gemini)
-       │      └─ Copies to workflows (Antigravity)
+       │      └─ Antigravity: reads via .agents/workflows → commands
        │
        └─── sync-mcp.sh
               └─ Generates platform configs
@@ -553,7 +536,8 @@ The `.agents/` architecture provides:
 
 **⚠️ Constraints:**
 
-- Antigravity limitations (no project MCP, copied rules/commands)
+- Antigravity limitations (no project MCP, no agents)
+- Antigravity reads rules/skills/commands natively from `.agents/`
 - Agents only in Claude Code
 - Platform-specific behaviors
 
@@ -569,6 +553,6 @@ The `.agents/` architecture provides:
 
 - Symlinks (instant, preferred)
 - Generation (platform-specific configs)
-- Copies (Antigravity constraints)
+- Native detection (Antigravity reads directly from `.agents/`)
 
 **Result:** Consistent, maintainable AI agent configuration across entire team and all platforms!

@@ -6,7 +6,7 @@ version: 0.1.0
 
 # Team Skill Creator
 
-Create and manage skills, commands, and agents within the `.agents/` centralized architecture with automatic synchronization across all AI platforms (Cursor, Claude Code, Gemini CLI, Antigravity).
+Create and manage skills, commands, and agents within the `.agents/` centralized architecture with automatic synchronization across all AI platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode).
 
 ## Overview
 
@@ -37,7 +37,8 @@ The `.agents/` directory serves as the **single source of truth** for all AI age
 - **Cursor** - Full symlink support
 - **Claude Code** - Full symlink support
 - **Gemini CLI** - Full symlink support
-- **Antigravity** - Selective symlinks/copies
+- **Antigravity** - Native detection from `.agents/`
+- **Copilot (VSCode)** - Copy+rename (`.instructions.md`, `.prompt.md`, `.agent.md`)
 
 ### Automatic Synchronization
 
@@ -184,7 +185,7 @@ What do you need to create?
 | **Resources**   | Yes (scripts/refs/etc) | No                  | No                     |
 | **Location**    | `.agents/skills/`      | `.agents/commands/` | `.claude/agents/`      |
 | **Format**      | Directory with files   | Single `.md` file   | Single `.md` file      |
-| **Platforms**   | All 4                  | All 4               | Claude Code only       |
+| **Platforms**   | All 5                  | All 5               | Claude Code only       |
 | **Sync needed** | Yes (automatic)        | Yes (automatic)     | No (platform-specific) |
 
 ### Decision Examples
@@ -488,7 +489,7 @@ When creating skills/commands, the workflow is:
    - .cursor/skills → ../.agents/skills
    - .claude/skills → ../.agents/skills
    - .gemini/skills → ../.agents/skills
-   - .agent/skills/{skill-name} → ../../.agents/skills/{skill-name}
+   - Antigravity reads natively from `.agents/skills/` (no symlink needed)
 4. Verification checks run automatically
 5. User receives confirmation: "✅ Synced to all platforms"
 ```
@@ -524,7 +525,7 @@ cat .cursor/skills/team-skill-creator/SKILL.md | head -20
 
 - ⚠️ Selective symlinks (per-skill/command)
 - ⚠️ Must re-run sync after editing existing components
-- ⚠️ Commands go to `.agent/workflows/` not `.agent/commands/`
+- ✅ Commands go to `.agents/workflows/` (symlink to `.agents/commands/`)
 - ❌ Agents not supported
 
 **Detailed internals:** See `references/sync-system.md`
@@ -713,22 +714,24 @@ For detailed understanding of the `.agents/` system, see: `references/architectu
 
 - **Source of truth:** `.agents/` directory
 - **Synchronization:** Symlinks for instant propagation
-- **Platform support:** 4 platforms with varying capabilities
+- **Platform support:** 5 platforms with varying capabilities
 - **Component types:** Rules, Skills, Commands, Agents, MCP
 
 **Platform support matrix:**
 
-| Platform    | MCP Project | Skills | Commands | Agents | Rules   |
-| ----------- | ----------- | ------ | -------- | ------ | ------- |
-| Cursor      | ✅          | ✅ Sym | ✅ Sym   | ✅\*   | ✅ Sym  |
-| Claude Code | ✅          | ✅ Sym | ✅ Sym   | ✅     | ✅ Sym  |
-| Gemini CLI  | ✅          | ✅ Sym | ✅ Sym   | ❌     | ✅ Sym  |
-| Antigravity | ❌ Global   | ✅ Sel | ✅ Copy  | ❌     | ✅ Copy |
+| Platform         | MCP Project | Skills | Commands | Agents  | Rules    |
+| ---------------- | ----------- | ------ | -------- | ------- | -------- |
+| Cursor           | ✅          | ✅ Sym | ✅ Sym   | ✅\*    | ✅ Copy  |
+| Claude Code      | ✅          | ✅ Sym | ✅ Sym   | ✅      | ✅ Sym   |
+| Gemini CLI       | ✅          | ✅ Sym | ✅ Gen   | ✅ Sym  | ❌ Index |
+| Antigravity      | ❌ Global   | ✅ Nat | ✅ Nat   | ❌      | ✅ Nat   |
+| Copilot (VSCode) | ✅          | ✅ Sym | ✅ Copy  | ✅ Copy | ✅ Copy  |
 
 **Legend:**
 
 - Sym = Full directory symlink
-- Sel = Selective (per-item) symlinks
+- Nat = Native detection from `.agents/`
+- Gen = Generated (format conversion)
 - Copy = Files copied during sync
 - \*Agents may have limited support in Cursor
 

@@ -91,6 +91,89 @@ sync_gemini() {
   echo ""
 }
 
+# Convert subagent .md to Copilot .agent.md format
+convert_to_agent_md() {
+  local md_file=$1
+  local agent_file=$2
+
+  # Extract frontmatter fields
+  local has_frontmatter=false
+  if head -1 "$md_file" | grep -q "^---$"; then
+    has_frontmatter=true
+  fi
+
+  local name=""
+  local description=""
+  if [ "$has_frontmatter" = true ]; then
+    name=$(sed -n '/^---$/,/^---$/p' "$md_file" | grep "^name:" | sed 's/name: *//' | sed 's/^"//' | sed 's/"$//')
+    description=$(sed -n '/^---$/,/^---$/p' "$md_file" | grep "^description:" | sed 's/description: *//' | sed 's/^"//' | sed 's/"$//')
+  fi
+
+  # Extract body content (everything after second ---)
+  local body=""
+  if [ "$has_frontmatter" = true ]; then
+    body=$(awk 'BEGIN{skip=1} /^---$/{if(NR==1)next; skip=0; next} !skip{print}' "$md_file")
+  else
+    body=$(cat "$md_file")
+  fi
+
+  # Generate .agent.md with Copilot frontmatter
+  {
+    echo "---"
+    if [ -n "$name" ]; then
+      echo "name: $name"
+    fi
+    if [ -n "$description" ]; then
+      echo "description: \"$description\""
+    fi
+    echo "tools:"
+    echo "  - codebase"
+    echo "  - editFiles"
+    echo "  - terminalLastCommand"
+    echo "---"
+    echo "$body"
+  } > "$agent_file"
+}
+
+# Function to sync Copilot agents (copy+rename to .agent.md)
+sync_copilot() {
+  echo "🐙 Syncing Copilot (VSCode) agents (converting .md → .agent.md)..."
+
+  if [ "$DRY_RUN" = true ]; then
+    echo "  ${YELLOW}[DRY RUN]${NC} Would convert and copy agents to .github/agents/"
+    echo ""
+    return 0
+  fi
+
+  # Preserve .github/ but recreate agents/ subdirectory
+  if [ -e "$PROJECT_ROOT/.github/agents" ] || [ -L "$PROJECT_ROOT/.github/agents" ]; then
+    rm -rf "$PROJECT_ROOT/.github/agents"
+  fi
+  mkdir -p "$PROJECT_ROOT/.github/agents"
+
+  echo "  📝 Converting agents..."
+
+  local count=0
+  for md_file in "$AGENTS_SOURCE"/*.md; do
+    if [ -f "$md_file" ]; then
+      local base_name=$(basename "$md_file" .md)
+      local agent_file="$PROJECT_ROOT/.github/agents/${base_name}.agent.md"
+
+      convert_to_agent_md "$md_file" "$agent_file"
+      echo -e "    ${GREEN}✅${NC} ${base_name}.md → ${base_name}.agent.md"
+      ((count++))
+    fi
+  done
+
+  if [ $count -gt 0 ]; then
+    echo -e "  ${GREEN}✅${NC} Converted $count agents to .agent.md format"
+  else
+    echo -e "  ${YELLOW}⚠️${NC}  No agents found to convert"
+  fi
+
+  echo ""
+}
+
 # Function to verify synchronization
 verify_sync() {
   echo "🔍 Verifying synchronization..."
@@ -124,6 +207,15 @@ verify_sync() {
     all_ok=false
   fi
 
+  # Check Copilot (.github/agents)
+  if [ -d "$PROJECT_ROOT/.github/agents" ]; then
+    local agent_count=$(find "$PROJECT_ROOT/.github/agents" -name "*.agent.md" 2>/dev/null | wc -l | tr -d ' ')
+    echo -e "  ${GREEN}✅${NC} copilot agents: $agent_count .agent.md files"
+  else
+    echo -e "  ${RED}❌${NC} copilot agents: Directory not found"
+    all_ok=false
+  fi
+
   echo ""
 
   if [ "$all_ok" = true ]; then
@@ -138,14 +230,15 @@ verify_sync() {
   echo "  - Cursor: agents ✅ (symlink)"
   echo "  - Claude Code: agents ✅ (symlink)"
   echo "  - Gemini CLI: agents ✅ (symlink)"
+  echo "  - Copilot (VSCode): agents ✅ (converted to .agent.md)"
   echo "  - Antigravity: agents ⊘ (not supported)"
   echo ""
   echo "📁 All subagents now synchronized from .agents/subagents/"
   echo ""
   echo "ℹ️  Notes:"
-  echo "   - All platforms use symlinks (minimal format requires no transformation)"
+  echo "   - Cursor, Claude, Gemini use symlinks"
+  echo "   - Copilot uses .agent.md format (copy+rename)"
   echo "   - Antigravity does NOT support project-level agents"
-  echo "   - Agents are available in Cursor, Claude Code, and Gemini CLI"
 }
 
 # Main execution
@@ -154,6 +247,7 @@ main() {
   sync_cursor
   sync_claude
   sync_gemini
+  sync_copilot
   verify_sync
 }
 

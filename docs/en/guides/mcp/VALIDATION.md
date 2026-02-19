@@ -71,7 +71,7 @@ Generando configuraciones por plataforma...
   📝 Generando .cursor/mcp.json...
   📝 Generando .claude/mcp.json...
   📝 Generando .gemini/settings.json...
-  📝 Generando .agent/settings.json (Antigravity)...
+  📝 Generando .agents/settings.json (Antigravity)...
 
 ✅ Sincronización completada
 ```
@@ -80,7 +80,7 @@ Generando configuraciones por plataforma...
 
 ```bash
 # Verificar que todos los archivos existen
-ls -la .cursor/mcp.json .claude/mcp.json .gemini/settings.json .agent/settings.json
+ls -la .cursor/mcp.json .claude/mcp.json .gemini/settings.json .agents/settings.json
 
 # Verificar contenido de cada uno
 echo "=== Cursor ==="
@@ -93,7 +93,7 @@ echo "=== Gemini CLI ==="
 jq . .gemini/settings.json
 
 echo "=== Antigravity ==="
-jq . .agent/settings.json
+jq . .agents/settings.json
 ```
 
 **Expected:** Todos deben tener la misma estructura:
@@ -168,7 +168,7 @@ gemini /mcp
 
 ```bash
 # Verificar configuración
-cat .agent/settings.json | jq .
+cat .agents/settings.json | jq .
 
 # Abrir Antigravity
 # 1. Ir a MCP Servers settings
@@ -221,7 +221,7 @@ jq 'del(.servers.test)' .agents/mcp/mcp-servers.json > .agents/mcp/mcp-servers.j
 - [ ] Genera `.cursor/mcp.json` correctamente
 - [ ] Genera `.claude/mcp.json` correctamente
 - [ ] Genera `.gemini/settings.json` correctamente
-- [ ] Genera `.agent/settings.json` correctamente
+- [ ] Genera `.agents/settings.json` correctamente
 - [ ] Context7 aparece en Cursor MCP settings
 - [ ] Context7 aparece en `claude mcp list`
 - [ ] Context7 funciona en Cursor (`@context7`)
@@ -288,7 +288,7 @@ Una vez validado:
 1. Commit configuración a git:
 
 ```bash
-git add .agents/mcp/ .cursor/mcp.json .claude/mcp.json .gemini/settings.json .agent/settings.json .gitignore
+git add .agents/mcp/ .cursor/mcp.json .claude/mcp.json .gemini/settings.json .agents/settings.json .gitignore
 git commit -m "feat: add Context7 MCP with sync system"
 ```
 

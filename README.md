@@ -1,14 +1,14 @@
 # LIDR Multi-Agent AI Development Template
 
-> Enterprise-grade configuration management for AI-assisted development across 4 platforms
+> Enterprise-grade configuration management for AI-assisted development across 5 platforms
 
 [![License](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
-[![Platforms](https://img.shields.io/badge/platforms-Cursor%20%7C%20Claude%20%7C%20Gemini%20%7C%20Antigravity-green.svg)](docs/en/guides/setup.md)
+[![Platforms](https://img.shields.io/badge/platforms-Cursor%20%7C%20Claude%20%7C%20Gemini%20%7C%20Antigravity%20%7C%20Copilot-green.svg)](docs/en/guides/setup.md)
 [![MCP](https://img.shields.io/badge/MCP-Context7-purple.svg)](https://context7.com)
 [![Documentation](https://img.shields.io/badge/docs-VitePress-brightgreen.svg)](docs/)
 [![AGENTS.md](https://img.shields.io/badge/standard-agents.md-orange.svg)](https://agents.md)
 
-**One source of truth.** Edit once in `.agents/`, automatically synchronized to Cursor, Claude Code, Gemini CLI, and Antigravity.
+**One source of truth.** Edit once in `.agents/`, automatically synchronized to Cursor, Claude Code, Gemini CLI, Antigravity, and GitHub Copilot (VSCode).
 
 **Stats:**
 
@@ -23,7 +23,7 @@
 
 ## Quick Start
 
-**Prerequisites:** Node.js 18+, Git, one AI platform (Cursor/Claude/Gemini/Antigravity)
+**Prerequisites:** Node.js 18+, Git, one AI platform (Cursor/Claude/Gemini/Antigravity/Copilot)
 
 ```bash
 # 1. Clone and setup
@@ -179,12 +179,13 @@ User: "Create a skill for React component testing with test templates"
 
 **Platform Support:**
 
-| Platform    | Project-Level | Global | Config Location                         |
-| ----------- | ------------- | ------ | --------------------------------------- |
-| Cursor      | ✅            | ✅     | `.cursor/mcp.json`                      |
-| Claude Code | ✅            | ✅     | `.claude/mcp.json`                      |
-| Gemini CLI  | ✅            | ✅     | `.gemini/settings.json`                 |
-| Antigravity | ❌            | ✅     | `~/.gemini/antigravity/mcp_config.json` |
+| Platform         | Project-Level | Global | Config Location                         |
+| ---------------- | ------------- | ------ | --------------------------------------- |
+| Cursor           | ✅            | ✅     | `.cursor/mcp.json`                      |
+| Claude Code      | ✅            | ✅     | `.claude/mcp.json`                      |
+| Gemini CLI       | ✅            | ✅     | `.gemini/settings.json`                 |
+| Antigravity      | ❌            | ✅     | `~/.gemini/antigravity/mcp_config.json` |
+| Copilot (VSCode) | ✅            | ✅     | `.vscode/mcp.json`                      |
 
 **Add New MCP Server:**
 
@@ -378,7 +379,7 @@ cat .cursor/skills/team-skill-creator/SKILL.md
 #### 2. Symlinks (Selective - Rules)
 
 **Used for:** Rules distribution
-**Platforms:** Claude Code, Antigravity only
+**Platforms:** Claude Code only (via symlink); Antigravity reads natively from `.agents/`
 
 **Why selective:** Cursor doesn't support subdirectories, Gemini has no native rules support
 
@@ -387,20 +388,20 @@ cat .cursor/skills/team-skill-creator/SKILL.md
 ```bash
 # Full directory symlink (supports nested structure)
 ln -s ../.agents/rules .claude/rules
-ln -s ../.agents/rules .agent/rules
+# Antigravity: no symlink needed — reads rules natively from .agents/rules/
 ```
 
 **Platform-specific behavior:**
 
-- **Claude Code:** Supports nested subdirectories → can use symlink
-- **Antigravity:** Supports nested subdirectories → can use symlink
+- **Claude Code:** Supports nested subdirectories → uses symlink
+- **Antigravity:** Reads rules natively from `.agents/rules/` — no symlink required
 - **Cursor:** No subdirectory support → requires copy+convert (Strategy #4)
 - **Gemini CLI:** No native rules → requires index file (Strategy #3)
 
 **Verification:**
 
 ```bash
-# Verify symlink target
+# Verify symlink target (Claude Code)
 readlink .claude/rules
 # Output: ../.agents/rules
 
@@ -518,13 +519,13 @@ done
 
 ### Platform Support Matrix
 
-| Component         | Cursor         | Claude Code  | Gemini CLI    | Antigravity      |
-| ----------------- | -------------- | ------------ | ------------- | ---------------- |
-| **Rules**         | ✅ Copy (.mdc) | ✅ Symlink   | ❌ Index only | ✅ Symlink       |
-| **Skills**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ✅ Symlink       |
-| **Commands**      | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ✅ Copy          |
-| **Agents**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ❌ Not supported |
-| **MCP (Project)** | ✅ Generated   | ✅ Generated | ✅ Generated  | ❌ Global only   |
+| Component         | Cursor         | Claude Code  | Gemini CLI    | Antigravity      | Copilot (VSCode)           |
+| ----------------- | -------------- | ------------ | ------------- | ---------------- | -------------------------- |
+| **Rules**         | ✅ Copy (.mdc) | ✅ Symlink   | ❌ Index only | ✅ Native        | ✅ Copy (.instructions.md) |
+| **Skills**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ✅ Native        | ✅ Symlink                 |
+| **Commands**      | ✅ Symlink     | ✅ Symlink   | ✅ Generated  | ✅ Native        | ✅ Copy (.prompt.md)       |
+| **Agents**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ❌ Not supported | ✅ Copy (.agent.md)        |
+| **MCP (Project)** | ✅ Generated   | ✅ Generated | ✅ Generated  | ❌ Global only   | ✅ Generated               |
 
 ### Sync Execution Order
 
@@ -592,7 +593,7 @@ done
 
 - **[agents.md](https://agents.md) standard:** Universal convention for agent configurations
 - **Clear separation:** Distinct from `docs/` (documentation) and `src/` (code)
-- **Consistent across platforms:** All 4 platforms recognize this pattern
+- **Consistent across platforms:** All 5 platforms recognize this pattern
 - **Scalable:** Easy to add new components (agents, skills, commands, rules)
 
 **Trade-offs accepted:**
@@ -614,11 +615,11 @@ done
 **Solution:**
 
 1. Create rule: `.agents/rules/code/review-checklist.md`
-2. Add universal YAML frontmatter (works on all 4 platforms)
+2. Add universal YAML frontmatter (works on all 5 platforms)
 3. Run sync: `./.agents/rules/sync-rules.sh`
 4. All agents automatically apply checklist
 
-**Result:** Every code review follows same standards across Cursor, Claude Code, Gemini CLI, and Antigravity
+**Result:** Every code review follows same standards across Cursor, Claude Code, Gemini CLI, Antigravity, and Copilot
 
 **Example rule:**
 
@@ -964,7 +965,7 @@ vim .agents/mcp/.env
 
 📋 Syncing rules...
   ✅ Claude: Symlink created (.claude/rules → ../.agents/rules)
-  ✅ Antigravity: Symlink created (.agent/rules → ../.agents/rules)
+  ✅ Antigravity: Native detection (.agents/rules/ read directly)
   ✅ Cursor: 14 rules copied and converted to .mdc
   ✅ Gemini: Index file generated (.gemini/GEMINI.md)
 
@@ -972,7 +973,7 @@ vim .agents/mcp/.env
   ✅ Cursor: Symlink created (.cursor/skills → ../.agents/skills)
   ✅ Claude: Symlink created (.claude/skills → ../.agents/skills)
   ✅ Gemini: Symlink created (.gemini/skills → ../.agents/skills)
-  ✅ Antigravity: Symlink created (.agent/skills → ../.agents/skills)
+  ✅ Antigravity: Native detection (.agents/skills/ read directly)
 
 ⚙️ Syncing commands...
   ✅ All platforms synchronized
@@ -1251,9 +1252,9 @@ ls .cursor/rules/
 # Close and reopen project
 # Antigravity caches rules, needs reload
 
-# Check symlink valid
-readlink .agent/rules
-# Should output: ../.agents/rules
+# Antigravity reads natively from .agents/rules/ — no symlink needed
+# Verify source files exist
+ls .agents/rules/
 ```
 
 **For all platforms:**
@@ -1273,12 +1274,12 @@ ls -l .agents/rules/code/principles.md
 ### General Questions
 
 **Q: What is this project?**
-A: This is a multi-agent synchronization framework for managing AI development configurations across 4 platforms (Cursor, Claude Code, Gemini CLI, Antigravity). It's NOT a documentation wiki - it's a production tool for teams.
+A: This is a multi-agent synchronization framework for managing AI development configurations across 5 platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode). It's NOT a documentation wiki - it's a production tool for teams.
 
 **Q: Who is this for?**
 A: Development teams, enterprises, and DevOps teams managing AI-assisted workflows. Ideal for teams using multiple AI platforms who want consistent behavior.
 
-**Q: Do I need all 4 platforms?**
+**Q: Do I need all 5 platforms?**
 A: No. The template works with any subset of platforms. Use only the ones your team needs - sync scripts handle missing platforms gracefully.
 
 **Q: Is this production-ready?**
@@ -1458,10 +1459,8 @@ template-best-practices/
 │   ├── agents → ../.agents/agents   # ← Symlink to source
 │   └── settings.json                # ← Generated (Gemini MCP format)
 │
-├── .agent/                          # Antigravity (selective approach)
-│   ├── rules → ../.agents/rules     # ← Symlink to source
-│   ├── skills → ../.agents/skills   # ← Symlink to source
-│   └── workflows/                   # ← Commands copied here (platform requirement)
+│   # Antigravity: reads natively from .agents/ (no separate platform directory)
+│   # .agents/workflows → .agents/commands  (symlink for Antigravity workflows)
 │
 ├── docs/                            # Documentation (74 files)
 │   ├── en/
@@ -1511,10 +1510,14 @@ template-best-practices/
 - Edit once here, syncs to all platforms
 - Version controlled (commit to git)
 
-**`.cursor/` `.claude/` `.gemini/` `.agent/`** - Platform-specific
+**`.cursor/` `.claude/` `.gemini/`** - Platform-specific
 - Generated or symlinked from `.agents/`
 - **Do not edit directly**
 - Regenerate with sync scripts
+
+**Antigravity** - Reads natively from `.agents/` (no separate platform directory)
+- Rules, skills, and workflows detected directly from `.agents/`
+- `.agents/workflows` symlinks to `.agents/commands`
 
 **`docs/`** - Project documentation (74 files)
 - Guides (how-to), references (technical), notes (research)
@@ -2083,6 +2086,7 @@ ISC License - see [LICENSE](LICENSE) file for details
 - [Claude Code](https://code.claude.com) - AI development platform
 - [Gemini CLI](https://geminicli.com) - AI command-line interface
 - [Antigravity](https://antigravity.dev) - AI development tool
+- [GitHub Copilot](https://github.com/features/copilot) - AI pair programmer (VSCode)
 
 **Inspired by:**
 - Multi-agent systems architectures

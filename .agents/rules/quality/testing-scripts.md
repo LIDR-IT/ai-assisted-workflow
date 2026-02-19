@@ -151,7 +151,7 @@ test_file_access() {
 # Test file access
 test_file_access ".cursor/rules/principles.md"
 test_file_access ".claude/rules/code/style.md"
-test_file_access ".agent/rules/copywriting.md"
+test_file_access ".agents/rules/content/copywriting.md"
 ```
 
 ### JSON Validation
@@ -202,7 +202,7 @@ echo "# Test Rule" > .agents/rules/test-rule.md
 
 # 3. Verify in all agents (Cursor gets .mdc, others get symlinks)
 if [ -f ".cursor/rules/test-rule.mdc" ] &&
-   [ -L ".agent/rules" ]; then
+   [ -L ".claude/rules" ]; then
   echo "✅ Rule propagated to all agents"
 else
   echo "❌ Rule not propagated correctly"
@@ -340,14 +340,13 @@ test_file_overwrite() {
   fi
 }
 
-# Issue #2: Antigravity rules symlink created
-test_antigravity_symlink() {
-  rm -rf .agent/rules
-  ./.agents/rules/sync-rules.sh > /dev/null 2>&1
-  if [ -L ".agent/rules" ]; then
-    echo "✅ Antigravity rules symlink created"
+# Issue #2: Antigravity workflows symlink created
+test_antigravity_workflows() {
+  ./.agents/commands/sync-commands.sh > /dev/null 2>&1
+  if [ -L ".agents/workflows" ]; then
+    echo "✅ Antigravity workflows symlink exists"
   else
-    echo "❌ Antigravity rules symlink not created"
+    echo "❌ Antigravity workflows symlink not found"
   fi
 }
 
@@ -378,7 +377,7 @@ test_rules_size() {
 
 # Run all tests
 test_file_overwrite
-test_antigravity_symlink
+test_antigravity_workflows
 test_env_variables
 test_rules_size
 ```

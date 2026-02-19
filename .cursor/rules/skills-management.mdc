@@ -2,8 +2,7 @@
 name: skills-management
 description: Review project for skills structure and compliance
 alwaysApply: false
-globs:
-  [".agents/skills/**/*", ".claude/skills", ".cursor/skills", ".gemini/skills", ".agent/skills"]
+globs: [".agents/skills/**/*", ".claude/skills", ".cursor/skills", ".gemini/skills"]
 argument-hint: <project-root>
 paths: [".agents/skills/**/*"]
 trigger: always_on
@@ -37,10 +36,10 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 
 ```bash
 # From project root - all skills to all agents
-ln -s .agents/skills .agent/skills
-ln -s .agents/skills .claude/skills
-ln -s .agents/skills .cursor/skills
-ln -s .agents/skills .gemini/skills
+ln -s ../.agents/skills .claude/skills
+ln -s ../.agents/skills .cursor/skills
+ln -s ../.agents/skills .gemini/skills
+# Antigravity: reads natively from .agents/skills/ (no symlink needed)
 ```
 
 **Approach 2: Selective Skills (Advanced)**
@@ -61,10 +60,10 @@ ln -s ../../.agents/skills/universal-skill .cursor/skills/universal-skill
 ```
 project-root/
 ├── .agents/skills/skill-one/SKILL.md    # ← Source of truth
-├── .agent/skills → ../.agents/skills
 ├── .claude/skills → ../.agents/skills
 ├── .cursor/skills → ../.agents/skills
-└── .gemini/skills → ../.agents/skills
+├── .gemini/skills → ../.agents/skills
+# Antigravity reads natively from .agents/skills/
 ```
 
 **Approach 2:**
@@ -87,19 +86,19 @@ project-root/
 
 ```bash
 # Create structure
-mkdir -p .agents/skills .agent .claude .cursor .gemini
+mkdir -p .agents/skills .claude .cursor .gemini
 
 # Create symlinks
-ln -s ../.agents/skills .agent/skills
 ln -s ../.agents/skills .claude/skills
 ln -s ../.agents/skills .cursor/skills
 ln -s ../.agents/skills .gemini/skills
+# Antigravity reads natively from .agents/skills/ (no symlink needed)
 
 # Verify
 ls -la .*/skills
 
 # Commit
-git add .agents/ .agent .claude .cursor .gemini
+git add .agents/ .claude .cursor .gemini
 git commit -m "feat: initialize skills structure"
 ```
 
@@ -193,8 +192,9 @@ echo ".agents/" >> .gitignore
 
 - [ ] `.agents/skills/` exists with skill subfolders
 - [ ] Each skill has `SKILL.md`
-- [ ] `.agent/skills`, `.claude/skills`, `.cursor/skills`, `.gemini/skills` are valid symlinks
+- [ ] `.claude/skills`, `.cursor/skills`, `.gemini/skills` are valid symlinks
 - [ ] Symlinks point to `../.agents/skills`
+- [ ] Antigravity reads natively from `.agents/skills/`
 - [ ] `.agents/skills/` committed to git
 - [ ] Symlink directories committed
 - [ ] Skills NOT in `.gitignore`
@@ -258,7 +258,7 @@ Use `path` format (VS Code clickable). Terse findings.
 .claude/skills - ✓ Valid symlink to ../.agents/skills
 .cursor/skills - ✓ Valid symlink to ../.agents/skills
 .gemini/skills - ✓ Valid symlink to ../.agents/skills
-.agent/skills - ✓ Valid symlink to ../.agents/skills
+.agents/skills/ - ✓ Antigravity native detection (no symlink needed)
 
 ## Issues Found
 

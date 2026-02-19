@@ -21,9 +21,9 @@ Agents are autonomous subprocesses that handle complex, multi-step tasks indepen
 
 This is a platform limitation. While Antigravity supports:
 
-- ✅ Rules (via copy to `.agent/rules/`)
-- ✅ Skills (via selective symlinks to `.agent/skills/`)
-- ✅ Commands (via selective symlinks to `.agent/workflows/`)
+- ✅ Rules (native detection from `.agents/rules/`)
+- ✅ Skills (native detection from `.agents/skills/`)
+- ✅ Commands (native detection from `.agents/workflows/`)
 
 It does **NOT** support:
 

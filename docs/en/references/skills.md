@@ -259,7 +259,7 @@ readlink .claude/skills
 **Antigravity skill issues:**
 
 - Antigravity uses selective symlinks or copies
-- Check `.agent/skills/` for copied skills
+- Check `.agents/skills/` for copied skills
 - Global skills: `~/.gemini/antigravity/skills/`
 
 ## Best Practices

@@ -12,6 +12,7 @@
 - Claude Code: No hard limit, but concise is better
 - Gemini CLI: Performance degrades with large files
 - Antigravity: Focused rules work best
+- Copilot (VSCode): Follows Cursor-like limits
 
 **Check file size:**
 
@@ -29,15 +30,16 @@ find .agents/rules -name "*.md" -type f -exec wc -c {} + | awk '$1 > 12000 {prin
 
 All rules in `.agents/rules/` should use universal YAML frontmatter that works across all platforms:
 
-| Field           | Cursor | Claude Code | Gemini CLI | Antigravity |
-| --------------- | ------ | ----------- | ---------- | ----------- |
-| `name`          | ✅     | ❌          | ❌         | ❌          |
-| `description`   | ✅     | ✅          | ✅         | ❌          |
-| `alwaysApply`   | ✅     | ❌          | ❌         | ❌          |
-| `globs`         | ✅     | ❌          | ❌         | ❌          |
-| `trigger`       | ❌     | ❌          | ❌         | ✅          |
-| `argument-hint` | ❌     | ✅          | ✅         | ❌          |
-| `paths`         | ❌     | ✅          | ❌         | ❌          |
+| Field           | Cursor | Claude Code | Gemini CLI | Antigravity | Copilot (VSCode)    |
+| --------------- | ------ | ----------- | ---------- | ----------- | ------------------- |
+| `name`          | ✅     | ❌          | ❌         | ❌          | ❌                  |
+| `description`   | ✅     | ✅          | ✅         | ❌          | ✅                  |
+| `alwaysApply`   | ✅     | ❌          | ❌         | ❌          | ❌                  |
+| `globs`         | ✅     | ❌          | ❌         | ❌          | ❌ (uses `applyTo`) |
+| `trigger`       | ❌     | ❌          | ❌         | ✅          | ❌                  |
+| `argument-hint` | ❌     | ✅          | ✅         | ❌          | ❌                  |
+| `paths`         | ❌     | ✅          | ❌         | ❌          | ❌                  |
+| `applyTo`       | ❌     | ❌          | ❌         | ❌          | ✅                  |
 
 ### Universal Format (Recommended)
 
@@ -152,9 +154,18 @@ All components must use functional components...
 
 **Antigravity (.md format):**
 
-- Uses symlinks to `.agents/rules/` (supports subdirectories)
+- Reads natively from `.agents/rules/` (no copy or symlink needed)
 - Reads: `trigger`
 - Very minimal YAML requirements
+
+**Copilot/VSCode (.instructions.md format):**
+
+- ⚠️ **Extension MUST be `.instructions.md`** (sync script auto-converts)
+- ⚠️ **NO subdirectories supported** - rules must be in flat structure
+- Extracts: `description`, transforms `globs` → `applyTo`
+- Flattened structure: `code/principles.md` → `principles.instructions.md`
+- **Ignores:** `name`, `alwaysApply`, `paths`, `trigger`, `argument-hint`
+- Also generates `.github/copilot-instructions.md` index file
 
 ### YAML Best Practices
 
@@ -185,6 +196,7 @@ After creating a rule, verify it works on:
 - [ ] Claude Code (verify with `/memory`)
 - [ ] Gemini CLI (check `.gemini/GEMINI.md` index)
 - [ ] Antigravity (check in Customizations panel)
+- [ ] Copilot/VSCode (check `.github/rules/` and `.github/copilot-instructions.md`)
 
 **❌ Don't create platform-specific files:**
 
@@ -479,7 +491,7 @@ Use hierarchical headers (H2, H3, H4) for scannable structure:
 
 - Use UTF-8 encoding
 - Avoid special characters that may not render correctly
-- Test on all platforms (Cursor, Claude, Gemini, Antigravity)
+- Test on all platforms (Cursor, Claude, Gemini, Antigravity, Copilot)
 
 ### Line Endings
 
@@ -519,7 +531,8 @@ After editing rules:
 ls -la .cursor/rules          # Should contain .mdc files
 ls -la .claude/rules          # Should be symlink → ../.agents/rules
 ls -la .gemini/GEMINI.md      # Should exist (index file)
-ls -la .agent/rules           # Should be symlink → ../.agents/rules
+ls -la .agents/rules/         # Antigravity reads natively from here (no copy needed)
+ls -la .github/rules/         # Should contain .instructions.md files (Copilot)
 ```
 
 ## Checklist for New Rules

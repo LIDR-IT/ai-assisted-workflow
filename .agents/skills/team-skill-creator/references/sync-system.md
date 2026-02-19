@@ -131,7 +131,7 @@ echo "╚═══════════════════════�
 
 1. Validate source directory exists
 2. Create symlinks for Cursor, Claude, Gemini
-3. Copy files for Antigravity
+3. Antigravity reads natively from .agents/
 4. Verify symlinks created
 
 **Example:**
@@ -158,9 +158,7 @@ create_symlink "../.agents/rules" ".cursor/rules"
 create_symlink "../.agents/rules" ".claude/rules"
 create_symlink "../.agents/rules" ".gemini/rules"
 
-# Copy for Antigravity
-mkdir -p .agent/rules
-cp -r .agents/rules/*.md .agent/rules/
+# Antigravity reads natively from .agents/rules/ (no copy needed)
 ```
 
 ### sync-skills.sh
@@ -173,18 +171,8 @@ cp -r .agents/rules/*.md .agent/rules/
 
 1. Validate source directory
 2. Create full directory symlinks (Cursor, Claude, Gemini)
-3. Create selective symlinks for Antigravity (per-skill)
+3. Antigravity reads natively from .agents/skills/
 4. Verify all symlinks
-
-**Antigravity selective symlinks:**
-
-```bash
-# For each skill in .agents/skills/
-for skill in .agents/skills/*/; do
-  skill_name=$(basename "$skill")
-  ln -s "../../.agents/skills/$skill_name" ".agent/skills/$skill_name"
-done
-```
 
 ### sync-commands.sh
 
@@ -196,16 +184,8 @@ done
 
 1. Validate source directory
 2. Create symlinks for Cursor, Claude, Gemini
-3. Copy to `.agent/workflows/` for Antigravity (not `.agent/commands/`)
+3. Antigravity reads natively via `.agents/workflows/` (symlink → `commands/`)
 4. Verify synchronization
-
-**Antigravity special handling:**
-
-```bash
-# Commands go to workflows/ for Antigravity
-mkdir -p .agent/workflows
-cp -r .agents/commands/*.md .agent/workflows/
-```
 
 ### sync-mcp.sh
 
@@ -298,51 +278,65 @@ create_directory_symlink "../.agents/skills" ".cursor/skills"
 
 ### Strategy: Selective Symlinks
 
-**Used by:** sync-skills.sh (Antigravity only)
-**Platform:** Antigravity
+**Used by:** sync-skills.sh (Cursor, Claude, Gemini only)
+**Platform:** Cursor, Claude Code, Gemini CLI
 
-**Implementation:**
+**Note:** Antigravity reads skills natively from `.agents/skills/` — no selective symlinks or copies needed.
+
+**Implementation (for Cursor/Claude/Gemini):**
 
 ```bash
-# Create parent directory
-mkdir -p .agent/skills
-
-# For each skill
+# For each skill, create a selective symlink per agent
 for skill_dir in .agents/skills/*/; do
   skill_name=$(basename "$skill_dir")
-  target=".agent/skills/$skill_name"
   source="../../.agents/skills/$skill_name"
 
-  # Remove existing
-  rm -rf "$target"
+  for agent in cursor claude gemini; do
+    target=".$agent/skills/$skill_name"
+    mkdir -p ".$agent/skills"
 
-  # Create selective symlink
-  ln -s "$source" "$target"
+    # Remove existing
+    rm -rf "$target"
 
-  echo "  ✅ $skill_name"
+    # Create selective symlink
+    ln -s "$source" "$target"
+
+    echo "  ✅ $agent: $skill_name"
+  done
 done
+# Antigravity: reads natively from .agents/skills/ (no action needed)
 ```
 
 ### Strategy: File Copies
 
-**Used by:** sync-rules.sh, sync-commands.sh (Antigravity only)
-**Platform:** Antigravity
+**Used by:** sync-rules.sh, sync-commands.sh (legacy platforms only)
+**Platform:** Not required for Antigravity
 
-**Implementation:**
+**Note:** Antigravity now reads rules and commands natively from `.agents/` — no file copies needed. The copy strategy is retained only for platforms that lack symlink or native detection support.
+
+**Legacy implementation (for reference):**
 
 ```bash
-# Create destination directory
-mkdir -p .agent/rules
-
-# Copy files
-cp -r .agents/rules/*.md .agent/rules/
-
-# Verify
-file_count=$(ls -1 .agent/rules/*.md 2>/dev/null | wc -l)
-echo "  ✅ Copied $file_count files to .agent/rules/"
+# This is no longer needed for Antigravity.
+# Antigravity detects .agents/rules/ and .agents/commands/ natively.
+# No copy step required; changes in .agents/ are immediately visible.
 ```
 
-**Note:** Changes require re-sync (not instant like symlinks).
+**For Cursor (rules only — flat .mdc required):**
+
+```bash
+# Cursor requires a flat directory with .mdc extension (no subdirectories)
+mkdir -p .cursor/rules
+for rule in .agents/rules/**/*.md; do
+  base=$(basename "$rule")
+  cp "$rule" ".cursor/rules/${base%.md}.mdc"
+done
+
+file_count=$(ls -1 .cursor/rules/*.mdc 2>/dev/null | wc -l)
+echo "  ✅ Copied $file_count rules to .cursor/rules/"
+```
+
+**Note:** Cursor rules require re-sync after each change (not instant like symlinks).
 
 ### Strategy: Script Generation
 
@@ -394,7 +388,8 @@ All sync scripts support `--dry-run` mode for preview without changes.
 ```
 [DRY RUN] Would create symlink: .cursor/skills → ../.agents/skills
 [DRY RUN] Would create symlink: .claude/skills → ../.agents/skills
-[DRY RUN] Would copy 6 files to .agent/rules/
+[DRY RUN] Would create symlink: .gemini/skills → ../.agents/skills
+[DRY RUN] Antigravity reads natively from .agents/ (no action needed)
 ```
 
 **Implementation:**
@@ -477,25 +472,27 @@ diff .cursor/skills/team-skill-creator/SKILL.md .agents/skills/team-skill-creato
 
 ### Verify Antigravity
 
-**Check rules copied:**
+Antigravity reads rules, skills, and workflows natively from `.agents/`. Verify the source directories exist and contain the expected files.
+
+**Check rules are accessible:**
 
 ```bash
-ls -la .agent/rules/*.md
-# Should show files (not symlinks)
+ls -la .agents/rules/
+# Should show rule subdirectories (code/, process/, quality/, etc.)
 ```
 
-**Check skills symlinked:**
+**Check skills are accessible:**
 
 ```bash
-ls -la .agent/skills/ | grep "\->"
-# Should show symlinks to ../../.agents/skills/
+ls -la .agents/skills/
+# Should show skill subdirectories, each containing SKILL.md
 ```
 
-**Check commands in workflows:**
+**Check commands are accessible:**
 
 ```bash
-ls -la .agent/workflows/*.md
-# Should show command files
+ls -la .agents/commands/
+# Should show command .md files
 ```
 
 ## Troubleshooting
@@ -606,16 +603,19 @@ vim .agents/mcp/mcp-servers.json
 
 **Symptoms:** Edited rule/command in `.agents/` but not visible in Antigravity
 
-**Cause:** Files are copied (not symlinked), need re-sync
+**Cause:** Antigravity caches configuration at project load time. Changes to `.agents/` are detected natively but may require reloading the project.
 
 **Solution:**
 
 ```bash
-# Re-run sync
-./.agents/sync-all.sh
+# Close and reopen the project in Antigravity to reload .agents/ detection
 
-# Verify
-cat .agent/rules/core-principles.md
+# Verify the source file exists and is correct
+cat .agents/rules/code/principles.md
+
+# Confirm skills and commands are present in .agents/
+ls -la .agents/skills/
+ls -la .agents/commands/
 ```
 
 ## Summary
@@ -631,8 +631,8 @@ The synchronization system:
 **🔄 Strategies:**
 
 - Symlinks for instant propagation (Cursor/Claude/Gemini)
-- Copies for Antigravity constraints
-- Generation for platform-specific configs
+- Native `.agents/` detection for Antigravity (no copies needed)
+- Generation for platform-specific configs (MCP, Cursor rules)
 
 **🔍 Verification:**
 

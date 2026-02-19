@@ -19,15 +19,22 @@
       "env": {
         "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"
       },
-      "platforms": ["cursor", "claude", "gemini", "antigravity"],
+      "platforms": ["cursor", "claude", "gemini", "antigravity", "copilot"],
       "description": "Context7 - Up-to-date documentation for popular frameworks and libraries"
     },
     "playwright": {
       "type": "stdio",
       "command": "npx",
       "args": ["@playwright/mcp@latest"],
-      "platforms": ["cursor", "claude", "gemini"],
+      "platforms": ["cursor", "claude", "gemini", "copilot"],
       "description": "Playwright - Browser automation for testing and visual validation"
+    },
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp"],
+      "platforms": ["cursor", "claude", "gemini", "copilot"],
+      "description": "Chrome DevTools MCP - Browser debugging and inspection capabilities"
     }
   }
 }

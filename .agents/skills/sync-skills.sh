@@ -81,10 +81,28 @@ sync_gemini() {
   echo ""
 }
 
-# Sync Antigravity
+# Sync Copilot (VSCode)
+sync_copilot() {
+  echo "🐙 Syncing Copilot (VSCode) skills..."
+  create_directory_symlink "../.agents/skills" "$PROJECT_ROOT/.github/skills" "skills"
+  echo ""
+}
+
+# Sync Antigravity (native .agents/ detection)
 sync_antigravity() {
-  echo "🌌 Syncing Antigravity skills..."
-  create_directory_symlink "../.agents/skills" "$PROJECT_ROOT/.agent/skills" "skills"
+  echo "🌌 Syncing Antigravity skills (native .agents/ detection)..."
+  echo "  ✅ Antigravity reads skills natively from .agents/skills/"
+
+  # Clean up legacy .agent/skills symlink if present
+  if [ -e "$PROJECT_ROOT/.agent/skills" ] || [ -L "$PROJECT_ROOT/.agent/skills" ]; then
+    if [ "$DRY_RUN" = true ]; then
+      echo "  [DRY RUN] Would remove legacy .agent/skills symlink"
+    else
+      rm -rf "$PROJECT_ROOT/.agent/skills"
+      echo "  🧹 Removed legacy .agent/skills symlink"
+    fi
+  fi
+
   echo ""
 }
 
@@ -95,7 +113,7 @@ verify_symlinks() {
   if [ "$DRY_RUN" = false ]; then
     local errors=0
 
-    for agent in cursor claude gemini agent; do
+    for agent in cursor claude gemini; do
       local link="$PROJECT_ROOT/.$agent/skills"
       if [ -L "$link" ]; then
         local target=$(readlink "$link")
@@ -105,6 +123,19 @@ verify_symlinks() {
         ((errors++))
       fi
     done
+
+    # Verify Copilot (.github)
+    local copilot_link="$PROJECT_ROOT/.github/skills"
+    if [ -L "$copilot_link" ]; then
+      local target=$(readlink "$copilot_link")
+      echo "  ✅ copilot skills: $copilot_link → $target"
+    else
+      echo "  ❌ copilot skills: Not a symlink"
+      ((errors++))
+    fi
+
+    # Antigravity native support
+    echo "  ✅ antigravity skills: native .agents/ detection (no symlink needed)"
 
     echo ""
 
@@ -125,6 +156,7 @@ main() {
   sync_cursor
   sync_claude
   sync_gemini
+  sync_copilot
   sync_antigravity
 
   verify_symlinks
@@ -136,7 +168,8 @@ main() {
     echo "  - Cursor: skills ✅ (full symlink)"
     echo "  - Claude Code: skills ✅ (full symlink)"
     echo "  - Gemini CLI: skills ✅ (full symlink)"
-    echo "  - Antigravity: skills ✅ (full symlink)"
+    echo "  - Copilot (VSCode): skills ✅ (full symlink)"
+    echo "  - Antigravity: skills ✅ (native .agents/ detection)"
     echo ""
     echo "📁 All skills now synchronized from .agents/skills/"
   else

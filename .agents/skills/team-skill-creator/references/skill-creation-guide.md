@@ -516,7 +516,7 @@ This skill provides access to company database schemas and query patterns.
 **Platform awareness:**
 
 - Generic: Single platform
-- `.agents/`: 4 platforms (Cursor, Claude Code, Gemini CLI, Antigravity)
+- `.agents/`: 5 platforms (Cursor, Claude Code, Gemini CLI, Antigravity, Copilot)
 
 ### Automatic Synchronization
 
@@ -592,4 +592,4 @@ Creating a skill in `.agents/` system:
 - [ ] Test skill with trigger phrases in AI agents
 - [ ] Iterate based on usage feedback
 
-**Result:** Skill available across all 4 platforms, ready to use!
+**Result:** Skill available across all 5 platforms, ready to use!

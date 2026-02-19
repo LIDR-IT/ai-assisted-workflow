@@ -14,7 +14,7 @@ trigger: always_on
 
 **Name:** LIDR Multi-Agent AI Development Template
 
-**Tagline:** Centralized configuration management for multi-agent AI development across 4 platforms
+**Tagline:** Centralized configuration management for multi-agent AI development across 5 platforms
 
 **Version:** 1.0.0 (Q1 2026)
 
@@ -31,7 +31,7 @@ trigger: always_on
 ### Use Cases
 
 - Onboarding new developers with pre-configured AI environments (<5 min vs 2-4 hours)
-- Maintaining configuration consistency across Cursor, Claude Code, Gemini CLI, and Antigravity
+- Maintaining configuration consistency across Cursor, Claude Code, Gemini CLI, Antigravity, and GitHub Copilot (VSCode)
 - Scaling AI-assisted development practices across teams and departments
 - Enforcing coding standards, security policies, and quality gates via AI agents
 
@@ -60,7 +60,7 @@ trigger: always_on
 
 - **`.agents/` Directory:** Single source of truth for all configurations
 - **Sync Scripts:** Automated propagation to platform-specific directories
-- **Universal Patterns:** YAML frontmatter and structures work across all 4 platforms
+- **Universal Patterns:** YAML frontmatter and structures work across all 5 platforms
 - **Graceful Degradation:** Platform limitations handled automatically
 
 ### Key Components
@@ -159,7 +159,7 @@ trigger: always_on
 
 **In Scope:**
 
-- Configuration management for 4 supported platforms
+- Configuration management for 5 supported platforms
 - Workflow automation via commands, agents, hooks
 - Documentation and guidelines
 - Example projects and templates

@@ -40,7 +40,7 @@ project-root/
 ├── .cursor/              # Cursor-specific (symlinks/generated)
 ├── .claude/              # Claude Code-specific (symlinks/generated)
 ├── .gemini/              # Gemini CLI-specific (symlinks/generated)
-├── .agent/               # Antigravity-specific (copied/selective)
+├── .agents/workflows     # Antigravity workflows (symlink → commands)
 ├── docs/                 # Documentation
 │   ├── guidelines/       # Project-specific coding standards
 │   ├── guides/           # How-to guides

@@ -526,7 +526,7 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 **Scope:**
 
 - **Global:** `~/.gemini/antigravity/rules/`
-- **Workspace:** `.agent/rules/`
+- **Workspace:** `.agents/rules/`
 
 **Uso:**
 
@@ -538,7 +538,7 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 **Ejemplo:**
 
 ```markdown
-# .agent/rules/code-style.md
+# .agents/rules/code-style.md
 
 ## TypeScript Style Guide
 
@@ -567,7 +567,7 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 **Scope:**
 
 - **Global:** `~/.gemini/antigravity/workflows/`
-- **Workspace:** `.agent/workflows/`
+- **Workspace:** `.agents/workflows/`
 
 **Uso:**
 
@@ -579,7 +579,7 @@ El agente genera evidencia de su trabajo para facilitar revisión y colaboració
 **Ejemplo:**
 
 ```markdown
-# .agent/workflows/review-security.md
+# .agents/workflows/review-security.md
 
 Review this code for security vulnerabilities:
 
@@ -611,7 +611,7 @@ Provide specific line numbers and fixes.
 | **Activación** | Automática (siempre)     | Manual (comando `/`)  |
 | **Scope**      | Global (todo el trabajo) | Específico (tarea)    |
 | **Propósito**  | Guías continuas          | Tareas on-demand      |
-| **Ubicación**  | `.agent/rules/`          | `.agent/workflows/`   |
+| **Ubicación**  | `.agents/rules/`         | `.agents/workflows/`  |
 | **Ejemplo**    | "Usar 2 spaces"          | "Generar tests"       |
 | **Frecuencia** | Siempre aplicada         | Solo cuando se invoca |
 
@@ -638,14 +638,13 @@ Skills son paquetes especializados que:
 **Workspace:**
 
 ```
-<root>/.agent/skills/
+<root>/.agents/skills/
 ```
 
 **En este proyecto:**
 
 ```
-.agents/skills/          # Source of truth
-.agent/skills/           # Antigravity (enlaces selectivos)
+.agents/skills/          # Source of truth (native .agents/ detection)
 ```
 
 ### Tipos de Skills
@@ -794,7 +793,7 @@ Antigravity: Carga skill "testing-skill"
 ✅ **DO:**
 
 - Crear Rules para estándares del equipo
-- Compartir Rules vía git (`.agent/rules/`)
+- Compartir Rules vía git (`.agents/rules/`)
 - Usar Workflows para tareas repetitivas
 - Documentar claramente cada Rule/Workflow
 
@@ -840,12 +839,10 @@ Antigravity: Carga skill "testing-skill"
 
 ```
 <project-root>/
-├── .agent/
-│   ├── rules/               # Project rules
-│   ├── workflows/           # Project workflows
-│   └── skills/              # Project skills (symlinks)
 └── .agents/
-    ├── skills/              # Source of truth (skills)
+    ├── rules/               # Project rules (native .agents/ detection)
+    ├── workflows/           # Project workflows (native .agents/ detection)
+    ├── skills/              # Project skills (native .agents/ detection)
     └── mcp/                 # Source of truth (MCP)
 ```
 
@@ -872,7 +869,7 @@ Antigravity: Carga skill "testing-skill"
 **Skills:**
 
 - ✅ 7 skills en `.agents/skills/`
-- ⚠️ `.agent/skills/` usa enlaces selectivos (Approach 2)
+- ✅ Antigravity lee nativamente desde `.agents/skills/` (detección nativa)
 - ✅ Funcionando correctamente
 
 ### Configuración Recomendada
@@ -917,9 +914,9 @@ wget
 | **Review Policies**  | 3 niveles (Always/Agent/Request)        | Built-in                       | Via hooks                      |
 | **Terminal Control** | 3 modos + Lists                         | Basic                          | Via hooks                      |
 | **Artifacts**        | ✅ Nativos (Plans, Diffs, Walkthroughs) | Limited                        | Limited                        |
-| **Rules**            | ✅ `.agent/rules/`                      | N/A                            | N/A                            |
-| **Workflows**        | ✅ `.agent/workflows/`                  | Commands (`.cursor/commands/`) | Commands (`.claude/commands/`) |
-| **Skills**           | ✅ `.agent/skills/`                     | Skills (`.cursor/skills/`)     | Skills (`.claude/skills/`)     |
+| **Rules**            | ✅ `.agents/rules/`                     | N/A                            | N/A                            |
+| **Workflows**        | ✅ `.agents/workflows/`                 | Commands (`.cursor/commands/`) | Commands (`.claude/commands/`) |
+| **Skills**           | ✅ `.agents/skills/`                    | Skills (`.cursor/skills/`)     | Skills (`.claude/skills/`)     |
 | **MCP Support**      | ⚠️ Solo global                          | ✅ Project-level               | ✅ Project-level               |
 | **Subagents**        | ✅ Built-in (Browser, Terminal)         | ✅ Custom                      | ✅ Custom                      |
 | **Security**         | ✅ Allow/Deny Lists nativos             | Basic                          | Via hooks                      |
@@ -953,10 +950,10 @@ wget
 
 ```bash
 # Verificar ubicación de rules
-ls .agent/rules/
+ls .agents/rules/
 
 # Verificar contenido
-cat .agent/rules/code-style.md
+cat .agents/rules/code-style.md
 
 # Reiniciar Antigravity
 # CMD+Q (Mac) / Alt+F4 (Windows)
@@ -1058,18 +1055,18 @@ echo $CONTEXT7_API_KEY
    - Implementar Browser URL Allowlist
 
 2. **Crear Rules de equipo:**
-   - `.agent/rules/code-style.md`
-   - `.agent/rules/testing-standards.md`
-   - `.agent/rules/documentation-requirements.md`
+   - `.agents/rules/code-style.md`
+   - `.agents/rules/testing-standards.md`
+   - `.agents/rules/documentation-requirements.md`
 
 3. **Crear Workflows útiles:**
-   - `.agent/workflows/review-security.md`
-   - `.agent/workflows/generate-tests.md`
-   - `.agent/workflows/create-pr.md`
+   - `.agents/workflows/review-security.md`
+   - `.agents/workflows/generate-tests.md`
+   - `.agents/workflows/create-pr.md`
 
 4. **Optimizar Skills:**
-   - Considerar migrar a Approach 1 (symlinks completos)
-   - Mantener sincronización con `.agents/skills/`
+   - Antigravity lee nativamente desde `.agents/skills/` (no requiere sincronización adicional)
+   - Mantener `.agents/skills/` como fuente de verdad
 
 ### Recomendaciones Generales
 

@@ -81,12 +81,17 @@ This runs all synchronization scripts:
 .gemini/settings.json
 ```
 
-**Copy Strategy** (Cursor and Antigravity - no subdirectory support):
+**Copy Strategy** (Cursor - no subdirectory support):
 
 ```
 .agents/rules/ → .cursor/rules/  (copied, flattened)
-.agents/rules/ → .agent/rules/   (copied, flattened)
-.agents/skills/ → .agent/skills/  (selective symlinks)
+```
+
+**Native Detection** (Antigravity - reads directly from `.agents/`):
+
+```
+.agents/rules/   → native detection (no copy needed)
+.agents/skills/  → native detection (no symlink needed)
 ```
 
 ## Individual Setup Sections
@@ -106,7 +111,7 @@ Project-specific guidelines and coding standards synchronized to all agents.
 ls -la .cursor/rules    # Should show symlink
 ls -la .claude/rules    # Should show symlink
 ls -la .gemini/rules    # Should show symlink
-ls -la .agent/rules     # Should show copied files (Antigravity)
+ls -la .agents/rules    # Antigravity reads natively from .agents/
 ```
 
 **Current rules structure:**
@@ -415,21 +420,21 @@ Follow [Antigravity documentation](https://antigravity.dev/docs)
 
 **Configuration:**
 
-- Rules: `.agent/rules/` (copied files, flattened - no subdirectories)
-- Skills: `.agent/skills/` (selective symlinks)
+- Rules: `.agents/rules/` (native detection - no copy needed)
+- Skills: `.agents/skills/` (native detection - no symlink needed)
+- Workflows: `.agents/commands/` (native detection via internal symlink)
 - MCP: `~/.gemini/antigravity/mcp_config.json` (global only)
 
 **Important limitations:**
 
 - No project-level MCP support (global only)
 - No agents directory support
-- Rules must be copied and flattened (no subdirectory support)
 
 **Verify setup:**
 
 ```bash
-ls -la .agent/rules
-ls -la .agent/skills
+ls -la .agents/rules
+ls -la .agents/skills
 cat ~/.gemini/antigravity/mcp_config.json
 ```
 

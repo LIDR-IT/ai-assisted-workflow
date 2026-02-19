@@ -33,7 +33,7 @@ Esta nota documenta cómo instalar Skills universalmente y explica por qué MCP 
 
 **En este proyecto:**
 
-- ✅ Antigravity (`.agent/skills/`)
+- ✅ Antigravity (`.agents/skills/` → native detection)
 - ✅ Claude Code (`.claude/skills/`)
 - ✅ Cursor (`.cursor/skills/`)
 - ✅ Gemini CLI (`.gemini/skills` → symlink)
@@ -97,7 +97,7 @@ npx skills
 **Por defecto (project-local):**
 
 - `./.claude/skills`
-- `./.agent/skills` (con `--universal`)
+- `./.agents/skills` (con `--universal`)
 
 **Global (con flag):**
 
@@ -116,9 +116,9 @@ npx skills
 └── skill-development/
 
 # Configuración por agente:
-.agent/skills/         → Directorio con enlaces selectivos
-.claude/skills/        → Directorio con enlaces selectivos
-.cursor/skills/        → Directorio con enlaces selectivos
+.agents/skills/        → Native .agents/ detection (Antigravity) ✅
+.claude/skills/        → Symlink a ../.agents/skills ✅
+.cursor/skills/        → Symlink a ../.agents/skills ✅
 .gemini/skills         → Symlink a ../.agents/skills ✅
 ```
 
@@ -323,20 +323,20 @@ mkdir -p .mcp
 **Skills (Implementado):**
 
 - ✅ Source of truth: `.agents/skills/`
-- ⚠️ Approach mixto:
-  - `.gemini/skills` → symlink (Approach 1) ✅
-  - `.agent/skills/`, `.claude/skills/`, `.cursor/skills/` → directorios (Approach 2)
+- ✅ Approach unificado:
+  - `.agents/skills/` → native .agents/ detection (Antigravity) ✅
+  - `.gemini/skills`, `.claude/skills`, `.cursor/skills` → symlinks ✅
 - ✅ 7 skills instaladas y funcionando
 - ✅ Commiteado a git
 
-**Mejora recomendada para Skills:**
+**Estado actual de Skills:**
 
 ```bash
-# Convertir todos a symlinks (Approach 1)
-rm -rf .agent/skills .claude/skills .cursor/skills
-ln -s ../.agents/skills .agent/skills
-ln -s ../.agents/skills .claude/skills
-ln -s ../.agents/skills .cursor/skills
+# Verificar symlinks y detección nativa
+ls -la .agents/skills/        # Antigravity lee nativamente desde aquí
+readlink .claude/skills        # → ../.agents/skills
+readlink .cursor/skills        # → ../.agents/skills
+readlink .gemini/skills        # → ../.agents/skills
 ```
 
 **MCP (No implementado):**
@@ -411,14 +411,15 @@ ln -s ../.agents/skills .cursor/skills
 
 **Agentes Configurados:**
 
-- ✅ Antigravity (`.agent/skills/`)
+- ✅ Antigravity (`.agents/skills/` → native detection)
 - ✅ Claude Code (`.claude/skills/`)
 - ✅ Cursor (`.cursor/skills/`)
 - ✅ Gemini CLI (`.gemini/skills` → symlink)
 
-**Mejoras Pendientes:**
+**Estado:**
 
-- Convertir `.agent`, `.claude`, `.cursor` a symlinks (Approach 1)
+- ✅ Antigravity usa native .agents/ detection (no requiere symlink separado)
+- ✅ Claude Code, Cursor, Gemini CLI usan symlinks a `.agents/skills/`
 - Documentar skills en README
 
 ### MCP: ❌ No Configuradas a Nivel de Proyecto
@@ -463,14 +464,13 @@ ln -s ../.agents/skills .cursor/skills
 
 **Estrategia del proyecto:**
 
-- **Skills:** ✅ Implementadas con OpenSkills (mejorar sincronización a Approach 1)
+- **Skills:** ✅ Implementadas — Antigravity usa native .agents/ detection, otros agentes usan symlinks
 - **MCP:** ❌ Pendiente de implementar con script de sincronización centralizado
 
 **Próximos pasos:**
 
-1. Migrar skills de Approach 2 a Approach 1 (symlinks)
-2. Implementar configuración MCP a nivel de proyecto
-3. Crear script de sincronización MCP
+1. Implementar configuración MCP a nivel de proyecto
+2. Crear script de sincronización MCP
 
 ---
 

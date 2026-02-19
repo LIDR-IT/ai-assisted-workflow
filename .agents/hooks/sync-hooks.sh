@@ -282,6 +282,88 @@ sync_gemini() {
   echo -e "${GREEN}  ✅ Updated .gemini/settings.json ($hooks_count hook types)${NC}"
 }
 
+# Generate Copilot hooks.json (same format as Cursor: camelCase, no Notification)
+generate_copilot_hooks() {
+  local source_file="$1"
+
+  # Check if any hooks have copilot in platforms
+  local copilot_hooks_count
+  copilot_hooks_count=$(jq '[.hooks | to_entries[] | select(.value.platforms | index("copilot"))] | length' "$source_file")
+
+  if [ "$copilot_hooks_count" -eq 0 ]; then
+    cat <<'COPILOT_HOOKS'
+{
+  "version": 1,
+  "_note": "No hooks configured for Copilot",
+  "hooks": {}
+}
+COPILOT_HOOKS
+    return
+  fi
+
+  # Generate hooks in Copilot format (same as Cursor: camelCase events)
+  jq '{
+    version: 1,
+    hooks: {
+      preToolUse: [
+        (
+          .hooks | to_entries | map(
+            select(.value.platforms | index("copilot")) |
+            select(.value.event == "PreToolUse") |
+            {
+              matcher: .value.matcher,
+              command: ("bash .github/hooks/scripts/" + .key + ".sh"),
+              timeout: .value.timeout
+            }
+          )
+        )[]
+      ],
+      postToolUse: [
+        (
+          .hooks | to_entries | map(
+            select(.value.platforms | index("copilot")) |
+            select(.value.event == "PostToolUse") |
+            {
+              matcher: .value.matcher,
+              command: ("bash .github/hooks/scripts/" + .key + ".sh"),
+              timeout: .value.timeout
+            }
+          )
+        )[]
+      ]
+    }
+  } | .hooks |= with_entries(select(.value | length > 0))' "$source_file"
+}
+
+# Sync Copilot (VSCode)
+sync_copilot() {
+  echo ""
+  echo -e "${BLUE}🔄 Syncing hooks for Copilot (VSCode)...${NC}"
+
+  mkdir -p "$PROJECT_ROOT/.github/hooks"
+
+  # Create hooks scripts symlink
+  if [ -L "$PROJECT_ROOT/.github/hooks/scripts" ] || [ -d "$PROJECT_ROOT/.github/hooks/scripts" ]; then
+    rm -rf "$PROJECT_ROOT/.github/hooks/scripts"
+  fi
+  ln -s "../../.agents/hooks/scripts" "$PROJECT_ROOT/.github/hooks/scripts"
+  echo -e "${GREEN}  ✅ Created hooks scripts symlink${NC}"
+
+  # Generate Copilot hooks.json
+  local copilot_hooks
+  copilot_hooks=$(generate_copilot_hooks "$PROJECT_ROOT/.agents/hooks/hooks.json")
+  echo "$copilot_hooks" > "$PROJECT_ROOT/.github/hooks/hooks.json"
+
+  local copilot_hook_count
+  copilot_hook_count=$(echo "$copilot_hooks" | jq '.hooks | to_entries | length' 2>/dev/null || echo "0")
+
+  if [ "$copilot_hook_count" -gt 0 ]; then
+    echo -e "${GREEN}  ✅ Updated .github/hooks/hooks.json ($copilot_hook_count hook types)${NC}"
+  else
+    echo -e "${GREEN}  ✅ Updated .github/hooks/hooks.json (empty)${NC}"
+  fi
+}
+
 # Sync Cursor
 sync_cursor() {
   echo ""
@@ -376,17 +458,34 @@ verify_sync() {
     echo -e "${YELLOW}  ⚠️  No .cursor/hooks.json (OK if using Husky)${NC}"
   fi
 
+  # Check Copilot hooks
+  if [ -L "$PROJECT_ROOT/.github/hooks/scripts" ]; then
+    echo -e "${GREEN}  ✅ Copilot hooks scripts symlink${NC}"
+  else
+    echo -e "${RED}  ❌ Missing Copilot hooks scripts symlink${NC}"
+    ((errors++))
+  fi
+
+  if [ -f "$PROJECT_ROOT/.github/hooks/hooks.json" ]; then
+    local copilot_count
+    copilot_count=$(jq '.hooks | to_entries | length' "$PROJECT_ROOT/.github/hooks/hooks.json" 2>/dev/null || echo "0")
+    echo -e "${GREEN}  ✅ Copilot hooks.json has $copilot_count hook types${NC}"
+  else
+    echo -e "${YELLOW}  ⚠️  No .github/hooks/hooks.json${NC}"
+  fi
+
   if [ $errors -eq 0 ]; then
     echo ""
     echo -e "${GREEN}✅ Hooks synchronized successfully!${NC}"
     echo ""
     echo "Summary:"
-    echo "  • Claude Code: All hooks (Notification, PreToolUse, PostToolUse)"
-    echo "  • Gemini CLI:  All hooks (Notification, BeforeTool, AfterTool)"
+    echo "  • Claude Code:      All hooks (Notification, PreToolUse, PostToolUse)"
+    echo "  • Gemini CLI:       All hooks (Notification, BeforeTool, AfterTool)"
+    echo "  • Copilot (VSCode): preToolUse, postToolUse (no Notification)"
     if [ "$cursor_count" -gt 0 ]; then
-      echo "  • Cursor:      auto-format only (best-effort, Husky guarantees)"
+      echo "  • Cursor:           auto-format only (best-effort, Husky guarantees)"
     else
-      echo "  • Cursor:      No hooks (use Husky pre-commit for formatting/secrets)"
+      echo "  • Cursor:           No hooks (use Husky pre-commit for formatting/secrets)"
     fi
   else
     echo ""
@@ -401,6 +500,7 @@ main() {
   sync_claude
   sync_gemini
   sync_cursor
+  sync_copilot
   verify_sync
 }
 

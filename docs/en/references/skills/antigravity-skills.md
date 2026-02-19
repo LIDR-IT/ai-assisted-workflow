@@ -95,7 +95,7 @@ Agent: Executes using testing expertise
 
 ### Workspace Skills
 
-**Location:** `<workspace-root>/.agent/skills/`
+**Location:** `<workspace-root>/.agents/skills/`
 
 **Purpose:**
 
@@ -107,7 +107,7 @@ Agent: Executes using testing expertise
 **Example structure:**
 
 ```
-.agent/skills/
+.agents/skills/
 ├── deployment-automation/
 ├── database-migration/
 ├── react-component-generator/
@@ -126,7 +126,7 @@ Agent: Executes using testing expertise
 ├── skill-creator/
 └── skill-development/
 
-.agent/skills/           # Antigravity (enlaces selectivos)
+.agents/skills/          # Antigravity (enlaces selectivos)
 ```
 
 ---
@@ -1042,7 +1042,7 @@ Different descriptions ensure correct version loads.
 - `docs/references/commands/antigravity-workflows.md` - Workflows documentation
 - `docs/references/skills/openskills.md` - OpenSkills (universal loader)
 - `.agents/skills/` - Source of truth for skills
-- `.agent/skills/` - Antigravity skills directory
+- `.agents/skills/` - Antigravity skills directory
 
 ### Related
 

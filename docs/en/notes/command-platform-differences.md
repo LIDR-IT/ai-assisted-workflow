@@ -2,7 +2,7 @@
 
 ## Overview
 
-Commands in the `.agents/` system work differently across the four supported platforms (Cursor, Claude Code, Gemini CLI, Antigravity). This document explains the technical differences in how each platform handles command files, based on the implementation in `.agents/commands/sync-commands.sh`.
+Commands in the `.agents/` system work differently across the five supported platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode). This document explains the technical differences in how each platform handles command files, based on the implementation in `.agents/commands/sync-commands.sh`.
 
 ## Key Finding
 
@@ -12,7 +12,7 @@ Commands in the `.agents/` system work differently across the four supported pla
 
 - **Cursor & Claude Code:** Use Markdown files directly via symlinks
 - **Gemini CLI:** Converts Markdown to TOML format
-- **Antigravity:** Uses Markdown files via symlinks to `.agent/workflows/` (not `.agent/commands/`)
+- **Antigravity:** Uses Markdown files natively via `.agents/workflows/` (symlink → `commands/`)
 
 ## Platform-Specific Implementation
 
@@ -200,48 +200,40 @@ gemini /security-review file.js
 
 ### Antigravity
 
-**Mechanism:** Selective file symlinks to `.agent/workflows/`
+**Mechanism:** Native `.agents/` detection via `workflows` symlink
 
 **Implementation:**
 
+Antigravity reads commands natively from `.agents/workflows/`, which is a symlink to `commands/` inside `.agents/`:
+
 ```bash
-# sync-commands.sh lines 148-164
-mkdir -p "$PROJECT_ROOT/.agent/workflows"
-
-for command_file in "$PROJECT_ROOT/.agents/commands"/*.md; do
-  command_name=$(basename "$command_file" .md)
-  target_link="$PROJECT_ROOT/.agent/workflows/$command_name"
-
-  # Remove existing
-  if [ -L "$target_link" ] || [ -e "$target_link" ]; then
-    rm -rf "$target_link"
-  fi
-
-  # Create selective symlink
-  ln -s "../../.agents/commands/$command_name.md" "$target_link"
-done
+# Inside .agents/ directory
+ln -s commands workflows
+# Result: .agents/workflows → commands
 ```
 
-**Why `.agent/workflows/` not `.agent/commands/`:**
+**Why `workflows` not `commands`:**
 
 - Antigravity platform uses "workflows" terminology
 - Commands are invoked as workflows in Antigravity
-- Technical limitation: Must use this specific directory structure
+- The symlink inside `.agents/` bridges the naming difference
 
 **How it works:**
 
-- Creates individual symlink per command file
-- `.agent/workflows/sync-setup` → `../../.agents/commands/sync-setup.md`
-- `.agent/workflows/security-review` → `../../.agents/commands/security-review.md`
-- Each command is a separate symlink (not full directory)
+- Antigravity natively detects `.agents/workflows/`
+- `.agents/workflows` is a relative symlink to `commands/`
+- All `.md` command files are accessible through `.agents/workflows/`
+- Changes propagate immediately (no sync needed)
 
 **File structure:**
 
 ```
-.agent/workflows/
-  ├── sync-setup → ../../.agents/commands/sync-setup.md
-  ├── security-review → ../../.agents/commands/security-review.md
-  └── ... (individual symlinks)
+.agents/
+  ├── commands/           # Source of truth
+  │   ├── sync-setup.md
+  │   ├── security-review.md
+  │   └── ...
+  └── workflows → commands  # Symlink for Antigravity
 ```
 
 **Invocation:**
@@ -264,16 +256,16 @@ description: Brief description
 
 ## Platform Comparison Table
 
-| Aspect                 | Cursor              | Claude Code         | Gemini CLI          | Antigravity         |
-| ---------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| **Format**             | Markdown (.md)      | Markdown (.md)      | TOML (.toml)        | Markdown (.md)      |
-| **Sync Method**        | Full dir symlink    | Full dir symlink    | Convert + generate  | Selective symlinks  |
-| **Location**           | `.cursor/commands/` | `.claude/commands/` | `.gemini/commands/` | `.agent/workflows/` |
-| **Variable Syntax**    | `$ARGUMENTS`        | `$ARGUMENTS`        | `{{args}}`          | `$ARGUMENTS`        |
-| **Frontmatter**        | YAML                | YAML                | Extracted to TOML   | YAML                |
-| **Changes Propagate**  | Instant             | Instant             | Re-sync required    | Instant             |
-| **Triple Backticks**   | Allowed             | Allowed             | Removed             | Allowed             |
-| **Backslash Escaping** | None                | None                | Doubled             | None                |
+| Aspect                 | Cursor              | Claude Code         | Gemini CLI          | Antigravity          | Copilot (VSCode)          |
+| ---------------------- | ------------------- | ------------------- | ------------------- | -------------------- | ------------------------- |
+| **Format**             | Markdown (.md)      | Markdown (.md)      | TOML (.toml)        | Markdown (.md)       | Markdown (.prompt.md)     |
+| **Sync Method**        | Full dir symlink    | Full dir symlink    | Convert + generate  | Native detection     | Copy + rename             |
+| **Location**           | `.cursor/commands/` | `.claude/commands/` | `.gemini/commands/` | `.agents/workflows/` | `.github/prompts/`        |
+| **Variable Syntax**    | `$ARGUMENTS`        | `$ARGUMENTS`        | `{{args}}`          | `$ARGUMENTS`         | `{{{ input }}}`           |
+| **Frontmatter**        | YAML                | YAML                | Extracted to TOML   | YAML                 | YAML (description + mode) |
+| **Changes Propagate**  | Instant             | Instant             | Re-sync required    | Instant              | Re-sync required          |
+| **Triple Backticks**   | Allowed             | Allowed             | Removed             | Allowed              | Allowed                   |
+| **Backslash Escaping** | None                | None                | Doubled             | None                 | None                      |
 
 ## Technical Challenges
 
@@ -333,10 +325,11 @@ sed 's/```//g'
 
 **Problem:** Antigravity uses "workflows" not "commands"
 
-**Solution:** Symlink to `.agent/workflows/` instead of `.agent/commands/`
+**Solution:** Internal symlink `.agents/workflows → commands` for native detection
 
 ```bash
-ln -s "../../.agents/commands/$command_name.md" ".agent/workflows/$command_name"
+# Inside .agents/ directory
+ln -s commands workflows
 ```
 
 ## Synchronization Workflow
@@ -351,7 +344,7 @@ ln -s "../../.agents/commands/$command_name.md" ".agent/workflows/$command_name"
 # 1. Cursor: .cursor/commands → ../.agents/commands (symlink)
 # 2. Claude: .claude/commands → ../.agents/commands (symlink)
 # 3. Gemini: Converts all .md → .toml in .gemini/commands/
-# 4. Antigravity: Creates selective symlinks in .agent/workflows/
+# 4. Antigravity: Reads natively from .agents/workflows/ (symlink → commands)
 ```
 
 ### After Adding New Command
@@ -369,8 +362,8 @@ ln -s "../../.agents/commands/$command_name.md" ".agent/workflows/$command_name"
    # Gemini (generated)
    cat .gemini/commands/new-command.toml
 
-   # Antigravity (selective symlink)
-   ls -la .agent/workflows/new-command
+   # Antigravity (native detection)
+   ls -la .agents/workflows/new-command
    ```
 
 ### After Editing Existing Command
@@ -457,30 +450,18 @@ for command_file in "$PROJECT_ROOT/.agents/commands"/*.md; do
 done
 ````
 
-### Selective Symlinks (Antigravity)
+### Native Detection (Antigravity)
 
 ```bash
-# Lines 148-164
-echo "Syncing commands for Antigravity..."
-mkdir -p "$PROJECT_ROOT/.agent/workflows"
+# Antigravity reads commands natively from .agents/workflows/
+# which is a symlink to commands/ inside .agents/
 
-for command_file in "$PROJECT_ROOT/.agents/commands"/*.md; do
-  if [ ! -f "$command_file" ]; then
-    continue
-  fi
+# Setup (one-time, inside .agents/ directory):
+cd .agents && ln -s commands workflows && cd ..
 
-  command_name=$(basename "$command_file" .md)
-  target_link="$PROJECT_ROOT/.agent/workflows/$command_name"
-
-  # Remove existing
-  if [ -L "$target_link" ] || [ -e "$target_link" ]; then
-    rm -rf "$target_link"
-  fi
-
-  # Create selective symlink
-  ln -s "../../.agents/commands/$command_name.md" "$target_link"
-  echo "  ✅ Linked: .agent/workflows/$command_name"
-done
+# Verification:
+readlink .agents/workflows  # Should output: commands
+ls .agents/workflows/       # Should list command .md files
 ```
 
 ## Best Practices
@@ -551,13 +532,14 @@ cat .gemini/commands/your-command.toml
 **Antigravity command not found:**
 
 ```bash
-# Check symlink in workflows
-ls -la .agent/workflows/your-command
+# Check workflows symlink exists
+readlink .agents/workflows  # Should output: commands
 
-# Should show: .agent/workflows/your-command → ../../.agents/commands/your-command.md
+# Check command is accessible
+ls -la .agents/workflows/your-command.md
 
-# Re-sync if needed
-./.agents/commands/sync-commands.sh
+# If symlink missing, recreate:
+cd .agents && ln -s commands workflows && cd ..
 ```
 
 ## Verification Commands
@@ -576,13 +558,13 @@ ls -la .gemini/commands/
 cat .gemini/commands/sync-setup.toml
 
 # Verify Antigravity workflows
-ls -la .agent/workflows/
-readlink .agent/workflows/sync-setup  # Should: ../../.agents/commands/sync-setup.md
+readlink .agents/workflows  # Should: commands
+ls -la .agents/workflows/
 
 # Test file accessibility
 cat .cursor/commands/sync-setup.md
 cat .gemini/commands/sync-setup.toml
-cat .agent/workflows/sync-setup
+cat .agents/workflows/sync-setup.md
 ```
 
 ## Related Documentation
@@ -599,7 +581,8 @@ Commands in the `.agents/` system demonstrate platform-specific handling while m
 - **Source:** All commands are Markdown in `.agents/commands/`
 - **Cursor/Claude:** Direct symlink access to Markdown files
 - **Gemini:** Automated Markdown-to-TOML conversion with syntax transformations
-- **Antigravity:** Selective symlinks to `.agent/workflows/` directory
+- **Antigravity:** Native detection via `.agents/workflows/` (symlink → `commands/`)
+- **Copilot:** Copy+rename to `.github/prompts/*.prompt.md` with `$ARGUMENTS` → `{{{ input }}}` conversion
 - **Maintenance:** Run sync script after creating/editing commands (except for Cursor/Claude/Antigravity which use symlinks)
 
 This architecture allows cross-platform compatibility while respecting each platform's technical requirements and limitations.

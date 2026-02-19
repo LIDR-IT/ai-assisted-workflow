@@ -100,7 +100,7 @@ gemini /mcp
 3. Commit cambios:
 
 ```bash
-git add .agents/mcp/ .cursor/ .claude/ .gemini/ .agent/
+git add .agents/mcp/ .cursor/ .claude/ .gemini/ .agents/
 git commit -m "feat: add nuevo-server MCP"
 ```
 

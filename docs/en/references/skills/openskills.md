@@ -34,7 +34,7 @@ This eliminates the need to maintain separate skill formats for different AI age
 
 - **Project-local**: `./.claude/skills/` (default)
 - **Global**: `~/.claude/skills/` (system-wide)
-- **Universal mode**: `./.agent/skills/` (for multi-agent setups)
+- **Universal mode**: `./.agents/skills/` (for multi-agent setups)
 
 ### Multiple Source Support
 
@@ -140,7 +140,7 @@ npx openskills remove <skill-name>
 | Flag           | Description                                         |
 | -------------- | --------------------------------------------------- |
 | `--global`     | Install skills system-wide instead of project-local |
-| `--universal`  | Use `.agent/skills/` instead of `.claude/skills/`   |
+| `--universal`  | Use `.agents/skills/` instead of `.claude/skills/`  |
 | `-y, --yes`    | Skip confirmation prompts (auto-accept)             |
 | `-o, --output` | Specify custom output file path                     |
 
@@ -175,7 +175,7 @@ npx openskills sync --global
 # Install for multiple AI agents
 npx openskills install anthropics/skills --universal
 
-# Sync to .agent/skills/
+# Sync to .agents/skills/
 npx openskills sync --universal
 ```
 
@@ -273,7 +273,7 @@ your-project/
 
 ```
 your-project/
-├── .agent/
+├── .agents/
 │   └── skills/
 │       ├── skill-1/
 │       └── skill-2/

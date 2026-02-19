@@ -103,12 +103,15 @@ gemini /find-skills
 **Antigravity:**
 
 ```bash
-# Verify rules copied (flattened)
-ls -la .agent/rules/
-cat .agent/rules/principles.md
+# Verify native .agents/ detection
+ls -la .agents/rules/
+cat .agents/rules/code/principles.md
 
 # Verify skills accessible
-ls -la .agent/skills/
+ls -la .agents/skills/
+
+# Verify workflows symlink
+readlink .agents/workflows  # Should: commands
 
 # Note: MCP must be configured globally
 cat ~/.gemini/antigravity/mcp_config.json
@@ -187,8 +190,8 @@ Test synchronization of rules and skills across all agent platforms.
 **Steps:**
 
 1. Run `.agents/rules/sync-rules.sh`
-2. Check `.cursor/rules/` and `.agent/rules/` contain .md files
-   **Expected:** All rules flattened in both directories
+2. Check `.cursor/rules/` contains .mdc files
+   **Expected:** All rules flattened in .cursor/rules/
 
 ### TC-003: Symlink Creation (Claude/Gemini)
 

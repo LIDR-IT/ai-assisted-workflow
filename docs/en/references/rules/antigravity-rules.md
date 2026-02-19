@@ -67,7 +67,7 @@ Rules function as **passive, always-on guardrails** that ensure the agent follow
 
 ### Workspace Rules
 
-**Location:** `<workspace-root>/.agent/rules/`
+**Location:** `<workspace-root>/.agents/rules/`
 
 **Purpose:**
 
@@ -79,7 +79,7 @@ Rules function as **passive, always-on guardrails** that ensure the agent follow
 **Example structure:**
 
 ```
-.agent/rules/
+.agents/rules/
 ├── code-style.md
 ├── testing-standards.md
 ├── documentation.md
@@ -90,7 +90,7 @@ Rules function as **passive, always-on guardrails** that ensure the agent follow
 **In This Project:**
 
 ```
-.agent/rules/           # Project-specific rules
+.agents/rules/           # Project-specific rules
 ```
 
 ---
@@ -117,10 +117,10 @@ vi ~/.gemini/GEMINI.md
 
 ```bash
 # Create project rules directory
-mkdir -p .agent/rules
+mkdir -p .agents/rules
 
 # Create specific rule file
-cat > .agent/rules/code-style.md << 'EOF'
+cat > .agents/rules/code-style.md << 'EOF'
 # Code Style Guidelines
 
 ## Python
@@ -168,7 +168,7 @@ Rules are written in **plain Markdown** with directives:
 
 ### Code Style Rule
 
-**File:** `.agent/rules/code-style.md`
+**File:** `.agents/rules/code-style.md`
 
 ```markdown
 # Code Style Guidelines
@@ -206,7 +206,7 @@ Rules are written in **plain Markdown** with directives:
 
 ### Testing Standards Rule
 
-**File:** `.agent/rules/testing-standards.md`
+**File:** `.agents/rules/testing-standards.md`
 
 ```markdown
 # Testing Standards
@@ -242,7 +242,7 @@ Rules are written in **plain Markdown** with directives:
 
 ### Documentation Rule
 
-**File:** `.agent/rules/documentation.md`
+**File:** `.agents/rules/documentation.md`
 
 ```markdown
 # Documentation Standards
@@ -282,7 +282,7 @@ Rules are written in **plain Markdown** with directives:
 
 ### Security Rule
 
-**File:** `.agent/rules/security.md`
+**File:** `.agents/rules/security.md`
 
 ```markdown
 # Security Guidelines
@@ -320,7 +320,7 @@ Rules are written in **plain Markdown** with directives:
 
 ### Git Conventions Rule
 
-**File:** `.agent/rules/git-conventions.md`
+**File:** `.agents/rules/git-conventions.md`
 
 ```markdown
 # Git Conventions
@@ -380,7 +380,7 @@ Rules are written in **plain Markdown** with directives:
 **Flat Structure (5-10 rules):**
 
 ```
-.agent/rules/
+.agents/rules/
 ├── code-style.md
 ├── testing.md
 ├── documentation.md
@@ -391,7 +391,7 @@ Rules are written in **plain Markdown** with directives:
 **Categorized Structure (10+ rules):**
 
 ```
-.agent/rules/
+.agents/rules/
 ├── code/
 │   ├── python-style.md
 │   ├── typescript-style.md
@@ -459,7 +459,7 @@ Rules are written in **plain Markdown** with directives:
 | **Activation** | Always active       | User-triggered with `/` |
 | **Scope**      | Continuous guidance | On-demand tasks         |
 | **Purpose**    | Behavior guidelines | Saved prompts           |
-| **Location**   | `.agent/rules/`     | `.agent/workflows/`     |
+| **Location**   | `.agents/rules/`    | `.agents/workflows/`    |
 | **Example**    | "Use PEP 8"         | "Generate tests"        |
 | **Type**       | System instructions | Executable commands     |
 
@@ -602,7 +602,7 @@ Rules are written in **plain Markdown** with directives:
 
 ### Example: Full Development Rules
 
-**File:** `.agent/rules/development-workflow.md`
+**File:** `.agents/rules/development-workflow.md`
 
 ```markdown
 # Development Workflow
@@ -654,10 +654,10 @@ Rules are written in **plain Markdown** with directives:
 
 ```bash
 # Verify rule file location
-ls -la .agent/rules/
+ls -la .agents/rules/
 
 # Check file is readable
-cat .agent/rules/code-style.md
+cat .agents/rules/code-style.md
 
 # Restart Antigravity
 # CMD+Q (Mac) / Alt+F4 (Windows)
@@ -703,7 +703,7 @@ cat .agent/rules/code-style.md
 
 ```bash
 # Project rules should be shared
-git add .agent/rules/
+git add .agents/rules/
 git commit -m "docs: add code style rules"
 ```
 
@@ -718,7 +718,7 @@ git commit -m "docs: add code style rules"
 
 **Best practices:**
 
-1. Document rules in `.agent/rules/`
+1. Document rules in `.agents/rules/`
 2. Commit to repository
 3. Include in onboarding docs
 4. Review in team meetings
@@ -728,7 +728,7 @@ git commit -m "docs: add code style rules"
 
 ```bash
 # Create new rule
-cat > .agent/rules/api-design.md << 'EOF'
+cat > .agents/rules/api-design.md << 'EOF'
 # API Design Guidelines
 
 ## REST Endpoints
@@ -745,7 +745,7 @@ cat > .agent/rules/api-design.md << 'EOF'
 EOF
 
 # Commit
-git add .agent/rules/api-design.md
+git add .agents/rules/api-design.md
 git commit -m "docs: add API design guidelines"
 
 # Push for team
@@ -815,7 +815,7 @@ git push
 
 - `docs/notes/antigravity-agent-modes-settings.md` - Agent modes and configuration
 - `docs/references/commands/antigravity-workflows.md` - Workflows documentation
-- `.agent/rules/` - Project rules directory
+- `.agents/rules/` - Project rules directory
 
 ---
 

@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repository Is
 
-This is a **multi-agent AI configuration template** demonstrating centralized management across 4 platforms: Cursor, Claude Code, Gemini CLI, and Antigravity. It's a production tool for teams, not a documentation wiki.
+This is a **multi-agent AI configuration template** demonstrating centralized management across 5 platforms: Cursor, Claude Code, Gemini CLI, Antigravity, and GitHub Copilot (VSCode). It's a production tool for teams, not a documentation wiki.
 
 **Core Architecture:** Source-of-truth pattern with automated synchronization
 
@@ -65,16 +65,24 @@ npm run format:check      # Check formatting without changes
 # Verify symlinks point correctly
 readlink .cursor/rules    # Should: ../.agents/rules
 readlink .claude/rules    # Should: ../.agents/rules
+readlink .github/skills   # Should: ../.agents/skills
 ls -la .cursor/skills     # Should show: lrwxr-xr-x (symlink)
 
 # Validate generated configs
 jq . .cursor/mcp.json
 jq . .claude/mcp.json
+jq .servers .vscode/mcp.json
 jq empty .agents/mcp/mcp-servers.json  # Validate source JSON
 
 # Check hooks configuration
 jq .hooks .claude/settings.json
+jq . .github/hooks/hooks.json
 ls -la .claude/hooks/
+
+# Copilot-specific verification
+ls .github/rules/*.instructions.md
+ls .github/prompts/*.prompt.md
+ls .github/agents/*.agent.md
 ```
 
 ---
@@ -135,9 +143,11 @@ ls -la .claude/hooks/
 
 **2. Symlinks + Copy (Rules - Hybrid)**
 
-- **Symlink:** Claude Code, Antigravity (support nested structure)
+- **Symlink:** Claude Code (supports nested structure)
+- **Native:** Antigravity (reads `.agents/rules/` directly)
 - **Copy:** Cursor (no subdirectory support, requires `.mdc` extension)
-- **Generated Index:** Gemini CLI (no native rules support)
+- **Copy:** Copilot (requires `.instructions.md` extension, flat structure)
+- **Generated Index:** Gemini CLI (no native rules support), Copilot (`copilot-instructions.md`)
 
 **3. Script Generation (MCP, Hooks)**
 
@@ -145,27 +155,33 @@ ls -la .claude/hooks/
 - **Process:** Universal source → platform-specific JSONs
 - **Commit:** Both source AND generated files
 
-**4. Conversion (Gemini Commands)**
+**4. Conversion (Gemini Commands, Copilot Prompts/Agents)**
 
 - **Process:** `.md` → `.toml` (Gemini requirement)
-- **Auto-converts:** Every sync-commands.sh run
+- **Process:** `.md` → `.prompt.md` (Copilot commands)
+- **Process:** `.md` → `.agent.md` (Copilot agents)
+- **Auto-converts:** Every sync run
 
 ### Platform Support Matrix
 
-| Component     | Cursor                                  | Claude Code           | Gemini CLI            | Antigravity               |
-| ------------- | --------------------------------------- | --------------------- | --------------------- | ------------------------- |
-| Rules         | ✅ Copy (.mdc, flat)                    | ✅ Symlink            | ❌ Index only         | ✅ Symlink                |
-| Skills        | ✅ Symlink                              | ✅ Symlink            | ✅ Symlink            | ✅ Symlink                |
-| Commands      | ✅ Symlink                              | ✅ Symlink            | ✅ Generated (.toml)  | ✅ Symlink (as workflows) |
-| Subagents     | ✅ Symlink                              | ✅ Symlink            | ✅ Symlink            | ❌ Not supported          |
-| MCP (Project) | ✅ Generated                            | ✅ Generated          | ✅ Generated          | ❌ Global only            |
-| Hooks         | ✅ Partial (2/3 hooks, NO Notification) | ✅ Full (all 3 hooks) | ✅ Full (all 3 hooks) | ❌ Global only            |
+| Component | Cursor                | Claude Code  | Gemini CLI     | Antigravity      | **Copilot (VSCode)**               |
+| --------- | --------------------- | ------------ | -------------- | ---------------- | ---------------------------------- |
+| Rules     | ✅ Copy (.mdc)        | ✅ Symlink   | ❌ Index only  | ✅ Native        | ✅ Copy (.instructions.md) + Index |
+| Skills    | ✅ Symlink            | ✅ Symlink   | ✅ Symlink     | ✅ Native        | ✅ Symlink                         |
+| Commands  | ✅ Symlink            | ✅ Symlink   | ✅ Gen (.toml) | ✅ Native        | ✅ Copy (.prompt.md)               |
+| Subagents | ✅ Symlink            | ✅ Symlink   | ✅ Symlink     | ❌ Not supported | ✅ Copy (.agent.md)                |
+| MCP       | ✅ Generated          | ✅ Generated | ✅ Generated   | ❌ Global only   | ✅ Generated (.vscode/)            |
+| Hooks     | ✅ Partial (no Notif) | ✅ Full      | ✅ Full        | ❌ Global only   | ✅ Partial (no Notification)       |
+| Memory    | CLAUDE.md             | CLAUDE.md    | GEMINI.md      | AGENTS.md        | CLAUDE.md + AGENTS.md              |
 
 **Critical Limitations:**
 
 - **Cursor:** No subdirectories, requires `.mdc` extension, `name` field mandatory
-- **Antigravity:** No project MCP, no subagents, requires reload after sync
+- **Antigravity:** No project MCP, no subagents, requires reload after sync, commands require `workflows` folder name
 - **Gemini:** No native rules (uses index), commands need TOML format
+- **Copilot:** Requires `.instructions.md`/`.agent.md`/`.prompt.md` extensions, flat rules structure
+
+**Cross-Compatibility (Copilot):** Copilot also reads from `.claude/rules/` (symlink), `AGENTS.md`, and `CLAUDE.md` in root. No need for a separate `COPILOT.md`.
 
 ---
 
@@ -209,6 +225,7 @@ wc -c .agents/rules/team/api-standards.md
 ls .cursor/rules/api-standards.mdc              # Cursor (converted)
 cat .claude/rules/team/api-standards.md         # Claude (symlink)
 cat .gemini/GEMINI.md | grep api-standards      # Gemini (index)
+ls .github/rules/api-standards.instructions.md  # Copilot (converted)
 
 # 5. Commit source only (symlinks auto-restore)
 git add .agents/rules/team/api-standards.md
@@ -225,7 +242,7 @@ vim .agents/mcp/mcp-servers.json
 {
   "servers": {
     "my-server": {
-      "platforms": ["cursor", "claude", "gemini"],
+      "platforms": ["cursor", "claude", "gemini", "copilot"],
       "description": "My documentation server",
       "type": "stdio",
       "command": "npx",
@@ -245,7 +262,7 @@ jq empty .agents/mcp/mcp-servers.json
 
 # 4. Commit BOTH source and generated files
 git add .agents/mcp/mcp-servers.json
-git add .cursor/mcp.json .claude/mcp.json .gemini/settings.json
+git add .cursor/mcp.json .claude/mcp.json .gemini/settings.json .vscode/mcp.json
 git commit -m "feat: Add my-server MCP integration"
 
 # 5. Restart Claude Code/Cursor to detect new server
@@ -305,7 +322,7 @@ git commit -m "feat: Add React testing skill with patterns and utilities"
 name: rule-name # Cursor only (REQUIRED for Cursor)
 description: Brief description # All platforms
 alwaysApply: false # Cursor only (optional, default: false)
-globs: ["**/*.ts", "**/*.tsx"] # Cursor only (optional)
+globs: ["**/*.ts", "**/*.tsx"] # Cursor + Copilot (optional, auto-converted to applyTo)
 argument-hint: <file-pattern> # Claude/Gemini (optional)
 paths: ["src/**/*.ts"] # Claude only (optional)
 trigger: always_on # Antigravity only (optional)
@@ -498,7 +515,7 @@ Example workflow:
 **Configuration location:**
 
 - Source: `.agents/mcp/mcp-servers.json`
-- Generated: `.cursor/mcp.json`, `.claude/mcp.json`, `.gemini/settings.json`
+- Generated: `.cursor/mcp.json`, `.claude/mcp.json`, `.gemini/settings.json`, `.vscode/mcp.json`
 - Antigravity: `~/.gemini/antigravity/mcp_config.json` (global only)
 
 **API Key:** Set `CONTEXT7_API_KEY` in `.agents/mcp/.env`
@@ -512,6 +529,7 @@ See [Adding an MCP Server](#adding-an-mcp-server) section above.
 - **Cursor:** `mcpServers` object, no metadata
 - **Claude Code:** `mcpServers` object, with metadata
 - **Gemini CLI:** Nested in `settings.json` `mcpServers`
+- **Copilot (VSCode):** `servers` object in `.vscode/mcp.json`, env vars use `${env:VAR}`
 - **Antigravity:** Global config only (not project-level)
 
 ---
@@ -522,19 +540,19 @@ See [Adding an MCP Server](#adding-an-mcp-server) section above.
 
 **1. notify.sh** - Notification events
 
-- Platform: Claude Code, Gemini CLI (NOT Cursor - no Notification event)
+- Platform: Claude Code, Gemini CLI (NOT Cursor/Copilot - no Notification event)
 - Purpose: Send notifications for important events
 - Example: Notify on sync completion
 
 **2. auto-format.sh** - Code formatting
 
-- Platform: Claude Code, Gemini CLI, Cursor
+- Platform: Claude Code, Gemini CLI, Cursor, Copilot
 - Purpose: Auto-format code before operations
 - Example: Run Prettier before commit
 
 **3. protect-secrets.sh** - Secret detection
 
-- Platform: Claude Code, Gemini CLI, Cursor
+- Platform: Claude Code, Gemini CLI, Copilot
 - Purpose: Prevent committing secrets
 - Example: Block commit if `.env` file in staging
 
@@ -572,6 +590,18 @@ See [Adding an MCP Server](#adding-an-mcp-server) section above.
   "hooks": {
     "preToolUse": [{ "scriptPath": ".cursor/hooks/protect-secrets.sh" }],
     "postToolUse": [{ "scriptPath": ".cursor/hooks/auto-format.sh" }]
+  }
+}
+```
+
+**Copilot (VSCode):** `.github/hooks/hooks.json` (camelCase, NO Notification)
+
+```json
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [{ "command": "bash .github/hooks/scripts/protect-secrets.sh" }],
+    "postToolUse": [{ "command": "bash .github/hooks/scripts/auto-format.sh" }]
   }
 }
 ```
@@ -673,17 +703,25 @@ head -10 .agents/rules/my-rule.md
 ./.agents/rules/sync-rules.sh  # Must re-run after edits
 ```
 
-**Claude/Gemini/Antigravity (symlinked):**
+**Claude/Gemini (symlinked):**
 
 ```bash
 # Changes instant, just verify symlink exists
 readlink .claude/rules  # Should: ../.agents/rules
 ```
 
-**Antigravity specifically:**
+**Copilot rules (copied, not symlinked):**
 
 ```bash
-# Close and reopen project (rules cached)
+./.agents/rules/sync-rules.sh  # Must re-run after edits
+# Also regenerates .github/copilot-instructions.md index
+```
+
+**Antigravity (native .agents/ detection):**
+
+```bash
+# Changes read directly from .agents/, but may be cached
+# Close and reopen project to refresh cached rules
 ```
 
 ### MCP Server Not Loading
@@ -753,7 +791,7 @@ ln -s ../.agents/skills .cursor/skills
 ### 1. Single Source of Truth
 
 - Edit only in `.agents/`
-- Never edit platform directories (`.cursor/`, `.claude/`, etc.) directly
+- Never edit platform directories (`.cursor/`, `.claude/`, `.github/`, `.vscode/`, etc.) directly
 - Sync scripts handle distribution
 
 ### 2. Commit Patterns
@@ -777,7 +815,9 @@ ln -s ../.agents/skills .cursor/skills
 
 - Cursor: Open Settings → Rules → Verify rule appears
 - Claude Code: `claude mcp list` → Verify servers
-- Verify symlinks: `ls -la .cursor/skills`
+- Copilot: `ls .github/rules/*.instructions.md` → Verify rules
+- VSCode: Open `.vscode/mcp.json` → Verify servers
+- Verify symlinks: `ls -la .cursor/skills .github/skills`
 
 ---
 

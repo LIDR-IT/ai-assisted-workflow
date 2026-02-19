@@ -50,16 +50,16 @@ Antigravity soporta configuración tanto **global** como **por workspace**:
 
 ### Configuración por Workspace
 
-| Tipo                    | Ubicación                          |
-| ----------------------- | ---------------------------------- |
-| **Workspace Rules**     | `your-workspace/.agent/rules/`     |
-| **Workspace Workflows** | `your-workspace/.agent/workflows/` |
+| Tipo                    | Ubicación                           |
+| ----------------------- | ----------------------------------- |
+| **Workspace Rules**     | `your-workspace/.agents/rules/`     |
+| **Workspace Workflows** | `your-workspace/.agents/workflows/` |
 
 ### Estructura de Proyecto Típica
 
 ```
 my-project/
-├── .agent/
+├── .agents/
 │   ├── rules/
 │   │   ├── code-style.md
 │   │   ├── testing.md
@@ -91,8 +91,8 @@ my-project/
 
 Alternativamente, edita directamente los archivos markdown en:
 
-- `.agent/rules/` para reglas del workspace
-- `.agent/workflows/` para workflows del workspace
+- `.agents/rules/` para reglas del workspace
+- `.agents/workflows/` para workflows del workspace
 - `~/.gemini/GEMINI.md` para reglas globales
 
 ## Rules (Reglas)
@@ -236,7 +236,7 @@ Los workflows son **prompts guardados** que el usuario puede activar bajo demand
 
 #### 1. Generar Tests (/generate-tests)
 
-**`.agent/workflows/generate-tests.md`**
+**`.agents/workflows/generate-tests.md`**
 
 ```markdown
 # Generate Unit Tests Workflow
@@ -285,7 +285,7 @@ instance.method(invalid_data)
 
 #### 2. Documentar Código (/document)
 
-**`.agent/workflows/document.md`**
+**`.agents/workflows/document.md`**
 
 ```markdown
 # Document Code Workflow
@@ -331,7 +331,7 @@ def complex_function(param1: str, param2: int = 10) -> dict:
 
 #### 3. Refactorizar (/refactor)
 
-**`.agent/workflows/refactor.md`**
+**`.agents/workflows/refactor.md`**
 
 ```markdown
 # Refactor Code Workflow
@@ -367,7 +367,7 @@ Document refactoring in `artifacts/refactor_[date].md`:
 
 #### 4. Review Code (/review)
 
-**`.agent/workflows/review.md`**
+**`.agents/workflows/review.md`**
 
 ```markdown
 # Code Review Workflow
@@ -632,7 +632,7 @@ def fetch_user_data(user_id: int) -> dict:
 
 ```
 my-antigravity-project/
-├── .agent/
+├── .agents/
 │   ├── rules/
 │   │   ├── 01-code-style.md
 │   │   ├── 02-testing.md
@@ -716,7 +716,7 @@ Focus on core shopping cart and checkout functionality.
 **2. Organizar por Categoría**
 
 ```markdown
-.agent/rules/
+.agents/rules/
 ├── 01-code-style.md # Estilo de código
 ├── 02-testing.md # Testing standards
 ├── 03-security.md # Security requirements
@@ -805,7 +805,7 @@ Si usas ambas herramientas en el mismo sistema, las configuraciones pueden entra
 
 **Opción 1: Usar configuración por workspace**
 
-Priorizar `.agent/rules/` en lugar de configuración global.
+Priorizar `.agents/rules/` en lugar de configuración global.
 
 **Opción 2: Separar configuraciones**
 
@@ -866,17 +866,17 @@ Framework completo con:
 
 ## Comparación con Otros Sistemas
 
-| Aspecto                  | Antigravity            | Claude Code           | Gemini CLI            | Cursor               |
-| ------------------------ | ---------------------- | --------------------- | --------------------- | -------------------- |
-| **Tipo**                 | IDE Agentic            | CLI                   | CLI                   | Editor/IDE           |
-| **Rules ubicación**      | `.agent/rules/`        | `.claude/rules/`      | `GEMINI.md`           | `.cursor/rules/`     |
-| **Workflows**            | ✅ `.agent/workflows/` | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
-| **Global rules**         | `~/.gemini/GEMINI.md`  | `~/.claude/CLAUDE.md` | `~/.gemini/GEMINI.md` | Cursor Settings      |
-| **Mission file**         | ✅ `mission.md`        | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
-| **Artifacts**            | ✅ `artifacts/`        | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
-| **Deep Think**           | ✅ Gemini 3 Deep Think | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
-| **Browser control**      | ✅ Con límites         | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
-| **Activación workflows** | `/workflow-name`       | N/A                   | N/A                   | `@rule-name` (rules) |
+| Aspecto                  | Antigravity             | Claude Code           | Gemini CLI            | Cursor               |
+| ------------------------ | ----------------------- | --------------------- | --------------------- | -------------------- |
+| **Tipo**                 | IDE Agentic             | CLI                   | CLI                   | Editor/IDE           |
+| **Rules ubicación**      | `.agents/rules/`        | `.claude/rules/`      | `GEMINI.md`           | `.cursor/rules/`     |
+| **Workflows**            | ✅ `.agents/workflows/` | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
+| **Global rules**         | `~/.gemini/GEMINI.md`   | `~/.claude/CLAUDE.md` | `~/.gemini/GEMINI.md` | Cursor Settings      |
+| **Mission file**         | ✅ `mission.md`         | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
+| **Artifacts**            | ✅ `artifacts/`         | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
+| **Deep Think**           | ✅ Gemini 3 Deep Think  | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
+| **Browser control**      | ✅ Con límites          | ❌ No soportado       | ❌ No soportado       | ❌ No soportado      |
+| **Activación workflows** | `/workflow-name`        | N/A                   | N/A                   | `@rule-name` (rules) |
 
 ### Características Únicas de Antigravity
 
@@ -915,7 +915,7 @@ Current Phase: Core endpoints (auth, users, products)
 Next: Payment integration with Stripe
 ```
 
-**.agent/rules/api-standards.md:**
+**.agents/rules/api-standards.md:**
 
 ```markdown
 # API Development Standards
@@ -927,7 +927,7 @@ Next: Payment integration with Stripe
 - Rate limiting: 100 req/min per user
 ```
 
-**.agent/workflows/generate-endpoint.md:**
+**.agents/workflows/generate-endpoint.md:**
 
 ```markdown
 # Generate API Endpoint
@@ -954,7 +954,7 @@ Success: 85%+ accuracy on test set
 Deployment: Vertex AI endpoint
 ```
 
-**.agent/rules/ml-standards.md:**
+**.agents/rules/ml-standards.md:**
 
 ```markdown
 # ML Development Standards
@@ -966,7 +966,7 @@ Deployment: Vertex AI endpoint
 - Use scikit-learn pipelines for transformations
 ```
 
-**.agent/workflows/train-model.md:**
+**.agents/workflows/train-model.md:**
 
 ```markdown
 # Train Model Workflow

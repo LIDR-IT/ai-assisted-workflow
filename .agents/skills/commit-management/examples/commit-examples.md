@@ -558,7 +558,7 @@ Features:
 Files:
 - .agents/commands/commit.md - Command source definition
 - .gemini/commands/commit.toml - Auto-generated TOML for Gemini
-- .agent/workflows/commit.md - Symlink for Antigravity
+- .agents/workflows/commit.md - Available via Antigravity (native detection)
 - TODO.md - Marked task as completed
 
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>

@@ -1,0 +1,278 @@
+---
+description: Review project for skills structure and compliance
+What this skill does
+applyTo: ".agents/skills/**/*,  .claude/skills,  .cursor/skills,  .gemini/skills"
+---
+
+# Skills Management Guidelines
+
+Review project for skills compliance: $ARGUMENTS
+
+Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.
+
+## Rules
+
+### CRITICAL - Project-Level Only
+
+- Skills at **project level** only (`.agents/skills/`)
+- NEVER user level (`~/.claude/skills`, `~/.cursor/skills`)
+- NEVER team/organization level
+- Version-controlled, reproducible across team
+
+### CRITICAL - Centralized Source of Truth
+
+- All skills in `.agents/skills/` (AGENTS.md standard)
+- Individual subfolders are source of truth: `.agents/skills/skill-name/`
+- Agent directories use symlinks to `.agents/skills/`
+- Prevents duplication, maintains consistency
+
+### CRITICAL - Symlink Structure
+
+**Approach 1: Shared Skills (Recommended)**
+
+```bash
+# From project root - all skills to all agents
+ln -s ../.agents/skills .claude/skills
+ln -s ../.agents/skills .cursor/skills
+ln -s ../.agents/skills .gemini/skills
+# Antigravity: reads natively from .agents/skills/ (no symlink needed)
+```
+
+**Approach 2: Selective Skills (Advanced)**
+
+```bash
+# Link specific skills to specific agents only
+ln -s ../../.agents/skills/subagent-creator .claude/skills/subagent-creator
+ln -s ../../.agents/skills/universal-skill .claude/skills/universal-skill
+ln -s ../../.agents/skills/universal-skill .cursor/skills/universal-skill
+```
+
+⚠️ Selective linking = maintenance overhead. Use Approach 1 unless skill genuinely agent-specific.
+
+### Directory Structure
+
+**Approach 1:**
+
+```
+project-root/
+├── .agents/skills/skill-one/SKILL.md    # ← Source of truth
+├── .claude/skills → ../.agents/skills
+├── .cursor/skills → ../.agents/skills
+├── .gemini/skills → ../.agents/skills
+# Antigravity reads natively from .agents/skills/
+```
+
+**Approach 2:**
+
+```
+project-root/
+├── .agents/skills/
+│   ├── universal/SKILL.md
+│   └── claude-only/SKILL.md
+├── .claude/skills/
+│   ├── universal → ../../.agents/skills/universal
+│   └── claude-only → ../../.agents/skills/claude-only
+└── .cursor/skills/
+    └── universal → ../../.agents/skills/universal
+```
+
+**Single-agent:** Use native structure (`.claude/skills/` direct). Locks to that agent.
+
+## Quick Setup
+
+```bash
+# Create structure
+mkdir -p .agents/skills .claude .cursor .gemini
+
+# Create symlinks
+ln -s ../.agents/skills .claude/skills
+ln -s ../.agents/skills .cursor/skills
+ln -s ../.agents/skills .gemini/skills
+# Antigravity reads natively from .agents/skills/ (no symlink needed)
+
+# Verify
+ls -la .*/skills
+
+# Commit
+git add .agents/ .claude .cursor .gemini
+git commit -m "feat: initialize skills structure"
+```
+
+## Installing Skills
+
+**Project scope:**
+
+```bash
+# Via CLI
+claude plugin install skill-name@marketplace --scope project
+
+# Manual
+mkdir -p .agents/skills/custom-skill
+cat > .agents/skills/custom-skill/SKILL.md << 'EOF'
+name: custom-skill
+description: What this skill does
+Instructions...
+EOF
+```
+
+**Never user/global:**
+
+```bash
+# ❌ WRONG
+claude plugin install skill-name --scope user
+npx skills add skill-name -g
+```
+
+## Best Practices
+
+- ✅ Commit `.agents/skills/` and symlinks to git
+- ✅ Document skills in README/AGENTS.md
+- ✅ Review skill additions in PRs
+- ✅ Use lowercase-hyphen naming: `code-review`, `api-conventions`
+- ✅ Periodically update and remove unused skills
+- ❌ Never gitignore skills directory
+- ❌ Never allow user-level skills
+- ❌ No spaces or special chars in names
+
+## Anti-Patterns
+
+### ❌ User-Level Skills
+
+```bash
+# Wrong - inconsistent across team
+npx skills add skill-name -g
+claude plugin install skill-name --scope user
+```
+
+**Fix:** Install to `.agents/skills/`
+
+### ❌ Duplicate Copies
+
+```
+.agents/skills/skill-one/
+.claude/skills/skill-one/    # ❌ Duplicate
+```
+
+**Fix:** Use symlinks
+
+### ❌ Hardcoded Paths
+
+```yaml
+# Wrong - won't work for team
+Read /Users/john/project/config.json
+```
+
+**Fix:** Use relative: "Read config.json in project root"
+
+### ❌ Broken Symlinks
+
+```bash
+# Wrong - creates broken link
+cd .claude && ln -s .agents/skills skills
+```
+
+**Fix:** From project root: `ln -s ../.agents/skills .claude/skills`
+
+### ❌ Not Version Controlled
+
+```bash
+# Wrong - team can't access
+echo ".agents/" >> .gitignore
+```
+
+**Fix:** Commit skills to git
+
+## Verification Checklist
+
+- [ ] `.agents/skills/` exists with skill subfolders
+- [ ] Each skill has `SKILL.md`
+- [ ] `.claude/skills`, `.cursor/skills`, `.gemini/skills` are valid symlinks
+- [ ] Symlinks point to `../.agents/skills`
+- [ ] Antigravity reads natively from `.agents/skills/`
+- [ ] `.agents/skills/` committed to git
+- [ ] Symlink directories committed
+- [ ] Skills NOT in `.gitignore`
+- [ ] Skills visible in agents (`/skills` command)
+- [ ] Documented in README/AGENTS.md
+
+## Troubleshooting
+
+**Skill not found:**
+
+```bash
+ls -la .claude/skills
+rm .claude/skills
+ln -s ../.agents/skills .claude/skills
+```
+
+**Skills not syncing:**
+
+```bash
+# Verify symlinks, not directories
+file .claude/skills .cursor/skills .gemini/skills
+
+# Fix
+rm -rf .claude/skills .cursor/skills .gemini/skills
+ln -s ../.agents/skills .claude/skills
+ln -s ../.agents/skills .cursor/skills
+ln -s ../.agents/skills .gemini/skills
+```
+
+**Broken symlink:**
+
+```bash
+readlink .claude/skills
+ls -la .agents/skills
+rm .claude/skills
+ln -s ../.agents/skills .claude/skills
+```
+
+## Migration
+
+**User-level to project:**
+
+```bash
+mkdir -p .agents/skills
+cp -r ~/.claude/skills/* .agents/skills/
+rm -rf .claude/skills
+ln -s ../.agents/skills .claude/skills
+git add .agents .claude
+git commit -m "feat: migrate skills to project"
+rm -rf ~/.claude/skills
+```
+
+## Output Format
+
+Use `path` format (VS Code clickable). Terse findings.
+
+```text
+## Skills Structure
+
+.agents/skills/skill-one/SKILL.md - ✓ Canonical location
+.claude/skills - ✓ Valid symlink to ../.agents/skills
+.cursor/skills - ✓ Valid symlink to ../.agents/skills
+.gemini/skills - ✓ Valid symlink to ../.agents/skills
+.agents/skills/ - ✓ Antigravity native detection (no symlink needed)
+
+## Issues Found
+
+.cursor/skills - ✗ Not a symlink, should link to ../.agents/skills
+~/.claude/skills/skill-two/ - ✗ User-level installation, move to .agents/skills/
+.agents/skills/ - ✗ Not in version control, add to git
+.claude/skills/custom-skill - ✗ Direct file, should be in .agents/skills/
+
+## Summary
+
+✓ 3 skills configured correctly
+✗ 4 issues require attention
+```
+
+State issue + location. Skip explanation unless fix non-obvious. No preamble.
+
+## References
+
+- `docs/references/skills/skills-claude-code.md`
+- `docs/references/skills/skill-creator.md`
+- `docs/references/agents/agents-md-format.md`
+- [agents.md](https://agents.md)
+- [skills.sh](https://skills.sh)

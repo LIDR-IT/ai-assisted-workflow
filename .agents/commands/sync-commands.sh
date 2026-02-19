@@ -164,10 +164,123 @@ sync_gemini() {
   echo ""
 }
 
-# Sync Antigravity (directory symlink with different name: workflows)
+# Convert Markdown command to Copilot .prompt.md format
+convert_md_to_prompt_md() {
+  local md_file=$1
+  local prompt_file=$2
+
+  # Check if file has frontmatter
+  local has_frontmatter=false
+  if head -1 "$md_file" | grep -q "^---$"; then
+    has_frontmatter=true
+  fi
+
+  # Extract description from YAML frontmatter (if exists)
+  local description=""
+  if [ "$has_frontmatter" = true ]; then
+    description=$(sed -n '/^---$/,/^---$/p' "$md_file" | grep "^description:" | sed 's/description: *//')
+  fi
+
+  # Extract prompt content (everything after second ---)
+  local prompt=""
+  if [ "$has_frontmatter" = true ]; then
+    prompt=$(awk 'BEGIN{skip=1} /^---$/{if(NR==1)next; skip=0; next} !skip{print}' "$md_file")
+  else
+    prompt=$(cat "$md_file")
+  fi
+
+  # Convert $ARGUMENTS to Copilot-compatible reference
+  prompt=$(echo "$prompt" | sed 's/\$ARGUMENTS/{{{ input }}}/g')
+
+  # Generate .prompt.md with Copilot frontmatter
+  {
+    echo "---"
+    if [ -n "$description" ]; then
+      echo "description: $description"
+    fi
+    echo "mode: agent"
+    echo "---"
+    echo "$prompt"
+  } > "$prompt_file"
+}
+
+# Sync Copilot (VSCode) commands as prompts
+sync_copilot() {
+  echo "🐙 Syncing Copilot (VSCode) prompts (converting .md → .prompt.md)..."
+
+  if [ "$DRY_RUN" = true ]; then
+    echo "  [DRY RUN] Would convert and copy commands to .github/prompts/"
+    echo ""
+    return 0
+  fi
+
+  # Preserve .github/ but recreate prompts/ subdirectory
+  if [ -e "$PROJECT_ROOT/.github/prompts" ] || [ -L "$PROJECT_ROOT/.github/prompts" ]; then
+    rm -rf "$PROJECT_ROOT/.github/prompts"
+  fi
+  mkdir -p "$PROJECT_ROOT/.github/prompts"
+
+  echo "  📝 Converting commands to prompts..."
+
+  local count=0
+  for md_file in "$COMMANDS_SOURCE"/*.md; do
+    if [ -f "$md_file" ]; then
+      local base_name=$(basename "$md_file" .md)
+
+      # Skip sync scripts and READMEs
+      case "$base_name" in
+        sync-*|README|readme) continue ;;
+      esac
+
+      local prompt_file="$PROJECT_ROOT/.github/prompts/${base_name}.prompt.md"
+
+      convert_md_to_prompt_md "$md_file" "$prompt_file"
+      echo "    ✅ ${base_name}.md → ${base_name}.prompt.md"
+      ((count++))
+    fi
+  done
+
+  if [ $count -gt 0 ]; then
+    echo "  ✅ Converted $count commands to .prompt.md format"
+  else
+    echo "  ⚠️  No commands found to convert"
+  fi
+
+  echo ""
+}
+
+# Sync Antigravity (native .agents/ detection via workflows symlink)
 sync_antigravity() {
-  echo "🌌 Syncing Antigravity commands (workflows symlink)..."
-  create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.agent/workflows" "workflows"
+  echo "🌌 Syncing Antigravity commands (native .agents/ detection)..."
+
+  # Create .agents/workflows → commands symlink if not present
+  local workflows_link="$PROJECT_ROOT/.agents/workflows"
+  if [ "$DRY_RUN" = true ]; then
+    echo "  [DRY RUN] Would ensure .agents/workflows → commands symlink"
+  else
+    if [ ! -L "$workflows_link" ]; then
+      # Remove if exists as file/directory
+      if [ -e "$workflows_link" ]; then
+        rm -rf "$workflows_link"
+      fi
+      # Create relative symlink inside .agents/
+      (cd "$PROJECT_ROOT/.agents" && ln -s commands workflows)
+      echo "  ✅ Created .agents/workflows → commands symlink"
+    else
+      echo "  ✅ .agents/workflows → commands symlink already exists"
+    fi
+  fi
+
+  # Clean up legacy .agent/workflows symlink if present
+  if [ -e "$PROJECT_ROOT/.agent/workflows" ] || [ -L "$PROJECT_ROOT/.agent/workflows" ]; then
+    if [ "$DRY_RUN" = true ]; then
+      echo "  [DRY RUN] Would remove legacy .agent/workflows symlink"
+    else
+      rm -rf "$PROJECT_ROOT/.agent/workflows"
+      echo "  🧹 Removed legacy .agent/workflows symlink"
+    fi
+  fi
+
   echo ""
 }
 
@@ -199,13 +312,22 @@ verify_sync() {
       ((errors++))
     fi
 
-    # Verify Antigravity workflows symlink
-    local antigravity_link="$PROJECT_ROOT/.agent/workflows"
-    if [ -L "$antigravity_link" ]; then
-      local target=$(readlink "$antigravity_link")
-      echo "  ✅ antigravity workflows: $antigravity_link → $target"
+    # Verify Copilot prompts
+    if [ -d "$PROJECT_ROOT/.github/prompts" ]; then
+      local prompt_count=$(find "$PROJECT_ROOT/.github/prompts" -name "*.prompt.md" 2>/dev/null | wc -l | tr -d ' ')
+      echo "  ✅ copilot prompts: $prompt_count .prompt.md files generated"
     else
-      echo "  ❌ antigravity workflows: Not a symlink"
+      echo "  ❌ copilot prompts: Directory not found"
+      ((errors++))
+    fi
+
+    # Verify Antigravity workflows symlink (inside .agents/)
+    local workflows_link="$PROJECT_ROOT/.agents/workflows"
+    if [ -L "$workflows_link" ]; then
+      local target=$(readlink "$workflows_link")
+      echo "  ✅ antigravity workflows: .agents/workflows → $target (native detection)"
+    else
+      echo "  ❌ antigravity workflows: .agents/workflows symlink not found"
       ((errors++))
     fi
 
@@ -228,6 +350,7 @@ main() {
   sync_cursor
   sync_claude
   sync_gemini
+  sync_copilot
   sync_antigravity
 
   verify_sync
@@ -239,12 +362,13 @@ main() {
     echo "  - Cursor: commands ✅ (directory symlink)"
     echo "  - Claude Code: commands ✅ (directory symlink)"
     echo "  - Gemini CLI: commands ✅ (converted to .toml files)"
-    echo "  - Antigravity: workflows ✅ (directory symlink with different name)"
+    echo "  - Copilot (VSCode): prompts ✅ (converted to .prompt.md files)"
+    echo "  - Antigravity: workflows ✅ (native .agents/ detection via .agents/workflows)"
     echo ""
     echo "📁 All commands now synchronized from .agents/commands/"
     echo ""
     echo "⚠️  Notes:"
-    echo "  - Antigravity uses .agent/workflows/ (symlink to .agents/commands/)"
+    echo "  - Antigravity reads commands natively via .agents/workflows/ → commands/"
     echo "  - Gemini CLI commands auto-converted from .md to .toml format"
   else
     echo "✅ Dry run completed - no changes made"

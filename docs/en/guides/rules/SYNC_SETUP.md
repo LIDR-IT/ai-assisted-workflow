@@ -10,18 +10,19 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 - **Skills** - Agent capabilities and extensions (`.agents/skills/`)
 
 **Source of Truth:** `.agents/` directory
-**Synchronized to:** Cursor, Claude Code, Gemini CLI, Antigravity
+**Synchronized to:** Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot (VSCode)
 
 ## Architecture
 
 ### Synchronization Strategy
 
-| Platform    | Rules | Skills | Method                           |
-| ----------- | ----- | ------ | -------------------------------- |
-| Cursor      | ✅    | ✅     | Full directory symlinks          |
-| Claude Code | ✅    | ✅     | Full directory symlinks          |
-| Gemini CLI  | ✅    | ✅     | Full directory symlinks          |
-| Antigravity | ✅    | ✅     | Copy (rules), Selective (skills) |
+| Platform         | Rules | Skills | Method                                   |
+| ---------------- | ----- | ------ | ---------------------------------------- |
+| Cursor           | ✅    | ✅     | Full directory symlinks                  |
+| Claude Code      | ✅    | ✅     | Full directory symlinks                  |
+| Gemini CLI       | ✅    | ✅     | Full directory symlinks                  |
+| Antigravity      | ✅    | ✅     | Native (reads from .agents/ directly)    |
+| Copilot (VSCode) | ✅    | ✅     | Copy+rename (.instructions.md) + symlink |
 
 ### Directory Structure
 
@@ -57,12 +58,8 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 ├── rules → ../.agents/rules    # Symlink
 └── skills → ../.agents/skills  # Symlink
 
-.agent/
-├── rules/                      # Copied files
-│   ├── core-principles.md
-│   ├── code-style.md
-│   └── ...
-└── skills/                     # Selective symlinks
+# Antigravity reads natively from .agents/ — no separate directory needed
+# .agents/rules/ and .agents/skills/ are accessed directly
 ```
 
 ## Installation
@@ -144,10 +141,9 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
   ✅ Created rules symlink: .gemini/rules → ../.agents/rules
   ✅ Skills already synced (existing symlink)
 
-🌌 Syncing Antigravity (special case)...
-  📝 Copying rules to .agent/rules/...
-  ✅ Rules copied to .agent/rules/
-  ✅ Skills directory exists (selective approach maintained)
+🌌 Syncing Antigravity...
+  ✅ Antigravity reads rules natively from .agents/rules/
+  ✅ Antigravity reads skills natively from .agents/skills/
 
 🔍 Verifying symlinks...
   ✅ Cursor rules: .cursor/rules → ../.agents/rules
@@ -176,21 +172,20 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
    EOF
    ```
 
-2. **Run sync (for Antigravity only):**
+2. **Changes propagate automatically:**
 
    ```bash
-   # Cursor, Claude, Gemini see changes immediately via symlinks
-   # Antigravity needs sync to copy files
-   ./.agents/rules/sync-rules.sh
+   # All platforms see changes immediately — all read from .agents/ directly
+   # No sync step required
    ```
 
 3. **Verify propagation:**
    ```bash
-   # Check all platforms
+   # Check all platforms (all resolve through .agents/rules/)
    ls .cursor/rules/security.md
    ls .claude/rules/security.md
    ls .gemini/rules/security.md
-   ls .agent/rules/security.md
+   ls .agents/rules/security.md   # Antigravity reads natively from here
    ```
 
 ### Adding New Skills
@@ -222,10 +217,10 @@ Skills use the same synchronization approach:
    ls .gemini/skills/my-skill
    ```
 
-3. **For Antigravity (if needed):**
+3. **For Antigravity:**
    ```bash
-   # Antigravity uses selective symlinks
-   # May need manual setup - see .agent/skills/
+   # Antigravity reads skills natively from .agents/skills/ — no setup needed
+   ls .agents/skills/my-skill
    ```
 
 ## Verification
@@ -266,8 +261,8 @@ ls .claude/skills/
 # Check Gemini rules
 ls .gemini/rules/*.md
 
-# Check Antigravity (copied)
-ls .agent/rules/*.md
+# Check Antigravity (reads natively from .agents/)
+ls .agents/rules/*.md
 ```
 
 ### Verify in Agents
@@ -301,11 +296,11 @@ gemini /find-skills
 **Antigravity:**
 
 ```bash
-# Verify rules copied
-ls ~/.gemini/antigravity/.agent/rules/
+# Antigravity reads rules natively from .agents/rules/
+ls .agents/rules/
 
-# Verify skills accessible
-ls ~/.gemini/antigravity/.agent/skills/
+# Antigravity reads skills natively from .agents/skills/
+ls .agents/skills/
 ```
 
 ## Troubleshooting
@@ -372,12 +367,9 @@ readlink .cursor/rules
 **For Antigravity:**
 
 ```bash
-# Antigravity uses copies, not symlinks
-# Re-run sync to copy updated files
-./.agents/rules/sync-rules.sh
-
-# Verify files copied
-ls .agent/rules/
+# Antigravity reads natively from .agents/rules/ — no sync needed
+# Verify rules are accessible
+ls .agents/rules/
 ```
 
 ### Script Fails with Errors
@@ -436,16 +428,13 @@ cat docs/guides/mcp/ANTIGRAVITY_SETUP.md
 
 **Rules not updated:**
 
-Antigravity uses copied files, not symlinks.
+Antigravity reads rules natively from `.agents/rules/`. No sync step is needed — edits to `.agents/rules/` are picked up immediately.
 
 **Solution:**
 
 ```bash
-# Re-run sync to copy updated rules
-./.agents/rules/sync-rules.sh
-
-# Verify copied
-ls .agent/rules/
+# Verify rules exist in the source directory
+ls .agents/rules/
 ```
 
 ## Advanced Usage
@@ -469,7 +458,7 @@ To completely rebuild synchronization:
 rm -rf .cursor/rules .cursor/skills
 rm -rf .claude/rules .claude/skills
 rm -rf .gemini/rules
-rm -rf .agent/rules
+# Note: Antigravity reads natively from .agents/ — nothing to remove
 
 # Re-run sync
 ./.agents/rules/sync-rules.sh
@@ -498,7 +487,7 @@ ln -s ../.agents/skills .cursor/skills
 - `.agents/skills/` - Source skills
 - `.agents/rules/sync-rules.sh` - Sync script
 - `.cursor/rules`, `.claude/rules`, etc. - Symlinks themselves
-- `.agent/rules/*.md` - Copied files for Antigravity
+- Antigravity reads natively from `.agents/rules/` — no separate copy committed
 
 **Not committed:**
 
@@ -517,8 +506,7 @@ cd <repo>
 # Symlinks are automatically restored
 ls -la .cursor/rules  # Shows symlink
 
-# Antigravity rules need sync (first time)
-./.agents/rules/sync-rules.sh
+# Antigravity reads natively from .agents/ — no additional step needed
 ```
 
 ## Comparison with MCP Sync
@@ -527,16 +515,16 @@ ls -la .cursor/rules  # Shows symlink
 | ------------- | ----------------------------------- | --------------------------------------- |
 | Script        | `.agents/mcp/sync-mcp.sh`           | `.agents/rules/sync-rules.sh`           |
 | Source        | `.agents/mcp/mcp-servers.json`      | `.agents/rules/*.md`, `.agents/skills/` |
-| Method        | Generate configs                    | Create symlinks + copy                  |
+| Method        | Generate configs                    | Create symlinks (Antigravity: native)   |
 | Platforms     | Cursor, Claude, Gemini, Antigravity | Same                                    |
-| Run Frequency | After editing source JSON           | After adding rules (Antigravity only)   |
+| Run Frequency | After editing source JSON           | After adding rules/skills               |
 | Idempotent    | ✅ Yes                              | ✅ Yes                                  |
 
 ## Best Practices
 
 ### Do's
 
-✅ **Run sync after adding rules** (for Antigravity)
+✅ **Run sync after adding rules/skills** (recreates symlinks for Cursor/Claude/Gemini)
 ✅ **Use dry-run mode** before actual sync
 ✅ **Verify symlinks** after sync
 ✅ **Edit source files only** (in `.agents/`)
@@ -549,7 +537,7 @@ ls -la .cursor/rules  # Shows symlink
 ❌ **Don't delete .agents/ directory** - it's the source of truth
 ❌ **Don't manually create rules in agent directories** - use source
 ❌ **Don't commit broken symlinks** - verify before committing
-❌ **Don't skip Antigravity sync** - it needs copies
+❌ **Don't copy rules manually for Antigravity** - it reads natively from `.agents/`
 
 ## Related Documentation
 

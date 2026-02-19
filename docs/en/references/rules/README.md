@@ -5,7 +5,7 @@ Este directorio contiene documentación de referencia sobre sistemas de memoria 
 - **Claude Code** (CLAUDE.md) - CLI de Anthropic
 - **Gemini CLI** (GEMINI.md) - CLI de Google
 - **Cursor** (.cursor/rules, AGENTS.md) - Editor con IA integrada
-- **Antigravity** (.agent/rules, .agent/workflows) - IDE Agentic de Google
+- **Antigravity** (.agents/rules, .agents/workflows) - IDE Agentic de Google
 
 Estos sistemas permiten gestionar preferencias, convenciones y configuraciones persistentes a través de sesiones.
 
@@ -253,10 +253,10 @@ Antigravity es un IDE agentic que evoluciona el concepto de editor tradicional h
 
 ### Ubicaciones de Archivos
 
-| Tipo          | Global                                    | Workspace               |
-| ------------- | ----------------------------------------- | ----------------------- |
-| **Rules**     | `~/.gemini/GEMINI.md`                     | `.agent/rules/*.md`     |
-| **Workflows** | `~/.gemini/antigravity/global_workflows/` | `.agent/workflows/*.md` |
+| Tipo          | Global                                    | Workspace                |
+| ------------- | ----------------------------------------- | ------------------------ |
+| **Rules**     | `~/.gemini/GEMINI.md`                     | `.agents/rules/*.md`     |
+| **Workflows** | `~/.gemini/antigravity/global_workflows/` | `.agents/workflows/*.md` |
 
 ### Características Únicas
 
@@ -271,7 +271,7 @@ Antigravity es un IDE agentic que evoluciona el concepto de editor tradicional h
 A diferencia de otros sistemas, Antigravity tiene workflows como concepto de primera clase:
 
 ```markdown
-# .agent/workflows/generate-tests.md
+# .agents/workflows/generate-tests.md
 
 Generate comprehensive unit tests for current file.
 [Template y requirements...]
@@ -371,9 +371,9 @@ Similar a CLAUDE.md, Gemini CLI implementa un sistema de archivos GEMINI.md con 
 | ------------------------ | ---------------------------------------- | ---------------------------------- | ----------------------------------------------- | ------------------------------------------- |
 | **Tipo de herramienta**  | CLI                                      | CLI                                | Editor/IDE                                      | IDE Agentic                                 |
 | **Niveles de jerarquía** | 5 (Managed, Project, Rules, User, Local) | 3 (Global, Project, Sub-directory) | 4 (Team, Project, User, AGENTS.md)              | 2 (Global, Workspace)                       |
-| **Archivo principal**    | `CLAUDE.md`                              | `GEMINI.md`                        | `.cursor/rules/*.md`                            | `.agent/rules/*.md`                         |
-| **Ubicación project**    | `./CLAUDE.md` o `./.claude/CLAUDE.md`    | `./GEMINI.md`                      | `.cursor/rules/` o `AGENTS.md`                  | `.agent/rules/`                             |
-| **Workflows nativos**    | ❌ No                                    | ❌ No                              | ❌ No                                           | ✅ `.agent/workflows/`                      |
+| **Archivo principal**    | `CLAUDE.md`                              | `GEMINI.md`                        | `.cursor/rules/*.md`                            | `.agents/rules/*.md`                        |
+| **Ubicación project**    | `./CLAUDE.md` o `./.claude/CLAUDE.md`    | `./GEMINI.md`                      | `.cursor/rules/` o `AGENTS.md`                  | `.agents/rules/`                            |
+| **Workflows nativos**    | ❌ No                                    | ❌ No                              | ❌ No                                           | ✅ `.agents/workflows/`                     |
 | **Modularización**       | `@path` imports + `.claude/rules/`       | `@./path` imports                  | Múltiples archivos                              | Múltiples archivos `.md`                    |
 | **Reglas condicionales** | YAML `paths` en `.claude/rules/`         | No soportado                       | YAML `globs` en `.mdc`                          | No mencionado                               |
 | **Modos de aplicación**  | Automático por jerarquía                 | Automático por directorio          | 4 modos (Always, Intelligent, Specific, Manual) | Rules (siempre) + Workflows (`/` on-demand) |
@@ -493,7 +493,7 @@ Similar a CLAUDE.md, Gemini CLI implementa un sistema de archivos GEMINI.md con 
 ### Para Portabilidad
 
 - **AGENTS.md**: Funciona nativamente en Cursor y vía config en Gemini CLI
-- Antigravity usa `.agent/rules/` (no directamente compatible)
+- Antigravity usa `.agents/rules/` (no directamente compatible)
 
 ### Para Equipos Grandes
 

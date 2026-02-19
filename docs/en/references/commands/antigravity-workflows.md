@@ -52,7 +52,7 @@ Unlike Rules (which are always active), Workflows require **specific user comman
 
 ### Workspace Workflows
 
-**Location:** `<workspace-root>/.agent/workflows/`
+**Location:** `<workspace-root>/.agents/workflows/`
 
 **Purpose:**
 
@@ -64,7 +64,7 @@ Unlike Rules (which are always active), Workflows require **specific user comman
 **Example structure:**
 
 ```
-.agent/workflows/
+.agents/workflows/
 ├── generate-tests.md
 ├── create-pr.md
 ├── setup-feature.md
@@ -75,7 +75,7 @@ Unlike Rules (which are always active), Workflows require **specific user comman
 **In This Project:**
 
 ```
-.agent/workflows/       # Project-specific workflows
+.agents/workflows/       # Project-specific workflows
 ```
 
 ---
@@ -114,10 +114,10 @@ EOF
 
 ```bash
 # Create workflows directory
-mkdir -p .agent/workflows
+mkdir -p .agents/workflows
 
 # Create workflow file
-cat > .agent/workflows/generate-tests.md << 'EOF'
+cat > .agents/workflows/generate-tests.md << 'EOF'
 # Generate Unit Tests
 
 * Generate unit tests for each file and each method
@@ -199,7 +199,7 @@ Workflows are written in **plain Markdown** with task directives:
 
 ### Unit Test Generation
 
-**File:** `.agent/workflows/generate-tests.md`
+**File:** `.agents/workflows/generate-tests.md`
 
 ```markdown
 # Generate Unit Tests
@@ -215,7 +215,7 @@ Generate comprehensive unit tests for the selected code.
   - Edge cases
   - Error conditions
   - Boundary values
-- Follow project testing standards from .agent/rules/testing-standards.md
+- Follow project testing standards from .agents/rules/testing-standards.md
 - Achieve minimum 80% code coverage
 - Use appropriate mocking for external dependencies
 
@@ -235,7 +235,7 @@ Generate comprehensive unit tests for the selected code.
 
 ### Create Pull Request
 
-**File:** `.agent/workflows/create-pr.md`
+**File:** `.agents/workflows/create-pr.md`
 
 ```markdown
 # Create Pull Request
@@ -274,7 +274,7 @@ Include:
 
 ### Security Audit
 
-**File:** `.agent/workflows/security-audit.md`
+**File:** `.agents/workflows/security-audit.md`
 
 ```markdown
 # Security Audit
@@ -324,7 +324,7 @@ For each issue found:
 
 ### Feature Setup
 
-**File:** `.agent/workflows/setup-feature.md`
+**File:** `.agents/workflows/setup-feature.md`
 
 ```markdown
 # Setup New Feature
@@ -372,7 +372,7 @@ Create:
 
 ### Code Review
 
-**File:** `.agent/workflows/code-review.md`
+**File:** `.agents/workflows/code-review.md`
 
 ```markdown
 # Code Review
@@ -431,7 +431,7 @@ For each file reviewed:
 
 ### Deployment Workflow
 
-**File:** `.agent/workflows/deploy.md`
+**File:** `.agents/workflows/deploy.md`
 
 ```markdown
 # Deploy Application
@@ -488,7 +488,7 @@ If issues detected:
 
 ### Database Migration
 
-**File:** `.agent/workflows/run-migrations.md`
+**File:** `.agents/workflows/run-migrations.md`
 
 ```markdown
 # Run Database Migrations
@@ -573,7 +573,7 @@ If migration fails:
 **Flat Structure (5-15 workflows):**
 
 ```
-.agent/workflows/
+.agents/workflows/
 ├── generate-tests.md
 ├── code-review.md
 ├── create-pr.md
@@ -584,7 +584,7 @@ If migration fails:
 **Categorized Structure (15+ workflows):**
 
 ```
-.agent/workflows/
+.agents/workflows/
 ├── development/
 │   ├── setup-feature.md
 │   ├── generate-tests.md
@@ -634,7 +634,7 @@ review-security.md
 | **Activation** | User-triggered (`/command`) | Always active       |
 | **Scope**      | On-demand tasks             | Continuous guidance |
 | **Purpose**    | Execute specific tasks      | Guide behavior      |
-| **Location**   | `.agent/workflows/`         | `.agent/rules/`     |
+| **Location**   | `.agents/workflows/`        | `.agents/rules/`    |
 | **Example**    | `/generate-tests`           | "Use PEP 8"         |
 | **Type**       | Executable prompts          | System instructions |
 
@@ -835,7 +835,7 @@ Initialize new [feature] with structure.
 
 ```bash
 # Verify file location
-ls -la .agent/workflows/
+ls -la .agents/workflows/
 
 # Check file name matches command
 # /generate-tests needs generate-tests.md
@@ -883,7 +883,7 @@ ls -la .agent/workflows/
 
 ```bash
 # Project workflows should be shared
-git add .agent/workflows/
+git add .agents/workflows/
 git commit -m "feat: add deployment workflow"
 ```
 
@@ -898,7 +898,7 @@ git commit -m "feat: add deployment workflow"
 
 **Best practices:**
 
-1. Document workflows in `.agent/workflows/`
+1. Document workflows in `.agents/workflows/`
 2. Commit to repository
 3. Include usage in README
 4. Train team on available workflows
@@ -908,7 +908,7 @@ git commit -m "feat: add deployment workflow"
 
 ```bash
 # Create team workflow
-cat > .agent/workflows/onboard-developer.md << 'EOF'
+cat > .agents/workflows/onboard-developer.md << 'EOF'
 # Developer Onboarding
 
 Complete setup for new team member.
@@ -933,7 +933,7 @@ Complete setup for new team member.
 EOF
 
 # Commit
-git add .agent/workflows/onboard-developer.md
+git add .agents/workflows/onboard-developer.md
 git commit -m "docs: add developer onboarding workflow"
 git push
 ```
@@ -1005,7 +1005,7 @@ Execute full feature release process.
 - `docs/references/rules/antigravity-rules.md` - Rules documentation
 - `docs/references/commands/cursor-commands.md` - Cursor commands (similar concept)
 - `docs/references/commands/command-development.md` - Claude Code commands
-- `.agent/workflows/` - Project workflows directory
+- `.agents/workflows/` - Project workflows directory
 
 ---
 

@@ -160,6 +160,49 @@ generate_gemini_config() {
   fi
 }
 
+# Función para generar config de VSCode/Copilot
+generate_vscode_config() {
+  echo "  📝 Generando .vscode/mcp.json (Copilot/VSCode)..."
+
+  mkdir -p "$PROJECT_ROOT/.vscode"
+
+  # VSCode uses "servers" (not "mcpServers") and ${env:VAR} syntax
+  jq '{
+    servers: (
+      .servers |
+      to_entries |
+      map(
+        select(.value.platforms | index("copilot")) |
+        {
+          key: .key,
+          value: (
+            .value |
+            del(.platforms, .description) |
+            if .type == "http" then
+              {
+                url: .url,
+                headers: (.headers // {})
+              }
+            else
+              {
+                command: .command,
+                args: (.args // []),
+                env: (
+                  .env // {} |
+                  to_entries |
+                  map({key: .key, value: .value}) |
+                  from_entries
+                )
+              }
+            end
+          )
+        }
+      ) |
+      from_entries
+    )
+  }' "$MCP_CONFIG" > "$PROJECT_ROOT/.vscode/mcp.json"
+}
+
 # Generar configs para cada plataforma
 echo ""
 echo "Generando configuraciones por plataforma..."
@@ -177,6 +220,9 @@ generate_gemini_config
 # Antigravity
 generate_antigravity_config
 
+# Copilot (VSCode)
+generate_vscode_config
+
 echo ""
 echo "✅ Sincronización completada"
 echo ""
@@ -185,6 +231,7 @@ echo "  - .cursor/mcp.json ✅ (Cursor)"
 echo "  - .claude/mcp.json ✅ (Claude Code)"
 echo "  - .gemini/settings.json ✅ (Gemini CLI)"
 echo "  - .gemini/mcp_config.json ⚠️  (Antigravity - solo referencia)"
+echo "  - .vscode/mcp.json ✅ (Copilot/VSCode)"
 echo ""
 echo "⚠️  IMPORTANTE - Antigravity:"
 echo "  Antigravity NO lee configuración a nivel de proyecto."
@@ -200,3 +247,4 @@ echo "Para verificar:"
 echo "  - Cursor: Abrir y verificar MCP servers"
 echo "  - Claude Code: claude mcp list"
 echo "  - Gemini CLI: gemini /mcp"
+echo "  - VSCode/Copilot: Abrir .vscode/mcp.json"

@@ -715,7 +715,7 @@ Brief description of what the function does.
 ### Antigravity
 
 **Special considerations:**
-- ⚠️ Commands copied to `.agent/workflows/` (not `.agent/commands/`)
+- ✅ Commands available via `.agents/workflows/` (symlink to `.agents/commands/`)
 - ⚠️ Must re-sync after editing: `./.agents/sync-all.sh`
 - ⚠️ Changes don't propagate instantly (files are copied, not symlinked)
 
@@ -793,4 +793,4 @@ Commands in `.agents/` system:
 5. Sync (automatic or manual)
 6. Test via `/{command-name}`
 
-**Result:** Command available across all 4 platforms, invoked with `/{command-name}`!
+**Result:** Command available across all 5 platforms, invoked with `/{command-name}`!

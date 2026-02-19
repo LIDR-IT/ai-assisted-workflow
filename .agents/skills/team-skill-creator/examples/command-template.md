@@ -269,7 +269,7 @@ Commands work identically across these platforms:
 ### Antigravity
 
 Special considerations:
-- ⚠️ Commands copied to `.agent/workflows/` (not `.agent/commands/`)
+- ✅ Commands available via `.agents/workflows/` (symlink to `.agents/commands/`)
 - ⚠️ Must re-sync after editing
 - ⚠️ Changes don't propagate instantly
 

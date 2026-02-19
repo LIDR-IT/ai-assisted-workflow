@@ -443,12 +443,12 @@ gemini> What coding style should I use?
 
 This project uses GEMINI.md alongside other agent configs:
 
-| Agent       | Context File     | Scope                  |
-| ----------- | ---------------- | ---------------------- |
-| Gemini CLI  | `GEMINI.md`      | Hierarchical (3-tier)  |
-| Cursor      | `.cursor/rules/` | Project-level symlinks |
-| Claude Code | `.claude/rules/` | Project-level symlinks |
-| Antigravity | `.agent/rules/`  | Project-level copies   |
+| Agent       | Context File     | Scope                       |
+| ----------- | ---------------- | --------------------------- |
+| Gemini CLI  | `GEMINI.md`      | Hierarchical (3-tier)       |
+| Cursor      | `.cursor/rules/` | Project-level symlinks      |
+| Claude Code | `.claude/rules/` | Project-level symlinks      |
+| Antigravity | `.agents/rules/` | Native `.agents/` detection |
 
 **Recommendation:** Keep GEMINI.md focused on Gemini-specific instructions. Shared rules go in `.agents/rules/` (see [Rules System](../../rules/rules-system.md)).
 
