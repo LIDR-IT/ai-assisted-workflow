@@ -27,6 +27,7 @@ export default defineConfig({
           { text: "Referencias", link: "/es/references/" },
           { text: "Guidelines", link: "/es/guidelines/" },
           { text: "Notas", link: "/es/notes/" },
+          { text: "PRD", link: "/en/PRD/" },
         ],
 
         // Sidebar en español
@@ -249,6 +250,7 @@ export default defineConfig({
           { text: "References", link: "/en/references/" },
           { text: "Guidelines", link: "/en/guidelines/" },
           { text: "Notes", link: "/en/notes/" },
+          { text: "PRD", link: "/en/PRD/" },
         ],
 
         // English sidebar
@@ -397,6 +399,26 @@ export default defineConfig({
                       link: "/en/references/mcp/mcp-usage-claude-code",
                     },
                   ],
+                },
+              ],
+            },
+          ],
+
+          "/en/PRD/": [
+            {
+              text: "Product Requirements Document",
+              items: [
+                {
+                  text: "Overview",
+                  link: "/en/PRD/",
+                },
+                {
+                  text: "📋 PRD Template",
+                  link: "/en/PRD/template",
+                },
+                {
+                  text: "📖 Educational Content",
+                  link: "/en/PRD/content",
                 },
               ],
             },

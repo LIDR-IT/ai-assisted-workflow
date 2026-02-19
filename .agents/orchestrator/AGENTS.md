@@ -1,176 +1,218 @@
-# AGENTS.md (Orchestrator)
+# CLAUDE.md
 
-This file provides guidance to all AI agents (Claude Code, Gemini CLI, Cursor, Antigravity) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Note:** This file is the source of truth for agent documentation. Root-level files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are symlinks pointing to this file for platform-specific access.
+**Note:** This file is also used by other AI agents (Gemini CLI, Cursor, Antigravity). Root-level files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are symlinks to this orchestrator file.
 
-## Project Overview
+---
 
-This is a **multi-agent AI configuration template** demonstrating centralized management of AI development environments across 4 platforms: Cursor, Claude Code, Gemini CLI, and Antigravity. The core architecture uses a "source of truth" pattern with automated synchronization scripts.
+## What This Repository Is
+
+This is a **multi-agent AI configuration template** demonstrating centralized management across 4 platforms: Cursor, Claude Code, Gemini CLI, and Antigravity. It's a production tool for teams, not a documentation wiki.
+
+**Core Architecture:** Source-of-truth pattern with automated synchronization
+
+- Edit once in `.agents/` → automatically synced to all platforms
+- 14 rules across 8 categories (coding standards, workflows)
+- 9 reusable skills (progressive disclosure pattern)
+- 3 slash commands + 1 autonomous agent
+- MCP integration (Context7 for library documentation)
+- Git hooks patterns (auto-format, protect-secrets, notify)
+
+**Key Stats:** 287 files (40% reduction from 482), 576 lines of hooks (59% reduction)
+
+---
 
 ## Essential Commands
 
-### Documentation
+### Development Workflow
 
 ```bash
-# Start VitePress dev server
-npm run docs:dev
+# Documentation site
+npm run docs:dev          # Start VitePress dev server (port 5173)
+npm run docs:build        # Build static documentation
+npm run docs:preview      # Preview built site
 
-# Build documentation
-npm run docs:build
+# Linting and Formatting
+npm run format            # Format all files with Prettier
+npm run format:check      # Check formatting without changes
 
-# Preview built documentation
-npm run docs:preview
+# Git Pre-commit (Husky + lint-staged)
+# Automatically runs on commit:
+# - Prettier formatting on staged files
+# - Configured in package.json "lint-staged" section
 ```
 
-### Synchronization
+### Synchronization (Critical)
 
 ```bash
-# Sync all configurations (rules, skills, commands, agents, MCP, hooks)
+# Master sync - Run after ANY change in .agents/
 ./.agents/sync-all.sh
 
-# Sync only rules and skills
-./.agents/rules/sync-rules.sh
+# Individual component syncs
+./.agents/rules/sync-rules.sh       # Rules and skills
+./.agents/mcp/sync-mcp.sh           # MCP configurations
+./.agents/hooks/sync-hooks.sh       # Git hooks
 
-# Sync only MCP configurations
-./.agents/mcp/sync-mcp.sh
-
-# Sync only hooks
-./.agents/hooks/sync-hooks.sh
-
-# Dry run (preview without applying)
+# Dry run (preview changes)
+./.agents/sync-all.sh --dry-run
 ./.agents/rules/sync-rules.sh --dry-run
-./.agents/mcp/sync-mcp.sh --dry-run
-./.agents/hooks/sync-hooks.sh --dry-run
 ```
 
 ### Verification
 
 ```bash
-# Verify symlinks are correct
+# Verify symlinks point correctly
 readlink .cursor/rules    # Should: ../.agents/rules
 readlink .claude/rules    # Should: ../.agents/rules
-readlink .gemini/rules    # Should: ../.agents/rules
+ls -la .cursor/skills     # Should show: lrwxr-xr-x (symlink)
 
-# Check hooks
-ls -la .claude/hooks/
-ls -la .gemini/hooks/
-jq .hooks .claude/settings.json
-jq .hooks .gemini/settings.json
-
-# Check generated MCP configs
+# Validate generated configs
 jq . .cursor/mcp.json
 jq . .claude/mcp.json
-jq . .gemini/settings.json
+jq empty .agents/mcp/mcp-servers.json  # Validate source JSON
 
-# Validate JSON files
-jq empty .agents/mcp/mcp-servers.json
-jq empty .claude/settings.json
-jq empty .gemini/settings.json
+# Check hooks configuration
+jq .hooks .claude/settings.json
+ls -la .claude/hooks/
 ```
 
-## Architecture & Design Decisions
+---
 
-### Centralized Source-of-Truth Pattern
+## Architecture Overview
 
-All AI agent configurations live in `.agents/` and are synchronized to platform-specific directories:
+### The Source-of-Truth Pattern
 
-- **`.agents/rules/`** - Project rules (coding standards, guidelines)
-- **`.agents/skills/`** - Agent skills (reusable capabilities)
-- **`.agents/commands/`** - Slash commands (workflow automation)
-- **`.agents/subagents/`** - Subagents (specialized assistants)
-- **`.agents/mcp/`** - MCP server configurations (external tool integrations)
-- **`.agents/hooks/`** - Git workflow automation hooks (event-driven scripts)
-- **`orchestrator/`** - Orchestrator documentation (this file)
+```
+.agents/                      # ← SINGLE SOURCE OF TRUTH
+├── rules/                    # 14 rules (coding standards)
+│   ├── code/                 # principles.md, style.md
+│   ├── content/              # copywriting.md
+│   ├── design/               # web-design.md (800+ line accessibility)
+│   ├── frameworks/           # react-native.md
+│   ├── process/              # git-workflow.md, documentation.md
+│   ├── quality/              # testing.md, testing-scripts.md
+│   ├── team/                 # skills-management.md, third-party-security.md
+│   └── tools/                # use-context7.md, claude-code-extensions.md
+│
+├── skills/                   # 9 skills (progressive disclosure)
+│   ├── team-skill-creator/   # Meta-skill for creating components
+│   ├── command-development/  # Command creation workflows
+│   ├── agent-development/    # Agent patterns
+│   ├── skill-development/    # Skill architecture
+│   └── ...
+│
+├── commands/                 # 3 slash commands
+│   ├── commit.md             # Smart commit generation
+│   ├── improve-docs.md       # Doc auditing
+│   └── sync-setup.md         # Run sync-all.sh
+│
+├── subagents/                # 1 autonomous agent
+│   └── doc-improver.md       # Documentation auditor
+│
+├── mcp/                      # MCP server configs
+│   ├── mcp-servers.json      # ← Source (universal format)
+│   └── sync-mcp.sh           # Generates platform JSONs
+│
+├── hooks/                    # Git workflow automation
+│   ├── scripts/              # notify.sh, auto-format.sh, protect-secrets.sh
+│   └── sync-hooks.sh         # Generates platform configs
+│
+├── orchestrator/             # Orchestrator docs
+│   ├── AGENTS.md             # ← This file
+│   └── sync-orchestrator.sh  # Creates root symlinks
+│
+└── sync-all.sh               # ← Master sync (runs all)
+```
 
-### Synchronization Strategies
+### Synchronization Strategies by Component
 
-**Symlinks (Preferred):**
+**1. Symlinks (Instant Propagation)**
 
-- Used for: Skills, Commands, Agents
-- Platforms: Cursor, Claude Code, Gemini CLI, Antigravity
-- Advantage: Changes propagate instantly, zero duplication
-- Note: Antigravity does NOT support `.agents/subagents/` directory
+- **Used for:** Skills, Commands, Subagents, Orchestrator docs
+- **How:** `ln -s ../.agents/skills .cursor/skills`
+- **Why:** Zero duplication, instant updates, filesystem-native
 
-**Symlinks (Rules - Selective):**
+**2. Symlinks + Copy (Rules - Hybrid)**
 
-- Used for: Rules distribution
-- Platforms: Claude Code, Antigravity ONLY
-- Note: Cursor requires copy/conversion (see below)
+- **Symlink:** Claude Code, Antigravity (support nested structure)
+- **Copy:** Cursor (no subdirectory support, requires `.mdc` extension)
+- **Generated Index:** Gemini CLI (no native rules support)
 
-**Script Generation:**
+**3. Script Generation (MCP, Hooks)**
 
-- Used for: MCP configurations, Gemini rules index, hooks configurations
-- Scripts: `sync-mcp.sh`, `sync-rules.sh`, `sync-hooks.sh`
-- Why: Each platform requires different JSON structure/format
+- **Why:** Each platform requires different JSON structure
+- **Process:** Universal source → platform-specific JSONs
+- **Commit:** Both source AND generated files
 
-**Hybrid Approach (Hooks):**
+**4. Conversion (Gemini Commands)**
 
-- Used for: Git workflow automation hooks
-- **3 simple, practical hooks:** notify.sh, auto-format.sh, protect-secrets.sh
-- **576 lines total** (59% reduction vs 1,390 lines previously)
-- Symlink scripts (shared code across platforms)
-- Generate configs (platform-specific JSON formats)
-- Platforms: **Claude Code, Gemini CLI, Cursor** (Antigravity global only)
-- **Note:** Cursor does NOT support Notification events (notify.sh excluded from Cursor)
-
-**Copy + Convert (Cursor Limitation):**
-
-- Used for: Cursor rules only
-- Process: `.md` → `.mdc`, flattened structure (no subdirectories)
-- Triggered by: `sync-rules.sh`
+- **Process:** `.md` → `.toml` (Gemini requirement)
+- **Auto-converts:** Every sync-commands.sh run
 
 ### Platform Support Matrix
 
 | Component     | Cursor                                  | Claude Code           | Gemini CLI            | Antigravity               |
 | ------------- | --------------------------------------- | --------------------- | --------------------- | ------------------------- |
-| Rules         | ✅ Copy (.mdc)                          | ✅ Symlink            | ❌ Index only         | ✅ Symlink                |
+| Rules         | ✅ Copy (.mdc, flat)                    | ✅ Symlink            | ❌ Index only         | ✅ Symlink                |
 | Skills        | ✅ Symlink                              | ✅ Symlink            | ✅ Symlink            | ✅ Symlink                |
-| Commands      | ✅ Symlink (.md)                        | ✅ Symlink (.md)      | ✅ Generated (.toml)  | ✅ Symlink (as workflows) |
-| Agents        | ✅ Symlink                              | ✅ Symlink            | ✅ Symlink            | ❌ Not supported          |
+| Commands      | ✅ Symlink                              | ✅ Symlink            | ✅ Generated (.toml)  | ✅ Symlink (as workflows) |
+| Subagents     | ✅ Symlink                              | ✅ Symlink            | ✅ Symlink            | ❌ Not supported          |
 | MCP (Project) | ✅ Generated                            | ✅ Generated          | ✅ Generated          | ❌ Global only            |
 | Hooks         | ✅ Partial (2/3 hooks, NO Notification) | ✅ Full (all 3 hooks) | ✅ Full (all 3 hooks) | ❌ Global only            |
 
-**Key Details:**
+**Critical Limitations:**
 
-- **Gemini Commands:** Auto-converted `.md` → `.toml` (Gemini requires TOML format, not symlinks)
-- **Antigravity Commands:** Directory symlink `.agent/workflows` → `.agents/commands` (single symlink for all commands)
-- **Hooks:** Scripts symlinked, configs generated (each platform has different JSON format/location)
-  - **Current hooks (3):** notify.sh, auto-format.sh, protect-secrets.sh
-  - **Cursor:** `.cursor/hooks.json` (camelCase events, version: 1, **NO Notification event** - only 2/3 hooks)
-  - **Claude Code:** `.claude/settings.json` (PascalCase events - all 3 hooks)
-  - **Gemini CLI:** `.gemini/settings.json` (BeforeTool/AfterTool/Notification - all 3 hooks)
-  - **Statistics:** 576 lines (59% reduction from 1,390 lines)
-- **Visual Note:** File explorers display symlinks as regular directories (this is normal behavior)
+- **Cursor:** No subdirectories, requires `.mdc` extension, `name` field mandatory
+- **Antigravity:** No project MCP, no subagents, requires reload after sync
+- **Gemini:** No native rules (uses index), commands need TOML format
+
+---
 
 ## Critical Workflows
 
 ### Adding a New Rule
 
 ```bash
-# 1. Create rule file in categorized subdirectory
-vim .agents/rules/category/new-rule.md
-
-# 2. Use universal YAML frontmatter (all platforms)
+# 1. Create rule file (categorized subdirectory)
+cat > .agents/rules/team/api-standards.md << 'EOF'
 ---
-name: new-rule                    # Cursor
-description: Brief description    # All platforms
-alwaysApply: false                # Cursor
-globs: ["**/*.ts"]               # Cursor
-argument-hint: <file-pattern>     # Claude/Gemini
-paths: ["src/**/*.ts"]           # Claude
-trigger: always_on                # Antigravity
+name: api-standards                    # Cursor (REQUIRED)
+description: API design standards      # All platforms
+alwaysApply: false                     # Cursor (optional)
+globs: ["src/api/**/*.ts"]            # Cursor (optional)
+argument-hint: <api-file>              # Claude/Gemini (optional)
+paths: ["src/api/**/*.ts"]            # Claude (optional)
+trigger: always_on                     # Antigravity (optional)
 ---
 
-# 3. Keep under 12,000 characters
-wc -c .agents/rules/category/new-rule.md
+# API Standards
 
-# 4. Run sync
+Review these files for compliance: $ARGUMENTS
+
+## Rules
+- REST endpoints use `/api/v1/{resource}` structure
+- All endpoints validate input with Zod
+- Error responses use standard format
+
+## Output Format
+Use `file:line` format (VS Code clickable).
+EOF
+
+# 2. Verify character count (must be < 12,000)
+wc -c .agents/rules/team/api-standards.md
+
+# 3. Sync to all platforms
 ./.agents/rules/sync-rules.sh
 
-# 5. Verify
-ls -la .cursor/rules/new-rule.mdc  # Cursor (converted)
-cat .claude/rules/category/new-rule.md  # Claude (symlink)
+# 4. Verify
+ls .cursor/rules/api-standards.mdc              # Cursor (converted)
+cat .claude/rules/team/api-standards.md         # Claude (symlink)
+cat .gemini/GEMINI.md | grep api-standards      # Gemini (index)
+
+# 5. Commit source only (symlinks auto-restore)
+git add .agents/rules/team/api-standards.md
+git commit -m "docs: Add API design standards rule"
 ```
 
 ### Adding an MCP Server
@@ -179,283 +221,421 @@ cat .claude/rules/category/new-rule.md  # Claude (symlink)
 # 1. Edit source configuration
 vim .agents/mcp/mcp-servers.json
 
-# Add server entry:
+# Add server entry (merge with existing JSON):
 {
   "servers": {
     "my-server": {
       "platforms": ["cursor", "claude", "gemini"],
-      "description": "Server description",
+      "description": "My documentation server",
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "package-name"],
+      "args": ["-y", "@scope/package-name"],
       "env": {
-        "API_KEY": "${ENV_VAR_NAME}"
+        "API_KEY": "${MY_SERVER_API_KEY}"
       }
     }
   }
 }
 
-# 2. Validate JSON
+# 2. Validate JSON syntax
 jq empty .agents/mcp/mcp-servers.json
 
-# 3. Generate platform configs
+# 3. Generate platform-specific configs
 ./.agents/mcp/sync-mcp.sh
 
 # 4. Commit BOTH source and generated files
 git add .agents/mcp/mcp-servers.json
 git add .cursor/mcp.json .claude/mcp.json .gemini/settings.json
 git commit -m "feat: Add my-server MCP integration"
+
+# 5. Restart Claude Code/Cursor to detect new server
+# Verify: claude mcp list
 ```
 
-### Creating a Skill/Command/Agent
-
-Use the `/sync-setup` command which runs `.agents/sync-all.sh` to synchronize after creation.
-
-See `.agents/skills/team-skill-creator/` for templates and validation scripts.
-
-## ⚠️ Critical Platform Limitations
-
-### Cursor Limitations (MUST FOLLOW)
-
-1. **Requires .mdc extension:**
-   - Rules MUST be `.mdc` files (not `.md`)
-   - Sync script auto-converts `.md` → `.mdc`
-   - Manual `.md` files in `.cursor/rules/` are IGNORED
-
-2. **No subdirectory support:**
-   - Cursor does NOT recognize rules in subdirectories
-   - Rules MUST be in flat structure: `.cursor/rules/*.mdc`
-   - Sync script auto-flattens directory structure
-   - Example: `code/principles.md` → `principles.mdc`
-
-3. **YAML frontmatter required:**
-   - `name` field is REQUIRED (rule won't appear without it)
-   - Missing `name` = rule silently ignored in UI
-   - Other fields optional but recommended
-
-**Verification:**
+### Creating a Skill
 
 ```bash
-# Check Cursor rules are flat .mdc files
-ls .cursor/rules/
-# Should show: principles.mdc, style.mdc (no subdirectories)
+# Automated (Recommended) - Use team-skill-creator skill
+# In AI conversation:
+"Create a skill for React component testing with test templates"
 
-# Verify rule appears in Cursor
-# Open Cursor → Settings → Rules → Check rule is listed
+# Manual alternative:
+mkdir -p .agents/skills/react-testing/{references,examples,assets,scripts}
+
+cat > .agents/skills/react-testing/SKILL.md << 'EOF'
+---
+name: react-testing
+description: This skill should be used when the user asks to "test React component", "write component tests". React component testing patterns and utilities.
+version: 1.0.0
+---
+
+# React Testing Skill
+
+Testing patterns for React components.
+
+## Overview
+- Jest + React Testing Library patterns
+- Accessibility testing (jest-axe)
+- Mocking patterns (MSW for API calls)
+
+## References
+See references/testing-patterns.md for deep dive.
+EOF
+
+# Sync
+./.agents/sync-all.sh
+
+# Verify
+ls .cursor/skills/react-testing/
+ls .claude/skills/react-testing/
+
+# Commit
+git add .agents/skills/react-testing/
+git commit -m "feat: Add React testing skill with patterns and utilities"
 ```
 
-### Antigravity Limitations
+---
 
-1. **No project-level MCP:** Must configure MCP servers globally at `~/.gemini/antigravity/mcp_config.json`
-2. **No `.agents/subagents/` support:** Cannot use subagents directory
-3. **Requires reload:** After sync, close and reopen project for rules to refresh (caching issue)
+## Rules System Deep Dive
 
-### Cursor Limitations
-
-1. **No rule subdirectories:** Rules must be flattened to `.cursor/rules/`
-2. **Requires .mdc extension:** Sync script auto-converts `.md` → `.mdc`
-3. **No symlinks for rules:** Must copy files (handled by sync script)
-
-### Gemini CLI Limitations
-
-1. **No native rules support:** Uses generated index file at `.gemini/GEMINI.md`
-2. **Index regenerated on sync:** Don't manually edit `GEMINI.md`
-3. **Commands require TOML format:**
-   - Cannot use `.md` files directly
-   - `sync-commands.sh` auto-converts `.md` → `.toml`
-   - Generated files in `.gemini/commands/` (not symlinks)
-   - Conversion happens automatically on every sync
-
-## File Organization Principles
-
-### Rules Structure
-
-```
-.agents/rules/
-├── code/              # Code style and principles
-├── content/           # Copywriting and content guidelines
-├── design/            # Design and UI standards
-├── frameworks/        # Framework-specific patterns
-├── process/           # Workflows and processes
-├── quality/           # Testing and quality standards
-├── team/              # Team conventions and policies
-└── tools/             # Tool usage and configuration
-```
-
-**One topic per file, max 12,000 characters per rule.**
-
-### Skills Structure
-
-```
-.agents/skills/
-└── skill-name/
-    ├── SKILL.md              # Main skill content
-    ├── examples/             # Usage examples
-    └── references/           # Deep-dive documentation
-```
-
-**Use progressive disclosure: SKILL.md for essentials, references/ for details.**
-
-## Key Synchronization Behavior
-
-### After Editing Rules
-
-1. Run `./agents/rules/sync-rules.sh`
-2. Cursor: Rules copied and converted to `.mdc`
-3. Claude/Antigravity: Instant via symlinks
-4. Gemini: `GEMINI.md` index regenerated
-
-### After Editing MCP Config
-
-1. Run `./.agents/mcp/sync-mcp.sh`
-2. Platform-specific JSONs regenerated
-3. Must restart Claude Code/Cursor to detect changes
-4. Antigravity: Configure globally, not in project
-
-### After Creating Skill/Command/Agent
-
-1. Run `./.agents/sync-all.sh` (or use `/sync-setup` command)
-2. Symlinks created automatically for supported platforms
-3. Gemini commands auto-converted to `.toml` format
-4. Verify with `ls -la .cursor/skills .claude/skills .gemini/skills`
-
-**Command Sync Behavior:**
-
-- **Cursor/Claude/Antigravity:** Symlinks to `.agents/commands/` (instant sync)
-- **Gemini CLI:** Conversion `.md` → `.toml` (regenerated on sync)
-
-## YAML Frontmatter Requirements
-
-All rules must include universal YAML frontmatter supporting all platforms:
+### Universal YAML Frontmatter (All Platforms)
 
 ```yaml
 ---
-name: rule-name # Cursor only
+name: rule-name # Cursor only (REQUIRED for Cursor)
 description: Brief description # All platforms
-alwaysApply: false # Cursor only (optional)
-globs: ["**/*.ext"] # Cursor only (optional)
+alwaysApply: false # Cursor only (optional, default: false)
+globs: ["**/*.ts", "**/*.tsx"] # Cursor only (optional)
 argument-hint: <file-pattern> # Claude/Gemini (optional)
-paths: ["src/**/*.ext"] # Claude only (optional)
+paths: ["src/**/*.ts"] # Claude only (optional)
 trigger: always_on # Antigravity only (optional)
 ---
 ```
 
-**⚠️ CRITICAL WARNINGS:**
+**Critical Warnings:**
 
-- **Missing fields = Rule ignored:** Cursor requires `name` field or rule won't appear in UI
-- **Platform-specific fields:** Each platform ignores fields it doesn't recognize (safe to include all)
-- **Never create platform-specific files:** Use one file with all fields for all platforms
-- **Test on target platforms:** Always verify rules appear in settings/memory after sync
+- Missing `name` field → Cursor silently ignores rule (won't appear in UI)
+- Each platform ignores unsupported fields (safe to include all)
+- Never create platform-specific files (one file with all fields)
+- Test on target platforms after creating new rules
 
-## Git Workflow
+### Rules Character Limit: 12,000
 
-### Committing Sync Changes
+Why 12,000 characters?
 
-**When changing rules/skills (symlinked):**
-
-```bash
-# Only commit source
-git add .agents/rules/my-rule.md
-git commit -m "docs: Add my-rule for code standards"
-```
-
-**When changing MCP configs (generated):**
+- Cursor recommendation for optimal performance
+- Balance between detail and loading speed
+- Cross-platform compatibility sweet spot
 
 ```bash
-# Commit BOTH source and generated
-git add .agents/mcp/mcp-servers.json
-git add .cursor/mcp.json .claude/mcp.json .gemini/settings.json
-git commit -m "feat: Add new MCP server"
+# Check rule size before committing
+wc -c .agents/rules/design/web-design.md
+# Output: 8432 .agents/rules/design/web-design.md
+
+# All rules in category
+for rule in .agents/rules/code/*.md; do
+  echo "$(wc -c < "$rule") - $rule"
+done
 ```
 
-### Commit Message Format
+### Rules Categories Explained
 
-Use conventional commits:
+**`code/`** - Core programming principles
+
+- `principles.md` - Architectural decisions, source-of-truth pattern
+- `style.md` - Bash, Markdown, JSON conventions
+
+**`content/`** - Writing standards
+
+- `copywriting.md` - 800-line comprehensive copywriting guide
+
+**`design/`** - UI/UX standards
+
+- `web-design.md` - 800+ line accessibility checklist (Vercel guidelines)
+
+**`frameworks/`** - Framework-specific
+
+- `react-native.md` - React Native patterns
+
+**`process/`** - Development workflows
+
+- `git-workflow.md` - Branch naming, commit messages, PR process
+- `documentation.md` - Markdown, README patterns
+
+**`quality/`** - Testing standards
+
+- `testing.md` - Testing philosophy, manual testing
+- `testing-scripts.md` - Bash script testing patterns
+
+**`team/`** - Team conventions
+
+- `skills-management.md` - Skills lifecycle, progressive disclosure
+- `third-party-security.md` - Dependency review process
+
+**`tools/`** - Tool-specific
+
+- `use-context7.md` - Proactive Context7 usage for library docs
+- `claude-code-extensions.md` - Claude Code extensions guide
+
+---
+
+## Skills System Deep Dive
+
+### Progressive Disclosure Pattern
+
+```
+.agents/skills/skill-name/
+├── SKILL.md              # ← Always loaded (essentials only)
+├── references/           # ← On-demand (deep documentation)
+│   ├── advanced.md
+│   └── patterns.md
+├── examples/             # ← On-demand (usage samples)
+│   ├── basic.md
+│   └── advanced.md
+├── assets/               # ← On-demand (templates, resources)
+│   └── template.ts
+└── scripts/              # ← On-demand (executable utilities)
+    └── validate.sh
+```
+
+**Why Progressive Disclosure?**
+
+- Fast loading: Only SKILL.md initially (context window efficiency)
+- Deep context: Load references/ when agent needs details
+- Resources bundled: Templates accessible in same package
+- Scalable: Add depth without bloating initial load
+
+### Skill Frontmatter
+
+```yaml
+---
+name: skill-name
+description: This skill should be used when the user asks to "trigger phrase 1", "trigger phrase 2", "trigger phrase 3". Brief context about what this skill provides.
+version: 1.0.0
+---
+```
+
+**Description best practices:**
+
+- Use third-person form
+- List 2-4 specific trigger phrases in quotes
+- Keep under 200 characters
+- Examples:
+  - ✅ "This skill should be used when the user asks to 'create a skill', 'add agent capability'. Provides skill scaffolding and validation."
+  - ❌ "Create skills" (too vague)
+  - ❌ "I help with creating skills" (first person)
+
+### Available Skills
+
+**Meta-Skills (Creating Components):**
+
+- `team-skill-creator` - Meta-skill for creating skills/commands/agents with auto-sync
+- `command-development` - Command creation workflows and patterns
+- `agent-development` - Agent architecture and system prompts
+- `skill-development` - Skill structure and progressive disclosure
+- `skill-creator` - Generic skill scaffold generator
+
+**Development Skills:**
+
+- `mcp-integration` - MCP server setup and configuration workflows
+- `hook-development` - Git hooks patterns (pre-commit, post-merge)
+- `commit-management` - Git commit message workflows and conventions
+- `find-skills` - Skill discovery utility (searches available skills)
+
+---
+
+## Commands System
+
+### Available Commands
+
+| Command         | Purpose                             | Invokes                 |
+| --------------- | ----------------------------------- | ----------------------- |
+| `/commit`       | Smart commit message generation     | commit-management skill |
+| `/improve-docs` | Documentation audit and improvement | doc-improver agent      |
+| `/sync-setup`   | Synchronize all configurations      | sync-all.sh script      |
+
+### Command → Agent → Skill Pattern
+
+```
+User: /improve-docs docs/guides
+    ↓
+Command: improve-docs.md (slash command)
+    ↓
+Agent: doc-improver.md (autonomous workflow)
+    ↓
+Skill: skill-development (progressive disclosure)
+    ↓
+Rule: documentation.md (standards)
+    ↓
+Result: Audit report with prioritized recommendations
+```
+
+Example workflow:
+
+1. User runs `/improve-docs`
+2. Command invokes `doc-improver` agent
+3. Agent reads `documentation.md` rule for standards
+4. Agent uses `skill-development` patterns for structure analysis
+5. Agent outputs audit with high/medium/low priority issues
+6. User approves fixes, agent implements changes
+
+---
+
+## MCP Integration
+
+### Context7 Server (Currently Configured)
+
+**Purpose:** Up-to-date library and framework documentation
+
+**Supported libraries:** React, Next.js, TypeScript, Node.js, Vue, Angular, etc.
+
+**Usage:** Automatically triggered by `use-context7.md` rule
+
+- No need to explicitly request
+- Proactively used for library questions
+- Always prefer Context7 over outdated knowledge
+
+**Configuration location:**
+
+- Source: `.agents/mcp/mcp-servers.json`
+- Generated: `.cursor/mcp.json`, `.claude/mcp.json`, `.gemini/settings.json`
+- Antigravity: `~/.gemini/antigravity/mcp_config.json` (global only)
+
+**API Key:** Set `CONTEXT7_API_KEY` in `.agents/mcp/.env`
+
+### Adding New MCP Servers
+
+See [Adding an MCP Server](#adding-an-mcp-server) section above.
+
+**Platform-specific formats:**
+
+- **Cursor:** `mcpServers` object, no metadata
+- **Claude Code:** `mcpServers` object, with metadata
+- **Gemini CLI:** Nested in `settings.json` `mcpServers`
+- **Antigravity:** Global config only (not project-level)
+
+---
+
+## Git Hooks System
+
+### Available Hooks (3)
+
+**1. notify.sh** - Notification events
+
+- Platform: Claude Code, Gemini CLI (NOT Cursor - no Notification event)
+- Purpose: Send notifications for important events
+- Example: Notify on sync completion
+
+**2. auto-format.sh** - Code formatting
+
+- Platform: Claude Code, Gemini CLI, Cursor
+- Purpose: Auto-format code before operations
+- Example: Run Prettier before commit
+
+**3. protect-secrets.sh** - Secret detection
+
+- Platform: Claude Code, Gemini CLI, Cursor
+- Purpose: Prevent committing secrets
+- Example: Block commit if `.env` file in staging
+
+### Hook Configuration Locations
+
+**Claude Code:** `.claude/settings.json` (PascalCase events)
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [{ "scriptPath": ".claude/hooks/protect-secrets.sh" }],
+    "PostToolUse": [{ "scriptPath": ".claude/hooks/auto-format.sh" }],
+    "Notification": [{ "scriptPath": ".claude/hooks/notify.sh" }]
+  }
+}
+```
+
+**Gemini CLI:** `.gemini/settings.json` (BeforeTool/AfterTool)
+
+```json
+{
+  "hooks": {
+    "BeforeTool": [{ "scriptPath": ".gemini/hooks/protect-secrets.sh" }],
+    "AfterTool": [{ "scriptPath": ".gemini/hooks/auto-format.sh" }],
+    "Notification": [{ "scriptPath": ".gemini/hooks/notify.sh" }]
+  }
+}
+```
+
+**Cursor:** `.cursor/hooks.json` (camelCase, NO Notification)
+
+```json
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [{ "scriptPath": ".cursor/hooks/protect-secrets.sh" }],
+    "postToolUse": [{ "scriptPath": ".cursor/hooks/auto-format.sh" }]
+  }
+}
+```
+
+**Scripts:** Symlinked from `.agents/hooks/scripts/`
+
+---
+
+## Commit Message Format
+
+Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+type: Brief summary (50 chars or less)
+
+Detailed explanation if needed. Wrap at 72 characters.
+Explain WHAT changed and WHY, not HOW.
+
+- Bullet points for multiple changes
+- Focus on impact and rationale
+
+Refs: #issue-number
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+```
+
+### Commit Types
 
 - `feat:` New feature or functionality
 - `fix:` Bug fix
-- `docs:` Documentation changes
-- `refactor:` Code restructuring
-- `chore:` Maintenance (dependencies, configs)
+- `docs:` Documentation only changes
+- `refactor:` Code restructuring without behavior change
+- `test:` Adding or updating tests
+- `chore:` Maintenance tasks (dependencies, configs)
+- `perf:` Performance improvements
+- `style:` Code formatting (no logic change)
 
-## Troubleshooting
+### Examples
 
-### Changes Not Propagating
+```
+feat: Add API conventions rule and patterns skill
 
-**Cursor rules:**
+Implemented comprehensive API standards:
+- REST API conventions (error handling, pagination, versioning)
+- GraphQL schema patterns
+- Authentication/authorization patterns
 
-```bash
-# Re-run sync (rules are copied)
-./.agents/rules/sync-rules.sh
+Includes templates and validation scripts.
+
+Refs: #45
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
-**Claude/Gemini/Antigravity:**
+```
+fix: Resolve symlink creation error on Windows
 
-```bash
-# Check symlink target
-readlink .claude/rules
-# Should point to: ../.agents/rules
+Fixed path resolution in sync-all.sh to work with
+Windows Developer Mode symlinks. Added check for
+elevated permissions.
+
+Refs: #72
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
-**Antigravity specifically:**
-
-```bash
-# Close and reopen project (rules are cached)
-```
-
-### Symlink Issues
-
-```bash
-# Verify if path is a symlink (look for "l" prefix)
-ls -ld .agent/workflows
-# lrwxr-xr-x = symlink ✅
-# drwxr-xr-x = directory ❌
-
-# Check symlink target
-readlink .agent/workflows
-# Should show: ../.agents/commands
-
-# Verify source exists
-ls -la .agents/rules .agents/skills .agents/commands
-
-# Recreate manually if needed
-ln -s ../.agents/rules .claude/rules
-ln -s ../.agents/skills .cursor/skills
-ln -s ../.agents/commands .agent/workflows
-```
-
-**Note:** File explorers (VS Code, Finder) display symlinks as regular directories. Use terminal `ls -l` to verify symlinks.
-
-### MCP Not Working
-
-**Cursor/Claude/Gemini:**
-
-```bash
-# Regenerate configs
-./.agents/mcp/sync-mcp.sh
-
-# Validate JSON
-jq empty .cursor/mcp.json
-jq empty .claude/mcp.json
-```
-
-**Antigravity:**
-
-```bash
-# Check GLOBAL config (project-level not supported)
-cat ~/.gemini/antigravity/mcp_config.json
-```
-
-## Documentation System
-
-VitePress-powered documentation with bilingual support (EN/ES). Configuration lives in `docs/.vitepress/config.js`.
-
-**Structure:**
-
-- `docs/en/` - English documentation
-- `docs/es/` - Spanish documentation (WIP)
-- Modules organized by concept (Skills, MCP, etc.)
-- Cross-referenced guides and references
+---
 
 ## Common Pitfalls & Troubleshooting
 
@@ -467,91 +647,185 @@ VitePress-powered documentation with bilingual support (EN/ES). Configuration li
 
 1. Missing `name` field in YAML frontmatter ❌
 2. File is `.md` instead of `.mdc` ❌
-3. Rule in subdirectory instead of flat structure ❌
+3. Rule in subdirectory (Cursor doesn't support) ❌
 4. YAML frontmatter malformed ❌
 
 **Solution:**
 
 ```bash
-# 1. Check file has .mdc extension
-ls .cursor/rules/*.md
-# If any .md files exist, they're ignored
+# Check .mdc files exist
+ls .cursor/rules/*.md  # Should be empty
 
-# 2. Verify YAML has required 'name' field
+# Verify YAML has 'name' field
 head -10 .agents/rules/my-rule.md
-# Should have: name: my-rule
 
-# 3. Re-run sync
+# Re-run sync
 ./.agents/rules/sync-rules.sh
 
-# 4. Verify in Cursor
-# Settings → Rules → Check rule appears
-```
-
-### Rule Not Working on Specific Platform
-
-**Symptom:** Rule works on Claude but not on Cursor (or vice versa)
-
-**Causes:**
-
-1. Platform-specific YAML field missing
-2. Field ignored by target platform (expected behavior)
-
-**Check:**
-
-```yaml
-# Cursor needs:
-name: rule-name           # REQUIRED
-description: ...          # Recommended
-
-# Claude needs:
-description: ...          # Recommended
-argument-hint: ...        # Optional
-
-# Antigravity needs:
-trigger: always_on        # Optional
-```
-
-### Subdirectories Not Recognized (Cursor)
-
-**Symptom:** Created rule in `.cursor/rules/code/` but Cursor doesn't see it
-
-**Cause:** Cursor does NOT support subdirectories
-
-**Solution:**
-
-```bash
-# Don't create subdirectories in .cursor/rules/
-# Instead, let sync script flatten structure automatically
-
-# Source (OK - has subdirs):
-.agents/rules/code/principles.md
-
-# Cursor (auto-flattened):
-.cursor/rules/principles.mdc
+# Verify in Cursor: Settings → Rules → Check rule appears
 ```
 
 ### Changes Not Propagating
 
-**Symptom:** Edited rule in `.agents/rules/` but platforms don't see changes
-
-**Solutions by platform:**
+**Cursor rules (copied, not symlinked):**
 
 ```bash
-# Cursor: Re-run sync (rules are copied)
-./.agents/rules/sync-rules.sh
-
-# Claude/Gemini/Antigravity: Changes instant (symlinks)
-# Just verify symlink exists:
-readlink .claude/rules  # Should: ../.agents/rules
-
-# Antigravity: May need project reload
-# Close and reopen project in Antigravity
+./.agents/rules/sync-rules.sh  # Must re-run after edits
 ```
 
+**Claude/Gemini/Antigravity (symlinked):**
+
+```bash
+# Changes instant, just verify symlink exists
+readlink .claude/rules  # Should: ../.agents/rules
+```
+
+**Antigravity specifically:**
+
+```bash
+# Close and reopen project (rules cached)
+```
+
+### MCP Server Not Loading
+
+**All platforms:**
+
+```bash
+# 1. Restart AI platform
+# 2. Verify environment variables
+cat .agents/mcp/.env
+
+# 3. Validate JSON
+jq empty .agents/mcp/mcp-servers.json
+
+# 4. Regenerate configs
+./.agents/mcp/sync-mcp.sh
+
+# 5. Check generated files
+jq . .cursor/mcp.json
+```
+
+**Claude Code specific:**
+
+```bash
+# Verify server appears
+claude mcp list  # Should show: context7
+
+# Test server
+# In conversation: "Show me React documentation for useEffect"
+```
+
+**Antigravity specific:**
+
+```bash
+# Check GLOBAL config (project-level not supported)
+cat ~/.gemini/antigravity/mcp_config.json
+```
+
+### Symlink Issues
+
+```bash
+# Verify symlink (look for "l" prefix)
+ls -ld .cursor/skills
+# lrwxr-xr-x = symlink ✅
+# drwxr-xr-x = directory ❌
+
+# Check symlink target
+readlink .cursor/skills  # Should: ../.agents/skills
+
+# Verify source exists
+ls -la .agents/skills
+
+# Recreate manually if needed
+rm -rf .cursor/skills
+ln -s ../.agents/skills .cursor/skills
+```
+
+**Windows users:**
+
+- Enable Developer Mode: Settings → Update & Security → For Developers
+- Or run as Administrator
+
+---
+
+## Key Principles
+
+### 1. Single Source of Truth
+
+- Edit only in `.agents/`
+- Never edit platform directories (`.cursor/`, `.claude/`, etc.) directly
+- Sync scripts handle distribution
+
+### 2. Commit Patterns
+
+- **Symlinked resources:** Commit source only (`.agents/rules/`, `.agents/skills/`)
+- **Generated configs:** Commit both source AND generated (`.agents/mcp/mcp-servers.json` + platform JSONs)
+- Symlinks auto-restore on clone (Git handles them correctly)
+
+### 3. Sync After Every Change
+
+```bash
+# Changed anything in .agents/? Run sync
+./.agents/sync-all.sh
+
+# Or individual component syncs
+./.agents/rules/sync-rules.sh
+./.agents/mcp/sync-mcp.sh
+```
+
+### 4. Test on Target Platforms
+
+- Cursor: Open Settings → Rules → Verify rule appears
+- Claude Code: `claude mcp list` → Verify servers
+- Verify symlinks: `ls -la .cursor/skills`
+
+---
+
+## Documentation System
+
+**VitePress powered:** Bilingual support (EN/ES)
+
+**Structure:**
+
+- `docs/en/guides/` - How-to guides (task-oriented)
+- `docs/en/references/` - Technical documentation (system-oriented)
+- `docs/en/notes/` - Research, comparisons, explorations
+- `docs/.vitepress/config.js` - Site configuration
+
+**Key References:**
+
+- [Complete Setup Guide](docs/en/guides/setup.md)
+- [MCP Setup Guide](docs/guides/mcp/mcp-setup-guide.md)
+- [Antigravity Limitations](docs/guides/mcp/ANTIGRAVITY_LIMITATION.md)
+- [Rules Documentation](docs/en/references/rules/memory-and-rules.md)
+- [Skills Reference](docs/en/references/skills.md)
+- [MCP Quick Reference](docs/en/references/mcp.md)
+
+---
+
 ## References
+
+**Project Documentation:**
 
 - Platform limitations: `docs/guides/mcp/ANTIGRAVITY_LIMITATION.md`
 - Rules guide: `.agents/rules-readme.md`
 - Core principles: `.agents/rules/code/principles.md`
 - Skills management: `.agents/rules/team/skills-management.md`
+- Git workflow: `.agents/rules/process/git-workflow.md`
+- Testing guidelines: `.agents/rules/quality/testing.md`
+
+**README Files:**
+
+- Project root: `README.md` (comprehensive project overview)
+- Rules: `.agents/rules-readme.md`
+- Skills: Documented in individual SKILL.md files
+- Commands: `.agents/commands-readme.md`
+- MCP: `.agents/mcp-readme.md`
+- Hooks: `.agents/hooks-readme.md`
+
+**External Standards:**
+
+- [agents.md](https://agents.md) - Universal agent configuration standard
+- [skills.sh](https://skills.sh) - Skills ecosystem documentation
+- [Context7](https://context7.com) - MCP documentation server
+- [Conventional Commits](https://www.conventionalcommits.org/)
