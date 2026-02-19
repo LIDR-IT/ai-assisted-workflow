@@ -367,7 +367,7 @@ Improve documentation following preloaded standards.
 **Razón 3:** Evita errores con formatos incompatibles
 
 **Trade-off:** Cambios no son instantáneos, requiere re-sync
-**Mitigación:** Script sync-agents.sh automatiza el proceso
+**Mitigación:** Script `.agents/sync.sh --only=agents` automatiza el proceso
 
 ### ¿Por qué no eliminar skills si solo Claude lo usa?
 

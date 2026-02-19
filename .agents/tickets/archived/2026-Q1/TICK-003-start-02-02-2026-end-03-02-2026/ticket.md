@@ -34,7 +34,7 @@ Implement post-merge and pre-push git hooks to automate sync operations, depende
 
 ## Acceptance Criteria
 
-- [x] post-merge hook automatically runs sync-all.sh after merge/pull
+- [x] post-merge hook automatically runs sync.sh after merge/pull
 - [x] post-merge hook updates dependencies if package files changed
 - [x] post-merge hook cleans up stale branches and archived tickets
 - [x] pre-push hook prompts for manual test confirmation ("Did you run tests? y/n")
@@ -74,7 +74,7 @@ Feature: Post-Merge Hook Automation
     Given remote branch has new rules in .agents/rules/
     When developer runs "git pull origin main"
     Then post-merge hook detects changes
-    And sync-all.sh runs automatically
+    And sync.sh runs automatically
     And new rules appear in all platform directories
     And developer sees "✅ Configs synchronized" message
 
@@ -149,7 +149,7 @@ Feature: Pre-Push Hook Validation
 - Decision 1: Use bash scripts (not node/python) for maximum compatibility
 - Decision 2: Make hooks informative (show progress) not silent
 - Decision 3: Allow --no-verify bypass for emergency situations
-- Decision 4: post-merge runs sync-all.sh (not individual syncs) for consistency
+- Decision 4: post-merge runs sync.sh (not individual syncs) for consistency
 - Decision 5: Manual test confirmation + Playwright MCP (not automated suite yet - stack TBD in TICK-005)
 
 **Trade-offs:**
@@ -161,7 +161,7 @@ Feature: Pre-Push Hook Validation
 
 - Existing pre-commit hook: `.agents/hooks/scripts/validate-commit.sh`
 - Hooks configuration: `.agents/hooks/hooks.json`
-- Sync scripts: `.agents/sync-all.sh`
+- Sync scripts: `.agents/sync.sh`
 - Git workflow: `.agents/rules/process/git-workflow.md`
 
 **Hook Configuration Structure:**
@@ -252,7 +252,7 @@ AI Agent Hooks (best-effort, DX enhancement):
 
 Fixed Claude Code hook paths to use `${CLAUDE_PROJECT_DIR}/.agents` instead of `${CLAUDE_PLUGIN_ROOT}`:
 
-- Updated sync-hooks.sh to generate correct paths
+- Updated sync.sh hooks adapter to generate correct paths
 - Updated documentation (hooks-readme.md, hooks-guide-claude-code.md, hooks-quick-reference.md)
 - All hooks now work reliably across platforms
 
@@ -277,7 +277,7 @@ Ticket completed successfully with **architectural evolution** from complex, com
 
 **Files Modified:**
 
-- `.agents/hooks/sync-hooks.sh` - Updated path generation
+- `.agents/sync.sh` (hooks adapter) - Updated path generation
 - `.claude/settings.json` - Regenerated with correct paths
 - `.agents/hooks-readme.md` - Complete documentation
 - `docs/en/references/hooks/hooks-guide-claude-code.md` - Updated guide

@@ -64,7 +64,7 @@ Guías detalladas de configuración, troubleshooting y validación de MCP server
 ## 🚀 Quick Start
 
 1. **Leer** [mcp-setup-guide.md](./mcp-setup-guide.md) para setup completo
-2. **Ejecutar** `.agents/mcp/sync-mcp.sh` para sincronizar
+2. **Ejecutar** `.agents/sync.sh --only=mcp` para sincronizar
 3. **Validar** siguiendo [VALIDATION.md](./VALIDATION.md)
 4. **Configurar Antigravity** siguiendo [ANTIGRAVITY_SETUP.md](./ANTIGRAVITY_SETUP.md)
 
@@ -77,7 +77,7 @@ MCP Documentation
 │
 ├── Operacional (.agents/mcp/)
 │   ├── mcp-servers.json        # Source of truth
-│   ├── sync-mcp.sh              # Script de sync
+│   ├── sync.sh                  # Unified sync CLI
 │   └── README.md                # Quick start
 │
 ├── Guías (docs/guides/mcp/)     # ← ESTÁS AQUÍ

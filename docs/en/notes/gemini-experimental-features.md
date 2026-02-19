@@ -26,7 +26,7 @@ Los subagents en Gemini CLI requieren flag experimental:
 
 **Estado:** Experimental (puede cambiar en futuras versiones)
 
-**Sincronización:** El script `sync-mcp.sh` **preserva** esta configuración
+**Sincronización:** El script `.agents/sync.sh --only=mcp` **preserva** esta configuración
 
 ## 2. Context Files (Memoria)
 
@@ -75,7 +75,7 @@ Puedes agregar más archivos editando `.gemini/settings.json`:
 }
 ```
 
-**Importante:** Los cambios en `settings.json` son **preservados** por `sync-mcp.sh`
+**Importante:** Los cambios en `settings.json` son **preservados** por `.agents/sync.sh --only=mcp`
 
 ### Cambiar Archivo de Memoria
 
@@ -146,13 +146,13 @@ Ejemplo de `.gemini/settings.json` con todas las configuraciones:
 
 ## Sincronización y Preservación
 
-### Script sync-mcp.sh
+### Script .agents/sync.sh --only=mcp
 
 El script de sincronización **preserva** configuraciones importantes:
 
 ```bash
 # Ejecutar sync
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Resultado:
 # ✅ Preserva: experimental
@@ -180,7 +180,7 @@ El script de sincronización **preserva** configuraciones importantes:
 cat .gemini/settings.json
 
 # Sync
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Después de sync - verificar
 cat .gemini/settings.json
@@ -416,13 +416,13 @@ gemini
 
 ### Sync Sobrescribe Config
 
-**Problema:** sync-mcp.sh elimina experimental/context
+**Problema:** .agents/sync.sh --only=mcp elimina experimental/context
 
 **Solución:**
 
 ```bash
 # Verificar versión del script
-grep -A 10 "generate_gemini_config" .agents/mcp/sync-mcp.sh
+grep -A 10 "generate_gemini_config" .agents/sync.sh
 
 # Debe tener lógica de merge
 # Si no, actualizar desde template
@@ -442,4 +442,4 @@ grep -A 10 "generate_gemini_config" .agents/mcp/sync-mcp.sh
 - ✅ Documentado `enableAgents: true` experimental flag
 - ✅ Documentado `context.fileName` para memory files
 - ✅ Explicado cómo agregar/cambiar archivos de memoria
-- ✅ Confirmado que sync-mcp.sh preserva configuraciones
+- ✅ Confirmado que .agents/sync.sh --only=mcp preserva configuraciones

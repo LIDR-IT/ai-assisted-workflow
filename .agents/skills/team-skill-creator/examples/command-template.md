@@ -7,7 +7,7 @@ This is a copy-paste template for creating new commands within the `.agents/` sy
 1. Copy the template below
 2. Replace all `[PLACEHOLDERS]` with your specific content
 3. Create file: `.agents/commands/[command-name].md`
-4. Run sync: `./.agents/sync-all.sh`
+4. Run sync: `./.agents/sync.sh`
 5. Test with: `[/command-name]`
 
 ---

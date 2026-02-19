@@ -130,7 +130,7 @@ aceptan  aceptan  aceptan
 ### Script Actualizado
 
 ```bash
-# sync-agents.sh simplificado
+# sync.sh --only=agents (simplificado)
 # Solo crear symlinks para todas las plataformas
 
 ln -s ../.agents/agents .cursor/agents
@@ -283,14 +283,14 @@ vim .agents/agents/doc-improver.md
 # - model
 
 # 3. Sync (ahora simple)
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 
 # 4. Verificar
 head -10 .agents/agents/doc-improver.md
 head -10 .gemini/agents/doc-improver.md  # Debe ser idéntico
 ```
 
-### Actualizar sync-agents.sh
+### Actualizar sync.sh --only=agents
 
 Simplificar para usar symlinks para todas:
 

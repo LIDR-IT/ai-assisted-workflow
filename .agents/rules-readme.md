@@ -525,7 +525,7 @@ After editing rules:
 
 ```bash
 # Sync to all platforms
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # Verify sync
 ls -la .cursor/rules          # Should contain .mdc files

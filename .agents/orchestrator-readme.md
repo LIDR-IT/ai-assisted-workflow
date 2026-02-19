@@ -9,7 +9,7 @@ The orchestrator directory contains the master documentation (`AGENTS.md`) that 
 ## Files
 
 - **`AGENTS.md`** - Master documentation (source of truth)
-- **`sync-orchestrator.sh`** - Synchronization script
+- **`sync.sh --only=orchestrator`** - Synchronization command
 - **`README.md`** - This file
 
 ## Root Symlinks
@@ -40,10 +40,10 @@ Root level:
 
 ```bash
 # Sync orchestrator only
-./.agents/orchestrator/sync-orchestrator.sh
+./.agents/sync.sh --only=orchestrator
 
 # Sync all components (includes orchestrator)
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 ### Command Sync
@@ -57,7 +57,7 @@ Root level:
 
 ```bash
 # Preview changes without applying
-./.agents/orchestrator/sync-orchestrator.sh --dry-run
+./.agents/sync.sh --only=orchestrator --dry-run
 ```
 
 ## Verification
@@ -147,7 +147,7 @@ All paths update the same source file due to symlinks.
 
 ```bash
 # Re-run sync
-./.agents/orchestrator/sync-orchestrator.sh
+./.agents/sync.sh --only=orchestrator
 
 # Or manually create
 cd /path/to/project
@@ -189,4 +189,4 @@ git clone <repo-url>
 
 - [AGENTS.md Standard](https://agents.md) - Universal agent documentation format
 - [Source-of-Truth Pattern](./../rules/code/principles.md) - Architecture principles
-- [Sync All Script](./../sync-all.sh) - Master synchronization
+- [Sync Script](./../sync.sh) - Master synchronization

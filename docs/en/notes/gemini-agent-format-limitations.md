@@ -58,7 +58,7 @@ color: [...] # ❌ No existe en Gemini
 
 ### Transformación Automática
 
-El script `sync-agents.sh` ahora **transforma** agents al copiarlos a Gemini:
+El script `.agents/sync.sh --only=agents` ahora **transforma** agents al copiarlos a Gemini:
 
 ```python
 # Elimina campos incompatibles:
@@ -184,7 +184,7 @@ Al sincronizar:
 2. Gemini → **Copy + Transform** (remueve incompatibles)
 
 ```bash
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 
 # Resultado:
 # .cursor/agents → ../.agents/agents (symlink completo)
@@ -256,7 +256,7 @@ tools.0: Invalid tool name
 **Solución:** Re-sincronizar
 
 ```bash
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 ```
 
 ### Error: Unrecognized Key 'skills'
@@ -272,7 +272,7 @@ Unrecognized key(s) in object: 'skills'
 **Solución:** Re-sincronizar con script actualizado
 
 ```bash
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 ```
 
 ### Transformación No Aplicada
@@ -289,7 +289,7 @@ brew install python3  # macOS
 apt install python3   # Linux
 
 # Re-sync
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 ```
 
 ## Verificación
@@ -330,7 +330,7 @@ gemini /agents
 - [Gemini CLI Subagents Docs](https://geminicli.com/docs/core/subagents/)
 - [Agent Format Standard](../references/agents/AGENT_FORMAT_STANDARD.md)
 - [Platform Comparison](../references/agents/PLATFORM_COMPARISON.md)
-- [Sync Agents Script](../../.agents/agents/sync-agents.sh)
+- [Sync Agents Script](../../.agents/sync.sh) (use `--only=agents` flag)
 
 ## TL;DR
 

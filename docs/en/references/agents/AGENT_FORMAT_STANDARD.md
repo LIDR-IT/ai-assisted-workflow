@@ -367,7 +367,7 @@ You are a [ROLE] specialized in [PURPOSE].
 
 ## Sincronización entre Plataformas
 
-### Script: sync-agents.sh
+### Script: sync.sh --only=agents
 
 **Comportamiento:**
 
@@ -401,7 +401,7 @@ vim .agents/agents/doc-improver.md
 2. **Sincronizar:**
 
 ```bash
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 # O
 /sync-setup
 ```

@@ -55,7 +55,7 @@ jq '.servers.context7' .agents/mcp/mcp-servers.json
 
 ```bash
 # Ejecutar script
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Verificar que no hay errores
 echo $?  # Debe mostrar 0
@@ -191,7 +191,7 @@ jq '.servers.test = {
 }' .agents/mcp/mcp-servers.json > .agents/mcp/mcp-servers.json.tmp && mv .agents/mcp/mcp-servers.json.tmp .agents/mcp/mcp-servers.json
 
 # Re-sincronizar
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Verificar que el nuevo server aparece
 jq '.mcpServers.test' .cursor/mcp.json
@@ -208,7 +208,7 @@ jq '.mcpServers.test' .gemini/settings.json  # Debe ser null
 jq 'del(.servers.test)' .agents/mcp/mcp-servers.json > .agents/mcp/mcp-servers.json.tmp && mv .agents/mcp/mcp-servers.json.tmp .agents/mcp/mcp-servers.json
 
 # Re-sincronizar
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 ```
 
 ## Checklist de Validación Completa
@@ -216,7 +216,7 @@ jq 'del(.servers.test)' .agents/mcp/mcp-servers.json > .agents/mcp/mcp-servers.j
 - [ ] jq instalado y funcional
 - [ ] CONTEXT7_API_KEY configurada en environment
 - [ ] `mcp-servers.json` es JSON válido
-- [ ] Script `sync-mcp.sh` es ejecutable
+- [ ] Script `sync.sh` es ejecutable
 - [ ] Script ejecuta sin errores
 - [ ] Genera `.cursor/mcp.json` correctamente
 - [ ] Genera `.claude/mcp.json` correctamente
@@ -240,7 +240,7 @@ brew install jq
 ### Context7 no aparece en platform
 
 1. Verificar que la plataforma está en el array `platforms` en mcp-servers.json
-2. Re-ejecutar sync: `./.agents/mcp/sync-mcp.sh`
+2. Re-ejecutar sync: `./.agents/sync.sh --only=mcp`
 3. Reiniciar la aplicación (Cursor, Claude Code, etc.)
 
 ### "CONTEXT7_API_KEY not found"
@@ -261,10 +261,10 @@ source ~/.zshrc
 
 ```bash
 # Verificar que script tiene permisos
-chmod +x ./.agents/mcp/sync-mcp.sh
+chmod +x ./.agents/sync.sh
 
 # Ejecutar con bash explícito
-bash ./.agents/mcp/sync-mcp.sh
+bash ./.agents/sync.sh --only=mcp
 
 # Verificar que no hay errores de jq
 jq . .agents/mcp/mcp-servers.json

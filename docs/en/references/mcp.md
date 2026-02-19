@@ -63,8 +63,8 @@ This project uses centralized MCP configuration in `.agents/mcp/`:
 # Source of truth
 .agents/mcp/mcp-servers.json
 
-# Sync script generates platform-specific configs
-.agents/mcp/sync-mcp.sh
+# Sync CLI generates platform-specific configs
+.agents/sync.sh --only=mcp
 ```
 
 **Current MCP Servers:**
@@ -74,7 +74,7 @@ This project uses centralized MCP configuration in `.agents/mcp/`:
 **To add a new MCP server:**
 
 1. Edit `.agents/mcp/mcp-servers.json`
-2. Run `.agents/mcp/sync-mcp.sh`
+2. Run `.agents/sync.sh --only=mcp`
 3. Verify with `claude mcp list` or platform-specific command
 
 ## Quick Start
@@ -82,8 +82,8 @@ This project uses centralized MCP configuration in `.agents/mcp/`:
 **Install Context7 MCP:**
 
 ```bash
-# Automatic (via sync script)
-.agents/mcp/sync-mcp.sh
+# Automatic (via sync CLI)
+.agents/sync.sh --only=mcp
 
 # Manual (Claude Code)
 claude mcp add context7

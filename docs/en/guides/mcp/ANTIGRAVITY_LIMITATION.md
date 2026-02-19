@@ -93,7 +93,7 @@ C:\Users\<USER_NAME>\.gemini\antigravity\mcp_config.json
 
 ## Script de Sync Actualizado
 
-El script `.agents/mcp/sync-mcp.sh` ahora:
+El script `.agents/sync.sh --only=mcp` ahora:
 
 - ✅ Genera configuraciones para Cursor, Claude, Gemini CLI
 - ⚠️ **Genera `.gemini/mcp_config.json` como referencia**

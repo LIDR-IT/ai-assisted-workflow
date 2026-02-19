@@ -37,7 +37,7 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 .agents/agents/              ← Source of truth
 ├── doc-improver.md          ← Agent 1
 ├── code-reviewer.md         ← Agent 2 (example)
-├── sync-agents.sh           ← Sync script
+├── (synced via .agents/sync.sh --only=agents)
 └── README.md
 
 ↓ Symlinks to ↓
@@ -49,7 +49,7 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 
 ## Sync Script
 
-**Location:** `.agents/agents/sync-agents.sh`
+**Location:** `.agents/sync.sh` (use `--only=agents` flag)
 
 **What it does:**
 
@@ -62,13 +62,13 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 
 ```bash
 # Manual sync
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 
 # Dry run (preview changes)
-./.agents/agents/sync-agents.sh --dry-run
+./.agents/sync.sh --only=agents --dry-run
 
 # Or use the sync-all script
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 ## Automatic Synchronization
@@ -80,7 +80,7 @@ Agents are automatically synchronized when using:
 /sync-setup
 
 # Or manually
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 The sync order is:
@@ -174,7 +174,7 @@ You are [agent role]...
 3. **Run sync:**
 
 ```bash
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 ```
 
 4. **Verify:**
@@ -231,7 +231,6 @@ ls .gemini/agents/
 
 # Should show:
 # doc-improver.md
-# sync-agents.sh
 # README.md
 ```
 
@@ -256,7 +255,7 @@ cat .gemini/agents/doc-improver.md
 
 ```bash
 # Re-run sync script
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 
 # Or manually create
 ln -s ../.agents/agents .cursor/agents
@@ -277,7 +276,7 @@ rm .claude/agents
 rm .gemini/agents
 
 # Re-run sync
-./.agents/agents/sync-agents.sh
+./.agents/sync.sh --only=agents
 ```
 
 ### Agent Not Found
@@ -427,7 +426,7 @@ Break agent work into clear phases:
 
 **Where:** `.agents/agents/` → `.cursor/agents`, `.claude/agents`, `.gemini/agents`
 
-**How:** Run `./.agents/agents/sync-agents.sh` or `/sync-setup`
+**How:** Run `./.agents/sync.sh --only=agents` or `/sync-setup`
 
 **Limitation:** Antigravity does NOT support agents
 

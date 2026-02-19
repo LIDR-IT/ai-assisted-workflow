@@ -521,8 +521,8 @@ Después de crear estos archivos, sincroniza:
 /sync-setup
 
 # O manualmente
-./.agents/rules/sync-rules.sh    # Sincroniza rules
-./.agents/skills/sync-skills.sh  # Sincroniza skills
+./.agents/sync.sh --only=rules    # Sincroniza rules
+./.agents/sync.sh --only=skills  # Sincroniza skills
 # Commands y agents se sincronizan automáticamente en .agents/
 ```
 

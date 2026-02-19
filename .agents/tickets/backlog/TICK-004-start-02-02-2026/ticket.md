@@ -85,7 +85,7 @@ Feature: Video Tutorial Effectiveness
 Feature: Troubleshooting Guide Usage
 
   Scenario: Developer encounters sync error
-    Given developer runs sync-all.sh and gets error
+    Given developer runs sync.sh and gets error
     When they search troubleshooting guide for "sync error"
     Then they find the exact error message listed
     And see step-by-step solution
@@ -182,7 +182,7 @@ Feature: Troubleshooting Guide Usage
 
 ### Sync Issues
 
-1. sync-all.sh fails with permission error
+1. sync.sh fails with permission error
 2. Symlinks pointing to wrong location
 3. Platform not detecting new configs
 

@@ -258,8 +258,8 @@ ls .agents/rules/process/documentation.md
 /sync-setup
 
 # O individualmente
-./.agents/rules/sync-rules.sh
-./.agents/skills/sync-skills.sh
+./.agents/sync.sh --only=rules
+./.agents/sync.sh --only=skills
 ```
 
 ## Casos de Uso Transversales

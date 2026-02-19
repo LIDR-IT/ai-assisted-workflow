@@ -226,7 +226,7 @@ Sync happens automatically after command creation.
 **Manual (when creating directly):**
 
 ```bash
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 **Verification:**
@@ -716,7 +716,7 @@ Brief description of what the function does.
 
 **Special considerations:**
 - ✅ Commands available via `.agents/workflows/` (symlink to `.agents/commands/`)
-- ⚠️ Must re-sync after editing: `./.agents/sync-all.sh`
+- ⚠️ Must re-sync after editing: `./.agents/sync.sh`
 - ⚠️ Changes don't propagate instantly (files are copied, not symlinked)
 
 ## Validation
@@ -747,7 +747,7 @@ After creating a command, validate it:
 ls .agents/commands/{command-name}.md
 
 # 2. Re-sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # 3. Verify synced
 ls -la .cursor/commands/ | grep {command-name}
@@ -764,7 +764,7 @@ cat .agents/commands/{command-name}.md
 
 - Check file extension is `.md`
 - Verify file is in `.agents/commands/` not elsewhere
-- Re-sync: `./.agents/sync-all.sh`
+- Re-sync: `./.agents/sync.sh`
 - Try full restart of AI agent
 
 ## Summary

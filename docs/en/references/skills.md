@@ -131,7 +131,7 @@ Instructions here.
 EOF
 
 # Sync to all agents
-.agents/sync-all.sh
+.agents/sync.sh
 ```
 
 ## Skill Patterns
@@ -182,7 +182,7 @@ npm install -g @skills/skill-name
 
 # From Git
 git clone https://github.com/user/skill.git .agents/skills/skill-name
-.agents/sync-all.sh
+.agents/sync.sh
 ```
 
 ## Skill Invocation
@@ -247,7 +247,7 @@ ls .agents/skills/skill-name/skill.md
 readlink .claude/skills
 
 # Re-run sync
-.agents/sync-all.sh
+.agents/sync.sh
 ```
 
 **Skill not triggering:**

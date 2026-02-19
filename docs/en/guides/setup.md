@@ -19,7 +19,7 @@ This guide walks through setting up the centralized AI agent configuration syste
 # Clone and sync everything
 git clone <repo-url>
 cd template-best-practices
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 This runs all synchronization scripts:
@@ -58,7 +58,7 @@ This runs all synchronization scripts:
 ├── commands/               # Slash commands
 ├── agents/                 # Custom subagents
 ├── mcp/                    # MCP server configurations
-└── sync-all.sh            # Master sync script
+└── sync.sh                # Unified sync CLI
 ```
 
 ### Platform Synchronization
@@ -75,7 +75,7 @@ This runs all synchronization scripts:
 
 ```
 .agents/mcp/mcp-servers.json
-    ↓ (sync-mcp.sh)
+    ↓ (sync.sh --only=mcp)
 .cursor/mcp.json
 .claude/mcp.json
 .gemini/settings.json
@@ -105,7 +105,7 @@ Project-specific guidelines and coding standards synchronized to all agents.
 
 ```bash
 # Automatic
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # Manual verification
 ls -la .cursor/rules    # Should show symlink
@@ -135,7 +135,7 @@ ls -la .agents/rules    # Antigravity reads natively from .agents/
 echo "# New Rule" > .agents/rules/category/new-rule.md
 
 # Sync to all agents
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # Verify
 cat .cursor/rules/category/new-rule.md
@@ -149,8 +149,8 @@ Specialized capabilities that extend agent functionality with workflows and doma
 **Setup:**
 
 ```bash
-# Automatic (included in sync-rules.sh)
-./.agents/rules/sync-rules.sh
+# Automatic (included in sync.sh)
+./.agents/sync.sh --only=skills
 
 # Verify
 ls -la .cursor/skills
@@ -199,7 +199,7 @@ description: When to use this skill
 Instructions here.
 EOF
 
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=skills
 ```
 
 ### 3. Commands Setup
@@ -210,8 +210,8 @@ Slash commands that provide quick access to common operations.
 **Setup:**
 
 ```bash
-# Commands sync with rules
-./.agents/rules/sync-rules.sh
+# Commands sync
+./.agents/sync.sh --only=commands
 
 # Verify
 ls -la .cursor/commands
@@ -239,7 +239,7 @@ args: [arg1, arg2]
 # Command implementation
 EOF
 
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=commands
 ```
 
 ### 4. Agents Setup
@@ -250,8 +250,8 @@ Custom subagents with specialized system prompts and tool access.
 **Setup:**
 
 ```bash
-# Agents sync with rules
-./.agents/rules/sync-rules.sh
+# Agents sync
+./.agents/sync.sh --only=agents
 
 # Verify
 ls -la .cursor/agents
@@ -280,7 +280,7 @@ tools: ["Read", "Write", "Bash"]
 System prompt for the agent.
 EOF
 
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=agents
 ```
 
 ### 5. MCP Setup
@@ -292,7 +292,7 @@ Model Context Protocol - connects agents to external tools and services.
 
 ```bash
 # Generate platform configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Verify
 cat .cursor/mcp.json
@@ -325,7 +325,7 @@ vim .agents/mcp/mcp-servers.json
 }
 
 # Generate configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Commit both source and generated
 git add .agents/mcp/mcp-servers.json
@@ -515,10 +515,10 @@ ln -s ../.agents/skills .claude/skills
 
 ```bash
 # Re-run sync
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # For Antigravity (uses copy, not symlink)
-./.agents/rules/sync-rules.sh  # Re-copies files
+./.agents/sync.sh --only=rules  # Re-copies files
 ```
 
 ### MCP Servers Not Appearing
@@ -532,7 +532,7 @@ ln -s ../.agents/skills .claude/skills
 jq empty .agents/mcp/mcp-servers.json
 
 # Regenerate configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Restart agent/IDE
 ```
@@ -559,10 +559,8 @@ vim ~/.gemini/antigravity/mcp_config.json
 **Solution:**
 
 ```bash
-# Make scripts executable
-chmod +x .agents/sync-all.sh
-chmod +x .agents/rules/sync-rules.sh
-chmod +x .agents/mcp/sync-mcp.sh
+# Make sync script executable
+chmod +x .agents/sync.sh
 ```
 
 ## Team Workflow
@@ -575,7 +573,7 @@ git clone <repo-url>
 cd template-best-practices
 
 # 2. Run sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # 3. Set up environment variables
 cp .env.example .env
@@ -595,7 +593,7 @@ ls -la .cursor/rules
 vim .agents/rules/category/new-rule.md
 
 # 2. Sync
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # 3. Commit
 git add .agents/rules/category/new-rule.md
@@ -609,7 +607,7 @@ git commit -m "docs: Add new rule for X"
 vim .agents/mcp/mcp-servers.json
 
 # 2. Generate configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 3. Commit both source and generated
 git add .agents/mcp/mcp-servers.json .cursor/mcp.json .claude/mcp.json
@@ -623,7 +621,7 @@ git commit -m "feat: Add MCP server for X"
 git pull
 
 # Re-sync everything
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Verify
 ls -la .cursor/rules .claude/skills

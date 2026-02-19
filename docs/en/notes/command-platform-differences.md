@@ -2,7 +2,7 @@
 
 ## Overview
 
-Commands in the `.agents/` system work differently across the five supported platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode). This document explains the technical differences in how each platform handles command files, based on the implementation in `.agents/commands/sync-commands.sh`.
+Commands in the `.agents/` system work differently across the five supported platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode). This document explains the technical differences in how each platform handles command files, based on the implementation in `.agents/sync.sh --only=commands`.
 
 ## Key Finding
 
@@ -23,7 +23,7 @@ Commands in the `.agents/` system work differently across the five supported pla
 **Implementation:**
 
 ```bash
-# sync-commands.sh lines 49-54
+# sync.sh --only=commands (symlink creation)
 create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.cursor/commands"
 create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands"
 ```
@@ -72,7 +72,7 @@ Your instructions here...
 **Implementation:**
 
 ```bash
-# sync-commands.sh lines 78-124
+# sync.sh --only=commands (TOML conversion)
 convert_md_to_toml() {
   local md_file=$1
   local command_name=$(basename "$md_file" .md)
@@ -338,7 +338,7 @@ ln -s commands workflows
 
 ```bash
 # Run sync script
-./.agents/commands/sync-commands.sh
+./.agents/sync.sh --only=commands
 
 # What happens:
 # 1. Cursor: .cursor/commands → ../.agents/commands (symlink)
@@ -352,7 +352,7 @@ ln -s commands workflows
 **Steps:**
 
 1. Create `.agents/commands/new-command.md`
-2. Run `./.agents/commands/sync-commands.sh`
+2. Run `./.agents/sync.sh --only=commands`
 3. Verify:
 
    ```bash
@@ -377,15 +377,15 @@ ln -s commands workflows
 
 - Re-run sync to regenerate TOML:
   ```bash
-  ./.agents/commands/sync-commands.sh
+  ./.agents/sync.sh --only=commands
   ```
 
-## Code Examples from sync-commands.sh
+## Code Examples from sync.sh --only=commands
 
 ### Full Directory Symlink (Cursor/Claude)
 
 ```bash
-# Lines 49-54
+# Symlink creation
 create_directory_symlink() {
   local target=$1
   local link=$2
@@ -407,7 +407,7 @@ create_directory_symlink "../.agents/commands" "$PROJECT_ROOT/.claude/commands"
 ### Markdown-to-TOML Conversion (Gemini)
 
 ````bash
-# Lines 78-124
+# TOML conversion logic
 convert_md_to_toml() {
   local md_file=$1
   local command_name=$(basename "$md_file" .md)
@@ -494,7 +494,7 @@ Avoid excessive triple backticks (stripped in Gemini conversion).
 
 ```bash
 # After creating/editing command
-./.agents/commands/sync-commands.sh
+./.agents/sync.sh --only=commands
 
 # Test in each platform
 /your-command arg1 arg2
@@ -511,7 +511,7 @@ ls -la .cursor/commands
 # Should show: .cursor/commands → ../.agents/commands
 
 # Re-sync if needed
-./.agents/commands/sync-commands.sh
+./.agents/sync.sh --only=commands
 ```
 
 **Gemini command not working:**
@@ -526,7 +526,7 @@ cat .gemini/commands/your-command.toml
 # - Escaping problems
 
 # Regenerate
-./.agents/commands/sync-commands.sh
+./.agents/sync.sh --only=commands
 ```
 
 **Antigravity command not found:**
@@ -569,7 +569,7 @@ cat .agents/workflows/sync-setup.md
 
 ## Related Documentation
 
-- **Sync Script:** `.agents/commands/sync-commands.sh` (implementation)
+- **Sync Script:** `.agents/sync.sh --only=commands` (implementation)
 - **Command Templates:** `.agents/skills/team-skill-creator/examples/command-template.md`
 - **Command Creation Guide:** `.agents/skills/team-skill-creator/references/command-creation-guide.md`
 - **Architecture Overview:** `.agents/skills/team-skill-creator/references/architecture-overview.md`

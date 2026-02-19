@@ -9,7 +9,7 @@ Source of truth para configuración de MCP servers del proyecto.
 export CONTEXT7_API_KEY="your-api-key"
 
 # 2. Sincronizar configuración
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 3. Verificar
 claude mcp list
@@ -19,7 +19,7 @@ gemini mcp list
 ## Archivos
 
 - **`mcp-servers.json`** - Source of truth de MCP servers
-- **`sync-mcp.sh`** - Script de sincronización automática
+- **`sync.sh --only=mcp`** - Sync command for MCP configurations
 - **`.env.example`** - Template de variables de entorno
 
 ## Servers Configurados
@@ -34,7 +34,7 @@ Documentación actualizada para frameworks y librerías populares.
 ## Agregar Nuevo Server
 
 1. Edita `mcp-servers.json`
-2. Ejecuta `./sync-mcp.sh`
+2. Ejecuta `./.agents/sync.sh --only=mcp`
 3. Commit cambios
 
 ## Plataformas Soportadas
@@ -59,7 +59,7 @@ Documentación actualizada para frameworks y librerías populares.
 
 ```bash
 # Re-sincronizar
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # Verificar JSON válido
 jq '.' .agents/mcp/mcp-servers.json

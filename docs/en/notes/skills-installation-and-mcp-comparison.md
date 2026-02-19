@@ -151,7 +151,7 @@ Cada plataforma requiere su propio archivo de configuración:
 
 - ✅ **Context7** configurado en Cursor, Claude Code, Gemini CLI
 - ⚠️ **Antigravity** - NO soporta MCP a nivel de proyecto (solo global)
-- ✅ Sistema de sincronización centralizado (`.agents/mcp/sync-mcp.sh`)
+- ✅ Sistema de sincronización centralizado (`.agents/sync.sh --only=mcp`)
 - 📝 [Discusión sobre soporte per-workspace](https://discuss.ai.google.dev/t/support-for-per-workspace-mcp-config-on-antigravity/111952)
 - Documentación disponible en `docs/references/mcp/` para:
   - mcp-antigravity.md
@@ -188,7 +188,7 @@ Cada plataforma requiere su propio archivo de configuración:
 Dado que no existe estándar universal, la approach recomendada es:
 
 1. **Source of truth:** `.agents/mcp/mcp-servers.json` (a crear)
-2. **Script de sync:** `.agents/mcp/sync-mcp.sh` (a crear)
+2. **Script de sync:** `.agents/sync.sh --only=mcp` (a crear)
 3. **Configs generados:** Por plataforma automáticamente
 
 **Estado actual en proyecto:**
@@ -315,7 +315,7 @@ npx openskills install vercel-labs/code-review --universal
 mkdir -p .mcp
 # Editar .agents/mcp/mcp-servers.json
 # Ejecutar sync script
-.agents/mcp/sync-mcp.sh
+.agents/sync.sh --only=mcp
 ```
 
 ### Caso 2: Equipo Multi-Agente (Este Proyecto)
@@ -444,7 +444,7 @@ readlink .gemini/skills        # → ../.agents/skills
 - ✅ **Implementado** - Sistema de sincronización centralizado
 - ✅ **Context7** configurado en todos los agentes
 - Source of truth: `.agents/mcp/mcp-servers.json`
-- Script de sync: `.agents/mcp/sync-mcp.sh`
+- Script de sync: `.agents/sync.sh --only=mcp`
 
 ---
 

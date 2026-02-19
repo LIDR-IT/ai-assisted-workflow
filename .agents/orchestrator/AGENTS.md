@@ -47,16 +47,23 @@ npm run format:check      # Check formatting without changes
 
 ```bash
 # Master sync - Run after ANY change in .agents/
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Individual component syncs
-./.agents/rules/sync-rules.sh       # Rules and skills
-./.agents/mcp/sync-mcp.sh           # MCP configurations
-./.agents/hooks/sync-hooks.sh       # Git hooks
+./.agents/sync.sh --only=rules        # Rules only
+./.agents/sync.sh --only=mcp          # MCP configurations only
+./.agents/sync.sh --only=hooks        # Git hooks only
+
+# Platform-specific sync
+./.agents/sync.sh --platform=copilot            # Copilot only
+./.agents/sync.sh --platform=cursor,claude       # Multiple platforms
+
+# Combined
+./.agents/sync.sh --platform=copilot --only=rules,mcp
 
 # Dry run (preview changes)
-./.agents/sync-all.sh --dry-run
-./.agents/rules/sync-rules.sh --dry-run
+./.agents/sync.sh --dry-run
+./.agents/sync.sh --only=rules --dry-run
 ```
 
 ### Verification
@@ -113,24 +120,45 @@ ls .github/agents/*.agent.md
 ├── commands/                 # 3 slash commands
 │   ├── commit.md             # Smart commit generation
 │   ├── improve-docs.md       # Doc auditing
-│   └── sync-setup.md         # Run sync-all.sh
+│   └── sync-setup.md         # Run sync.sh
 │
 ├── subagents/                # 1 autonomous agent
 │   └── doc-improver.md       # Documentation auditor
 │
 ├── mcp/                      # MCP server configs
-│   ├── mcp-servers.json      # ← Source (universal format)
-│   └── sync-mcp.sh           # Generates platform JSONs
+│   └── mcp-servers.json      # ← Source (universal format)
 │
 ├── hooks/                    # Git workflow automation
-│   ├── scripts/              # notify.sh, auto-format.sh, protect-secrets.sh
-│   └── sync-hooks.sh         # Generates platform configs
+│   ├── hooks.json            # ← Source (hook definitions)
+│   └── scripts/              # notify.sh, auto-format.sh, protect-secrets.sh
 │
 ├── orchestrator/             # Orchestrator docs
-│   ├── AGENTS.md             # ← This file
-│   └── sync-orchestrator.sh  # Creates root symlinks
+│   └── AGENTS.md             # ← This file
 │
-└── sync-all.sh               # ← Master sync (runs all)
+├── platforms.json            # Platform registry (capabilities)
+├── lib/                      # Shared libraries (DRY)
+│   ├── core.sh               # Logging, colors, validation
+│   ├── symlink.sh            # Symlink management
+│   ├── frontmatter.sh        # YAML frontmatter parsing
+│   └── registry.sh           # Platform registry queries
+│
+├── adapters/                 # Platform adapters (Open/Closed)
+│   ├── cursor.sh             # Cursor transformations
+│   ├── claude.sh             # Claude Code transformations
+│   ├── gemini.sh             # Gemini CLI transformations
+│   ├── copilot.sh            # Copilot/VSCode transformations
+│   └── antigravity.sh        # Antigravity transformations
+│
+├── sync/                     # Component orchestrators (SRP)
+│   ├── orchestrator.sh       # Root symlinks
+│   ├── rules.sh              # Rules dispatch
+│   ├── skills.sh             # Skills dispatch
+│   ├── commands.sh           # Commands dispatch
+│   ├── agents.sh             # Agents dispatch
+│   ├── mcp.sh                # MCP dispatch
+│   └── hooks.sh              # Hooks dispatch
+│
+└── sync.sh                   # ← Unified CLI entry point
 ```
 
 ### Synchronization Strategies by Component
@@ -219,7 +247,7 @@ EOF
 wc -c .agents/rules/team/api-standards.md
 
 # 3. Sync to all platforms
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # 4. Verify
 ls .cursor/rules/api-standards.mdc              # Cursor (converted)
@@ -258,7 +286,7 @@ vim .agents/mcp/mcp-servers.json
 jq empty .agents/mcp/mcp-servers.json
 
 # 3. Generate platform-specific configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 4. Commit BOTH source and generated files
 git add .agents/mcp/mcp-servers.json
@@ -300,7 +328,7 @@ See references/testing-patterns.md for deep dive.
 EOF
 
 # Sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Verify
 ls .cursor/skills/react-testing/
@@ -469,7 +497,7 @@ version: 1.0.0
 | --------------- | ----------------------------------- | ----------------------- |
 | `/commit`       | Smart commit message generation     | commit-management skill |
 | `/improve-docs` | Documentation audit and improvement | doc-improver agent      |
-| `/sync-setup`   | Synchronize all configurations      | sync-all.sh script      |
+| `/sync-setup`   | Synchronize all configurations      | sync.sh CLI             |
 
 ### Command → Agent → Skill Pattern
 
@@ -657,7 +685,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 fix: Resolve symlink creation error on Windows
 
-Fixed path resolution in sync-all.sh to work with
+Fixed path resolution in sync.sh to work with
 Windows Developer Mode symlinks. Added check for
 elevated permissions.
 
@@ -690,7 +718,7 @@ ls .cursor/rules/*.md  # Should be empty
 head -10 .agents/rules/my-rule.md
 
 # Re-run sync
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # Verify in Cursor: Settings → Rules → Check rule appears
 ```
@@ -700,7 +728,7 @@ head -10 .agents/rules/my-rule.md
 **Cursor rules (copied, not symlinked):**
 
 ```bash
-./.agents/rules/sync-rules.sh  # Must re-run after edits
+./.agents/sync.sh --only=rules  # Must re-run after edits
 ```
 
 **Claude/Gemini (symlinked):**
@@ -713,7 +741,7 @@ readlink .claude/rules  # Should: ../.agents/rules
 **Copilot rules (copied, not symlinked):**
 
 ```bash
-./.agents/rules/sync-rules.sh  # Must re-run after edits
+./.agents/sync.sh --only=rules  # Must re-run after edits
 # Also regenerates .github/copilot-instructions.md index
 ```
 
@@ -737,7 +765,7 @@ cat .agents/mcp/.env
 jq empty .agents/mcp/mcp-servers.json
 
 # 4. Regenerate configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 5. Check generated files
 jq . .cursor/mcp.json
@@ -804,11 +832,11 @@ ln -s ../.agents/skills .cursor/skills
 
 ```bash
 # Changed anything in .agents/? Run sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Or individual component syncs
-./.agents/rules/sync-rules.sh
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=rules
+./.agents/sync.sh --only=mcp
 ```
 
 ### 4. Test on Target Platforms

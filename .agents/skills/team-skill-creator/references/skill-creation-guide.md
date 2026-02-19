@@ -487,7 +487,7 @@ This skill provides access to company database schemas and query patterns.
 ./.agents/skills/team-skill-creator/scripts/validate-skill.sh {skill-name}
 
 # Sync to platforms
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Test in AI agent
 # Try trigger phrases from description
@@ -511,7 +511,7 @@ This skill provides access to company database schemas and query patterns.
 **Synchronization:**
 
 - Generic: Manual installation
-- `.agents/`: Automatic via `sync-all.sh`
+- `.agents/`: Automatic via `sync.sh`
 
 **Platform awareness:**
 
@@ -524,10 +524,10 @@ After creating skill, synchronization happens automatically:
 
 ```bash
 # Automatic (when using team-skill-creator)
-# Claude executes: ./.agents/sync-all.sh
+# Claude executes: ./.agents/sync.sh
 
 # Manual (when editing existing skills)
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 **Verification:**
@@ -552,7 +552,7 @@ cat .cursor/skills/{skill-name}/SKILL.md
 **Antigravity:**
 
 - ⚠️ Selective symlinks (per-skill)
-- ⚠️ Must re-sync after editing: `./.agents/sync-all.sh`
+- ⚠️ Must re-sync after editing: `./.agents/sync.sh`
 
 ### Integration with Team Workflow
 
@@ -569,7 +569,7 @@ cat .cursor/skills/{skill-name}/SKILL.md
 
 1. Edit files in `.agents/skills/{skill-name}/`
 2. Changes propagate instantly (Cursor/Claude/Gemini)
-3. For Antigravity: Re-run `./.agents/sync-all.sh`
+3. For Antigravity: Re-run `./.agents/sync.sh`
 4. Verify changes: `cat .cursor/skills/{skill-name}/SKILL.md`
 
 ## Summary Checklist
@@ -587,7 +587,7 @@ Creating a skill in `.agents/` system:
 - [ ] Keep SKILL.md lean (400-700 lines ideal)
 - [ ] Reference bundled resources from SKILL.md
 - [ ] Validate structure: `scripts/validate-skill.sh {skill-name}`
-- [ ] Sync automatically happens (or run manually: `./.agents/sync-all.sh`)
+- [ ] Sync automatically happens (or run manually: `./.agents/sync.sh`)
 - [ ] Verify symlinks: `ls -la .cursor/skills/{skill-name}`
 - [ ] Test skill with trigger phrases in AI agents
 - [ ] Iterate based on usage feedback

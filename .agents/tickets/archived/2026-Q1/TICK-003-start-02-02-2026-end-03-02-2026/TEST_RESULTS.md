@@ -155,7 +155,7 @@ log_step "Testing step"
 **Workflow Validated:**
 
 1. Check for config changes in `.agents/`
-2. Run sync-all.sh if changes detected (120s timeout)
+2. Run sync.sh if changes detected (120s timeout)
 3. Check for package.json changes
 4. Run npm install if changes detected (180s timeout)
 5. Check for stale branches (deleted remotely)
@@ -299,7 +299,7 @@ git commit -m "feat(TICK-003): Add post-merge and pre-push git hooks..."
 
 ### ✅ All 12 Criteria Verified
 
-1. ✅ **post-merge hook automatically runs sync-all.sh**
+1. ✅ **post-merge hook automatically runs sync.sh**
    - Implemented in `post-merge.sh:46-57`
    - Detects changes in `.agents/` directories
    - Runs with 120-second timeout

@@ -59,7 +59,7 @@ project-root/
 
 **Scripts:**
 
-- Use kebab-case: `sync-mcp.sh`, `sync-rules.sh`
+- Use kebab-case: `sync.sh`, `protect-secrets.sh`
 - Include `.sh` extension for bash scripts
 - Make executable: `chmod +x script.sh`
 
@@ -456,5 +456,5 @@ PATH="/Users/user/project/file.txt"
 - [Bash Best Practices](https://bertvv.github.io/cheat-sheets/Bash.html)
 - [Markdown Guide](https://www.markdownguide.org/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
-- `.agents/mcp/sync-mcp.sh` - Reference implementation
+- `.agents/sync.sh` - Unified sync CLI (reference implementation)
 ````

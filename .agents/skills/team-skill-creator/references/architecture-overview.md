@@ -168,7 +168,7 @@ Platform-specific directories receive synced configurations:
 ```
 .agents/mcp/
 ├── mcp-servers.json      # Source of truth
-└── sync-mcp.sh           # Generation script
+└── (synced via .agents/sync.sh --only=mcp)
 ```
 
 **Sync strategy:**
@@ -213,7 +213,7 @@ ln -s ../.agents/skills .cursor/skills
 
 ```bash
 # Source: .agents/mcp/mcp-servers.json
-# Script: .agents/mcp/sync-mcp.sh
+# Script: .agents/sync.sh --only=mcp
 # Generated:
 #   .cursor/mcp.json
 #   .claude/mcp.json
@@ -397,8 +397,8 @@ Step 1: Create in source
   .agents/skills/new-skill/SKILL.md
 
 Step 2: Automatic sync triggered
-  ./.agents/sync-all.sh
-    └─ ./.agents/skills/sync-skills.sh
+  ./.agents/sync.sh
+    └─ ./.agents/sync.sh --only=skills
 
 Step 3: Symlinks created
   .cursor/skills → ../.agents/skills
@@ -419,8 +419,8 @@ Step 1: Create in source
   .agents/commands/new-command.md
 
 Step 2: Automatic sync triggered
-  ./.agents/sync-all.sh
-    └─ ./.agents/commands/sync-commands.sh
+  ./.agents/sync.sh
+    └─ ./.agents/sync.sh --only=commands
 
 Step 3: Symlinks created
   .cursor/commands → ../.agents/commands
@@ -454,7 +454,7 @@ Step 1: Edit source
   .agents/mcp/mcp-servers.json
 
 Step 2: Run sync
-  ./.agents/mcp/sync-mcp.sh
+  ./.agents/sync.sh --only=mcp
 
 Step 3: Generate platform configs
   .cursor/mcp.json (Cursor format)
@@ -500,21 +500,22 @@ Step 4: Antigravity manual config
 User creates/edits in .agents/
        │
        ▼
-.agents/sync-all.sh executes
+.agents/sync.sh executes
+       │  (loads adapters/ and sync/ modules)
        │
-       ├─── sync-rules.sh
+       ├─── sync/rules.sh
        │      └─ Creates symlinks (Cursor/Claude/Gemini)
        │      └─ Antigravity: reads natively from .agents/rules/
        │
-       ├─── sync-skills.sh
+       ├─── sync/skills.sh
        │      └─ Creates symlinks (Cursor/Claude/Gemini)
        │      └─ Antigravity: reads natively from .agents/skills/
        │
-       ├─── sync-commands.sh
+       ├─── sync/commands.sh
        │      └─ Creates symlinks (Cursor/Claude/Gemini)
        │      └─ Antigravity: reads via .agents/workflows → commands
        │
-       └─── sync-mcp.sh
+       └─── sync/mcp.sh
               └─ Generates platform configs
                   ├─ .cursor/mcp.json
                   ├─ .claude/mcp.json

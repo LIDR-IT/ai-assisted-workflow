@@ -33,7 +33,7 @@ cp .agents/mcp/.env.example .agents/mcp/.env
 # Edit .env and add CONTEXT7_API_KEY
 
 # 2. Sync all configurations
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # 3. Verify
 ls -la .cursor/skills .claude/rules .gemini/commands
@@ -123,7 +123,7 @@ User: "Create a skill for React component testing with test templates"
 1. Creates .agents/skills/react-testing/ structure
 2. Generates SKILL.md with frontmatter
 3. Adds references/ and assets/ directories
-4. Runs ./.agents/sync-all.sh automatically
+4. Runs ./.agents/sync.sh automatically
 5. Verifies sync across all platforms
 ```
 
@@ -210,7 +210,7 @@ vim .agents/mcp/mcp-servers.json
 }
 
 # 2. Generate platform-specific configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 3. Commit BOTH source and generated files
 git add .agents/mcp/mcp-servers.json
@@ -229,7 +229,7 @@ git commit -m "feat: Add my-server MCP integration"
 **Available Patterns:**
 
 - **Pre-commit validation** - Check rules character count, validate JSON
-- **Post-merge sync** - Auto-run sync scripts after pulling changes
+- **Post-merge sync** - Auto-run sync CLI after pulling changes
 - **Pre-push checks** - Verify sync status before pushing
 
 **Example Hook:**
@@ -272,7 +272,7 @@ echo "✅ Pre-commit checks passed"
 | --------------- | ----------------------------------- | ----------------------- |
 | `/commit`       | Smart commit message generation     | commit-management skill |
 | `/improve-docs` | Documentation audit and improvement | doc-improver agent      |
-| `/sync-setup`   | Synchronize all configurations      | sync-all.sh script      |
+| `/sync-setup`   | Synchronize all configurations      | sync.sh CLI             |
 
 **Command → Agent → Skill Pattern:**
 
@@ -318,7 +318,17 @@ All AI agent configurations centralized in `.agents/` directory:
 ├── commands/                 # 3 slash commands
 ├── subagents/                # Specialized subagents
 ├── mcp/                      # MCP server configs
-└── sync-all.sh               # Master sync script
+├── sync.sh                   # ← Unified sync CLI (--platform=, --only=, --dry-run)
+├── platforms.json            # ← Platform registry (capabilities, strategies)
+├── lib/                      # ← Shared libraries (DRY)
+│   ├── core.sh               # Logging, colors, validation
+│   ├── symlink.sh            # Symlink management
+│   ├── frontmatter.sh        # YAML parser
+│   └── registry.sh           # Platform queries
+├── adapters/                 # ← Platform adapters (1 per platform)
+│   ├── cursor.sh, claude.sh, gemini.sh, copilot.sh, antigravity.sh
+└── sync/                     # ← Component orchestrators
+    ├── rules.sh, skills.sh, commands.sh, agents.sh, mcp.sh, hooks.sh, orchestrator.sh
 
 orchestrator/                 # ← Orchestrator documentation
 └── AGENTS.md                 # Source of truth for agent docs
@@ -412,7 +422,7 @@ cat .claude/rules/code/principles.md
 #### 3. Script Generation
 
 **Used for:** MCP configurations, Gemini rules index
-**Scripts:** `sync-mcp.sh`, `sync-rules.sh`
+**CLI:** `sync.sh --only=mcp`, `sync.sh --only=rules`
 
 **Why needed:** Each platform requires different JSON structure
 
@@ -533,22 +543,23 @@ done
 
 ```bash
 #!/bin/bash
-# .agents/sync-all.sh
+# .agents/sync.sh — Unified sync CLI
 
-# 1. Rules first (dependencies for agents)
-./.agents/rules/sync-rules.sh
+# Sync everything (default)
+./.agents/sync.sh
 
-# 2. Skills (knowledge base)
-./.agents/skills/sync-skills.sh
+# Or sync individual components
+./.agents/sync.sh --only=rules       # 1. Rules first (dependencies for agents)
+./.agents/sync.sh --only=skills      # 2. Skills (knowledge base)
+./.agents/sync.sh --only=commands    # 3. Commands (user interface)
+./.agents/sync.sh --only=agents      # 4. Agents (autonomous workflows)
+./.agents/sync.sh --only=mcp         # 5. MCP last (external integrations)
 
-# 3. Commands (user interface)
-./.agents/commands/sync-commands.sh
+# Preview changes without applying
+./.agents/sync.sh --dry-run
 
-# 4. Agents (autonomous workflows, depend on rules/skills)
-./.agents/agents/sync-agents.sh
-
-# 5. MCP last (external integrations)
-./.agents/mcp/sync-mcp.sh
+# Target a specific platform
+./.agents/sync.sh --platform=cursor
 ```
 
 ### File Watching Behavior
@@ -564,12 +575,12 @@ done
 
 ```bash
 # Option 1: Sync BEFORE opening Antigravity (Recommended)
-./.agents/sync-all.sh
+./.agents/sync.sh
 # THEN open Antigravity → rules loaded with correct timestamps
 
 # Option 2: Reload AFTER sync
 # 1. Antigravity already open
-# 2. Run sync: ./.agents/sync-all.sh
+# 2. Run sync: ./.agents/sync.sh
 # 3. Close and reopen project in Antigravity
 ```
 
@@ -587,7 +598,7 @@ done
 - **Platform capabilities differ:** Some support symlinks, some don't; some support subdirectories, some don't
 - **Graceful degradation:** Handle limitations without breaking functionality
 - **Optimal strategy per component:** Use best approach for each (symlinks > generation > copy)
-- **Transparent handling:** Sync scripts hide complexity from users
+- **Transparent handling:** Sync CLI hides complexity from users
 
 **Why `.agents/` directory?**
 
@@ -616,7 +627,7 @@ done
 
 1. Create rule: `.agents/rules/code/review-checklist.md`
 2. Add universal YAML frontmatter (works on all 5 platforms)
-3. Run sync: `./.agents/rules/sync-rules.sh`
+3. Run sync: `./.agents/sync.sh --only=rules`
 4. All agents automatically apply checklist
 
 **Result:** Every code review follows same standards across Cursor, Claude Code, Gemini CLI, Antigravity, and Copilot
@@ -751,7 +762,7 @@ Use assets/controller-template.ts for new controllers.
 
 **Solution:**
 1. Clone repository
-2. Run `./.agents/sync-all.sh`
+2. Run `./.agents/sync.sh`
 3. All rules, skills, commands available immediately in their AI agents
 
 **Result:** New developer's AI agents already know:
@@ -768,7 +779,7 @@ Use assets/controller-template.ts for new controllers.
 # Day 1: New developer joins
 git clone team-repo.git
 cd team-repo
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # AI agents now have:
 # - 14 project rules
@@ -955,8 +966,8 @@ vim .agents/mcp/.env
 ### Step 3: Synchronize Configurations
 
 ```bash
-# Run master sync script
-./.agents/sync-all.sh
+# Run unified sync CLI
+./.agents/sync.sh
 ```
 
 **Expected output:**
@@ -1165,7 +1176,7 @@ Instructions for using this skill.
 EOF
 
 # Re-sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Verify
 ls .cursor/rules/my-standard.mdc
@@ -1198,7 +1209,7 @@ git commit -m "feat: Add project-specific configurations"
 # Right-click terminal → "Run as Administrator"
 
 # Re-run sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 ---
@@ -1221,7 +1232,7 @@ jq . .agents/mcp/mcp-servers.json
 # Should output formatted JSON without errors
 
 # 4. Regenerate configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 5. Check generated files
 jq . .cursor/mcp.json
@@ -1244,7 +1255,7 @@ ls .cursor/rules/
 # Should see .mdc files (not .md)
 
 # Re-run sync if missing
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 ```
 
 **For Antigravity:**
@@ -1280,7 +1291,7 @@ A: This is a multi-agent synchronization framework for managing AI development c
 A: Development teams, enterprises, and DevOps teams managing AI-assisted workflows. Ideal for teams using multiple AI platforms who want consistent behavior.
 
 **Q: Do I need all 5 platforms?**
-A: No. The template works with any subset of platforms. Use only the ones your team needs - sync scripts handle missing platforms gracefully.
+A: No. The template works with any subset of platforms. Use only the ones your team needs - the sync CLI handles missing platforms gracefully.
 
 **Q: Is this production-ready?**
 A: Yes. After 40% consolidation (482→287 files), the project is focused, tested, and actively maintained. Many teams use it in production.
@@ -1321,14 +1332,14 @@ A: See [Platform Support Matrix](#platform-support-matrix) in Architecture secti
 
 ### Synchronization
 
-**Q: When do I run sync scripts?**
-A: After ANY change in `.agents/` directory. Add/edit/delete rule, skill, command, agent, or MCP server → run sync.
+**Q: When do I run the sync CLI?**
+A: After ANY change in `.agents/` directory. Add/edit/delete rule, skill, command, agent, or MCP server → run `./.agents/sync.sh`.
 
 **Q: Can I auto-sync?**
-A: No auto-sync by default (manual is safer, explicit, verifiable). Can add git hooks for post-merge auto-sync if desired.
+A: No auto-sync by default (manual is safer, explicit, verifiable). Use `./.agents/sync.sh --dry-run` to preview changes. Can add git hooks for post-merge auto-sync if desired.
 
 **Q: What if sync fails?**
-A: Check error message, verify source files exist, check permissions, re-run sync. Most failures are missing source files or permission issues.
+A: Check error message, verify source files exist, check permissions, re-run `./.agents/sync.sh`. Use `--dry-run` to preview changes without applying. Most failures are missing source files or permission issues.
 
 **Q: Do I commit generated files?**
 A: YES for MCP configs (`.cursor/mcp.json`, `.claude/mcp.json`, `.gemini/settings.json`). Symlinks auto-restore on clone, don't need special handling.
@@ -1338,7 +1349,7 @@ A: YES for MCP configs (`.cursor/mcp.json`, `.claude/mcp.json`, `.gemini/setting
 ### Customization
 
 **Q: How do I add a project-specific rule?**
-A: Create in `.agents/rules/{category}/my-rule.md`, add universal YAML frontmatter, run `./.agents/rules/sync-rules.sh`.
+A: Create in `.agents/rules/{category}/my-rule.md`, add universal YAML frontmatter, run `./.agents/sync.sh --only=rules`.
 
 **Q: Can I modify existing rules?**
 A: YES. Edit in `.agents/rules/`, NEVER in platform directories (`.cursor/`, `.claude/`, etc.). Then run sync.
@@ -1357,26 +1368,26 @@ A: Yes, but discouraged. Prefer universal skills that work everywhere. If needed
 A: Windows issue. Enable Developer Mode: Settings → Update & Security → For Developers → Developer Mode. Restart terminal, re-run sync.
 
 **Q: MCP server not loading?**
-A: 1) Restart platform, 2) Check env vars in `.agents/mcp/.env`, 3) Verify JSON syntax with `jq . .agents/mcp/mcp-servers.json`, 4) Regenerate configs.
+A: 1) Restart platform, 2) Check env vars in `.agents/mcp/.env`, 3) Verify JSON syntax with `jq . .agents/mcp/mcp-servers.json`, 4) Regenerate configs with `./.agents/sync.sh --only=mcp`.
 
 **Q: Rules not applying?**
 A: **Antigravity:** Close/reopen project (rules cached). **Cursor:** Check `.mdc` files exist. **All:** Verify source file in `.agents/rules/`.
 
 **Q: Changes not propagating?**
-A: Check symlink valid with `readlink .cursor/skills`. Verify source file exists. For Cursor rules, re-run sync (uses copy, not symlink).
+A: Check symlink valid with `readlink .cursor/skills`. Verify source file exists. For Cursor rules, re-run `./.agents/sync.sh --only=rules` (uses copy, not symlink).
 
 ---
 
 ### Advanced
 
 **Q: Can I add more MCP servers?**
-A: YES. Edit `.agents/mcp/mcp-servers.json`, add server entry, run `./.agents/mcp/sync-mcp.sh`, commit source and generated files.
+A: YES. Edit `.agents/mcp/mcp-servers.json`, add server entry, run `./.agents/sync.sh --only=mcp`, commit source and generated files.
 
 **Q: How do I create team-wide conventions?**
 A: Add rules in `.agents/rules/team/`. These sync to all team members. Examples: code review standards, security policies, API patterns.
 
 **Q: Can I use this with CI/CD?**
-A: YES. Sync scripts work in automation. Example: Run `./.agents/sync-all.sh` in GitHub Actions to verify configs synced before deployment.
+A: YES. The sync CLI works in automation. Example: Run `./.agents/sync.sh` in GitHub Actions to verify configs synced before deployment.
 
 **Q: How do I version control this?**
 A: Commit `.agents/` directory (source of truth) AND generated configs (`.cursor/mcp.json`, etc.). Symlinks auto-restore on clone.
@@ -1398,7 +1409,6 @@ template-best-practices/
 │   │   ├── team/                    # skills-management.md, third-party-security.md
 │   │   ├── tools/                   # use-context7.md, claude-code-extensions.md
 │   │   ├── README.md                # Rules guidelines (12K char limit, YAML format)
-│   │   ├── sync-rules.sh            # ← Rules synchronization script
 │   │   └── migrate-yaml.sh          # YAML frontmatter migration utility
 │   │
 │   ├── skills/                      # 9 skill packages
@@ -1410,25 +1420,31 @@ template-best-practices/
 │   │   ├── mcp-integration/         # MCP server setup
 │   │   ├── skill-creator/           # Skill scaffold generator
 │   │   ├── skill-development/       # Skill architecture patterns
-│   │   ├── team-skill-creator/      # Meta-skill for creating components
-│   │   └── sync-skills.sh           # ← Skills synchronization script
+│   │   └── team-skill-creator/      # Meta-skill for creating components
 │   │
 │   ├── commands/                    # 3 slash commands
 │   │   ├── commit.md                # Smart commit generation
 │   │   ├── improve-docs.md          # Documentation audit
-│   │   ├── sync-setup.md            # Configuration sync
-│   │   └── sync-commands.sh         # ← Commands synchronization script
+│   │   └── sync-setup.md            # Configuration sync
 │   │
 │   ├── agents/                      # 1 autonomous agent
-│   │   ├── doc-improver.md          # Documentation auditor
-│   │   └── sync-agents.sh           # ← Agents synchronization script
+│   │   └── doc-improver.md          # Documentation auditor
 │   │
 │   ├── mcp/                         # MCP configuration
 │   │   ├── mcp-servers.json         # ← Source of truth for MCP servers
-│   │   ├── sync-mcp.sh              # ← Generates platform-specific configs
 │   │   └── .env.example             # Environment variables template
 │   │
-│   ├── sync-all.sh                  # ← Master sync script (runs all syncs)
+│   ├── sync.sh                      # ← Unified sync CLI (--platform=, --only=, --dry-run)
+│   ├── platforms.json               # ← Platform registry (capabilities, strategies)
+│   ├── lib/                         # ← Shared libraries (DRY)
+│   │   ├── core.sh                  # Logging, colors, validation
+│   │   ├── symlink.sh               # Symlink management
+│   │   ├── frontmatter.sh           # YAML parser
+│   │   └── registry.sh              # Platform queries
+│   ├── adapters/                    # ← Platform adapters (1 per platform)
+│   │   ├── cursor.sh, claude.sh, gemini.sh, copilot.sh, antigravity.sh
+│   ├── sync/                        # ← Component orchestrators
+│   │   ├── rules.sh, skills.sh, commands.sh, agents.sh, mcp.sh, hooks.sh, orchestrator.sh
 │   ├── agent-readme.md              # Agents documentation
 │   ├── commands-readme.md           # Commands documentation
 │   └── mcp-readme.md                # MCP documentation
@@ -1500,9 +1516,9 @@ template-best-practices/
 ### Legend
 
 - `← Source of truth` - Edit these files, never derived copies
-- `← Generated` - Created by sync scripts, do not edit manually
+- `← Generated` - Created by sync CLI, do not edit manually
 - `← Symlink` - Points to source, changes propagate instantly
-- `← Copied` - Platform limitation, sync script handles updates
+- `← Copied` - Platform limitation, sync CLI handles updates
 
 ### Key Directories
 
@@ -1513,7 +1529,7 @@ template-best-practices/
 **`.cursor/` `.claude/` `.gemini/`** - Platform-specific
 - Generated or symlinked from `.agents/`
 - **Do not edit directly**
-- Regenerate with sync scripts
+- Regenerate with `./.agents/sync.sh`
 
 **Antigravity** - Reads natively from `.agents/` (no separate platform directory)
 - Rules, skills, and workflows detected directly from `.agents/`
@@ -1675,7 +1691,7 @@ EOF
 wc -c .agents/rules/team/new-rule.md
 
 # 3. Run sync
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # 4. Verify synchronization
 ls .cursor/rules/new-rule.mdc                # Cursor (converted)
@@ -1717,7 +1733,7 @@ See: [Rules Documentation](docs/en/references/rules/memory-and-rules.md)
 1. Create .agents/skills/react-testing/ structure
 2. Generate SKILL.md with frontmatter
 3. Add references/, examples/, assets/, scripts/ directories
-4. Run ./.agents/sync-all.sh automatically
+4. Run ./.agents/sync.sh automatically
 5. Verify sync across all platforms
 ```
 
@@ -1760,7 +1776,7 @@ echo "# Deep Guide" > .agents/skills/my-skill/references/deep-guide.md
 echo "# Example Usage" > .agents/skills/my-skill/examples/usage-example.md
 
 # 4. Sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # 5. Test
 # In AI: "Help me with [skill purpose]"
@@ -1834,7 +1850,7 @@ Brief description of what this command does.
 EOF
 
 # 2. Sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # 3. Test command
 # In Claude Code: /my-command
@@ -1890,7 +1906,7 @@ jq empty .agents/mcp/mcp-servers.json
 # Should output nothing (valid JSON)
 
 # 4. Generate platform-specific configs
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # 5. Verify generated files
 jq . .cursor/mcp.json
@@ -1935,7 +1951,7 @@ vim .agents/rules/team/api-conventions.md
 vim .agents/skills/api-patterns/SKILL.md
 
 # 3. Run sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # 4. Test with AI agents
 # Open Cursor/Claude/Gemini
@@ -1991,7 +2007,7 @@ When reviewing contributions, verify:
 - [ ] Both source and generated files committed
 
 **General:**
-- [ ] Sync scripts run successfully
+- [ ] Sync CLI runs successfully (`./.agents/sync.sh`)
 - [ ] Tested on at least one platform
 - [ ] Documentation updated (if needed)
 - [ ] Conventional commit message used
@@ -2044,7 +2060,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 fix: Resolve symlink creation error on Windows
 
-Fixed path resolution in sync-all.sh to work with
+Fixed path resolution in sync.sh to work with
 Windows Developer Mode symlinks. Added check for
 elevated permissions.
 

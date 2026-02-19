@@ -30,7 +30,7 @@ This hooks system provides **3 simple, practical hooks** that demonstrate real-w
 ```
 .agents/hooks/
 ├── hooks.json              # Source (Claude Code format)
-├── sync-hooks.sh           # Synchronization script
+├── (synced via .agents/sync.sh --only=hooks)
 └── scripts/
     ├── notify.sh           # Desktop notifications
     ├── auto-format.sh      # Auto-format with prettier
@@ -107,7 +107,7 @@ This hooks system provides **3 simple, practical hooks** that demonstrate real-w
 
 ```bash
 # 1. Sync hooks to platforms
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 
 # 2. Verify installation
 ls -la .claude/hooks .gemini/hooks
@@ -288,7 +288,7 @@ chmod +x .agents/hooks/scripts/my-hook.sh
 4. **Sync to platforms:**
 
 ```bash
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 ```
 
 ### Disabling a Hook
@@ -300,7 +300,7 @@ chmod +x .agents/hooks/scripts/my-hook.sh
 vim .agents/hooks/hooks.json
 
 # Re-sync
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 ```
 
 **Option 2: Platform-specific disable**
@@ -445,7 +445,7 @@ jq .hooks .gemini/settings.json
 **Re-sync if needed:**
 
 ```bash
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 ```
 
 ### Hook Script Errors
@@ -606,7 +606,7 @@ cp .gemini/settings.json .gemini/settings.json.bak
 2. **Run new sync:**
 
 ```bash
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 ```
 
 3. **Remove old Cursor hooks:**

@@ -4,7 +4,7 @@ This guide explains how to set up and use the centralized rules and skills synch
 
 ## Overview
 
-The `.agents/rules/sync-rules.sh` script synchronizes:
+The `.agents/sync.sh` CLI synchronizes:
 
 - **Rules** - Project guidelines and standards (`.agents/rules/*.md`)
 - **Skills** - Agent capabilities and extensions (`.agents/skills/`)
@@ -35,7 +35,7 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 │   ├── git-workflow.md
 │   ├── testing.md
 │   ├── use-context7.md
-│   └── sync-rules.sh      # Synchronization script
+│   └── ...                 # Rule files by category
 └── skills/                 # Source of truth for skills
     ├── agent-development/
     ├── command-development/
@@ -82,19 +82,19 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 2. **Make script executable (if not already):**
 
    ```bash
-   chmod +x .agents/rules/sync-rules.sh
+   chmod +x .agents/sync.sh
    ```
 
 3. **Test with dry-run:**
 
    ```bash
-   ./.agents/rules/sync-rules.sh --dry-run
+   ./.agents/sync.sh --only=rules --dry-run
    ```
 
 4. **Run actual sync:**
 
    ```bash
-   ./.agents/rules/sync-rules.sh
+   ./.agents/sync.sh --only=rules
    ```
 
 5. **Verify symlinks created:**
@@ -111,13 +111,13 @@ The `.agents/rules/sync-rules.sh` script synchronizes:
 **Basic usage:**
 
 ```bash
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 ```
 
 **Dry-run mode (preview changes):**
 
 ```bash
-./.agents/rules/sync-rules.sh --dry-run
+./.agents/sync.sh --only=rules --dry-run
 ```
 
 **Expected output:**
@@ -319,8 +319,8 @@ ls -la .cursor/rules
 **Solution:**
 
 ```bash
-# Re-run sync script
-./.agents/rules/sync-rules.sh
+# Re-run sync
+./.agents/sync.sh --only=rules
 
 # Or manually create
 rm -rf .cursor/rules
@@ -346,7 +346,7 @@ rm .cursor/rules
 ln -s ../.agents/rules .cursor/rules
 
 # Or re-run sync
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 ```
 
 ### Changes Not Propagating
@@ -404,10 +404,10 @@ git clone <repo-url>
 ls -la .cursor/
 
 # Make script executable
-chmod +x .agents/rules/sync-rules.sh
+chmod +x .agents/sync.sh
 
 # Run with correct permissions
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 ```
 
 ### Antigravity-Specific Issues
@@ -446,7 +446,7 @@ After pulling changes that update rules/skills:
 ```bash
 # For Cursor/Claude/Gemini - no action needed (symlinks)
 # For Antigravity - re-sync to copy new rules
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 ```
 
 ### Clean Slate Re-sync
@@ -461,7 +461,7 @@ rm -rf .gemini/rules
 # Note: Antigravity reads natively from .agents/ — nothing to remove
 
 # Re-run sync
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 ```
 
 ### Custom Sync for Single Platform
@@ -469,7 +469,7 @@ rm -rf .gemini/rules
 To sync only one platform:
 
 ```bash
-# Edit sync-rules.sh to comment out platforms
+# Use --only= flag to sync specific components
 # Or manually create symlinks:
 
 # Cursor only
@@ -485,7 +485,7 @@ ln -s ../.agents/skills .cursor/skills
 
 - `.agents/rules/*.md` - Source rules
 - `.agents/skills/` - Source skills
-- `.agents/rules/sync-rules.sh` - Sync script
+- `.agents/sync.sh` - Unified sync CLI
 - `.cursor/rules`, `.claude/rules`, etc. - Symlinks themselves
 - Antigravity reads natively from `.agents/rules/` — no separate copy committed
 
@@ -513,7 +513,7 @@ ls -la .cursor/rules  # Shows symlink
 
 | Feature       | MCP Sync                            | Rules Sync                              |
 | ------------- | ----------------------------------- | --------------------------------------- |
-| Script        | `.agents/mcp/sync-mcp.sh`           | `.agents/rules/sync-rules.sh`           |
+| Script        | `.agents/sync.sh --only=mcp`        | `.agents/sync.sh --only=rules`          |
 | Source        | `.agents/mcp/mcp-servers.json`      | `.agents/rules/*.md`, `.agents/skills/` |
 | Method        | Generate configs                    | Create symlinks (Antigravity: native)   |
 | Platforms     | Cursor, Claude, Gemini, Antigravity | Same                                    |
@@ -549,8 +549,7 @@ ls -la .cursor/rules  # Shows symlink
 
 ## References
 
-- **Sync Script:** `.agents/rules/sync-rules.sh`
-- **MCP Sync Script:** `.agents/mcp/sync-mcp.sh` (similar pattern)
+- **Sync CLI:** `.agents/sync.sh` (use `--only=rules` or `--only=mcp`)
 - **Project README:** `README.md`
 - **Claude.md:** `.claude/CLAUDE.md`
 

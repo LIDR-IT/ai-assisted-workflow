@@ -42,7 +42,7 @@ The `.agents/` directory serves as the **single source of truth** for all AI age
 
 ### Automatic Synchronization
 
-After creating any component, this skill automatically runs `./.agents/sync-all.sh` to:
+After creating any component, this skill automatically runs `./.agents/sync.sh` to:
 
 1. Create symlinks for Cursor, Claude Code, Gemini CLI
 2. Create selective symlinks/copies for Antigravity
@@ -245,7 +245,7 @@ What do you need to create?
    - Reference them from SKILL.md
 
 6. **Automatic synchronization happens**
-   - Skill triggers sync-all.sh automatically
+   - Skill triggers sync.sh automatically
    - Symlinks created for all platforms
 
 7. **Verify synchronization**
@@ -316,7 +316,7 @@ What do you need to create?
    ```
 
 4. **Automatic synchronization happens**
-   - Command triggers sync-all.sh automatically
+   - Command triggers sync.sh automatically
    - Symlinks created for all platforms
 
 5. **Verify synchronization**
@@ -448,9 +448,9 @@ Make independent decisions about:
 
 ## Automatic Synchronization
 
-### What is sync-all.sh?
+### What is sync.sh?
 
-The `.agents/sync-all.sh` script orchestrates synchronization of all components across platforms:
+The `.agents/sync.sh` CLI orchestrates synchronization of all components across platforms:
 
 **What it does:**
 
@@ -484,7 +484,7 @@ When creating skills/commands, the workflow is:
 
 ```
 1. Create component in .agents/skills/ or .agents/commands/
-2. Claude automatically executes: ./.agents/sync-all.sh
+2. Claude automatically executes: ./.agents/sync.sh
 3. Sync script creates symlinks:
    - .cursor/skills → ../.agents/skills
    - .claude/skills → ../.agents/skills
@@ -610,7 +610,7 @@ readlink .cursor/skills/{skill-name}
 
 ```bash
 # Re-run sync manually
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Verify symlinks created
 ls -la .cursor/skills .claude/skills
@@ -637,7 +637,7 @@ ls -la .cursor/commands/{command-name}.md
 
 ```bash
 # Re-sync
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Verify
 ls .cursor/commands/ | grep {command-name}
@@ -678,11 +678,11 @@ cat .claude/agents/{agent-name}.md | head -10
 **For Antigravity:**
 
 - Changes require re-sync (files are copied, not symlinked)
-- Solution: `./.agents/sync-all.sh`
+- Solution: `./.agents/sync.sh`
 
 ### Issue: Sync Script Fails
 
-**Symptoms:** sync-all.sh exits with error
+**Symptoms:** sync.sh exits with error
 
 **Common causes:**
 
@@ -697,13 +697,13 @@ cat .claude/agents/{agent-name}.md | head -10
 ls -la .agents/rules .agents/skills .agents/commands
 
 # Check script executable
-ls -l .agents/sync-all.sh
+ls -l .agents/sync.sh
 
 # Make executable if needed
-chmod +x .agents/sync-all.sh
+chmod +x .agents/sync.sh
 
 # Re-run
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 ## Architecture Overview
@@ -743,7 +743,7 @@ For detailed understanding of the `.agents/` system, see: `references/architectu
 - **`references/command-creation-guide.md`** - Detailed workflow for creating commands, frontmatter options, and usage patterns
 - **`references/agent-creation-guide.md`** - Agent creation process, system prompt design, and autonomous workflows
 - **`references/architecture-overview.md`** - Deep dive into `.agents/` system architecture, synchronization strategies, and platform capabilities
-- **`references/sync-system.md`** - Internal workings of sync-all.sh, individual sync scripts, and troubleshooting
+- **`references/sync-system.md`** - Internal workings of sync.sh, adapter-based architecture, and troubleshooting
 
 ### Templates
 
@@ -784,16 +784,16 @@ MCP:       .agents/mcp/mcp-servers.json
 
 ```bash
 # Sync everything
-./.agents/sync-all.sh
+./.agents/sync.sh
 
 # Sync with preview (no changes)
-./.agents/sync-all.sh --dry-run
+./.agents/sync.sh --dry-run
 
 # Sync specific components
-./.agents/rules/sync-rules.sh
-./.agents/skills/sync-skills.sh
-./.agents/commands/sync-commands.sh
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=rules
+./.agents/sync.sh --only=skills
+./.agents/sync.sh --only=commands
+./.agents/sync.sh --only=mcp
 ```
 
 ### Verification Commands

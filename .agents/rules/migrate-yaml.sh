@@ -139,7 +139,7 @@ if [ $needs_update -gt 0 ]; then
   echo "  1. Review suggestions above"
   echo "  2. Update rule files with missing YAML fields"
   echo "  3. See README.md (YAML Frontmatter section) for complete field reference"
-  echo "  4. Run sync-rules.sh to propagate changes"
+  echo "  4. Run .agents/sync.sh --only=rules to propagate changes"
 else
   echo -e "${GREEN}✅ All rules have good YAML frontmatter!${NC}"
 fi

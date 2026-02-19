@@ -5,7 +5,7 @@
     "platforms": "Valid values: cursor, claude, gemini, copilot",
     "cursor_limitation": "Cursor lacks PreToolUse (no blocking). auto-format is 'nice to have', Husky pre-commit guarantees formatting",
     "copilot_limitation": "Copilot uses same format as Cursor (camelCase events, no Notification)",
-    "sync_behavior": "sync-hooks.sh reads 'platforms' field to generate platform-specific configs"
+    "sync_behavior": "sync.sh --only=hooks reads 'platforms' field to generate platform-specific configs"
   },
   "hooks": {
     "notify": {

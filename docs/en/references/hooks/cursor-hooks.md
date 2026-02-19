@@ -323,7 +323,7 @@ echo $CURSOR_PROJECT_DIR
 Run the sync script to configure Cursor hooks:
 
 ```bash
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 ```
 
 **What it does:**
@@ -424,7 +424,7 @@ ls -la .agents/hooks/scripts/*.sh
 
 ```bash
 # Re-run sync
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 
 # Restart Cursor
 ```
@@ -554,7 +554,7 @@ jq '.hooks.preToolUse[0].command' .cursor/hooks.json
 4. Remove `Notification` events
 5. Update paths: `${CLAUDE_PLUGIN_ROOT}` → `.cursor/hooks`
 
-**Automated:** Use `./.agents/hooks/sync-hooks.sh` (handles conversion)
+**Automated:** Use `./.agents/sync.sh --only=hooks` (handles conversion)
 
 ### From Gemini CLI
 
@@ -566,7 +566,7 @@ jq '.hooks.preToolUse[0].command' .cursor/hooks.json
 4. Timeout: milliseconds → seconds (divide by 1000)
 5. Update paths: `${GEMINI_PROJECT_DIR}/.agents` → `.cursor/hooks`
 
-**Automated:** Use `./.agents/hooks/sync-hooks.sh` (handles conversion)
+**Automated:** Use `./.agents/sync.sh --only=hooks` (handles conversion)
 
 ## Recommended: Husky + lint-staged (Guaranteed Formatting)
 
@@ -652,7 +652,7 @@ Both systems work together:
 - **Total lines:** 576 (vs 1,390 before) = 59% reduction
 - **Platforms:** 3 (Claude Code, Gemini CLI, Cursor)
 - **Hooks in Cursor:** 2 of 3 (notify.sh excluded)
-- **Sync script:** `.agents/hooks/sync-hooks.sh`
+- **Sync command:** `.agents/sync.sh --only=hooks`
 - **Current hooks:**
   - ✅ protect-secrets.sh (preToolUse)
   - ✅ auto-format.sh (postToolUse)

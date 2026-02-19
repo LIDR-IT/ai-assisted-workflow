@@ -80,7 +80,7 @@ Sistema modular para organizar instrucciones por tema:
 
 Este proyecto implementa un sistema de sincronización centralizada para distribuir rules y skills:
 
-**Script:** `.agents/rules/sync-rules.sh`
+**Script:** `.agents/sync.sh --only=rules`
 
 **Arquitectura:**
 
@@ -92,10 +92,10 @@ Este proyecto implementa un sistema de sincronización centralizada para distrib
 
 ```bash
 # Sincronizar rules y skills a todos los agentes
-./.agents/rules/sync-rules.sh
+./.agents/sync.sh --only=rules
 
 # Modo dry-run (previsualizar cambios)
-./.agents/rules/sync-rules.sh --dry-run
+./.agents/sync.sh --only=rules --dry-run
 ```
 
 **Core rules incluidas:**

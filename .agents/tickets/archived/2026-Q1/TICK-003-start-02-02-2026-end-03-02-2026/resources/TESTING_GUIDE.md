@@ -505,7 +505,7 @@ Testing is complete and successful when:
 - **Implementation:** `.agents/hooks-readme.md` - Complete system documentation
 - **Source:** `.agents/hooks/hooks.json` - Master configuration
 - **Scripts:** `.agents/hooks/scripts/` - Hook implementations
-- **Sync:** `.agents/hooks/sync-hooks.sh` - Platform synchronization
+- **Sync:** `.agents/sync.sh --only=hooks` - Platform synchronization
 
 ---
 

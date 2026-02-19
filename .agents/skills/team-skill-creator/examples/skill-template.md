@@ -9,7 +9,7 @@ This is a copy-paste template for creating new skills within the `.agents/` syst
 3. Create your skill directory: `.agents/skills/[skill-name]/`
 4. Save as `SKILL.md` in your skill directory
 5. Add bundled resources (scripts/, references/, assets/) as needed
-6. Run sync: `./.agents/sync-all.sh`
+6. Run sync: `./.agents/sync.sh`
 
 ---
 

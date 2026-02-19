@@ -462,7 +462,7 @@ jq '.hooks.PostToolUse[0].hooks[0].command' .claude/settings.json
 # Should show: bash "${CLAUDE_PROJECT_DIR}/.agents/hooks/scripts/..."
 
 # If incorrect, re-run sync
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 
 # Test manually
 CLAUDE_PROJECT_DIR=$(pwd) bash .agents/hooks/scripts/auto-format.sh
@@ -490,7 +490,7 @@ chmod +x .agents/hooks/scripts/lib/*.sh
 ## Related Documentation
 
 - **Hook Development Skill:** `.agents/skills/hook-development/`
-- **Sync Hooks Script:** `.agents/hooks/sync-hooks.sh`
+- **Sync Hooks:** `.agents/sync.sh --only=hooks`
 - **Workflow Automation:** `docs/en/references/hooks/automate-workflows-with-hooks.md`
 - **Test Hooks Command:** `.agents/commands/test-hooks.md`
 - **Platform Comparison:** `CURSOR_SUPPORT_RESTORED.md`
@@ -501,4 +501,4 @@ chmod +x .agents/hooks/scripts/lib/*.sh
 - **Platforms:** 3 (Claude Code, Gemini CLI, Cursor)
 - **Hooks:** 3 (notify, auto-format, protect-secrets)
 - **Converters:** 2 (Gemini, Cursor)
-- **Sync script:** `.agents/hooks/sync-hooks.sh`
+- **Sync command:** `.agents/sync.sh --only=hooks`

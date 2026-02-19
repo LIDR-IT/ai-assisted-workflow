@@ -5,8 +5,8 @@ Technical details of how the `.agents/` synchronization system works, including 
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [sync-all.sh](#sync-allsh)
-3. [Individual Sync Scripts](#individual-sync-scripts)
+2. [sync.sh CLI](#syncsh-cli)
+3. [Architecture](#architecture)
 4. [Synchronization Strategies](#synchronization-strategies)
 5. [Dry-Run Mode](#dry-run-mode)
 6. [Verification](#verification)
@@ -16,75 +16,57 @@ Technical details of how the `.agents/` synchronization system works, including 
 
 The synchronization system ensures configurations in `.agents/` propagate to all platform-specific directories.
 
-**Key scripts:**
+**Entry point:**
 
-- `.agents/sync-all.sh` - Orchestrates all syncs
-- `.agents/rules/sync-rules.sh` - Syncs rules
-- `.agents/skills/sync-skills.sh` - Syncs skills
-- `.agents/commands/sync-commands.sh` - Syncs commands
-- `.agents/mcp/sync-mcp.sh` - Generates MCP configs
+- `.agents/sync.sh` - Unified CLI for all synchronization operations
 
-**Execution order:**
+**Architecture:**
+
+- `.agents/lib/` - Shared utility functions
+- `.agents/adapters/` - Platform adapters (one per platform)
+- `.agents/sync/` - Component orchestrators (rules, skills, commands, mcp, hooks, agents)
+- `.agents/platforms.json` - Platform registry and configuration
+
+**Execution:** `sync.sh` loads platform adapters from `adapters/` and component orchestrators from `sync/`, dispatching to `{platform}_{component}()` functions dynamically.
+
+**Component order:**
 
 1. Rules
 2. Skills
 3. Commands
-4. MCP servers
+4. Agents
+5. MCP servers
+6. Hooks
 
-## sync-all.sh
+## sync.sh CLI
 
-**Location:** `.agents/sync-all.sh`
+**Location:** `.agents/sync.sh`
 
-**Purpose:** Orchestrate synchronization of all components.
-
-### Script Structure
-
-```bash
-#!/bin/bash
-set -e  # Exit on error
-
-# Parse arguments
-DRY_RUN_FLAG=""
-if [[ "$1" == "--dry-run" ]]; then
-  DRY_RUN_FLAG="--dry-run"
-fi
-
-# Run individual sync scripts
-run_sync() {
-  local script=$1
-  local title=$2
-
-  echo "┌────────────────────────────────┐"
-  echo "│  $title"
-  echo "└────────────────────────────────┘"
-
-  "$script" $DRY_RUN_FLAG
-}
-
-# Execute syncs in order
-run_sync "$SCRIPT_DIR/rules/sync-rules.sh" "1. RULES"
-run_sync "$SCRIPT_DIR/skills/sync-skills.sh" "2. SKILLS"
-run_sync "$SCRIPT_DIR/commands/sync-commands.sh" "3. COMMANDS"
-run_sync "$SCRIPT_DIR/mcp/sync-mcp.sh" "4. MCP SERVERS"
-
-# Summary
-echo "╔═══════════════════════════════╗"
-echo "║  ✅ ALL SYNCHRONIZATIONS COMPLETED  ║"
-echo "╚═══════════════════════════════╝"
-```
+**Purpose:** Unified CLI for synchronizing all components across platforms.
 
 ### Usage
 
-**Basic sync:**
+**Sync everything:**
 
 ```bash
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 **Dry-run (preview without changes):**
 
 ```bash
-./.agents/sync-all.sh --dry-run
+./.agents/sync.sh --dry-run
+```
+
+**Sync specific components:**
+
+```bash
+./.agents/sync.sh --only=rules
+./.agents/sync.sh --only=skills
+./.agents/sync.sh --only=commands
+./.agents/sync.sh --only=agents
+./.agents/sync.sh --only=mcp
+./.agents/sync.sh --only=hooks
 ```
 
 **Output:**
@@ -119,133 +101,59 @@ echo "╚═══════════════════════�
 ╚═══════════════════════════════════════════════════════════════════╝
 ```
 
-## Individual Sync Scripts
+## Architecture
 
-### sync-rules.sh
+### Directory Structure
 
-**Location:** `.agents/rules/sync-rules.sh`
-
-**Purpose:** Sync rules from `.agents/rules/` to all platforms.
-
-**Process:**
-
-1. Validate source directory exists
-2. Create symlinks for Cursor, Claude, Gemini
-3. Antigravity reads natively from .agents/
-4. Verify symlinks created
-
-**Example:**
-
-```bash
-#!/bin/bash
-
-# Validate source
-if [ ! -d ".agents/rules" ]; then
-  echo "❌ Source not found: .agents/rules"
-  exit 1
-fi
-
-# Sync Cursor
-create_symlink() {
-  local source=$1
-  local target=$2
-
-  rm -rf "$target"
-  ln -s "$source" "$target"
-}
-
-create_symlink "../.agents/rules" ".cursor/rules"
-create_symlink "../.agents/rules" ".claude/rules"
-create_symlink "../.agents/rules" ".gemini/rules"
-
-# Antigravity reads natively from .agents/rules/ (no copy needed)
+```
+.agents/
+├── sync.sh              # ← Unified CLI entry point
+├── platforms.json       # Platform registry and configuration
+├── lib/                 # Shared utility functions
+├── adapters/            # Platform adapters (one per platform)
+│   ├── cursor.sh
+│   ├── claude.sh
+│   ├── gemini.sh
+│   ├── antigravity.sh
+│   └── copilot.sh
+└── sync/                # Component orchestrators
+    ├── rules.sh
+    ├── skills.sh
+    ├── commands.sh
+    ├── agents.sh
+    ├── mcp.sh
+    └── hooks.sh
 ```
 
-### sync-skills.sh
+### Execution Flow
 
-**Location:** `.agents/skills/sync-skills.sh`
+`sync.sh` dynamically loads adapters and dispatches to `{platform}_{component}()` functions:
 
-**Purpose:** Sync skills from `.agents/skills/` to all platforms.
+1. Parse CLI arguments (`--dry-run`, `--only=component`)
+2. Load platform adapters from `adapters/`
+3. Load component orchestrators from `sync/`
+4. For each component (or the `--only` target):
+   - For each platform adapter:
+     - Call `{platform}_{component}()` function
+5. Run verification checks
+6. Print summary
 
-**Process:**
+### Component Orchestrators
 
-1. Validate source directory
-2. Create full directory symlinks (Cursor, Claude, Gemini)
-3. Antigravity reads natively from .agents/skills/
-4. Verify all symlinks
+Each file in `sync/` handles one component type across all platforms:
 
-### sync-commands.sh
-
-**Location:** `.agents/commands/sync-commands.sh`
-
-**Purpose:** Sync commands from `.agents/commands/` to all platforms.
-
-**Process:**
-
-1. Validate source directory
-2. Create symlinks for Cursor, Claude, Gemini
-3. Antigravity reads natively via `.agents/workflows/` (symlink → `commands/`)
-4. Verify synchronization
-
-### sync-mcp.sh
-
-**Location:** `.agents/mcp/sync-mcp.sh`
-
-**Purpose:** Generate platform-specific MCP configs from source.
-
-**Source:** `.agents/mcp/mcp-servers.json`
-
-**Process:**
-
-1. Read source JSON
-2. For each platform, extract relevant servers
-3. Generate platform-specific format
-4. Validate generated JSON
-5. Write to platform config files
-
-**Example generation:**
-
-```bash
-#!/bin/bash
-
-SOURCE=".agents/mcp/mcp-servers.json"
-
-# Generate Cursor config
-jq '{mcpServers: .servers |
-    to_entries |
-    map(select(.value.platforms | contains(["cursor"]))) |
-    from_entries}' "$SOURCE" > .cursor/mcp.json
-
-# Generate Claude config
-jq '{mcpServers: .servers |
-    to_entries |
-    map(select(.value.platforms | contains(["claude"]))) |
-    from_entries}' "$SOURCE" > .claude/mcp.json
-
-# Generate Gemini config
-jq '.servers |
-    to_entries |
-    map(select(.value.platforms | contains(["gemini"]))) |
-    from_entries' "$SOURCE" > .gemini/settings.json
-```
-
-**Validation:**
-
-```bash
-# Validate each generated config
-for file in .cursor/mcp.json .claude/mcp.json .gemini/settings.json; do
-  if ! jq empty "$file" 2>/dev/null; then
-    echo "❌ Invalid JSON: $file"
-    exit 1
-  fi
-done
-```
+- **`sync/rules.sh`** - Syncs rules from `.agents/rules/` to all platforms
+- **`sync/skills.sh`** - Syncs skills from `.agents/skills/` to all platforms
+- **`sync/commands.sh`** - Syncs commands from `.agents/commands/` to all platforms
+- **`sync/agents.sh`** - Syncs subagents from `.agents/subagents/` to all platforms
+- **`sync/mcp.sh`** - Generates platform-specific MCP configs from `.agents/mcp/mcp-servers.json`
+- **`sync/hooks.sh`** - Generates platform-specific hook configs from `.agents/hooks/`
 
 ## Synchronization Strategies
 
 ### Strategy: Full Directory Symlinks
 
-**Used by:** sync-rules.sh, sync-skills.sh, sync-commands.sh
+**Used by:** sync/rules.sh, sync/skills.sh, sync/commands.sh
 **Platforms:** Cursor, Claude Code, Gemini CLI
 
 **Implementation:**
@@ -278,7 +186,7 @@ create_directory_symlink "../.agents/skills" ".cursor/skills"
 
 ### Strategy: Selective Symlinks
 
-**Used by:** sync-skills.sh (Cursor, Claude, Gemini only)
+**Used by:** sync/skills.sh (Cursor, Claude, Gemini only)
 **Platform:** Cursor, Claude Code, Gemini CLI
 
 **Note:** Antigravity reads skills natively from `.agents/skills/` — no selective symlinks or copies needed.
@@ -309,7 +217,7 @@ done
 
 ### Strategy: File Copies
 
-**Used by:** sync-rules.sh, sync-commands.sh (legacy platforms only)
+**Used by:** sync/rules.sh, sync/commands.sh (legacy platforms only)
 **Platform:** Not required for Antigravity
 
 **Note:** Antigravity now reads rules and commands natively from `.agents/` — no file copies needed. The copy strategy is retained only for platforms that lack symlink or native detection support.
@@ -340,7 +248,7 @@ echo "  ✅ Copied $file_count rules to .cursor/rules/"
 
 ### Strategy: Script Generation
 
-**Used by:** sync-mcp.sh
+**Used by:** sync/mcp.sh
 **Platforms:** All (except Antigravity project-level)
 
 **Implementation:**
@@ -380,7 +288,7 @@ All sync scripts support `--dry-run` mode for preview without changes.
 **Usage:**
 
 ```bash
-./.agents/sync-all.sh --dry-run
+./.agents/sync.sh --dry-run
 ```
 
 **Output:**
@@ -522,7 +430,7 @@ fi
 ```bash
 # Remove and re-create
 rm -rf .cursor/skills
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 ### Issue: Permission Denied
@@ -536,15 +444,11 @@ Permission denied when running sync scripts
 **Solution:**
 
 ```bash
-# Make scripts executable
-chmod +x .agents/sync-all.sh
-chmod +x .agents/rules/sync-rules.sh
-chmod +x .agents/skills/sync-skills.sh
-chmod +x .agents/commands/sync-commands.sh
-chmod +x .agents/mcp/sync-mcp.sh
+# Make script executable
+chmod +x .agents/sync.sh
 
 # Re-run
-./.agents/sync-all.sh
+./.agents/sync.sh
 ```
 
 ### Issue: Source Directory Missing
@@ -593,7 +497,7 @@ jq . .cursor/mcp.json
 jq . .agents/mcp/mcp-servers.json
 
 # If source is valid, re-generate
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 
 # If source is invalid, fix it first
 vim .agents/mcp/mcp-servers.json

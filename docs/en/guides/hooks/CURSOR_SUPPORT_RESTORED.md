@@ -54,7 +54,7 @@ Se ha restaurado exitosamente el soporte para Cursor en el sistema de hooks, man
 
 | Archivo              | Líneas  | Descripción                                      |
 | -------------------- | ------- | ------------------------------------------------ |
-| `sync-hooks.sh`      | 324     | Script de sincronización (incluye 3 conversores) |
+| `sync.sh`            | 324     | Script de sincronización (incluye 3 conversores) |
 | `progress.sh`        | 76      | Utilidades de salida (colores, emojis)           |
 | `platform-detect.sh` | 55      | Detección de plataforma (3 plataformas)          |
 | `hooks.json`         | 41      | Configuración fuente (formato Claude Code)       |
@@ -71,7 +71,7 @@ Se ha restaurado exitosamente el soporte para Cursor en el sistema de hooks, man
 - **Líneas:** 43 → 55 (+12 líneas)
 - **Variables detectadas:** `CURSOR_PROJECT_DIR`
 
-### 2. sync-hooks.sh
+### 2. sync.sh (hooks sync)
 
 - **Cambio:** Agregado conversor de Cursor + función sync_cursor()
 - **Líneas:** 238 → 324 (+86 líneas)
@@ -249,7 +249,7 @@ Se ha restaurado exitosamente el soporte para Cursor en el sistema de hooks, man
 
 ```bash
 # Sincronización
-./.agents/hooks/sync-hooks.sh
+./.agents/sync.sh --only=hooks
 
 # Salida:
 # ✅ Source files validated

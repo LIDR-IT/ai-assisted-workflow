@@ -34,7 +34,7 @@
 **Features:**
 
 - Detects changes in `.agents/` directories
-- Auto-runs `sync-all.sh` if configs changed
+- Auto-runs `sync.sh` if configs changed
 - Auto-runs `npm install` if package files changed
 - Prompts for stale branch cleanup
 - 120-second timeout with graceful handling
@@ -161,7 +161,7 @@
 
 ### ✅ All 12 Criteria Met
 
-- [x] post-merge hook automatically runs sync-all.sh after merge/pull
+- [x] post-merge hook automatically runs sync.sh after merge/pull
 - [x] post-merge hook updates dependencies if package files changed
 - [x] post-merge hook cleans up stale branches and archived tickets
 - [x] pre-push hook prompts for manual test confirmation ("Did you run tests? y/n")
@@ -235,7 +235,7 @@
 1. **Post-merge with config changes:**
    - Modify `.agents/rules/` on remote
    - Run `git pull origin main`
-   - Verify sync-all.sh runs automatically
+   - Verify sync.sh runs automatically
 
 2. **Post-merge with dependency changes:**
    - Modify `package.json` on remote

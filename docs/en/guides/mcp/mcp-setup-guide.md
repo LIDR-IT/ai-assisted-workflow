@@ -32,7 +32,7 @@ export CONTEXT7_API_KEY="tu-api-key"
 
 ```bash
 # Ejecutar script de sincronización
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 ```
 
 Esto genera los archivos de configuración específicos por plataforma:
@@ -94,7 +94,7 @@ gemini /mcp
 2. Ejecutar sync:
 
 ```bash
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 ```
 
 3. Commit cambios:
@@ -128,7 +128,7 @@ npx -y @upstash/context7-mcp --help
 echo $CONTEXT7_API_KEY
 
 # Re-sincronizar
-./.agents/mcp/sync-mcp.sh
+./.agents/sync.sh --only=mcp
 ```
 
 **Rate limit:**

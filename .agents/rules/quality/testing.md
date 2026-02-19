@@ -37,7 +37,7 @@ trigger: always_on
 
 ## Manual Testing Checklist
 
-### For sync-rules.sh
+### For sync.sh --only=rules
 
 ```markdown
 - [ ] Script runs without errors
@@ -167,7 +167,7 @@ ln -s "$target" "$link"
 ### Documenting Tests
 
 ```markdown
-# Test Plan: sync-rules.sh
+# Test Plan: sync.sh --only=rules
 
 ## Scope
 
@@ -180,7 +180,7 @@ Test synchronization of rules and skills across all agent platforms.
 **Description:** Verify dry-run mode makes no changes
 **Steps:**
 
-1. Run `.agents/rules/sync-rules.sh --dry-run`
+1. Run `.agents/sync.sh --only=rules --dry-run`
 2. Check no files created/modified
    **Expected:** Script completes with dry-run messages, no changes made
 
@@ -189,7 +189,7 @@ Test synchronization of rules and skills across all agent platforms.
 **Description:** Verify files copied correctly
 **Steps:**
 
-1. Run `.agents/rules/sync-rules.sh`
+1. Run `.agents/sync.sh --only=rules`
 2. Check `.cursor/rules/` contains .mdc files
    **Expected:** All rules flattened in .cursor/rules/
 
@@ -198,7 +198,7 @@ Test synchronization of rules and skills across all agent platforms.
 **Description:** Verify symlinks created correctly
 **Steps:**
 
-1. Run `.agents/rules/sync-rules.sh`
+1. Run `.agents/sync.sh --only=rules`
 2. Check `.claude/rules`, `.gemini/rules`
    **Expected:** Both are symlinks pointing to `../.agents/rules`
 

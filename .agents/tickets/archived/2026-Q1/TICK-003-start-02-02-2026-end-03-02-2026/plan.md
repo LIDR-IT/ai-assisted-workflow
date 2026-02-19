@@ -35,7 +35,7 @@ This builds on the existing pre-commit hook infrastructure using Claude Code's h
 **Workflow:**
 
 1. Detect changes in `.agents/` directories (rules, skills, commands, mcp)
-2. If changes detected → Run `.agents/sync-all.sh`
+2. If changes detected → Run `.agents/sync.sh`
 3. Detect changes in `package.json`, `package-lock.json`
 4. If package files changed → Run `npm install`
 5. Check for stale local branches (deleted remotely)
@@ -132,7 +132,7 @@ This builds on the existing pre-commit hook infrastructure using Claude Code's h
 
 ```bash
 # Wrap long operations with timeout
-timeout 120 .agents/sync-all.sh || {
+timeout 120 .agents/sync.sh || {
   log_error "Sync timed out after 2 minutes"
   exit 1
 }
@@ -182,7 +182,7 @@ timeout 120 .agents/sync-all.sh || {
 
 - Pre-commit hook: `.agents/hooks/scripts/validate-commit.sh`
 - Hook config: `.agents/hooks/hooks.json`
-- Sync script: `.agents/sync-all.sh`
+- Sync script: `.agents/sync.sh`
 - Git workflow: `.agents/rules/process/git-workflow.md`
 
 ### Hook System Documentation
