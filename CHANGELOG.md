@@ -6,19 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+_No unreleased changes._
+
+## [0.6.0] - 2026-02-20
+
 ### Added
 
-- **Antigravity Native `.agents/` Detection** — Antigravity now reads rules, skills, and commands directly from `.agents/` without requiring a separate `.agent/` directory with symlinks
-- `.agents/workflows` internal symlink (`workflows → commands`) bridges the Antigravity naming convention
+- **GitHub Copilot (VSCode) as 5th Supported Platform** — Full integration with automated sync across all components:
+  - Rules: Copy+rename to `.github/rules/*.instructions.md` with frontmatter transformation (`globs` → `applyTo`)
+  - Commands: Copy+rename to `.github/prompts/*.prompt.md` (`$ARGUMENTS` → `{{{ input }}}`)
+  - Agents: Copy+rename to `.github/agents/*.agent.md` with `tools` field injection
+  - Skills: Symlink `.github/skills` → `../.agents/skills`
+  - MCP: Generated `.vscode/mcp.json` with `servers` key and `${env:VAR}` syntax
+  - Hooks: Symlink scripts + generated `.github/hooks/hooks.json` (camelCase events)
+  - Index: Auto-generated `.github/copilot-instructions.md` with project overview and rules summary
+- **Changelog Generator Skill** — Reusable skill for generating user-friendly changelogs from git commit history
+- **Antigravity Native `.agents/` Detection** — Antigravity now reads rules, skills, and commands directly from `.agents/` without requiring a separate `.agent/` directory
 
 ### Changed
 
-- Sync scripts log native Antigravity support and automatically clean up legacy `.agent/` symlinks
-- All documentation (~30 files) updated to reflect native `.agents/` detection pattern
+- All 7 sync scripts updated with `sync_copilot()` functions (sync-rules, sync-skills, sync-commands, sync-agents, sync-mcp, sync-hooks, sync-all)
+- `mcp-servers.json` and `hooks.json` sources now include `"copilot"` in platform arrays
+- All documentation (~40 files) updated to reference 5 platforms instead of 4
+- Platform Support Matrix expanded across README, AGENTS.md, SKILL.md, and 10+ reference docs
+- `sync-all.sh` summary now includes Copilot verification commands
 
 ### Removed
 
-- `.agent/` directory and its symlinks (`rules`, `skills`, `workflows`) no longer created by sync scripts
+- `.agent/` directory and its symlinks no longer created by sync scripts (Antigravity reads natively from `.agents/`)
 
 ## [0.5.0] - 2026-02-19
 
