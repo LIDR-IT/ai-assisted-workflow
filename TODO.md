@@ -1,18 +1,2 @@
-✅ 1. Rules (Documentación / Convenciones / Estándares / Buenas prácticas / Workflow (Branch / Commit / Testing))
-✅ 2. Memories (Proyecto actual) / Context (Diferentes proyectos)
-✅ 3. Privacidad de datos
-✅ 4. Compact (Context) / Usage (Tokens)
-
-✅ 5. Commands (Saved Prompts)
-✅ 6. MCP (Model Context Protocol) (Context7) / https://hub.docker.com/mcp / https://cursor.com/es/docs/context/mcp / Crea tu propio MCP / mcp.json
-✅ 7. Skills (Habilidades) (npx skills find skill / npx skills add skill)
-✅ 8. Trabajando con Modelos y Modos. Agent / Ask / Plan / Debug (Cursor) - Agent / Plan (Claude) (Modelos thinking vs No thinking) - Elegir modelos externos mediante API Key
-
-✅ 9. Context managment (Context / Memories / Rules / Commands / MCP / Skills)
-✅ 10. Subagents
-✅ 11. Comandos del CLI/IDE recomendados (/init, /resume, /context ...)
-✅ 12. Uso de Scaffolding (Generación de código) con Makefile
-✅ 13. Hooks (Hooks vs Pre-Commit)
-
-✅ 14. Orchestration (Refuerzo / Workflow / Buenas prácticas)
-✅ 15. Spec-Driven Development (Bonus: Vitepress) 16. En acción: Ticket to PR. (Bonus: CodeRabbit)
+[ ] Copilot/VSCode (.github/ + .vscode/) — Delete, regenerate, verify (Skills ✅ / Agents ✅ / Commands ✅ / MCP ✅ / Rules ❌ / Memories ✅ / Hooks ✅ )
+[ ] Crear sistema para el CLI de Copilot (Skills / Agents / Commands / MCP / Rules / Memories / Hooks )

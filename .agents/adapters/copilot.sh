@@ -1,8 +1,10 @@
 #!/bin/bash
 # Platform adapter: GitHub Copilot (VSCode)
-# Rules: copy-flatten .instructions.md + index | Skills: symlink
+# Rules: copy-flatten .instructions.md + index | Skills: native (reads .agents/ directly)
 # Commands: copy .prompt.md | Agents: copy .agent.md | MCP: .vscode/mcp.json
 # Hooks: hooks.json + scripts symlink
+# NOTE: VSCode/Copilot discovers skills from .agents/ natively.
+#       Symlinks to .github/skills/ cause duplicate skill detection.
 
 COPILOT_DIR="$PROJECT_ROOT/.github"
 COPILOT_MCP_DIR="$PROJECT_ROOT/.vscode"
@@ -147,7 +149,16 @@ COPILOT_INDEX
 }
 
 copilot_skills() {
-  create_symlink "../.agents/skills" "$COPILOT_DIR/skills" "skills"
+  # VSCode/Copilot reads .agents/skills/ natively — no symlink needed.
+  # Creating .github/skills → .agents/skills causes duplicate skill detection.
+  # Remove stale symlink if present from previous sync versions.
+  if [ -L "$COPILOT_DIR/skills" ]; then
+    if run_or_dry "remove stale .github/skills symlink"; then return 0; fi
+    rm "$COPILOT_DIR/skills"
+    log_info "Removed stale .github/skills symlink (Copilot reads .agents/skills/ natively)"
+  else
+    log_info "Skills: native (.agents/skills/ — no symlink needed)"
+  fi
 }
 
 copilot_commands() {
@@ -201,7 +212,7 @@ _copilot_convert_to_prompt() {
   {
     echo "---"
     [ -n "$description" ] && echo "description: $description"
-    echo "mode: agent"
+    echo "agent: 'agent'"
     echo "---"
     echo "$prompt"
   } > "$prompt_file"
@@ -390,11 +401,17 @@ copilot_verify() {
     ((errors++))
   fi
 
-  # Skills symlink
-  if [ -L "$COPILOT_DIR/skills" ]; then
-    log_info "copilot skills: $COPILOT_DIR/skills → $(readlink "$COPILOT_DIR/skills")"
+  # Skills (native — no symlink expected)
+  if [ -d "$AGENTS_DIR/skills" ]; then
+    local skill_count
+    skill_count=$(find "$AGENTS_DIR/skills" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+    log_info "copilot skills: native from .agents/skills/ ($skill_count skills)"
+    # Warn if stale symlink still exists
+    if [ -L "$COPILOT_DIR/skills" ]; then
+      log_warn "copilot skills: stale .github/skills symlink exists (causes conflicts)"
+    fi
   else
-    log_error "copilot skills: Not a symlink"
+    log_error "copilot skills: .agents/skills/ not found"
     ((errors++))
   fi
 

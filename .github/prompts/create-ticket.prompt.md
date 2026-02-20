@@ -1,6 +1,6 @@
 ---
 description: Create a new ticket with full folder structure
-mode: agent
+agent: 'agent'
 ---
 
 # Create Ticket Command

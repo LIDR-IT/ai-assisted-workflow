@@ -22,7 +22,7 @@ The `.agents/` system provides **centralized configuration management** for AI a
 2. **Claude Code** - Full support with symlinks
 3. **Gemini CLI** - Full support with symlinks
 4. **Antigravity** - Native detection from `.agents/` (no sync needed)
-5. **Copilot (VSCode)** - Copy+rename with symlinks for skills
+5. **Copilot (VSCode)** - Copy+rename for rules/commands/agents; reads skills natively from `.agents/`
 
 **Core principle:** Edit once in `.agents/`, automatically synchronized to all platforms.
 
@@ -139,8 +139,8 @@ Platform-specific directories receive synced configurations:
 
 **Sync strategy:**
 
-- Cursor, Claude, Gemini: Full directory symlink
-- Antigravity: Native detection from `.agents/skills/` (no sync needed)
+- Cursor, Claude: Full directory symlink
+- Gemini, Antigravity, Copilot: Native detection from `.agents/skills/` (no sync needed)
 
 ### .agents/commands/
 
@@ -252,7 +252,7 @@ symlink inside `.agents/`. No file copies or manual syncs are required.
 | Claude Code      | ✅          | ✅         | ✅ Sym    | ✅ Sym    | ✅      | ✅ Sym      |
 | Gemini CLI       | ✅          | ✅         | ✅ Sym    | ✅ Gen    | ✅ Sym  | ❌ Index    |
 | Antigravity      | ❌ Global   | ✅         | ✅ Native | ✅ Native | ❌      | ✅ Native   |
-| Copilot (VSCode) | ✅          | ✅         | ✅ Sym    | ✅ Copy   | ✅ Copy | ✅ Copy+Idx |
+| Copilot (VSCode) | ✅          | ✅         | ✅ Native | ✅ Copy   | ✅ Copy | ✅ Copy+Idx |
 
 **Legend:**
 

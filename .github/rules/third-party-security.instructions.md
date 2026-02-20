@@ -378,4 +378,5 @@ State issue + severity + location. Skip explanation unless fix non-obvious. No p
 - `docs/references/claude-code/security.md` - Claude Code security
 - `docs/notes/agents-vs-skills.md` - Architecture understanding
 
+
 **Remember:** The two most common AI vulnerabilities are **data exfiltration** and **prompt injection**. Always verify third-party code before installation, especially with sensitive data.

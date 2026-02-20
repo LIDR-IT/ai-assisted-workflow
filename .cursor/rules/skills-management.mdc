@@ -2,7 +2,7 @@
 name: skills-management
 description: Review project for skills structure and compliance
 alwaysApply: false
-globs: [".agents/skills/**/*", ".claude/skills", ".cursor/skills", ".gemini/skills"]
+globs: [".agents/skills/**/*", ".claude/skills", ".cursor/skills"]
 argument-hint: <project-root>
 paths: [".agents/skills/**/*"]
 trigger: always_on
@@ -38,7 +38,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 # From project root - all skills to all agents
 ln -s ../.agents/skills .claude/skills
 ln -s ../.agents/skills .cursor/skills
-ln -s ../.agents/skills .gemini/skills
+# Gemini CLI: reads natively from .agents/skills/ (no symlink needed)
 # Antigravity: reads natively from .agents/skills/ (no symlink needed)
 ```
 
@@ -62,7 +62,7 @@ project-root/
 ├── .agents/skills/skill-one/SKILL.md    # ← Source of truth
 ├── .claude/skills → ../.agents/skills
 ├── .cursor/skills → ../.agents/skills
-├── .gemini/skills → ../.agents/skills
+# Gemini CLI reads natively from .agents/skills/
 # Antigravity reads natively from .agents/skills/
 ```
 
@@ -86,19 +86,19 @@ project-root/
 
 ```bash
 # Create structure
-mkdir -p .agents/skills .claude .cursor .gemini
+mkdir -p .agents/skills .claude .cursor
 
 # Create symlinks
 ln -s ../.agents/skills .claude/skills
 ln -s ../.agents/skills .cursor/skills
-ln -s ../.agents/skills .gemini/skills
-# Antigravity reads natively from .agents/skills/ (no symlink needed)
+# Gemini CLI: reads natively from .agents/skills/ (no symlink needed)
+# Antigravity: reads natively from .agents/skills/ (no symlink needed)
 
 # Verify
 ls -la .*/skills
 
 # Commit
-git add .agents/ .claude .cursor .gemini
+git add .agents/ .claude .cursor
 git commit -m "feat: initialize skills structure"
 ```
 
@@ -192,8 +192,9 @@ echo ".agents/" >> .gitignore
 
 - [ ] `.agents/skills/` exists with skill subfolders
 - [ ] Each skill has `SKILL.md`
-- [ ] `.claude/skills`, `.cursor/skills`, `.gemini/skills` are valid symlinks
+- [ ] `.claude/skills`, `.cursor/skills` are valid symlinks
 - [ ] Symlinks point to `../.agents/skills`
+- [ ] Gemini CLI reads natively from `.agents/skills/`
 - [ ] Antigravity reads natively from `.agents/skills/`
 - [ ] `.agents/skills/` committed to git
 - [ ] Symlink directories committed
@@ -215,13 +216,13 @@ ln -s ../.agents/skills .claude/skills
 
 ```bash
 # Verify symlinks, not directories
-file .claude/skills .cursor/skills .gemini/skills
+file .claude/skills .cursor/skills
 
 # Fix
-rm -rf .claude/skills .cursor/skills .gemini/skills
+rm -rf .claude/skills .cursor/skills
 ln -s ../.agents/skills .claude/skills
 ln -s ../.agents/skills .cursor/skills
-ln -s ../.agents/skills .gemini/skills
+# Gemini CLI reads natively from .agents/skills/ (no symlink needed)
 ```
 
 **Broken symlink:**
@@ -257,7 +258,7 @@ Use `path` format (VS Code clickable). Terse findings.
 .agents/skills/skill-one/SKILL.md - ✓ Canonical location
 .claude/skills - ✓ Valid symlink to ../.agents/skills
 .cursor/skills - ✓ Valid symlink to ../.agents/skills
-.gemini/skills - ✓ Valid symlink to ../.agents/skills
+.agents/skills/ - ✓ Gemini CLI native detection (no symlink needed)
 .agents/skills/ - ✓ Antigravity native detection (no symlink needed)
 
 ## Issues Found

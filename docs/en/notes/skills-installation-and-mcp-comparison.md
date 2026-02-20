@@ -36,7 +36,7 @@ Esta nota documenta cómo instalar Skills universalmente y explica por qué MCP 
 - ✅ Antigravity (`.agents/skills/` → native detection)
 - ✅ Claude Code (`.claude/skills/`)
 - ✅ Cursor (`.cursor/skills/`)
-- ✅ Gemini CLI (`.gemini/skills` → symlink)
+- ✅ Gemini CLI (`.agents/skills/` → native detection)
 
 ### Comandos de Instalación
 
@@ -119,7 +119,7 @@ npx skills
 .agents/skills/        → Native .agents/ detection (Antigravity) ✅
 .claude/skills/        → Symlink a ../.agents/skills ✅
 .cursor/skills/        → Symlink a ../.agents/skills ✅
-.gemini/skills         → Symlink a ../.agents/skills ✅
+.agents/skills/        → Native detection (Gemini CLI) ✅
 ```
 
 ### Ventajas del Sistema Skills
@@ -325,7 +325,8 @@ mkdir -p .mcp
 - ✅ Source of truth: `.agents/skills/`
 - ✅ Approach unificado:
   - `.agents/skills/` → native .agents/ detection (Antigravity) ✅
-  - `.gemini/skills`, `.claude/skills`, `.cursor/skills` → symlinks ✅
+  - `.claude/skills`, `.cursor/skills` → symlinks ✅
+  - Gemini CLI reads natively from `.agents/skills/` ✅
 - ✅ 7 skills instaladas y funcionando
 - ✅ Commiteado a git
 
@@ -336,7 +337,7 @@ mkdir -p .mcp
 ls -la .agents/skills/        # Antigravity lee nativamente desde aquí
 readlink .claude/skills        # → ../.agents/skills
 readlink .cursor/skills        # → ../.agents/skills
-readlink .gemini/skills        # → ../.agents/skills
+ls -la .agents/skills/         # Gemini CLI reads natively from here
 ```
 
 **MCP (No implementado):**
@@ -414,12 +415,13 @@ readlink .gemini/skills        # → ../.agents/skills
 - ✅ Antigravity (`.agents/skills/` → native detection)
 - ✅ Claude Code (`.claude/skills/`)
 - ✅ Cursor (`.cursor/skills/`)
-- ✅ Gemini CLI (`.gemini/skills` → symlink)
+- ✅ Gemini CLI (`.agents/skills/` → native detection)
 
 **Estado:**
 
 - ✅ Antigravity usa native .agents/ detection (no requiere symlink separado)
-- ✅ Claude Code, Cursor, Gemini CLI usan symlinks a `.agents/skills/`
+- ✅ Claude Code, Cursor usan symlinks a `.agents/skills/`
+- ✅ Gemini CLI usa native detection desde `.agents/skills/`
 - Documentar skills en README
 
 ### MCP: ❌ No Configuradas a Nivel de Proyecto
@@ -464,7 +466,7 @@ readlink .gemini/skills        # → ../.agents/skills
 
 **Estrategia del proyecto:**
 
-- **Skills:** ✅ Implementadas — Antigravity usa native .agents/ detection, otros agentes usan symlinks
+- **Skills:** ✅ Implementadas — Antigravity y Gemini CLI usan native .agents/ detection, Cursor y Claude Code usan symlinks
 - **MCP:** ❌ Pendiente de implementar con script de sincronización centralizado
 
 **Próximos pasos:**

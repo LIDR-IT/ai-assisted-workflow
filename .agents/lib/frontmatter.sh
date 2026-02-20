@@ -7,11 +7,13 @@ has_frontmatter() {
   head -1 "$file" | grep -q "^---$"
 }
 
-# Extract a single YAML field value
+# Extract a single YAML field value (from first frontmatter block only)
 # Usage: extract_field "file.md" "description"
 extract_field() {
   local file=$1 field=$2
-  sed -n '/^---$/,/^---$/p' "$file" | grep "^${field}:" | sed "s/^${field}: *//" | sed 's/^["'\'']//' | sed 's/["'\'']*$//'
+  # Use extract_yaml_block to only parse the FIRST --- block,
+  # avoiding false matches from --- inside code examples in the body
+  extract_yaml_block "$file" | grep "^${field}:" | head -1 | sed "s/^${field}: *//" | sed 's/^["'\'']//' | sed 's/["'\'']*$//'
 }
 
 # Extract document body (everything after frontmatter)

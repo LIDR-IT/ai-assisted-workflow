@@ -1,6 +1,6 @@
 ---
 description: Create conventional commit from staged changes
-mode: agent
+agent: 'agent'
 ---
 
 # Git Commit Workflow

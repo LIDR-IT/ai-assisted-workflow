@@ -1,9 +1,5 @@
 ---
 description: Review Claude Code extension structure and usage
-When to use this skill
-Triggering conditions with examples
-When to use this skill
-Triggering conditions with examples
 applyTo: ".agents/**/*,  .claude/**/*"
 ---
 

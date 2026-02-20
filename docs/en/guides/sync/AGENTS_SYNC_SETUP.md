@@ -12,7 +12,7 @@ Agents are autonomous subprocesses that handle complex, multi-step tasks indepen
 | --------------- | -------------------- | ------- | --------------------------------------- |
 | **Cursor**      | ✅ Full              | Symlink | `.cursor/agents → ../.agents/subagents` |
 | **Claude Code** | ✅ Full              | Symlink | `.claude/agents → ../.agents/subagents` |
-| **Gemini CLI**  | ✅ Full              | Symlink | `.gemini/agents → ../.agents/subagents` |
+| **Gemini CLI**  | ✅ Full              | Native  | `.agents/subagents/` (read directly)    |
 | **Antigravity** | ❌ **NOT Supported** | N/A     | N/A                                     |
 
 ### Important: Antigravity Limitation
@@ -29,7 +29,7 @@ It does **NOT** support:
 
 - ❌ Agents directory
 
-Agents will only work in Cursor, Claude Code, and Gemini CLI.
+Agents will only work in Cursor, Claude Code, and Gemini CLI. Gemini CLI reads agents natively from `.agents/subagents/` (no symlink needed).
 
 ## Architecture
 
@@ -44,7 +44,10 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 
 .cursor/agents → ../.agents/subagents
 .claude/agents → ../.agents/subagents
-.gemini/agents → ../.agents/subagents
+
+↓ Native detection ↓
+
+Gemini CLI reads directly from .agents/subagents/
 ```
 
 ## Sync Script
@@ -54,9 +57,10 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 **What it does:**
 
 1. Validates `.agents/subagents/` source directory exists
-2. Creates symlinks for Cursor, Claude Code, Gemini CLI
-3. Skips Antigravity (not supported)
-4. Verifies all symlinks created correctly
+2. Creates symlinks for Cursor and Claude Code
+3. Skips Gemini CLI (native detection from `.agents/subagents/`)
+4. Skips Antigravity (not supported)
+5. Verifies all symlinks created correctly
 
 **Usage:**
 
@@ -182,7 +186,7 @@ You are [agent role]...
 ```bash
 ls -la .cursor/agents/your-agent.md
 ls -la .claude/agents/your-agent.md
-ls -la .gemini/agents/your-agent.md
+ls -la .agents/subagents/your-agent.md   # Gemini reads natively from here
 ```
 
 5. **Create invoking command (optional):**
@@ -201,12 +205,13 @@ See: [Command → Agent → Skill Pattern](../patterns/command-agent-skill-patte
 # Verify agents symlinks
 ls -la .cursor/agents
 ls -la .claude/agents
-ls -la .gemini/agents
 
 # Should show:
 # lrwxr-xr-x ... .cursor/agents -> ../.agents/subagents
 # lrwxr-xr-x ... .claude/agents -> ../.agents/subagents
-# lrwxr-xr-x ... .gemini/agents -> ../.agents/subagents
+
+# Gemini CLI reads natively from .agents/subagents/ (no symlink needed)
+ls -la .agents/subagents/
 ```
 
 ### Check Symlinks Point to Correct Target
@@ -215,10 +220,11 @@ ls -la .gemini/agents
 # Check symlink targets
 readlink .cursor/agents
 readlink .claude/agents
-readlink .gemini/agents
 
-# All should output:
+# Both should output:
 # ../.agents/subagents
+
+# Gemini CLI reads natively from .agents/subagents/ (no symlink)
 ```
 
 ### Verify Agent Files Accessible
@@ -227,7 +233,9 @@ readlink .gemini/agents
 # List agents through symlinks
 ls .cursor/agents/
 ls .claude/agents/
-ls .gemini/agents/
+
+# List agents for Gemini (native detection)
+ls .agents/subagents/
 
 # Should show:
 # doc-improver.md
@@ -240,7 +248,9 @@ ls .gemini/agents/
 # Read agent file through symlink
 cat .cursor/agents/doc-improver.md
 cat .claude/agents/doc-improver.md
-cat .gemini/agents/doc-improver.md
+
+# Read agent file for Gemini (native detection)
+cat .agents/subagents/doc-improver.md
 
 # Should display agent content
 ```
@@ -260,7 +270,7 @@ cat .gemini/agents/doc-improver.md
 # Or manually create
 ln -s ../.agents/subagents .cursor/agents
 ln -s ../.agents/subagents .claude/agents
-ln -s ../.agents/subagents .gemini/agents
+# Gemini CLI reads natively from .agents/subagents/ (no symlink needed)
 ```
 
 ### Symlinks Point to Wrong Location
@@ -273,7 +283,7 @@ ln -s ../.agents/subagents .gemini/agents
 # Remove incorrect symlinks
 rm .cursor/agents
 rm .claude/agents
-rm .gemini/agents
+# Gemini CLI reads natively from .agents/subagents/ (no symlink to fix)
 
 # Re-run sync
 ./.agents/sync.sh --only=agents
@@ -422,12 +432,12 @@ Break agent work into clear phases:
 
 ## Summary
 
-**What:** Agents are synchronized via symlinks to platform directories
+**What:** Agents are synchronized via symlinks (Cursor, Claude) or native detection (Gemini)
 
-**Where:** `.agents/subagents/` → `.cursor/agents`, `.claude/agents`, `.gemini/agents`
+**Where:** `.agents/subagents/` → `.cursor/agents`, `.claude/agents` (symlinks); Gemini reads directly from `.agents/subagents/`
 
 **How:** Run `./.agents/sync.sh --only=agents` or `/sync-setup`
 
 **Limitation:** Antigravity does NOT support agents
 
-**Verify:** `ls -la .cursor/agents .claude/agents .gemini/agents`
+**Verify:** `ls -la .cursor/agents .claude/agents .agents/subagents/`

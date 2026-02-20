@@ -1,42 +1,56 @@
-description = "Interactive testing for cross-platform hooks (auto-format, protect-secrets)"
+description = "Interactive testing for cross-platform hooks (platform-specific coverage)"
 
 prompt = """
 
 # Test Hooks Command
 
-Interactive testing guide for cross-platform development hooks.
+Interactive testing guide for cross-platform development hooks with platform-specific coverage.
 
 ## Usage
 
 [Code block:]
-/test-hooks claude-code
-/test-hooks cursor
-/test-hooks gemini-cli
+/test-hooks claude-code  # Tests: auto-format + protect-secrets (2 hooks)
+/test-hooks cursor       # Tests: auto-format only (1 hook) - platform limitation
+/test-hooks gemini-cli   # Tests: auto-format + protect-secrets (2 hooks)
 
 
 ## What This Command Does
 
-This command provides **interactive testing** for the transversal development hooks:
+This command provides **interactive testing** for development hooks with automatic platform detection:
 
-1. **auto-format.sh** (PostToolUse/AfterTool/postToolUse) - Automatic formatting after Edit/Write
-2. **protect-secrets.sh** (PreToolUse/BeforeTool/preToolUse) - Block edits to sensitive files
+### Hooks Available
 
-These hooks work **identically** across all 3 platforms.
+1. **auto-format.sh** - Automatic formatting after Edit/Write
+   - ✅ Claude Code (PostToolUse)
+   - ✅ Cursor (afterFileEdit)
+   - ✅ Gemini CLI (AfterTool)
 
-**Note on notify.sh:** The system includes a third hook (`notify.sh` for desktop notifications), but it's **not tested here** because:
+2. **protect-secrets.sh** - Block edits to sensitive files (before edit)
+   - ✅ Claude Code (PreToolUse)
+   - ❌ **Cursor (NOT SUPPORTED - no beforeFileEdit event)**
+   - ✅ Gemini CLI (BeforeTool)
 
-- **Cursor does NOT support Notification events** (would fail on Cursor)
-- Testing requires triggering notifications (hard to test interactively)
-- notify.sh is simple (16 lines) and works on Claude Code & Gemini CLI only
+3. **notify.sh** - Desktop notifications (not tested here)
+   - ✅ Claude Code (Notification event)
+   - ❌ Cursor (NOT SUPPORTED)
+   - ✅ Gemini CLI (Notification event)
 
-For notify.sh testing, see platform-specific manual validation guides.
+### Platform Coverage
+
+| Platform    | auto-format | protect-secrets | Tests Run   |
+| ----------- | ----------- | --------------- | ----------- |
+| Claude Code | ✅          | ✅              | 7 tests     |
+| **Cursor**  | ✅          | ❌ Limitation   | **3 tests** |
+| Gemini CLI  | ✅          | ✅              | 7 tests     |
+
+**Important:** When testing on **Cursor**, only auto-format tests will run (Tests 1.1-1.3). The protect-secrets tests (Tests 2.1-2.4) will be **automatically skipped** due to platform limitations.
 
 
 ## Implementation
 
 When invoked, the agent should guide the user through testing both hooks:
 
-### Step 1: Validate Platform
+### Step 1: Validate Platform & Detect Limitations
 
 javascript
 const validPlatforms = ["claude-code", "cursor", "gemini-cli"];
@@ -46,29 +60,62 @@ if (!validPlatforms.includes(platform)) {
   return `❌ Invalid platform: ${args.platform}
 
 Valid platforms:
-  - claude-code   (Claude Code CLI)
-  - cursor        (Cursor IDE)
-  - gemini-cli    (Gemini CLI)
+  - claude-code   (Claude Code CLI) - 7 tests
+  - cursor        (Cursor IDE) - 3 tests (limited)
+  - gemini-cli    (Gemini CLI) - 7 tests
 
 Usage: /test-hooks <platform>`;
 }
 
+// Detect platform limitations
+const isCursor = platform === "cursor";
+const testsToRun = isCursor ? 3 : 7;
+const hooksToTest = isCursor ? 1 : 2;
+
 
 ### Step 2: Present Welcome Screen
+
+**For Claude Code & Gemini CLI (Full Support):**
 
 
 🧪 Testing Cross-Platform Hooks - ${PLATFORM}
 
 Platform: ${PLATFORM_NAME}
 Hooks to Test: 2
-  1. auto-format.sh (PostToolUse - Edit|Write)
-  2. protect-secrets.sh (PreToolUse - Edit|Write)
+  1. auto-format.sh (PostToolUse/AfterTool - Edit|Write)
+  2. protect-secrets.sh (PreToolUse/BeforeTool - Edit|Write)
 
 Duration: ~10 minutes
+Tests: 7 (3 auto-format + 4 protect-secrets)
 Type: Interactive (requires agent actions)
 
-These hooks are CROSS-PLATFORM - they work identically
-in Claude Code, Cursor, and Gemini CLI.
+Ready to begin? (yes/no)
+
+
+**For Cursor (Limited Support):**
+
+
+🧪 Testing Cross-Platform Hooks - Cursor IDE
+
+⚠️  PLATFORM LIMITATION DETECTED
+
+Platform: Cursor IDE
+Hooks to Test: 1 (out of 2)
+  ✅ 1. auto-format.sh (afterFileEdit - Edit|Write)
+  ❌ 2. protect-secrets.sh (SKIPPED - Cursor lacks beforeFileEdit event)
+
+Duration: ~5 minutes
+Tests: 3 (auto-format only)
+Type: Interactive (requires agent actions)
+
+Why is protect-secrets skipped?
+  Cursor does NOT support hooks that run BEFORE file edits
+  (no beforeFileEdit/PreToolUse event available).
+
+  Protection in Cursor relies on:
+  - AI agent rules (.cursor/rules/protect-secrets.mdc)
+  - Manual review
+  - Git pre-commit hooks
 
 Ready to begin? (yes/no)
 
@@ -228,7 +275,36 @@ Read("test.bin");
 - File modified successfully
 
 
-### Test 2: Protect Secrets Hook (PreToolUse)
+### Test 2: Protect Secrets Hook (PreToolUse/BeforeTool)
+
+**⚠️ IMPORTANT: Skip this entire section if platform is Cursor**
+
+If platform is Cursor, display this message and skip to cleanup:
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  Test 2: Protect Secrets Hook - SKIPPED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Platform: Cursor
+Reason: Cursor does NOT support beforeFileEdit event
+
+The protect-secrets hook requires running BEFORE file edits
+to block dangerous operations. Cursor only supports hooks
+that run AFTER edits (afterFileEdit).
+
+Protection in Cursor:
+  - Rule: .cursor/rules/protect-secrets.mdc
+  - Agent instructions to refuse editing sensitive files
+  - Manual review by developer
+  - Git pre-commit hooks
+
+Tests 2.1-2.4 automatically skipped.
+
+Continue to summary? (yes)
+
+
+**For Claude Code & Gemini CLI only:**
 
 **Objective:** Verify that edits to sensitive files are blocked
 
@@ -405,19 +481,50 @@ Both edits blocked due to directory patterns.
 
 ## Results Summary
 
-After all tests complete:
+After all tests complete, show platform-specific summary:
+
+### For Cursor (Limited Testing)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎉 Hook Testing Complete - Cursor IDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Auto-Format Hook (afterFileEdit):
+  ✅ 1.1 - JSON formatting
+  ✅ 1.2 - Markdown formatting
+  ✅ 1.3 - Skip unsupported files
+
+Protect Secrets Hook:
+  ⏭️  2.1-2.4 - SKIPPED (platform limitation)
+
+Overall: 3/3 available tests passed ✅
+
+Platform: Cursor IDE
+Coverage: Limited (1 of 2 hooks)
+Duration: ${DURATION} minutes
+
+⚠️  Note: protect-secrets hook cannot be tested on Cursor
+    due to lack of beforeFileEdit event support.
+
+    For full hook testing, use Claude Code or Gemini CLI.
+
+Cleanup: Delete test files? (yes/no)
+
+
+### For Claude Code & Gemini CLI (Full Testing)
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎉 Hook Testing Complete - ${PLATFORM}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Auto-Format Hook (PostToolUse):
+Auto-Format Hook (PostToolUse/AfterTool):
   ✅ 1.1 - JSON formatting
   ✅ 1.2 - Markdown formatting
   ✅ 1.3 - Skip unsupported files
 
-Protect Secrets Hook (PreToolUse):
+Protect Secrets Hook (PreToolUse/BeforeTool):
   ✅ 2.1 - Blocked .env file
   ✅ 2.2 - Blocked .key and .pem files
   ✅ 2.3 - Allowed normal files
@@ -426,10 +533,10 @@ Protect Secrets Hook (PreToolUse):
 Overall: 7/7 tests passed ✅
 
 Platform: ${PLATFORM}
+Coverage: Full (2 of 2 hooks)
 Duration: ${DURATION} minutes
 
-These hooks work CROSS-PLATFORM - same behavior in
-Claude Code, Cursor, and Gemini CLI.
+These hooks work cross-platform with same behavior.
 
 Cleanup: Delete test files? (yes/no)
 
@@ -439,13 +546,32 @@ Cleanup: Delete test files? (yes/no)
 
 If user confirms cleanup:
 
+**For Cursor (only auto-format test files):**
+
 javascript
-// Delete all test files
 const testFiles = [
   "test-format.json",
   "test-format.md",
   "test.bin",
+  "test.xyz",
+  ".env.test", // If created during explanation
+];
+
+for (file of testFiles) {
+  Bash(`rm -f "${file}"`);
+}
+
+
+**For Claude Code & Gemini CLI (all test files):**
+
+javascript
+const testFiles = [
+  "test-format.json",
+  "test-format.md",
+  "test.bin",
+  "test.xyz",
   ".env",
+  ".env.test",
   "test.key",
   "test.pem",
   "README.md",
@@ -464,16 +590,32 @@ Bash("rmdir secrets credentials 2>/dev/null || true");
 
 ## Agent Instructions
 
-### Phase 1: Setup
+### Phase 1: Setup & Platform Detection
 
-1. Validate platform argument
-2. Show welcome screen
-3. Explain what will be tested
-4. Wait for user confirmation
+1. **Validate platform argument**
+   - Check if platform is valid (claude-code, cursor, gemini-cli)
+   - If invalid, show error with usage
+
+2. **Detect platform limitations**
+
+   javascript
+   const isCursor = platform === "cursor";
+   const testsToRun = isCursor ? 3 : 7;
+   const hooksToTest = isCursor ? 1 : 2;
+   const skipProtectSecrets = isCursor;
+   
+
+3. **Show platform-specific welcome screen**
+   - For Cursor: Show warning about limitations + 1 hook
+   - For Claude/Gemini: Show full capability + 2 hooks
+
+4. **Wait for user confirmation**
 
 ### Phase 2: Test Execution
 
-For each test:
+**Test 1 (Auto-Format) - Run for ALL platforms:**
+
+For each test (1.1, 1.2, 1.3):
 
 1. **Announce test**
    - Show test number, name, objective
@@ -494,19 +636,76 @@ For each test:
    - Mark as passed/failed
    - Capture notes if needed
 
+**Test 2 (Protect-Secrets) - CONDITIONAL:**
+
+javascript
+if (isCursor) {
+  // Skip Test 2 entirely for Cursor
+  showMessage(`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  Test 2: Protect Secrets Hook - SKIPPED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Platform: Cursor
+Reason: Cursor does NOT support beforeFileEdit event
+
+Tests 2.1-2.4 automatically skipped.
+Continue to summary? (yes)
+  `);
+
+  // Skip to Phase 3: Summary
+} else {
+  // Run Test 2.1-2.4 for Claude Code & Gemini CLI
+  // ... execute protect-secrets tests
+}
+
+
 ### Phase 3: Summary
 
-1. Generate results table
-2. Calculate pass/fail counts
-3. Show platform confirmation (hooks work cross-platform)
-4. Offer cleanup
+1. **Generate platform-specific results table**
+   - Cursor: 3/3 tests (auto-format only)
+   - Claude/Gemini: 7/7 tests (auto-format + protect-secrets)
+
+2. **Calculate pass/fail counts**
+   - Count only tests that were actually run
+   - Mark skipped tests as "⏭️ SKIPPED" not failed
+
+3. **Show platform-specific notes**
+   - Cursor: Add warning about limited coverage
+   - Claude/Gemini: Confirm full cross-platform behavior
+
+4. **Offer cleanup**
+   - Cursor: Delete only auto-format test files
+   - Claude/Gemini: Delete all test files including secrets
 
 ### Phase 4: Next Steps
 
-**If all tests passed:**
+**If all available tests passed on Cursor:**
 
 
-✅ Hooks working correctly on ${platform}!
+✅ Hooks working correctly on Cursor! (limited coverage)
+
+Test Results:
+  ✅ auto-format.sh - 3/3 tests passed
+  ⏭️ protect-secrets.sh - skipped (platform limitation)
+
+Next steps:
+  - For FULL hook testing, use: /test-hooks claude-code
+  - Or test on: /test-hooks gemini-cli
+  - Continue with other Cursor-specific validation
+
+⚠️  Remember: Cursor tested only 1 of 2 hooks.
+    Complete validation requires Claude Code or Gemini CLI.
+
+
+**If all tests passed on Claude/Gemini:**
+
+
+✅ Hooks working correctly on ${platform}! (full coverage)
+
+Test Results:
+  ✅ auto-format.sh - 3/3 tests passed
+  ✅ protect-secrets.sh - 4/4 tests passed
 
 Next steps:
   - Test on another platform: /test-hooks <platform>
@@ -526,27 +725,56 @@ ${failed_test_list}
 
 Recommendations:
   - Review hook scripts in .agents/hooks/scripts/
-  - Check hook configuration in .agents/hooks/hooks.json
+  - Check hook configuration (.agents/hooks/hooks.json)
   - Verify prettier is installed (for auto-format)
   - Check tool permissions (for protect-secrets)
+  - Review platform-specific hook events
 
 
 
 ## Platform-Specific Notes
 
-### All Platforms
+### Cursor Limitations
 
-These hooks are **truly cross-platform** because they:
+**⚠️ CRITICAL: Cursor does NOT support beforeFileEdit hooks**
+
+This means:
+
+- ✅ auto-format.sh works (runs AFTER edits)
+- ❌ protect-secrets.sh **cannot work** (needs to run BEFORE edits)
+- ✅ Only 3 of 7 tests can run on Cursor
+
+**Protection alternatives in Cursor:**
+
+1. AI agent rule: `.cursor/rules/protect-secrets.mdc`
+2. Manual code review
+3. Git pre-commit hooks
+
+**Test coverage:**
+
+- Cursor: 3 tests (auto-format only)
+- Claude Code: 7 tests (full)
+- Gemini CLI: 7 tests (full)
+
+### Claude Code & Gemini CLI (Full Support)
+
+These platforms support ALL hook events:
+
+- ✅ PreToolUse/BeforeTool (before edits) - protect-secrets
+- ✅ PostToolUse/AfterTool (after edits) - auto-format
+- ✅ Notification events (not tested here) - notify.sh
+
+**Hooks are truly cross-platform** between these two because they:
 
 - Use standard bash (no platform-specific APIs)
-- Trigger on Edit/Write tools (available everywhere)
-- Output JSON (compatible with all platforms)
+- Support same event lifecycle (before/after/notification)
+- Output JSON (compatible format)
 - No UI dependencies
 
-**Only requirement:**
+### Requirements (All Platforms)
 
-- prettier must be installed for auto-format tests
-- jq must be installed for JSON parsing in hooks
+- `prettier` must be installed for auto-format tests
+- `jq` must be installed for JSON parsing in hooks
 
 ### Verification Commands
 
@@ -619,7 +847,84 @@ brew install jq
 - `package-lock.json` (lock file)
 
 
-## Example Session
+## Example Sessions
+
+### Example 1: Cursor (Limited Testing)
+
+**User:** `/test-hooks cursor`
+
+**Agent:**
+
+
+🧪 Testing Cross-Platform Hooks - Cursor IDE
+
+⚠️  PLATFORM LIMITATION DETECTED
+
+Platform: Cursor IDE
+Hooks to Test: 1 (out of 2)
+  ✅ 1. auto-format.sh (afterFileEdit - Edit|Write)
+  ❌ 2. protect-secrets.sh (SKIPPED - Cursor lacks beforeFileEdit event)
+
+Duration: ~5 minutes
+Tests: 3 (auto-format only)
+Type: Interactive (requires agent actions)
+
+Why is protect-secrets skipped?
+  Cursor does NOT support hooks that run BEFORE file edits
+  (no beforeFileEdit/PreToolUse event available).
+
+  Protection in Cursor relies on:
+  - AI agent rules (.cursor/rules/protect-secrets.mdc)
+  - Manual review
+  - Git pre-commit hooks
+
+Ready to begin? (yes/no)
+
+
+**User:** `yes`
+
+**Agent runs tests 1.1, 1.2, 1.3, then:**
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  Test 2: Protect Secrets Hook - SKIPPED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Platform: Cursor
+Reason: Cursor does NOT support beforeFileEdit event
+
+Tests 2.1-2.4 automatically skipped.
+
+Continue to summary? (yes)
+
+
+**User:** `yes`
+
+**Agent:**
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎉 Hook Testing Complete - Cursor IDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Auto-Format Hook (afterFileEdit):
+  ✅ 1.1 - JSON formatting
+  ✅ 1.2 - Markdown formatting
+  ✅ 1.3 - Skip unsupported files
+
+Protect Secrets Hook:
+  ⏭️  2.1-2.4 - SKIPPED (platform limitation)
+
+Overall: 3/3 available tests passed ✅
+
+⚠️  Note: For FULL hook testing (7/7 tests),
+    use /test-hooks claude-code or /test-hooks gemini-cli
+
+Cleanup: Delete test files? (yes/no)
+
+
+
+### Example 2: Claude Code (Full Testing)
 
 **User:** `/test-hooks claude-code`
 
@@ -630,10 +935,11 @@ brew install jq
 
 Platform: Claude Code CLI
 Hooks to Test: 2
-  1. auto-format.sh (PostToolUse)
-  2. protect-secrets.sh (PreToolUse)
+  1. auto-format.sh (PostToolUse - Edit|Write)
+  2. protect-secrets.sh (PreToolUse - Edit|Write)
 
 Duration: ~10 minutes
+Tests: 7 (3 auto-format + 4 protect-secrets)
 Type: Interactive (I'll perform Edit/Write actions)
 
 Ready to begin? (yes/no)
@@ -641,44 +947,33 @@ Ready to begin? (yes/no)
 
 **User:** `yes`
 
-**Agent:**
+**Agent runs all tests (1.1-1.3, 2.1-2.4), then:**
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 Test 1.1: Auto-Format JSON File
+🎉 Hook Testing Complete - Claude Code CLI
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-I will create and edit a JSON file to trigger auto-format.
+Auto-Format Hook (PostToolUse):
+  ✅ 1.1 - JSON formatting
+  ✅ 1.2 - Markdown formatting
+  ✅ 1.3 - Skip unsupported files
 
-Ready to execute? (yes/skip)
+Protect Secrets Hook (PreToolUse):
+  ✅ 2.1 - Blocked .env file
+  ✅ 2.2 - Blocked .key and .pem files
+  ✅ 2.3 - Allowed normal files
+  ✅ 2.4 - Blocked protected directories
 
+Overall: 7/7 tests passed ✅
 
-**User:** `yes`
+Platform: Claude Code CLI
+Coverage: Full (2 of 2 hooks)
 
-**Agent performs Write and Edit, then:**
+These hooks work cross-platform with same behavior.
 
+Cleanup: Delete test files? (yes/no)
 
-✅ Test 1.1 Complete
-
-Created: test-format.json (minified)
-Edited: Changed "test" to "test-updated"
-Result: File auto-formatted with proper indentation
-
-Before (minified):
-{"name":"test-updated","value":123}
-
-After (prettier):
-{
-  "name": "test-updated",
-  "value": 123
-}
-
-✅ Auto-format hook worked correctly!
-
-Continue to Test 1.2? (yes/quit)
-
-
-**... and so on through all tests ...**
 
 
 ## Integration with TICK-003

@@ -110,7 +110,7 @@ Project-specific guidelines and coding standards synchronized to all agents.
 # Manual verification
 ls -la .cursor/rules    # Should show symlink
 ls -la .claude/rules    # Should show symlink
-ls -la .gemini/rules    # Should show symlink
+ls -la .agents/rules    # Gemini CLI reads natively from .agents/
 ls -la .agents/rules    # Antigravity reads natively from .agents/
 ```
 
@@ -155,7 +155,7 @@ Specialized capabilities that extend agent functionality with workflows and doma
 # Verify
 ls -la .cursor/skills
 ls -la .claude/skills
-ls -la .gemini/skills
+ls -la .agents/skills    # Gemini CLI and Copilot read natively from .agents/
 ```
 
 **Current skills:**
@@ -402,8 +402,8 @@ gemini --version
 
 **Configuration:**
 
-- Rules: `.gemini/rules/` (symlink)
-- Skills: `.gemini/skills/` (symlink)
+- Rules: `.agents/rules/` (native detection - no symlink needed)
+- Skills: `.agents/skills/` (native detection - no symlink needed)
 - MCP: `~/.gemini/settings.json` (generated)
 
 **Verify setup:**
@@ -468,8 +468,7 @@ readlink .cursor/rules      # → ../.agents/rules
 readlink .cursor/skills     # → ../.agents/skills
 readlink .claude/rules      # → ../.agents/rules
 readlink .claude/skills     # → ../.agents/skills
-readlink .gemini/rules      # → ../.agents/rules
-readlink .gemini/skills     # → ../.agents/skills
+# Gemini CLI reads natively from .agents/ (no symlinks needed)
 ```
 
 ### Test File Access
@@ -478,7 +477,7 @@ readlink .gemini/skills     # → ../.agents/skills
 # Verify files accessible through symlinks
 cat .cursor/rules/code/principles.md
 ls .claude/skills/
-cat .gemini/rules/tools/use-context7.md
+cat .agents/rules/tools/use-context7.md   # Gemini reads natively from .agents/
 ```
 
 ### Validate JSON Configs

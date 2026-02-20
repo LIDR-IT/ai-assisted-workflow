@@ -34,9 +34,15 @@
       "output_dir": ".gemini",
       "components": {
         "rules": { "strategy": "generate-index" },
-        "skills": { "strategy": "symlink" },
+        "skills": {
+          "strategy": "native",
+          "_note": "Gemini CLI reads .agents/skills/ natively; symlink causes duplicate detection"
+        },
         "commands": { "strategy": "convert-toml" },
-        "agents": { "strategy": "symlink" },
+        "agents": {
+          "strategy": "native",
+          "_note": "Gemini CLI reads .agents/subagents/ natively; symlink causes duplicate detection"
+        },
         "mcp": { "strategy": "generate", "format": "gemini-settings" },
         "hooks": { "strategy": "generate", "format": "gemini-settings" }
       }
@@ -53,7 +59,10 @@
           "transform_frontmatter": true,
           "generate_index": true
         },
-        "skills": { "strategy": "symlink" },
+        "skills": {
+          "strategy": "native",
+          "_note": "VSCode/Copilot reads .agents/skills/ natively; symlink causes duplicate detection"
+        },
         "commands": { "strategy": "copy-rename", "extension": ".prompt.md" },
         "agents": { "strategy": "copy-rename", "extension": ".agent.md" },
         "mcp": { "strategy": "generate", "format": "vscode-servers" },

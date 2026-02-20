@@ -1,7 +1,9 @@
 #!/bin/bash
 # Platform adapter: Gemini CLI
-# Rules: generate GEMINI.md index | Skills/Agents: symlink
+# Rules: generate GEMINI.md index | Skills/Agents: native (reads .agents/ directly)
 # Commands: convert .md → .toml | MCP: merge settings.json | Hooks: merge settings.json
+# NOTE: Gemini CLI discovers skills/agents from .agents/ natively.
+#       Symlinks to .gemini/skills/ cause "Skill conflict detected" warnings.
 
 GEMINI_DIR="$PROJECT_ROOT/.gemini"
 
@@ -134,7 +136,16 @@ EOF
 }
 
 gemini_skills() {
-  create_symlink "../.agents/skills" "$GEMINI_DIR/skills" "skills"
+  # Gemini CLI reads .agents/skills/ natively — no symlink needed.
+  # Creating .gemini/skills → .agents/skills causes "Skill conflict detected" warnings.
+  # Remove stale symlink if present from previous sync versions.
+  if [ -L "$GEMINI_DIR/skills" ]; then
+    if run_or_dry "remove stale .gemini/skills symlink"; then return 0; fi
+    rm "$GEMINI_DIR/skills"
+    log_info "Removed stale .gemini/skills symlink (Gemini reads .agents/skills/ natively)"
+  else
+    log_info "Skills: native (.agents/skills/ — no symlink needed)"
+  fi
 }
 
 gemini_commands() {
@@ -193,7 +204,16 @@ _gemini_convert_to_toml() {
 }
 
 gemini_agents() {
-  create_symlink "../.agents/subagents" "$GEMINI_DIR/agents" "agents"
+  # Gemini CLI reads .agents/subagents/ natively — no symlink needed.
+  # Creating .gemini/agents → .agents/subagents causes duplicate detection.
+  # Remove stale symlink if present from previous sync versions.
+  if [ -L "$GEMINI_DIR/agents" ]; then
+    if run_or_dry "remove stale .gemini/agents symlink"; then return 0; fi
+    rm "$GEMINI_DIR/agents"
+    log_info "Removed stale .gemini/agents symlink (Gemini reads .agents/subagents/ natively)"
+  else
+    log_info "Agents: native (.agents/subagents/ — no symlink needed)"
+  fi
 }
 
 gemini_mcp() {
@@ -366,11 +386,17 @@ gemini_verify() {
     ((errors++))
   fi
 
-  # Skills symlink
-  if [ -L "$GEMINI_DIR/skills" ]; then
-    log_info "gemini skills: $GEMINI_DIR/skills → $(readlink "$GEMINI_DIR/skills")"
+  # Skills (native — no symlink expected)
+  if [ -d "$AGENTS_DIR/skills" ]; then
+    local skill_count
+    skill_count=$(find "$AGENTS_DIR/skills" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+    log_info "gemini skills: native from .agents/skills/ ($skill_count skills)"
+    # Warn if stale symlink still exists
+    if [ -L "$GEMINI_DIR/skills" ]; then
+      log_warn "gemini skills: stale .gemini/skills symlink exists (causes conflicts)"
+    fi
   else
-    log_error "gemini skills: Not a symlink"
+    log_error "gemini skills: .agents/skills/ not found"
     ((errors++))
   fi
 
@@ -384,11 +410,17 @@ gemini_verify() {
     ((errors++))
   fi
 
-  # Agents symlink
-  if [ -L "$GEMINI_DIR/agents" ]; then
-    log_info "gemini agents: $GEMINI_DIR/agents → $(readlink "$GEMINI_DIR/agents")"
+  # Agents (native — no symlink expected)
+  if [ -d "$AGENTS_DIR/subagents" ]; then
+    local agent_count
+    agent_count=$(find "$AGENTS_DIR/subagents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    log_info "gemini agents: native from .agents/subagents/ ($agent_count agents)"
+    # Warn if stale symlink still exists
+    if [ -L "$GEMINI_DIR/agents" ]; then
+      log_warn "gemini agents: stale .gemini/agents symlink exists (causes conflicts)"
+    fi
   else
-    log_error "gemini agents: Not a symlink"
+    log_error "gemini agents: .agents/subagents/ not found"
     ((errors++))
   fi
 

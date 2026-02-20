@@ -45,7 +45,7 @@ trigger: always_on
 - [ ] Validates source directories exist
 - [ ] Creates Cursor files correctly (flattened .mdc)
 - [ ] Creates Claude symlinks correctly (subdirs)
-- [ ] Creates Gemini symlinks correctly (subdirs)
+- [ ] Gemini reads natively from .agents/ (no symlinks needed)
 - [ ] Creates Antigravity symlinks correctly (subdirs)
 - [ ] Verification step passes
 - [ ] Error messages are clear
@@ -193,14 +193,15 @@ Test synchronization of rules and skills across all agent platforms.
 2. Check `.cursor/rules/` contains .mdc files
    **Expected:** All rules flattened in .cursor/rules/
 
-### TC-003: Symlink Creation (Claude/Gemini)
+### TC-003: Symlink Creation (Claude)
 
 **Description:** Verify symlinks created correctly
 **Steps:**
 
 1. Run `.agents/sync.sh --only=rules`
-2. Check `.claude/rules`, `.gemini/rules`
-   **Expected:** Both are symlinks pointing to `../.agents/rules`
+2. Check `.claude/rules`
+   **Expected:** Symlink pointing to `../.agents/rules`
+   **Note:** Gemini CLI reads natively from `.agents/` (no symlinks needed)
 
 ## Coverage
 
@@ -257,13 +258,11 @@ echo "✅ Pre-commit tests passed"
 verify_sync() {
   echo "Verifying synchronization..."
 
-  # Check Claude/Gemini symlinks
-  for agent in claude gemini; do
-    if [ ! -L ".$agent/rules" ]; then
-      echo "❌ Missing rules symlink: .$agent/rules"
-      return 1
-    fi
-  done
+  # Check Claude symlinks (Gemini reads natively from .agents/)
+  if [ ! -L ".claude/rules" ]; then
+    echo "❌ Missing rules symlink: .claude/rules"
+    return 1
+  fi
 
   # Check Cursor/Antigravity copies
   for agent in cursor agent; do

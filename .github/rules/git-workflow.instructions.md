@@ -92,7 +92,7 @@ feat: Add centralized rules synchronization script
 Implement .agents/sync.sh --only=rules to synchronize rules
 and skills across all agent platforms using symlinks.
 
-- Cursor, Claude, Gemini use full directory symlinks
+- Cursor, Claude use full directory symlinks; Gemini reads natively
 - Antigravity uses copy strategy (platform limitation)
 - Includes dry-run mode and verification steps
 

@@ -275,7 +275,6 @@ _Italic_ or _italic_
 **Horizontal Rules:**
 
 ```markdown
-
 ```
 
 ### Writing Style

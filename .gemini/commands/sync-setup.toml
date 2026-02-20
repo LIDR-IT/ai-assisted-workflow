@@ -45,7 +45,7 @@ ls -la AGENTS.md CLAUDE.md GEMINI.md
 ls -la .cursor/rules .cursor/skills .cursor/commands .cursor/agents
 ls -la .claude/rules .claude/skills .claude/commands .claude/agents
 ls -la .gemini/rules .gemini/skills .gemini/commands .gemini/agents
-ls -la .github/rules .github/skills .github/prompts .github/agents
+ls -la .github/rules .github/prompts .github/agents
 
 # 4. Verificar Antigravity (native .agents/ detection, no soporta subagents)
 ls -la .agents/rules/ | head -5

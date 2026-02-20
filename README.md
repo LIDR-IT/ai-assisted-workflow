@@ -363,7 +363,7 @@ Root symlinks:
 #### 1. Symlinks (Instant Propagation)
 
 **Used for:** Skills, Commands, Subagents, Orchestrator docs
-**Platforms:** Cursor, Claude Code, Gemini CLI
+**Platforms:** Cursor, Claude Code
 
 **Technical implementation:**
 
@@ -371,8 +371,9 @@ Root symlinks:
 # Create full directory symlinks
 ln -s ../.agents/skills .cursor/skills
 ln -s ../.agents/skills .claude/skills
-ln -s ../.agents/skills .gemini/skills
 ```
+
+**Note:** Gemini CLI and Copilot read skills and agents natively from `.agents/skills/` and `.agents/subagents/` (no symlinks needed).
 
 **Advantages:**
 
@@ -543,9 +544,9 @@ done
 | Component         | Cursor         | Claude Code  | Gemini CLI    | Antigravity      | Copilot (VSCode)           |
 | ----------------- | -------------- | ------------ | ------------- | ---------------- | -------------------------- |
 | **Rules**         | ✅ Copy (.mdc) | ✅ Symlink   | ❌ Index only | ✅ Native        | ✅ Copy (.instructions.md) |
-| **Skills**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ✅ Native        | ✅ Symlink                 |
+| **Skills**        | ✅ Symlink     | ✅ Symlink   | ✅ Native     | ✅ Native        | ✅ Native                  |
 | **Commands**      | ✅ Symlink     | ✅ Symlink   | ✅ Generated  | ✅ Native        | ✅ Copy (.prompt.md)       |
-| **Agents**        | ✅ Symlink     | ✅ Symlink   | ✅ Symlink    | ❌ Not supported | ✅ Copy (.agent.md)        |
+| **Agents**        | ✅ Symlink     | ✅ Symlink   | ✅ Native     | ❌ Not supported | ✅ Copy (.agent.md)        |
 | **MCP (Project)** | ✅ Generated   | ✅ Generated | ✅ Generated  | ❌ Global only   | ✅ Generated               |
 
 ### Sync Execution Order
@@ -994,8 +995,9 @@ vim .agents/mcp/.env
 🧩 Syncing skills...
   ✅ Cursor: Symlink created (.cursor/skills → ../.agents/skills)
   ✅ Claude: Symlink created (.claude/skills → ../.agents/skills)
-  ✅ Gemini: Symlink created (.gemini/skills → ../.agents/skills)
-  ✅ Antigravity: Native detection (.agents/skills/ read directly)
+  ✅ Gemini: Native (.agents/skills/ — reads natively)
+  ✅ Antigravity: Native (.agents/skills/ — reads natively)
+  ✅ Copilot: Native (.agents/skills/ — reads natively)
 
 ⚙️ Syncing commands...
   ✅ All platforms synchronized
@@ -1491,10 +1493,9 @@ template-best-practices/
 ├── .gemini/                         # Gemini CLI (mixed approach)
 │   ├── GEMINI.md                    # ← Generated index (no native rules support)
 │   ├── rules → ../.agents/rules     # ← Symlink (for reference access)
-│   ├── skills → ../.agents/skills   # ← Symlink to source
 │   ├── commands → ../.agents/commands # ← Symlink to source
-│   ├── agents → ../.agents/subagents # ← Symlink to source
 │   └── settings.json                # ← Generated (Gemini MCP format)
+│   # Skills & Agents: Gemini reads natively from .agents/skills/ and .agents/subagents/
 │
 │   # Antigravity: reads natively from .agents/ (no separate platform directory)
 │   # .agents/workflows → .agents/commands  (symlink for Antigravity workflows)

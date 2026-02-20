@@ -119,7 +119,7 @@ model: inherit
     ┌────┴────┬──────────┐
     ↓         ↓          ↓
 Cursor    Claude     Gemini
-(symlink)  (symlink)  (symlink)
+(symlink)  (symlink)  (native)
 
 ✅ Todas ✅ Todas  ✅ Todas
 aceptan  aceptan  aceptan
@@ -131,11 +131,11 @@ aceptan  aceptan  aceptan
 
 ```bash
 # sync.sh --only=agents (simplificado)
-# Solo crear symlinks para todas las plataformas
+# Crear symlinks para Cursor y Claude; Gemini lee nativamente
 
 ln -s ../.agents/subagents .cursor/agents
 ln -s ../.agents/subagents .claude/agents
-ln -s ../.agents/subagents .gemini/agents
+# Gemini CLI lee nativamente desde .agents/subagents/ (no necesita symlink)
 ```
 
 ## Ejemplo Completo
@@ -287,7 +287,7 @@ vim .agents/subagents/doc-improver.md
 
 # 4. Verificar
 head -10 .agents/subagents/doc-improver.md
-head -10 .gemini/agents/doc-improver.md  # Debe ser idéntico
+head -10 .agents/subagents/doc-improver.md  # Gemini lee nativamente desde aquí
 ```
 
 ### Actualizar sync.sh --only=agents
@@ -300,7 +300,7 @@ Simplificar para usar symlinks para todas:
 
 ln -sf ../.agents/subagents .cursor/agents
 ln -sf ../.agents/subagents .claude/agents
-ln -sf ../.agents/subagents .gemini/agents
+# Gemini CLI reads natively from .agents/subagents/ (no symlink needed)
 ```
 
 ## Verificación
@@ -310,7 +310,7 @@ ln -sf ../.agents/subagents .gemini/agents
 cat .agents/subagents/doc-improver.md
 cat .cursor/agents/doc-improver.md     # Via symlink
 cat .claude/agents/doc-improver.md     # Via symlink
-cat .gemini/agents/doc-improver.md     # Via symlink
+cat .agents/subagents/doc-improver.md  # Gemini reads natively from .agents/
 
 # Debe ser IDÉNTICO
 ```

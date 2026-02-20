@@ -38,14 +38,14 @@ The `.agents/` directory serves as the **single source of truth** for all AI age
 - **Claude Code** - Full symlink support
 - **Gemini CLI** - Full symlink support
 - **Antigravity** - Native detection from `.agents/`
-- **Copilot (VSCode)** - Copy+rename (`.instructions.md`, `.prompt.md`, `.agent.md`)
+- **Copilot (VSCode)** - Copy+rename (`.instructions.md`, `.prompt.md`, `.agent.md`); reads skills natively from `.agents/`
 
 ### Automatic Synchronization
 
 After creating any component, this skill automatically runs `./.agents/sync.sh` to:
 
-1. Create symlinks for Cursor, Claude Code, Gemini CLI
-2. Create selective symlinks/copies for Antigravity
+1. Create symlinks for Cursor, Claude Code
+2. Native detection for Gemini CLI, Antigravity, Copilot
 3. Generate platform-specific MCP configs
 4. Verify synchronization success
 
@@ -725,7 +725,7 @@ For detailed understanding of the `.agents/` system, see: `references/architectu
 | Claude Code      | ✅          | ✅ Sym | ✅ Sym   | ✅      | ✅ Sym   |
 | Gemini CLI       | ✅          | ✅ Sym | ✅ Gen   | ✅ Sym  | ❌ Index |
 | Antigravity      | ❌ Global   | ✅ Nat | ✅ Nat   | ❌      | ✅ Nat   |
-| Copilot (VSCode) | ✅          | ✅ Sym | ✅ Copy  | ✅ Copy | ✅ Copy  |
+| Copilot (VSCode) | ✅          | ✅ Nat | ✅ Copy  | ✅ Copy | ✅ Copy  |
 
 **Legend:**
 

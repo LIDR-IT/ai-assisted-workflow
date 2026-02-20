@@ -33,10 +33,11 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 **1. Symlinks (Skills, Commands, Subagents)**
 
 - **Used for:** Skills, commands, and subagents distribution
-- **Platforms:** Cursor, Claude Code, Gemini CLI, Antigravity, Copilot (VSCode)
+- **Platforms:** Cursor, Claude Code
 - **Mechanism:** Full directory symlinks pointing to `.agents/`
 - **Advantages:** Instant propagation, zero duplication, single source of truth
 - **Note:** Antigravity does NOT support subagents directory
+- **Note:** Gemini CLI and Copilot read skills natively from `.agents/` (no symlinks needed)
 
 **2. Symlinks (Rules - Selective)**
 
@@ -64,9 +65,9 @@ This project demonstrates a **centralized source-of-truth** pattern for managing
 | ----------- | -------------------------- | ---------- | --------------------- | ------------------- | -------------- | ---------- |
 | Cursor      | ✅ Copy (flat .mdc)        | ✅ Symlink | ✅ Symlink            | ✅ Symlink          | ✅             | ✅         |
 | Claude Code | ✅ Symlink                 | ✅ Symlink | ✅ Symlink            | ✅ Symlink          | ✅             | ✅         |
-| Gemini CLI  | ❌ Index file only         | ✅ Symlink | ✅ Generated (.toml)  | ✅ Symlink          | ✅             | ✅         |
+| Gemini CLI  | ❌ Index file only         | ✅ Native  | ✅ Generated (.toml)  | ✅ Native           | ✅             | ✅         |
 | Antigravity | ✅ Native (.agents/)       | ✅ Native  | ✅ Native (workflows) | ❌ Not supported    | ❌ Global only | ✅         |
-| Copilot     | ✅ Copy (.instructions.md) | ✅ Symlink | ✅ Copy (.prompt.md)  | ✅ Copy (.agent.md) | ✅ (.vscode/)  | ✅         |
+| Copilot     | ✅ Copy (.instructions.md) | ✅ Native  | ✅ Copy (.prompt.md)  | ✅ Copy (.agent.md) | ✅ (.vscode/)  | ✅         |
 
 **Notes:**
 
@@ -171,7 +172,9 @@ After any sync operation:
 # Check symlinks
 ls -la .cursor/rules .cursor/skills
 ls -la .claude/rules .claude/skills
-ls -la .gemini/rules .gemini/skills
+
+# Gemini reads skills/agents natively from .agents/ (no symlinks)
+ls -la .agents/skills/
 
 # Verify targets
 readlink .cursor/rules    # Should: ../.agents/rules
@@ -198,7 +201,7 @@ ls .claude/skills/
 
 **Changes not propagating:**
 
-1. Verify symlink: `readlink .cursor/rules` (or `.claude/rules`, `.gemini/rules`)
+1. Verify symlink: `readlink .cursor/rules` (or `.claude/rules`)
 2. Check source file exists: `ls .agents/rules/{file}.md`
 3. For Cursor: Re-run sync script (rules are copied and converted to .mdc)
 

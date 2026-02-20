@@ -1,6 +1,6 @@
 ---
 description: Validate ticket completeness and structure
-mode: agent
+agent: 'agent'
 ---
 
 # Enrich Ticket Command

@@ -2,7 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Note:** This file is also used by other AI agents (Gemini CLI, Cursor, Antigravity). Root-level files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are symlinks to this orchestrator file.
+**Note:** This file is the single orchestrator for all AI agents. Root-level files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are symlinks to this orchestrator file. Each platform reads from its preferred file:
+
+- **Cursor / Claude Code:** Read `CLAUDE.md`
+- **Gemini CLI / Antigravity:** Read `GEMINI.md` (shared, no duplicates)
+- **Copilot (VSCode):** Reads `CLAUDE.md` + `AGENTS.md` + `copilot-instructions.md` — no separate orchestrator needed
 
 ---
 
@@ -72,7 +76,6 @@ npm run format:check      # Check formatting without changes
 # Verify symlinks point correctly
 readlink .cursor/rules    # Should: ../.agents/rules
 readlink .claude/rules    # Should: ../.agents/rules
-readlink .github/skills   # Should: ../.agents/skills
 ls -la .cursor/skills     # Should show: lrwxr-xr-x (symlink)
 
 # Validate generated configs
@@ -170,6 +173,7 @@ ls .github/agents/*.agent.md
 - **Used for:** Skills, Commands, Subagents, Orchestrator docs
 - **How:** `ln -s ../.agents/skills .cursor/skills`
 - **Why:** Zero duplication, instant updates, filesystem-native
+- **Note:** Gemini CLI and Copilot read `.agents/skills/` and `.agents/subagents/` natively (no symlinks needed)
 
 **2. Symlinks + Copy (Rules - Hybrid)**
 
@@ -194,24 +198,30 @@ ls .github/agents/*.agent.md
 
 ### Platform Support Matrix
 
-| Component | Cursor                | Claude Code  | Gemini CLI     | Antigravity      | **Copilot (VSCode)**               |
-| --------- | --------------------- | ------------ | -------------- | ---------------- | ---------------------------------- |
-| Rules     | ✅ Copy (.mdc)        | ✅ Symlink   | ❌ Index only  | ✅ Native        | ✅ Copy (.instructions.md) + Index |
-| Skills    | ✅ Symlink            | ✅ Symlink   | ✅ Symlink     | ✅ Native        | ✅ Symlink                         |
-| Commands  | ✅ Symlink            | ✅ Symlink   | ✅ Gen (.toml) | ✅ Native        | ✅ Copy (.prompt.md)               |
-| Subagents | ✅ Symlink            | ✅ Symlink   | ✅ Symlink     | ❌ Not supported | ✅ Copy (.agent.md)                |
-| MCP       | ✅ Generated          | ✅ Generated | ✅ Generated   | ❌ Global only   | ✅ Generated (.vscode/)            |
-| Hooks     | ✅ Partial (no Notif) | ✅ Full      | ✅ Full        | ❌ Global only   | ✅ Partial (no Notification)       |
-| Memory    | CLAUDE.md             | CLAUDE.md    | GEMINI.md      | AGENTS.md        | CLAUDE.md + AGENTS.md              |
+| Component | Cursor                | Claude Code  | Gemini CLI     | Antigravity      | **Copilot (VSCode)**                            |
+| --------- | --------------------- | ------------ | -------------- | ---------------- | ----------------------------------------------- |
+| Rules     | ✅ Copy (.mdc)        | ✅ Symlink   | ❌ Index only  | ✅ Native        | ✅ Copy (.instructions.md) + Index              |
+| Skills    | ✅ Symlink            | ✅ Symlink   | ✅ Native      | ✅ Native        | ✅ Native                                       |
+| Commands  | ✅ Symlink            | ✅ Symlink   | ✅ Gen (.toml) | ✅ Native        | ✅ Copy (.prompt.md)                            |
+| Subagents | ✅ Symlink            | ✅ Symlink   | ✅ Native      | ❌ Not supported | ✅ Copy (.agent.md)                             |
+| MCP       | ✅ Generated          | ✅ Generated | ✅ Generated   | ❌ Global only   | ✅ Generated (.vscode/)                         |
+| Hooks     | ✅ Partial (no Notif) | ✅ Full      | ✅ Full        | ❌ Global only   | ✅ Partial (no Notification)                    |
+| Memory    | CLAUDE.md             | CLAUDE.md    | GEMINI.md      | GEMINI.md        | CLAUDE.md + AGENTS.md + copilot-instructions.md |
+
+**Orchestrator Strategy (no duplicates):**
+
+All three root files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are **symlinks to the same file** (`.agents/orchestrator/AGENTS.md`). Each platform reads its preferred file:
+
+- **Cursor / Claude Code** → `CLAUDE.md`
+- **Gemini CLI / Antigravity** → `GEMINI.md` (both share the same file, no duplicates)
+- **Copilot (VSCode)** → `CLAUDE.md` + `AGENTS.md` + `.github/copilot-instructions.md` (auto-generated index). No separate `COPILOT.md` needed.
 
 **Critical Limitations:**
 
 - **Cursor:** No subdirectories, requires `.mdc` extension, `name` field mandatory
 - **Antigravity:** No project MCP, no subagents, requires reload after sync, commands require `workflows` folder name
-- **Gemini:** No native rules (uses index), commands need TOML format
-- **Copilot:** Requires `.instructions.md`/`.agent.md`/`.prompt.md` extensions, flat rules structure
-
-**Cross-Compatibility (Copilot):** Copilot also reads from `.claude/rules/` (symlink), `AGENTS.md`, and `CLAUDE.md` in root. No need for a separate `COPILOT.md`.
+- **Gemini:** No native rules (uses index), commands need TOML format, reads skills/agents natively from `.agents/` (no symlinks)
+- **Copilot:** Requires `.instructions.md`/`.agent.md`/`.prompt.md` extensions, flat rules structure, reads skills natively from `.agents/` (no symlinks)
 
 ---
 
@@ -335,6 +345,7 @@ EOF
 # Verify
 ls .cursor/skills/react-testing/
 ls .claude/skills/react-testing/
+ls .agents/skills/react-testing/   # Gemini/Antigravity/Copilot (native detection)
 
 # Commit
 git add .agents/skills/react-testing/
@@ -754,6 +765,15 @@ readlink .claude/rules  # Should: ../.agents/rules
 # Also regenerates .github/copilot-instructions.md index
 ```
 
+**Gemini CLI / Copilot skills/agents (native .agents/ detection):**
+
+```bash
+# Gemini and Copilot read skills and agents natively from .agents/skills/ and .agents/subagents/
+# No symlinks needed — changes propagate directly
+ls .agents/skills/    # Verify skills exist
+ls .agents/subagents/ # Verify agents exist
+```
+
 **Antigravity (native .agents/ detection):**
 
 ```bash
@@ -854,7 +874,7 @@ ln -s ../.agents/skills .cursor/skills
 - Claude Code: `claude mcp list` → Verify servers
 - Copilot: `ls .github/rules/*.instructions.md` → Verify rules
 - VSCode: Open `.vscode/mcp.json` → Verify servers
-- Verify symlinks: `ls -la .cursor/skills .github/skills`
+- Verify symlinks: `ls -la .cursor/skills .claude/skills`
 
 ---
 

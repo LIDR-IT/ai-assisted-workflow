@@ -22,6 +22,11 @@ yarn.lock
 secrets/
 credentials/
 
+# Generated platform configs (frontmatter must not be reformatted)
+.github/
+.gemini/
+.cursor/rules/
+
 # Git
 .git/
 

@@ -16,13 +16,13 @@ The `.agents/sync.sh` CLI synchronizes:
 
 ### Synchronization Strategy
 
-| Platform         | Rules | Skills | Method                                   |
-| ---------------- | ----- | ------ | ---------------------------------------- |
-| Cursor           | ✅    | ✅     | Full directory symlinks                  |
-| Claude Code      | ✅    | ✅     | Full directory symlinks                  |
-| Gemini CLI       | ✅    | ✅     | Full directory symlinks                  |
-| Antigravity      | ✅    | ✅     | Native (reads from .agents/ directly)    |
-| Copilot (VSCode) | ✅    | ✅     | Copy+rename (.instructions.md) + symlink |
+| Platform         | Rules | Skills | Method                                  |
+| ---------------- | ----- | ------ | --------------------------------------- |
+| Cursor           | ✅    | ✅     | Full directory symlinks                 |
+| Claude Code      | ✅    | ✅     | Full directory symlinks                 |
+| Gemini CLI       | ✅    | ✅     | Native (reads from .agents/ directly)   |
+| Antigravity      | ✅    | ✅     | Native (reads from .agents/ directly)   |
+| Copilot (VSCode) | ✅    | ✅     | Copy+rename (.instructions.md) + native |
 
 ### Directory Structure
 
@@ -54,9 +54,8 @@ The `.agents/sync.sh` CLI synchronizes:
 ├── rules → ../.agents/rules    # Symlink
 └── skills → ../.agents/skills  # Symlink
 
-.gemini/
-├── rules → ../.agents/rules    # Symlink
-└── skills → ../.agents/skills  # Symlink
+# Gemini CLI reads natively from .agents/ — no separate directory needed
+# .agents/rules/ and .agents/skills/ are accessed directly
 
 # Antigravity reads natively from .agents/ — no separate directory needed
 # .agents/rules/ and .agents/skills/ are accessed directly
@@ -101,7 +100,7 @@ The `.agents/sync.sh` CLI synchronizes:
    ```bash
    ls -la .cursor/rules .cursor/skills
    ls -la .claude/rules .claude/skills
-   ls -la .gemini/rules .gemini/skills
+   ls -la .agents/rules .agents/skills    # Gemini CLI reads natively from here
    ```
 
 ## Usage
@@ -138,8 +137,8 @@ The `.agents/sync.sh` CLI synchronizes:
   ✅ Created skills symlink: .claude/skills → ../.agents/skills
 
 💎 Syncing Gemini CLI...
-  ✅ Created rules symlink: .gemini/rules → ../.agents/rules
-  ✅ Skills already synced (existing symlink)
+  ✅ Gemini CLI reads rules natively from .agents/rules/
+  ✅ Gemini CLI reads skills natively from .agents/skills/
 
 🌌 Syncing Antigravity...
   ✅ Antigravity reads rules natively from .agents/rules/
@@ -150,8 +149,8 @@ The `.agents/sync.sh` CLI synchronizes:
   ✅ Cursor skills: .cursor/skills → ../.agents/skills
   ✅ Claude rules: .claude/rules → ../.agents/rules
   ✅ Claude skills: .claude/skills → ../.agents/skills
-  ✅ Gemini rules: .gemini/rules → ../.agents/rules
-  ✅ Gemini skills: .gemini/skills → ../.agents/skills
+  ✅ Gemini rules: native detection from .agents/rules/
+  ✅ Gemini skills: native detection from .agents/skills/
 
 ✅ Synchronization completed successfully
 ```
@@ -211,10 +210,11 @@ Skills use the same synchronization approach:
 2. **Changes propagate automatically:**
 
    ```bash
-   # Symlinks mean instant propagation for Cursor, Claude, Gemini
+   # Symlinks mean instant propagation for Cursor, Claude
    ls .cursor/skills/my-skill
    ls .claude/skills/my-skill
-   ls .gemini/skills/my-skill
+   # Gemini CLI reads natively from .agents/skills/
+   ls .agents/skills/my-skill
    ```
 
 3. **For Antigravity:**
@@ -234,8 +234,7 @@ readlink .cursor/rules    # Should output: ../.agents/rules
 readlink .cursor/skills   # Should output: ../.agents/skills
 readlink .claude/rules    # Should output: ../.agents/rules
 readlink .claude/skills   # Should output: ../.agents/skills
-readlink .gemini/rules    # Should output: ../.agents/rules
-readlink .gemini/skills   # Should output: ../.agents/skills
+# Gemini CLI reads natively from .agents/ (no symlinks needed)
 ```
 
 **Visual verification:**
@@ -258,10 +257,7 @@ cat .cursor/rules/core-principles.md
 # List skills through Claude symlink
 ls .claude/skills/
 
-# Check Gemini rules
-ls .gemini/rules/*.md
-
-# Check Antigravity (reads natively from .agents/)
+# Check Gemini/Antigravity (both read natively from .agents/)
 ls .agents/rules/*.md
 ```
 
@@ -351,7 +347,7 @@ ln -s ../.agents/rules .cursor/rules
 
 ### Changes Not Propagating
 
-**For Cursor/Claude/Gemini:**
+**For Cursor/Claude (symlinks):**
 
 ```bash
 # Verify symlink exists
@@ -444,8 +440,8 @@ ls .agents/rules/
 After pulling changes that update rules/skills:
 
 ```bash
-# For Cursor/Claude/Gemini - no action needed (symlinks)
-# For Antigravity - re-sync to copy new rules
+# For Cursor/Claude - no action needed (symlinks)
+# For Gemini/Antigravity - no action needed (native detection from .agents/)
 ./.agents/sync.sh --only=rules
 ```
 
@@ -457,8 +453,7 @@ To completely rebuild synchronization:
 # Remove all agent directories
 rm -rf .cursor/rules .cursor/skills
 rm -rf .claude/rules .claude/skills
-rm -rf .gemini/rules
-# Note: Antigravity reads natively from .agents/ — nothing to remove
+# Note: Gemini CLI and Antigravity read natively from .agents/ — nothing to remove
 
 # Re-run sync
 ./.agents/sync.sh --only=rules

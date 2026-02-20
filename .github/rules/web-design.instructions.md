@@ -1,10 +1,6 @@
 ---
-description: Web interface design guidelines
-Review UI code for Vercel Web Interface Guidelines compliance
----
-
 description: Review UI code for Vercel Web Interface Guidelines compliance
-argument-hint: <file-or-pattern>
+---
 
 # Web Interface Guidelines
 

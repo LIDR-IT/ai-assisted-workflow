@@ -1,6 +1,6 @@
 ---
 description: Audits and improves project documentation
-mode: agent
+agent: 'agent'
 ---
 
 # Improve Documentation Command

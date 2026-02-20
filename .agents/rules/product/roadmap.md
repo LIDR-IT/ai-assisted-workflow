@@ -26,7 +26,7 @@ trigger: always_on
 
 - **Cursor:** Rules (copy + convert), Skills/Commands/Agents (symlink), MCP (project + global)
 - **Claude Code:** Rules/Skills/Commands/Agents (symlink), MCP (project + global)
-- **Gemini CLI:** Rules (index file), Skills/Agents (symlink), Commands (TOML generated), MCP (project + global)
+- **Gemini CLI:** Rules (index file), Skills/Agents (native .agents/ detection), Commands (TOML generated), MCP (project + global)
 - **Antigravity:** Rules/Skills (symlink), Commands (workflows symlink), MCP (global only), Agents (not supported)
 
 ## Phase 1: Complete Core Pillars (Month 1-2)
