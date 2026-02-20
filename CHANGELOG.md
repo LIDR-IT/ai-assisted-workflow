@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 _No unreleased changes._
 
+## [0.7.1] - 2026-02-20
+
+### Changed
+
+- **Gemini CLI: Native skills/agents detection** — Removed symlinks to `.gemini/skills` and `.gemini/agents`; Gemini CLI reads directly from `.agents/skills/` and `.agents/subagents/` natively (symlinks caused "Skill conflict detected" warnings)
+- **Copilot (VSCode): Native skills detection** — Removed symlink to `.github/skills`; VSCode/Copilot reads directly from `.agents/skills/` natively (symlink caused duplicate skill detection)
+- Copilot prompts: Replaced deprecated `mode: agent` with `agent: 'agent'` in `.prompt.md` frontmatter
+- Platform adapters now include stale symlink cleanup logic (auto-removes old symlinks on sync)
+- `platforms.json` updated with `"native"` strategy for Gemini skills/agents and Copilot skills
+- Orchestrator documentation updated with native detection strategy and cross-platform memory architecture
+
+### Fixed
+
+- **Frontmatter parser** (`extract_field`) now only reads the first YAML `---` block, preventing false matches from `---` delimiters inside code examples in the document body
+- **Double frontmatter** in `web-design.md` merged into single block (was causing corrupted `.instructions.md` output)
+- Added `.github/`, `.gemini/`, `.cursor/rules/` to `.prettierignore` — Prettier was reformatting YAML frontmatter in generated platform files, breaking properties with line breaks
+
 ## [0.7.0] - 2026-02-20
 
 ### Added
