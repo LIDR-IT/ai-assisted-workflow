@@ -96,7 +96,7 @@ See: [Command → Agent → Skill Pattern Guide](../../docs/guides/patterns/comm
 
 **Quick steps:**
 
-1. Create agent file: `.agents/agents/your-agent.md`
+1. Create agent file: `.agents/subagents/your-agent.md`
 2. Define frontmatter with trigger conditions
 3. Write system prompt with workflow
 4. Create invoking command: `.agents/commands/your-command.md`
@@ -189,9 +189,9 @@ Never modify files without user consent:
 
 Agents are automatically synchronized to all platforms via `.agents/` directory:
 
-- **Cursor:** Uses agents from `.agents/agents/`
-- **Claude Code:** Uses agents from `.agents/agents/`
-- **Gemini CLI:** Uses agents from `.agents/agents/`
+- **Cursor:** Uses agents from `.agents/subagents/`
+- **Claude Code:** Uses agents from `.agents/subagents/`
+- **Gemini CLI:** Uses agents from `.agents/subagents/`
 - **Antigravity:** May need manual configuration
 
 No sync script needed - agents are read directly from source.

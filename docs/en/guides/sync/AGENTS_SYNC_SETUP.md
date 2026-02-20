@@ -4,16 +4,16 @@ This guide explains how agents (subagents) are synchronized across multiple AI p
 
 ## Overview
 
-Agents are autonomous subprocesses that handle complex, multi-step tasks independently. They are synchronized from `.agents/agents/` to platform-specific directories using symlinks.
+Agents are autonomous subprocesses that handle complex, multi-step tasks independently. They are synchronized from `.agents/subagents/` to platform-specific directories using symlinks.
 
 ## Platform Support
 
-| Platform        | Agents Support       | Method  | Location                             |
-| --------------- | -------------------- | ------- | ------------------------------------ |
-| **Cursor**      | ✅ Full              | Symlink | `.cursor/agents → ../.agents/agents` |
-| **Claude Code** | ✅ Full              | Symlink | `.claude/agents → ../.agents/agents` |
-| **Gemini CLI**  | ✅ Full              | Symlink | `.gemini/agents → ../.agents/agents` |
-| **Antigravity** | ❌ **NOT Supported** | N/A     | N/A                                  |
+| Platform        | Agents Support       | Method  | Location                                |
+| --------------- | -------------------- | ------- | --------------------------------------- |
+| **Cursor**      | ✅ Full              | Symlink | `.cursor/agents → ../.agents/subagents` |
+| **Claude Code** | ✅ Full              | Symlink | `.claude/agents → ../.agents/subagents` |
+| **Gemini CLI**  | ✅ Full              | Symlink | `.gemini/agents → ../.agents/subagents` |
+| **Antigravity** | ❌ **NOT Supported** | N/A     | N/A                                     |
 
 ### Important: Antigravity Limitation
 
@@ -34,7 +34,7 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 ## Architecture
 
 ```
-.agents/agents/              ← Source of truth
+.agents/subagents/              ← Source of truth
 ├── doc-improver.md          ← Agent 1
 ├── code-reviewer.md         ← Agent 2 (example)
 ├── (synced via .agents/sync.sh --only=agents)
@@ -42,9 +42,9 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 
 ↓ Symlinks to ↓
 
-.cursor/agents → ../.agents/agents
-.claude/agents → ../.agents/agents
-.gemini/agents → ../.agents/agents
+.cursor/agents → ../.agents/subagents
+.claude/agents → ../.agents/subagents
+.gemini/agents → ../.agents/subagents
 ```
 
 ## Sync Script
@@ -53,7 +53,7 @@ Agents will only work in Cursor, Claude Code, and Gemini CLI.
 
 **What it does:**
 
-1. Validates `.agents/agents/` source directory exists
+1. Validates `.agents/subagents/` source directory exists
 2. Creates symlinks for Cursor, Claude Code, Gemini CLI
 3. Skips Antigravity (not supported)
 4. Verifies all symlinks created correctly
@@ -93,7 +93,7 @@ The sync order is:
 
 ## Agent Structure
 
-Every agent in `.agents/agents/` should follow this structure:
+Every agent in `.agents/subagents/` should follow this structure:
 
 ```markdown
 ---
@@ -148,7 +148,7 @@ You are [agent role]...
 /improve-docs docs/guides
 ```
 
-See: [doc-improver.md](../../../.agents/agents/doc-improver.md)
+See: [doc-improver.md](../../../.agents/subagents/doc-improver.md)
 
 ## Creating New Agents
 
@@ -157,7 +157,7 @@ See: [doc-improver.md](../../../.agents/agents/doc-improver.md)
 1. **Create agent file:**
 
 ```bash
-touch .agents/agents/your-agent.md
+touch .agents/subagents/your-agent.md
 ```
 
 2. **Add frontmatter and system prompt:**
@@ -204,9 +204,9 @@ ls -la .claude/agents
 ls -la .gemini/agents
 
 # Should show:
-# lrwxr-xr-x ... .cursor/agents -> ../.agents/agents
-# lrwxr-xr-x ... .claude/agents -> ../.agents/agents
-# lrwxr-xr-x ... .gemini/agents -> ../.agents/agents
+# lrwxr-xr-x ... .cursor/agents -> ../.agents/subagents
+# lrwxr-xr-x ... .claude/agents -> ../.agents/subagents
+# lrwxr-xr-x ... .gemini/agents -> ../.agents/subagents
 ```
 
 ### Check Symlinks Point to Correct Target
@@ -218,7 +218,7 @@ readlink .claude/agents
 readlink .gemini/agents
 
 # All should output:
-# ../.agents/agents
+# ../.agents/subagents
 ```
 
 ### Verify Agent Files Accessible
@@ -258,9 +258,9 @@ cat .gemini/agents/doc-improver.md
 ./.agents/sync.sh --only=agents
 
 # Or manually create
-ln -s ../.agents/agents .cursor/agents
-ln -s ../.agents/agents .claude/agents
-ln -s ../.agents/agents .gemini/agents
+ln -s ../.agents/subagents .cursor/agents
+ln -s ../.agents/subagents .claude/agents
+ln -s ../.agents/subagents .gemini/agents
 ```
 
 ### Symlinks Point to Wrong Location
@@ -287,7 +287,7 @@ rm .gemini/agents
 
 ```bash
 # 1. Verify agent exists in source
-ls .agents/agents/your-agent.md
+ls .agents/subagents/your-agent.md
 
 # 2. Verify symlink works
 ls .cursor/agents/your-agent.md
@@ -354,7 +354,7 @@ See: [Skills Sync Setup](./SKILLS_SYNC_SETUP.md)
 Each agent should be in its own `.md` file:
 
 ```
-.agents/agents/
+.agents/subagents/
 ├── doc-improver.md      ✅ Good
 ├── code-reviewer.md     ✅ Good
 └── all-agents.md        ❌ Bad (don't combine)
@@ -415,7 +415,7 @@ Break agent work into clear phases:
 ## Related Documentation
 
 - [Command → Agent → Skill Pattern](../patterns/command-agent-skill-pattern.md)
-- [Agents README](../../../.agents/agents/README.md)
+- [Agents README](../../../.agents/subagent-readme.md)
 - [Agent Development Skill](../../../.agents/skills/agent-development/)
 - [Sync All Components](./SYNC_ALL_SETUP.md)
 - [Platform Support Matrix](../../references/PLATFORM_SUPPORT.md)
@@ -424,7 +424,7 @@ Break agent work into clear phases:
 
 **What:** Agents are synchronized via symlinks to platform directories
 
-**Where:** `.agents/agents/` → `.cursor/agents`, `.claude/agents`, `.gemini/agents`
+**Where:** `.agents/subagents/` → `.cursor/agents`, `.claude/agents`, `.gemini/agents`
 
 **How:** Run `./.agents/sync.sh --only=agents` or `/sync-setup`
 

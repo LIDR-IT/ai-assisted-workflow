@@ -34,7 +34,7 @@ This hooks system provides **3 simple, practical hooks** across **3 platforms**:
 | **Version Field**       | ❌ No                   | ❌ No                   | ✅ Required (version: 1)  |
 | **Name Field**          | ❌ No                   | ✅ Optional             | ❌ No                     |
 | **Config File**         | `.claude/settings.json` | `.gemini/settings.json` | `.cursor/hooks.json`      |
-| **Env Var**             | `CLAUDE_PROJECT_DIR`    | `GEMINI_PROJECT_DIR`    | (uses relative paths)     |
+| **Env Var**             | `CLAUDE_PLUGIN_ROOT`    | `GEMINI_PROJECT_DIR`    | (uses relative paths)     |
 | **Timeout Unit**        | seconds                 | milliseconds (×1000)    | seconds                   |
 | **Stdout**              | Normal                  | ⚠️ **PURE JSON ONLY**   | Normal                    |
 | **Input file_path**     | `.tool_input.file_path` | `.tool_input.file_path` | `.file_path` (root level) |

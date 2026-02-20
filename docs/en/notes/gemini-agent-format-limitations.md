@@ -80,7 +80,7 @@ El script `.agents/sync.sh --only=agents` ahora **transforma** agents al copiarl
 
 ### Resultado
 
-**Source (.agents/agents/doc-improver.md):**
+**Source (.agents/subagents/doc-improver.md):**
 
 ```yaml
 ---
@@ -156,7 +156,7 @@ tools:
 
 ### Source of Truth Mantiene Todos los Campos
 
-El archivo en `.agents/agents/` mantiene formato completo:
+El archivo en `.agents/subagents/` mantiene formato completo:
 
 ```yaml
 ---
@@ -187,8 +187,8 @@ Al sincronizar:
 ./.agents/sync.sh --only=agents
 
 # Resultado:
-# .cursor/agents → ../.agents/agents (symlink completo)
-# .claude/agents → ../.agents/agents (symlink completo)
+# .cursor/agents → ../.agents/subagents (symlink completo)
+# .claude/agents → ../.agents/subagents (symlink completo)
 # .gemini/agents/doc-improver.md (transformado, sin skills/tools)
 ```
 

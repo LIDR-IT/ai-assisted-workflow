@@ -548,7 +548,7 @@ Use colors to visually distinguish agent types:
 
 If other platforms add agent support:
 
-- Consider moving to `.agents/agents/` for synchronization
+- Consider moving to `.agents/subagents/` for synchronization
 - Update sync scripts to handle agents
 - Document platform compatibility
 

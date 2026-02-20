@@ -21,7 +21,7 @@ Este documento explica el patrón arquitectónico para crear comandos que invoca
 └─────────────────────────────────────────────────────────────┘
                          ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ AGENT (.agents/agents/doc-improver.md)                      │
+│ AGENT (.agents/subagents/doc-improver.md)                      │
 │                                                              │
 │ - Proceso autónomo                                          │
 │ - Lógica de negocio                                         │
@@ -74,7 +74,7 @@ This command launches the doc-improver agent...
 
 ### 2. Agent: Lógica Autónoma
 
-**Archivo:** `.agents/agents/doc-improver.md`
+**Archivo:** `.agents/subagents/doc-improver.md`
 
 ```markdown
 ---
@@ -331,7 +331,7 @@ args:
 Launches code-reviewer agent to analyze code quality.
 ```
 
-### Agent: `.agents/agents/code-reviewer.md`
+### Agent: `.agents/subagents/code-reviewer.md`
 
 ```markdown
 ---
@@ -447,7 +447,7 @@ args:
 ### 2. Crea Agent
 
 ```bash
-# .agents/agents/tu-agente.md
+# .agents/subagents/tu-agente.md
 ---
 name: tu-agente
 description: Use when [conditions]. Examples: [...]

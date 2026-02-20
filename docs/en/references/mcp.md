@@ -178,7 +178,7 @@ npx @modelcontextprotocol/inspector npx -y <package-name>
 
 - [MCP Setup Guide](../guides/mcp/mcp-setup-guide.md) - Detailed setup instructions
 - [Antigravity Limitations](../guides/mcp/ANTIGRAVITY_LIMITATION.md) - Platform constraints
-- [Sync System](../guides/sync-system.md) - How configuration sync works
+- Sync System - See the "Architecture Overview" section in `CLAUDE.md` (root)
 
 ## External References
 

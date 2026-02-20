@@ -159,6 +159,6 @@ Feature: PR validation command
 
 **References:**
 
-- pr-validator agent: `.agents/agents/pr-validator.md` (TICK-007)
+- pr-validator agent: `.agents/subagents/pr-validator.md` (TICK-007)
 - Command development: `.agents/skills/command-development/`
 - Workflow: `.agents/rules/process/ai-workflow-system.md`

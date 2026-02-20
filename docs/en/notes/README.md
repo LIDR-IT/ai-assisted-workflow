@@ -243,7 +243,7 @@ Settings y configs específicas de plataforma.
 
 - [Agent Format Standard](../references/agents/AGENT_FORMAT_STANDARD.md)
 - [Platform Comparison](../references/agents/PLATFORM_COMPARISON.md)
-- [Agents README](../../.agents/agents/README.md)
+- [Agents README](../../.agents/subagent-readme.md)
 
 ### Documentación Externa
 

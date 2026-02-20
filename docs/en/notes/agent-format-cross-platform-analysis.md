@@ -204,7 +204,7 @@ Examples in body (not frontmatter for Gemini compatibility)
 ### Estrategia Actual
 
 ```
-.agents/agents/doc-improver.md  (formato estándar completo)
+.agents/subagents/doc-improver.md  (formato estándar completo)
          ↓
     ┌────┴────┬──────────┐
     ↓         ↓          ↓
@@ -408,7 +408,7 @@ Migrar agents a formato mejorado con skills:
 
 ```bash
 # Audit current agents
-ls .agents/agents/
+ls .agents/subagents/
 
 # Identify which skills each needs
 # Update frontmatter

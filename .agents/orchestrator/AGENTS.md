@@ -13,9 +13,9 @@ This is a **multi-agent AI configuration template** demonstrating centralized ma
 **Core Architecture:** Source-of-truth pattern with automated synchronization
 
 - Edit once in `.agents/` → automatically synced to all platforms
-- 14 rules across 8 categories (coding standards, workflows)
-- 9 reusable skills (progressive disclosure pattern)
-- 3 slash commands + 1 autonomous agent
+- 17 rules across 8 categories (coding standards, workflows)
+- 12 reusable skills (progressive disclosure pattern)
+- 7 slash commands + 3 autonomous agents
 - MCP integration (Context7 for library documentation)
 - Git hooks patterns (auto-format, protect-secrets, notify)
 
@@ -100,7 +100,7 @@ ls .github/agents/*.agent.md
 
 ```
 .agents/                      # ← SINGLE SOURCE OF TRUTH
-├── rules/                    # 14 rules (coding standards)
+├── rules/                    # 17 rules (coding standards)
 │   ├── code/                 # principles.md, style.md
 │   ├── content/              # copywriting.md
 │   ├── design/               # web-design.md (800+ line accessibility)
@@ -110,20 +110,22 @@ ls .github/agents/*.agent.md
 │   ├── team/                 # skills-management.md, third-party-security.md
 │   └── tools/                # use-context7.md, claude-code-extensions.md
 │
-├── skills/                   # 9 skills (progressive disclosure)
+├── skills/                   # 12 skills (progressive disclosure)
 │   ├── team-skill-creator/   # Meta-skill for creating components
 │   ├── command-development/  # Command creation workflows
 │   ├── agent-development/    # Agent patterns
 │   ├── skill-development/    # Skill architecture
 │   └── ...
 │
-├── commands/                 # 3 slash commands
+├── commands/                 # 7 slash commands
 │   ├── commit.md             # Smart commit generation
 │   ├── improve-docs.md       # Doc auditing
 │   └── sync-setup.md         # Run sync.sh
 │
-├── subagents/                # 1 autonomous agent
-│   └── doc-improver.md       # Documentation auditor
+├── subagents/                # 3 autonomous agents
+│   ├── doc-improver.md       # Documentation auditor
+│   ├── pr-validator.md       # PR standards validator
+│   └── ticket-enricher.md    # Ticket completeness validator
 │
 ├── mcp/                      # MCP server configs
 │   └── mcp-servers.json      # ← Source (universal format)
@@ -486,6 +488,9 @@ version: 1.0.0
 - `hook-development` - Git hooks patterns (pre-commit, post-merge)
 - `commit-management` - Git commit message workflows and conventions
 - `find-skills` - Skill discovery utility (searches available skills)
+- `bdd-gherkin-patterns` - BDD/Gherkin scenario patterns and test generation
+- `changelog-generator` - Automated changelog generation from git commits
+- `ticket-validation` - Ticket structure validation and quality checks
 
 ---
 
@@ -493,11 +498,15 @@ version: 1.0.0
 
 ### Available Commands
 
-| Command         | Purpose                             | Invokes                 |
-| --------------- | ----------------------------------- | ----------------------- |
-| `/commit`       | Smart commit message generation     | commit-management skill |
-| `/improve-docs` | Documentation audit and improvement | doc-improver agent      |
-| `/sync-setup`   | Synchronize all configurations      | sync.sh CLI             |
+| Command          | Purpose                             | Invokes                 |
+| ---------------- | ----------------------------------- | ----------------------- |
+| `/commit`        | Smart commit message generation     | commit-management skill |
+| `/create-ticket` | Create structured tickets           | ticket-validation skill |
+| `/enrich-ticket` | Validate ticket completeness        | ticket-enricher agent   |
+| `/improve-docs`  | Documentation audit and improvement | doc-improver agent      |
+| `/sync-setup`    | Synchronize all configurations      | sync.sh CLI             |
+| `/test-hooks`    | Test cross-platform hooks           | hook-development skill  |
+| `/validate-pr`   | Validate PR against standards       | pr-validator agent      |
 
 ### Command → Agent → Skill Pattern
 
@@ -890,6 +899,8 @@ ln -s ../.agents/skills .cursor/skills
 - Commands: `.agents/commands-readme.md`
 - MCP: `.agents/mcp-readme.md`
 - Hooks: `.agents/hooks-readme.md`
+- Orchestrator: `.agents/orchestrator-readme.md`
+- Subagents: `.agents/subagent-readme.md`
 
 **External Standards:**
 

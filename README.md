@@ -13,9 +13,9 @@
 **Stats:**
 
 - 📏 287 total files (40% reduction from 482)
-- 📋 14 rules across 8 categories
-- 🧩 9 reusable skill packages
-- ⚙️ 3 slash commands + 1 autonomous agent
+- 📋 17 rules across 9 categories
+- 🧩 12 reusable skill packages
+- ⚙️ 7 slash commands + 3 autonomous agents
 - 🔌 MCP integration (Context7)
 - 🪝 Git hooks patterns documented
 
@@ -47,7 +47,7 @@ ls -la .cursor/skills .claude/rules .gemini/commands
 
 ### 1. 📋 Agents (Memory & Rules)
 
-**14 rules across 8 categories** provide intelligent context to all AI agents.
+**17 rules across 9 categories** provide intelligent context to all AI agents.
 
 **Categories:**
 
@@ -56,13 +56,14 @@ ls -la .cursor/skills .claude/rules .gemini/commands
 - `design/` - web-design.md
 - `frameworks/` - react-native.md
 - `process/` - git-workflow.md, documentation.md
+- `product/` - mission.md, roadmap.md
 - `quality/` - testing.md, testing-scripts.md
 - `team/` - skills-management.md, third-party-security.md
-- `tools/` - use-context7.md, claude-code-extensions.md
+- `tools/` - use-context7.md, claude-code-extensions.md, ai-workflow-system.md, protect-secrets.md
 
 **Example:** `web-design.md` - 800+ line accessibility checklist automatically applied to UI code reviews
 
-**Autonomous Agent:** `doc-improver` audits documentation structure, identifies gaps, suggests improvements
+**Autonomous Agents:** `doc-improver` audits documentation structure, `pr-validator` validates pull requests, `ticket-enricher` enriches tickets with details
 
 **Universal YAML frontmatter:**
 
@@ -86,7 +87,7 @@ trigger: always_on # Antigravity
 
 ### 2. 🎓 Subagents (Teaching Skills)
 
-**9 specialized skills** that teach agents how to create more agents, following progressive disclosure pattern.
+**12 specialized skills** that teach agents how to create more agents, following progressive disclosure pattern.
 
 **Teaching Skills:**
 
@@ -99,6 +100,9 @@ trigger: always_on # Antigravity
 - `hook-development` - Git hooks patterns
 - `commit-management` - Git commit workflows
 - `find-skills` - Skill discovery utility
+- `bdd-gherkin-patterns` - BDD/Gherkin testing patterns
+- `changelog-generator` - Changelog generation workflows
+- `ticket-validation` - Ticket validation and quality checks
 
 **Progressive Disclosure Pattern:**
 
@@ -133,7 +137,7 @@ User: "Create a skill for React component testing with test templates"
 
 ### 3. 🧩 Skills (Reusable Knowledge)
 
-**9 skill packages** with bundled resources (scripts, references, templates).
+**12 skill packages** with bundled resources (scripts, references, templates).
 
 **Structure Pattern:**
 
@@ -149,6 +153,8 @@ User: "Create a skill for React component testing with test templates"
 **Available Skills:**
 
 - `agent-development` - Agent creation patterns
+- `bdd-gherkin-patterns` - BDD/Gherkin testing patterns
+- `changelog-generator` - Changelog generation workflows
 - `command-development` - Command creation workflows
 - `commit-management` - Git commit workflows
 - `find-skills` - Skill discovery
@@ -157,6 +163,7 @@ User: "Create a skill for React component testing with test templates"
 - `skill-creator` - Skill scaffold generator
 - `skill-development` - Skill architecture patterns
 - `team-skill-creator` - Meta-skill for creating components
+- `ticket-validation` - Ticket validation and quality checks
 
 **Why Progressive Disclosure?**
 
@@ -218,7 +225,7 @@ git add .cursor/mcp.json .claude/mcp.json .gemini/settings.json
 git commit -m "feat: Add my-server MCP integration"
 ```
 
-**Learn more:** [MCP Setup Guide](docs/guides/mcp/mcp-setup-guide.md) | [Antigravity Limitations](docs/guides/mcp/ANTIGRAVITY_LIMITATION.md)
+**Learn more:** [MCP Setup Guide](docs/en/guides/mcp/mcp-setup-guide.md) | [Antigravity Limitations](docs/en/guides/mcp/ANTIGRAVITY_LIMITATION.md)
 
 ---
 
@@ -258,21 +265,25 @@ done
 echo "✅ Pre-commit checks passed"
 ```
 
-**Learn more:** [Hooks Reference](docs/references/hooks/)
+**Learn more:** [Hooks Reference](docs/en/references/hooks/)
 
 ---
 
 ### 6. ⚙️ Commands (User Interface)
 
-**3 slash commands** providing convenient interfaces to agents and workflows.
+**7 slash commands** providing convenient interfaces to agents and workflows.
 
 **Available Commands:**
 
-| Command         | Purpose                             | Invokes                 |
-| --------------- | ----------------------------------- | ----------------------- |
-| `/commit`       | Smart commit message generation     | commit-management skill |
-| `/improve-docs` | Documentation audit and improvement | doc-improver agent      |
-| `/sync-setup`   | Synchronize all configurations      | sync.sh CLI             |
+| Command          | Purpose                             | Invokes                 |
+| ---------------- | ----------------------------------- | ----------------------- |
+| `/commit`        | Smart commit message generation     | commit-management skill |
+| `/create-ticket` | Create structured tickets           | ticket-validation skill |
+| `/enrich-ticket` | Enrich tickets with details         | ticket-enricher agent   |
+| `/improve-docs`  | Documentation audit and improvement | doc-improver agent      |
+| `/sync-setup`    | Synchronize all configurations      | sync.sh CLI             |
+| `/test-hooks`    | Test git hooks configuration        | hook-development skill  |
+| `/validate-pr`   | Validate pull request quality       | pr-validator agent      |
 
 **Command → Agent → Skill Pattern:**
 
@@ -301,7 +312,7 @@ Result: Audit report with recommendations
 /sync-setup
 ```
 
-**Learn more:** [Commands README](.agents/commands-readme.md) | [Agents README](.agents/agent-readme.md)
+**Learn more:** [Commands README](.agents/commands-readme.md) | [Agents README](.agents/subagent-readme.md)
 
 ---
 
@@ -313,10 +324,10 @@ All AI agent configurations centralized in `.agents/` directory:
 
 ```
 .agents/                      # ← Single source of truth
-├── rules/                    # 14 rules, 8 categories
-├── skills/                   # 9 skill packages
-├── commands/                 # 3 slash commands
-├── subagents/                # Specialized subagents
+├── rules/                    # 17 rules, 9 categories
+├── skills/                   # 12 skill packages
+├── commands/                 # 7 slash commands
+├── subagents/                # 3 autonomous agents
 ├── mcp/                      # MCP server configs
 ├── sync.sh                   # ← Unified sync CLI (--platform=, --only=, --dry-run)
 ├── platforms.json            # ← Platform registry (capabilities, strategies)
@@ -782,10 +793,10 @@ cd team-repo
 ./.agents/sync.sh
 
 # AI agents now have:
-# - 14 project rules
-# - 9 reusable skills
-# - 3 slash commands
-# - 1 autonomous agent
+# - 17 project rules
+# - 12 reusable skills
+# - 7 slash commands
+# - 3 autonomous agents
 # - MCP integration
 
 # Developer starts coding immediately with AI assistance
@@ -926,7 +937,7 @@ Analyzed 74 documentation files in 45 seconds.
 Would you like me to implement these changes? (Y/n)
 ```
 
-**Learn more:** [doc-improver agent](.agents/agents/doc-improver.md)
+**Learn more:** [doc-improver agent](.agents/subagents/doc-improver.md)
 
 ---
 
@@ -977,7 +988,7 @@ vim .agents/mcp/.env
 📋 Syncing rules...
   ✅ Claude: Symlink created (.claude/rules → ../.agents/rules)
   ✅ Antigravity: Native detection (.agents/rules/ read directly)
-  ✅ Cursor: 14 rules copied and converted to .mdc
+  ✅ Cursor: 17 rules copied and converted to .mdc
   ✅ Gemini: Index file generated (.gemini/GEMINI.md)
 
 🧩 Syncing skills...
@@ -1047,7 +1058,7 @@ cursor .
 # Check rules loaded
 # 1. Open Cursor Settings (Cmd/Ctrl + ,)
 # 2. Navigate to: Cursor Settings → Features → Rules
-# 3. Should see 14 rules listed
+# 3. Should see 17 rules listed
 
 # Test skill
 # In chat: "Create a new skill for testing React components"
@@ -1099,7 +1110,7 @@ cat .gemini/GEMINI.md
 
 **Note:** Antigravity requires global MCP configuration
 
-1. Set up global MCP: See [ANTIGRAVITY_SETUP.md](docs/guides/mcp/ANTIGRAVITY_SETUP.md)
+1. Set up global MCP: See [ANTIGRAVITY_SETUP.md](docs/en/guides/mcp/ANTIGRAVITY_SETUP.md)
 2. Close and reopen project (rules cache refresh)
 3. Open Customizations panel
 4. Check rules appear in list
@@ -1320,7 +1331,7 @@ A: 5 minutes for quick start (clone, env, sync). 15 minutes for full customizati
 A: Platform limitation. Cursor requires flat rule structure. We handle this via copy+convert strategy (`.md` → `.mdc`, flattened).
 
 **Q: Why does Antigravity need global MCP?**
-A: Platform doesn't support project-level MCP configs. Must configure at `~/.gemini/antigravity/mcp_config.json`. See [ANTIGRAVITY_LIMITATION.md](docs/guides/mcp/ANTIGRAVITY_LIMITATION.md).
+A: Platform doesn't support project-level MCP configs. Must configure at `~/.gemini/antigravity/mcp_config.json`. See [ANTIGRAVITY_LIMITATION.md](docs/en/guides/mcp/ANTIGRAVITY_LIMITATION.md).
 
 **Q: Why does Gemini need an index file?**
 A: Gemini CLI doesn't support native rules. We generate `GEMINI.md` index file with links to all rules as workaround.
@@ -1399,20 +1410,23 @@ A: Commit `.agents/` directory (source of truth) AND generated configs (`.cursor
 ```
 template-best-practices/
 ├── .agents/                         # ← Source of Truth (63 files)
-│   ├── rules/                       # 14 rules, 8 categories
+│   ├── rules/                       # 17 rules, 9 categories
 │   │   ├── code/                    # principles.md, style.md
 │   │   ├── content/                 # copywriting.md
 │   │   ├── design/                  # web-design.md
 │   │   ├── frameworks/              # react-native.md
 │   │   ├── process/                 # git-workflow.md, documentation.md
+│   │   ├── product/                 # mission.md, roadmap.md
 │   │   ├── quality/                 # testing.md, testing-scripts.md
 │   │   ├── team/                    # skills-management.md, third-party-security.md
-│   │   ├── tools/                   # use-context7.md, claude-code-extensions.md
+│   │   ├── tools/                   # use-context7.md, claude-code-extensions.md, ai-workflow-system.md, protect-secrets.md
 │   │   ├── README.md                # Rules guidelines (12K char limit, YAML format)
 │   │   └── migrate-yaml.sh          # YAML frontmatter migration utility
 │   │
-│   ├── skills/                      # 9 skill packages
+│   ├── skills/                      # 12 skill packages
 │   │   ├── agent-development/       # Agent creation patterns
+│   │   ├── bdd-gherkin-patterns/    # BDD/Gherkin testing patterns
+│   │   ├── changelog-generator/     # Changelog generation workflows
 │   │   ├── command-development/     # Command creation workflows
 │   │   ├── commit-management/       # Git commit workflows
 │   │   ├── find-skills/             # Skill discovery
@@ -1420,15 +1434,22 @@ template-best-practices/
 │   │   ├── mcp-integration/         # MCP server setup
 │   │   ├── skill-creator/           # Skill scaffold generator
 │   │   ├── skill-development/       # Skill architecture patterns
-│   │   └── team-skill-creator/      # Meta-skill for creating components
+│   │   ├── team-skill-creator/      # Meta-skill for creating components
+│   │   └── ticket-validation/       # Ticket validation and quality checks
 │   │
-│   ├── commands/                    # 3 slash commands
+│   ├── commands/                    # 7 slash commands
 │   │   ├── commit.md                # Smart commit generation
+│   │   ├── create-ticket.md         # Structured ticket creation
+│   │   ├── enrich-ticket.md         # Ticket enrichment
 │   │   ├── improve-docs.md          # Documentation audit
-│   │   └── sync-setup.md            # Configuration sync
+│   │   ├── sync-setup.md            # Configuration sync
+│   │   ├── test-hooks.md            # Git hooks testing
+│   │   └── validate-pr.md           # Pull request validation
 │   │
-│   ├── agents/                      # 1 autonomous agent
-│   │   └── doc-improver.md          # Documentation auditor
+│   ├── subagents/                   # 3 autonomous agents
+│   │   ├── doc-improver.md          # Documentation auditor
+│   │   ├── pr-validator.md          # Pull request validator
+│   │   └── ticket-enricher.md       # Ticket enricher
 │   │
 │   ├── mcp/                         # MCP configuration
 │   │   ├── mcp-servers.json         # ← Source of truth for MCP servers
@@ -1445,7 +1466,7 @@ template-best-practices/
 │   │   ├── cursor.sh, claude.sh, gemini.sh, copilot.sh, antigravity.sh
 │   ├── sync/                        # ← Component orchestrators
 │   │   ├── rules.sh, skills.sh, commands.sh, agents.sh, mcp.sh, hooks.sh, orchestrator.sh
-│   ├── agent-readme.md              # Agents documentation
+│   ├── subagent-readme.md           # Subagents documentation
 │   ├── commands-readme.md           # Commands documentation
 │   └── mcp-readme.md                # MCP documentation
 │
@@ -1454,17 +1475,17 @@ template-best-practices/
 │   │   ├── principles.mdc
 │   │   ├── style.mdc
 │   │   ├── copywriting.mdc
-│   │   └── ...                      # All 14 rules as .mdc files
+│   │   └── ...                      # All 17 rules as .mdc files
 │   ├── skills → ../.agents/skills   # ← Symlink to source
 │   ├── commands → ../.agents/commands # ← Symlink to source
-│   ├── agents → ../.agents/agents   # ← Symlink to source
+│   ├── agents → ../.agents/subagents # ← Symlink to source
 │   └── mcp.json                     # ← Generated (Cursor format)
 │
 ├── .claude/                         # Claude Code (symlinked)
 │   ├── rules → ../.agents/rules     # ← Symlink to source (supports subdirs)
 │   ├── skills → ../.agents/skills   # ← Symlink to source
 │   ├── commands → ../.agents/commands # ← Symlink to source
-│   ├── agents → ../.agents/agents   # ← Symlink to source
+│   ├── agents → ../.agents/subagents # ← Symlink to source
 │   └── mcp.json                     # ← Generated (Claude format)
 │
 ├── .gemini/                         # Gemini CLI (mixed approach)
@@ -1472,7 +1493,7 @@ template-best-practices/
 │   ├── rules → ../.agents/rules     # ← Symlink (for reference access)
 │   ├── skills → ../.agents/skills   # ← Symlink to source
 │   ├── commands → ../.agents/commands # ← Symlink to source
-│   ├── agents → ../.agents/agents   # ← Symlink to source
+│   ├── agents → ../.agents/subagents # ← Symlink to source
 │   └── settings.json                # ← Generated (Gemini MCP format)
 │
 │   # Antigravity: reads natively from .agents/ (no separate platform directory)
@@ -1551,41 +1572,41 @@ template-best-practices/
 - [Quick Start](#quick-start) - 5-minute setup
 
 **MCP Integration:**
-- [MCP Setup Guide](docs/guides/mcp/mcp-setup-guide.md) - MCP server configuration
-- [Antigravity Setup](docs/guides/mcp/ANTIGRAVITY_SETUP.md) - Platform-specific setup
-- [Antigravity Limitations](docs/guides/mcp/ANTIGRAVITY_LIMITATION.md) - Known constraints
-- [MCP Validation](docs/guides/mcp/VALIDATION.md) - Testing MCP servers
+- [MCP Setup Guide](docs/en/guides/mcp/mcp-setup-guide.md) - MCP server configuration
+- [Antigravity Setup](docs/en/guides/mcp/ANTIGRAVITY_SETUP.md) - Platform-specific setup
+- [Antigravity Limitations](docs/en/guides/mcp/ANTIGRAVITY_LIMITATION.md) - Known constraints
+- [MCP Validation](docs/en/guides/mcp/VALIDATION.md) - Testing MCP servers
 
 **Synchronization:**
-- [Sync System Guide](docs/guides/sync/) - Understanding synchronization
-- [Rules Sync](docs/guides/rules/) - Rules synchronization details
-- [Agents Sync](docs/guides/sync/) - Agents synchronization
+- [Sync System Guide](docs/en/guides/sync/) - Understanding synchronization
+- [Rules Sync](docs/en/guides/rules/) - Rules synchronization details
+- [Agents Sync](docs/en/guides/sync/) - Agents synchronization
 
 **Patterns:**
-- [Command → Agent → Skill Pattern](docs/guides/patterns/) - Workflow architecture
-- [Progressive Disclosure](docs/guides/patterns/) - Skills organization pattern
+- [Command → Agent → Skill Pattern](docs/en/guides/patterns/) - Workflow architecture
+- [Progressive Disclosure](docs/en/guides/patterns/) - Skills organization pattern
 
 ---
 
 ### References (Technical)
 
 **Core Components:**
-- [Rules Reference](docs/references/rules/) - All 14 rules documented
-- [Skills Reference](docs/references/skills/) - All 9 skills detailed
-- [Commands Reference](docs/references/commands/) - All 3 commands explained
-- [Agents Reference](docs/references/agents/) - Agent architecture
-- [Hooks Reference](docs/references/hooks/) - Git hooks patterns
+- [Rules Reference](docs/en/references/rules/) - All 17 rules documented
+- [Skills Reference](docs/en/references/skills/) - All 12 skills detailed
+- [Commands Reference](docs/en/references/commands/) - All 7 commands explained
+- [Agents Reference](docs/en/references/agents/) - Agent architecture
+- [Hooks Reference](docs/en/references/hooks/) - Git hooks patterns
 
 **MCP System:**
 - [MCP Quick Reference](docs/en/references/mcp.md) - Consolidated MCP guide
-- [MCP Platform Docs](docs/references/mcp/) - Platform-specific details
-- [Context7 Setup](docs/references/mcp/) - Context7 server configuration
+- [MCP Platform Docs](docs/en/references/mcp/) - Platform-specific details
+- [Context7 Setup](docs/en/references/mcp/) - Context7 server configuration
 
 **Platform-Specific:**
-- [Claude Code References](docs/references/claude-code/) - Claude-specific features
-- [Cursor Integration](docs/references/) - Cursor-specific patterns
-- [Gemini CLI Usage](docs/references/) - Gemini-specific details
-- [Antigravity Constraints](docs/references/) - Platform limitations
+- [Claude Code References](docs/en/references/claude-code/) - Claude-specific features
+- [Cursor Integration](docs/en/references/) - Cursor-specific patterns
+- [Gemini CLI Usage](docs/en/references/) - Gemini-specific details
+- [Antigravity Constraints](docs/en/references/) - Platform limitations
 
 ---
 
@@ -1845,7 +1866,7 @@ Brief description of what this command does.
 
 ## Related
 
-- Agent: [related-agent.md](.agents/agents/related-agent.md) (if applicable)
+- Agent: [related-agent.md](.agents/subagents/related-agent.md) (if applicable)
 - Rule: [related-rule.md](.agents/rules/category/related-rule.md)
 EOF
 
@@ -1936,7 +1957,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
 - Test on all specified platforms
 - Commit both source and generated configs
 
-See: [MCP Setup Guide](docs/guides/mcp/mcp-setup-guide.md)
+See: [MCP Setup Guide](docs/en/guides/mcp/mcp-setup-guide.md)
 
 ---
 

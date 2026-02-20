@@ -307,7 +307,7 @@ cat .gemini/settings.json
 
 - Architecture: See docs/architecture.md
 - Conventions: See .agents/rules/
-- Agents: See .agents/agents/README.md
+- Agents: See .agents/subagent-readme.md
 ```
 
 ### 2. Actualizar al Cambiar Proyecto
@@ -360,7 +360,7 @@ Multi-agent AI configuration template
 ## Key Locations
 
 - Rules: .agents/rules/
-- Agents: .agents/agents/
+- Agents: .agents/subagents/
 - Full docs: docs/
 
 ## Core Principle

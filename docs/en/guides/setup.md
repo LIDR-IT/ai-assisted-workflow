@@ -26,7 +26,7 @@ This runs all synchronization scripts:
 
 - Rules and skills → symlinks to `.agents/`
 - Commands → symlinks to `.agents/commands/`
-- Agents → symlinks to `.agents/agents/`
+- Agents → symlinks to `.agents/subagents/`
 - MCP configs → platform-specific JSON generation
 
 ## Prerequisites
@@ -271,7 +271,7 @@ ls -la .claude/agents
 claude /agent-development
 
 # Or manually
-cat > .agents/agents/my-agent.md << 'EOF'
+cat > .agents/subagents/my-agent.md << 'EOF'
 ---
 name: my-agent
 description: When to trigger this agent with examples
@@ -629,7 +629,7 @@ ls -la .cursor/rules .claude/skills
 
 ## Related Documentation
 
-- [Sync System Architecture](sync-system.md) - How synchronization works
+- Sync System Architecture - See the "Architecture Overview" section in `CLAUDE.md` (root)
 - [MCP Reference](../references/mcp.md) - MCP servers and setup
 - [Skills Reference](../references/skills.md) - Skills ecosystem
 - [Antigravity Limitations](mcp/ANTIGRAVITY_LIMITATION.md) - Platform constraints

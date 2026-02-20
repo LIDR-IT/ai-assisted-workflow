@@ -32,7 +32,7 @@ Create specialized agent that validates PR readiness before creation. This agent
 
 ## Acceptance Criteria
 
-- [ ] Agent file created at `.agents/agents/pr-validator.md`
+- [ ] Agent file created at `.agents/subagents/pr-validator.md`
 - [ ] Agent uses `ticket-validation` skill
 - [ ] Validates all acceptance criteria checked off
 - [ ] Validates Definition of Done completeness
@@ -110,7 +110,7 @@ Feature: PR validation with pr-validator agent
 
 ## Tasks
 
-- [ ] Create agent file `.agents/agents/pr-validator.md` - Assigned to: developer
+- [ ] Create agent file `.agents/subagents/pr-validator.md` - Assigned to: developer
 - [ ] Define agent frontmatter (name, description, tools, skills) - Assigned to: developer
 - [ ] Implement ticket extraction from branch name - Assigned to: developer
 - [ ] Implement acceptance criteria validation - Assigned to: developer

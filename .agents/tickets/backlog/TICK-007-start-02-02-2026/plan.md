@@ -151,7 +151,7 @@ Fix 3 acceptance criteria, write tests, update docs before creating PR.
 ## Resources
 
 - Agent development guide: `.agents/skills/agent-development/`
-- Existing agents for reference: `.agents/agents/`
+- Existing agents for reference: `.agents/subagents/`
 - ticket-validation skill: `.agents/skills/ticket-validation/`
 
 ## Notes

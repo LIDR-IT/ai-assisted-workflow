@@ -114,7 +114,7 @@ model: inherit
 ### Todas Usan Symlinks
 
 ```
-.agents/agents/doc-improver.md  (formato mínimo)
+.agents/subagents/doc-improver.md  (formato mínimo)
          ↓
     ┌────┴────┬──────────┐
     ↓         ↓          ↓
@@ -133,9 +133,9 @@ aceptan  aceptan  aceptan
 # sync.sh --only=agents (simplificado)
 # Solo crear symlinks para todas las plataformas
 
-ln -s ../.agents/agents .cursor/agents
-ln -s ../.agents/agents .claude/agents
-ln -s ../.agents/agents .gemini/agents
+ln -s ../.agents/subagents .cursor/agents
+ln -s ../.agents/subagents .claude/agents
+ln -s ../.agents/subagents .gemini/agents
 ```
 
 ## Ejemplo Completo
@@ -272,10 +272,10 @@ skills: [skill-1]           # ⚠️ Solo Claude
 
 ```bash
 # 1. Backup
-cp .agents/agents/doc-improver.md .agents/agents/doc-improver.md.bak
+cp .agents/subagents/doc-improver.md .agents/subagents/doc-improver.md.bak
 
 # 2. Editar - remover campos extras
-vim .agents/agents/doc-improver.md
+vim .agents/subagents/doc-improver.md
 
 # Solo dejar:
 # - name
@@ -286,7 +286,7 @@ vim .agents/agents/doc-improver.md
 ./.agents/sync.sh --only=agents
 
 # 4. Verificar
-head -10 .agents/agents/doc-improver.md
+head -10 .agents/subagents/doc-improver.md
 head -10 .gemini/agents/doc-improver.md  # Debe ser idéntico
 ```
 
@@ -298,16 +298,16 @@ Simplificar para usar symlinks para todas:
 #!/bin/bash
 # Simplified sync - symlinks for all platforms
 
-ln -sf ../.agents/agents .cursor/agents
-ln -sf ../.agents/agents .claude/agents
-ln -sf ../.agents/agents .gemini/agents
+ln -sf ../.agents/subagents .cursor/agents
+ln -sf ../.agents/subagents .claude/agents
+ln -sf ../.agents/subagents .gemini/agents
 ```
 
 ## Verificación
 
 ```bash
 # Todos deben mostrar el mismo contenido
-cat .agents/agents/doc-improver.md
+cat .agents/subagents/doc-improver.md
 cat .cursor/agents/doc-improver.md     # Via symlink
 cat .claude/agents/doc-improver.md     # Via symlink
 cat .gemini/agents/doc-improver.md     # Via symlink

@@ -39,7 +39,7 @@ Commands are markdown files that register slash commands in Claude Code CLI. The
 
 **Related:**
 
-- Agent: `.agents/agents/doc-improver.md`
+- Agent: `.agents/subagents/doc-improver.md`
 - Rule: `.agents/rules/process/documentation.md`
 
 ## Command Architecture
@@ -140,7 +140,7 @@ Explanation, usage, examples.
 4. **Create corresponding agent (if needed):**
 
 ```bash
-touch .agents/agents/your-agent.md
+touch .agents/subagents/your-agent.md
 ```
 
 5. **Test:**
@@ -222,7 +222,7 @@ Help users discover related functionality:
 ```markdown
 ## Related
 
-- Agent: `.agents/agents/agent-name.md`
+- Agent: `.agents/subagents/agent-name.md`
 - Rule: `.agents/rules/category/rule.md`
 - Skill: Use `/skill-name` for specialized knowledge
 ```

@@ -34,7 +34,7 @@ Audit + Report + Implement
 **Componentes:**
 
 - **Command:** `.agents/commands/improve-docs.md`
-- **Agent:** `.agents/agents/doc-improver.md`
+- **Agent:** `.agents/subagents/doc-improver.md`
 - **Rules:** `.agents/rules/process/documentation.md`
 - **Skills:** `.agents/skills/*` (opcionales)
 
@@ -79,7 +79,7 @@ Audit + Report + Implement
          │
          ↓
 ┌─────────────────────────────────────────────────────────┐
-│ AGENT (.agents/agents/)                                 │
+│ AGENT (.agents/subagents/)                                 │
 │ • Workflow autónomo multi-paso                          │
 │ • Lógica de negocio                                     │
 │ • Usa tools (Read, Write, Grep, etc.)                   │
@@ -221,7 +221,7 @@ touch .agents/commands/improve-docs.md
 # Documentar interfaz, argumentos, uso
 
 # Paso 2: Crear agent
-touch .agents/agents/doc-improver.md
+touch .agents/subagents/doc-improver.md
 # Workflow, lógica, process
 
 # Paso 3: Verificar rules existen
@@ -315,7 +315,7 @@ Usage, examples, documentation.
 EOF
 
 # 2. Agent
-cat > .agents/agents/tu-agente.md << 'EOF'
+cat > .agents/subagents/tu-agente.md << 'EOF'
 ---
 name: tu-agente
 description: Use when [conditions]. Examples: [...]
@@ -338,7 +338,7 @@ EOF
 
 - [Command → Agent → Skill Pattern](./command-agent-skill-pattern.md) - Patrón completo detallado
 - [Commands README](../../../.agents/commands/README.md) - Guía de commands
-- [Agents README](../../../.agents/agents/README.md) - Guía de agents
+- [Agents README](../../../.agents/subagent-readme.md) - Guía de agents
 - [Skills README](../../../.agents/skills/README.md) - Guía de skills
 - [Rules README](../../../.agents/rules/README.md) - Guía de rules
 

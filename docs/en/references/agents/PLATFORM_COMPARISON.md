@@ -293,7 +293,7 @@ You are a Documentation Quality Agent...
 
 ```bash
 # Mantener todos los campos
-.claude/agents → ../.agents/agents
+.claude/agents → ../.agents/subagents
 ```
 
 ### Para Gemini CLI (Copy)
@@ -308,7 +308,7 @@ You are a Documentation Quality Agent...
 
 ```bash
 # Mantener todos los campos (ignora lo que no entiende)
-.cursor/agents → ../.agents/agents
+.cursor/agents → ../.agents/subagents
 ```
 
 ## Decisión: Qué Incluir en el Estándar
@@ -478,8 +478,8 @@ skills: [skill-1, ...] # Claude lo usa - MUY IMPORTANTE!
 3. ✅ **Temperature en Gemini** controla creatividad
 4. ✅ **max_turns en Gemini** limita ejecución
 5. ✅ **Sin errores** - campos desconocidos son ignorados
-6. ✅ **Un solo source of truth** - `.agents/agents/`
+6. ✅ **Un solo source of truth** - `.agents/subagents/`
 
 ### Próximo Paso
 
-Actualizar `.agents/agents/doc-improver.md` con el formato mejorado que incluye **skills**.
+Actualizar `.agents/subagents/doc-improver.md` con el formato mejorado que incluye **skills**.

@@ -319,7 +319,7 @@ You are a [ROLE] specialized in [PURPOSE].
 
 - ✅ Frontmatter YAML estándar
 - ✅ Tools como lista
-- ✅ Symlinks desde `.agents/agents/`
+- ✅ Symlinks desde `.agents/subagents/`
 
 **Peculiaridades:**
 
@@ -332,7 +332,7 @@ You are a [ROLE] specialized in [PURPOSE].
 - ✅ Frontmatter YAML estándar
 - ✅ Tools como lista
 - ✅ Campo `color` adicional
-- ✅ Symlinks desde `.agents/agents/`
+- ✅ Symlinks desde `.agents/subagents/`
 
 **Peculiaridades:**
 
@@ -373,10 +373,10 @@ You are a [ROLE] specialized in [PURPOSE].
 
 ```bash
 # Cursor - Symlink
-.cursor/agents → ../.agents/agents
+.cursor/agents → ../.agents/subagents
 
 # Claude Code - Symlink
-.claude/agents → ../.agents/agents
+.claude/agents → ../.agents/subagents
 
 # Gemini CLI - Copias filtradas
 .gemini/agents/
@@ -395,7 +395,7 @@ You are a [ROLE] specialized in [PURPOSE].
 1. **Editar source of truth:**
 
 ```bash
-vim .agents/agents/doc-improver.md
+vim .agents/subagents/doc-improver.md
 ```
 
 2. **Sincronizar:**
@@ -427,13 +427,13 @@ vim .agents/agents/doc-improver.md
 
 ```bash
 # Validar YAML frontmatter
-head -20 .agents/agents/doc-improver.md | grep -A 15 "^---$"
+head -20 .agents/subagents/doc-improver.md | grep -A 15 "^---$"
 
 # Verificar no tiene ejemplos XML en frontmatter
-head -50 .agents/agents/doc-improver.md | grep "<example>" && echo "❌ XML en frontmatter" || echo "✅ OK"
+head -50 .agents/subagents/doc-improver.md | grep "<example>" && echo "❌ XML en frontmatter" || echo "✅ OK"
 
 # Verificar tools como lista
-grep -A 10 "^tools:" .agents/agents/doc-improver.md
+grep -A 10 "^tools:" .agents/subagents/doc-improver.md
 ```
 
 ## Migración de Formato Antiguo
@@ -479,6 +479,6 @@ System prompt...
 ## Referencias
 
 - [Agent Development Skill](../../../.agents/skills/agent-development/)
-- [Agents README](../../../.agents/agents/README.md)
+- [Agents README](../../../.agents/subagent-readme.md)
 - [Gemini Experimental Features](../../notes/gemini-experimental-features.md)
 - [Agents Sync Setup](../../guides/sync/AGENTS_SYNC_SETUP.md)
