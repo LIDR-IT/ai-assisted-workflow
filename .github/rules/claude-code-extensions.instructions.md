@@ -19,7 +19,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 
 - Skills must be in `.agents/skills/{skill-name}/SKILL.md` (uppercase SKILL.md)
 - Commands must be in `.agents/commands/{command-name}.md`
-- Agents must be in `.agents/agents/{agent-name}.md`
+- Agents must be in `.agents/subagents/{agent-name}.md`
 - All extensions need complete YAML frontmatter
 - Never create extensions in agent-specific directories (`.claude/`, `.cursor/` use symlinks)
 
@@ -122,7 +122,7 @@ System prompt here
 
 - **Skills:** `.agents/skills/{skill-name}/skill.md`
 - **Commands:** `.agents/commands/{command-name}.md`
-- **Agents:** `.agents/agents/{agent-name}.md`
+- **Agents:** `.agents/subagents/{agent-name}.md`
 - **Hooks:** `.claude/hooks/{Event}/{hook-name}.sh`
 - **MCP:** `.agents/mcp/mcp-servers.json`
 
@@ -146,14 +146,14 @@ Use `file:line` or `path` format (VS Code clickable). Terse findings.
 
 .agents/skills/custom-skill/SKILL.md - ✓ Proper structure with YAML frontmatter
 .agents/commands/deploy.md - ✓ Valid command with args defined
-.agents/agents/reviewer.md - ✓ Agent with tools specified
+.agents/subagents/reviewer.md - ✓ Agent with tools specified
 
 ## Issues Found
 
 .agents/skills/broken-skill/skill.md - ✗ Wrong filename, should be SKILL.md
 .agents/commands/test.md:1 - ✗ Missing YAML frontmatter
 .claude/skills/direct-skill/ - ✗ Should be in .agents/skills/
-.agents/agents/worker.md:5 - ✗ Missing required 'description' field
+.agents/subagents/worker.md:5 - ✗ Missing required 'description' field
 
 ## Recommendations
 
