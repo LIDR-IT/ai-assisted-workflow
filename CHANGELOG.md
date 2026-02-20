@@ -46,6 +46,15 @@ _No unreleased changes._
 - `orchestrator/sync-orchestrator.sh` — Replaced by `sync.sh --only=orchestrator`
 - 200+ lines of duplicated code (4 copies of `create_symlink()`, 4 YAML parser implementations)
 
+### Fixed
+
+- Corrected 70 references to non-existent `.agents/agents/` directory (now `.agents/subagents/`)
+- Updated outdated component counts across README.md and AGENTS.md (rules: 14→17, skills: 9→12, commands: 3→7, subagents: 1→3)
+- Fixed broken documentation link `.agents/agent-readme.md` → `.agents/subagent-readme.md`
+- Fixed 10+ broken `docs/guides/` paths → `docs/en/guides/` (missing `/en/` segment)
+- Fixed broken links to non-existent `sync-system.md` in setup guide and MCP reference
+- Fixed inconsistent environment variable reference (`CLAUDE_PROJECT_DIR` → `CLAUDE_PLUGIN_ROOT`)
+
 ### Migration
 
 | Old Command                             | New Command                              |
