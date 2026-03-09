@@ -21,9 +21,10 @@ claude_agents() {
 }
 
 claude_mcp() {
-  log_verbose "Claude MCP: generate .claude/mcp.json"
+  log_verbose "Claude MCP: generate .mcp.json (project root)"
   mkdir -p "$CLAUDE_DIR"
 
+  # Claude Code uses ${VAR} not ${env:VAR} (the env: prefix is VSCode/Copilot syntax)
   jq --arg platform "claude" '{
     mcpServers: (
       .servers |
@@ -38,16 +39,28 @@ claude_mcp() {
             if .type == "http" then
               { url: .url, headers: (.headers // {}) }
             else
-              { command: .command, args: (.args // []), env: (.env // {}) }
+              {
+                command: .command,
+                args: (.args // []),
+                env: (
+                  .env // {} |
+                  to_entries |
+                  map({key: .key, value: (.value | gsub("\\$\\{env:"; "${"))}) |
+                  from_entries
+                )
+              }
             end
           )
         }
       ) |
       from_entries
     )
-  }' "$AGENTS_DIR/mcp/mcp-servers.json" > "$CLAUDE_DIR/mcp.json"
+  }' "$AGENTS_DIR/mcp/mcp-servers.json" > "$PROJECT_ROOT/.mcp.json"
 
-  log_info "Generated .claude/mcp.json"
+  # Remove legacy .claude/mcp.json if it exists
+  [ -f "$CLAUDE_DIR/mcp.json" ] && rm "$CLAUDE_DIR/mcp.json"
+
+  log_info "Generated .mcp.json (project root)"
 }
 
 claude_hooks() {
@@ -182,11 +195,13 @@ claude_verify() {
     ((errors++))
   fi
 
-  # MCP config
-  if [ -f "$CLAUDE_DIR/mcp.json" ]; then
-    log_info "claude MCP: .claude/mcp.json"
+  # MCP config (new location: project root .mcp.json)
+  if [ -f "$PROJECT_ROOT/.mcp.json" ]; then
+    log_info "claude MCP: .mcp.json (project root)"
+  elif [ -f "$CLAUDE_DIR/mcp.json" ]; then
+    log_warn "claude MCP: .claude/mcp.json (legacy location, run sync to migrate)"
   else
-    log_error "claude MCP: .claude/mcp.json not found"
+    log_error "claude MCP: .mcp.json not found"
     ((errors++))
   fi
 

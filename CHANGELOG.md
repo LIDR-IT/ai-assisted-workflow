@@ -8,6 +8,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 _No unreleased changes._
 
+## [0.7.2] - 2026-03-09
+
+### Changed
+
+- **Claude MCP: Migrated to project-root `.mcp.json`** — MCP config now generates at `$PROJECT_ROOT/.mcp.json` instead of `.claude/mcp.json`, following Claude Code's latest convention. Legacy file is auto-removed on sync.
+- **Environment variable syntax normalization** — Claude adapter now converts `${env:VAR}` (VSCode/Copilot syntax) to `${VAR}` (Claude syntax) automatically, preventing misconfiguration across platforms.
+- **Skill names hyphenated** — 5 skills renamed from `"Name With Spaces"` to `"Name-With-Spaces"` for consistent cross-platform compatibility:
+  - Agent-Development, Command-Development, Hook-Development, MCP-Integration, Skill-Development
+- **Context7 API key removed from source** — `CONTEXT7_API_KEY` env var removed from `mcp-servers.json` (server doesn't require it). All platform configs regenerated without the unused env entry.
+
+### Removed
+
+- `.claude/mcp.json` — Replaced by project-root `.mcp.json`
+- `CONTEXT7_API_KEY` env var reference from all MCP configurations
+
 ## [0.7.1] - 2026-02-20
 
 ### Changed

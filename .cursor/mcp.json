@@ -3,9 +3,7 @@
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
-      "env": {
-        "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"
-      }
+      "env": {}
     },
     "playwright": {
       "command": "npx",
