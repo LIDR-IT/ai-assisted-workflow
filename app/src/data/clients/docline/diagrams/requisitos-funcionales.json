@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "id": "requisitos-funcionales",
+    "title": "Clinical Functional Requirements",
+    "description": "Healthcare-focused functional requirement structure — Complete specification of each telemedicine platform feature",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": ["requirements", "clinical-requirements", "healthcare-specification", "patient-safety"]
+  },
+  "configuration": {
+    "height": 450,
+    "exportName": "Estructura_Requisito_Funcional",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "id",
+      "x": 200,
+      "y": 0,
+      "label": "Clinical Identification",
+      "variant": "blue",
+      "subtitle": "CF-[CLINICAL-MODULE]-[NUM] · Patient safety focus"
+    },
+    {
+      "id": "desc",
+      "x": 200,
+      "y": 110,
+      "label": "1. Clinical Description",
+      "variant": "green",
+      "subtitle": "Patient outcome · Healthcare actors · Clinical scope"
+    },
+    {
+      "id": "behav",
+      "x": 200,
+      "y": 220,
+      "label": "2. Clinical Behavior",
+      "variant": "orange",
+      "subtitle": "Care workflow · Clinical alternatives · Safety protocols"
+    },
+    {
+      "id": "accept",
+      "x": 200,
+      "y": 330,
+      "label": "3. Clinical Acceptance Criteria",
+      "variant": "violet",
+      "subtitle": "Patient safety BDD · HIPAA compliance · QA-ready"
+    },
+    {
+      "id": "deps",
+      "x": 200,
+      "y": 440,
+      "label": "4. Clinical Dependencies & Traceability",
+      "variant": "cyan",
+      "subtitle": "EHR integration · Clinical modules · Care continuity"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "id",
+      "target": "desc",
+      "label": "Define"
+    },
+    {
+      "id": "e2",
+      "source": "desc",
+      "target": "behav",
+      "label": "Especifica"
+    },
+    {
+      "id": "e3",
+      "source": "behav",
+      "target": "accept",
+      "label": "Valida con"
+    },
+    {
+      "id": "e4",
+      "source": "accept",
+      "target": "deps",
+      "label": "Mapea"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-200", "label": "Clinical Requirement ID" },
+    { "color": "bg-green-200", "label": "Clinical Description (Patient outcomes)" },
+    { "color": "bg-orange-200", "label": "Clinical Behavior (Care workflows)" },
+    { "color": "bg-violet-200", "label": "Clinical Acceptance (Patient safety BDD)" },
+    { "color": "bg-cyan-200", "label": "Clinical Dependencies (EHR integration)" },
+    { "color": "bg-amber-200", "label": "Healthcare AI Generation" }
+  ],
+  "tables": []
+}

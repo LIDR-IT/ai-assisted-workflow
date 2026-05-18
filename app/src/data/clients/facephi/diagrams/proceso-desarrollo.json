@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "id": "proceso-desarrollo",
+    "title": "Proceso de Desarrollo",
+    "description": "Estrategia de branching, flujo de PR, asignación de tareas y Definition of Done",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["development", "pull-request", "branching", "security", "sdlc"]
+  },
+  "configuration": {
+    "height": 500,
+    "exportName": "Flujo_de_Pull_Request",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "ticket",
+      "x": 250,
+      "y": 0,
+      "label": "Ticket Jira Asignado",
+      "variant": "indigo",
+      "subtitle": "User Story + Sub-tareas técnicas"
+    },
+    {
+      "id": "branch",
+      "x": 250,
+      "y": 100,
+      "label": "Feature Branch",
+      "variant": "orange",
+      "subtitle": "Desarrollo en rama aislada"
+    },
+    {
+      "id": "pr",
+      "x": 250,
+      "y": 200,
+      "label": "Pull Request (PR)",
+      "variant": "yellow",
+      "subtitle": "Solicitud de integración"
+    },
+    {
+      "id": "sast",
+      "x": 250,
+      "y": 310,
+      "label": "SAST / SCA Automatizado",
+      "variant": "red",
+      "subtitle": "Escaneo de seguridad en cada PR"
+    },
+    {
+      "id": "blocked",
+      "x": 10,
+      "y": 310,
+      "label": "BLOQUEADO",
+      "variant": "red",
+      "subtitle": "Vulnerabilidad Crítica/Alta"
+    },
+    {
+      "id": "review",
+      "x": 250,
+      "y": 430,
+      "label": "Code Review",
+      "variant": "blue",
+      "subtitle": "Pares + Tech Lead · Solo si SAST limpio"
+    },
+    {
+      "id": "merge",
+      "x": 250,
+      "y": 550,
+      "label": "Aprobación + Merge",
+      "variant": "emerald",
+      "subtitle": "Integración a rama principal"
+    },
+    {
+      "id": "pipe",
+      "x": 250,
+      "y": 660,
+      "label": "Pipeline Seguridad & Despliegue",
+      "variant": "slate",
+      "subtitle": "Continúa el flujo SDLC"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "ticket",
+      "target": "branch",
+      "label": "Crea branch"
+    },
+    {
+      "id": "e2",
+      "source": "branch",
+      "target": "pr",
+      "label": "Abre PR"
+    },
+    {
+      "id": "e3",
+      "source": "pr",
+      "target": "sast",
+      "label": "Dispara escaneo"
+    },
+    {
+      "id": "e4",
+      "source": "sast",
+      "target": "review",
+      "label": "Limpio"
+    },
+    {
+      "id": "e4r",
+      "source": "sast",
+      "target": "blocked",
+      "label": "Crítica/Alta",
+      "style": "red"
+    },
+    {
+      "id": "e4b",
+      "source": "blocked",
+      "target": "branch",
+      "label": "Corregir + re-scan",
+      "style": "dashed"
+    },
+    {
+      "id": "e5",
+      "source": "review",
+      "target": "merge",
+      "label": "Aprobado"
+    },
+    {
+      "id": "e6",
+      "source": "merge",
+      "target": "pipe",
+      "label": "Deploy"
+    }
+  ],
+  "legend": [
+    { "color": "bg-indigo-200", "label": "Tickets Jira / Input" },
+    { "color": "bg-orange-200", "label": "Desarrollo (Feature Branch)" },
+    { "color": "bg-yellow-200", "label": "Pull Request" },
+    { "color": "bg-red-200", "label": "Seguridad (SAST/SCA)" },
+    { "color": "bg-blue-200", "label": "Code Review" },
+    { "color": "bg-emerald-200", "label": "Merge / Integración" }
+  ],
+  "tables": []
+}

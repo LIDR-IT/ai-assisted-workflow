@@ -1,0 +1,253 @@
+{
+  "metadata": {
+    "id": "seguridad-sdlc",
+    "title": "Seguridad SDLC — AS-IS Aramis",
+    "description": "Fundamentos operacionales sólidos: PHPStan + validadores custom, Vault, Keycloak, Cloudflare. Existe equipo central de Ciberseguridad Aramis Group (con VP) que escala alertas, además de jobs CI parciales de secretos y vulnerabilidades. La debilidad es la ausencia de un programa formal estandarizado: SCA/DAST no orquestados, sin checklist pre-release, y sin guidelines para uso seguro de IA.",
+    "version": "1.2.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["security", "devsecops", "phpstan", "vault", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "partial",
+      "description": "Seguridad operacional madura (Vault, Keycloak, Cloudflare, PHPStan + validadores custom) + equipo central de Ciberseguridad Aramis Group con VP. Existen jobs CI parciales de detección de secretos y vulnerabilidades de paquetes, pero no estandarizados a todos los proyectos. Sin DAST formal, sin gate de seguridad pre-release, sin guidelines de IA segura. Security/compliance awareness Medio (survey).",
+      "evidence": "Pre-kickoff survey · Discovery report PP-01 (dimensión seguridad) · VTT ≈1:39:30 (equipo ciberseguridad), ≈1:40:30 (job de secretos y job de vulnerabilidades en CI)"
+    }
+  },
+  "configuration": {
+    "height": 840,
+    "exportName": "Aramis_Seguridad_SDLC_AS_IS",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "dev",
+      "x": 560,
+      "y": 0,
+      "label": "Developer push",
+      "variant": "blue",
+      "subtitle": "GitLab repository"
+    },
+    {
+      "id": "phpstan",
+      "x": 20,
+      "y": 130,
+      "label": "PHPStan + validadores custom",
+      "variant": "emerald",
+      "subtitle": "SAST + reglas arquitectura hexagonal · CI"
+    },
+    {
+      "id": "secret-scan",
+      "x": 380,
+      "y": 130,
+      "label": "Job detección secretos",
+      "variant": "amber",
+      "subtitle": "Bloquea contraseñas en commits · Parcial por proyecto"
+    },
+    {
+      "id": "sca-partial",
+      "x": 740,
+      "y": 130,
+      "label": "SCA parcial",
+      "variant": "amber",
+      "subtitle": "Job vulnerabilidades de paquetes · No en todos los repos"
+    },
+    {
+      "id": "no-dast",
+      "x": 1100,
+      "y": 130,
+      "label": "Sin DAST en pipeline",
+      "variant": "red",
+      "subtitle": "Sin pruebas dinámicas pre-release"
+    },
+    {
+      "id": "vault",
+      "x": 20,
+      "y": 270,
+      "label": "Vault",
+      "variant": "emerald",
+      "subtitle": "Gestión de secretos · Operacional"
+    },
+    {
+      "id": "keycloak",
+      "x": 380,
+      "y": 270,
+      "label": "Keycloak",
+      "variant": "emerald",
+      "subtitle": "Identidad y autenticación · Operacional"
+    },
+    {
+      "id": "cloudflare",
+      "x": 740,
+      "y": 270,
+      "label": "Cloudflare",
+      "variant": "emerald",
+      "subtitle": "Edge security · WAF · DDoS"
+    },
+    {
+      "id": "security-team",
+      "x": 1100,
+      "y": 270,
+      "label": "Equipo Ciberseguridad Aramis Group",
+      "variant": "blue",
+      "subtitle": "VP de seguridad · Escala alertas vía Slack · Plan hook GDPR (no implementado)"
+    },
+    {
+      "id": "no-checklist",
+      "x": 20,
+      "y": 410,
+      "label": "Sin checklist pre-release",
+      "variant": "red",
+      "subtitle": "Seguridad como afterthought"
+    },
+    {
+      "id": "no-ai-guidelines",
+      "x": 380,
+      "y": 410,
+      "label": "Sin guidelines IA segura",
+      "variant": "red",
+      "subtitle": "PP-01 dimensión seguridad · IA sin policy"
+    },
+    {
+      "id": "no-pentest",
+      "x": 740,
+      "y": 410,
+      "label": "Sin pentest programado",
+      "variant": "amber",
+      "subtitle": "Sin cadencia formal anual"
+    },
+    {
+      "id": "no-standard",
+      "x": 1100,
+      "y": 410,
+      "label": "Sin estándar transversal",
+      "variant": "red",
+      "subtitle": "Jobs CI no replicados en todos los proyectos"
+    },
+    {
+      "id": "deploy",
+      "x": 560,
+      "y": 560,
+      "label": "Deploy a producción",
+      "variant": "violet",
+      "subtitle": "Sin gate de seguridad explícito"
+    },
+    {
+      "id": "incident-response",
+      "x": 560,
+      "y": 700,
+      "label": "Respuesta a incidentes",
+      "variant": "amber",
+      "subtitle": "Reactiva · Sin runbook formal · Escala a Ciberseguridad Group"
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "dev", "target": "phpstan", "label": "Lint + arquitectura" },
+    { "id": "e2", "source": "dev", "target": "secret-scan", "label": "Pre-commit" },
+    { "id": "e3", "source": "dev", "target": "sca-partial", "label": "Pre-build" },
+    { "id": "e4", "source": "dev", "target": "no-dast", "label": "Gap", "style": "red" },
+    { "id": "e5", "source": "phpstan", "target": "vault", "label": "Run-time secrets" },
+    { "id": "e6", "source": "secret-scan", "target": "keycloak", "label": "Identidad" },
+    { "id": "e7", "source": "sca-partial", "target": "cloudflare", "label": "Defensa perimetral" },
+    {
+      "id": "e8",
+      "source": "no-dast",
+      "target": "security-team",
+      "label": "Escala alertas",
+      "style": "dashed"
+    },
+    {
+      "id": "e9",
+      "source": "vault",
+      "target": "no-checklist",
+      "label": "Faltan controles",
+      "style": "red"
+    },
+    {
+      "id": "e10",
+      "source": "keycloak",
+      "target": "no-ai-guidelines",
+      "label": "Falta policy",
+      "style": "red"
+    },
+    {
+      "id": "e11",
+      "source": "cloudflare",
+      "target": "no-pentest",
+      "label": "Sin validación externa"
+    },
+    {
+      "id": "e12",
+      "source": "security-team",
+      "target": "no-standard",
+      "label": "Falta gobernanza CI",
+      "style": "dashed"
+    },
+    { "id": "e13", "source": "no-checklist", "target": "deploy", "label": "Aprueba sin gate" },
+    {
+      "id": "e14",
+      "source": "no-ai-guidelines",
+      "target": "deploy",
+      "label": "Riesgo IA en prod",
+      "style": "red"
+    },
+    {
+      "id": "e15",
+      "source": "no-pentest",
+      "target": "deploy",
+      "label": "Asume riesgo",
+      "style": "dashed"
+    },
+    {
+      "id": "e16",
+      "source": "no-standard",
+      "target": "deploy",
+      "label": "Coverage inconsistente",
+      "style": "red"
+    },
+    { "id": "e17", "source": "deploy", "target": "incident-response", "label": "Si falla" }
+  ],
+  "legend": [
+    { "color": "bg-emerald-200", "label": "Fortaleza confirmada (operacional)" },
+    {
+      "color": "bg-blue-200",
+      "label": "Paso neutro · Apoyo organizacional (Ciberseguridad Group)"
+    },
+    { "color": "bg-amber-200", "label": "Gap parcial · Existe pero no estandarizado" },
+    { "color": "bg-red-200", "label": "Ausente / crítico en DevSecOps" },
+    { "color": "bg-violet-200", "label": "Deploy a producción" }
+  ],
+  "tables": [
+    {
+      "label": "SAST (discovery)",
+      "value": "PHPStan + validadores custom de arquitectura hexagonal en CI"
+    },
+    {
+      "label": "SCA (dependencias)",
+      "value": "Job vulnerabilidades · Parcial por proyecto (no estandarizado)"
+    },
+    {
+      "label": "Detección de secretos",
+      "value": "Job CI bloquea contraseñas · No replicado en todos los repos"
+    },
+    { "label": "DAST (dinámico)", "value": "No formal" },
+    { "label": "Secrets management (survey)", "value": "Vault" },
+    { "label": "Identity & SSO (survey)", "value": "Keycloak" },
+    { "label": "Edge security (survey)", "value": "Cloudflare" },
+    {
+      "label": "Equipo Ciberseguridad",
+      "value": "Aramis Group nivel grupo · VP de seguridad · Escala alertas (Slack)"
+    },
+    {
+      "label": "Hook GDPR sobre prompts IA",
+      "value": "Planeado por Ciberseguridad · No implementado aún"
+    },
+    { "label": "Checklist pre-release", "value": "No existe (discovery)" },
+    { "label": "Guidelines de IA segura (survey)", "value": "No definidas" },
+    { "label": "Pentest cadencia", "value": "Sin cadencia formal (discovery)" },
+    { "label": "Security/compliance awareness (survey)", "value": "Medium" },
+    {
+      "label": "Riesgos IA específicos (survey)",
+      "value": "Incorrect outputs reaching production · Copy/paste sin entendimiento · Inconsistent usage cross-teams"
+    }
+  ]
+}

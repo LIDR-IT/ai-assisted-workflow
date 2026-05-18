@@ -1,0 +1,210 @@
+{
+  "metadata": {
+    "id": "demo-custom-blocks",
+    "title": "Demo Custom Blocks System",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["demo", "custom-blocks", "plugin-system"]
+  },
+  "header": {
+    "title": "Sistema de Custom Blocks - {{CLIENT_NAME}}",
+    "subtitle": "Demostración del nuevo sistema de auto-registro de blocks personalizados"
+  },
+  "blocks": [
+    {
+      "id": "intro-text",
+      "type": "rich-text",
+      "title": "¿Qué son los Custom Blocks?",
+      "config": {
+        "colors": {
+          "background": "bg-blue-50",
+          "border": "border-blue-200",
+          "text": "text-blue-900",
+          "accent": "text-blue-600"
+        },
+        "icon": "Info"
+      },
+      "content": {
+        "text": "El sistema de custom blocks permite a los desarrolladores agregar nuevos tipos de componentes simplemente creando archivos TypeScript en el directorio `/custom/`. No se requiere modificar el código base ni hacer configuraciones complejas.\n\n✅ **Beneficios clave:**\n• Auto-registro automático por convención de nombres\n• Integración completa con el sistema de colores\n• Type safety con TypeScript\n• Hot reload en desarrollo\n• Zero configuration",
+        "markdown": false
+      }
+    },
+    {
+      "id": "custom-chart-example",
+      "type": "chart",
+      "title": "Ejemplo: Custom Chart Block",
+      "config": {
+        "colors": {
+          "background": "bg-purple-50",
+          "border": "border-purple-200",
+          "text": "text-purple-900",
+          "accent": "text-purple-600"
+        },
+        "icon": "BarChart3"
+      },
+      "content": {
+        "chartType": "bar",
+        "title": "Adopción de Custom Blocks por Sprint",
+        "data": {
+          "labels": ["Sprint 1", "Sprint 2", "Sprint 3", "Sprint 4"],
+          "values": [1, 3, 7, 12]
+        },
+        "showLegend": true,
+        "height": 250
+      }
+    },
+    {
+      "id": "how-to-create",
+      "type": "problem-solution",
+      "title": "¿Cómo crear un Custom Block?",
+      "config": {
+        "colors": {
+          "background": "bg-green-50",
+          "border": "border-green-200",
+          "accent": "text-green-600"
+        },
+        "icon": "Code"
+      },
+      "content": {
+        "problem": {
+          "title": "¿Necesitas un nuevo tipo de componente?",
+          "description": "Antes tenías que modificar el código base, actualizar schemas, y hacer deploy para agregar nuevos tipos de bloques."
+        },
+        "solution": {
+          "title": "Ahora es súper simple",
+          "items": [
+            "Crear archivo TypeScript en src/app/components/content/blocks/custom/",
+            "Seguir la convención: MiBlockPersonalizadoBlock.tsx → 'miblocpersonalizado'",
+            "Exportar component como default export",
+            "¡Automáticamente disponible en JSON content!"
+          ]
+        }
+      }
+    },
+    {
+      "id": "code-example",
+      "type": "code-hierarchy",
+      "title": "Estructura de un Custom Block",
+      "config": {
+        "colors": {
+          "background": "bg-gray-50",
+          "border": "border-gray-200",
+          "text": "text-gray-800",
+          "accent": "text-gray-600"
+        },
+        "icon": "FileText"
+      },
+      "content": {
+        "items": [
+          {
+            "label": "1. Archivo: CustomTableBlock.tsx",
+            "level": 0,
+            "description": "Archivo en directorio custom/"
+          },
+          {
+            "label": "export default function CustomTableBlock({ block })",
+            "level": 1,
+            "description": "Component principal con export default"
+          },
+          {
+            "label": "const { colors } = useColorConfig(block.config?.colors)",
+            "level": 2,
+            "description": "Integración con sistema de colores"
+          },
+          {
+            "label": "return <SectionBox>...</SectionBox>",
+            "level": 2,
+            "description": "Usar componentes compartidos"
+          },
+          {
+            "label": "2. Uso en JSON:",
+            "level": 0,
+            "description": "Inmediatamente disponible"
+          },
+          {
+            "label": "{ \"type\": \"customtable\", \"content\": {...} }",
+            "level": 1,
+            "description": "Auto-detectado como 'customtable'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "benefits-table",
+      "type": "info-table",
+      "title": "Comparación: Antes vs Ahora",
+      "config": {
+        "colors": {
+          "background": "bg-amber-50",
+          "border": "border-amber-200",
+          "text": "text-amber-900",
+          "accent": "text-amber-600"
+        },
+        "icon": "GitCompare"
+      },
+      "content": {
+        "rows": [
+          {
+            "label": "Tiempo para nuevo block",
+            "value": "Antes: 2-3 horas (modificar core) → Ahora: 15-30 minutos"
+          },
+          {
+            "label": "Cambios en código base",
+            "value": "Antes: ContentBlockRenderer + schemas → Ahora: Solo el nuevo archivo"
+          },
+          {
+            "label": "Deploy requerido",
+            "value": "Antes: Sí (cambios core) → Ahora: Solo para el nuevo block"
+          },
+          {
+            "label": "Riesgo de breaking changes",
+            "value": "Antes: Alto (toca core) → Ahora: Zero (aislado)"
+          },
+          {
+            "label": "Type safety",
+            "value": "Antes: Manual → Ahora: Automático con TypeScript"
+          }
+        ]
+      }
+    },
+    {
+      "id": "next-steps",
+      "type": "tool-list",
+      "title": "Próximos Pasos",
+      "config": {
+        "colors": {
+          "background": "bg-indigo-50",
+          "border": "border-indigo-200",
+          "text": "text-indigo-900",
+          "accent": "text-indigo-600"
+        },
+        "icon": "ArrowRight"
+      },
+      "content": {
+        "tools": [
+          {
+            "name": "Crear tu primer custom block",
+            "description": "Sigue el README en /custom/ para crear tu primer componente personalizado",
+            "category": "primary"
+          },
+          {
+            "name": "Revisar ChartBlock.tsx",
+            "description": "Ejemplo completo con todas las mejores prácticas implementadas",
+            "category": "secondary"
+          },
+          {
+            "name": "Explorar hook useColorConfig",
+            "description": "Aprende a integrar el sistema de colores avanzado en tus blocks",
+            "category": "secondary"
+          },
+          {
+            "name": "Compartir con el equipo",
+            "description": "Los custom blocks pueden ser compartidos entre proyectos simplemente copiando archivos",
+            "category": "optional"
+          }
+        ]
+      }
+    }
+  ]
+}

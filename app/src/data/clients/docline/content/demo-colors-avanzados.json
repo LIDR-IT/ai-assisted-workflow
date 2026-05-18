@@ -1,0 +1,203 @@
+{
+  "metadata": {
+    "id": "demo-colors-avanzados",
+    "title": "Demo Colores Avanzados",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["demo", "colors", "advanced", "hex", "css-custom"]
+  },
+  "header": {
+    "title": "Sistema de Colores Avanzado - {{CLIENT_NAME}}",
+    "subtitle": "Demostración de capacidades avanzadas de coloración: Hex, CSS Custom Properties, y validación"
+  },
+  "blocks": [
+    {
+      "id": "hex-colors-example",
+      "type": "tool-list",
+      "title": "Ejemplo con Colores Hex",
+      "config": {
+        "colors": {
+          "background": "#f0f9ff",
+          "border": "#0ea5e9",
+          "text": "#0c4a6e",
+          "accent": "#0284c7"
+        },
+        "icon": "Bot"
+      },
+      "content": {
+        "tools": [
+          {
+            "name": "Color Hex Directo",
+            "description": "Este bloque usa colores hex directamente: background #f0f9ff, border #0ea5e9",
+            "category": "primary"
+          },
+          {
+            "name": "Validación Automática",
+            "description": "Los colores hex son validados automáticamente por el sistema",
+            "category": "secondary"
+          }
+        ]
+      }
+    },
+    {
+      "id": "css-custom-properties",
+      "type": "problem-solution",
+      "title": "CSS Custom Properties",
+      "config": {
+        "colors": {
+          "background": "var(--brand-background)",
+          "border": "var(--brand-border)",
+          "text": "var(--brand-text)",
+          "accent": "var(--brand-accent)"
+        },
+        "icon": "Settings"
+      },
+      "content": {
+        "problem": {
+          "title": "Problema de Consistencia de Marca",
+          "description": "Los colores de marca necesitan ser consistentes pero configurables dinámicamente."
+        },
+        "solution": {
+          "title": "Solución con CSS Custom Properties",
+          "items": [
+            "Usar --brand-* variables para colores de marca",
+            "Definir variables en el tema global",
+            "Permitir override dinámico por cliente",
+            "Mantener fallbacks para compatibilidad"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mixed-color-formats",
+      "type": "info-table",
+      "title": "Formatos de Color Mixtos",
+      "config": {
+        "colors": {
+          "background": "bg-purple-50",
+          "border": "#e879f9",
+          "text": "var(--info-text-color)",
+          "accent": "#a855f7"
+        },
+        "icon": "Info"
+      },
+      "content": {
+        "rows": [
+          {
+            "label": "Background",
+            "value": "Tailwind class: bg-purple-50 (light purple)"
+          },
+          {
+            "label": "Border",
+            "value": "Hex color: #e879f9 (bright pink)"
+          },
+          {
+            "label": "Text",
+            "value": "CSS Custom Property: var(--info-text-color)"
+          },
+          {
+            "label": "Accent",
+            "value": "Hex color: #a855f7 (purple)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "theme-based-colors",
+      "type": "rich-text",
+      "title": "Colores Basados en Tema",
+      "config": {
+        "colors": {
+          "background": "bg-emerald-50",
+          "border": "border-emerald-300",
+          "text": "text-emerald-900",
+          "accent": "text-emerald-600"
+        },
+        "icon": "CheckCircle"
+      },
+      "content": {
+        "markdown": false,
+        "text": "✅ VENTAJAS del sistema de colores avanzado:\n\n• Soporte para múltiples formatos (Tailwind, Hex, CSS Custom Properties, RGB/HSL)\n• Validación automática en desarrollo con warnings/errors\n• Fallbacks inteligentes por tema\n• CSS Custom Properties generadas automáticamente\n• Compatibilidad con arbitrary values de Tailwind\n• Temas predefinidos para casos comunes\n\n🎨 Los desarrolladores pueden usar el formato que prefieran:\n- Tailwind: 'bg-blue-500'\n- Hex: '#3b82f6' \n- CSS vars: '--primary-color'\n- RGB: 'rgb(59, 130, 246)'\n\nTodos son procesados automáticamente por el sistema."
+      }
+    },
+    {
+      "id": "grid-color-showcase",
+      "type": "grid",
+      "title": "Showcase de Diferentes Esquemas de Color",
+      "content": {
+        "columns": 3,
+        "gap": "medium",
+        "responsive": true,
+        "blocks": [
+          {
+            "id": "warm-theme",
+            "type": "rich-text",
+            "title": "Tema Cálido",
+            "config": {
+              "colors": {
+                "background": "#fef3c7",
+                "border": "#f59e0b",
+                "text": "#92400e",
+                "accent": "#d97706"
+              }
+            },
+            "content": {
+              "text": "🔥 Colores hex cálidos\nPerfecto para alertas y llamadas de atención"
+            }
+          },
+          {
+            "id": "cool-theme",
+            "type": "rich-text",
+            "title": "Tema Frío",
+            "config": {
+              "colors": {
+                "background": "bg-cyan-50",
+                "border": "border-cyan-200",
+                "text": "text-cyan-900",
+                "accent": "text-cyan-600"
+              }
+            },
+            "content": {
+              "text": "❄️ Clases Tailwind estándar\nMás predecible y consistente"
+            }
+          },
+          {
+            "id": "custom-theme",
+            "type": "rich-text",
+            "title": "Tema Personalizado",
+            "config": {
+              "colors": {
+                "background": "--card-bg",
+                "border": "--card-border",
+                "text": "--card-text",
+                "accent": "--card-accent"
+              }
+            },
+            "content": {
+              "text": "🎨 CSS Custom Properties\nTotalmente dinámico y configurable"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "accessibility-note",
+      "type": "rich-text",
+      "title": "Consideraciones de Accesibilidad",
+      "config": {
+        "colors": {
+          "background": "bg-orange-50",
+          "border": "border-orange-300",
+          "text": "text-orange-900",
+          "accent": "text-orange-700"
+        },
+        "icon": "AlertTriangle"
+      },
+      "content": {
+        "markdown": false,
+        "text": "⚠️ IMPORTANTE - Accesibilidad de colores:\n\n• El sistema valida formatos pero NO verifica contraste automáticamente\n• Siempre probar el contraste de texto sobre fondo (mínimo 4.5:1 para AA)\n• Considerar daltonismo al elegir combinaciones de colores\n• Usar herramientas como WebAIM Contrast Checker\n• Los temas predefinidos ya tienen contrastes validados\n\n🔍 En desarrollo, el sistema mostrará warnings para:\n- Formatos de color inválidos\n- Clases Tailwind inexistentes  \n- CSS Custom Properties sin definir\n\nPero la validación de contraste debe hacerse manualmente."
+      }
+    }
+  ]
+}

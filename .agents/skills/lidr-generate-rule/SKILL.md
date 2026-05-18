@@ -1,4 +1,5 @@
 ---
+name: lidr-generate-rule
 id: generate-rule
 version: "1.2.0"
 last_updated: "2026-03-16"
@@ -8,7 +9,6 @@ phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-name: generate-rule
 description: >
   Generate Claude Code rule files (.md) with correct frontmatter, scope, and content structure to guide AI behavior in a project.
   Domain-agnostic — works for any project type, technology stack, or industry.

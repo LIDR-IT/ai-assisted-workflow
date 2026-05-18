@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "id": "requisitos-funcionales",
+    "title": "Requisitos Funcionales (RF)",
+    "description": "Estructura detallada de un Requisito Funcional — Especificación completa de cada funcionalidad del producto",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["requirements", "functional-requirements", "specification", "sdlc"]
+  },
+  "configuration": {
+    "height": 450,
+    "exportName": "Estructura_Requisito_Funcional",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "id",
+      "x": 200,
+      "y": 0,
+      "label": "Identificación",
+      "variant": "blue",
+      "subtitle": "RF-[PROYECTO]-[NUM] · Título · Módulo"
+    },
+    {
+      "id": "desc",
+      "x": 200,
+      "y": 110,
+      "label": "1. Descripción",
+      "variant": "green",
+      "subtitle": "Objetivo · Actores · Alcance · Exclusiones"
+    },
+    {
+      "id": "behav",
+      "x": 200,
+      "y": 220,
+      "label": "2. Comportamiento",
+      "variant": "orange",
+      "subtitle": "Flujo Principal · Alternativos · Error · Reglas"
+    },
+    {
+      "id": "accept",
+      "x": 200,
+      "y": 330,
+      "label": "3. Criterios de Aceptación",
+      "variant": "violet",
+      "subtitle": "Given/When/Then · No ambiguos · QA-ready"
+    },
+    {
+      "id": "deps",
+      "x": 200,
+      "y": 440,
+      "label": "4. Dependencias y Trazabilidad",
+      "variant": "cyan",
+      "subtitle": "Links entre RFs · Módulos · Orden implementación"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "id",
+      "target": "desc",
+      "label": "Define"
+    },
+    {
+      "id": "e2",
+      "source": "desc",
+      "target": "behav",
+      "label": "Especifica"
+    },
+    {
+      "id": "e3",
+      "source": "behav",
+      "target": "accept",
+      "label": "Valida con"
+    },
+    {
+      "id": "e4",
+      "source": "accept",
+      "target": "deps",
+      "label": "Mapea"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-200", "label": "Identificación del RF" },
+    { "color": "bg-green-200", "label": "Descripción (Objetivo, Actores, Alcance)" },
+    { "color": "bg-orange-200", "label": "Comportamiento (Flujos)" },
+    { "color": "bg-violet-200", "label": "Criterios de Aceptación (BDD)" },
+    { "color": "bg-cyan-200", "label": "Dependencias y Trazabilidad" },
+    { "color": "bg-amber-200", "label": "Generación con IA" }
+  ],
+  "tables": []
+}

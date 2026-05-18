@@ -1,0 +1,240 @@
+{
+  "metadata": {
+    "id": "testing-qa",
+    "title": "Docline QA & Testing Process",
+    "description": "Healthcare platform QA process with clinical workflow testing, patient safety validation, and HIPAA compliance verification using BDD methodology",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": [
+      "qa",
+      "testing",
+      "cucumber",
+      "gherkin",
+      "bdd",
+      "environments",
+      "clinical-workflows",
+      "patient-safety",
+      "hipaa-compliance"
+    ]
+  },
+  "configuration": {
+    "height": 800,
+    "exportName": "Docline QA Process",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "story-analysis",
+      "x": 450,
+      "y": 50,
+      "label": "Clinical User Story Analysis",
+      "variant": "purple",
+      "subtitle": "Healthcare workflow acceptance criteria & patient safety requirements"
+    },
+    {
+      "id": "gherkin-scenarios",
+      "x": 450,
+      "y": 150,
+      "label": "Clinical Scenario Writing",
+      "variant": "purple",
+      "subtitle": "Given-When-Then for patient workflows & telemedicine scenarios"
+    },
+    {
+      "id": "cucumber-automation",
+      "x": 450,
+      "y": 250,
+      "label": "Clinical Test Automation",
+      "variant": "blue",
+      "subtitle": "Automated healthcare workflow & FHIR API testing"
+    },
+    {
+      "id": "unit-testing",
+      "x": 100,
+      "y": 400,
+      "label": "Unit Testing",
+      "variant": "cyan",
+      "subtitle": "Developer-driven tests"
+    },
+    {
+      "id": "integration-testing",
+      "x": 450,
+      "y": 400,
+      "label": "Integration Testing",
+      "variant": "cyan",
+      "subtitle": "Component interaction tests"
+    },
+    {
+      "id": "system-testing",
+      "x": 800,
+      "y": 400,
+      "label": "Clinical System Testing",
+      "variant": "cyan",
+      "subtitle": "End-to-end telemedicine & patient management workflows"
+    },
+    {
+      "id": "bug-tracking",
+      "x": 625,
+      "y": 550,
+      "label": "Bug Tracking",
+      "variant": "red",
+      "subtitle": "Issue management & resolution"
+    },
+    {
+      "id": "integration-env-test",
+      "x": 275,
+      "y": 650,
+      "label": "Integration Environment Testing",
+      "variant": "orange",
+      "subtitle": "Shared development environment"
+    },
+    {
+      "id": "demo-env-test",
+      "x": 800,
+      "y": 650,
+      "label": "Demo Environment Testing",
+      "variant": "orange",
+      "subtitle": "Client demonstration validation"
+    },
+    {
+      "id": "uat",
+      "x": 800,
+      "y": 800,
+      "label": "Clinical Acceptance Testing",
+      "variant": "indigo",
+      "subtitle": "Healthcare provider validation & patient workflow approval"
+    },
+    {
+      "id": "production-validation",
+      "x": 800,
+      "y": 950,
+      "label": "Production Validation",
+      "variant": "green",
+      "subtitle": "Smoke tests & monitoring"
+    },
+    {
+      "id": "test-reporting",
+      "x": 1150,
+      "y": 800,
+      "label": "Clinical Quality Reporting",
+      "variant": "teal",
+      "subtitle": "Patient safety metrics, HIPAA compliance coverage & clinical quality indicators"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "story-analysis",
+      "target": "gherkin-scenarios",
+      "label": "Define Tests"
+    },
+    {
+      "id": "e2",
+      "source": "gherkin-scenarios",
+      "target": "cucumber-automation",
+      "label": "Automate"
+    },
+    {
+      "id": "e3",
+      "source": "cucumber-automation",
+      "target": "unit-testing",
+      "label": "Parallel Development",
+      "sourceHandle": "source-left"
+    },
+    {
+      "id": "e4",
+      "source": "cucumber-automation",
+      "target": "integration-testing",
+      "label": "Parallel Development"
+    },
+    {
+      "id": "e5",
+      "source": "cucumber-automation",
+      "target": "system-testing",
+      "label": "Parallel Development",
+      "sourceHandle": "right"
+    },
+    {
+      "id": "e6",
+      "source": "unit-testing",
+      "target": "integration-env-test",
+      "label": "Deploy to Integration"
+    },
+    {
+      "id": "e7",
+      "source": "integration-testing",
+      "target": "integration-env-test",
+      "label": "Deploy to Integration"
+    },
+    {
+      "id": "e8",
+      "source": "system-testing",
+      "target": "demo-env-test",
+      "label": "Deploy to Demo"
+    },
+    {
+      "id": "e9",
+      "source": "integration-env-test",
+      "target": "demo-env-test",
+      "label": "Integration Pass",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e10",
+      "source": "demo-env-test",
+      "target": "uat",
+      "label": "Demo Pass"
+    },
+    {
+      "id": "e11",
+      "source": "uat",
+      "target": "production-validation",
+      "label": "UAT Approved"
+    },
+    {
+      "id": "e12",
+      "source": "integration-testing",
+      "target": "bug-tracking",
+      "label": "Defects Found",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444"
+    },
+    {
+      "id": "e13",
+      "source": "system-testing",
+      "target": "bug-tracking",
+      "label": "Defects Found",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444"
+    },
+    {
+      "id": "e14",
+      "source": "demo-env-test",
+      "target": "test-reporting",
+      "label": "Generate Reports",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e15",
+      "source": "production-validation",
+      "target": "test-reporting",
+      "label": "Final Metrics",
+      "sourceHandle": "right",
+      "targetHandle": "target-bottom"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "BDD Planning" },
+    { "color": "bg-blue-200", "label": "Test Automation" },
+    { "color": "bg-cyan-200", "label": "Testing Levels" },
+    { "color": "bg-orange-200", "label": "Environment Testing" },
+    { "color": "bg-indigo-200", "label": "User Validation" },
+    { "color": "bg-green-200", "label": "Production" },
+    { "color": "bg-red-200", "label": "Issue Management" },
+    { "color": "bg-teal-200", "label": "Reporting" }
+  ]
+}

@@ -1,0 +1,316 @@
+{
+  "metadata": {
+    "id": "docline-team-structure",
+    "title": "Docline Healthcare Team Organization",
+    "description": "16-member healthcare technology team with clinical operations focus and HIPAA compliance specialization",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": [
+      "team-structure",
+      "healthcare",
+      "clinical-operations",
+      "hipaa-compliance",
+      "16-members"
+    ]
+  },
+  "configuration": {
+    "height": 900,
+    "exportName": "Docline Team Structure",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "pme",
+      "x": 400,
+      "y": 50,
+      "label": "Project Manager",
+      "variant": "purple",
+      "subtitle": "PME - Project execution & governance"
+    },
+    {
+      "id": "po1",
+      "x": 200,
+      "y": 150,
+      "label": "Product Owner",
+      "variant": "indigo",
+      "subtitle": "Healthcare platform features & clinical workflow optimization"
+    },
+    {
+      "id": "scrum-master",
+      "x": 400,
+      "y": 150,
+      "label": "Scrum Master",
+      "variant": "purple",
+      "subtitle": "Process facilitation & impediment removal"
+    },
+    {
+      "id": "tech-lead-frontend",
+      "x": 150,
+      "y": 300,
+      "label": "Tech Lead - Clinical UI",
+      "variant": "blue",
+      "subtitle": "Patient portal & clinical interface architecture"
+    },
+    {
+      "id": "tech-lead-backend",
+      "x": 650,
+      "y": 300,
+      "label": "Tech Lead - Healthcare Platform",
+      "variant": "blue",
+      "subtitle": "EHR integration & FHIR API architecture"
+    },
+    {
+      "id": "frontend-dev1",
+      "x": 50,
+      "y": 450,
+      "label": "Frontend Dev 1",
+      "variant": "cyan",
+      "subtitle": "Patient portal & clinical dashboards"
+    },
+    {
+      "id": "frontend-dev2",
+      "x": 150,
+      "y": 450,
+      "label": "Frontend Dev 2",
+      "variant": "cyan",
+      "subtitle": "Telemedicine video components"
+    },
+    {
+      "id": "frontend-dev3",
+      "x": 250,
+      "y": 450,
+      "label": "Frontend Dev 3",
+      "variant": "cyan",
+      "subtitle": "Clinical workflow & appointment management"
+    },
+    {
+      "id": "backend-dev1",
+      "x": 550,
+      "y": 450,
+      "label": "Backend Dev 1",
+      "variant": "cyan",
+      "subtitle": "FHIR API & EHR integration"
+    },
+    {
+      "id": "backend-dev2",
+      "x": 650,
+      "y": 450,
+      "label": "Backend Dev 2",
+      "variant": "cyan",
+      "subtitle": "PHI data services & e-prescription"
+    },
+    {
+      "id": "backend-dev3",
+      "x": 750,
+      "y": 450,
+      "label": "Backend Dev 3",
+      "variant": "cyan",
+      "subtitle": "Clinical messaging & video services"
+    },
+    {
+      "id": "fullstack-dev1",
+      "x": 350,
+      "y": 450,
+      "label": "Full-Stack Dev 1",
+      "variant": "teal",
+      "subtitle": "Cross-functional development"
+    },
+    {
+      "id": "fullstack-dev2",
+      "x": 450,
+      "y": 450,
+      "label": "Full-Stack Dev 2",
+      "variant": "teal",
+      "subtitle": "Integration specialist"
+    },
+    {
+      "id": "qa-lead",
+      "x": 200,
+      "y": 600,
+      "label": "QA Lead",
+      "variant": "orange",
+      "subtitle": "HIPAA compliance testing & clinical workflow validation"
+    },
+    {
+      "id": "qa-engineer1",
+      "x": 100,
+      "y": 700,
+      "label": "QA Engineer 1",
+      "variant": "orange",
+      "subtitle": "Clinical workflow & patient safety testing"
+    },
+    {
+      "id": "qa-engineer2",
+      "x": 300,
+      "y": 700,
+      "label": "QA Engineer 2",
+      "variant": "orange",
+      "subtitle": "Healthcare compliance & integration testing"
+    },
+    {
+      "id": "security-ciso",
+      "x": 550,
+      "y": 600,
+      "label": "CISO",
+      "variant": "red",
+      "subtitle": "PHI data protection & healthcare compliance"
+    },
+    {
+      "id": "security-engineer",
+      "x": 650,
+      "y": 600,
+      "label": "Security Engineer",
+      "variant": "red",
+      "subtitle": "HIPAA security controls & audit trails"
+    },
+    {
+      "id": "devops",
+      "x": 500,
+      "y": 700,
+      "label": "DevOps Engineer",
+      "variant": "green",
+      "subtitle": "CI/CD & infrastructure automation"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "pme",
+      "target": "po1",
+      "label": "Product Strategy"
+    },
+    {
+      "id": "e3",
+      "source": "pme",
+      "target": "scrum-master",
+      "label": "Process Governance"
+    },
+    {
+      "id": "e4",
+      "source": "po1",
+      "target": "tech-lead-frontend",
+      "label": "Requirements"
+    },
+    {
+      "id": "e6",
+      "source": "scrum-master",
+      "target": "tech-lead-frontend",
+      "label": "Sprint Facilitation"
+    },
+    {
+      "id": "e7",
+      "source": "scrum-master",
+      "target": "tech-lead-backend",
+      "label": "Sprint Facilitation"
+    },
+    {
+      "id": "e8",
+      "source": "tech-lead-frontend",
+      "target": "frontend-dev1",
+      "label": "Technical Guidance"
+    },
+    {
+      "id": "e9",
+      "source": "tech-lead-frontend",
+      "target": "frontend-dev2",
+      "label": "Technical Guidance"
+    },
+    {
+      "id": "e10",
+      "source": "tech-lead-frontend",
+      "target": "frontend-dev3",
+      "label": "Technical Guidance"
+    },
+    {
+      "id": "e11",
+      "source": "tech-lead-backend",
+      "target": "backend-dev1",
+      "label": "Technical Guidance"
+    },
+    {
+      "id": "e12",
+      "source": "tech-lead-backend",
+      "target": "backend-dev2",
+      "label": "Technical Guidance"
+    },
+    {
+      "id": "e13",
+      "source": "tech-lead-backend",
+      "target": "backend-dev3",
+      "label": "Technical Guidance"
+    },
+    {
+      "id": "e14",
+      "source": "tech-lead-frontend",
+      "target": "fullstack-dev1",
+      "label": "Collaboration",
+      "style": "dashed"
+    },
+    {
+      "id": "e15",
+      "source": "tech-lead-backend",
+      "target": "fullstack-dev2",
+      "label": "Collaboration",
+      "style": "dashed"
+    },
+    {
+      "id": "e16",
+      "source": "qa-lead",
+      "target": "qa-engineer1",
+      "label": "Test Coordination"
+    },
+    {
+      "id": "e17",
+      "source": "qa-lead",
+      "target": "qa-engineer2",
+      "label": "Test Coordination"
+    },
+    {
+      "id": "e18",
+      "source": "tech-lead-frontend",
+      "target": "qa-lead",
+      "label": "Handoff & Testing"
+    },
+    {
+      "id": "e19",
+      "source": "tech-lead-backend",
+      "target": "qa-lead",
+      "label": "Handoff & Testing"
+    },
+    {
+      "id": "e20",
+      "source": "security-ciso",
+      "target": "security-engineer",
+      "label": "Security Governance"
+    },
+    {
+      "id": "e21a",
+      "source": "security-engineer",
+      "target": "devops",
+      "label": "Security Integration"
+    },
+    {
+      "id": "e22",
+      "source": "devops",
+      "target": "tech-lead-frontend",
+      "label": "Deployment Support"
+    },
+    {
+      "id": "e23",
+      "source": "devops",
+      "target": "tech-lead-backend",
+      "label": "Deployment Support"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Management & Process" },
+    { "color": "bg-indigo-200", "label": "Product Ownership" },
+    { "color": "bg-blue-200", "label": "Technical Leadership" },
+    { "color": "bg-cyan-200", "label": "Development Teams" },
+    { "color": "bg-teal-200", "label": "Full-Stack" },
+    { "color": "bg-orange-200", "label": "Quality Assurance" },
+    { "color": "bg-red-200", "label": "Security" },
+    { "color": "bg-green-200", "label": "DevOps" }
+  ]
+}

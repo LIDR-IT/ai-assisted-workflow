@@ -1,0 +1,249 @@
+{
+  "metadata": {
+    "id": "seguridad-sdlc",
+    "title": "Seguridad y SDLC",
+    "description": "Pipeline de seguridad del ciclo de vida del software — Primera implementación en {{CLIENT_NAME}}, liderada por el equipo de Seguridad",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["security", "pipeline", "sast", "sca", "dast", "sdlc"]
+  },
+  "configuration": {
+    "height": 900,
+    "exportName": "Pipeline_SDLC_Seguridad",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "code",
+      "x": 250,
+      "y": 0,
+      "label": "Código fuente (Pull Request)",
+      "variant": "slate",
+      "subtitle": "Cada cambio dispara el pipeline"
+    },
+    {
+      "id": "sast",
+      "x": 100,
+      "y": 110,
+      "label": "1. SAST",
+      "variant": "blue",
+      "subtitle": "Static Application Security Testing - Análisis estático del código fuente"
+    },
+    {
+      "id": "sca",
+      "x": 400,
+      "y": 110,
+      "label": "2. SCA",
+      "variant": "violet",
+      "subtitle": "Software Composition Analysis - Vulnerabilidades en dependencias 3ros"
+    },
+    {
+      "id": "gate",
+      "x": 250,
+      "y": 230,
+      "label": "3. Gate de Seguridad",
+      "variant": "red",
+      "subtitle": "NO pasan vulnerabilidades Críticas/Altas"
+    },
+    {
+      "id": "qa",
+      "x": 250,
+      "y": 340,
+      "label": "4. QA (Quality Assurance)",
+      "variant": "sky",
+      "subtitle": "Verificaciones de calidad funcional"
+    },
+    {
+      "id": "sast2",
+      "x": 250,
+      "y": 450,
+      "label": "5. Segundo Escaneo SAST",
+      "variant": "blue",
+      "subtitle": "Post-QA - Verifica correcciones"
+    },
+    {
+      "id": "dast",
+      "x": 250,
+      "y": 560,
+      "label": "6. DAST",
+      "variant": "orange",
+      "subtitle": "Dynamic Application Security Testing - Pruebas dinámicas sobre app en ejecución"
+    },
+    {
+      "id": "pentest",
+      "x": 250,
+      "y": 670,
+      "label": "7. Pen Testing Manual",
+      "variant": "amber",
+      "subtitle": "Penetration Testing - Revisión configuraciones - Doble verificación"
+    },
+    {
+      "id": "comite",
+      "x": 250,
+      "y": 780,
+      "label": "8. Comité de Cambios",
+      "variant": "emerald",
+      "subtitle": "Gate 7 -> Producción"
+    },
+    {
+      "id": "reject",
+      "x": 620,
+      "y": 230,
+      "label": "BLOQUEADO",
+      "variant": "red",
+      "subtitle": "Remediación requerida"
+    },
+    {
+      "id": "reject-sec",
+      "x": 620,
+      "y": 615,
+      "label": "BLOQUEADO",
+      "variant": "red",
+      "subtitle": "Vulnerabilidad runtime - Remediación requerida"
+    },
+    {
+      "id": "wp-blk",
+      "x": 880,
+      "y": 0,
+      "label": "",
+      "variant": "waypoint"
+    },
+    {
+      "id": "wp-sec",
+      "x": 880,
+      "y": 615,
+      "label": "",
+      "variant": "waypoint"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "code",
+      "target": "sast",
+      "label": "Escanea"
+    },
+    {
+      "id": "e2",
+      "source": "code",
+      "target": "sca",
+      "label": "Escanea"
+    },
+    {
+      "id": "e3",
+      "source": "sast",
+      "target": "gate",
+      "label": "Resultados"
+    },
+    {
+      "id": "e4",
+      "source": "sca",
+      "target": "gate",
+      "label": "Resultados"
+    },
+    {
+      "id": "e5",
+      "source": "gate",
+      "target": "qa",
+      "label": "Sin vulnerabilidades"
+    },
+    {
+      "id": "e6",
+      "source": "gate",
+      "target": "reject",
+      "label": "Crítica/Alta",
+      "style": "red"
+    },
+    {
+      "id": "e7a",
+      "source": "reject",
+      "target": "wp-blk",
+      "label": "",
+      "style": "dashed"
+    },
+    {
+      "id": "e7b",
+      "source": "wp-blk",
+      "target": "code",
+      "label": "Corregir y re-escanear",
+      "style": "dashed"
+    },
+    {
+      "id": "e8",
+      "source": "qa",
+      "target": "sast2",
+      "label": "Post-QA"
+    },
+    {
+      "id": "e9",
+      "source": "sast2",
+      "target": "dast",
+      "label": "Limpio"
+    },
+    {
+      "id": "e10",
+      "source": "dast",
+      "target": "pentest",
+      "label": "Sin hallazgos"
+    },
+    {
+      "id": "e10r",
+      "source": "dast",
+      "target": "reject-sec",
+      "label": "Crítica/Alta",
+      "style": "red"
+    },
+    {
+      "id": "e11",
+      "source": "pentest",
+      "target": "comite",
+      "label": "Aprobado"
+    },
+    {
+      "id": "e11r",
+      "source": "pentest",
+      "target": "reject-sec",
+      "label": "Hallazgo crítico",
+      "style": "red"
+    },
+    {
+      "id": "e12a",
+      "source": "reject-sec",
+      "target": "wp-sec",
+      "label": "",
+      "style": "dashed"
+    },
+    {
+      "id": "e12b",
+      "source": "wp-sec",
+      "target": "wp-blk",
+      "label": "",
+      "style": "dashed"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-200", "label": "SAST (Análisis Estático)" },
+    { "color": "bg-violet-200", "label": "SCA (Composición Software)" },
+    { "color": "bg-red-200", "label": "Gate de Seguridad (Bloqueante)" },
+    { "color": "bg-sky-200", "label": "QA Funcional" },
+    { "color": "bg-orange-200", "label": "DAST (Análisis Dinámico)" },
+    { "color": "bg-amber-200", "label": "Pen Testing Manual" },
+    { "color": "bg-emerald-200", "label": "Comité de Cambios" },
+    { "color": "bg-slate-200", "label": "Automatización continua" }
+  ],
+  "tables": [
+    {
+      "label": "SAST/SCA",
+      "value": "Automatizado en cada Pull Request"
+    },
+    {
+      "label": "Endpoints",
+      "value": "Escaneo semanal automatizado (frecuencia ajustable)"
+    },
+    {
+      "label": "Post-deploy",
+      "value": "Escaneo automatizado tras cada despliegue"
+    }
+  ]
+}

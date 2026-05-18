@@ -1,0 +1,285 @@
+{
+  "metadata": {
+    "id": "gobernanza-workflow-bugs",
+    "title": "Clinical Defect Workflow — Healthcare Governance",
+    "description": "Clinical defect workflow in Jira for healthcare platform issues with patient safety focus",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": [
+      "healthcare",
+      "clinical",
+      "governance",
+      "workflow",
+      "jira",
+      "defects",
+      "patient-safety",
+      "HIPAA"
+    ]
+  },
+  "configuration": {
+    "height": 620,
+    "exportName": "Clinical Defect Workflow - Healthcare Governance",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "start",
+      "x": 320,
+      "y": 0,
+      "label": "● CREATE",
+      "variant": "green-dark"
+    },
+    {
+      "id": "tofix",
+      "x": 320,
+      "y": 110,
+      "label": "TO.FIX",
+      "variant": "teal-solid"
+    },
+    {
+      "id": "dup",
+      "x": 50,
+      "y": 30,
+      "label": "DUPLICATED",
+      "variant": "amber-solid",
+      "isTerminal": true
+    },
+    {
+      "id": "rej",
+      "x": 40,
+      "y": 200,
+      "label": "REJECTED",
+      "variant": "orange-solid",
+      "isTerminal": true
+    },
+    {
+      "id": "progress",
+      "x": 320,
+      "y": 270,
+      "label": "IN PROGRESS",
+      "variant": "blue-dark",
+      "isTerminal": true
+    },
+    {
+      "id": "blocked",
+      "x": 610,
+      "y": 270,
+      "label": "BLOCKED",
+      "variant": "red-solid",
+      "isTerminal": true
+    },
+    {
+      "id": "deploy-stg",
+      "x": 320,
+      "y": 430,
+      "label": "PENDING DEPLOY STG",
+      "variant": "indigo-solid"
+    },
+    {
+      "id": "qa",
+      "x": 320,
+      "y": 560,
+      "label": "READY TO QA",
+      "variant": "cyan-solid"
+    },
+    {
+      "id": "deploy-prod",
+      "x": 320,
+      "y": 690,
+      "label": "PENDING DEPLOY PROD",
+      "variant": "indigo-solid"
+    },
+    {
+      "id": "reopen",
+      "x": 20,
+      "y": 820,
+      "label": "REOPEN",
+      "variant": "purple-solid"
+    },
+    {
+      "id": "closed",
+      "x": 520,
+      "y": 820,
+      "label": "CLOSED",
+      "variant": "green-solid"
+    },
+    {
+      "id": "wp-failed",
+      "x": 870,
+      "y": 340,
+      "label": "Failed QA",
+      "variant": "red-solid"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "source": "start",
+      "target": "tofix",
+      "label": "Create"
+    },
+    {
+      "id": "e1",
+      "source": "tofix",
+      "target": "progress",
+      "label": "In Progress"
+    },
+    {
+      "id": "e2",
+      "source": "tofix",
+      "target": "dup",
+      "label": "Duplicated",
+      "sourceHandle": "source-left-top",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e3",
+      "source": "tofix",
+      "target": "rej",
+      "label": "Rejected",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e3b",
+      "source": "tofix",
+      "target": "blocked",
+      "label": "Waiting",
+      "sourceHandle": "source-right-bottom",
+      "style": "red",
+      "stroke": "#dc2626"
+    },
+    {
+      "id": "e4",
+      "source": "deploy-stg",
+      "target": "blocked",
+      "label": "Blocked",
+      "sourceHandle": "source-right-top",
+      "targetHandle": "left",
+      "style": "red",
+      "stroke": "#dc2626"
+    },
+    {
+      "id": "e4b",
+      "source": "blocked",
+      "target": "deploy-stg",
+      "label": "Unblocked development",
+      "type": "default",
+      "targetHandle": "target-right-bottom",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "e5",
+      "source": "progress",
+      "target": "deploy-stg",
+      "label": "Fixed"
+    },
+    {
+      "id": "e5b-1",
+      "source": "qa",
+      "target": "wp-failed",
+      "label": "QA Failed",
+      "sourceHandle": "source-right-bottom",
+      "targetHandle": "target-bottom",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#dc2626",
+      "markerEnd": false
+    },
+    {
+      "id": "e5b-2",
+      "source": "wp-failed",
+      "target": "tofix",
+      "label": "Failed",
+      "sourceHandle": "source-top",
+      "targetHandle": "target-right-top",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#dc2626"
+    },
+    {
+      "id": "e5c",
+      "source": "qa",
+      "target": "blocked",
+      "label": "Blocked",
+      "sourceHandle": "source-right-top",
+      "targetHandle": "target-right",
+      "style": "red",
+      "stroke": "#dc2626"
+    },
+    {
+      "id": "e6",
+      "source": "deploy-stg",
+      "target": "qa",
+      "label": "Deploy STG"
+    },
+    {
+      "id": "e7",
+      "source": "qa",
+      "target": "deploy-prod",
+      "label": "QA OK"
+    },
+    {
+      "id": "e8",
+      "source": "deploy-prod",
+      "target": "closed",
+      "label": "Deploy PROD"
+    },
+    {
+      "id": "e9",
+      "source": "closed",
+      "target": "reopen",
+      "label": "Reopen",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right",
+      "style": "purple",
+      "stroke": "#9333ea"
+    },
+    {
+      "id": "e10",
+      "source": "reopen",
+      "target": "tofix",
+      "label": "Re-assign",
+      "sourceHandle": "source-left-top",
+      "targetHandle": "left",
+      "style": "purple",
+      "stroke": "#9333ea"
+    },
+    {
+      "id": "e11",
+      "source": "dup",
+      "target": "reopen",
+      "label": "Reopened",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-left-bottom",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#9333ea"
+    },
+    {
+      "id": "e12",
+      "source": "rej",
+      "target": "reopen",
+      "label": "Reopened",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#9333ea"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-600", "label": "In Progress", "isJiraState": true },
+    { "color": "bg-red-600", "label": "Blocked", "isJiraState": true },
+    { "color": "bg-amber-400", "label": "Duplicated", "isJiraState": true },
+    { "color": "bg-orange-500", "label": "Rejected", "isJiraState": true },
+    { "color": "bg-green-600", "label": "Create (inicio)" },
+    { "color": "bg-teal-200", "label": "TO.FIX" },
+    { "color": "bg-indigo-400", "label": "Pending Deploy" },
+    { "color": "bg-cyan-500", "label": "Ready to QA" },
+    { "color": "bg-green-500", "label": "Closed" },
+    { "color": "bg-purple-400", "label": "Reopen" }
+  ],
+  "tables": []
+}

@@ -1,0 +1,71 @@
+,,
+,Question,Answer
+,Briefly describe the teams that will be involved in this initiative.,"Our teams follow the Spotify model: squads composed of a Product Manager, an Engineering Manager, a QA Engineer, and a group of Software Engineers. Most of the SEs are Senior Backend developers, although we have also included some Senior Frontend developers in the course.
+
+Cross-functional roles, such as Tech Leads, will also be participating in the course."
+,What is your Backend stack?,PHP with Symfony.
+,What is your Database management stack?,MySQL and Mongo.
+,What is your Cloud computing stack?,"All our services are dockerized in kubernetes, hosted in Google Cloud. We don't user BiQuery but Cloud SQL"
+,What is your Devops stack?,"GitLab Pipelines, ArgoCD, Helm, GKE (Kubernetes), Terraform, Grafana Cloud, Vault, Keycloak, Cloudflare, Ansible"
+,What is your Frontend stack?,Angular and Nuxt. The main project is using Angular.
+,What is your project management stack?,Redmine
+,What is your mobile development stack?,NA
+,What is your monitoring stack?,Grafana
+,What is your QA stack?,Cypress
+,What is your repository management system?,GitLab
+,Do you work with defined sprints or iterations?,Hybrid (Scrumban or other)
+,What is the duration of your sprints?,2 weeks
+,What day of the week does the sprint start?\*,Monday
+,What is the start date of your current (or next) sprint?,13/4/2026
+,What is the start date of the following sprint (sprint +1)?,27/4/2026
+,What is the start date of sprint +2?,11/5/2026
+,Do you hold a formal planning session at the start of each sprint? ,"Always, it's part of our process"
+,How long does a typical planning session last?,1 – 2 hours
+,Who participates in sprint planning?,"Product Owner, Developers, QA/Testing, Scrum Master"
+,Is a clear sprint goal defined for each sprint?,Always
+,Do you hold refinement (grooming) sessions before planning?,"Sometimes, when there's time"
+,Stories/tasks arrive at planning with clear acceptance criteria,Most of the time
+,"Is the team's actual capacity considered when planning? (PTO, tech debt, interruptions)",Always
+,The backlog is prioritized and the team understands the priorities,Agree
+,Which ceremonies do you hold regularly?,"Daily standup, Sprint planning, Retrospective"
+,How often do you hold retrospectives?,Every sprint
+,Are action items from retrospectives implemented in subsequent sprints?,Most of the time
+,Our planning sessions produce a realistic and achievable sprint plan,Agree
+,What percentage of the sprint backlog is typically completed?,70% – 90%
+,What is the biggest obstacle in your sprint planning? ,"Poor estimation, Interruptions/urgent requests, Unplanned tech debt"
+,"Overall, how satisfied are you with your team's sprint planning process?",Neutral
+,What would you change or improve about the current planning process?,More accurate estimation. For some teams the meeting takes too long (3h).
+,Is there anything else you'd like to share about how you plan your sprints?,Sometimes the criteria of a task is not 100% accurate.
+,"On a scale from 1 to 5, How would you rate the overall maturity of the engineering organization?",4
+,What are the main technical constraints you are facing today?,"Development speed, Lack of reliable tests, High cognitive load / complexity, Inefficient use of AI, Code quality / production incidents"
+,How would you describe the current adoption of testing practices?,Strong and standardized
+,Unit tests,Highly Effective
+,Integration tests,Weak
+,End-to-end tests,Weak
+,What is the biggest pain point when writing or maintaining tests today?,"We have very complex use cases that transfer that same complexity to the tests.
+
+For newcomers, these tests contain a lot of ""magic"" (helpers and such), which means getting up to speed with the ecosystem takes some time."
+,Which testing anti-patterns do you observe most often?,"Flaky or fragile tests, Tests written after the code “for compliance”"
+,How would you describe CI feedback time today?,Very slow (breaks developer flow)
+,What currently hurts developer experience the most?,Slow pipelines
+,"On a scale from 1 to 5, how much does CI/CD actually help enforce quality today?",3
+,Which AI tools are currently used in development workflows?,"Claude Code (Anthropic), JetBrains"
+,How integrated is AI in day-to-day development?,"Frequently, but unstructured"
+,What are the main AI use cases today?,"Writing or improving tests, Refactoring, Code generation / autocomplete, Debugging, Documentation"
+,Which AI-related risks or anti-patterns concern you most?,"Incorrect outputs reaching production, Copy/paste without understanding, Inconsistent usage across teams"
+,Tooling adequacy,Low
+,Workflow integration,Medium
+,Quality of AI-assisted output,High
+,Security / compliance awareness,Medium
+,Knowledge sharing and learning,Low
+,Are there clear guidelines or agreements on AI usage today?,No
+,"Would defining standards (IDE, assistants, workflows) be valuable at this stage?",It would be helpful
+,How would you describe the team’s attitude toward changes like AI adoption or stronger testing practices?,"Mixed, with clear early adopters"
+,Do you already see clear early adopters driving these practices?,Yes
+,What could realistically slow down or block adoption?,Not seeing the value of AI adoption. Not as a game changer.
+,What should be the top 2–3 priorities of this program?,"Increase development speed and productivity.
+Maintain high and consistent code quality standards.
+Increase E2E test coverage and improve their maintainability."
+,"At the end of the program, what outcomes would make you consider it a success?","Reduction in task lead time and an increase in the number of features developed.
+Reduction in lead time for bug fixes.
+Fewer bugs introduced by AI than by humans."

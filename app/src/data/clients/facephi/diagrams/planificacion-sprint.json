@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "id": "planificacion-sprint",
+    "title": "Planificación de Sprint",
+    "description": "Configuración, roles, proceso y gestión de la planificación de sprints de 2 semanas con estimación en horas",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["sprint-planning", "scrum", "estimation", "sdlc"]
+  },
+  "configuration": {
+    "height": 680,
+    "exportName": "Proceso_de_Planificacion_de_Sprint",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "backlog",
+      "x": 200,
+      "y": 0,
+      "label": "Backlog (RFs + User Stories)",
+      "variant": "indigo",
+      "subtitle": "Input priorizado"
+    },
+    {
+      "id": "po",
+      "x": 200,
+      "y": 100,
+      "label": "1. PO selecciona y prioriza",
+      "variant": "green",
+      "subtitle": "Prioridad de negocio · Dependencias · Valor"
+    },
+    {
+      "id": "group",
+      "x": 200,
+      "y": 200,
+      "label": "2. Agrupación de funcionalidades",
+      "variant": "green",
+      "subtitle": "Relacionadas · Dependencias colaterales"
+    },
+    {
+      "id": "refine",
+      "x": 200,
+      "y": 300,
+      "label": "3. Sesiones de Refinamiento",
+      "variant": "blue",
+      "subtitle": "PO presenta historias · Tech Leads estiman"
+    },
+    {
+      "id": "quote",
+      "x": 200,
+      "y": 400,
+      "label": "4. Cotización Conjunta",
+      "variant": "blue",
+      "subtitle": "PO + Equipo Producto + Tech Leads · En HORAS"
+    },
+    {
+      "id": "planning",
+      "x": 200,
+      "y": 500,
+      "label": "5. Sprint Planning Formal",
+      "variant": "violet",
+      "subtitle": "Acuerdo · Dependencias · Riesgos · Compromiso"
+    },
+    {
+      "id": "exec",
+      "x": 200,
+      "y": 600,
+      "label": "6. Ejecución del Sprint",
+      "variant": "orange",
+      "subtitle": "2 semanas de desarrollo"
+    },
+    {
+      "id": "gov",
+      "x": 200,
+      "y": 700,
+      "label": "7. Governance facilita",
+      "variant": "teal",
+      "subtitle": "PME + PO · Elimina blockers"
+    },
+    {
+      "id": "review",
+      "x": 200,
+      "y": 800,
+      "label": "8. Review + Retrospectiva",
+      "variant": "slate",
+      "subtitle": "→ Siguiente Sprint · Gestión carryover"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "backlog",
+      "target": "po",
+      "label": "Input"
+    },
+    {
+      "id": "e2",
+      "source": "po",
+      "target": "group",
+      "label": "Selecciona"
+    },
+    {
+      "id": "e3",
+      "source": "group",
+      "target": "refine",
+      "label": "Presenta"
+    },
+    {
+      "id": "e4",
+      "source": "refine",
+      "target": "quote",
+      "label": "Estima"
+    },
+    {
+      "id": "e5",
+      "source": "quote",
+      "target": "planning",
+      "label": "Acuerda"
+    },
+    {
+      "id": "e6",
+      "source": "planning",
+      "target": "exec",
+      "label": "Comienza sprint"
+    },
+    {
+      "id": "e7",
+      "source": "exec",
+      "target": "gov",
+      "label": "Facilita"
+    },
+    {
+      "id": "e8",
+      "source": "gov",
+      "target": "review",
+      "label": "Cierra sprint"
+    },
+    {
+      "id": "e9",
+      "source": "review",
+      "target": "backlog",
+      "label": "Carryover + nuevo backlog",
+      "style": "dashed"
+    }
+  ],
+  "legend": [
+    { "color": "bg-indigo-200", "label": "Backlog / Input" },
+    { "color": "bg-green-200", "label": "Product Owner (QUÉ)" },
+    { "color": "bg-blue-200", "label": "Refinamiento / Estimación" },
+    { "color": "bg-violet-200", "label": "Sprint Planning" },
+    { "color": "bg-orange-200", "label": "Ejecución" },
+    { "color": "bg-teal-200", "label": "Governance" },
+    { "color": "bg-red-200", "label": "Pain Points" },
+    { "color": "bg-emerald-200", "label": "Innovaciones" }
+  ],
+  "tables": [
+    {
+      "label": "Duración",
+      "value": "2 semanas (futuro: 3 semanas)"
+    },
+    {
+      "label": "Metodología",
+      "value": "Scrum"
+    },
+    {
+      "label": "Estimación",
+      "value": "Horas (no Story Points) — capacidad real con dedicaciones parciales/totales"
+    },
+    {
+      "label": "Herramienta",
+      "value": "Jira"
+    }
+  ]
+}

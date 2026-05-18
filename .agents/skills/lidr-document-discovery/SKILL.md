@@ -1,4 +1,5 @@
 ---
+name: lidr-document-discovery
 id: document-discovery
 version: "1.1.0"
 last_updated: "2026-03-16"
@@ -8,20 +9,18 @@ phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-name: document-discovery
-description: "Systematic document discovery and inventory using BMAD Method principles. Domain-agnostic — works for any project or organization needing document inventory. Use for comprehensive document discovery, conflict resolution, and quality assessment. Essential when starting documentation projects or conducting documentation audits. Always use when beginning systematic documentation efforts or discovering existing documentation landscape. Triggers on "discover documents", "document inventory", "find existing docs", "documentation audit", "document discovery", "catalog documents"."
-bmad_inspired: true
+description: "Systematic document discovery and inventory using LIDR SDLC Methodology principles. Domain-agnostic — works for any project or organization needing document inventory. Use for comprehensive document discovery, conflict resolution, and quality assessment. Essential when starting documentation projects or conducting documentation audits. Always use when beginning systematic documentation efforts or discovering existing documentation landscape. Triggers on "discover documents", "document inventory", "find existing docs", "documentation audit", "document discovery", "catalog documents"."
 ---
 
-# Skill: Document Discovery & Inventory (BMAD-Style)
+# Skill: Document Discovery & Inventory (LIDR SDLC standard)
 
-> **BMAD Inspiration**: Basado en BMAD Method's Step 1: Document Discovery workflow
+> **Methodology**: Based on LIDR SDLC Methodology's Step 1: Document Discovery workflow
 > **Purpose**: Inventario sistemático de documentos existentes con resolución de conflictos
 > **Context**: Essential pre-requisite para /document-project workflow
 
 ## Purpose
 
-Realiza un inventario sistemático de todos los documentos del proyecto, identificando duplicados, conflictos y organizando la estructura para evaluación posterior. Inspirado en BMAD Method's sophisticated document discovery process.
+Realiza un inventario sistemático de todos los documentos del proyecto, identificando duplicados, conflictos y organizando la estructura para evaluación posterior. Inspirado en LIDR SDLC Methodology's sophisticated document discovery process.
 
 ## When to Use
 
@@ -68,12 +67,12 @@ Realiza un inventario sistemático de todos los documentos del proyecto, identif
 - Updated tracking de documentos encontrados
 - Input para siguiente fase de workflow
 
-## Process (BMAD-Style)
+## Process (LIDR SDLC standard)
 
 ### Phase 1: Document Type Search Patterns
 
 ```python
-# BMAD-inspired search patterns por tipo documento
+# LIDR SDLC search patterns por tipo documento
 document_types = {
     'prd_documents': {
         'whole': '*prd*.md',
@@ -142,7 +141,7 @@ grep -r "README" .
 ### Phase 3: Duplicate Detection (CRITICAL)
 
 ```python
-# BMAD-inspired duplicate detection
+# LIDR SDLC duplicate detection
 def detect_duplicates(documents):
     conflicts = []
 
@@ -169,7 +168,7 @@ def detect_duplicates(documents):
 def assess_document_health(file_path):
     health = {
         'staleness': check_staleness(file_path),      # Last modified > 90 days
-        'frontmatter': has_yaml_frontmatter(file_path), # BMAD-style frontmatter
+        'frontmatter': has_yaml_frontmatter(file_path), # LIDR SDLC standard frontmatter
         'format': validate_markdown_format(file_path),  # CommonMark compliance
         'links': validate_internal_links(file_path),    # Broken references
         'size': check_document_size(file_path)          # Too large (>10KB) or too small (<500 chars)
@@ -201,7 +200,7 @@ def detect_missing_documents(project_type, found_documents):
 ### Phase 6: Organization & Reporting
 
 ```markdown
-# BMAD-Style Document Inventory Report
+# LIDR SDLC Standard Document Inventory Report
 
 ## PRD Documents Found
 
@@ -291,13 +290,13 @@ discovery_results:
       - "Validate all document frontmatter"
 ```
 
-## Integration with BMAD Workflow
+## Integration with LIDR SDLC Workflow
 
 ### Pre-Document-Project Validation
 
 ```python
 def validate_discovery_readiness():
-    """BMAD-style readiness check"""
+    """LIDR SDLC readiness check"""
     discovery = run_document_discovery()
 
     # Block workflow if critical issues
@@ -318,7 +317,7 @@ def validate_discovery_readiness():
     return {'ready': True, 'inventory': discovery}
 ```
 
-### Menu-Driven Resolution (BMAD Style)
+### Menu-Driven Resolution (LIDR SDLC Standard)
 
 ```
 **Document Discovery Complete**
@@ -344,7 +343,7 @@ def validate_discovery_readiness():
 
 - ✅ **Completeness**: Finds 95%+ of project documents
 - ✅ **Accuracy**: 99%+ correct duplicate detection
-- ✅ **BMAD Compatibility**: Follows BMAD Step 1 patterns exactly
+- ✅ **LIDR SDLC Compatibility**: Follows LIDR SDLC Step 1 patterns exactly
 - ✅ **Conflict Resolution**: Prevents workflow progression with unresolved conflicts
 
 ## Integration Points
@@ -354,18 +353,18 @@ def validate_discovery_readiness():
 - **Blocks**: Any documentation workflow until conflicts resolved
 - **Updates**: Document inventory tracking, health metrics
 
-## BMAD Method Compliance
+## LIDR SDLC Methodology Compliance
 
 ✅ **Step Goal Alignment**: "Discover, inventory, and organize all project documents"
 ✅ **Mandatory Rules**: Never proceed with unresolved duplicates
-✅ **Output Format**: BMAD-compatible inventory structure
+✅ **Output Format**: LIDR SDLC-compatible inventory structure
 ✅ **Menu-Driven UX**: Present findings → Get confirmation → Continue
 ✅ **Conflict Detection**: Sophisticated whole vs sharded detection
 
 ---
 
 **ROI**: 30-60 minutos de inventario manual → 2 minutos automatizados
-**BMAD Level**: Matches BMAD Step 1 sophistication exactly
+**LIDR SDLC Level**: Matches LIDR SDLC Step 1 sophistication exactly
 **Prevents**: Documentation workflow failures due to ambiguous inputs
 
 ## Quality Assurance

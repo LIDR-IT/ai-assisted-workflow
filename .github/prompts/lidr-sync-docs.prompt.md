@@ -1,0 +1,166 @@
+---
+description: Sync documentation with current codebase
+agent: 'agent'
+---
+
+<!--
+COMMAND: sync-docs
+VERSION: 1.0.0
+AUTHOR: SDLC Team
+LAST UPDATED: 2025-03-05
+
+PURPOSE:
+Analyzes code, detects drift vs documentation, auto-updates docs for safe
+changes, flags risky changes for human review, generates health report.
+
+USAGE:
+  /sync-docs all              → Full sync
+  /sync-docs architecture     → Architecture + specs
+  /sync-docs routes           → Routes only
+  /sync-docs db               → DB schema only
+  /sync-docs staleness        → Only check freshness
+  /sync-docs frontmatter      → Only check/fix metadata
+
+ARGUMENTS:
+  scope: all|architecture|routes|components|db|deployment|staleness|frontmatter
+
+RELATED COMMANDS:
+  /validate-project-docs - Validates completeness (this command fixes drift)
+  /init-project-docs     - Creates docs this command syncs
+
+CHANGELOG:
+  v1.0.0 (2025-03-05): Initial release
+-->
+
+# Sync Docs — Scope: $1
+
+Load: @../rules/documentation.md
+Load: @../rules/project.md
+
+## Validate
+
+If "$1" is empty:
+  Use AskUserQuestion:
+  - question: "¿Qué scope de sync necesitas?"
+  - header: "Scope"
+  - options:
+    - all (Sincronizar todo el ecosistema)
+    - architecture (Arquitectura + specs técnicos)
+    - staleness (Solo verificar frescura de docs)
+    - frontmatter (Solo verificar/corregir metadata)
+
+## Detect Current State
+
+### Read Code
+
+Project dependencies: !`cat package.json | jq '.dependencies, .devDependencies' 2>/dev/null`
+Directory structure: !`find src -type f -name "*.ts" -o -name "*.tsx" | head -50`
+Router config: !`find src -name "routes*" -o -name "router*" | head -5`
+DB models/schemas: !`find src -path "*/models/*" -o -path "*/schema/*" -o -path "*/entities/*" | head -20`
+API routes: !`find src -path "*/api/*" -o -path "*/controllers/*" | head -20`
+Components: !`find src -path "*/components/*" -name "*.tsx" | head -30`
+CI/CD config: !`find . -name "*.yml" -path "*/.github/*" -o -name "Dockerfile" | head -10`
+Env vars: !`cat .env.example 2>/dev/null || echo "no .env.example"`
+
+### Read Docs
+
+Project docs: !`find docs/projects -name "*.md" -type f 2>/dev/null`
+
+Read each doc's frontmatter and content for comparison.
+
+## Detect Drift
+
+Compare code state vs documented state:
+
+**Architecture drift:**
+- Dependencies in code NOT in architecture.md
+- Directory structure changed vs documented
+- New patterns not documented
+
+**Routes drift:**
+- Routes in router config NOT in specs/routes.md
+- Documented routes that NO LONGER exist
+- Auth requirements changed
+
+**DB drift:**
+- Tables/models in code NOT in db-schema.md
+- Column changes not reflected
+- New indexes not documented
+
+**Components drift:**
+- Exported components NOT in specs/components.md
+- Props changed vs documented
+- Documented components that no longer exist
+
+**Deployment drift:**
+- New env vars NOT in deployment.md
+- CI/CD pipeline changes not documented
+
+For each drift item, classify:
+- ✅ AUTO-FIX: New addition → add to doc
+- ⚠️ CONFIRM: Removal or change → ask human
+- ❌ MANUAL: Security/architecture change → human review required
+
+## Apply Auto-Fixes
+
+For each AUTO-FIX item:
+- Update the relevant document
+- Bump version (PATCH for additions)
+- Update frontmatter: last_updated, updated_by: "IA: sync-docs"
+- Add changelog entry
+
+For CONFIRM items:
+  Use AskUserQuestion:
+  - question: "Se detectaron {N} cambios que requieren confirmación. ¿Aplicar?"
+  - header: "Confirmar"
+  - options:
+    - Aplicar todos (Aceptar todos los cambios)
+    - Revisar uno a uno (Confirmar cada cambio)
+    - Solo reportar (No modificar nada)
+
+## Check Staleness
+
+Per @../rules/documentation.md, for ALL .md files in ecosystem:
+- Calculate freshness indicator (🟢🟡🔴⚫)
+- Flag stale documents
+- Verify frontmatter compliance
+- Check cross-references validity
+
+Find TODOs: !`grep -rn "TODO\|TBD\|⚠️ TODO" docs/ rules/ commands/ 2>/dev/null | head -30`
+
+## Generate Report
+
+```markdown
+## Documentation Sync Report
+Date: {today}
+Scope: $1
+
+### Health Score: {X}%
+
+### Drift Detected: {N} items
+| # | Document | Type | Detail | Severity | Auto-fixed |
+|---|----------|------|--------|----------|-----------|
+{drift items table}
+
+### Auto-Updates Applied: {N}
+| Document | Change | Version |
+|----------|--------|---------|
+{auto-fixes applied}
+
+### Staleness
+| Indicator | Count | Documents |
+|-----------|-------|-----------|
+| 🟢 Fresh | {N} | {list} |
+| 🟡 Due Soon | {N} | {list} |
+| 🔴 Stale | {N} | {list} |
+| ⚫ Critical | {N} | {list} |
+
+### Frontmatter: {N}/{total} compliant
+### Broken References: {N}
+### TODOs Remaining: {N}
+
+### Priority Actions
+1. 🔴 {critical}
+2. 🟡 {important}
+3. 🟢 {nice-to-have}
+```

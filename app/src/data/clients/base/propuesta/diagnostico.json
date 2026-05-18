@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "id": "base-diagnostico",
+    "title": "Diagnóstico AS-IS — Plantilla base LIDR",
+    "description": "Diagnóstico genérico LIDR usado como fallback cuando un cliente no provee su propio diagnostico.json. Contiene los pain points universales del framework con placeholders para herramientas específicas.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "Software Development",
+    "tags": ["base", "template", "diagnostico"],
+    "lastUpdated": "2026-05-14",
+    "author": "LIDR Framework",
+    "sourceReport": "src/data/features/propuestaMejora.tsx (legacy TSX defaults)"
+  },
+  "summary": {
+    "executiveSummary": "Plantilla base LIDR: 13 pain points genéricos del SDLC sin estandarizar. Estado actual típico: procesos artesanales, PRDs inconsistentes, RFs sin separación formal, QA reactivo, gaps en seguridad y despliegue. Quick wins LIDR: prd-funcional + generate-rf + test-plan skills en Sprint 1-2. Personaliza este JSON con datos reales del discovery para reemplazar el fallback genérico.",
+    "fortalezas": [
+      "• Sprint Planning establecido (cadencia regular)",
+      "• Equipo organizado con roles diferenciados",
+      "• Herramientas de tracking + comunicación operativas",
+      "• PO/Product Owner definido y estructura funcional"
+    ],
+    "oportunidades": [
+      "• Formalizar PRDs con skills prd-funcional/prd-tecnico",
+      "• Extraer RFs desde PRDs con skill generate-rf",
+      "• QA proactivo con test-plan + create-test-cases",
+      "• Adaptar {{TRACKING_TOOL}} integration para commands LIDR"
+    ],
+    "gapsCriticos": [
+      "• PRDs inconsistentes o ausentes",
+      "• RFs mezclados en PRD, sin separación formal",
+      "• QA reactivo, sin shift-left",
+      "• Procesos no estandarizados ('artesanales')"
+    ]
+  },
+  "painPoints": [
+    {
+      "fase": "Phase 1: Originación",
+      "problema": "Sin proceso formal de Business Case ni stakeholder mapping. Iniciativas llegan a desarrollo sin formalización.",
+      "impacto": "Crítico",
+      "mejora": "business-case + stakeholder-map + kickoff skills. Gate 0 obligatorio para formalizar proyectos antes de development."
+    },
+    {
+      "fase": "Phase 2: PRDs",
+      "problema": "PRDs inconsistentes — no siempre se llega al nivel de detalle necesario. Sin templates ni review cruzado.",
+      "impacto": "Alto",
+      "mejora": "prd-funcional + prd-tecnico skills estandarizados. Template obligatorio, review cruzado PO ↔ Tech Lead."
+    },
+    {
+      "fase": "Phase 3: Requisitos",
+      "problema": "RFs mezclados dentro del PRD, sin separación formal. Sin NFRs documentados ni trazabilidad.",
+      "impacto": "Crítico",
+      "mejora": "generate-rf + generate-nfr skills. Extraer RFs desde PRDs, crear NFRs medibles, trazabilidad RF→US→Tasks."
+    },
+    {
+      "fase": "Phase 4: Sprint Planning",
+      "problema": "User Stories irregulares en formato y nivel de detalle. Sin DoR formal.",
+      "impacto": "Medio",
+      "mejora": "user-stories + sprint-capacity skills. Formalizar DoR, estandarizar formato US con trazabilidad a RFs."
+    },
+    {
+      "fase": "Desarrollo",
+      "problema": "Sin Definition of Done formal o tácita.",
+      "impacto": "Alto",
+      "mejora": "cl-dod checklist + hook dtc-write-guard (PreToolUse) evalúa DTC + DoD. Gate 4 con pr-description + dev-handoff-qa + /advance-gate."
+    },
+    {
+      "fase": "Phase 6: QA",
+      "problema": "Testing reactivo y ad-hoc, sin estrategia formal de pruebas. Problemas se descubren tarde.",
+      "impacto": "Alto",
+      "mejora": "test-plan + create-test-cases + bug-report skills. QA Lead proactivo, test strategy formal, shift-left testing."
+    },
+    {
+      "fase": "Seguridad",
+      "problema": "Procesos de seguridad inmaduros o ausentes. Sin SAST/SCA/DAST formalizado.",
+      "impacto": "Medio",
+      "mejora": "4 skills (vuln-assessment, dast-interpretation, pentest-report, security-checklist) + cl-security + cl-nfr + so-security signoff. Gate 6 bloqueante."
+    },
+    {
+      "fase": "Despliegue",
+      "problema": "Sin entornos formales previos ni Change Request. Sin rollback plan documentado.",
+      "impacto": "Alto",
+      "mejora": "change-request + rollback-plan + release-notes skills. cl-postdeploy + cl-nfr checklists. /create-release-notes + /update-changelog commands. Gate 7 completo."
+    },
+    {
+      "fase": "Gobernanza",
+      "problema": "Múltiples proyectos paralelos sin métricas unificadas.",
+      "impacto": "Alto",
+      "mejora": "retrospective skill data-driven. 8 fuentes de verdad sincronizadas. Sistema de tracking unificado."
+    },
+    {
+      "fase": "Procesos Generales",
+      "problema": "Procesos no estandarizados, 'artesanales'. Cada miembro del equipo opera con su propio criterio.",
+      "impacto": "Alto",
+      "mejora": "Implementar gates formales /advance-gate, DoD documentado, hooks automáticos dtc-write-guard."
+    },
+    {
+      "fase": "Herramientas",
+      "problema": "{{TRACKING_TOOL}} vs Framework default — Framework LIDR SDLC necesita adaptación a herramientas del cliente.",
+      "impacto": "Medio",
+      "mejora": "Adaptar commands /create-branch, /create-pr a {{TRACKING_TOOL}} API. Mantener CSV export/import workflows."
+    },
+    {
+      "fase": "Phases 7-8: Seguridad/Deploy",
+      "problema": "Sin proceso seguridad, DAST, pen testing ni change requests formales.",
+      "impacto": "Crítico",
+      "mejora": "security-checklist + vuln-assessment + change-request + rollback-plan skills. Gates 6-7 implementación."
+    },
+    {
+      "fase": "Issues No Resueltas",
+      "problema": "Backlog de issues técnicas sin abordar de forma estructurada.",
+      "impacto": "Medio",
+      "mejora": "tech-debt skill para catalogar issues, epic-review para priorización, postmortem para root cause analysis."
+    }
+  ]
+}

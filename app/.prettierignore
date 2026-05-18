@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnpm/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Logs
+*.log
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Environment files
+.env*
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Git
+.git/
+
+# Claude Code
+.claude/
+
+# Generated files
+coverage/
+*.tsbuildinfo

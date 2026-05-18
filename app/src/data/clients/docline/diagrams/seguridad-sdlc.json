@@ -1,0 +1,272 @@
+{
+  "metadata": {
+    "id": "seguridad-sdlc",
+    "title": "Docline DevSecOps Pipeline",
+    "description": "HIPAA-compliant healthcare platform development with PHI protection, medical device security, and clinical system hardening throughout the SDLC",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": [
+      "devsecops",
+      "security-pipeline",
+      "sast",
+      "dast",
+      "compliance",
+      "hipaa",
+      "phi-protection",
+      "clinical-security"
+    ]
+  },
+  "configuration": {
+    "height": 900,
+    "exportName": "Docline DevSecOps Pipeline",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "code-commit",
+      "x": 50,
+      "y": 100,
+      "label": "Code Commit",
+      "variant": "purple",
+      "subtitle": "Developer pushes to feature branch"
+    },
+    {
+      "id": "pre-commit-hooks",
+      "x": 50,
+      "y": 200,
+      "label": "Pre-commit Hooks",
+      "variant": "orange",
+      "subtitle": "PHI exposure detection & healthcare security checks"
+    },
+    {
+      "id": "sast-scan",
+      "x": 200,
+      "y": 150,
+      "label": "SAST Scanning",
+      "variant": "red",
+      "subtitle": "Static code analysis (SonarQube)"
+    },
+    {
+      "id": "dependency-scan",
+      "x": 350,
+      "y": 100,
+      "label": "Dependency Scan",
+      "variant": "red",
+      "subtitle": "SCA - Vulnerable dependencies (Snyk)"
+    },
+    {
+      "id": "code-review",
+      "x": 500,
+      "y": 150,
+      "label": "Healthcare Security Review",
+      "variant": "cyan",
+      "subtitle": "PHI handling patterns & HIPAA compliance validation"
+    },
+    {
+      "id": "integration-env",
+      "x": 650,
+      "y": 150,
+      "label": "Integration Environment",
+      "variant": "indigo",
+      "subtitle": "Isolated testing environment"
+    },
+    {
+      "id": "dast-scan",
+      "x": 500,
+      "y": 300,
+      "label": "Healthcare DAST",
+      "variant": "orange",
+      "subtitle": "Clinical API security & telemedicine endpoint testing"
+    },
+    {
+      "id": "penetration-test",
+      "x": 650,
+      "y": 300,
+      "label": "Clinical Penetration Testing",
+      "variant": "red",
+      "subtitle": "Healthcare-specific attack simulation & PHI access testing"
+    },
+    {
+      "id": "compliance-check",
+      "x": 800,
+      "y": 200,
+      "label": "Healthcare Compliance",
+      "variant": "green",
+      "subtitle": "HIPAA, HITECH, FDA guidelines for medical devices"
+    },
+    {
+      "id": "demo-environment",
+      "x": 950,
+      "y": 150,
+      "label": "Demo Environment",
+      "variant": "indigo",
+      "subtitle": "UAT with security verification"
+    },
+    {
+      "id": "production",
+      "x": 1100,
+      "y": 150,
+      "label": "Production Deployment",
+      "variant": "green",
+      "subtitle": "Secure production release"
+    },
+    {
+      "id": "runtime-monitoring",
+      "x": 950,
+      "y": 300,
+      "label": "Clinical Runtime Security",
+      "variant": "teal",
+      "subtitle": "PHI access monitoring, clinical audit logs, healthcare incident response"
+    },
+    {
+      "id": "vuln-management",
+      "x": 350,
+      "y": 400,
+      "label": "Vulnerability Management",
+      "variant": "red",
+      "subtitle": "Remediation tracking & prioritization"
+    },
+    {
+      "id": "security-training",
+      "x": 50,
+      "y": 350,
+      "label": "Healthcare Security Training",
+      "variant": "purple",
+      "subtitle": "HIPAA compliance training & secure PHI handling practices"
+    },
+    {
+      "id": "incident-response",
+      "x": 800,
+      "y": 400,
+      "label": "Incident Response",
+      "variant": "red",
+      "subtitle": "Security incident handling"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "code-commit",
+      "target": "pre-commit-hooks",
+      "label": "Git Hook"
+    },
+    {
+      "id": "e2",
+      "source": "pre-commit-hooks",
+      "target": "sast-scan",
+      "label": "CI Triggered"
+    },
+    {
+      "id": "e3",
+      "source": "sast-scan",
+      "target": "dependency-scan",
+      "label": "SAST Pass"
+    },
+    {
+      "id": "e4",
+      "source": "dependency-scan",
+      "target": "code-review",
+      "label": "Deps Clean"
+    },
+    {
+      "id": "e5",
+      "source": "code-review",
+      "target": "integration-env",
+      "label": "Review Approved"
+    },
+    {
+      "id": "e6",
+      "source": "integration-env",
+      "target": "dast-scan",
+      "label": "Deploy to Test"
+    },
+    {
+      "id": "e7",
+      "source": "dast-scan",
+      "target": "penetration-test",
+      "label": "DAST Pass"
+    },
+    {
+      "id": "e8",
+      "source": "penetration-test",
+      "target": "compliance-check",
+      "label": "Pentest Pass"
+    },
+    {
+      "id": "e9",
+      "source": "compliance-check",
+      "target": "demo-environment",
+      "label": "Compliance OK"
+    },
+    {
+      "id": "e10",
+      "source": "demo-environment",
+      "target": "production",
+      "label": "UAT Approved"
+    },
+    {
+      "id": "e11",
+      "source": "production",
+      "target": "runtime-monitoring",
+      "label": "Monitor"
+    },
+    {
+      "id": "e12",
+      "source": "sast-scan",
+      "target": "vuln-management",
+      "label": "Vulnerabilities Found",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444"
+    },
+    {
+      "id": "e13",
+      "source": "dependency-scan",
+      "target": "vuln-management",
+      "label": "Vulnerable Deps",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444"
+    },
+    {
+      "id": "e14",
+      "source": "vuln-management",
+      "target": "code-commit",
+      "label": "Fix Required",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#f97316"
+    },
+    {
+      "id": "e15",
+      "source": "runtime-monitoring",
+      "target": "incident-response",
+      "label": "Security Alert"
+    },
+    {
+      "id": "e16",
+      "source": "security-training",
+      "target": "code-commit",
+      "label": "Secure Coding Practices"
+    },
+    {
+      "id": "e17",
+      "source": "incident-response",
+      "target": "security-training",
+      "label": "Lessons Learned",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#8b5cf6"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Development" },
+    { "color": "bg-red-200", "label": "Security Scanning" },
+    { "color": "bg-orange-200", "label": "Testing & Analysis" },
+    { "color": "bg-cyan-200", "label": "Review Process" },
+    { "color": "bg-indigo-200", "label": "Environments" },
+    { "color": "bg-green-200", "label": "Production & Compliance" },
+    { "color": "bg-teal-200", "label": "Monitoring & Response" }
+  ]
+}

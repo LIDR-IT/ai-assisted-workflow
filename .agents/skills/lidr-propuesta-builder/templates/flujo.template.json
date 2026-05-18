@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "id": "placeholder-flujo",
+    "title": "Flujo E2E Obligatorio — {{CLIENT_NAME}}",
+    "description": "TODO 1 línea: qué extensiones de flujo añaden al patrón base LIDR (hotfix paralelo, Bridge Impact, Cross-Country Check, etc.). Si el cliente no tiene extensiones, NO EMITAS este archivo — heredará de base/propuesta/flujo.json.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY_FULL}}",
+    "tags": ["placeholder", "flujo", "gates", "to-be"],
+    "lastUpdated": "{{YYYY-MM-DD}}",
+    "author": "{{PME_NAME}}",
+    "sourceReport": "docs/guides/lidr-core/placeholder-discovery-report.md@{{REPORT_VERSION}}"
+  },
+  "diagram": {
+    "metadata": {
+      "id": "placeholder-flujo-diagram",
+      "title": "Flujo E2E {{CLIENT_NAME}} con Quality Gates",
+      "description": "TODO descripción del flujo customizado.",
+      "version": "1.0.0",
+      "client": "{{CLIENT_NAME}}",
+      "industry": "{{INDUSTRY_FULL}}",
+      "tags": ["placeholder", "flujo", "react-flow"]
+    },
+    "configuration": {
+      "height": 2400,
+      "exportName": "placeholder_Flujo_SDLC",
+      "layout": "TB"
+    },
+    "nodes": [
+      {
+        "id": "biz",
+        "x": 400,
+        "y": 0,
+        "label": "Demanda de Negocio",
+        "variant": "purple",
+        "subtitle": "TODO contexto cliente"
+      },
+      {
+        "id": "gate0",
+        "x": 400,
+        "y": 110,
+        "label": "🚦 GATE 0: Intake",
+        "variant": "amber",
+        "subtitle": "TODO criterios cliente"
+      }
+    ],
+    "edges": [{ "id": "e-biz-g0", "source": "biz", "target": "gate0", "label": "Presenta caso" }],
+    "legend": [
+      { "color": "bg-purple-200", "label": "Originación" },
+      { "color": "bg-amber-200", "label": "🚦 Quality Gate (obligatorio)" }
+    ]
+  },
+  "gatesSummary": [
+    {
+      "gate": "Gate 0",
+      "name": "Intake",
+      "criteria": "TODO criterios específicos del cliente",
+      "owner": "TODO owner cliente"
+    }
+  ]
+}

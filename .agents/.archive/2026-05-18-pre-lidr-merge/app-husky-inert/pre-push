@@ -1,0 +1,27 @@
+#!/bin/sh
+# ═══════════════════════════════════════════
+# Git Hook: pre-push
+# Propósito: Tests + branch naming convention
+# Referencia: DoD DD-07 (tests pass), Guidelines.md §2.5 Git
+# ═══════════════════════════════════════════
+
+# 1. Verificar nombre de branch
+BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null)
+VALID_PATTERN="^(main|develop|feature\/[A-Z]+-[0-9]+-[a-z0-9-]+|release\/v[0-9]+\.[0-9]+\.[0-9]+|hotfix\/[A-Z]+-[0-9]+-[a-z0-9-]+)$"
+
+if ! echo "$BRANCH" | grep -qE "$VALID_PATTERN"; then
+  echo "❌ Branch name '$BRANCH' does not follow convention."
+  echo "   Expected: feature/PROJ-123-description, release/vX.Y.Z, or hotfix/PROJ-123-description"
+  echo "   (Guidelines.md §2.4 Naming)"
+  exit 1
+fi
+
+# 2. Ejecutar tests
+echo "🧪 Running tests before push..."
+npm test 2>&1
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed. Fix before pushing. (DoD DD-07)"
+  exit 1
+fi
+
+echo "✅ Pre-push checks passed."

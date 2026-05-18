@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "clientId": "docline",
+    "clientName": "Docline",
+    "industry": "Healthcare Technology",
+    "version": "1.0.0",
+    "inheritsFrom": "global"
+  },
+  "branding": {
+    "companyName": "Docline",
+    "logo": "/assets/logos/docline-logo.png",
+    "website": "https://www.docline.com",
+    "primaryColor": "#059669",
+    "secondaryColor": "#0891B2"
+  },
+  "colors": {
+    "primary": "bg-emerald-600",
+    "secondary": "bg-cyan-600",
+    "accent": "text-emerald-600",
+    "surface": "bg-emerald-50",
+    "border": "border-emerald-200",
+    "success": "bg-green-600",
+    "info": "bg-blue-600"
+  },
+  "theme": {
+    "name": "docline-healthcare",
+    "mode": "light"
+  },
+  "templateVariables": {
+    "CLIENT_NAME": "Docline",
+    "INDUSTRY": "Healthcare Technology",
+    "COMPANY_URL": "https://www.docline.com",
+    "SUPPORT_EMAIL": "support@docline.com",
+    "MAIN_PRODUCT": "DocLine Platform",
+    "TECHNOLOGY_STACK": "Healthcare APIs, FHIR, Telemedicine",
+    "COMPLIANCE": "HIPAA, FDA, CE Mark",
+    "TARGET_MARKETS": "Hospitals, Clinics, Telemedicine"
+  },
+  "components": {
+    "blocks": {
+      "defaultPadding": "p-6",
+      "showIcons": true,
+      "iconSet": "healthcare-icons"
+    },
+    "diagrams": {
+      "defaultHeight": 450,
+      "colorScheme": "emerald",
+      "showLegend": true,
+      "healthcareCompliant": true
+    }
+  },
+  "features": {
+    "customBlocks": true,
+    "patientDashboards": true,
+    "clinicalWorkflows": true,
+    "complianceTracking": true,
+    "telemedIntegration": true,
+    "fhirSupport": true
+  },
+  "industry": {
+    "specific": {
+      "healthcare": {
+        "standards": ["FHIR R4", "HL7", "DICOM", "ICD-10"],
+        "compliance": ["HIPAA", "GDPR", "FDA 21 CFR Part 11"],
+        "workflows": ["admission", "diagnosis", "treatment", "discharge"],
+        "terminology": {
+          "patient": "Patient",
+          "provider": "Healthcare Provider",
+          "encounter": "Clinical Encounter",
+          "prescription": "Medication Order"
+        }
+      }
+    }
+  },
+  "customizations": {
+    "dashboards": {
+      "showPatientMetrics": true,
+      "showClinicalAlerts": true,
+      "showComplianceStatus": true,
+      "hipaaCompliant": true
+    },
+    "workflows": {
+      "enableClinicalGates": true,
+      "patientPrivacy": true,
+      "auditTrail": true,
+      "telemedSupport": true
+    },
+    "ui": {
+      "accessibilityCompliant": true,
+      "highContrast": false,
+      "largeText": false
+    }
+  }
+}

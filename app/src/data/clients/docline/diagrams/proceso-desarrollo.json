@@ -1,0 +1,203 @@
+{
+  "metadata": {
+    "id": "proceso-desarrollo",
+    "title": "Docline Development Workflow",
+    "description": "Healthcare telemedicine development workflow with clinical safety focus, HIPAA compliance, and EHR integration testing",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": ["development", "workflow", "telemedicine", "hipaa-compliance", "ehr-integration"]
+  },
+  "configuration": {
+    "height": 1100,
+    "exportName": "Docline Development Workflow",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "refinement",
+      "x": 100,
+      "y": 100,
+      "label": "Refinement Session",
+      "variant": "purple",
+      "subtitle": "Clinical workflow story preparation"
+    },
+    {
+      "id": "sprint-planning",
+      "x": 500,
+      "y": 100,
+      "label": "Sprint Planning",
+      "variant": "purple",
+      "subtitle": "2-week sprint commitment"
+    },
+    {
+      "id": "frontend-dev",
+      "x": 200,
+      "y": 300,
+      "label": "Frontend Development",
+      "variant": "blue",
+      "subtitle": "Tech Lead: Hector"
+    },
+    {
+      "id": "backend-dev",
+      "x": 650,
+      "y": 300,
+      "label": "Backend Development",
+      "variant": "blue",
+      "subtitle": "Tech Lead: David"
+    },
+    {
+      "id": "code-review",
+      "x": 420,
+      "y": 500,
+      "label": "Code Review",
+      "variant": "cyan",
+      "subtitle": "Peer review & quality gates"
+    },
+    {
+      "id": "cucumber-testing",
+      "x": 800,
+      "y": 500,
+      "label": "Cucumber/Gherkin Testing",
+      "variant": "orange",
+      "subtitle": "Clinical workflow BDD testing"
+    },
+    {
+      "id": "monitoring",
+      "x": 1200,
+      "y": 500,
+      "label": "CI/CD Monitoring",
+      "variant": "teal",
+      "subtitle": "Pipeline & system health"
+    },
+    {
+      "id": "integration-env",
+      "x": 200,
+      "y": 750,
+      "label": "Integration Environment",
+      "variant": "indigo",
+      "subtitle": "EHR integration testing"
+    },
+    {
+      "id": "demo-env",
+      "x": 600,
+      "y": 750,
+      "label": "Demo Environment",
+      "variant": "indigo",
+      "subtitle": "Clinical demo & healthcare UAT"
+    },
+    {
+      "id": "production",
+      "x": 1000,
+      "y": 750,
+      "label": "Production Environment",
+      "variant": "green",
+      "subtitle": "Live healthcare platform deployment"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "refinement",
+      "target": "sprint-planning",
+      "label": "Stories Ready",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e2",
+      "source": "sprint-planning",
+      "target": "frontend-dev",
+      "label": "Sprint Start",
+      "sourceHandle": "source-left",
+      "targetHandle": "source-top"
+    },
+    {
+      "id": "e3",
+      "source": "sprint-planning",
+      "target": "backend-dev",
+      "label": "Sprint Start"
+    },
+    {
+      "id": "e4",
+      "source": "frontend-dev",
+      "target": "code-review",
+      "label": "Pull Request"
+    },
+    {
+      "id": "e5",
+      "source": "backend-dev",
+      "target": "code-review",
+      "label": "Pull Request",
+      "sourceHandle": "source-left",
+      "targetHandle": "right"
+    },
+    {
+      "id": "e6",
+      "source": "code-review",
+      "target": "cucumber-testing",
+      "label": "Approved",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e7",
+      "source": "cucumber-testing",
+      "target": "integration-env",
+      "label": "BDD Pass",
+      "sourceHandle": "source-left"
+    },
+    {
+      "id": "e8",
+      "source": "integration-env",
+      "target": "demo-env",
+      "label": "Integration Pass",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e9",
+      "source": "demo-env",
+      "target": "production",
+      "label": "UAT Approved",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e10",
+      "source": "production",
+      "target": "monitoring",
+      "label": "Deploy Success"
+    },
+    {
+      "id": "e11",
+      "source": "cucumber-testing",
+      "target": "frontend-dev",
+      "label": "Test Failure",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444",
+      "sourceHandle": "source-top",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e12",
+      "source": "cucumber-testing",
+      "target": "backend-dev",
+      "label": "Test Failure",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444",
+      "sourceHandle": "source-top"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Sprint Activities" },
+    { "color": "bg-blue-200", "label": "Development (Dual Leads)" },
+    { "color": "bg-cyan-200", "label": "Code Quality" },
+    { "color": "bg-orange-200", "label": "BDD Testing" },
+    { "color": "bg-indigo-200", "label": "Environments" },
+    { "color": "bg-green-200", "label": "Production" },
+    { "color": "bg-teal-200", "label": "CI/CD Operations" }
+  ]
+}

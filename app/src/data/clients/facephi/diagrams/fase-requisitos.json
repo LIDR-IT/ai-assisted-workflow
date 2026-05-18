@@ -1,0 +1,169 @@
+{
+  "metadata": {
+    "id": "fase-requisitos",
+    "title": "Fase de Requisitos",
+    "description": "Origen, procesamiento y transformación de requisitos desde las fuentes de negocio y tecnología",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["requirements", "business-analysis", "prd", "sdlc"]
+  },
+  "configuration": {
+    "height": 650,
+    "exportName": "Fase_Requisitos_SDLC",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "biz",
+      "x": 50,
+      "y": 0,
+      "label": "Liderazgo de Negocio",
+      "variant": "purple",
+      "subtitle": "Demanda de mercado · Visión estratégica"
+    },
+    {
+      "id": "biz-com",
+      "x": 50,
+      "y": 100,
+      "label": "Comunicación a Producto",
+      "variant": "purple",
+      "subtitle": "Reuniones · Documentación alto nivel"
+    },
+    {
+      "id": "cto",
+      "x": 400,
+      "y": 0,
+      "label": "CTO",
+      "variant": "blue",
+      "subtitle": "Solicitudes directas"
+    },
+    {
+      "id": "rnd",
+      "x": 400,
+      "y": 100,
+      "label": "R&D / Core",
+      "variant": "blue",
+      "subtitle": "Investigación · Prototipos · Viabilidad"
+    },
+    {
+      "id": "prd-tech",
+      "x": 400,
+      "y": 210,
+      "label": "PRD Técnico",
+      "variant": "cyan",
+      "subtitle": "Algoritmos · Capacidades · Limitaciones"
+    },
+    {
+      "id": "product",
+      "x": 225,
+      "y": 330,
+      "label": "Equipo de Producto",
+      "variant": "green",
+      "subtitle": "PO + Equipo Producto · Escuchar, entender, aterrizar"
+    },
+    {
+      "id": "prd-func",
+      "x": 225,
+      "y": 440,
+      "label": "PRD Funcional",
+      "variant": "cyan",
+      "subtitle": "Overview · Alcance · Funcionalidades · RFs"
+    },
+    {
+      "id": "rf",
+      "x": 225,
+      "y": 550,
+      "label": "Requisitos Funcionales (RF)",
+      "variant": "teal",
+      "subtitle": "Documentados en Confluence · Asistidos por IA"
+    },
+    {
+      "id": "us",
+      "x": 225,
+      "y": 650,
+      "label": "User Stories",
+      "variant": "indigo",
+      "subtitle": "Unidades de trabajo implementables"
+    },
+    {
+      "id": "backlog",
+      "x": 225,
+      "y": 750,
+      "label": "Backlog de Jira",
+      "variant": "indigo",
+      "subtitle": "Priorizadas para Sprint Planning"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "biz",
+      "target": "biz-com",
+      "label": "Comunica"
+    },
+    {
+      "id": "e2",
+      "source": "cto",
+      "target": "rnd",
+      "label": "Canaliza"
+    },
+    {
+      "id": "e3",
+      "source": "rnd",
+      "target": "prd-tech",
+      "label": "Formaliza"
+    },
+    {
+      "id": "e4",
+      "source": "biz-com",
+      "target": "product",
+      "label": "Input negocio"
+    },
+    {
+      "id": "e5",
+      "source": "prd-tech",
+      "target": "product",
+      "label": "Input técnico"
+    },
+    {
+      "id": "e6",
+      "source": "product",
+      "target": "prd-func",
+      "label": "Crea"
+    },
+    {
+      "id": "e7",
+      "source": "prd-func",
+      "target": "rf",
+      "label": "Especifica"
+    },
+    {
+      "id": "e8",
+      "source": "rf",
+      "target": "us",
+      "label": "Deriva"
+    },
+    {
+      "id": "e9",
+      "source": "us",
+      "target": "backlog",
+      "label": "Prioriza"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Fuente: Liderazgo de Negocio" },
+    { "color": "bg-blue-200", "label": "Fuente: CTO / R&D" },
+    { "color": "bg-green-200", "label": "Equipo de Producto" },
+    { "color": "bg-cyan-200", "label": "Documentación (PRD)" },
+    { "color": "bg-teal-200", "label": "Requisitos Funcionales" },
+    { "color": "bg-indigo-200", "label": "User Stories / Backlog" },
+    { "color": "bg-amber-200", "label": "Pain Points" }
+  ],
+  "tables": [
+    { "label": "Reuniones", "value": "Captura de requisitos con stakeholders" },
+    { "label": "Confluence", "value": "Documentación central de PRDs y RFs" },
+    { "label": "Jira", "value": "Trazabilidad de User Stories y tickets" },
+    { "label": "Correo/Chat", "value": "Comunicación ad-hoc entre equipos" }
+  ]
+}

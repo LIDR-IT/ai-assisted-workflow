@@ -31,6 +31,30 @@
       "timeout": 10,
       "platforms": ["claude", "gemini", "copilot"],
       "description": "Block edits to sensitive files (.env, .key, .pem, etc.)"
+    },
+    "lidr-frontmatter-guard": {
+      "event": "PreToolUse",
+      "matcher": "Edit|Write",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/lidr/frontmatter-guard.sh\"",
+      "timeout": 10,
+      "platforms": ["claude"],
+      "description": "LIDR SDLC: enforce YAML frontmatter on .md files in docs/, .agents/rules/, .agents/skills/. Blocks on missing frontmatter, warns on stale last_updated."
+    },
+    "lidr-load-context": {
+      "event": "SessionStart",
+      "matcher": "*",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/lidr/load-context.sh\"",
+      "timeout": 15,
+      "platforms": ["claude"],
+      "description": "LIDR SDLC: load project context at session start (PROJECT_TYPE, DTC_ACTIVE, stale docs detection)."
+    },
+    "lidr-validate-ecosystem-counts": {
+      "event": "Stop",
+      "matcher": "*",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/lidr/validate-ecosystem-counts.sh\"",
+      "timeout": 30,
+      "platforms": ["claude"],
+      "description": "LIDR SDLC: sync 8 sources of truth at session end, block on count drift (skills, commands, rules, etc.)."
     }
   }
 }

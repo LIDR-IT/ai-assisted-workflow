@@ -1,0 +1,208 @@
+{
+  "metadata": {
+    "id": "proceso-prd",
+    "title": "Proceso PRD — AS-IS Aramis",
+    "description": "Documentación de producto descrita por el equipo como 'uno de nuestros grandes fracasos'. Iniciativas en Notion sin mantener, sin PRD funcional/técnico estandarizado. Existen sesiones informales de challenge EM/PM/Designer (cubren parcialmente cross-country y Bridge) pero no review cruzado Producto ↔ Tech Lead formalizado. Concepto crítico: cada 'brand' = un país con sus particularidades.",
+    "version": "1.2.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["prd", "product-docs", "notion", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "absent",
+      "description": "No existe PRD formal por feature. Las iniciativas se documentan en Notion antes de pasar a Redmine, pero no se mantienen actualizadas tras la implementación. Existe challenge informal (EM/PM/Designer) que mitiga parcialmente riesgos cross-country y Bridge. Sin protocolo de review cruzado Producto/Ingeniería.",
+      "evidence": "Discovery report sec. 2.5 + PP-03 · VTT ≈1:18:00 (Reme: challenge sessions y brand=país) — este diagrama NO está cubierto por el pre-kickoff survey"
+    }
+  },
+  "configuration": {
+    "height": 780,
+    "exportName": "Aramis_Proceso_PRD_AS_IS",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "need",
+      "x": 220,
+      "y": 0,
+      "label": "Necesidad de negocio",
+      "variant": "blue",
+      "subtitle": "Stakeholder · Aramis Group · Operaciones · Origen frecuente: un brand"
+    },
+    {
+      "id": "brand-note",
+      "x": 600,
+      "y": 0,
+      "label": "Brand = país",
+      "variant": "blue",
+      "subtitle": "Cada brand es un país integrado en el CRM · Drivers locales vs globales"
+    },
+    {
+      "id": "notion",
+      "x": 400,
+      "y": 130,
+      "label": "Iniciativa en Notion",
+      "variant": "amber",
+      "subtitle": "PM redacta · Formato libre · No mantenida"
+    },
+    {
+      "id": "challenge",
+      "x": 400,
+      "y": 260,
+      "label": "Challenge informal",
+      "variant": "green",
+      "subtitle": "EM ↔ PM ↔ Designer · Detectan cross-country y Bridge parcialmente"
+    },
+    {
+      "id": "no-prd",
+      "x": 20,
+      "y": 390,
+      "label": "Sin PRD funcional",
+      "variant": "red",
+      "subtitle": "Personas, journeys y AC sin formato común"
+    },
+    {
+      "id": "no-review",
+      "x": 400,
+      "y": 390,
+      "label": "Sin review cruzado formal",
+      "variant": "red",
+      "subtitle": "Producto ↔ Tech Lead · No formalizado · Solo challenge informal"
+    },
+    {
+      "id": "no-prd-t",
+      "x": 780,
+      "y": 390,
+      "label": "Sin PRD técnico",
+      "variant": "red",
+      "subtitle": "Arquitectura, NFR e integraciones implícitas"
+    },
+    {
+      "id": "gap-design",
+      "x": 20,
+      "y": 510,
+      "label": "Diseño sin contrato",
+      "variant": "amber",
+      "subtitle": "Figma + Google AI Studio · Sin handoff documentado"
+    },
+    {
+      "id": "gap-cross-country",
+      "x": 780,
+      "y": 510,
+      "label": "Riesgo cross-country",
+      "variant": "red",
+      "subtitle": "PP-06 · Brand vs global · Incompatibilidades detectadas tarde"
+    },
+    {
+      "id": "tickets",
+      "x": 400,
+      "y": 630,
+      "label": "Tickets en Redmine",
+      "variant": "blue",
+      "subtitle": "Sin trazabilidad de origen del requisito"
+    },
+    {
+      "id": "stale",
+      "x": 400,
+      "y": 740,
+      "label": "Notion no actualizado",
+      "variant": "red",
+      "subtitle": "'Uno de nuestros grandes fracasos' — David"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "need",
+      "target": "notion",
+      "label": "PM captura",
+      "sourceHandle": "right",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e2",
+      "source": "brand-note",
+      "target": "notion",
+      "label": "Contexto país",
+      "style": "dashed",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right-top"
+    },
+    { "id": "e3", "source": "notion", "target": "challenge", "label": "PM presenta" },
+    {
+      "id": "e4",
+      "source": "challenge",
+      "target": "no-prd",
+      "label": "Falta formato",
+      "style": "red",
+      "sourceHandle": "source-left"
+    },
+    {
+      "id": "e5",
+      "source": "challenge",
+      "target": "no-review",
+      "label": "Sin gate formal",
+      "style": "red",
+      "sourceHandle": "source-left-bottom"
+    },
+    {
+      "id": "e6",
+      "source": "challenge",
+      "target": "no-prd-t",
+      "label": "Falta capa técnica",
+      "style": "red",
+      "sourceHandle": "right"
+    },
+    { "id": "e7", "source": "no-prd", "target": "gap-design", "label": "Brecha diseño" },
+    { "id": "e8", "source": "no-prd-t", "target": "gap-cross-country", "label": "Brecha técnica" },
+    { "id": "e9", "source": "no-review", "target": "tickets", "label": "Salta a Redmine" },
+    {
+      "id": "e10",
+      "source": "gap-design",
+      "target": "tickets",
+      "style": "dashed",
+      "sourceHandle": "right",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e11",
+      "source": "gap-cross-country",
+      "target": "tickets",
+      "style": "dashed",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e12",
+      "source": "tickets",
+      "target": "stale",
+      "label": "Notion queda atrás",
+      "style": "red"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-200", "label": "Paso neutro / herramienta / contexto" },
+    { "color": "bg-green-200", "label": "Práctica positiva informal (challenge)" },
+    { "color": "bg-amber-200", "label": "Gap parcial" },
+    { "color": "bg-red-200", "label": "Ausente / crítico" }
+  ],
+  "tables": [
+    { "label": "Documentación producto", "value": "Notion (no mantenida activamente)" },
+    { "label": "PRD funcional", "value": "Sin formalizar" },
+    { "label": "PRD técnico", "value": "Sin formalizar" },
+    {
+      "label": "Challenge informal (discovery)",
+      "value": "EM ↔ PM ↔ Designer · Cubre cross-country y Bridge parcialmente"
+    },
+    { "label": "Review cruzado formal", "value": "Sin protocolo unificado" },
+    {
+      "label": "Brand model (discovery)",
+      "value": "Brand = país · Polaris multi-brand · Features pueden ser globales o por brand"
+    },
+    { "label": "Diseño", "value": "Figma + Google AI Studio (Alejandro)" },
+    { "label": "AI Studio access", "value": "Tokens ilimitados (Google Workspace)" },
+    {
+      "label": "Gap auto-detectado",
+      "value": "Cross-country compatibility (PP-06) · Bridge (PP-05)"
+    },
+    { "label": "Calificación interna", "value": "'Uno de nuestros grandes fracasos' (David)" }
+  ]
+}

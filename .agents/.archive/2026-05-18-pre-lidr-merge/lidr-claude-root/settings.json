@@ -1,0 +1,72 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash(git:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "mcp__filesystem__*",
+      "mcp__memory__*",
+      "mcp__fetch__*"
+    ],
+    "deny": ["Bash(rm -rf *)", "Bash(sudo *)", "Bash(curl * | bash)", "Bash(wget * | bash)"]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/frontmatter-guard.sh",
+            "timeout": 10
+          },
+          {
+            "type": "prompt",
+            "prompt": "Analyze this file write operation. Check:\n1) If writing to source code files (.ts, .tsx, .sql, schema, API routes, CI/CD configs), identify which documentation files should also be updated per the DTC (Docs Travel With Code) rule. Impact matrix:\n   - DB changes → db-schema.md\n   - API changes → specs/routes.md\n   - UI component changes → specs/components.md\n   - New dependencies → architecture.md\n   - CI/CD changes → deployment.md\n   - Ecosystem artifacts (skills/commands/rules/hooks) → CLAUDE.md + HelpCenter.tsx + SitemapView.tsx + IntegrityTests.tsx + audit-catalog.md + Guidelines.md + lidr-help.md + org.md\n2) Check content for hardcoded secrets (API keys, passwords, tokens, private keys). Patterns: 'sk-', 'pk_', 'AKIA', 'ghp_', 'Bearer ', base64 long strings, 'password=', 'secret=', private key headers.\n3) Verify path is not a system directory (/etc, /usr, /var) and has no path traversal (..).\n4) FRONTMATTER CHECK: If this is a .md file being CREATED (not edited) inside docs/, .claude/rules/, or .claude/skills/, verify that the content starts with YAML frontmatter (a '---' block at the very top). If the new .md file lacks frontmatter, include this warning in the systemMessage: 'New .md file missing YAML frontmatter. Per rules/documentation.md, all .md files require frontmatter with at minimum: id, version, last_updated, updated_by, status.' This is a WARN only — do NOT deny.\n\nReturn:\n- 'deny' with reason if secrets detected or path invalid\n- 'approve' with systemMessage listing docs that may need updating if DTC impact detected, and/or frontmatter warning if applicable\n- 'approve' silently if no impact",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/validate-ecosystem-counts.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/notify.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/load-context.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,301 @@
+{
+  "metadata": {
+    "id": "proceso-desarrollo",
+    "title": "Proceso de Desarrollo — AS-IS Aramis",
+    "description": "Flujo de desarrollo Polaris en GitLab con feature branches sobre dev. Existe un pre-CI gate sólido (unit + integration + acceptance + PHPStan + arquitectura hexagonal) antes del code review. Convive un flujo paralelo de soporte (hotfix directo a main). Uso de IA (Claude Code + JetBrains) sin estandarización ni CLAUDE.md; code review dual técnico/funcional sin protocolo unificado.",
+    "version": "1.2.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["development", "gitlab", "ai-adoption", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "partial",
+      "description": "Flujo Git establecido y profesional (GitLab + main/dev/feature) con un pre-CI gate de calidad ya implementado (fortaleza). Existe además un flujo de soporte paralelo (hotfix → main). Pero la IA y el code review dependen de la iniciativa individual de cada perfil. Sin CLAUDE.md, sin protocolo de review.",
+      "evidence": "Discovery report PP-01, PP-02, PP-08 · VTT ≈1:03:00 (Adrián: pre-code-review CI checks) · VTT ≈1:02:30 (Dídac: flujo de soporte)"
+    }
+  },
+  "configuration": {
+    "height": 880,
+    "exportName": "Aramis_Proceso_Desarrollo_AS_IS",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "ticket",
+      "x": 400,
+      "y": 0,
+      "label": "Ticket Redmine listo",
+      "variant": "blue",
+      "subtitle": "Gherkin presente · Sin DoR formal"
+    },
+    {
+      "id": "branch",
+      "x": 400,
+      "y": 110,
+      "label": "Feature branch desde dev",
+      "variant": "green",
+      "subtitle": "Branching estándar · main / dev / feature/*"
+    },
+    {
+      "id": "support",
+      "x": 820,
+      "y": 110,
+      "label": "Hotfix desde main",
+      "variant": "amber",
+      "subtitle": "Flujo de soporte · Merge directo a main · Sin pasar por dev"
+    },
+    {
+      "id": "dev-ia",
+      "x": 20,
+      "y": 230,
+      "label": "Desarrollo con IA ad hoc",
+      "variant": "amber",
+      "subtitle": "PP-01 · Claude Code + JetBrains · Frecuente pero sin estructura"
+    },
+    {
+      "id": "no-claude-md",
+      "x": 400,
+      "y": 230,
+      "label": "Sin CLAUDE.md",
+      "variant": "red",
+      "subtitle": "PP-08 · BE, FE y Bridge sin contexto IA"
+    },
+    {
+      "id": "innovators",
+      "x": 680,
+      "y": 360,
+      "label": "Innovadores aislados",
+      "variant": "violet",
+      "subtitle": "Luis Marco · Pedro · Ramón · Dídac"
+    },
+    {
+      "id": "commit",
+      "x": 400,
+      "y": 360,
+      "label": "Commits + push",
+      "variant": "slate",
+      "subtitle": "Conventional commits parcial"
+    },
+    {
+      "id": "ci-pre-review",
+      "x": 400,
+      "y": 470,
+      "label": "Pre-CI gate (fortaleza)",
+      "variant": "emerald",
+      "subtitle": "Unit + Integration + Acceptance + PHPStan + reglas arquitectura hexagonal"
+    },
+    {
+      "id": "pr",
+      "x": 400,
+      "y": 590,
+      "label": "Pull Request en GitLab",
+      "variant": "indigo",
+      "subtitle": "PR description sin template"
+    },
+    {
+      "id": "review-tech",
+      "x": 20,
+      "y": 700,
+      "label": "Review técnico",
+      "variant": "blue",
+      "subtitle": "Calidad de código · Patrones · No siempre se hace"
+    },
+    {
+      "id": "review-gap",
+      "x": 400,
+      "y": 700,
+      "label": "Dual no protocolizado",
+      "variant": "red",
+      "subtitle": "PP-02 · Depende del reviewer asignado"
+    },
+    {
+      "id": "review-func",
+      "x": 680,
+      "y": 700,
+      "label": "Review funcional",
+      "variant": "blue",
+      "subtitle": "Cumple AC del ticket · No siempre se hace"
+    },
+    {
+      "id": "qa-phase",
+      "x": 240,
+      "y": 820,
+      "label": "Fase QA",
+      "variant": "blue",
+      "subtitle": "Local o entorno dinámico · Antes del merge a dev"
+    },
+    {
+      "id": "merge",
+      "x": 620,
+      "y": 980,
+      "label": "Merge dev → main",
+      "variant": "emerald",
+      "subtitle": "Sin release notes (PP-07)"
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "ticket", "target": "branch", "label": "Crea rama" },
+    {
+      "id": "e2",
+      "source": "ticket",
+      "target": "support",
+      "label": "Si es bug en prod",
+      "style": "dashed",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e3",
+      "source": "branch",
+      "target": "dev-ia",
+      "label": "Implementa",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e4",
+      "source": "branch",
+      "target": "no-claude-md",
+      "label": "Context gap",
+      "style": "red"
+    },
+    {
+      "id": "e5",
+      "source": "no-claude-md",
+      "target": "innovators",
+      "label": "Cada uno por su cuenta",
+      "style": "dashed",
+      "sourceHandle": "right"
+    },
+    {
+      "id": "e6",
+      "source": "dev-ia",
+      "target": "commit",
+      "sourceHandle": "source-left",
+      "targetHandle": "left"
+    },
+    { "id": "e7", "source": "no-claude-md", "target": "commit" },
+    {
+      "id": "e8",
+      "source": "innovators",
+      "target": "commit",
+      "style": "dashed",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right"
+    },
+    { "id": "e9", "source": "commit", "target": "ci-pre-review", "label": "CI ejecuta" },
+    { "id": "e10", "source": "ci-pre-review", "target": "pr", "label": "Verde · Habilita PR" },
+    {
+      "id": "e11",
+      "source": "pr",
+      "target": "review-tech",
+      "label": "Asignado A",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e12",
+      "source": "pr",
+      "target": "review-gap",
+      "label": "Brecha protocolo",
+      "style": "red"
+    },
+    {
+      "id": "e13",
+      "source": "pr",
+      "target": "review-func",
+      "label": "Asignado B",
+      "sourceHandle": "right"
+    },
+    {
+      "id": "e14",
+      "source": "review-tech",
+      "target": "qa-phase",
+      "label": "Aprueba",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e15",
+      "source": "review-func",
+      "target": "qa-phase",
+      "label": "Aprueba",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e16",
+      "source": "review-gap",
+      "target": "qa-phase",
+      "label": "Riesgo de PR incompleta",
+      "style": "dashed"
+    },
+    {
+      "id": "e17",
+      "source": "qa-phase",
+      "target": "merge",
+      "label": "QA OK · Merge a dev → main",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e18",
+      "source": "support",
+      "target": "merge",
+      "label": "Bypass dev (urgencia)",
+      "style": "dashed",
+      "targetHandle": "target-right"
+    }
+  ],
+  "legend": [
+    { "color": "bg-emerald-200", "label": "Fortaleza confirmada (pre-CI gate)" },
+    { "color": "bg-green-200", "label": "Proceso establecido" },
+    { "color": "bg-blue-200", "label": "Paso neutro / referencia" },
+    { "color": "bg-amber-200", "label": "Gap parcial — existe pero sin estandarización" },
+    { "color": "bg-red-200", "label": "Pain point / brecha crítica" },
+    { "color": "bg-violet-200", "label": "Innovación individual aislada" },
+    { "color": "bg-indigo-200", "label": "Punto de revisión" }
+  ],
+  "tables": [
+    { "label": "Repositorio (survey)", "value": "GitLab" },
+    {
+      "label": "Branching (discovery)",
+      "value": "main (prod) · dev (integración) · feature/* por ticket · hotfix directo a main en soporte"
+    },
+    { "label": "Stack backend (survey)", "value": "PHP + Symfony" },
+    { "label": "Stack frontend (survey)", "value": "Angular (principal) + Nuxt (secundario)" },
+    { "label": "Bases de datos (survey)", "value": "MySQL + MongoDB" },
+    {
+      "label": "Estructura del squad (survey)",
+      "value": "Spotify model · PM + EM + QA + SEs (Senior BE mayoría · FE incluidos) · Tech Leads cross-functional"
+    },
+    {
+      "label": "Restricciones técnicas (survey)",
+      "value": "Dev speed · Lack of reliable tests · High cognitive load / complexity · Inefficient use of AI · Code quality / production incidents"
+    },
+    {
+      "label": "IA en uso (survey)",
+      "value": "Claude Code (Anthropic) + JetBrains · Frecuente pero sin estructura"
+    },
+    { "label": "AI guidelines (survey)", "value": "No (gap confirmado)" },
+    { "label": "CLAUDE.md (discovery)", "value": "Ausente en BE, FE y Bridge" },
+    { "label": "Code review (discovery)", "value": "Dual (técnico + funcional) no protocolizado" },
+    {
+      "label": "Pre-CI gate (discovery)",
+      "value": "Unit + Integration + Acceptance + PHPStan + arquitectura hexagonal · Fortaleza"
+    },
+    {
+      "label": "Flujo de soporte (discovery)",
+      "value": "Hotfix directo a main · Sin pasar por dev"
+    },
+    {
+      "label": "Cadencia de despliegue",
+      "value": "Sprint: 1 deploy/día acumulado · Soporte: cuanto antes"
+    },
+    {
+      "label": "Iniciativa Luis Marco (discovery)",
+      "value": "~70% del flujo PM automatizado · Orquestador de agentes propio"
+    },
+    {
+      "label": "Análisis estático (discovery)",
+      "value": "PHPStan + validadores custom de arquitectura hexagonal"
+    }
+  ]
+}

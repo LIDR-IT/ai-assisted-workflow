@@ -1,0 +1,121 @@
+Test Case ID,Priority,Category,Feature,Scenario Description,Given,When,Then,Expected FAR,Expected FRR,Test Data,Device Requirements,Environment,Acceptance Criteria
+VC-001,Critical,Enrollment,Voice Enrollment,Successful voice enrollment with clear audio,"A new user wants to enroll their voice template
+AND the environment is quiet (noise <30dB)
+AND the user speaks clearly in their native language","The user speaks the enrollment phrase 3 times
+AND each sample is 3-5 seconds duration
+AND the audio quality is >85/100","The voice template should be successfully created
+AND the enrollment confidence should be ≥95%
+AND the template size should be <2KB
+AND the process should complete in <10 seconds",N/A,N/A,Spanish phrase: 'Mi voz es mi contraseña digital',Smartphone with quality microphone,Quiet indoor environment,Template created with 95%+ confidence
+VC-002,Critical,Verification,Voice Verification,Successful voice verification for enrolled user,"An enrolled user with valid voice template
+AND the user is in a standard office environment
+AND background noise is <40dB","The user speaks their verification phrase once
+AND the audio sample is 3-5 seconds
+AND the spoken phrase matches enrollment phrase","The verification should succeed
+AND the match confidence should be ≥90%
+AND the response time should be <3 seconds
+AND the verification event should be logged",≤1.0%,≤2.0%,Same Spanish phrase as enrollment,Same device type as enrollment,Standard office noise,Verification success with ≥90% confidence
+VC-003,High,Security,Anti-Spoofing,Recorded audio replay attack detection,"An attacker has a high-quality recording of enrolled user's voice
+AND the recording is played through speakers
+AND the recording quality is >80/100","The attacker attempts to verify using the recorded audio
+AND the audio is played at normal speaking volume
+AND the recording includes the correct verification phrase","The system should detect the replay attack
+AND reject the verification with confidence ≥95%
+AND return error code 'REPLAY_ATTACK_DETECTED'
+AND the attack should be detected within 3 seconds",≥95% detection,N/A,High-quality recording of enrolled voice,Smartphone or computer speakers,Controlled testing environment,95%+ replay detection accuracy
+VC-004,High,Security,Anti-Spoofing,Text-to-speech (TTS) attack detection,"An attacker uses advanced TTS software to generate speech
+AND the TTS voice mimics the enrolled user
+AND the generated audio includes correct phrase","The attacker attempts verification using TTS-generated audio
+AND the TTS quality is commercial-grade
+AND the speech pattern follows natural cadence","The system should identify the synthetic speech
+AND reject the verification with confidence ≥90%
+AND return error code 'SYNTHETIC_VOICE_DETECTED'
+AND flag the attempt for security review",≥90% detection,N/A,Commercial TTS software output,Computer speakers or smartphone,Laboratory testing setup,90%+ synthetic voice detection
+VC-005,Medium,Performance,Processing Speed,Voice processing under normal load,"The voice verification system is under normal load
+AND 50 concurrent users are being processed
+AND the server resources are at 60% capacity","A user initiates voice verification
+AND provides a clear 4-second voice sample
+AND the sample meets quality thresholds","The verification should complete within 3 seconds
+AND the accuracy should not degrade
+AND the confidence level should remain ≥90%
+AND system resources should not exceed 80%",≤1.5%,≤2.5%,Clear voice sample with good SNR,Standard smartphone microphone,Normal production load,<3s response time with maintained accuracy
+VC-006,Medium,Compatibility,Language Support,Voice verification in Portuguese,"An enrolled user with Portuguese language voice template
+AND the user speaks with Brazilian Portuguese accent
+AND the enrollment was done with Portuguese phrases","The user provides verification phrase in Portuguese
+AND speaks with natural Brazilian accent
+AND the phrase is 'Minha voz é minha senha digital'","The verification should succeed with ≥88% accuracy
+AND language detection should identify Portuguese
+AND accent variation should not affect accuracy
+AND processing time should remain <4 seconds",≤2.0%,≤3.0%,Portuguese phrase with Brazilian accent,Smartphone with noise cancellation,Quiet to moderate noise environment,88%+ accuracy for Portuguese language
+VC-007,High,Quality,Audio Quality,Voice verification with poor audio quality,"A user attempts verification with compromised audio
+AND the environment has significant background noise
+AND the microphone quality is below average","The user speaks the verification phrase
+AND background noise is 50-60dB
+AND the microphone introduces distortion","The system should either request a retry with better conditions
+OR attempt verification with reduced confidence threshold
+AND provide clear feedback about audio quality
+AND not store poor-quality templates",≤2.5%,≤5.0%,Noisy environment recording,Low-quality microphone or old device,Noisy office or public space,Clear audio quality feedback provided
+VC-008,Critical,Security,Voice Conversion,Advanced voice conversion attack detection,"An attacker uses AI voice conversion technology
+AND converts their voice to match enrolled user
+AND the conversion quality is high (>85% similarity)","The attacker attempts verification using converted voice
+AND the converted sample includes correct phrase
+AND the attack uses recent neural voice conversion","The system should detect voice conversion artifacts
+AND reject with confidence ≥80%
+AND return error code 'VOICE_CONVERSION_DETECTED'
+AND alert security team for investigation",≥80% detection,N/A,AI-generated voice conversion samples,High-quality speakers or headphones,Controlled security testing,80%+ voice conversion detection accuracy
+VC-009,Medium,Usability,Error Handling,Voice verification retry mechanism,"A user's first verification attempt fails due to ambient noise
+AND the user is in a busy environment
+AND the system detects poor audio conditions","The system prompts user to try again
+AND user moves to quieter location
+AND user provides second voice sample","The retry mechanism should work seamlessly
+AND provide helpful guidance for better audio
+AND allow up to 3 attempts before lockout
+AND track retry reasons for analytics",≤1.5%,≤2.5%,Multiple voice samples with varying quality,Mobile device with adaptive microphone,Various noise environments,Clear retry guidance with success on retry
+VC-010,High,Integration,Multi-Modal,Voice + Face biometric verification,"A user is enrolled with both voice and face biometrics
+AND both modalities are required for verification
+AND user provides face scan first","User provides voice sample after successful face verification
+AND both biometric samples meet quality thresholds
+AND samples are provided within 30-second window","The multi-modal verification should succeed
+AND combined confidence should be ≥98%
+AND voice verification should complete within 4 seconds
+AND the session should be linked securely",≤0.5%,≤1.0%,High-quality voice + face samples,Smartphone with front camera and microphone,Well-lit quiet environment,98%+ combined confidence multi-modal verification
+VC-011,Medium,Compliance,GDPR,Voice data privacy and consent,"A European user wants to enroll voice biometrics
+AND GDPR compliance is mandatory
+AND user must provide explicit consent","The user provides explicit consent for voice processing
+AND completes voice enrollment
+AND requests data export after 30 days","The system should store only encrypted voice templates
+AND provide complete data export in machine-readable format
+AND allow template deletion upon user request
+AND maintain audit log of all processing",N/A,N/A,Encrypted voice templates only,Any supported device,EU jurisdiction testing,Complete GDPR compliance demonstrated
+VC-012,High,Performance,Stress Testing,Voice system under peak load,"The voice verification system receives 500 concurrent requests
+AND all requests are legitimate verification attempts
+AND the system is at 90% normal capacity","Users attempt voice verification simultaneously
+AND each provides 4-second voice samples
+AND samples are of varying audio quality","The system should maintain ≥95% accuracy under load
+AND 95% of verifications should complete within 5 seconds
+AND no verifications should timeout or fail due to load
+AND system should gracefully handle queue management",≤2.0%,≤3.0%,500 concurrent voice samples,Various mobile devices,Simulated production load environment,95% accuracy maintained under peak load
+VC-013,Medium,Accessibility,Accessibility,Voice verification for users with speech impediments,"A user with mild speech impediment enrolls voice template
+AND the impediment affects pronunciation but not vocal characteristics
+AND user speaks slowly and clearly","The user attempts verification with consistent speech pattern
+AND speaks at slower pace than average
+AND pronunciation matches enrollment pattern","The system should accommodate speech variations
+AND verification should succeed with ≥85% accuracy
+AND processing time may be extended to 6 seconds
+AND provide patient user guidance",≤2.5%,≤4.0%,Speech samples with consistent impediment patterns,Standard smartphone microphone,Quiet supportive environment,85%+ accuracy for accessibility cases
+VC-014,High,Security,Session Security,Voice verification session hijacking protection,"A legitimate user starts voice verification
+AND an attacker attempts to intercept the session
+AND the session includes secure tokens","An attacker tries to replay session tokens
+AND attempts to substitute voice sample mid-verification
+AND uses man-in-the-middle attack techniques","The system should detect session tampering
+AND invalidate compromised sessions immediately
+AND require fresh authentication start
+AND log security incident for investigation",N/A,N/A,Encrypted session tokens and voice samples,Secure network connection,Controlled security testing environment,100% session hijacking prevention
+VC-015,Critical,Reliability,Fault Tolerance,Voice verification with network interruption,"A user is mid-way through voice verification
+AND the network connection is interrupted
+AND 60% of voice sample has been transmitted","The network connection is restored after 5 seconds
+AND user's session is still valid
+AND remaining voice data needs transmission","The system should resume verification seamlessly
+AND not require user to restart the process
+AND maintain session state during interruption
+AND complete verification within extended timeout",≤1.5%,≤2.5%,Partially transmitted voice samples,Mobile device with variable network,Network simulation with interruptions,Seamless recovery from network interruptions

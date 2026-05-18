@@ -1,0 +1,411 @@
+{
+  "metadata": {
+    "id": "base-flujo",
+    "title": "Flujo E2E Obligatorio — Plantilla base LIDR",
+    "description": "Flujo TO-BE genérico LIDR con 8 quality gates (0-7). Plantilla base usada como fallback cuando un cliente no provee su propio flujo.json.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "Software Development",
+    "tags": ["base", "template", "flujo", "gates"],
+    "lastUpdated": "2026-05-14",
+    "author": "LIDR Framework",
+    "sourceReport": "src/data/features/propuestaMejora.tsx (legacy flowTabData)"
+  },
+  "diagram": {
+    "metadata": {
+      "id": "base-flujo-diagram",
+      "title": "Flujo E2E LIDR con Quality Gates",
+      "description": "Diagrama React Flow del flujo SDLC LIDR base con 8 gates (0-7) — punto de partida personalizable por cliente.",
+      "version": "1.0.0",
+      "client": "{{CLIENT_NAME}}",
+      "industry": "Software Development",
+      "tags": ["base", "flujo", "gates", "react-flow"]
+    },
+    "configuration": {
+      "height": 2400,
+      "exportName": "Flujo_SDLC_Quality_Gates",
+      "layout": "TB"
+    },
+    "nodes": [
+      {
+        "id": "biz",
+        "x": 400,
+        "y": 0,
+        "label": "Demanda de Negocio",
+        "variant": "purple",
+        "subtitle": "Business Case · Visión estratégica"
+      },
+      {
+        "id": "cto",
+        "x": 100,
+        "y": 0,
+        "label": "CTO / R&D",
+        "variant": "purple",
+        "subtitle": "Solicitudes técnicas · Investigación"
+      },
+
+      {
+        "id": "gate0",
+        "x": 400,
+        "y": 110,
+        "label": "🚦 GATE 0: Intake",
+        "variant": "amber",
+        "subtitle": "Business Case aprobado"
+      },
+
+      {
+        "id": "disc",
+        "x": 400,
+        "y": 220,
+        "label": "Discovery & Análisis",
+        "variant": "blue",
+        "subtitle": "Viabilidad técnica + funcional"
+      },
+      {
+        "id": "prd-t",
+        "x": 200,
+        "y": 330,
+        "label": "PRD Técnico",
+        "variant": "blue",
+        "subtitle": "R&D: Algoritmos, limitaciones, PoC"
+      },
+      {
+        "id": "prd-f",
+        "x": 600,
+        "y": 330,
+        "label": "PRD Funcional",
+        "variant": "blue",
+        "subtitle": "Producto: Overview, alcance, roadmap"
+      },
+
+      {
+        "id": "gate1",
+        "x": 400,
+        "y": 440,
+        "label": "🚦 GATE 1: PRD Aprobado",
+        "variant": "amber",
+        "subtitle": "Review cruzado Tech + Producto"
+      },
+
+      {
+        "id": "rf",
+        "x": 400,
+        "y": 550,
+        "label": "Requisitos Funcionales",
+        "variant": "cyan",
+        "subtitle": "RF-XXX con IA estandarizada"
+      },
+      {
+        "id": "deps",
+        "x": 400,
+        "y": 660,
+        "label": "Mapa de Dependencias",
+        "variant": "cyan",
+        "subtitle": "Orden de implementación definido"
+      },
+
+      {
+        "id": "gate2",
+        "x": 400,
+        "y": 770,
+        "label": "🚦 GATE 2: Requisitos Completos",
+        "variant": "amber",
+        "subtitle": "RFs + NFRs + RTM + Epic Breakdown"
+      },
+
+      {
+        "id": "us",
+        "x": 400,
+        "y": 880,
+        "label": "User Stories + Criterios",
+        "variant": "teal",
+        "subtitle": "BDD-ready · Testables"
+      },
+      {
+        "id": "refine",
+        "x": 400,
+        "y": 990,
+        "label": "Refinamiento + Estimación",
+        "variant": "teal",
+        "subtitle": "En HORAS · Capacidad real"
+      },
+      {
+        "id": "sprint",
+        "x": 400,
+        "y": 1100,
+        "label": "Sprint Planning",
+        "variant": "teal",
+        "subtitle": "Compromiso formal · 2-3 semanas"
+      },
+
+      {
+        "id": "gate3",
+        "x": 400,
+        "y": 1210,
+        "label": "🚦 GATE 3: Sprint Committed",
+        "variant": "amber",
+        "subtitle": "DoR cumplida · Sin ambigüedades"
+      },
+
+      {
+        "id": "dev",
+        "x": 400,
+        "y": 1320,
+        "label": "Desarrollo",
+        "variant": "orange",
+        "subtitle": "Feature branch · PR flow"
+      },
+      {
+        "id": "sast",
+        "x": 400,
+        "y": 1430,
+        "label": "SAST + SCA",
+        "variant": "red",
+        "subtitle": "Automatizado en cada PR"
+      },
+      {
+        "id": "sast-blk",
+        "x": 100,
+        "y": 1430,
+        "label": "BLOQUEADO",
+        "variant": "red",
+        "subtitle": "Vulnerabilidad Crítica/Alta"
+      },
+      {
+        "id": "review",
+        "x": 400,
+        "y": 1540,
+        "label": "Code Review",
+        "variant": "orange",
+        "subtitle": "Pares + Tech Lead · Solo si SAST limpio"
+      },
+
+      {
+        "id": "gate4",
+        "x": 400,
+        "y": 1650,
+        "label": "🚦 GATE 4: DoD + Code Quality",
+        "variant": "amber",
+        "subtitle": "DoD cumplida · SAST limpio · PR aprobado"
+      },
+
+      {
+        "id": "qa",
+        "x": 400,
+        "y": 1760,
+        "label": "QA + Testing",
+        "variant": "sky",
+        "subtitle": "BDD + Funcional + Regresión"
+      },
+      {
+        "id": "bugs",
+        "x": 700,
+        "y": 1760,
+        "label": "Bug Fix Cycle",
+        "variant": "orange",
+        "subtitle": "Reporta al Dev · Requiere re-pipeline"
+      },
+
+      {
+        "id": "gate5",
+        "x": 400,
+        "y": 1870,
+        "label": "🚦 GATE 5: QA Sign-off",
+        "variant": "amber",
+        "subtitle": "Todos los test cases PASS"
+      },
+
+      {
+        "id": "dast",
+        "x": 400,
+        "y": 1980,
+        "label": "DAST + Pen Testing",
+        "variant": "red",
+        "subtitle": "App en ejecución · Manual review"
+      },
+      {
+        "id": "dast-blk",
+        "x": 100,
+        "y": 1980,
+        "label": "BLOQUEADO",
+        "variant": "red",
+        "subtitle": "Vulnerabilidad runtime Crítica/Alta"
+      },
+
+      {
+        "id": "gate6",
+        "x": 400,
+        "y": 2090,
+        "label": "🚦 GATE 6: Security Sign-off",
+        "variant": "amber",
+        "subtitle": "OWASP OK · so-security firmado"
+      },
+
+      {
+        "id": "comite",
+        "x": 400,
+        "y": 2200,
+        "label": "Comité de Cambios",
+        "variant": "emerald",
+        "subtitle": "Gate 7: Deploy approval"
+      },
+      {
+        "id": "deploy",
+        "x": 400,
+        "y": 2310,
+        "label": "Pipeline Deploy",
+        "variant": "emerald",
+        "subtitle": "Dev → STG → UAT → Pre → PROD"
+      },
+      {
+        "id": "scan",
+        "x": 400,
+        "y": 2420,
+        "label": "Post-deploy Scanning",
+        "variant": "emerald",
+        "subtitle": "Monitoreo continuo"
+      },
+      {
+        "id": "retro",
+        "x": 400,
+        "y": 2530,
+        "label": "Retrospectiva + Métricas",
+        "variant": "violet",
+        "subtitle": "Velocity + Lecciones aprendidas"
+      }
+    ],
+    "edges": [
+      { "id": "e-biz-g0", "source": "biz", "target": "gate0", "label": "Presenta caso" },
+      { "id": "e-cto-g0", "source": "cto", "target": "gate0", "label": "Presenta solicitud" },
+      { "id": "e-g0-disc", "source": "gate0", "target": "disc", "label": "Aprobado" },
+      { "id": "e-disc-prdt", "source": "disc", "target": "prd-t", "label": "Análisis técnico" },
+      { "id": "e-disc-prdf", "source": "disc", "target": "prd-f", "label": "Análisis funcional" },
+      { "id": "e-prdt-g1", "source": "prd-t", "target": "gate1", "label": "Entrega PRD-T" },
+      { "id": "e-prdf-g1", "source": "prd-f", "target": "gate1", "label": "Entrega PRD-F" },
+      { "id": "e-g1-rf", "source": "gate1", "target": "rf", "label": "Aprobado" },
+      { "id": "e-rf-deps", "source": "rf", "target": "deps", "label": "Especifica" },
+      { "id": "e-deps-g2", "source": "deps", "target": "gate2", "label": "Mapeado" },
+      { "id": "e-g2-us", "source": "gate2", "target": "us", "label": "Aprobado" },
+      { "id": "e-us-refine", "source": "us", "target": "refine", "label": "Refina" },
+      { "id": "e-refine-sprint", "source": "refine", "target": "sprint", "label": "Estima" },
+      { "id": "e-sprint-g3", "source": "sprint", "target": "gate3", "label": "Planifica" },
+      { "id": "e-g3-dev", "source": "gate3", "target": "dev", "label": "Committed" },
+      { "id": "e-dev-sast", "source": "dev", "target": "sast", "label": "PR abierto" },
+      { "id": "e-sast-review", "source": "sast", "target": "review", "label": "Limpio" },
+      {
+        "id": "e-sast-blk",
+        "source": "sast",
+        "target": "sast-blk",
+        "label": "Crítica/Alta",
+        "style": "red"
+      },
+      {
+        "id": "e-blk-dev",
+        "source": "sast-blk",
+        "target": "dev",
+        "label": "Corregir + re-scan",
+        "style": "dashed"
+      },
+      { "id": "e-review-g4", "source": "review", "target": "gate4", "label": "Aprobado" },
+      { "id": "e-g4-qa", "source": "gate4", "target": "qa", "label": "Merge" },
+      { "id": "e-qa-bugs", "source": "qa", "target": "bugs", "label": "Reporta bugs" },
+      {
+        "id": "e-bugs-dev",
+        "source": "bugs",
+        "target": "dev",
+        "label": "Corregir + re-pipeline",
+        "style": "dashed"
+      },
+      { "id": "e-qa-g5", "source": "qa", "target": "gate5", "label": "All pass" },
+      { "id": "e-g5-dast", "source": "gate5", "target": "dast", "label": "QA OK" },
+      { "id": "e-dast-g6", "source": "dast", "target": "gate6", "label": "Limpio" },
+      {
+        "id": "e-dast-blk",
+        "source": "dast",
+        "target": "dast-blk",
+        "label": "Crítica/Alta",
+        "style": "red"
+      },
+      {
+        "id": "e-dastblk-dev",
+        "source": "dast-blk",
+        "target": "dev",
+        "label": "Remediar + ciclo completo",
+        "style": "dashed"
+      },
+      { "id": "e-g6-comite", "source": "gate6", "target": "comite", "label": "Seguridad OK" },
+      { "id": "e-comite-deploy", "source": "comite", "target": "deploy", "label": "Aprobado" },
+      { "id": "e-deploy-scan", "source": "deploy", "target": "scan", "label": "En producción" },
+      { "id": "e-scan-retro", "source": "scan", "target": "retro", "label": "Datos" },
+      {
+        "id": "e-retro-biz",
+        "source": "retro",
+        "target": "biz",
+        "label": "Siguiente ciclo",
+        "style": "purple"
+      }
+    ],
+    "legend": [
+      { "color": "bg-purple-200", "label": "Originación (Negocio / CTO)" },
+      { "color": "bg-blue-200", "label": "Discovery & PRD" },
+      { "color": "bg-cyan-200", "label": "Especificación (RF + NFR)" },
+      { "color": "bg-teal-200", "label": "User Stories + Sprint Planning" },
+      { "color": "bg-orange-200", "label": "Desarrollo + Code Review" },
+      { "color": "bg-red-200", "label": "Seguridad (SAST/SCA/DAST)" },
+      { "color": "bg-sky-200", "label": "QA / Testing" },
+      { "color": "bg-emerald-200", "label": "Despliegue" },
+      { "color": "bg-amber-200", "label": "🚦 Quality Gate (obligatorio)" },
+      { "color": "bg-violet-200", "label": "Retrospectiva / Métricas" }
+    ]
+  },
+  "gatesSummary": [
+    {
+      "gate": "Gate 0",
+      "name": "Intake",
+      "criteria": "Business Case aprobado · Sponsor identificado · Presupuesto asignado · Alineación estratégica",
+      "owner": "PME + Negocio"
+    },
+    {
+      "gate": "Gate 1",
+      "name": "PRD Aprobado",
+      "criteria": "PRD Técnico + Funcional completos · Review cruzado aprobado · Riesgos identificados",
+      "owner": "Producto + R&D"
+    },
+    {
+      "gate": "Gate 2",
+      "name": "Requisitos Completos",
+      "criteria": "RFs + NFRs documentados · RTM generada · Epic breakdown aprobado · Coherencia validada · BDD-ready",
+      "owner": "PO + Tech Lead + QA"
+    },
+    {
+      "gate": "Gate 3",
+      "name": "Sprint Committed",
+      "criteria": "DoR cumplida · Estimación en horas · Capacidad confirmada · Sin ambigüedades",
+      "owner": "PO + Tech Lead"
+    },
+    {
+      "gate": "Gate 4",
+      "name": "DoD + Code Quality",
+      "criteria": "cl-dod cumplida · SAST/SCA limpio (prerequisito) → Code Review aprobado (pr-description) · Handoff QA generado (dev-handoff-qa)",
+      "owner": "TL + Dev"
+    },
+    {
+      "gate": "Gate 5",
+      "name": "QA Sign-off",
+      "criteria": "Todos los test cases PASS · so-qa signoff firmado · cl-nfr compliance · 0 bugs bloqueantes",
+      "owner": "QA Lead"
+    },
+    {
+      "gate": "Gate 6",
+      "name": "Security Sign-off",
+      "criteria": "OWASP Top 10 OK · so-security signoff firmado · cl-security + cl-nfr compliance · Vulnerabilidades remediadas",
+      "owner": "Sec Lead"
+    },
+    {
+      "gate": "Gate 7",
+      "name": "Deploy to Production",
+      "criteria": "CR aprobado (change-request) · Rollback plan documentado · Release notes publicadas · cl-postdeploy checklist",
+      "owner": "PME + DevOps"
+    }
+  ]
+}

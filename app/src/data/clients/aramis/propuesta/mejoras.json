@@ -1,0 +1,200 @@
+{
+  "metadata": {
+    "id": "aramis-mejoras",
+    "title": "Mejoras por Fase — Grupo Aramis (Polaris + Bridge)",
+    "description": "Propuesta TO-BE LIDR adaptada al contexto Aramis. v1.6.0: alineada al scope real de la consultoría. LIDR entrega el framework .claude/ y forma al equipo en metodología SDD; no desarrolla skills a medida, no co-construye herramientas del cliente, no documenta artefactos internos del cliente. Convenciones: ✅ skill/command incluido en el framework LIDR · 📚 LIDR enseña este patrón/skill · 📌 gap del framework (informativo: cliente puede crearlo con skill-development o esperar versión futura; no es scope) · 🏠 responsabilidad exclusiva del cliente · 💡 sugerencia de encaje de herramienta del cliente · ▸ command · ⚠️ Guard.",
+    "version": "1.6.0",
+    "client": "Aramis",
+    "industry": "Automotive Multi-country Retail",
+    "tags": ["aramis", "polaris", "bridge", "mejoras", "to-be", "8-fases"],
+    "lastUpdated": "2026-05-15",
+    "author": "PME: Luis Urdaneta",
+    "sourceReport": "docs/guides/lidr-core/aramis-discovery-report.md@1.4.0"
+  },
+  "fases": [
+    {
+      "id": "fase-1-originacion",
+      "phaseNumber": 1,
+      "gateNumber": 0,
+      "title": "1. Originación & Intake (Gate 0)",
+      "border": "border-purple-200",
+      "bg": "bg-purple-50",
+      "icon": null,
+      "actual": "Iniciativas llegan informalmente a Notion antes de Redmine — \"uno de nuestros grandes fracasos\" (Notion no se mantiene). Sin Business Case ni stakeholder mapping formal. Origen frecuente: necesidad de un brand (país) sin evaluación cross-country sistemática.",
+      "propuesta": [
+        "✅ business-case: skill incluida — produce borrador BC desde la necesidad del brand/país originador",
+        "✅ stakeholder-map: skill incluida — cubre Tribu originadora + países potencialmente afectados + equipo Bridge + Ciberseguridad",
+        "✅ kickoff: skill incluida — formaliza inicio entre tribus (Compras/Ventas) con sponsor + driver",
+        "✅ tracking-integration: skill incluida (adapters Jira/Linear). 📌 No incluye adapter Redmine; Aramis puede crearlo siguiendo el patrón tracking-integration/adapters/ si lo necesita — fuera de scope LIDR",
+        "✅ ▸ /init-project-docs y ▸ /advance-gate 0: commands incluidos",
+        "📚 LIDR forma a PME y al equipo en el uso de los 4 skills de esta fase + el flujo Gate 0",
+        "📚 LIDR enseña la convención 'global vs variant-specific' aplicable en el BC para mitigar PP-06 desde el origen — el equipo la adopta",
+        "🏠 Decisiones del cliente: confirmar driver del piloto (Adrián Louro tentativo), sponsor (Álvaro/David), criterios de selección de la primera iniciativa",
+        "⚠️ Guard: BC debe declarar si la iniciativa nace de un brand específico y qué países adicionales podrían verse afectados"
+      ]
+    },
+    {
+      "id": "fase-2-discovery-prd",
+      "phaseNumber": 2,
+      "gateNumber": 1,
+      "title": "2. Discovery & PRD (Gate 1)",
+      "border": "border-blue-200",
+      "bg": "bg-blue-50",
+      "icon": null,
+      "actual": "PRD = \"gran fracaso\" (David). Notion existe pero no se mantiene; criterios dispersos en tickets Redmine históricos. Sesiones de challenge informales EM↔PM↔Designer cubren parcialmente cross-country y Bridge pero sin protocolo de review cruzado Producto↔Tech Lead formal.",
+      "propuesta": [
+        "✅ prd-funcional y prd-tecnico: skills incluidas — PRDs estructurados desde Discovery; reemplazan Notion como fuente de verdad",
+        "✅ review-cruzado: skill incluida — formaliza las challenge sessions ya existentes (EM↔PM↔Designer) como gate explícito",
+        "✅ risk-log: skill incluida — registra riesgos Bridge, cross-country, seguridad desde Discovery",
+        "✅ architecture-doc (Arc42/C4): skill incluida — documenta arquitectura Polaris (PHP+Symfony hexagonal) + Bridge + contratos",
+        "✅ ux-design-spec: skill incluida — conecta con el flujo diseño→spec→PRD",
+        "✅ ▸ /advance-gate 1: command incluido",
+        "📚 LIDR forma a PO y TL en el uso de las skills de PRD + el flujo de review cruzado pre-Gate 1",
+        "💡 Sugerencia: el Polaris Knowledge Agent (Pedro) puede consumirse como MCP externo durante PRDs y RFs para dar contexto de negocio a la IA — Aramis decide si conecta su MCP usando el patrón mcp-integration que LIDR enseña",
+        "💡 Sugerencia: el orquestador de Luis Marco puede convivir con el framework; conviene mapear sus pasos a skills equivalentes para evitar duplicar esfuerzo — la decisión y la ejecución son de Aramis",
+        "⚠️ Guard: PRD debe declarar brands/países objetivo y, cuando aplique, referenciar contratos Bridge afectados (la lista de contratos la mantiene Aramis internamente)"
+      ]
+    },
+    {
+      "id": "fase-3-especificacion",
+      "phaseNumber": 3,
+      "gateNumber": 2,
+      "title": "3. Especificación RF/NFR (Gate 2)",
+      "border": "border-cyan-200",
+      "bg": "bg-cyan-50",
+      "icon": null,
+      "actual": "Gherkin/BDD ya está en tickets Redmine ✅ — pero sin gate de validación pre-desarrollo (PP-03). RFs/NFRs no separados formalmente del PRD. Análisis cross-country (PP-06) lo hacen EMs manualmente en challenge sessions, dependiendo del conocimiento individual presente.",
+      "propuesta": [
+        "✅ generate-rf: skill incluida — produce RFs con BDD heredando la práctica Gherkin existente del equipo",
+        "✅ generate-nfr: skill incluida — formaliza NFRs medibles (incluye criterios de tiempo de feedback CI tras PP-09 y de ATDD)",
+        "✅ bdd-patterns: skill incluida — valida la calidad de los criterios Gherkin que el equipo ya escribe",
+        "✅ validate-requirements: skill incluida (automatizada) — orquesta RFs + NFRs + trazabilidad + epic-breakdown",
+        "✅ epic-breakdown: skill incluida — descompone en sub-épicas",
+        "✅ ▸ /advance-gate 2 y ▸ /validate-requirements: commands incluidos",
+        "📚 LIDR forma a PO, TL y QA en el flujo ATDD: QA valida criterios Gherkin antes de 'Ready for Dev'",
+        "📚 LIDR enseña la convención de declarar 'global vs variant-specific' en cada RF (no se modifican templates a medida; es una convención de equipo)",
+        "📌 Gap del framework: no existe una skill de análisis automático de compatibilidad multi-variante. Aramis puede construirla con skill-development si decide priorizarla — fuera de scope LIDR",
+        "🏠 Mantener una matriz de configuraciones por país/brand (artefacto interno) es responsabilidad de Aramis; sin ella, cualquier análisis de compatibilidad sólo puede ser manual",
+        "🏠 Cablear el gate ATDD en Redmine (campos custom, transiciones, automatizaciones) es responsabilidad de Aramis",
+        "⚠️ Guard: ratio RF_with_BDD < 100% bloquea el gate; los criterios Gherkin son validados por QA antes de 'Ready for Dev'"
+      ]
+    },
+    {
+      "id": "fase-4-planning",
+      "phaseNumber": 4,
+      "gateNumber": 3,
+      "title": "4. Sprint Planning (Gate 3)",
+      "border": "border-violet-200",
+      "bg": "bg-violet-50",
+      "icon": null,
+      "actual": "Scrumban híbrido 2 semanas funciona ✅ (Daily + Planning + Retro, completion 70–90%). Pero: sin Sprint Review formal ⚠️ (gap confirmado en survey), planning 1–2h (3h en algunos equipos = pain), criterios de aceptación al planning 'la mayoría de las veces' (no siempre), refinement 'a veces cuando hay tiempo' (gap).",
+      "propuesta": [
+        "✅ user-stories: skill incluida (automatizada) — genera US con BDD heredado del RF",
+        "✅ sprint-capacity: skill incluida — calcula capacidad real con buffer 15-20%",
+        "✅ refinement-notes: skill incluida — formaliza el refinement que hoy es 'a veces cuando hay tiempo'",
+        "✅ Checklist DoR: incluido en skills/refinement-notes/checklists/ — bloquea entrada al sprint sin DoR cumplido",
+        "✅ ▸ /advance-gate 3 y ▸ /sprint-health: commands incluidos",
+        "📚 LIDR forma a SM, PO y TL en el flujo de Sprint Planning y en el uso de checklists DoR/DoD",
+        "🏠 Recuperar Sprint Review formal es un cambio cultural que decide y ejecuta Aramis (LIDR explica el patrón en docs/standards/org.md)",
+        "💡 Sugerencia: el comando /sprint-health puede leer datos del sprint vía MCP; si Aramis tiene MCP Redmine maduro, puede conectarlo siguiendo mcp-integration — la integración es de Aramis",
+        "⚠️ Guard: cada US referencia contratos potencialmente afectados cuando aplique (la lista de contratos la mantiene Aramis internamente)"
+      ]
+    },
+    {
+      "id": "fase-5-desarrollo",
+      "phaseNumber": 5,
+      "gateNumber": 4,
+      "title": "5. Desarrollo (Gate 4)",
+      "border": "border-orange-200",
+      "bg": "bg-orange-50",
+      "icon": null,
+      "actual": "Desarrollo sin CLAUDE.md en ninguno de los 3 repos (BE/FE/Bridge) — PP-08. Code review dual técnico/funcional inconsistente — PP-02 (Dídac formaliza individualmente con Claude Code ~2 semanas). Cambios en Polaris rompen Bridge silenciosamente — PP-05 ('te cargas un enum', David). CI muy lento — PP-09 (3/5 self-score). Pre-Code-Review CI Gate operativo ✅: Unit + Integration + Acceptance + PHPStan + validadores hexagonal.",
+      "propuesta": [
+        "✅ generate-rule: skill incluida — genera CLAUDE.md por repo BE (PHP+Symfony hexagonal) + FE (Angular/Nuxt) + Bridge. Driver inicial sugerido: Dídac",
+        "✅ pr-description, dev-handoff-qa, adr, tech-debt, postmortem: skills incluidas — cubren PR description, handoff a QA, decisiones arquitectónicas, deuda técnica e incidentes",
+        "✅ Checklist DoD + hook dtc-write-guard (PreToolUse: Write|Edit): incluidos — bloquean sin DoD cumplido",
+        "✅ ▸ /advance-gate 4, ▸ /create-branch, ▸ /create-pr, ▸ /implement-ticket: commands incluidos (hoy Jira-only)",
+        "📚 LIDR forma a Devs y TLs en el flujo de desarrollo, uso de CLAUDE.md y commands del framework",
+        "📚 LIDR enseña los patrones skill-development, command-development y mcp-integration para que Aramis pueda evolucionar el framework según sus necesidades",
+        "📌 Gap del framework: no existe una skill de code-review (técnico + BDD del ticket). Aramis puede crearla internamente con skill-development (Dídac ya formalizó algo similar individualmente). Fuera de scope LIDR",
+        "📌 Gap del framework: no existe una skill de análisis de impacto sobre catálogo de contratos. Aramis puede crearla internamente o explorarla — fuera de scope LIDR",
+        "📌 Los commands del framework son Jira-only hoy. Aramis puede crear variantes Redmine si lo necesita (patrón en .claude/commands/) — fuera de scope LIDR",
+        "✅ El Pre-Code-Review CI Gate existente (PHPStan + hex-validators + acceptance) se preserva tal cual — no se reemplaza, no se toca",
+        "🏠 Documentar el catálogo de contratos Bridge (enums, types, OpenAPI, schema DB) es responsabilidad de Aramis — owner sugerido: David / R&D",
+        "🏠 Optimizar GitLab Pipelines (PP-09) es responsabilidad del equipo Plataforma de Aramis — fuera de scope LIDR",
+        "💡 Sugerencia: el MCP Redmine+GitLab del equipo Plataforma puede consumirse desde commands futuros que Aramis cree; el patrón mcp-integration está documentado en el framework"
+      ]
+    },
+    {
+      "id": "fase-6-qa",
+      "phaseNumber": 6,
+      "gateNumber": 5,
+      "title": "6. QA & Testing (Gate 5)",
+      "border": "border-sky-200",
+      "bg": "bg-sky-50",
+      "icon": null,
+      "actual": "Docs QA de Sheila 'bastante normalizada' ✅ — modelo a escalar. Pero: testing FE débil (PP-04), Cypress en repo separado del FE → desincronización, no bloquea CI. Devs no pueden probar Cypress en local antes de mandar. Cuando un squad rediseña pantalla que otro hizo, rompe tests sin saberlo. E2E cobertura: 'no tenemos cubierto un flujo de trabajo completo' (gap survey).",
+      "propuesta": [
+        "✅ test-plan: skill incluida (automatizada) — plan QA exhaustivo desde RFs + Risk Log",
+        "✅ create-test-cases: skill incluida — BDD test cases (happy, edge, error, regresión) heredando Gherkin del RF",
+        "✅ regression-suite: skill incluida (automatizada) — impact analysis sobre diff y priorización de tests",
+        "✅ bug-report y test-execution-report: skills incluidas",
+        "✅ Signoff so-qa: incluido en skills/test-execution-report/signoffs/",
+        "✅ ▸ /advance-gate 5 y ▸ /prepare-testing: commands incluidos",
+        "📚 LIDR forma a QA en el uso de las skills, el ATDD pre-dev y el flujo Gate 5. El modelo Sheila se posiciona como referencia interna que el equipo escalará",
+        "🏠 Decisión sobre Cypress (mover al repo del frontend o convertirlo en job bloqueante en GitLab) es responsabilidad del cliente — requiere consenso David ↔ Dídac ↔ Sheila + buy-in del equipo Plataforma",
+        "📌 El selector-healing automático sobre redesigns no es una capacidad del framework actual; queda fuera del scope de la consultoría",
+        "⚠️ Guard: ratio RF_total vs test_cases_linked < 100% bloquea so-qa"
+      ]
+    },
+    {
+      "id": "fase-7-seguridad",
+      "phaseNumber": 7,
+      "gateNumber": 6,
+      "title": "7. Seguridad (Gate 6)",
+      "border": "border-red-200",
+      "bg": "bg-red-50",
+      "icon": null,
+      "actual": "PHPStan en CI ✅ (SAST PHP). SCA parcial ✅ (no en todos los proyectos). Detección de secretos parcial en CI ✅. Existe equipo de Ciberseguridad Aramis Group con VP que escala alertas vía Slack y planea hook GDPR sobre prompts IA (no implementado). DAST, pen testing y revisión OWASP no formalizados en el flujo del equipo de producto.",
+      "propuesta": [
+        "✅ vuln-assessment: skill incluida — interpreta SAST (PHPStan ya operativo) + SCA",
+        "✅ dast-interpretation: skill incluida — interpreta resultados DAST (la instalación y operación del scanner DAST es del cliente)",
+        "✅ pentest-report: skill incluida — estructura reportes de pen testing",
+        "✅ security-checklist: skill incluida (automatizada) — evalúa OWASP Top 10 + headers + privacy (con foco GDPR)",
+        "✅ Checklists cl-security y cl-nfr: incluidos en skills security-checklist y generate-nfr",
+        "✅ Signoff so-security: firmado por VP Seguridad del cliente",
+        "✅ ▸ /advance-gate 6: command incluido",
+        "📚 LIDR forma al equipo de producto y a Ciberseguridad Aramis en el flujo Gate 6 y en el uso de las 4 skills de seguridad",
+        "📚 LIDR enseña el patrón hook-development y los 5 hooks existentes (frontmatter-guard, dtc-write-guard, validate-ecosystem-counts, notify, load-context) como referencia",
+        "🏠 La implementación del hook GDPR planeado por Ciberseguridad Aramis es responsabilidad de Aramis; LIDR enseña el patrón PreToolUse pero no entrega la lógica de validación a medida",
+        "🏠 Generalizar la detección de secretos y SCA a todos los repos es responsabilidad del equipo Plataforma del cliente",
+        "💡 Sugerencia: coordinación trimestral con el VP de Ciberseguridad Aramis para alinear roadmap de seguridad — es iniciativa del cliente",
+        "⚠️ Guard: validar que el scan cubre paths de producción de Polaris + Bridge (scan_coverage métrica)"
+      ]
+    },
+    {
+      "id": "fase-8-despliegue",
+      "phaseNumber": 8,
+      "gateNumber": 7,
+      "title": "8. Despliegue & Post-deploy (Gate 7)",
+      "border": "border-emerald-200",
+      "bg": "bg-emerald-50",
+      "icon": null,
+      "actual": "Sin release notes ni changelog en Polaris (PP-07, solo parcial en una librería). Despliegue sin Change Request formal ni rollback plan documentado. Branching: main = producción, dev = integración. Flujo de soporte paralelo: hotfix branch desde main → main directo (sin pasar por dev), cadencia 1 deploy/día acumulado.",
+      "propuesta": [
+        "✅ release-notes: skill incluida (automatizada) + ▸ /create-release-notes y ▸ /update-changelog (commands incluidos)",
+        "✅ change-request: skill incluida — pre-llena CR con impacto, rollback y ventana de despliegue",
+        "✅ rollback-plan: skill incluida (automatizada) — documenta rollback para cada release",
+        "✅ retrospective: skill incluida — retro data-driven con métricas reales",
+        "✅ Checklists cl-postdeploy y cl-nfr: incluidos en las respectivas skills",
+        "✅ ▸ /advance-gate 7: command incluido",
+        "📚 LIDR forma a DevOps y TL en el uso del release-notes y el flujo Gate 7",
+        "📚 Primer ciclo de release notes asistido por LIDR para validar el formato y el valor antes de cualquier inversión interna",
+        "📌 El script git-analyzer.py de release-notes usa hoy GitHub CLI. Aramis puede ejecutarlo manualmente con la salida de su tracker o adaptarlo a GitLab internamente — fuera de scope LIDR",
+        "✅ El flujo de soporte paralelo (hotfix → main directo) se preserva con CR abreviado pero obligatorio para trazabilidad",
+        "🏠 Recuperar Sprint Review formal y publicar notes a canales internos (Slack #Cloud Coders) son responsabilidades del cliente",
+        "🏠 Pipeline Dev→STG→UAT→Pre→PROD sobre GKE + ArgoCD es stack y responsabilidad del cliente"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,483 @@
+{
+  "metadata": {
+    "id": "aramis-flujo",
+    "title": "Flujo E2E SDD — Grupo Aramis (Polaris + Bridge)",
+    "description": "Flujo TO-BE de la metodología SDD que LIDR entrega. v1.6.0: alineada al scope de consultoría. LIDR entrega el framework y forma al equipo; no desarrolla a medida. Convenciones de los nodos: sin marcador = skill/command del framework ya disponible; [GAP] = capacidad no cubierta por el framework (informativo, Aramis puede crearla internamente o esperar versión futura, fuera de scope LIDR); [CLIENTE] = artefacto, herramienta o proceso propio del cliente que encaja en este punto del flujo. Preserva el Pre-Code-Review CI Gate existente y el flujo de soporte paralelo (hotfix main→main).",
+    "version": "1.6.0",
+    "client": "Aramis",
+    "industry": "Automotive Multi-country Retail",
+    "tags": ["aramis", "polaris", "bridge", "flujo", "gates", "to-be"],
+    "lastUpdated": "2026-05-15",
+    "author": "PME: Luis Urdaneta",
+    "sourceReport": "docs/guides/lidr-core/aramis-discovery-report.md@1.4.0"
+  },
+  "diagram": {
+    "metadata": {
+      "id": "aramis-flujo-diagram",
+      "title": "Flujo E2E Aramis con Quality Gates",
+      "description": "Diagrama React Flow del flujo SDLC LIDR adaptado a Aramis con 8 gates (0-7), Pre-Code-Review CI Gate existente preservado, Bridge Impact Analyzer y flujo de soporte paralelo (hotfix).",
+      "version": "1.4.0",
+      "client": "Aramis",
+      "industry": "Automotive Multi-country Retail",
+      "tags": ["aramis", "flujo", "gates", "react-flow"]
+    },
+    "configuration": {
+      "height": 2600,
+      "exportName": "Aramis_Flujo_SDD_Gates_v1_6_0",
+      "layout": "TB"
+    },
+    "nodes": [
+      {
+        "id": "biz",
+        "x": 400,
+        "y": 0,
+        "label": "Demanda de Negocio",
+        "variant": "purple",
+        "subtitle": "Brand/país originador · Business Case"
+      },
+      {
+        "id": "cto",
+        "x": 100,
+        "y": 0,
+        "label": "CTO / R&D",
+        "variant": "purple",
+        "subtitle": "Solicitudes técnicas · Investigación"
+      },
+      {
+        "id": "hotfix-in",
+        "x": 900,
+        "y": 0,
+        "label": "Hotfix Producción",
+        "variant": "amber",
+        "subtitle": "Incidente Polaris/Bridge — flujo paralelo"
+      },
+
+      {
+        "id": "gate0",
+        "x": 400,
+        "y": 110,
+        "label": "🚦 GATE 0: Intake",
+        "variant": "amber",
+        "subtitle": "BC aprobado · Brand/país declarado · Sponsor identificado"
+      },
+
+      {
+        "id": "disc",
+        "x": 400,
+        "y": 220,
+        "label": "Discovery & Análisis",
+        "variant": "blue",
+        "subtitle": "Viabilidad técnica + funcional · challenge sessions formalizadas"
+      },
+      {
+        "id": "prd-t",
+        "x": 200,
+        "y": 330,
+        "label": "PRD Técnico",
+        "variant": "blue",
+        "subtitle": "skill prd-tecnico · MCP Polaris Knowledge Agent opcional [CLIENTE]"
+      },
+      {
+        "id": "prd-f",
+        "x": 600,
+        "y": 330,
+        "label": "PRD Funcional",
+        "variant": "blue",
+        "subtitle": "skill prd-funcional · convención global vs variant-specific (uso del equipo)"
+      },
+
+      {
+        "id": "gate1",
+        "x": 400,
+        "y": 440,
+        "label": "🚦 GATE 1: PRD Aprobado",
+        "variant": "amber",
+        "subtitle": "Review cruzado Producto ↔ Tech Lead · Riesgos identificados"
+      },
+
+      {
+        "id": "rf",
+        "x": 400,
+        "y": 550,
+        "label": "RFs + NFRs con BDD",
+        "variant": "cyan",
+        "subtitle": "Hereda Gherkin existente · NFRs medibles (incl. CI rápido)"
+      },
+      {
+        "id": "cross-country",
+        "x": 700,
+        "y": 550,
+        "label": "Compatibilidad multi-variante [GAP]",
+        "variant": "cyan",
+        "subtitle": "Capacidad no cubierta por el framework · requiere matriz interna del cliente"
+      },
+      {
+        "id": "rtm",
+        "x": 400,
+        "y": 660,
+        "label": "Trazabilidad + Epic Breakdown",
+        "variant": "cyan",
+        "subtitle": "Necesidad→PRD→RF→código · Dependencias Bridge"
+      },
+
+      {
+        "id": "gate2",
+        "x": 400,
+        "y": 770,
+        "label": "🚦 GATE 2: Especificación + ATDD",
+        "variant": "amber",
+        "subtitle": "RFs+NFRs+trazabilidad · BDD validado por QA pre-dev (PP-03)"
+      },
+
+      {
+        "id": "us",
+        "x": 400,
+        "y": 880,
+        "label": "User Stories",
+        "variant": "teal",
+        "subtitle": "Hereda BDD del RF · Brand-specific declarado"
+      },
+      {
+        "id": "refine",
+        "x": 400,
+        "y": 990,
+        "label": "Refinement + Sprint Planning",
+        "variant": "teal",
+        "subtitle": "Scrumban 2 sem · Capacidad con buffer 15-20% · Sprint Review formal"
+      },
+
+      {
+        "id": "gate3",
+        "x": 400,
+        "y": 1100,
+        "label": "🚦 GATE 3: Sprint Committed",
+        "variant": "amber",
+        "subtitle": "DoR por US · Contratos Bridge referenciados"
+      },
+
+      {
+        "id": "dev",
+        "x": 400,
+        "y": 1210,
+        "label": "Desarrollo",
+        "variant": "orange",
+        "subtitle": "CLAUDE.md (skill generate-rule) · MCP Redmine+GitLab del cliente [CLIENTE]"
+      },
+      {
+        "id": "ci-existing",
+        "x": 400,
+        "y": 1320,
+        "label": "✅ Pre-Code-Review CI Gate",
+        "variant": "emerald",
+        "subtitle": "PHPStan + hex-validators + acceptance tests EXISTENTES (preserved + extended)"
+      },
+      {
+        "id": "bridge-impact",
+        "x": 700,
+        "y": 1320,
+        "label": "Análisis de impacto sobre contratos [GAP]",
+        "variant": "red",
+        "subtitle": "Capacidad no cubierta por el framework · requiere catálogo de contratos del cliente"
+      },
+      {
+        "id": "sast",
+        "x": 400,
+        "y": 1430,
+        "label": "SAST + SCA",
+        "variant": "red",
+        "subtitle": "skill vuln-assessment · Hook GDPR [CLIENTE: implementa Ciberseguridad Aramis]"
+      },
+      {
+        "id": "sast-blk",
+        "x": 100,
+        "y": 1430,
+        "label": "BLOQUEADO",
+        "variant": "red",
+        "subtitle": "Vuln Crítica/Alta o Bridge contract roto"
+      },
+      {
+        "id": "review",
+        "x": 400,
+        "y": 1540,
+        "label": "Code Review Dual [GAP]",
+        "variant": "orange",
+        "subtitle": "Capacidad no cubierta por el framework · cliente puede crearla con skill-development"
+      },
+
+      {
+        "id": "gate4",
+        "x": 400,
+        "y": 1650,
+        "label": "🚦 GATE 4: DoD + Code Quality",
+        "variant": "amber",
+        "subtitle": "cl-dod · SAST limpio · Bridge OK · Review dual aprobado"
+      },
+
+      {
+        "id": "qa",
+        "x": 400,
+        "y": 1760,
+        "label": "QA + Testing",
+        "variant": "sky",
+        "subtitle": "skills test-plan + create-test-cases · Cypress en pipeline [CLIENTE: decide repo vs job]"
+      },
+      {
+        "id": "bugs",
+        "x": 700,
+        "y": 1760,
+        "label": "Bug Fix Cycle",
+        "variant": "orange",
+        "subtitle": "Reporta al Dev · Re-pipeline completo"
+      },
+
+      {
+        "id": "gate5",
+        "x": 400,
+        "y": 1870,
+        "label": "🚦 GATE 5: QA Sign-off",
+        "variant": "amber",
+        "subtitle": "All tests PASS · so-qa firmado (Sheila) · 0 bugs bloqueantes"
+      },
+
+      {
+        "id": "dast",
+        "x": 400,
+        "y": 1980,
+        "label": "DAST + Pen Testing",
+        "variant": "red",
+        "subtitle": "Coordinado con Ciberseguridad Aramis Group (VP)"
+      },
+      {
+        "id": "dast-blk",
+        "x": 100,
+        "y": 1980,
+        "label": "BLOQUEADO",
+        "variant": "red",
+        "subtitle": "Vulnerabilidad runtime Crítica/Alta"
+      },
+
+      {
+        "id": "gate6",
+        "x": 400,
+        "y": 2090,
+        "label": "🚦 GATE 6: Security Sign-off",
+        "variant": "amber",
+        "subtitle": "OWASP · so-security firmado por VP Seguridad Aramis"
+      },
+
+      {
+        "id": "comite",
+        "x": 400,
+        "y": 2200,
+        "label": "Comité de Cambios (CR)",
+        "variant": "emerald",
+        "subtitle": "Gate 7: aprobación deploy · Análisis cross-country"
+      },
+      {
+        "id": "deploy",
+        "x": 400,
+        "y": 2310,
+        "label": "Pipeline Deploy",
+        "variant": "emerald",
+        "subtitle": "Dev → STG → UAT → Pre → PROD · GKE + ArgoCD [CLIENTE: stack y pipeline propios]"
+      },
+      {
+        "id": "scan",
+        "x": 400,
+        "y": 2420,
+        "label": "Post-deploy Scanning",
+        "variant": "emerald",
+        "subtitle": "Grafana del cliente · Bridge sync health [CLIENTE: monitoring propio]"
+      },
+      {
+        "id": "retro",
+        "x": 400,
+        "y": 2530,
+        "label": "Retrospectiva + Sprint Review",
+        "variant": "violet",
+        "subtitle": "KPIs: lead time, bugs AI vs humanos · Recupera Sprint Review"
+      }
+    ],
+    "edges": [
+      { "id": "e-biz-g0", "source": "biz", "target": "gate0", "label": "Presenta caso" },
+      { "id": "e-cto-g0", "source": "cto", "target": "gate0", "label": "Presenta solicitud" },
+
+      { "id": "e-g0-disc", "source": "gate0", "target": "disc", "label": "Aprobado" },
+      { "id": "e-disc-prdt", "source": "disc", "target": "prd-t", "label": "Análisis técnico" },
+      { "id": "e-disc-prdf", "source": "disc", "target": "prd-f", "label": "Análisis funcional" },
+      { "id": "e-prdt-g1", "source": "prd-t", "target": "gate1", "label": "PRD-T" },
+      { "id": "e-prdf-g1", "source": "prd-f", "target": "gate1", "label": "PRD-F" },
+
+      { "id": "e-g1-rf", "source": "gate1", "target": "rf", "label": "Aprobado" },
+      { "id": "e-rf-cc", "source": "rf", "target": "cross-country", "label": "Análisis impacto" },
+      { "id": "e-cc-rtm", "source": "cross-country", "target": "rtm", "label": "OK" },
+      { "id": "e-rf-rtm", "source": "rf", "target": "rtm", "label": "Mapea" },
+      { "id": "e-rtm-g2", "source": "rtm", "target": "gate2", "label": "Completo" },
+
+      { "id": "e-g2-us", "source": "gate2", "target": "us", "label": "ATDD OK" },
+      { "id": "e-us-refine", "source": "us", "target": "refine", "label": "Refina" },
+      { "id": "e-refine-g3", "source": "refine", "target": "gate3", "label": "Compromete" },
+
+      { "id": "e-g3-dev", "source": "gate3", "target": "dev", "label": "Committed" },
+      { "id": "e-dev-ci", "source": "dev", "target": "ci-existing", "label": "PR abierto" },
+      {
+        "id": "e-dev-bridge",
+        "source": "dev",
+        "target": "bridge-impact",
+        "label": "Cambio Polaris"
+      },
+      {
+        "id": "e-ci-sast",
+        "source": "ci-existing",
+        "target": "sast",
+        "label": "✅ Existente + ext"
+      },
+      {
+        "id": "e-bridge-sast",
+        "source": "bridge-impact",
+        "target": "sast",
+        "label": "Contratos OK"
+      },
+      { "id": "e-sast-review", "source": "sast", "target": "review", "label": "Limpio" },
+      {
+        "id": "e-sast-blk",
+        "source": "sast",
+        "target": "sast-blk",
+        "label": "Crítica/Alta",
+        "style": "red"
+      },
+      {
+        "id": "e-bridge-blk",
+        "source": "bridge-impact",
+        "target": "sast-blk",
+        "label": "Contrato roto",
+        "style": "red"
+      },
+      {
+        "id": "e-blk-dev",
+        "source": "sast-blk",
+        "target": "dev",
+        "label": "Corregir + re-scan",
+        "style": "dashed"
+      },
+      { "id": "e-review-g4", "source": "review", "target": "gate4", "label": "Dual aprobado" },
+
+      { "id": "e-g4-qa", "source": "gate4", "target": "qa", "label": "Merge" },
+      { "id": "e-qa-bugs", "source": "qa", "target": "bugs", "label": "Reporta bugs" },
+      {
+        "id": "e-bugs-dev",
+        "source": "bugs",
+        "target": "dev",
+        "label": "Corregir + re-pipeline",
+        "style": "dashed"
+      },
+      { "id": "e-qa-g5", "source": "qa", "target": "gate5", "label": "All PASS" },
+
+      { "id": "e-g5-dast", "source": "gate5", "target": "dast", "label": "QA OK" },
+      { "id": "e-dast-g6", "source": "dast", "target": "gate6", "label": "Limpio" },
+      {
+        "id": "e-dast-blk",
+        "source": "dast",
+        "target": "dast-blk",
+        "label": "Crítica/Alta",
+        "style": "red"
+      },
+      {
+        "id": "e-dastblk-dev",
+        "source": "dast-blk",
+        "target": "dev",
+        "label": "Remediar + ciclo completo",
+        "style": "dashed"
+      },
+
+      { "id": "e-g6-comite", "source": "gate6", "target": "comite", "label": "Seguridad OK" },
+      { "id": "e-comite-deploy", "source": "comite", "target": "deploy", "label": "CR aprobado" },
+      { "id": "e-deploy-scan", "source": "deploy", "target": "scan", "label": "En producción" },
+      { "id": "e-scan-retro", "source": "scan", "target": "retro", "label": "Datos" },
+
+      {
+        "id": "e-hotfix-comite",
+        "source": "hotfix-in",
+        "target": "comite",
+        "label": "Hotfix paralelo (main→main)",
+        "style": "dashed"
+      },
+      {
+        "id": "e-retro-biz",
+        "source": "retro",
+        "target": "biz",
+        "label": "Siguiente ciclo",
+        "style": "purple"
+      }
+    ],
+    "legend": [
+      { "color": "bg-purple-200", "label": "Originación (Negocio / CTO / Hotfix)" },
+      { "color": "bg-blue-200", "label": "Discovery & PRD" },
+      {
+        "color": "bg-cyan-200",
+        "label": "Especificación (RF + NFR · [GAP] compatibilidad multi-variante)"
+      },
+      { "color": "bg-teal-200", "label": "User Stories + Sprint Planning" },
+      { "color": "bg-orange-200", "label": "Desarrollo · [GAP] Code Review Dual" },
+      { "color": "bg-emerald-200", "label": "Pre-Code-Review CI Gate existente (cliente)" },
+      {
+        "color": "bg-red-200",
+        "label": "Seguridad · [GAP] análisis de contratos · Hook GDPR [CLIENTE]"
+      },
+      { "color": "bg-sky-200", "label": "QA / Testing" },
+      { "color": "bg-emerald-200", "label": "Despliegue" },
+      { "color": "bg-amber-200", "label": "🚦 Quality Gate (obligatorio)" },
+      { "color": "bg-violet-200", "label": "Retrospectiva / Sprint Review" }
+    ]
+  },
+  "gatesSummary": [
+    {
+      "gate": "Gate 0",
+      "name": "Intake",
+      "criteria": "Business Case aprobado (skill business-case) · Brand/país originador declarado (convención del equipo, mitiga PP-06) · Sponsor identificado · Proyecto creado vía tracking-integration (adapters Jira/Linear; otros trackers son responsabilidad del cliente)",
+      "owner": "PME + Liderazgo (Álvaro, David)"
+    },
+    {
+      "gate": "Gate 1",
+      "name": "PRD Aprobado",
+      "criteria": "PRD-T + PRD-F completos (skills prd-tecnico + prd-funcional) · Review cruzado formalizado (skill review-cruzado) · Riesgos registrados (skill risk-log) · Si Aramis decide conectar su Polaris Knowledge Agent vía mcp-integration, queda como contexto adicional [CLIENTE]",
+      "owner": "Producto + Tech Lead (Tribu correspondiente)"
+    },
+    {
+      "gate": "Gate 2",
+      "name": "Especificación + ATDD",
+      "criteria": "RFs+NFRs+trazabilidad completos (skills generate-rf + generate-nfr + validate-requirements) · BDD validado con bdd-patterns · QA valida criterios Gherkin pre-'Ready for Dev' (la transición en el tracker la cablea Aramis) · Compatibilidad multi-variante: análisis manual sobre la matriz interna del cliente [GAP framework + CLIENTE]",
+      "owner": "PO + Tech Lead + QA Lead"
+    },
+    {
+      "gate": "Gate 3",
+      "name": "Sprint Committed",
+      "criteria": "DoR cumplida por cada US individual (checklist en skills/refinement-notes) · Capacidad confirmada con buffer 15-20% (skill sprint-capacity) · Refinement formalizado (skill refinement-notes)",
+      "owner": "PO + Tech Lead + Scrum"
+    },
+    {
+      "gate": "Gate 4",
+      "name": "DoD + Code Quality",
+      "criteria": "Pre-Code-Review CI Gate del cliente preservado tal cual ✅ (PHPStan + hex-validators + acceptance — propiedad de Aramis) · checklist DoD cumplida (incluido en skill pr-description) · Handoff QA generado (skill dev-handoff-qa) · Code Review Dual: capacidad no cubierta por el framework hoy [GAP, Aramis decide si crear skill propia] · Análisis de impacto sobre contratos: idem [GAP + requiere catálogo del cliente]",
+      "owner": "TL + Dev (driver: Dídac inicial)"
+    },
+    {
+      "gate": "Gate 5",
+      "name": "QA Sign-off",
+      "criteria": "Todos los test cases PASS (skills test-plan + create-test-cases + regression-suite) · so-qa firmado por QA Lead · 0 bugs bloqueantes · Cypress en pipeline: decisión del cliente sobre repo vs job [CLIENTE]",
+      "owner": "QA Lead (Sheila)"
+    },
+    {
+      "gate": "Gate 6",
+      "name": "Security Sign-off",
+      "criteria": "OWASP Top 10 OK (skill security-checklist) · SAST/SCA interpretado (skill vuln-assessment) · DAST si aplica (skill dast-interpretation) · so-security firmado por VP Seguridad del cliente · Hook GDPR: lo implementa Ciberseguridad Aramis usando el patrón hook-development que LIDR enseña [CLIENTE]",
+      "owner": "VP Seguridad Aramis Group + Sec Lead"
+    },
+    {
+      "gate": "Gate 7",
+      "name": "Deploy to Production",
+      "criteria": "CR aprobado (skill change-request) · Rollback plan documentado (skill rollback-plan) · Release notes publicadas (skill release-notes + ▸ /create-release-notes; ejecución asistida en el primer ciclo) · cl-postdeploy · Hotfix paralelo permitido con CR abreviado · Pipeline y monitoring son responsabilidad del cliente [CLIENTE]",
+      "owner": "PME + DevOps + Plataforma"
+    }
+  ]
+}

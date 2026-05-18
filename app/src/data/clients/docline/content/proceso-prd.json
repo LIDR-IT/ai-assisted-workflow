@@ -1,0 +1,250 @@
+{
+  "metadata": {
+    "id": "proceso-prd",
+    "title": "Proceso de PRD",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["prd", "proceso", "sdlc", "requisitos"]
+  },
+  "header": {
+    "title": "Proceso de PRD",
+    "subtitle": "Product Requirements Document — Documento maestro que conecta las necesidades de negocio con la ejecución técnica"
+  },
+  "blocks": [
+    {
+      "id": "main-diagram",
+      "type": "diagram",
+      "content": {
+        "diagramId": "proceso-prd",
+        "showLegend": true,
+        "height": 780,
+        "exportName": "Proceso_PRD_SDLC",
+        "resolveVariables": true
+      }
+    },
+    {
+      "id": "tools-section",
+      "type": "tool-list",
+      "title": "Herramientas",
+      "config": {
+        "colors": {
+          "background": "bg-violet-50",
+          "border": "border-violet-200",
+          "text": "text-violet-800",
+          "accent": "text-violet-600"
+        },
+        "icon": "Bot"
+      },
+      "content": {
+        "tools": [
+          {
+            "name": "Confluence",
+            "description": "Plataforma principal de documentación. PRDs, RFs y playbooks centralizados.",
+            "category": "primary"
+          },
+          {
+            "name": "Robo (RoboFlow)",
+            "description": "IA integrada con Confluence para generación asistida de RFs.",
+            "category": "secondary"
+          },
+          {
+            "name": "Jira",
+            "description": "Tracking de épicas, historias y sprint planning.",
+            "category": "primary"
+          },
+          {
+            "name": "Figma",
+            "description": "Wireframes y diseño UX/UI colaborativo.",
+            "category": "secondary"
+          },
+          {
+            "name": "Miro",
+            "description": "Mapas conceptuales y workshops de discovery.",
+            "category": "optional"
+          }
+        ]
+      }
+    },
+    {
+      "id": "problem-solution",
+      "type": "problem-solution",
+      "title": "Inconsistencia IA & Solución",
+      "config": {
+        "colors": {
+          "background": "bg-amber-50",
+          "border": "border-amber-200",
+          "accent": "text-amber-600"
+        },
+        "icon": "AlertTriangle"
+      },
+      "content": {
+        "problem": {
+          "title": "Problema",
+          "description": "El mismo prompt produce resultados distintos entre personas (nivel de detalle, estructura, terminología)."
+        },
+        "solution": {
+          "title": "Solución propuesta",
+          "items": [
+            "Prompts estandarizados con formato de salida fijo",
+            "Templates de output en los prompts",
+            "Documentar prompts en Confluence",
+            "Checklist de revisión post-generación"
+          ]
+        }
+      }
+    },
+    {
+      "id": "prd-components",
+      "type": "info-table",
+      "title": "Componentes del PRD",
+      "config": {
+        "colors": {
+          "background": "bg-green-50",
+          "border": "border-green-200",
+          "accent": "text-green-600"
+        },
+        "icon": "FileText"
+      },
+      "content": {
+        "rows": [
+          {
+            "label": "PRD Funcional",
+            "value": "Owner: Producto. Contiene user stories, criterios de aceptación, mockups."
+          },
+          {
+            "label": "PRD Técnico",
+            "value": "Owner: R&D Core. Arquitectura, NFRs, decisiones técnicas, PoCs."
+          },
+          {
+            "label": "Review Cruzado",
+            "value": "Validación entre Producto ↔ R&D para coherencia y viabilidad."
+          },
+          {
+            "label": "Estimación",
+            "value": "Esfuerzo en horas post-refinement con Tech Lead y Dev Team."
+          },
+          {
+            "label": "Risk Assessment",
+            "value": "Identificación temprana de riesgos técnicos y de negocio."
+          }
+        ]
+      }
+    },
+    {
+      "id": "workflow-steps",
+      "type": "code-hierarchy",
+      "title": "Flujo de Trabajo PRD",
+      "config": {
+        "colors": {
+          "background": "bg-slate-50",
+          "border": "border-slate-200",
+          "accent": "text-slate-600",
+          "text": "text-slate-100"
+        },
+        "icon": "ListChecks"
+      },
+      "content": {
+        "showLines": true,
+        "indentSize": 4,
+        "items": [
+          {
+            "id": "discovery",
+            "label": "📋 Discovery & Research",
+            "level": 0,
+            "color": "text-blue-400",
+            "children": [
+              {
+                "id": "stakeholder-interviews",
+                "label": "Stakeholder interviews",
+                "level": 1,
+                "color": "text-gray-300"
+              },
+              {
+                "id": "user-research",
+                "label": "User research & personas",
+                "level": 1,
+                "color": "text-gray-300"
+              },
+              {
+                "id": "competitor-analysis",
+                "label": "Competitive analysis",
+                "level": 1,
+                "color": "text-gray-300"
+              }
+            ]
+          },
+          {
+            "id": "prd-creation",
+            "label": "📝 PRD Creation",
+            "level": 0,
+            "color": "text-green-400",
+            "children": [
+              {
+                "id": "functional-prd",
+                "label": "PRD Funcional (Producto)",
+                "level": 1,
+                "color": "text-yellow-400"
+              },
+              {
+                "id": "technical-prd",
+                "label": "PRD Técnico (R&D Core)",
+                "level": 1,
+                "color": "text-yellow-400"
+              },
+              {
+                "id": "cross-review",
+                "label": "Review cruzado",
+                "level": 1,
+                "color": "text-purple-400"
+              }
+            ]
+          },
+          {
+            "id": "validation",
+            "label": "✅ Validation & Approval",
+            "level": 0,
+            "color": "text-orange-400",
+            "children": [
+              {
+                "id": "technical-feasibility",
+                "label": "Feasibility assessment",
+                "level": 1,
+                "color": "text-gray-300"
+              },
+              {
+                "id": "stakeholder-approval",
+                "label": "Stakeholder sign-off",
+                "level": 1,
+                "color": "text-gray-300"
+              },
+              {
+                "id": "epic-creation",
+                "label": "Epic creation in Jira",
+                "level": 1,
+                "color": "text-gray-300"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "compliance-note",
+      "type": "rich-text",
+      "title": "Consideraciones de Compliance para {{INDUSTRY}}",
+      "config": {
+        "colors": {
+          "background": "bg-red-50",
+          "border": "border-red-200",
+          "accent": "text-red-600"
+        },
+        "icon": "Shield"
+      },
+      "content": {
+        "markdown": false,
+        "text": "⚠️ CRITICAL para {{INDUSTRY}}:\n\nTodo PRD debe incluir sección específica sobre:\n\n• Compliance con GDPR Art. 9 (datos biométricos)\n• Requisitos de cifrado y almacenamiento seguro\n• Auditoría y trazabilidad de accesos\n• Procedimientos de data breach notification\n• Integración con sistemas de compliance existentes\n• Testing de vulnerabilidades (DAST/SAST)\n\nSin estas consideraciones, el PRD no pasa el Gate 1 de aprobación."
+      }
+    }
+  ]
+}

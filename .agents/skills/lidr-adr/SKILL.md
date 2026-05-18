@@ -1,14 +1,16 @@
 ---
+name: lidr-adr
 id: adr
 version: "1.3.0"
 last_updated: "2026-03-16"
 updated_by: "System: QA Enhancement"
 status: active
-phase: 0
+phase: 5
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Generate Architecture Decision Records (ADRs) in MADR format to document significant technical decisions with context, alternatives, trade-offs, and rationale. Domain-agnostic — works for any technology stack, architecture style, or industry vertical. Use for hard-to-reverse decisions, decisions affecting multiple teams, significant trade-off choices, extensively debated options."
+description: >
+  Generate Architecture Decision Records (ADRs) in MADR format to document significant technical decisions with context, alternatives, trade-offs, and rationale. Domain-agnostic — works for any technology stack, architecture style, or industry vertical. Use for hard-to-reverse decisions, decisions affecting multiple teams, significant trade-off choices, extensively debated options. ALWAYS use when documenting significant architectural decisions that are costly to reverse.
   Essential when a technical decision needs to be preserved so future team members understand the why.
   Always use when choosing a database/framework/cloud provider, always use when a decision was debated and needs documentation to avoid re-debating.
   Do NOT use for trivial reversible decisions, decisions already in tech-stack rules, or temporary PoC decisions.
@@ -68,6 +70,18 @@ Example: `docs/adr/ADR-005-database-migration-strategy.md`
 ## Output Template
 
 ```markdown
+---
+id: ADR-{NNN}-{decision-slug}
+version: "1.0.0"
+last_updated: "YYYY-MM-DD"
+updated_by: "Tech Lead: {Name}"
+status: active
+type: standard
+review_cycle: 90
+next_review: "YYYY-MM-DD"
+owner_role: "Tech Lead"
+---
+
 # ADR-{NNN}: {Decision title — descriptive phrase}
 
 ## Metadata

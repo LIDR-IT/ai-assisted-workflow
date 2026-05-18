@@ -1,14 +1,15 @@
 ---
+name: lidr-architecture-doc
 id: architecture-doc
-version: "1.1.0"
-last_updated: "2026-03-16"
-updated_by: "System: QA Enhancement"
+version: "1.2.0"
+last_updated: "2026-03-26"
+updated_by: "TL: ecosystem-integration"
 status: active
-phase: 2
+phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Generate and maintain comprehensive technical architecture documentation at 5 levels using project templates (architecture.md, db-schema.md, specs/routes.md, specs/components.md, specs/storage.md). Domain-agnostic — works for any tech stack and industry. Use when setting up new projects, after major architectural changes, or when documentation is outdated. Use at project initialization from PRD-T, post-ADR to update affected sections, at sprint reviews if stack/DB/structure changed, and pre-release to verify docs match code. Trigger for any architecture, database, API, or component documentation needs. Supports both greenfield projects and legacy codebase documentation."
+description: "Generate and maintain comprehensive technical architecture documentation at 5 levels using project templates (architecture.md, db-schema.md, specs/routes.md, specs/components.md, specs/storage.md). Domain-agnostic — works for any tech stack and industry. Use when setting up new projects, after major architectural changes, or when documentation is outdated. Use at project initialization from PRD-T, post-ADR to update affected sections, at sprint reviews if stack/DB/structure changed, and pre-release to verify docs match code. Trigger for any architecture, database, API, or component documentation needs. Supports both greenfield projects and legacy codebase documentation. ALWAYS use when creating or updating technical architecture documentation."
 ---
 
 # Architecture Document Generator
@@ -38,15 +39,15 @@ Phase: 2 — Discovery → maintained throughout project | Language: English | D
 
 ## Input
 
-| Input                              | Required      | Source                                        |
-| ---------------------------------- | ------------- | --------------------------------------------- |
-| PRD-T                              | ✅            | skill `prd-tecnico/`                          |
-| Codebase (package.json, structure) | ✅            | Repository                                    |
-| ORM schemas                        | If applicable | Prisma/TypeORM files                          |
-| Route definitions                  | ✅            | React Router / Express                        |
-| ADRs                               | Desirable     | skill `adr/`                                  |
-| Architecture template              | ✅            | `templates/architecture.md`                   |
-| Repo structure checklist           | ✅            | `@../../kickoff/checklists/repo-structure.md` |
+| Input                              | Required      | Source                                     |
+| ---------------------------------- | ------------- | ------------------------------------------ |
+| PRD-T                              | ✅            | skill `prd-tecnico/`                       |
+| Codebase (package.json, structure) | ✅            | Repository                                 |
+| ORM schemas                        | If applicable | Prisma/TypeORM files                       |
+| Route definitions                  | ✅            | React Router / Express                     |
+| ADRs                               | Desirable     | skill `adr/`                               |
+| Architecture template              | ✅            | `templates/architecture.md`                |
+| Repo structure checklist           | ✅            | `@../kickoff/checklists/repo-structure.md` |
 
 ## Output Location
 
@@ -184,6 +185,32 @@ Example: `docs/projects/identity-sdk-v3/architecture.md`
 - Data flow patterns
 - Performance considerations
 - Backup and recovery procedures
+
+## Output Template
+
+All generated documents MUST include proper YAML frontmatter following documentation governance standards:
+
+```yaml
+---
+id: {project-name}-architecture        # or -db-schema, -routes, -components, -storage
+version: "1.0.0"                      # semver
+last_updated: "YYYY-MM-DD"            # date of generation
+updated_by: "TL: {Name}"              # role and name
+status: active
+type: project
+review_cycle: 60                      # days between reviews (project documentation)
+next_review: "YYYY-MM-DD"             # calculated: last_updated + review_cycle
+owner_role: "TL"                      # Tech Lead maintains architecture docs
+---
+```
+
+Generated documents locations and their frontmatter IDs:
+
+- **Main architecture**: `docs/projects/{projectName}/architecture.md` → `id: {project-name}-architecture`
+- **Database schema**: `docs/projects/{projectName}/db-schema.md` → `id: {project-name}-db-schema`
+- **API routes**: `docs/projects/{projectName}/specs/routes.md` → `id: {project-name}-routes`
+- **UI components**: `docs/projects/{projectName}/specs/components.md` → `id: {project-name}-components`
+- **Storage layer**: `docs/projects/{projectName}/specs/storage.md` → `id: {project-name}-storage`
 
 ## Example Output Snippets
 
@@ -344,7 +371,30 @@ npx tsx scripts/validate-examples.ts
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
+## Level 6: Data Model (data-model.md) -- NEW
+
+**Step 1**: Gather entity context from PRD-T and codebase
+
+- Identify core domain entities from system requirements
+- Map actors/user types to identity entities
+- Determine cross-cutting concerns (multitenancy, RBAC, audit, eventing)
+
+**Step 2**: Analyze entity categories
+
+- Apply required entity categories from template (Tenant, User, Role, Core Domain, Audit, Outbox)
+- For each entity: document purpose, fields table, relationships, design decisions
+- Use crow's-foot notation for cardinalities
+
+**Step 3**: Generate ERD using Mermaid erDiagram
+
+- Every entity with uuid PK, created/updated timestamps, FK markers
+- Verb labels on all relationship lines
+- Many-to-many resolved via junction entities
+
+**Output**: `docs/projects/{projectName}/data-model.md`
+
 ## Resources
 
-- **Templates**: `templates/architecture.md`, `templates/db-schema.md`, `templates/specs/routes.md`, `templates/specs/components.md`, `templates/specs/storage.md`
-- **Checklist**: `@../../kickoff/checklists/repo-structure.md`
+- **Templates**: `templates/architecture.md`, `templates/db-schema.md`, `templates/specs/routes.md`, `templates/specs/components.md`, `templates/specs/storage.md`, `templates/data-model.md`
+- **Checklist**: `@../kickoff/checklists/repo-structure.md`
+- **Related skills**: `design-doc/` (orchestrates data-model as part of full SDD)

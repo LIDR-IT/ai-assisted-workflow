@@ -1,0 +1,281 @@
+{
+  "metadata": {
+    "id": "entornos-despliegue",
+    "title": "Entornos & Despliegue — AS-IS Aramis",
+    "description": "Pipeline moderno y completo: GitLab Pipelines + ArgoCD + Helm sobre GKE. Cadencia: sprint con 1 deploy/día acumulado; soporte con hotfix directo a main. Bridge Sync representa contratos compartidos invisibles que se rompen en tiempo de desarrollo (no en deploy). CI lento y sin release notes en Polaris.",
+    "version": "1.2.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["deployment", "gke", "argocd", "bridge", "release-notes", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "partial",
+      "description": "Infra cloud-native sólida (GKE + ArgoCD + Helm + Terraform + Vault). Convive un flujo de soporte (hotfix directo a main). Pero Bridge sync con riesgo silencioso (PP-05), CI lento (PP-09), sin release notes en Polaris (PP-07).",
+      "evidence": "Pre-kickoff survey stack · Discovery report PP-05, PP-07, PP-09 · VTT ≈1:02:30 (Dídac: flujo de soporte)"
+    }
+  },
+  "configuration": {
+    "height": 1080,
+    "exportName": "Aramis_Entornos_Despliegue_AS_IS",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "pr-merged",
+      "x": 180,
+      "y": 0,
+      "label": "PR mergeada a dev",
+      "variant": "blue",
+      "subtitle": "GitLab repository · Sprint flow"
+    },
+    {
+      "id": "hotfix",
+      "x": 620,
+      "y": 0,
+      "label": "Hotfix desde main",
+      "variant": "amber",
+      "subtitle": "Flujo de soporte · Bypass dev"
+    },
+    {
+      "id": "gitlab-ci",
+      "x": 400,
+      "y": 130,
+      "label": "GitLab Pipelines",
+      "variant": "green",
+      "subtitle": "Build · Test · Lint · PHPStan + arquitectura hexagonal"
+    },
+    {
+      "id": "ci-slow",
+      "x": 20,
+      "y": 130,
+      "label": "CI feedback lento",
+      "variant": "red",
+      "subtitle": "PP-09 · Pipelines largos · DX comprometida"
+    },
+    {
+      "id": "helm",
+      "x": 400,
+      "y": 260,
+      "label": "Helm charts",
+      "variant": "green",
+      "subtitle": "Packaging de release"
+    },
+    {
+      "id": "argocd",
+      "x": 400,
+      "y": 390,
+      "label": "ArgoCD",
+      "variant": "green",
+      "subtitle": "GitOps · Continuous delivery · 1 deploy/día (sprint)"
+    },
+    {
+      "id": "terraform",
+      "x": 940,
+      "y": 390,
+      "label": "Terraform + Ansible",
+      "variant": "green",
+      "subtitle": "Infra as code · Cloudflare · DNS"
+    },
+    {
+      "id": "vault",
+      "x": 20,
+      "y": 390,
+      "label": "Vault + Keycloak",
+      "variant": "emerald",
+      "subtitle": "Secretos · Identidad"
+    },
+    {
+      "id": "gke",
+      "x": 400,
+      "y": 520,
+      "label": "GKE (Google Cloud)",
+      "variant": "indigo",
+      "subtitle": "Polaris en Kubernetes · Cloud SQL"
+    },
+    {
+      "id": "bridge",
+      "x": 940,
+      "y": 520,
+      "label": "Bridge Sync (PHP)",
+      "variant": "red",
+      "subtitle": "PP-05 · Contratos compartidos invisibles · Daño introducido en código"
+    },
+    {
+      "id": "grafana",
+      "x": 20,
+      "y": 650,
+      "label": "Grafana Cloud",
+      "variant": "green",
+      "subtitle": "Monitoring · Métricas operacionales"
+    },
+    {
+      "id": "no-release-notes",
+      "x": 400,
+      "y": 650,
+      "label": "Sin release notes Polaris",
+      "variant": "red",
+      "subtitle": "PP-07 · Historia de cambios no documentada"
+    },
+    {
+      "id": "incident-risk",
+      "x": 940,
+      "y": 650,
+      "label": "Riesgo incidente cross-country",
+      "variant": "amber",
+      "subtitle": "PP-06 · Compatibilidad detectada tarde"
+    },
+    {
+      "id": "main",
+      "x": 400,
+      "y": 780,
+      "label": "main (producción)",
+      "variant": "violet",
+      "subtitle": "Polaris en operación · Multi-país (brands)"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "pr-merged",
+      "target": "gitlab-ci",
+      "label": "Triggers",
+      "sourceHandle": "right",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e2",
+      "source": "hotfix",
+      "target": "gitlab-ci",
+      "label": "Triggers",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e3",
+      "source": "gitlab-ci",
+      "target": "ci-slow",
+      "label": "Feedback time",
+      "style": "red",
+      "sourceHandle": "source-left",
+      "targetHandle": "right"
+    },
+    { "id": "e4", "source": "gitlab-ci", "target": "helm", "label": "Packaging" },
+    { "id": "e5", "source": "helm", "target": "argocd", "label": "Sync" },
+    {
+      "id": "e6",
+      "source": "helm",
+      "target": "vault",
+      "label": "Secret injection",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right-top"
+    },
+    { "id": "e7", "source": "argocd", "target": "gke", "label": "Deploy" },
+    {
+      "id": "e8",
+      "source": "terraform",
+      "target": "gke",
+      "label": "Provisiona infra",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e9",
+      "source": "vault",
+      "target": "gke",
+      "label": "Identidad",
+      "sourceHandle": "source-right-bottom",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e10",
+      "source": "gke",
+      "target": "bridge",
+      "label": "Contratos compartidos invisibles",
+      "style": "red",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e11",
+      "source": "gke",
+      "target": "grafana",
+      "label": "Métricas",
+      "sourceHandle": "source-left"
+    },
+    {
+      "id": "e12",
+      "source": "gke",
+      "target": "no-release-notes",
+      "label": "Falta documentación",
+      "style": "red",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e13",
+      "source": "bridge",
+      "target": "incident-risk",
+      "label": "Posible quiebre por enum"
+    },
+    { "id": "e14", "source": "no-release-notes", "target": "main", "label": "Despliegue" },
+    {
+      "id": "e15",
+      "source": "incident-risk",
+      "target": "main",
+      "label": "Riesgo asumido",
+      "style": "dashed",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e16",
+      "source": "grafana",
+      "target": "main",
+      "label": "Observa",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e17",
+      "source": "hotfix",
+      "target": "main",
+      "label": "Merge directo",
+      "style": "dashed",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e18",
+      "source": "ci-slow",
+      "target": "pr-merged",
+      "label": "Presiona a mergear sin feedback",
+      "style": "dashed",
+      "sourceHandle": "source-top",
+      "targetHandle": "target-left-bottom"
+    }
+  ],
+  "legend": [
+    { "color": "bg-emerald-200", "label": "Fortaleza confirmada (Vault + Keycloak)" },
+    { "color": "bg-green-200", "label": "Práctica positiva / herramienta sólida" },
+    { "color": "bg-blue-200", "label": "Paso neutro" },
+    { "color": "bg-amber-200", "label": "Riesgo parcial / flujo paralelo" },
+    { "color": "bg-red-200", "label": "Pain point / riesgo silencioso" },
+    { "color": "bg-indigo-200", "label": "Plataforma" },
+    { "color": "bg-violet-200", "label": "Producción" }
+  ],
+  "tables": [
+    { "label": "CI/CD", "value": "GitLab Pipelines + ArgoCD" },
+    { "label": "Cloud", "value": "GKE (Google Kubernetes Engine)" },
+    { "label": "Storage", "value": "Cloud SQL (MySQL) + MongoDB" },
+    { "label": "IaC", "value": "Terraform + Helm + Ansible" },
+    { "label": "Secrets / Identity", "value": "Vault + Keycloak" },
+    { "label": "Monitoring", "value": "Grafana Cloud" },
+    { "label": "DNS / Edge", "value": "Cloudflare" },
+    { "label": "Cadencia deploy (sprint)", "value": "1 deploy/día acumulado" },
+    { "label": "Cadencia deploy (soporte)", "value": "Hotfix directo a main · Cuanto antes" },
+    { "label": "CI feedback", "value": "Very slow (rompe el flow)" },
+    { "label": "Release notes Polaris", "value": "Inexistentes" },
+    {
+      "label": "Bridge Sync",
+      "value": "Contratos compartidos invisibles · Daño introducido en dev, manifestado en runtime · Sin tests de contrato"
+    },
+    { "label": "CI/CD score (survey)", "value": "3/5 efectividad como gate" }
+  ]
+}

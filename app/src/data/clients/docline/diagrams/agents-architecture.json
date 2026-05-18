@@ -1,0 +1,337 @@
+{
+  "metadata": {
+    "id": "agents-architecture",
+    "title": "Healthcare SDLC Agents Orchestration",
+    "description": "Automated healthcare platform development agents for telemedicine workflows with HIPAA compliance validation and PHI data protection",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": [
+      "agents",
+      "automation",
+      "orchestration",
+      "triggers",
+      "sdlc",
+      "hipaa",
+      "telemedicine",
+      "clinical-workflows"
+    ]
+  },
+  "configuration": {
+    "height": 1000,
+    "exportName": "Healthcare SDLC Agents Orchestration",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "t-jira",
+      "x": 50,
+      "y": 50,
+      "label": "Ticket -> \"Ready for QA\"",
+      "variant": "cyan",
+      "subtitle": "QA Lead invoca CLI"
+    },
+    {
+      "id": "t-gh",
+      "x": 50,
+      "y": 180,
+      "label": "Merge a main / release branch",
+      "variant": "emerald",
+      "subtitle": "PME invoca CLI"
+    },
+    {
+      "id": "t-ci",
+      "x": 50,
+      "y": 310,
+      "label": "Scan SAST/DAST completado",
+      "variant": "red",
+      "subtitle": "Sec Lead invoca CLI"
+    },
+    {
+      "id": "t-man",
+      "x": 50,
+      "y": 440,
+      "label": "Invocacion manual via CLI",
+      "variant": "purple",
+      "subtitle": "TL/PO invoca CLI"
+    },
+    {
+      "id": "t-docs",
+      "x": 50,
+      "y": 570,
+      "label": "Cambios en docs/ o .claude/",
+      "variant": "indigo",
+      "subtitle": "Dev/TL invoca CLI post-sesion"
+    },
+    {
+      "id": "t-sprint",
+      "x": 50,
+      "y": 700,
+      "label": "Cierre de sprint",
+      "variant": "amber",
+      "subtitle": "TL invoca CLI al cierre"
+    },
+    {
+      "id": "a-qa",
+      "x": 400,
+      "y": 50,
+      "label": "clinical-qa-agent",
+      "variant": "sky",
+      "subtitle": "clinical workflow testing + patient safety validation + HIPAA compliance"
+    },
+    {
+      "id": "a-release",
+      "x": 400,
+      "y": 180,
+      "label": "release-agent",
+      "variant": "emerald",
+      "subtitle": "release-notes + change-request + rollback"
+    },
+    {
+      "id": "a-sec",
+      "x": 400,
+      "y": 310,
+      "label": "hipaa-security-agent",
+      "variant": "red",
+      "subtitle": "PHI protection assessment + healthcare compliance + medical device security"
+    },
+    {
+      "id": "a-onboard",
+      "x": 400,
+      "y": 440,
+      "label": "clinical-onboarding-agent",
+      "variant": "purple",
+      "subtitle": "healthcare architecture docs + clinical workflow training + FHIR integration"
+    },
+    {
+      "id": "a-docs",
+      "x": 400,
+      "y": 570,
+      "label": "docs-agent",
+      "variant": "indigo",
+      "subtitle": "32 integrity tests + sync 8 fuentes + rule staleness"
+    },
+    {
+      "id": "a-metrics",
+      "x": 400,
+      "y": 700,
+      "label": "metrics-agent",
+      "variant": "amber",
+      "subtitle": "retrospective + sprint-capacity"
+    },
+    {
+      "id": "o-xray",
+      "x": 750,
+      "y": 50,
+      "label": "Clinical Test Cases",
+      "variant": "sky",
+      "subtitle": "Patient workflow validation & compliance testing"
+    },
+    {
+      "id": "o-conf",
+      "x": 750,
+      "y": 180,
+      "label": "Confluence: Release Notes",
+      "variant": "emerald",
+      "subtitle": "Output automatico"
+    },
+    {
+      "id": "o-jira",
+      "x": 750,
+      "y": 310,
+      "label": "Healthcare Security Tickets",
+      "variant": "red",
+      "subtitle": "PHI compliance issues & medical device vulnerabilities"
+    },
+    {
+      "id": "o-plan",
+      "x": 750,
+      "y": 440,
+      "label": "Clinical Training Plan",
+      "variant": "purple",
+      "subtitle": "Healthcare workflows + HIPAA training + EHR integration guide"
+    },
+    {
+      "id": "o-sync",
+      "x": 750,
+      "y": 570,
+      "label": "Docs Sincronizados",
+      "variant": "indigo",
+      "subtitle": "Drift corregido"
+    },
+    {
+      "id": "o-dash",
+      "x": 750,
+      "y": 700,
+      "label": "Dashboard Metricas",
+      "variant": "amber",
+      "subtitle": "Sprint + DORA"
+    },
+    {
+      "id": "h-qa",
+      "x": 1100,
+      "y": 50,
+      "label": "QA Lead: Sign-off",
+      "variant": "slate",
+      "subtitle": "Humano valida"
+    },
+    {
+      "id": "h-cr",
+      "x": 1100,
+      "y": 180,
+      "label": "Comite: CR Aprobado",
+      "variant": "slate",
+      "subtitle": "Humano decide"
+    },
+    {
+      "id": "h-sec",
+      "x": 1100,
+      "y": 310,
+      "label": "Sec Lead: Sign-off",
+      "variant": "slate",
+      "subtitle": "Humano valida"
+    }
+  ],
+  "edges": [
+    {
+      "id": "t1",
+      "source": "t-jira",
+      "target": "a-qa",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t2",
+      "source": "t-gh",
+      "target": "a-release",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t3",
+      "source": "t-ci",
+      "target": "a-sec",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t4a",
+      "source": "t-man",
+      "target": "a-onboard",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t5",
+      "source": "t-docs",
+      "target": "a-docs",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t6",
+      "source": "t-sprint",
+      "target": "a-metrics",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o1",
+      "source": "a-qa",
+      "target": "o-xray",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o2",
+      "source": "a-release",
+      "target": "o-conf",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o3",
+      "source": "a-sec",
+      "target": "o-jira",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o4",
+      "source": "a-onboard",
+      "target": "o-plan",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o5",
+      "source": "a-docs",
+      "target": "o-sync",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o6",
+      "source": "a-metrics",
+      "target": "o-dash",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "h1",
+      "source": "o-xray",
+      "target": "h-qa",
+      "label": "QA Lead revisa",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#64748b"
+    },
+    {
+      "id": "h2",
+      "source": "o-conf",
+      "target": "h-cr",
+      "label": "Comite revisa",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#64748b"
+    },
+    {
+      "id": "h3",
+      "source": "o-jira",
+      "target": "h-sec",
+      "label": "Sec Lead valida",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#64748b"
+    }
+  ],
+  "legend": [
+    { "color": "bg-cyan-200", "label": "Triggers - QA/Testing" },
+    { "color": "bg-emerald-200", "label": "Triggers - Release/Deploy" },
+    { "color": "bg-red-200", "label": "Triggers - Security" },
+    { "color": "bg-purple-200", "label": "Triggers - Manual/Onboarding" },
+    { "color": "bg-indigo-200", "label": "Triggers - Documentation" },
+    { "color": "bg-amber-200", "label": "Triggers - Sprint/Metrics" },
+    { "color": "bg-sky-200", "label": "Agents - Automated Processing" },
+    { "color": "bg-slate-200", "label": "Human Validation - Sign-offs" }
+  ],
+  "tables": []
+}

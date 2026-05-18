@@ -1,0 +1,259 @@
+{
+  "metadata": {
+    "id": "entornos-despliegue",
+    "title": "Docline Environment Strategy",
+    "description": "HIPAA-compliant 3-environment healthcare deployment strategy with PHI isolation, clinical system integration, and healthcare-grade security controls",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": [
+      "environments",
+      "deployment",
+      "isolation",
+      "testing-strategy",
+      "hipaa-compliant",
+      "phi-isolation",
+      "clinical-systems"
+    ]
+  },
+  "configuration": {
+    "height": 700,
+    "exportName": "Docline Environment Strategy",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "development",
+      "x": 50,
+      "y": 150,
+      "label": "Development",
+      "variant": "purple",
+      "subtitle": "Local developer machines"
+    },
+    {
+      "id": "feature-branches",
+      "x": 300,
+      "y": 150,
+      "label": "Feature Branches",
+      "variant": "purple",
+      "subtitle": "Git branch per feature/story"
+    },
+    {
+      "id": "ci-pipeline",
+      "x": 550,
+      "y": 150,
+      "label": "CI/CD Pipeline",
+      "variant": "cyan",
+      "subtitle": "Automated build, test & deploy"
+    },
+    {
+      "id": "integration-env",
+      "x": 800,
+      "y": 150,
+      "label": "Healthcare Integration Environment",
+      "variant": "blue",
+      "subtitle": "FHIR API testing & clinical workflow integration (synthetic PHI only)"
+    },
+    {
+      "id": "security-scanning",
+      "x": 1050,
+      "y": 0,
+      "label": "Healthcare Security Scanning",
+      "variant": "red",
+      "subtitle": "HIPAA compliance validation & PHI protection verification"
+    },
+    {
+      "id": "cucumber-tests",
+      "x": 1050,
+      "y": 300,
+      "label": "Clinical Test Suite",
+      "variant": "orange",
+      "subtitle": "Healthcare workflow BDD testing & EHR integration validation"
+    },
+    {
+      "id": "demo-env",
+      "x": 1300,
+      "y": 150,
+      "label": "Clinical Demo Environment",
+      "variant": "indigo",
+      "subtitle": "Healthcare provider demonstrations & clinical workflow UAT (de-identified data)"
+    },
+    {
+      "id": "stakeholder-validation",
+      "x": 1550,
+      "y": 0,
+      "label": "Clinical Stakeholder Validation",
+      "variant": "indigo",
+      "subtitle": "Healthcare provider approval & clinical workflow sign-off"
+    },
+    {
+      "id": "performance-testing",
+      "x": 1550,
+      "y": 300,
+      "label": "Performance Testing",
+      "variant": "orange",
+      "subtitle": "Load & stress testing"
+    },
+    {
+      "id": "production-env",
+      "x": 1800,
+      "y": 150,
+      "label": "Clinical Production Environment",
+      "variant": "green",
+      "subtitle": "Live healthcare system - HIPAA-compliant with full PHI protection"
+    },
+    {
+      "id": "backup-recovery",
+      "x": 2050,
+      "y": 0,
+      "label": "Healthcare Data Backup & Recovery",
+      "variant": "red",
+      "subtitle": "HIPAA-compliant PHI backup, encrypted disaster recovery & business continuity"
+    },
+    {
+      "id": "monitoring",
+      "x": 2050,
+      "y": 300,
+      "label": "Clinical System Monitoring",
+      "variant": "teal",
+      "subtitle": "Patient safety monitoring, PHI access auditing & clinical performance metrics"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "development",
+      "target": "feature-branches",
+      "label": "Code Commit",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e2",
+      "source": "feature-branches",
+      "target": "ci-pipeline",
+      "label": "Pull Request",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e3",
+      "source": "ci-pipeline",
+      "target": "integration-env",
+      "label": "Automated Deploy",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e4",
+      "source": "integration-env",
+      "target": "cucumber-tests",
+      "label": "Run BDD Tests",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e12",
+      "source": "integration-env",
+      "target": "security-scanning",
+      "label": "Security Check",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e5",
+      "source": "cucumber-tests",
+      "target": "demo-env",
+      "label": "Tests Pass",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e13",
+      "source": "security-scanning",
+      "target": "demo-env",
+      "label": "Security Clear",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e6",
+      "source": "demo-env",
+      "target": "stakeholder-validation",
+      "label": "Demo Session",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e7",
+      "source": "demo-env",
+      "target": "performance-testing",
+      "label": "Performance Check",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e8",
+      "source": "stakeholder-validation",
+      "target": "production-env",
+      "label": "UAT Approved",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e9",
+      "source": "performance-testing",
+      "target": "production-env",
+      "label": "Performance OK",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e11",
+      "source": "production-env",
+      "target": "backup-recovery",
+      "label": "Data Protection",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e10",
+      "source": "production-env",
+      "target": "monitoring",
+      "label": "Health Monitoring",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e14",
+      "source": "cucumber-tests",
+      "target": "ci-pipeline",
+      "label": "Test Failure",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-bottom"
+    },
+    {
+      "id": "e15",
+      "source": "stakeholder-validation",
+      "target": "integration-env",
+      "label": "Feedback Loop",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#8b5cf6",
+      "sourceHandle": "source-left"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Development" },
+    { "color": "bg-blue-200", "label": "Integration" },
+    { "color": "bg-cyan-200", "label": "CI/CD" },
+    { "color": "bg-orange-200", "label": "Testing" },
+    { "color": "bg-indigo-200", "label": "Demo/UAT" },
+    { "color": "bg-green-200", "label": "Production" },
+    { "color": "bg-teal-200", "label": "Monitoring" },
+    { "color": "bg-red-200", "label": "Security & Backup" }
+  ]
+}

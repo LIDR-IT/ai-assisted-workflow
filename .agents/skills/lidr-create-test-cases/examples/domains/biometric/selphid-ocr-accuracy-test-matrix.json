@@ -1,0 +1,281 @@
+{
+  "testSuite": {
+    "name": "SelphID OCR Accuracy Test Matrix",
+    "version": "5.1.0",
+    "description": "Comprehensive test cases for document OCR field extraction accuracy across European identity documents",
+    "lastUpdated": "2025-03-15",
+    "totalTestCases": 48
+  },
+  "documentTypes": [
+    {
+      "documentType": "Spanish DNI (New Format)",
+      "documentCode": "ES-DNI-NEW",
+      "fields": [
+        {
+          "fieldName": "Document Number",
+          "fieldType": "alphanumeric",
+          "pattern": "\\d{8}[A-Z]",
+          "expectedAccuracy": 99.5,
+          "testCases": [
+            {
+              "testCaseId": "OCR-ES-001",
+              "priority": "Critical",
+              "scenario": "Clear high-resolution document scan",
+              "given": "Spanish DNI new format document with pristine condition AND optimal lighting (500-1000 lux) AND high-resolution camera (12MP+)",
+              "when": "OCR engine processes document number field",
+              "then": "Extract 8 digits + 1 check letter with 99.8% accuracy AND complete extraction within 2 seconds",
+              "testData": "12345678Z",
+              "expectedResult": "12345678Z",
+              "acceptanceCriteria": "Exact match with source document",
+              "environment": "Controlled lighting laboratory"
+            },
+            {
+              "testCaseId": "OCR-ES-002",
+              "priority": "High",
+              "scenario": "Worn document with minor scratches",
+              "given": "Spanish DNI with normal wear and minor surface scratches AND document age 3-5 years",
+              "when": "OCR processes partially degraded document number",
+              "then": "Maintain ≥98% accuracy despite visual artifacts AND flag low confidence areas for review",
+              "testData": "87654321X",
+              "expectedResult": "87654321X",
+              "acceptanceCriteria": "Successful extraction with confidence score ≥0.95",
+              "environment": "Standard office lighting"
+            }
+          ]
+        },
+        {
+          "fieldName": "Full Name",
+          "fieldType": "text",
+          "pattern": "[A-ZÁÉÍÓÚÑÜ\\s]+",
+          "expectedAccuracy": 98.5,
+          "testCases": [
+            {
+              "testCaseId": "OCR-ES-003",
+              "priority": "Critical",
+              "scenario": "Complex Spanish name with accents",
+              "given": "Spanish DNI containing name with multiple accents AND special characters (Ñ, Ü) AND compound surnames",
+              "when": "OCR extracts full name field",
+              "then": "Correctly identify all Spanish characters AND preserve accent marks AND handle compound names",
+              "testData": "JOSÉ MARÍA GONZÁLEZ-PÉREZ",
+              "expectedResult": "JOSÉ MARÍA GONZÁLEZ-PÉREZ",
+              "acceptanceCriteria": "100% character accuracy including accents and hyphens",
+              "environment": "Standard document scanning"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "documentType": "German ID Card",
+      "documentCode": "DE-ID",
+      "fields": [
+        {
+          "fieldName": "Given Names",
+          "fieldType": "text",
+          "pattern": "[A-ZÄÖÜ\\s]+",
+          "expectedAccuracy": 98.0,
+          "testCases": [
+            {
+              "testCaseId": "OCR-DE-001",
+              "priority": "High",
+              "scenario": "German umlauts recognition",
+              "given": "German ID card with names containing umlauts (Ä, Ö, Ü) AND Gothic-style font rendering",
+              "when": "OCR processes given names field",
+              "then": "Accurately recognize umlauts AND distinguish from similar Latin characters",
+              "testData": "BJÖRN MÜLLER",
+              "expectedResult": "BJÖRN MÜLLER",
+              "acceptanceCriteria": "Correct umlaut recognition with ≥98% accuracy",
+              "environment": "Various lighting conditions"
+            }
+          ]
+        },
+        {
+          "fieldName": "Place of Birth",
+          "fieldType": "text",
+          "pattern": "[A-ZÄÖÜ\\s,.-]+",
+          "expectedAccuracy": 96.5,
+          "testCases": [
+            {
+              "testCaseId": "OCR-DE-002",
+              "priority": "Medium",
+              "scenario": "Complex German city names",
+              "given": "German ID with compound city names AND geographic prepositions",
+              "when": "OCR extracts place of birth field",
+              "then": "Handle long compound words AND preserve geographic formatting",
+              "testData": "BADEN-WÜRTTEMBERG",
+              "expectedResult": "BADEN-WÜRTTEMBERG",
+              "acceptanceCriteria": "Accurate compound word extraction with proper hyphenation",
+              "environment": "Standard scanning conditions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "documentType": "French National ID",
+      "documentCode": "FR-CNI",
+      "fields": [
+        {
+          "fieldName": "Surname",
+          "fieldType": "text",
+          "pattern": "[A-ZÀÂÄÉÈÊËÏÎÔÖÙÛÜŸÇ\\s-]+",
+          "expectedAccuracy": 98.8,
+          "testCases": [
+            {
+              "testCaseId": "OCR-FR-001",
+              "priority": "Critical",
+              "scenario": "French diacritics and cedilla",
+              "given": "French CNI with surnames containing various French accents AND cedilla characters",
+              "when": "OCR processes surname field with French characters",
+              "then": "Preserve all French diacritical marks AND handle character combinations correctly",
+              "testData": "FRANÇOIS-JOSÉ",
+              "expectedResult": "FRANÇOIS-JOSÉ",
+              "acceptanceCriteria": "100% diacritic preservation accuracy",
+              "environment": "High-resolution scanning"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "documentType": "EU Passport",
+      "documentCode": "EU-PASSPORT",
+      "fields": [
+        {
+          "fieldName": "Passport Number",
+          "fieldType": "alphanumeric",
+          "pattern": "[A-Z]{2}\\d{6,9}",
+          "expectedAccuracy": 99.2,
+          "testCases": [
+            {
+              "testCaseId": "OCR-EU-001",
+              "priority": "Critical",
+              "scenario": "Machine readable zone (MRZ) extraction",
+              "given": "EU passport with standard ICAO MRZ format AND OCR-B font specification",
+              "when": "OCR processes machine readable zone",
+              "then": "Extract passport number with 99.5% accuracy AND validate check digits",
+              "testData": "ES123456782",
+              "expectedResult": "ES123456782",
+              "acceptanceCriteria": "MRZ specification compliance with check digit validation",
+              "environment": "Standardized document scanner"
+            }
+          ]
+        },
+        {
+          "fieldName": "Date of Birth",
+          "fieldType": "date",
+          "pattern": "\\d{2}\\s[A-Z]{3}\\s\\d{4}",
+          "expectedAccuracy": 99.0,
+          "testCases": [
+            {
+              "testCaseId": "OCR-EU-002",
+              "priority": "Critical",
+              "scenario": "Date format recognition across EU countries",
+              "given": "EU passport with date in DD MMM YYYY format AND various EU country formats",
+              "when": "OCR extracts date of birth from visual zone",
+              "then": "Parse date correctly AND validate date logic AND handle month abbreviations",
+              "testData": "15 JUL 1985",
+              "expectedResult": "15 JUL 1985",
+              "acceptanceCriteria": "Correct date parsing with format validation",
+              "environment": "Various document conditions"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "qualityScenarios": [
+    {
+      "scenarioName": "Optimal Conditions",
+      "description": "Best case scenario for OCR accuracy testing",
+      "conditions": {
+        "lighting": "500-1000 lux even lighting",
+        "documentCondition": "Pristine, new document",
+        "cameraResolution": "≥12MP",
+        "imageStability": "Tripod mounted, no shake",
+        "background": "Neutral, high contrast"
+      },
+      "expectedAccuracy": 99.5,
+      "testCases": ["OCR-*-001"]
+    },
+    {
+      "scenarioName": "Standard Office Environment",
+      "description": "Typical user environment for document scanning",
+      "conditions": {
+        "lighting": "200-800 lux office fluorescent",
+        "documentCondition": "Normal wear, 1-3 years old",
+        "cameraResolution": "5-12MP smartphone",
+        "imageStability": "Handheld, minor shake",
+        "background": "Office desk, some clutter"
+      },
+      "expectedAccuracy": 98.0,
+      "testCases": ["OCR-*-002"]
+    },
+    {
+      "scenarioName": "Challenging Conditions",
+      "description": "Difficult but realistic scanning conditions",
+      "conditions": {
+        "lighting": "100-300 lux low light or glare",
+        "documentCondition": "Worn, folded, 5+ years old",
+        "cameraResolution": "2-8MP budget smartphone",
+        "imageStability": "Handheld, some shake",
+        "background": "Variable, low contrast"
+      },
+      "expectedAccuracy": 95.0,
+      "testCases": ["OCR-*-003"]
+    }
+  ],
+  "performanceRequirements": {
+    "processingTime": {
+      "maxTime": "5 seconds per document",
+      "averageTime": "2.5 seconds",
+      "timeoutThreshold": "10 seconds"
+    },
+    "memoryUsage": {
+      "maxMemory": "300MB during processing",
+      "averageMemory": "200MB",
+      "peakMemoryAlert": "400MB"
+    },
+    "accuracy": {
+      "overallTarget": "≥98.5%",
+      "criticalFields": "≥99.0%",
+      "minimumAcceptable": "≥95.0%"
+    }
+  },
+  "complianceRequirements": {
+    "dataProtection": {
+      "gdpr": "Full GDPR compliance for document processing",
+      "retention": "Process only, no permanent storage of document images",
+      "encryption": "AES-256 for any temporary data storage"
+    },
+    "accessibility": {
+      "wcag": "WCAG 2.1 AA compliance for OCR interface",
+      "languages": "Support for 12+ European languages",
+      "fonts": "Handle various official document fonts"
+    },
+    "security": {
+      "fraudDetection": "≥95% fraud detection for altered documents",
+      "templateSecurity": "Irreversible template generation",
+      "auditLogging": "Complete audit trail for all extractions"
+    }
+  },
+  "testExecution": {
+    "environment": {
+      "testFramework": "Custom OCR validation suite",
+      "devices": "25+ device types covering market range",
+      "documentSamples": "5000+ real anonymized documents per type"
+    },
+    "metrics": {
+      "characterAccuracy": "Per-character comparison with ground truth",
+      "fieldAccuracy": "Complete field extraction success rate",
+      "confidenceScoring": "OCR confidence correlation with actual accuracy",
+      "processingSpeed": "Time from capture to field extraction complete"
+    },
+    "reportGeneration": {
+      "detailedResults": "Per-field, per-document-type accuracy matrix",
+      "performanceMetrics": "Processing time and resource utilization",
+      "errorAnalysis": "Common failure patterns and root causes",
+      "improvementRecommendations": "Algorithm tuning suggestions"
+    }
+  }
+}

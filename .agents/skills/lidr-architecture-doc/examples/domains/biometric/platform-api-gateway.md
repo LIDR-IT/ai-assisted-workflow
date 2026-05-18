@@ -1,4 +1,4 @@
-# FacePhi Platform API Gateway - Architecture
+# {{CLIENT_NAME}} Platform API Gateway - Architecture
 
 > **Proyecto**: PLAT-2024-02-GW
 > **Versión**: 3.0.0
@@ -9,7 +9,7 @@
 
 ### 1.1 Requerimientos
 
-El API Gateway orchestrates all biometric verification workflows through a unified interface:
+El API Gateway orchestrates all domain-specific verification workflows through a unified interface:
 
 - **Latency**: < 300ms for routing, < 2.5s end-to-end
 - **Throughput**: 10,000 concurrent verifications
@@ -29,15 +29,15 @@ El API Gateway orchestrates all biometric verification workflows through a unifi
 
 ```yaml
 Identity Onboarding:
-  - Document capture (SelphID)
-  - Facial verification (Selphi)
+  - Document capture ({{PRODUCT_NAME_1}}D)
+  - Facial verification ({{PRODUCT_NAME_1}})
   - Voice enrollment (Voice)
   - Liveness detection (anti-spoofing)
 
 Authentication:
   - 1:1 facial verification
   - Voice verification
-  - Behavioral biometrics
+  - Behavioral domain-specifics
   - Step-up authentication
 
 Compliance:
@@ -61,7 +61,7 @@ Compliance:
 │                    External Systems                         │
 ├─────────────────────────────────────────────────────────────┤
 │ [Client Apps] ──────┐                                      │
-│ [Partner APIs] ─────┼─── [API Gateway] ──── [FacePhi Core] │
+│ [Partner APIs] ─────┼─── [API Gateway] ──── [{{CLIENT_NAME}} Core] │
 │ [Admin Dashboard] ──┘                │                      │
 │                                      │                      │
 │ [Identity Providers] ────────────────┤                      │
@@ -91,7 +91,7 @@ API Gateway:
     - Rate limiting and DDoS protection
     - Request/response transformation
 
-Biometric Router:
+domain-specific Router:
   Technology: Node.js + Express
   Responsibilities:
     - Workflow orchestration
@@ -119,11 +119,11 @@ Message Broker:
 ### 4.2 Downstream Services
 
 ```yaml
-SelphID Service:
+{{PRODUCT_NAME_1}}D Service:
   Endpoint: /v2/document/verify
   SLA: 1.5s P95, 99.9% availability
 
-Selphi Service:
+{{PRODUCT_NAME_1}} Service:
   Endpoint: /v2/face/verify
   SLA: 2s P95, 99.95% availability
 
@@ -172,26 +172,30 @@ interface ApiGatewayComponents {
 interface OrchestrationComponents {
   WorkflowEngine: {
     responsibilities: [
-      "Multi-step verification flows",
-      "Business rule execution",
-      "State machine management",
-    ];
-    patterns: ["Saga pattern", "CQRS", "Event sourcing"];
-  };
+      'Multi-step verification flows',
+      'Business rule execution',
+      'State machine management'
+    ]
+    patterns: ['Saga pattern', 'CQRS', 'Event sourcing']
+  }
 
-  BiometricValidator: {
-    responsibilities: ["Input validation", "Format conversion", "Quality assessment"];
-    validations: ["Image quality", "Document format", "Audio quality"];
-  };
+  domain-specificValidator: {
+    responsibilities: [
+      'Input validation',
+      'Format conversion',
+      'Quality assessment'
+    ]
+    validations: ['Image quality', 'Document format', 'Audio quality']
+  }
 
   ResultAggregator: {
     responsibilities: [
-      "Combine multiple verification results",
-      "Confidence scoring",
-      "Decision logic",
-    ];
-    algorithms: ["Weighted average", "ML fusion", "Rule-based"];
-  };
+      'Combine multiple verification results',
+      'Confidence scoring',
+      'Decision logic'
+    ]
+    algorithms: ['Weighted average', 'ML fusion', 'Rule-based']
+  }
 }
 ```
 
@@ -203,20 +207,20 @@ interface OrchestrationComponents {
 sequenceDiagram
     participant Client as Mobile App
     participant Gateway as API Gateway
-    participant Router as Biometric Router
-    participant SelphID as SelphID Service
-    participant Selphi as Selphi Service
+    participant Router as domain-specific Router
+    participant {{PRODUCT_NAME_1}}D as {{PRODUCT_NAME_1}}D Service
+    participant {{PRODUCT_NAME_1}} as {{PRODUCT_NAME_1}} Service
     participant DB as Audit DB
 
     Client->>Gateway: POST /v2/identity/onboard
     Gateway->>Gateway: Validate JWT & Rate Limit
     Gateway->>Router: Forward request
 
-    Router->>SelphID: Document verification
-    SelphID-->>Router: Document result
+    Router->>{{PRODUCT_NAME_1}}D: Document verification
+    {{PRODUCT_NAME_1}}D-->>Router: Document result
 
-    Router->>Selphi: Face verification
-    Selphi-->>Router: Face result
+    Router->>{{PRODUCT_NAME_1}}: Face verification
+    {{PRODUCT_NAME_1}}-->>Router: Face result
 
     Router->>Router: Aggregate results
     Router->>DB: Store audit trail
@@ -230,8 +234,8 @@ sequenceDiagram
 sequenceDiagram
     participant Client as Web App
     participant Gateway as API Gateway
-    participant Router as Biometric Router
-    participant Selphi as Selphi Service
+    participant Router as domain-specific Router
+    participant {{PRODUCT_NAME_1}} as {{PRODUCT_NAME_1}} Service
     participant Cache as Redis Cache
 
     Client->>Gateway: POST /v2/auth/verify
@@ -241,8 +245,8 @@ sequenceDiagram
     Router->>Cache: Check user template
     Cache-->>Router: Template found
 
-    Router->>Selphi: 1:1 verification
-    Selphi-->>Router: Match result
+    Router->>{{PRODUCT_NAME_1}}: 1:1 verification
+    {{PRODUCT_NAME_1}}-->>Router: Match result
 
     Router->>Router: Apply business rules
     Router-->>Gateway: Authentication result
@@ -266,7 +270,7 @@ API Gateway Cluster:
   - Instance type: c5.2xlarge
   - Deployment: Blue-green
 
-Biometric Router:
+domain-specific Router:
   - 5x Node.js instances
   - Auto-scaling: 5-20 instances
   - Instance type: c5.xlarge
@@ -292,7 +296,7 @@ Internet ──→ CloudFlare ──→ AWS ALB ──→ Kong Gateway
                                Private Subnet (DMZ)
                                          │
                                          ▼
-                              Biometric Router Cluster
+                              domain-specific Router Cluster
                                          │
                                          ▼
                                Private Subnet (Core)
@@ -300,7 +304,7 @@ Internet ──→ CloudFlare ──→ AWS ALB ──→ Kong Gateway
                                          ▼
                    ┌─────────────────────┼─────────────────────┐
                    ▼                     ▼                     ▼
-             SelphID Service      Selphi Service      Voice Service
+             {{PRODUCT_NAME_1}}D Service      {{PRODUCT_NAME_1}} Service      Voice Service
 ```
 
 ## 8. Seguridad
@@ -329,7 +333,7 @@ Authorization:
 Data Protection:
   - Request/response encryption
   - PII field redaction in logs
-  - Biometric template encryption
+  - domain-specific template encryption
   - Key rotation (90 days)
 ```
 
@@ -433,7 +437,7 @@ Alert Conditions:
 ### 11.2 Q3 2024: Advanced Security
 
 - Zero-trust network model
-- Biometric template tokenization
+- domain-specific template tokenization
 - Advanced threat detection
 - Compliance automation
 

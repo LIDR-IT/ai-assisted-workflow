@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "id": "placeholder-mejoras",
+    "title": "Mejoras por Fase — {{CLIENT_NAME}}",
+    "description": "TODO 1 línea: qué extensiones específicas del cliente añaden al patrón LIDR (Bridge Impact, Cross-Country, etc.). Si el cliente no tiene extensiones, NO EMITAS este archivo — heredará de base/propuesta/mejoras.json.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY_FULL}}",
+    "tags": ["placeholder", "mejoras", "to-be", "8-fases"],
+    "lastUpdated": "{{YYYY-MM-DD}}",
+    "author": "{{PME_NAME}}",
+    "sourceReport": "docs/guides/lidr-core/placeholder-discovery-report.md@{{REPORT_VERSION}}"
+  },
+  "fases": [
+    {
+      "id": "fase-1-originacion",
+      "phaseNumber": 1,
+      "gateNumber": 0,
+      "title": "1. Originación & Intake (Gate 0)",
+      "border": "border-purple-200",
+      "bg": "bg-purple-50",
+      "icon": null,
+      "actual": "TODO AS-IS específico del cliente para Fase 1.",
+      "propuesta": [
+        "TODO propuesta TO-BE 1",
+        "TODO propuesta TO-BE 2 (con LIDR skill o agent específico)"
+      ]
+    },
+    {
+      "id": "fase-2-discovery-prd",
+      "phaseNumber": 2,
+      "gateNumber": 1,
+      "title": "2. Discovery & PRD (Gate 1)",
+      "border": "border-blue-200",
+      "bg": "bg-blue-50",
+      "icon": null,
+      "actual": "TODO AS-IS Fase 2",
+      "propuesta": ["TODO TO-BE"]
+    },
+    {
+      "id": "fase-3-especificacion",
+      "phaseNumber": 3,
+      "gateNumber": 2,
+      "title": "3. Especificación RF/NFR (Gate 2)",
+      "border": "border-cyan-200",
+      "bg": "bg-cyan-50",
+      "icon": null,
+      "actual": "TODO AS-IS Fase 3",
+      "propuesta": ["TODO TO-BE"]
+    },
+    {
+      "id": "fase-4-planning",
+      "phaseNumber": 4,
+      "gateNumber": 3,
+      "title": "4. Sprint Planning (Gate 3)",
+      "border": "border-violet-200",
+      "bg": "bg-violet-50",
+      "icon": null,
+      "actual": "TODO AS-IS Fase 4",
+      "propuesta": ["TODO TO-BE"]
+    },
+    {
+      "id": "fase-5-desarrollo",
+      "phaseNumber": 5,
+      "gateNumber": 4,
+      "title": "5. Desarrollo (Gate 4)",
+      "border": "border-orange-200",
+      "bg": "bg-orange-50",
+      "icon": null,
+      "actual": "TODO AS-IS Fase 5",
+      "propuesta": ["TODO TO-BE"]
+    },
+    {
+      "id": "fase-6-qa",
+      "phaseNumber": 6,
+      "gateNumber": 5,
+      "title": "6. QA & Testing (Gate 5)",
+      "border": "border-sky-200",
+      "bg": "bg-sky-50",
+      "icon": null,
+      "actual": "TODO AS-IS Fase 6",
+      "propuesta": ["TODO TO-BE"]
+    },
+    {
+      "id": "fase-7-seguridad",
+      "phaseNumber": 7,
+      "gateNumber": 6,
+      "title": "7. Seguridad (Gate 6)",
+      "border": "border-red-200",
+      "bg": "bg-red-50",
+      "icon": null,
+      "actual": "TODO AS-IS Fase 7",
+      "propuesta": ["TODO TO-BE"]
+    },
+    {
+      "id": "fase-8-despliegue",
+      "phaseNumber": 8,
+      "gateNumber": 7,
+      "title": "8. Despliegue & Post-deploy (Gate 7)",
+      "border": "border-emerald-200",
+      "bg": "bg-emerald-50",
+      "icon": null,
+      "actual": "TODO AS-IS Fase 8",
+      "propuesta": ["TODO TO-BE"]
+    }
+  ]
+}

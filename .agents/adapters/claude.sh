@@ -123,6 +123,38 @@ claude_hooks() {
             }
           )
         )[]
+      ],
+      SessionStart: [
+        (
+          .hooks | to_entries | map(
+            select(.value.platforms | index("claude")) |
+            select(.value.event == "SessionStart") |
+            {
+              matcher: .value.matcher,
+              hooks: [{
+                type: "command",
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.claude")),
+                timeout: .value.timeout
+              }]
+            }
+          )
+        )[]
+      ],
+      Stop: [
+        (
+          .hooks | to_entries | map(
+            select(.value.platforms | index("claude")) |
+            select(.value.event == "Stop") |
+            {
+              matcher: .value.matcher,
+              hooks: [{
+                type: "command",
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.claude")),
+                timeout: .value.timeout
+              }]
+            }
+          )
+        )[]
       ]
     }
   } | .hooks | with_entries(select(.value | length > 0))' "$source_file")

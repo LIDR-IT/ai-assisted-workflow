@@ -1,0 +1,317 @@
+{
+  "metadata": {
+    "id": "ejemplo-completo",
+    "title": "Ejemplo Completo de Sistema JSON",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["demo", "json-system", "all-blocks"]
+  },
+  "header": {
+    "title": "Sistema de Contenido JSON - Demostración Completa",
+    "subtitle": "Ejemplo que muestra todos los tipos de bloques disponibles con configuración personalizada"
+  },
+  "blocks": [
+    {
+      "id": "tools-section",
+      "type": "tool-list",
+      "title": "Herramientas del Ecosistema {{CLIENT_NAME}}",
+      "config": {
+        "colors": {
+          "background": "bg-violet-50",
+          "border": "border-violet-200",
+          "text": "text-violet-800",
+          "accent": "text-violet-600"
+        },
+        "icon": "Bot"
+      },
+      "content": {
+        "tools": [
+          {
+            "name": "SelphID SDK",
+            "description": "SDK de verificación de identidad documental con OCR y NFC integrados",
+            "category": "primary",
+            "url": "https://docs.facephi.com/selphid"
+          },
+          {
+            "name": "Selphi SDK",
+            "description": "Reconocimiento facial con detección de vivacidad para {{INDUSTRY}}",
+            "category": "primary",
+            "url": "https://docs.facephi.com/selphi"
+          },
+          {
+            "name": "Voice SDK",
+            "description": "Verificación biométrica por voz con anti-spoofing avanzado",
+            "category": "secondary"
+          },
+          {
+            "name": "Legacy API v1.x",
+            "description": "API heredada, migración recomendada a v2.x",
+            "category": "optional"
+          }
+        ]
+      }
+    },
+    {
+      "id": "problem-solution",
+      "type": "problem-solution",
+      "title": "Desafío de Integración y Solución",
+      "config": {
+        "colors": {
+          "background": "bg-amber-50",
+          "border": "border-amber-200",
+          "accent": "text-amber-600"
+        },
+        "icon": "AlertTriangle"
+      },
+      "content": {
+        "problem": {
+          "title": "Problema",
+          "description": "Los desarrolladores de {{CLIENT_NAME}} necesitan integrar múltiples SDKs biométricos sin experiencia previa en {{INDUSTRY}}, resultando en implementaciones inconsistentes y vulnerabilidades de seguridad."
+        },
+        "solution": {
+          "title": "Solución Propuesta",
+          "items": [
+            "Documentación unificada con ejemplos específicos para {{INDUSTRY}}",
+            "SDK wrapper que abstrae la complejidad de configuración",
+            "Plantillas de código pre-validadas para casos de uso comunes",
+            "Herramientas de testing automatizado para compliance {{INDUSTRY}}",
+            "Soporte técnico especializado en integración {{INDUSTRY}}"
+          ]
+        }
+      }
+    },
+    {
+      "id": "info-table",
+      "type": "info-table",
+      "title": "Especificaciones Técnicas",
+      "config": {
+        "colors": {
+          "background": "bg-green-50",
+          "border": "border-green-200",
+          "accent": "text-green-600"
+        },
+        "icon": "Info"
+      },
+      "content": {
+        "rows": [
+          {
+            "label": "Cliente",
+            "value": "{{CLIENT_NAME}}"
+          },
+          {
+            "label": "Industria",
+            "value": "{{INDUSTRY}}"
+          },
+          {
+            "label": "Plataformas Soportadas",
+            "value": "iOS 12+, Android API 21+, Web (Chrome 80+)"
+          },
+          {
+            "label": "Precisión FAR",
+            "value": "< 0.001% (configurable según {{INDUSTRY}})"
+          },
+          {
+            "label": "Tiempo de Procesamiento",
+            "value": "< 2 segundos (onboarding), < 500ms (autenticación)"
+          },
+          {
+            "label": "Compliance",
+            "value": "GDPR Art. 9, eIDAS nivel substantial, ISO 30107"
+          }
+        ]
+      }
+    },
+    {
+      "id": "architecture-hierarchy",
+      "type": "code-hierarchy",
+      "title": "Arquitectura del SDK {{CLIENT_NAME}}",
+      "config": {
+        "colors": {
+          "background": "bg-slate-50",
+          "border": "border-slate-200",
+          "accent": "text-slate-600",
+          "text": "text-slate-100"
+        },
+        "icon": "Code"
+      },
+      "content": {
+        "showLines": true,
+        "indentSize": 4,
+        "items": [
+          {
+            "id": "root",
+            "label": "{{CLIENT_NAME}}-SDK/",
+            "level": 0,
+            "color": "text-blue-400",
+            "children": [
+              {
+                "id": "core",
+                "label": "core/",
+                "level": 1,
+                "color": "text-green-400",
+                "children": [
+                  {
+                    "id": "biometric-engine",
+                    "label": "BiometricEngine.swift",
+                    "level": 2,
+                    "color": "text-yellow-400"
+                  },
+                  {
+                    "id": "liveness-detector",
+                    "label": "LivenessDetector.swift",
+                    "level": 2,
+                    "color": "text-yellow-400"
+                  }
+                ]
+              },
+              {
+                "id": "adapters",
+                "label": "adapters/",
+                "level": 1,
+                "color": "text-green-400",
+                "children": [
+                  {
+                    "id": "camera-adapter",
+                    "label": "CameraAdapter.swift",
+                    "level": 2,
+                    "color": "text-purple-400"
+                  },
+                  {
+                    "id": "network-adapter",
+                    "label": "NetworkAdapter.swift",
+                    "level": 2,
+                    "color": "text-purple-400"
+                  }
+                ]
+              },
+              {
+                "id": "models",
+                "label": "models/",
+                "level": 1,
+                "color": "text-green-400",
+                "children": [
+                  {
+                    "id": "user-model",
+                    "label": "User.swift",
+                    "level": 2,
+                    "color": "text-orange-400"
+                  },
+                  {
+                    "id": "session-model",
+                    "label": "Session.swift",
+                    "level": 2,
+                    "color": "text-orange-400"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "integration-diagram",
+      "type": "diagram",
+      "title": "Flujo de Integración {{CLIENT_NAME}}",
+      "content": {
+        "diagramId": "proceso-prd",
+        "clientId": "facephi",
+        "height": 600,
+        "showLegend": true,
+        "showMetadata": false,
+        "resolveVariables": true,
+        "exportName": "Integracion_{{CLIENT_CODE}}_Flujo"
+      }
+    },
+    {
+      "id": "rich-text-info",
+      "type": "rich-text",
+      "title": "Consideraciones de Seguridad para {{INDUSTRY}}",
+      "config": {
+        "colors": {
+          "background": "bg-red-50",
+          "border": "border-red-200",
+          "accent": "text-red-600"
+        },
+        "icon": "Shield"
+      },
+      "content": {
+        "markdown": false,
+        "text": "IMPORTANTE: Los datos biométricos son considerados de categoría especial bajo GDPR Art. 9.\n\nEsto implica que {{CLIENT_NAME}} debe:\n\n• Obtener consentimiento explícito del usuario antes de capturar cualquier dato biométrico\n• Implementar cifrado AES-256 mínimo para almacenamiento de templates\n• Garantizar que los templates biométricos no sean reversibles a la imagen original\n• Proporcionar mecanismos claros para la revocación y eliminación de datos\n• Realizar DPIA (Data Protection Impact Assessment) antes del despliegue\n• Mantener logs de auditoría inmutables para todas las operaciones biométricas\n\nEl incumplimiento puede resultar en multas de hasta 4% del revenue anual global."
+      }
+    },
+    {
+      "id": "grid-layout",
+      "type": "grid",
+      "title": "Componentes del Ecosistema",
+      "content": {
+        "columns": 2,
+        "gap": "medium",
+        "responsive": true,
+        "blocks": [
+          {
+            "id": "mobile-sdk",
+            "type": "rich-text",
+            "title": "SDK Móvil",
+            "config": {
+              "colors": {
+                "background": "bg-blue-50",
+                "border": "border-blue-200"
+              }
+            },
+            "content": {
+              "markdown": false,
+              "text": "SDK nativo para iOS y Android con capacidades offline y sincronización en la nube."
+            }
+          },
+          {
+            "id": "web-sdk",
+            "type": "rich-text",
+            "title": "SDK Web",
+            "config": {
+              "colors": {
+                "background": "bg-green-50",
+                "border": "border-green-200"
+              }
+            },
+            "content": {
+              "markdown": false,
+              "text": "JavaScript SDK para aplicaciones web con soporte para WebRTC y MediaDevices API."
+            }
+          },
+          {
+            "id": "api-gateway",
+            "type": "rich-text",
+            "title": "API Gateway",
+            "config": {
+              "colors": {
+                "background": "bg-purple-50",
+                "border": "border-purple-200"
+              }
+            },
+            "content": {
+              "markdown": false,
+              "text": "Gateway unificado para todos los servicios biométricos con rate limiting y autenticación."
+            }
+          },
+          {
+            "id": "dashboard",
+            "type": "rich-text",
+            "title": "Dashboard Analítico",
+            "config": {
+              "colors": {
+                "background": "bg-orange-50",
+                "border": "border-orange-200"
+              }
+            },
+            "content": {
+              "markdown": false,
+              "text": "Panel de control en tiempo real para monitoreo de transacciones y métricas de fraude."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

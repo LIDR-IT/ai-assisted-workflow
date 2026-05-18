@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "clientId": "facephi",
+    "clientName": "FacePhi",
+    "industry": "Biometric Technology",
+    "version": "1.0.0",
+    "inheritsFrom": "global"
+  },
+  "branding": {
+    "companyName": "FacePhi",
+    "logo": "/assets/logos/facephi-logo.png",
+    "website": "https://www.facephi.com",
+    "primaryColor": "#6366F1",
+    "secondaryColor": "#8B5CF6"
+  },
+  "colors": {
+    "primary": "bg-indigo-600",
+    "secondary": "bg-purple-600",
+    "accent": "text-indigo-600",
+    "surface": "bg-indigo-50",
+    "border": "border-indigo-200"
+  },
+  "theme": {
+    "name": "facephi-brand",
+    "mode": "light"
+  },
+  "templateVariables": {
+    "CLIENT_NAME": "FacePhi",
+    "INDUSTRY": "Biometric Technology",
+    "COMPANY_URL": "https://www.facephi.com",
+    "SUPPORT_EMAIL": "support@facephi.com",
+    "MAIN_PRODUCT": "SelphID",
+    "TECHNOLOGY_STACK": "AI/ML, Computer Vision, Biometrics",
+    "COMPLIANCE": "GDPR, ISO 27001, eIDAS",
+    "TARGET_MARKETS": "Banking, Government, Fintech"
+  },
+  "components": {
+    "blocks": {
+      "defaultPadding": "p-8",
+      "showIcons": true,
+      "iconSet": "biometric-icons"
+    },
+    "diagrams": {
+      "defaultHeight": 500,
+      "colorScheme": "indigo",
+      "showLegend": true,
+      "brandedExports": true
+    }
+  },
+  "features": {
+    "customBlocks": true,
+    "advancedCharts": true,
+    "biometricDiagrams": true,
+    "complianceReports": true,
+    "securityDashboard": true
+  },
+  "industry": {
+    "specific": {
+      "biometrics": {
+        "algorithms": ["facial", "fingerprint", "voice", "behavioral"],
+        "compliance": ["GDPR Art.9", "ISO 30107", "NIST 800-63B"],
+        "metrics": ["FAR", "FRR", "EER", "liveness"],
+        "terminology": {
+          "template": "Biometric Template",
+          "enrollment": "User Enrollment",
+          "verification": "1:1 Verification",
+          "identification": "1:N Identification"
+        }
+      }
+    }
+  },
+  "customizations": {
+    "dashboards": {
+      "showBiometricMetrics": true,
+      "showSecurityAlerts": true,
+      "showComplianceStatus": true
+    },
+    "workflows": {
+      "enableSecurityGates": true,
+      "biometricValidation": true,
+      "automaticReporting": true
+    }
+  }
+}

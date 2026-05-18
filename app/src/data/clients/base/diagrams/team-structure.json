@@ -1,0 +1,223 @@
+{
+  "metadata": {
+    "id": "team-structure",
+    "title": "Team Structure & Roles",
+    "description": "Generic team structure and responsibilities matrix for software development teams",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["team", "roles", "organization"]
+  },
+  "configuration": {
+    "height": 650,
+    "exportName": "Team Structure",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "pme",
+      "x": 400,
+      "y": 50,
+      "label": "Project Manager",
+      "variant": "purple",
+      "subtitle": "Governance & stakeholder management"
+    },
+    {
+      "id": "po",
+      "x": 200,
+      "y": 150,
+      "label": "Product Owner",
+      "variant": "blue",
+      "subtitle": "Product vision & prioritization"
+    },
+    {
+      "id": "tl",
+      "x": 600,
+      "y": 150,
+      "label": "Tech Lead",
+      "variant": "cyan",
+      "subtitle": "Technical decisions & architecture"
+    },
+    {
+      "id": "sm",
+      "x": 400,
+      "y": 150,
+      "label": "Scrum Master",
+      "variant": "indigo",
+      "subtitle": "Process facilitation & team coaching"
+    },
+    {
+      "id": "dev-team",
+      "x": 600,
+      "y": 250,
+      "label": "Development Team",
+      "variant": "green",
+      "subtitle": "Feature implementation & code quality"
+    },
+    {
+      "id": "qa-team",
+      "x": 200,
+      "y": 250,
+      "label": "QA Team",
+      "variant": "orange",
+      "subtitle": "Testing & quality assurance"
+    },
+    {
+      "id": "security",
+      "x": 100,
+      "y": 350,
+      "label": "Security Team",
+      "variant": "red",
+      "subtitle": "Security review & compliance"
+    },
+    {
+      "id": "devops",
+      "x": 700,
+      "y": 350,
+      "label": "DevOps Team",
+      "variant": "teal",
+      "subtitle": "Infrastructure & deployment"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "pme",
+      "target": "po",
+      "label": "Product Strategy"
+    },
+    {
+      "id": "e2",
+      "source": "pme",
+      "target": "tl",
+      "label": "Technical Governance"
+    },
+    {
+      "id": "e3",
+      "source": "pme",
+      "target": "sm",
+      "label": "Process Oversight"
+    },
+    {
+      "id": "e4",
+      "source": "po",
+      "target": "qa-team",
+      "label": "Acceptance Criteria"
+    },
+    {
+      "id": "e5",
+      "source": "po",
+      "target": "dev-team",
+      "label": "Requirements"
+    },
+    {
+      "id": "e6",
+      "source": "tl",
+      "target": "dev-team",
+      "label": "Technical Guidance"
+    },
+    {
+      "id": "e7",
+      "source": "sm",
+      "target": "dev-team",
+      "label": "Sprint Facilitation"
+    },
+    {
+      "id": "e8",
+      "source": "sm",
+      "target": "qa-team",
+      "label": "Process Support"
+    },
+    {
+      "id": "e9",
+      "source": "dev-team",
+      "target": "qa-team",
+      "label": "Code Handoff"
+    },
+    {
+      "id": "e10",
+      "source": "qa-team",
+      "target": "security",
+      "label": "Security Review"
+    },
+    {
+      "id": "e11",
+      "source": "dev-team",
+      "target": "devops",
+      "label": "Deployment"
+    },
+    {
+      "id": "e12",
+      "source": "security",
+      "target": "devops",
+      "label": "Security Clearance"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Project Management" },
+    { "color": "bg-blue-200", "label": "Product Management" },
+    { "color": "bg-cyan-200", "label": "Technical Leadership" },
+    { "color": "bg-indigo-200", "label": "Process & Facilitation" },
+    { "color": "bg-green-200", "label": "Development" },
+    { "color": "bg-orange-200", "label": "Quality Assurance" },
+    { "color": "bg-red-200", "label": "Security & Compliance" },
+    { "color": "bg-teal-200", "label": "Operations & Infrastructure" }
+  ],
+  "tables": [
+    {
+      "id": "responsibilities",
+      "title": "Key Responsibilities Matrix",
+      "headers": ["Role", "Primary Focus", "Key Activities", "Deliverables"],
+      "rows": [
+        [
+          "Project Manager",
+          "Governance",
+          "Stakeholder management, risk tracking",
+          "Project status, change requests"
+        ],
+        [
+          "Product Owner",
+          "Product Value",
+          "Requirements, prioritization, acceptance",
+          "User stories, product backlog"
+        ],
+        [
+          "Tech Lead",
+          "Technical Quality",
+          "Architecture, code review, technical decisions",
+          "Technical design, ADRs"
+        ],
+        [
+          "Scrum Master",
+          "Team Process",
+          "Sprint facilitation, impediment removal",
+          "Sprint metrics, retrospectives"
+        ],
+        [
+          "Development Team",
+          "Implementation",
+          "Coding, unit testing, peer review",
+          "Features, bug fixes, documentation"
+        ],
+        [
+          "QA Team",
+          "Quality Assurance",
+          "Testing, bug reporting, quality gates",
+          "Test plans, test results, quality reports"
+        ],
+        [
+          "Security Team",
+          "Security & Compliance",
+          "Security review, vulnerability assessment",
+          "Security reports, compliance docs"
+        ],
+        [
+          "DevOps Team",
+          "Operations",
+          "CI/CD, infrastructure, monitoring",
+          "Deployment pipelines, system health"
+        ]
+      ]
+    }
+  ]
+}

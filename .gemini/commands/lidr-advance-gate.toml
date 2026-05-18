@@ -1,0 +1,363 @@
+description = "Evaluate gate and generate handoff package"
+
+prompt = """
+
+<!--
+COMMAND: advance-gate
+VERSION: 2.0.0
+AUTHOR: SDLC Team
+LAST UPDATED: 2026-03-09
+
+PURPOSE:
+Universal handoff orchestrator — evaluates a gate's criteria with CONTENT
+validation, cross-coherence checks, weighted scoring, and Jira registration.
+Covers all 8 gates (0-7) of the SDLC.
+
+USAGE:
+  /advance-gate 0        -> Originacion -> Discovery
+  /advance-gate 3        -> Sprint Planning -> Desarrollo
+  /advance-gate 7        -> Deploy -> Produccion (Gate Final)
+
+ARGUMENTS:
+  gate-number: 0-7 (required). Maps to:
+    0 = Originacion -> Discovery
+    1 = Discovery -> Especificacion
+    2 = Especificacion -> Sprint Planning
+    3 = Sprint Planning -> Desarrollo
+    4 = Desarrollo -> QA (sprint aggregator)
+    5 = QA -> Seguridad
+    6 = Seguridad -> Despliegue
+    7 = Despliegue -> Produccion (Gate Final)
+
+REQUIREMENTS:
+  - .claude/rules/ configured (org.md, tech-stack.md, project.md, workflows.md)
+  - Jira access for status transitions (degrades without)
+  - Notification system for status updates (degrades without)
+
+RELATED COMMANDS:
+  /implement-ticket - Gate 4 per-ticket workflow
+  /prepare-testing  - Pre-Gate 5 QA preparation
+  /create-release-notes - Pre-Gate 7 changelog
+
+OUTPUT TEMPLATE:
+  skills/{skill-name}/templates/gate-evaluation.md (tpl-gate-evaluation)
+
+CHANGELOG:
+  v1.0.0 (2025-03-05): Initial release - all 8 gates
+  v2.0.0 (2026-03-09): Content validation, cross-coherence, weighted scoring,
+                        Jira Gate Status registration, tpl-gate-evaluation output
+-->
+
+# Advance Gate $1
+
+Load context from rules FIRST:
+- @../rules/org.md -> organizational standards, roles, gate criteria
+- @../rules/tech-stack.md -> technical conventions
+- @../rules/project.md -> current project context
+- @../rules/workflows.md -> role permissions, command chains
+- @../rules/documentation.md -> doc governance standards
+
+## Step 1: Validate Gate Number
+
+If "$1" is empty or not a number 0-7:
+  ERROR: Gate number required (0-7).
+  Usage: /advance-gate [0-7]
+  Show gate map and exit.
+
+## Step 2: Verify Role Authorization
+
+Check @../rules/workflows.md for the role permissions matrix.
+Authorized roles for /advance-gate: PME, PO, Tech Lead, QA Lead, Security Lead, DevOps.
+
+Use AskUserQuestion to confirm role:
+- question: "Cual es tu rol para esta evaluacion de gate?"
+- header: "Tu rol"
+- options:
+  - PME (Project Manager)
+  - PO (Product Owner)
+  - Tech Lead (R&D Lead)
+  - QA Lead
+  - Security Lead
+  - DevOps
+
+If role is "Dev" -> "Devs no ejecutan /advance-gate. Usa /implement-ticket para tu ticket." Exit.
+
+## Step 3: Verify Previous Gate
+
+If $1 > 0, check that Gate ($1 - 1) has been passed.
+Look for previous handoff package: `docs/projects/{project}/handoffs/gate-{N-1}-handoff.md`
+
+If not found:
+  WARNING: Gate {N-1} handoff not found. Previous gate may not be passed.
+
+  Use AskUserQuestion:
+  - question: "Gate anterior no registrado. Continuar de todos modos?"
+  - header: "Confirmar"
+  - options:
+    - Si (Continuar con la evaluacion)
+    - No (Cancelar y resolver primero)
+
+  If "No" -> Exit.
+
+## Step 4: Evaluate Gate Criteria — Existence + CONTENT Validation
+
+Based on gate number $1, evaluate the specific criteria.
+
+**CRITICAL: For EVERY artifact, validate TWO dimensions:**
+1. **Existence**: The artifact file/document exists
+2. **Content validity**: The artifact has meaningful content (not empty, not placeholder)
+
+**Content validation rules:**
+- File must have >50 characters of meaningful content (excluding frontmatter)
+- Required sections must be present AND populated (not "TBD", "TODO", "N/A" without justification)
+- Frontmatter must be valid: id, version, last_updated, status fields present
+- References to other artifacts must be resolvable (read the referenced file to confirm it exists)
+- An empty or placeholder artifact is WORSE than a missing one — it gives false confidence
+
+**Gate 0 (Originacion -> Discovery):**
+- Check: Business Case exists AND contains: problem statement, proposed solution, expected ROI, sponsor approval
+- Check: Acta de Kick-off exists AND contains: attendees, decisions, action items (non-empty lists)
+- Check: Stakeholder Map exists AND has at least 1 stakeholder with role and interest level (desirable)
+- Check: Epica in Jira with complete fields (summary, description >100 chars, acceptance criteria)
+- Gate criteria from @../rules/org.md: BC approved by sponsor, budget identified, roadmap alignment, kick-off done
+- Content guard: BC must have success metrics defined (not empty/TBD), sponsor field must reference a real person
+
+**Gate 1 (Discovery -> Especificacion):**
+- Check: PRD Tecnico published AND contains: scope, architecture overview, technical constraints, dependencies
+- Check: PRD Funcional published AND contains: user flows, functional requirements summary, acceptance criteria
+- Check: Review Cruzado completed (checklist @../skills/review-cruzado/checklists/review-cruzado.md passed)
+- Check: Risk Log with identified risks (at least 1 risk with probability + impact + mitigation)
+- Check: PoC Report (if applicable) with conclusions and recommendations
+- Content guard: PRD sections (PoC, limitations, roadmap, scope) must not be empty placeholders
+
+**Gate 2 (Especificacion -> Sprint Planning):**
+- Check: All RFs documented with BDD criteria
+- **RF-BDD Counter**: Count RF_total and RF_with_BDD (RFs that have at least 1 Given/When/Then scenario). RF_with_BDD / RF_total must be 100%. If <100% -> FAIL with list of RFs missing BDD
+- **RNF Measurability Counter**: Count RNF_total and RNF_with_metric (RNFs that have: quantifiable metric + threshold + measurement method). RNF_with_metric / RNF_total must be 100%. If <100% -> FAIL (without measurable NFRs, cl-nfr in Gates 5/6 cannot evaluate)
+- Check: Coherence checklist (@../skills/generate-rf/checklists/rf-coherence.md) PASS
+- Check: Dependency matrix without cycles
+- Check: QA confirms testability of BDD criteria
+
+**Gate 3 (Sprint Planning -> Desarrollo):**
+- Check: All User Stories meet DoR (@../skills/refinement-notes/checklists/dor.md) — evaluate EACH US individually, not globally
+- Check: Sprint capacity calculated with >=15% buffer
+- Check: Sprint commitment signed (PO + Tech Lead)
+- Check: No unresolved dependencies
+- Content guard: EACH US has: title, description, acceptance criteria (Given/When/Then), estimation
+
+**Gate 4 (Desarrollo -> QA — Sprint Aggregator):**
+- Check: ALL tickets in sprint have status "Ready for QA" or "Done"
+- Check: ALL PRs merged with approved code reviews
+- Check: ALL DoD checklists passed (@../skills/pr-description/checklists/dod.md) — check EACH ticket individually
+- Check: ALL handoffs dev->QA generated with meaningful content
+- If any ticket still "In Progress" -> list them and FAIL
+- Content guard: Handoff documents must contain: changes summary, test suggestions, risks identified
+
+**Gate 5 (QA -> Seguridad):**
+- Check: Test execution report generated with actual test results (not empty template)
+- Check: 0 blocker/critical bugs open
+- Check: Regression suite executed without regressions
+- Check: QA Sign-off signed (@../skills/test-execution-report/signoffs/qa-signoff.md)
+- **RTM-Xray Cross-check**: Count RF_total from spec phase and test_cases_linked from Xray/test execution. RTM_coverage = test_cases_linked / RF_total. If <100% -> FAIL with list of untested RFs. This BLOCKS so-qa signoff
+- Content guard: Sign-off must be dated AFTER last test execution
+
+**Gate 6 (Seguridad -> Despliegue):**
+- Check: SAST/SCA results: 0 Critical, 0 High
+- Check: DAST results: 0 Critical, 0 High
+- Check: OWASP Top 10 checklist PASS (@../skills/security-checklist/checklists/security-compliance.md)
+- Check: Security Sign-off signed (@../../skills/security-checklist/signoffs/security-signoff.md)
+- Content guard: Scanner exclusions must not cover production code paths. Calculate scan_coverage = files_scanned / files_production. Report coverage percentage
+- Content guard: Sign-off must reference specific scan report (not generic)
+
+**Gate 7 (Despliegue -> Produccion — Gate Final):**
+- Check: Change Request approved by Change Committee (CR must have approval date and approver)
+- Check: Rollback plan documented with specific steps, estimated time, and responsible person
+- Check: Release notes generated (/create-release-notes) with actual content
+- Check: CHANGELOG.md updated (/update-changelog)
+- Check: On-call confirmed (name + contact method)
+- Check: Deploy window agreed (specific date/time range)
+- Content guard: Rollback plan must have been tested/validated. CR must reference Gate 6 PASS
+
+For each criterion, report: PASS / WARN / FAIL with specific detail.
+
+## Step 5: Ecosystem Health Validation (NEW - Phase 1 Enhancement)
+
+**CRITICAL**: Before evaluating gate criteria, validate ecosystem health using the new validation engine:
+
+[Code block:]
+# Import ecosystem validation
+import { validateForGateAdvancement } from '../_shared/validators/ecosystem-validation.js';
+
+# Run ecosystem health check
+const ecosystemResult = await validateForGateAdvancement($1);
+
+if (!ecosystemResult.success) {
+  ERROR: Ecosystem health check failed for Gate $1
+
+  ecosystemResult.issues.forEach(issue => {
+    console.log(`${issue.severity}: ${issue.message}`);
+    console.log(`Suggestion: ${issue.suggestion}`);
+  });
+
+  EXIT with ecosystem health report and recommendations.
+}
+
+console.log(`✅ Ecosystem health: ${ecosystemResult.score.toFixed(1)}/5.0 for Gate $1`);
+
+
+**Ecosystem requirements by gate:**
+- Gates 0,1,2,7 (critical): Require ≥90% ecosystem health
+- Gates 3,4,5,6 (operational): Require ≥70% ecosystem health
+
+If ecosystem health fails, provide specific actions to fix:
+1. Run ecosystem synchronization script
+2. Fix count drift between filesystem and tracking
+3. Resolve validation script issues
+4. Update tracking files (HelpCenter.tsx, CLAUDE.md, stats.ts)
+
+## Step 6: Cross-Coherence Validation
+
+Validate referential integrity BETWEEN artifacts across phases:
+
+**Cross-reference checks:**
+
+| Source | Target | Validation |
+|--------|--------|------------|
+| RF -> PRD | Each RF must reference a valid PRD section | Read RF, extract PRD ref, verify PRD section exists |
+| US -> RF | Each US must trace to a valid RF | Read US, extract RF ref, verify RF exists |
+| BDD -> AC | Each BDD scenario must map to acceptance criteria | Read test, extract AC ref, verify in US |
+| Test -> RF (RTM) | Each RF must have at least 1 linked test | Cross RTM matrix with test execution |
+| Checklist -> Artifact | Each checklist item must reference a real artifact | Verify paths in checklist evaluations |
+
+**Process:**
+1. For the current gate, identify all SOURCE artifacts (produced in current/previous phases)
+2. For each source, extract references to TARGET artifacts
+3. Attempt to READ each referenced target — if not found, mark as BROKEN REF
+4. Calculate: refs_valid / refs_total = coherence_score
+
+**Gate-specific coherence:**
+- Gate 2: RF->PRD traceability + BDD coverage per RF
+- Gate 3: US->RF traceability + DoR per US
+- Gate 4: PR->Ticket traceability + DoD per ticket
+- Gate 5: Test->RF traceability (RTM completeness)
+
+If any broken reference found -> CONDITIONAL (with action items to fix refs)
+If >20% broken references -> FAIL
+
+## Step 7: Generate Handoff Package (via tpl-gate-evaluation)
+
+If overall result is PASS or CONDITIONAL:
+
+Generate handoff package using **tpl-gate-evaluation** template (@../skills/gate-evaluation/templates/gate-evaluation.md) and save to `.claude/handoffs/gate-$1-handoff.local.md`.
+
+The output MUST follow the tpl-gate-evaluation schema:
+- Header: gate, evaluator, date, project, sprint, epic
+- Artifacts Evaluation table with existence + content validation
+- Checklists Evaluation table with item-level pass/fail
+- Cross-Coherence Evaluation table with reference validation
+- Signoffs Evaluation table (Gates 5/6)
+- Weighted Score Calculation
+- Verdict with threshold evaluation
+- Action Items (if CONDITIONAL or FAIL)
+- Evidence with links to actual files
+- Handoff Context for next phase
+- Jira Registration metadata
+
+## Step 8: Execute Transitions
+
+If PASS:
+- Jira: transition epic/tickets to next phase status (manual or script)
+- Notification: notify next phase's team with handoff summary
+- If Gate 1 PASS -> suggest: "Run generate-rf skill to draft RFs from PRDs"
+- If Gate 2 PASS -> suggest: "Run user-stories skill to draft US from RFs"
+- If Gate 3 PASS -> suggest: "Devs can now run /create-branch [ID] for their tickets"
+- If Gate 6 PASS -> suggest: "Run /create-release-notes then /update-changelog"
+
+If CONDITIONAL:
+- Jira: transition epic/tickets to next phase BUT add comment with action items (manual or script)
+- Notification: notify with "CONDITIONAL" status and list mandatory action items with deadlines
+- Create Jira subtasks for each action item (assigned to owner role)
+
+If FAIL:
+- List ALL failed criteria with specific actions to fix each
+- Suggest who should fix each item (based on role from workflows.md)
+- Do NOT transition Jira status
+- Create Jira subtasks for each FAIL item (assigned to owner role)
+
+## Step 9: Calculate Weighted Score
+
+Apply the weighted scoring model:
+
+| Dimension | Weight | Calculation |
+|-----------|--------|-------------|
+| Artifacts | 40% | (artifacts_pass / artifacts_total) * 100 |
+| Checklists | 35% | (checklist_items_pass / checklist_items_total) * 100 |
+| Coherence | 15% | (refs_valid / refs_total) * 100 |
+| Signoffs | 10% | (signoffs_signed / signoffs_required) * 100 |
+
+**Total = (Artifacts * 0.40) + (Checklists * 0.35) + (Coherence * 0.15) + (Signoffs * 0.10)**
+
+**Verdict thresholds:**
+- >= 90%: PASS — proceed to next phase
+- 70-89%: CONDITIONAL — proceed with mandatory action items (deadline required)
+- < 70%: FAIL — block advancement, resolve all FAIL items
+
+**Special rules:**
+- Any single Critical artifact missing -> automatic FAIL regardless of score
+- Any signoff missing when required (Gates 5/6) -> automatic FAIL
+- RF BDD coverage <100% at Gate 2 -> automatic FAIL
+- RNF measurability <100% at Gate 2 -> automatic FAIL
+- RTM coverage <100% at Gate 5 -> automatic FAIL (blocks so-qa)
+
+## Step 10: Report
+
+Present final report:
+
+
+## /advance-gate $1 — Result
+
+Gate $1: [Phase Name] -> [Next Phase Name]
+Status: PASS / CONDITIONAL / FAIL
+Score: [total_score]% (Artifacts: [a]% | Checklists: [c]% | Coherence: [co]% | Signoffs: [s]%)
+Approved by: [role]
+Date: [today]
+
+[Criteria table from Step 4]
+[Cross-coherence results from Step 5]
+[Weighted score breakdown from Step 8]
+[Handoff package link if PASS/CONDITIONAL]
+[Action items with owners and deadlines if CONDITIONAL/FAIL]
+
+Next command: /advance-gate [N+1] (when next phase completes)
+
+
+## Step 11: Register Result in Jira
+
+Via Jira (manual or script), register the gate evaluation result:
+
+1. **Update Epic**: Set custom field "Gate Status" on the epic:
+   - Value: `Gate {N}: {verdict} ({score}%) — {date}`
+   - If field does not exist, add as comment with label `gate-evaluation`
+
+2. **Create Subtasks** (if CONDITIONAL or FAIL):
+   - One subtask per action item from the evaluation
+   - Title: `[Gate {N}] {action_item_description}`
+   - Assignee: based on owner role from action items
+   - Priority: mapped from severity (Critical->Blocker, High->Critical, Medium->Major)
+   - Label: `gate-remediation`
+
+3. **Add Comment to Epic**:
+   
+   Gate {N} Evaluation — {verdict} ({score}%)
+   Evaluator: {role}
+   Date: {date}
+   Handoff: .claude/handoffs/gate-{N}-handoff.local.md
+   Action Items: {count}
+   Next: /advance-gate {N+1}
+   
+
+4. **Transition Epic**:
+   - PASS: Move to next phase status
+   - CONDITIONAL: Move to next phase + add "gate-conditional" label
+   - FAIL: Keep current status + add "gate-blocked" label
+"""

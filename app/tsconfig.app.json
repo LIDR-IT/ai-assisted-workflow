@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noPropertyAccessFromIndexSignature": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/app/**/*", "src/data/**/*", "src/hooks/**/*", "src/styles/**/*"],
+  "exclude": ["src/**/*.test.*", "src/**/__tests__/**/*"]
+}

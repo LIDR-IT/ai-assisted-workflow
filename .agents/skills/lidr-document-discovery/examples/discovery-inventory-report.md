@@ -1,6 +1,6 @@
 # Document Discovery Inventory Report (BMAD-Style)
 
-**Project**: FacePhi Identity Platform v3.2
+**Project**: {{CLIENT_NAME}} Identity Platform v3.2
 **Discovery Date**: 2026-03-16
 **Scope**: Complete project documentation ecosystem
 **Method**: BMAD-inspired systematic discovery with automated classification
@@ -91,7 +91,7 @@
 #### High Priority Issues
 
 1. **Deployment Guide (docs/deployment/deployment-guide.md)**
-   - Issue: Missing biometric-specific deployment steps
+   - Issue: Missing domain-specific-specific deployment steps
    - Impact: Deployment errors in production
    - Action: Add algorithm deployment and validation steps
 
@@ -126,7 +126,7 @@
    - Priority: High
 
 2. **Disaster Recovery Plan** (`docs/operations/dr-plan.md`)
-   - Purpose: Business continuity for biometric services
+   - Purpose: Business continuity for domain-specific services
    - Owner: DevOps + Security
    - Priority: Critical
 
@@ -196,7 +196,7 @@
 ### Short Term (Next Sprint)
 
 1. Create integration specifications directory
-2. Update deployment guide with biometric specifics
+2. Update deployment guide with domain-specific specifics
 3. Establish document review schedule
 
 ### Long Term (Next Quarter)

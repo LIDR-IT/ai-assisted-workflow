@@ -377,6 +377,45 @@ async function main(): Promise<void> {
     ...DOCUMENTATION_QUALITY_RULES,
   ];
 
+  const DATA_MODEL_RULES: ValidationRule[] = [
+    {
+      name: "Entity Analysis Section",
+      description: "Must include entity analysis with field tables",
+      check: (content) => content.includes("Entity") && content.includes("Field"),
+      severity: "ERROR",
+    },
+    {
+      name: "ERD Diagram",
+      description: "Must include Mermaid erDiagram",
+      check: (content) => content.includes("erDiagram"),
+      severity: "ERROR",
+    },
+    {
+      name: "Primary Keys",
+      description: "Entities must have uuid PK fields",
+      check: (content) => content.includes("PK") || content.includes("Primary"),
+      severity: "ERROR",
+    },
+    {
+      name: "Relationship Verb Labels",
+      description: "ERD relationships should have verb labels",
+      check: (content) => /\|\|--o\{.*:.*"/.test(content) || /\|\|--\|\|.*:.*"/.test(content),
+      severity: "WARN",
+    },
+    {
+      name: "Tenant Entity",
+      description: "Should include Tenant entity for multitenancy",
+      check: (content) => content.includes("Tenant"),
+      severity: "WARN",
+    },
+    {
+      name: "Audit Log Entity",
+      description: "Should include AuditLog entity",
+      check: (content) => content.includes("AuditLog") || content.includes("Audit"),
+      severity: "WARN",
+    },
+  ];
+
   const validationCases = [
     {
       file: "domains/biometric/platform-api-gateway.md",
@@ -407,6 +446,11 @@ async function main(): Promise<void> {
       file: "generic/microservices-template.md",
       rules: allRules,
       description: "Generic Microservices Template",
+    },
+    {
+      file: "example-data-model-saas.md",
+      rules: DATA_MODEL_RULES,
+      description: "Data Model SaaS Example (NEW)",
     },
   ];
 

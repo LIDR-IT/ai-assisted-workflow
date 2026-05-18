@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash:*)",
+      "Bash(python3:*)",
+      "Bash(mkdir:*)",
+      "Bash(chmod +x:*)",
+      "Bash(wc:*)",
+      "Bash(env:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_fill_form",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_run_code",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_close",
+      "Bash(node -e \"const { skillsCount } = require\\('./src/data/artifacts/skills.ts'\\); console.log\\('Skills count:', skillsCount\\);\")",
+      "Bash(node -p \"const fs = require\\('fs'\\); const content = fs.readFileSync\\('skills.ts', 'utf8'\\); const matches = content.match\\(/{\\\\s*id:/g\\); console.log\\('Total skills objects:', matches ? matches.length : 0\\);\")"
+    ]
+  }
+}

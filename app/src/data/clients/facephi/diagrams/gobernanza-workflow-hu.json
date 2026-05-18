@@ -1,0 +1,250 @@
+{
+  "metadata": {
+    "id": "gobernanza-workflow-hu",
+    "title": "Flujo HU / Evolutivo — Gobernanza Jira",
+    "description": "Flujo de estados en Jira para Historias de Usuario y Evolutivos",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["governance", "workflow", "jira", "user-stories", "states"]
+  },
+  "configuration": {
+    "height": 700,
+    "exportName": "Flujo HU Evolutivo - Gobernanza Jira",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "todo",
+      "x": 350,
+      "y": 0,
+      "label": "TO DO",
+      "variant": "blue-solid",
+      "subtitle": "PM"
+    },
+    {
+      "id": "dup",
+      "x": 90,
+      "y": 40,
+      "label": "DUPLICATED",
+      "variant": "amber-solid"
+    },
+    {
+      "id": "rej",
+      "x": 90,
+      "y": 120,
+      "label": "REJECTED",
+      "variant": "orange-solid"
+    },
+    {
+      "id": "progress",
+      "x": 350,
+      "y": 170,
+      "label": "IN PROGRESS",
+      "variant": "blue-dark",
+      "subtitle": "DEV"
+    },
+    {
+      "id": "blocked",
+      "x": 680,
+      "y": 30,
+      "label": "BLOCKED",
+      "variant": "red-solid",
+      "subtitle": "ALL"
+    },
+    {
+      "id": "deploy-qa",
+      "x": 350,
+      "y": 340,
+      "label": "PENDING DEPLOY QA/STG",
+      "variant": "indigo-solid",
+      "subtitle": "PM"
+    },
+    {
+      "id": "qa-stg",
+      "x": 350,
+      "y": 480,
+      "label": "READY TO QA QA/STG",
+      "variant": "cyan-solid",
+      "subtitle": "QA"
+    },
+    {
+      "id": "deploy-pre",
+      "x": 350,
+      "y": 620,
+      "label": "PENDING DEPLOY PRE",
+      "variant": "indigo-solid",
+      "subtitle": "PM"
+    },
+    {
+      "id": "qa-prod",
+      "x": 700,
+      "y": 750,
+      "label": "READY TO QA PROD",
+      "variant": "cyan-solid",
+      "subtitle": "QA"
+    },
+    {
+      "id": "deploy-prod",
+      "x": 350,
+      "y": 810,
+      "label": "PENDING DEPLOY PROD",
+      "variant": "indigo-solid",
+      "subtitle": "PM"
+    },
+    {
+      "id": "finished",
+      "x": 350,
+      "y": 960,
+      "label": "FINISHED",
+      "variant": "emerald-solid",
+      "subtitle": "QA → PM"
+    },
+    {
+      "id": "reopened",
+      "x": 60,
+      "y": 1110,
+      "label": "REOPENED",
+      "variant": "purple-solid"
+    },
+    {
+      "id": "closed",
+      "x": 560,
+      "y": 1110,
+      "label": "CLOSED",
+      "variant": "green-solid"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "todo",
+      "target": "progress",
+      "label": "Start development"
+    },
+    {
+      "id": "e2",
+      "source": "todo",
+      "target": "dup",
+      "label": "Duplicate",
+      "sourceHandle": "source-left-top",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e3",
+      "source": "todo",
+      "target": "rej",
+      "label": "Reject",
+      "sourceHandle": "source-left-bottom"
+    },
+    {
+      "id": "e4",
+      "source": "progress",
+      "target": "blocked",
+      "label": "Blocked",
+      "sourceHandle": "source-right-top",
+      "targetHandle": "left",
+      "style": "red"
+    },
+    {
+      "id": "e4b",
+      "source": "blocked",
+      "target": "progress",
+      "label": "Unblock",
+      "type": "default",
+      "targetHandle": "target-right-bottom",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "e5",
+      "source": "progress",
+      "target": "deploy-qa",
+      "label": "Finish dev"
+    },
+    {
+      "id": "e6",
+      "source": "deploy-qa",
+      "target": "qa-stg",
+      "label": "Finish deploy to QA"
+    },
+    {
+      "id": "e7",
+      "source": "qa-stg",
+      "target": "deploy-pre",
+      "label": "Finish test QA"
+    },
+    {
+      "id": "e8",
+      "source": "deploy-pre",
+      "target": "deploy-prod",
+      "label": "Finish deploy to PRE"
+    },
+    {
+      "id": "e8b",
+      "source": "deploy-pre",
+      "target": "qa-prod",
+      "label": "Validación alta/crítica",
+      "sourceHandle": "right",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#dc2626"
+    },
+    {
+      "id": "e8c",
+      "source": "qa-prod",
+      "target": "deploy-prod",
+      "label": "OK",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e9",
+      "source": "deploy-prod",
+      "target": "finished",
+      "label": "Deploy to PROD"
+    },
+    {
+      "id": "e10",
+      "source": "finished",
+      "target": "closed",
+      "label": "Close",
+      "sourceHandle": "right",
+      "style": "green",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "e11",
+      "source": "finished",
+      "target": "reopened",
+      "label": "Reopen",
+      "sourceHandle": "source-left",
+      "style": "purple",
+      "stroke": "#9333ea"
+    },
+    {
+      "id": "e12",
+      "source": "reopened",
+      "target": "todo",
+      "label": "Re-assign",
+      "sourceHandle": "source-left",
+      "targetHandle": "left",
+      "style": "purple",
+      "stroke": "#9333ea"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-500", "label": "To Do (estado inicial)" },
+    { "color": "bg-blue-600", "label": "In Progress" },
+    { "color": "bg-red-600", "label": "Blocked" },
+    { "color": "bg-amber-400", "label": "Duplicated" },
+    { "color": "bg-orange-500", "label": "Rejected" },
+    { "color": "bg-indigo-400", "label": "Pending Deploy" },
+    { "color": "bg-cyan-500", "label": "Ready to QA" },
+    { "color": "bg-emerald-200", "label": "Finished" },
+    { "color": "bg-green-500", "label": "Closed" },
+    { "color": "bg-purple-400", "label": "Reopened" }
+  ],
+  "tables": []
+}

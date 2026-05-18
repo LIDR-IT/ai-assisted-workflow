@@ -1,0 +1,156 @@
+{
+  "metadata": {
+    "id": "testing-qa",
+    "title": "Testing y QA",
+    "description": "Metodología BDD, gestión de pruebas en TestRail, flujo de trabajo QA y ciclo de vida de bugs",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["testing", "qa", "bdd", "quality", "testcase", "bugs"]
+  },
+  "configuration": {
+    "height": 620,
+    "exportName": "Flujo_Trabajo_QA_SDLC",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "po",
+      "x": 200,
+      "y": 0,
+      "label": "1. PO crea User Stories",
+      "variant": "green",
+      "subtitle": "Con criterios de aceptación maduros"
+    },
+    {
+      "id": "tc",
+      "x": 200,
+      "y": 100,
+      "label": "2. QA genera Test Cases",
+      "variant": "sky",
+      "subtitle": "En TestRail · Vinculados a # US de Jira"
+    },
+    {
+      "id": "prep",
+      "x": 200,
+      "y": 200,
+      "label": "3. Pruebas preparadas",
+      "variant": "violet",
+      "subtitle": "ANTES del desarrollo (aspiración)"
+    },
+    {
+      "id": "dev",
+      "x": 200,
+      "y": 300,
+      "label": "4. Desarrollo completa tarea",
+      "variant": "orange",
+      "subtitle": "Cambio de estado en flujo de trabajo"
+    },
+    {
+      "id": "recv",
+      "x": 200,
+      "y": 400,
+      "label": "5. QA recibe tarea (Ready for QA)",
+      "variant": "sky",
+      "subtitle": "Señalización por cambio de estado"
+    },
+    {
+      "id": "exec",
+      "x": 200,
+      "y": 500,
+      "label": "6. QA ejecuta pruebas",
+      "variant": "emerald",
+      "subtitle": "Escenarios BDD + funcionales + regresión"
+    },
+    {
+      "id": "bugs",
+      "x": 200,
+      "y": 600,
+      "label": "7. Bugs reportados",
+      "variant": "red",
+      "subtitle": "Ciclo de vida propio por entorno"
+    },
+    {
+      "id": "done",
+      "x": 200,
+      "y": 700,
+      "label": "8. US no se cierra hasta validación QA",
+      "variant": "emerald",
+      "subtitle": "Definition of Done"
+    },
+    {
+      "id": "fix",
+      "x": 470,
+      "y": 600,
+      "label": "Dev corrige bug",
+      "variant": "orange"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "po",
+      "target": "tc",
+      "label": "Crea"
+    },
+    {
+      "id": "e2",
+      "source": "tc",
+      "target": "prep",
+      "label": "Genera"
+    },
+    {
+      "id": "e3",
+      "source": "prep",
+      "target": "dev",
+      "label": "Espera desarrollo"
+    },
+    {
+      "id": "e4",
+      "source": "dev",
+      "target": "recv",
+      "label": "Ready for QA"
+    },
+    {
+      "id": "e5",
+      "source": "recv",
+      "target": "exec",
+      "label": "Ejecuta"
+    },
+    {
+      "id": "e6",
+      "source": "exec",
+      "target": "bugs",
+      "label": "Reporta bugs"
+    },
+    {
+      "id": "e7",
+      "source": "bugs",
+      "target": "done",
+      "label": "Sin bugs pendientes"
+    },
+    {
+      "id": "e8",
+      "source": "bugs",
+      "target": "fix",
+      "label": "Asigna fix"
+    },
+    {
+      "id": "e9",
+      "source": "fix",
+      "target": "recv",
+      "label": "Re-test",
+      "style": "purple"
+    }
+  ],
+  "legend": [
+    { "color": "bg-green-200", "label": "Input (User Stories + Criterios)" },
+    { "color": "bg-sky-200", "label": "QA / TestRail" },
+    { "color": "bg-violet-200", "label": "BDD (Given/When/Then)" },
+    { "color": "bg-orange-200", "label": "Desarrollo completa tarea" },
+    { "color": "bg-emerald-200", "label": "Ejecución de pruebas" },
+    { "color": "bg-red-200", "label": "Bugs / Defectos" },
+    { "color": "bg-amber-200", "label": "Pain Points" }
+  ],
+  "tables": []
+}

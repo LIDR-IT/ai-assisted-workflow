@@ -1,0 +1,167 @@
+{
+  "metadata": {
+    "id": "entornos-despliegue",
+    "title": "Entornos y Despliegue",
+    "description": "Pipeline de entornos de despliegue — Primer proyecto en {{CLIENT_NAME}} con entornos y puertas de despliegue definidos",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["deployment", "environments", "pipeline", "dast", "devops"]
+  },
+  "configuration": {
+    "height": 300,
+    "exportName": "Pipeline_de_Entornos_y_Despliegue",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "dev",
+      "x": 0,
+      "y": 0,
+      "label": "Dev",
+      "variant": "blue",
+      "subtitle": "Codificación"
+    },
+    {
+      "id": "stg",
+      "x": 200,
+      "y": 0,
+      "label": "Staging",
+      "variant": "cyan",
+      "subtitle": "Integración"
+    },
+    {
+      "id": "uat",
+      "x": 400,
+      "y": 0,
+      "label": "UAT",
+      "variant": "amber",
+      "subtitle": "Aceptación"
+    },
+    {
+      "id": "pre",
+      "x": 600,
+      "y": 0,
+      "label": "Pre-prod",
+      "variant": "orange",
+      "subtitle": "Espejo prod"
+    },
+    {
+      "id": "prod",
+      "x": 800,
+      "y": 0,
+      "label": "Producción",
+      "variant": "emerald",
+      "subtitle": "En vivo"
+    },
+    {
+      "id": "dast-dev",
+      "x": 0,
+      "y": 110,
+      "label": "DAST",
+      "variant": "red",
+      "subtitle": "Escaneo dinámico"
+    },
+    {
+      "id": "dast-stg",
+      "x": 200,
+      "y": 110,
+      "label": "DAST",
+      "variant": "red",
+      "subtitle": "Escaneo dinámico"
+    },
+    {
+      "id": "dast-uat",
+      "x": 400,
+      "y": 110,
+      "label": "DAST",
+      "variant": "red",
+      "subtitle": "Escaneo dinámico"
+    },
+    {
+      "id": "dast-pre",
+      "x": 600,
+      "y": 110,
+      "label": "DAST",
+      "variant": "red",
+      "subtitle": "Escaneo dinámico"
+    },
+    {
+      "id": "dast-pro",
+      "x": 800,
+      "y": 110,
+      "label": "DAST",
+      "variant": "red",
+      "subtitle": "Escaneo dinámico"
+    }
+  ],
+  "edges": [
+    {
+      "id": "p1",
+      "source": "dev",
+      "target": "stg",
+      "label": "Deploy"
+    },
+    {
+      "id": "p2",
+      "source": "stg",
+      "target": "uat",
+      "label": "Deploy"
+    },
+    {
+      "id": "p3",
+      "source": "uat",
+      "target": "pre",
+      "label": "Deploy"
+    },
+    {
+      "id": "p4",
+      "source": "pre",
+      "target": "prod",
+      "label": "Deploy"
+    },
+    {
+      "id": "d1",
+      "source": "dev",
+      "target": "dast-dev",
+      "label": "Audita"
+    },
+    {
+      "id": "d2",
+      "source": "stg",
+      "target": "dast-stg",
+      "label": "Audita"
+    },
+    {
+      "id": "d3",
+      "source": "uat",
+      "target": "dast-uat",
+      "label": "Audita"
+    },
+    {
+      "id": "d4",
+      "source": "pre",
+      "target": "dast-pre",
+      "label": "Audita"
+    },
+    {
+      "id": "d5",
+      "source": "prod",
+      "target": "dast-pro",
+      "label": "Audita"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-200", "label": "Dev (Desarrollo)" },
+    { "color": "bg-cyan-200", "label": "Staging (Integración)" },
+    { "color": "bg-amber-200", "label": "UAT (Aceptación Usuario)" },
+    { "color": "bg-orange-200", "label": "Pre-producción" },
+    { "color": "bg-emerald-200", "label": "Producción" },
+    {
+      "color": "bg-red-200",
+      "label": "DAST — Dynamic Application Security Testing (Auditoría por entorno)"
+    },
+    { "color": "bg-slate-200", "label": "Escaneo automatizado" }
+  ],
+  "tables": []
+}

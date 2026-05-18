@@ -1,0 +1,350 @@
+{
+  "metadata": {
+    "id": "agents-architecture",
+    "title": "Arquitectura de Agentes IA — AS-IS Aramis + Oportunidad LIDR",
+    "description": "Mapa de las iniciativas individuales de IA en Aramis: Luis Marco (orquestador propio, ~70% flujo automatizado), Pedro (orquestador propio + Polaris Knowledge Agent MCP), MCP Redmine+GitLab del equipo de plataforma usado colectivamente, Dídac (code review dual con Claude Code), Alejandro (Google AI Studio). Hay además un proyecto activo de skills (DevOps + Tech Leads + Plataforma) y un canal Slack 'Cloud Coders' para compartir conocimiento. LIDR aparece como el framework común que conecta estas innovaciones aisladas.",
+    "version": "1.2.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["ai-agents", "mcp", "claude-code", "lidr-integration", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "partial",
+      "description": "Aramis tiene perfiles individuales construyendo soluciones IA avanzadas, pero sin framework común. La brecha no es de talento ni de tecnología — es de estandarización. Madurez de ingeniería 4/5; calidad output IA 'alta', integración 'media', guidelines 'no'. Existen ya iniciativas de estandarización (proyecto de skills + canal Cloud Coders).",
+      "evidence": "Discovery report sec. 2.3 + sec. 8 (innovadores internos) + sec. 9 (survey) · VTT ≈16:34 (Cloud Coders), ≈21:00/≈33:00 (proyecto skills DevOps + Tech Leads), ≈19:50 (Grafana MCP evaluado)"
+    }
+  },
+  "configuration": {
+    "height": 980,
+    "exportName": "Aramis_Agents_Architecture",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "luis-marco",
+      "x": 20,
+      "y": 0,
+      "label": "Luis Marco (PM Ventas)",
+      "variant": "emerald",
+      "subtitle": "Orquestador propio · ~70% flujo PM automatizado"
+    },
+    {
+      "id": "pedro",
+      "x": 360,
+      "y": 0,
+      "label": "Pedro (Product Lead Ventas)",
+      "variant": "blue",
+      "subtitle": "Orquestador propio + Polaris Knowledge MCP (en construcción)"
+    },
+    {
+      "id": "ramon",
+      "x": 700,
+      "y": 0,
+      "label": "Ramón (EM/Dev + Plataforma)",
+      "variant": "blue",
+      "subtitle": "MCP del equipo de plataforma · Lee tickets + código"
+    },
+    {
+      "id": "didac",
+      "x": 1040,
+      "y": 0,
+      "label": "Dídac (SE Backend)",
+      "variant": "cyan",
+      "subtitle": "Code review dual con Claude Code · ~2 semanas"
+    },
+    {
+      "id": "alejandro",
+      "x": 1380,
+      "y": 0,
+      "label": "Alejandro (Designer)",
+      "variant": "violet",
+      "subtitle": "Google AI Studio · Tokens ilimitados (Workspace)"
+    },
+    {
+      "id": "claude-code",
+      "x": 360,
+      "y": 180,
+      "label": "Claude Code (Anthropic)",
+      "variant": "blue",
+      "subtitle": "Adopción frecuente · Sin CLAUDE.md"
+    },
+    {
+      "id": "jetbrains-ai",
+      "x": 700,
+      "y": 180,
+      "label": "JetBrains AI / Junie",
+      "variant": "amber",
+      "subtitle": "Predecesor de Claude Code · Migración en curso"
+    },
+    {
+      "id": "google-ai",
+      "x": 1040,
+      "y": 180,
+      "label": "Google AI Studio",
+      "variant": "violet",
+      "subtitle": "Prototipos ideación · Figma → AI Studio → código"
+    },
+    {
+      "id": "no-claude-md",
+      "x": 20,
+      "y": 360,
+      "label": "Sin CLAUDE.md",
+      "variant": "red",
+      "subtitle": "PP-08 · BE, FE y Bridge · Resultado depende del developer"
+    },
+    {
+      "id": "no-guidelines",
+      "x": 360,
+      "y": 360,
+      "label": "Sin guidelines IA",
+      "variant": "red",
+      "subtitle": "PP-01 · Knowledge sharing 'Low' (survey)"
+    },
+    {
+      "id": "skills-project",
+      "x": 700,
+      "y": 360,
+      "label": "Proyecto de skills (en marcha)",
+      "variant": "amber",
+      "subtitle": "DevOps + Tech Leads + Plataforma · Centralización iniciada"
+    },
+    {
+      "id": "cloud-coders",
+      "x": 1040,
+      "y": 360,
+      "label": "Slack #Cloud Coders",
+      "variant": "green",
+      "subtitle": "Canal informal de tips IA · Práctica positiva"
+    },
+    {
+      "id": "redmine",
+      "x": 20,
+      "y": 540,
+      "label": "Redmine",
+      "variant": "indigo",
+      "subtitle": "Project management · Tickets"
+    },
+    {
+      "id": "polaris",
+      "x": 360,
+      "y": 540,
+      "label": "Polaris (CRM/ERP)",
+      "variant": "indigo",
+      "subtitle": "3 años · Brownfield · PHP + Symfony"
+    },
+    {
+      "id": "gitlab",
+      "x": 700,
+      "y": 540,
+      "label": "GitLab",
+      "variant": "indigo",
+      "subtitle": "Repo · Pipelines · Review"
+    },
+    {
+      "id": "grafana-mcp",
+      "x": 1040,
+      "y": 540,
+      "label": "Grafana MCP (evaluado)",
+      "variant": "amber",
+      "subtitle": "Mencionado como opción · No adoptado aún"
+    },
+    {
+      "id": "figma",
+      "x": 1380,
+      "y": 540,
+      "label": "Figma + Figma Make",
+      "variant": "indigo",
+      "subtitle": "Diseño · Design system"
+    },
+    {
+      "id": "lidr",
+      "x": 700,
+      "y": 720,
+      "label": "LIDR SDLC Framework",
+      "variant": "emerald",
+      "subtitle": "Lenguaje común · Skills · Commands · CLAUDE.md estandarizado"
+    },
+    {
+      "id": "outcome",
+      "x": 700,
+      "y": 870,
+      "label": "Innovación individual → ventaja de equipo",
+      "variant": "green",
+      "subtitle": "Tres iniciativas internas + canal + skills + LIDR como nexo"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "luis-marco",
+      "target": "claude-code",
+      "label": "Orquesta",
+      "style": "dashed"
+    },
+    { "id": "e2", "source": "pedro", "target": "claude-code", "label": "Knowledge MCP" },
+    {
+      "id": "e3",
+      "source": "ramon",
+      "target": "claude-code",
+      "label": "Vía MCP del equipo de plataforma"
+    },
+    { "id": "e4", "source": "didac", "target": "claude-code", "label": "Dual review" },
+    {
+      "id": "e5",
+      "source": "didac",
+      "target": "jetbrains-ai",
+      "label": "Antes (Junie)",
+      "style": "dashed"
+    },
+    { "id": "e6", "source": "alejandro", "target": "google-ai", "label": "Prototipa" },
+    {
+      "id": "e7",
+      "source": "claude-code",
+      "target": "no-claude-md",
+      "label": "Context gap",
+      "style": "red"
+    },
+    {
+      "id": "e8",
+      "source": "claude-code",
+      "target": "no-guidelines",
+      "label": "Policy gap",
+      "style": "red"
+    },
+    { "id": "e9", "source": "ramon", "target": "skills-project", "label": "Lidera iniciativa" },
+    {
+      "id": "e10",
+      "source": "skills-project",
+      "target": "cloud-coders",
+      "label": "Compartir progreso",
+      "style": "dashed"
+    },
+    {
+      "id": "e11",
+      "source": "google-ai",
+      "target": "cloud-coders",
+      "label": "Tips cross-rol",
+      "style": "dashed"
+    },
+    {
+      "id": "e12",
+      "source": "ramon",
+      "target": "redmine",
+      "label": "Lee tickets",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e13",
+      "source": "pedro",
+      "target": "polaris",
+      "label": "Consulta reglas de negocio",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-top"
+    },
+    {
+      "id": "e14",
+      "source": "ramon",
+      "target": "gitlab",
+      "label": "Lee diffs",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-top"
+    },
+    {
+      "id": "e15",
+      "source": "claude-code",
+      "target": "grafana-mcp",
+      "label": "Opción evaluada",
+      "style": "dashed"
+    },
+    { "id": "e16", "source": "alejandro", "target": "figma", "label": "Diseño → código manual" },
+    {
+      "id": "e17",
+      "source": "no-claude-md",
+      "target": "lidr",
+      "label": "Resuelve",
+      "sourceHandle": "right",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e18",
+      "source": "no-guidelines",
+      "target": "lidr",
+      "label": "Resuelve",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e19",
+      "source": "skills-project",
+      "target": "lidr",
+      "label": "Integra",
+      "style": "dashed"
+    },
+    { "id": "e20", "source": "cloud-coders", "target": "lidr", "label": "Amplifica" },
+    { "id": "e25", "source": "lidr", "target": "outcome", "label": "Habilita" }
+  ],
+  "legend": [
+    {
+      "color": "bg-emerald-200",
+      "label": "Fortaleza · Innovador de alto impacto / framework propuesto"
+    },
+    { "color": "bg-blue-200", "label": "Paso neutro · Innovador o herramienta IA actual" },
+    { "color": "bg-cyan-200", "label": "Iniciativa individual reciente" },
+    { "color": "bg-violet-200", "label": "Bloque de diseño / prototipo" },
+    { "color": "bg-amber-200", "label": "En transición / evaluado / iniciativa parcial" },
+    { "color": "bg-green-200", "label": "Práctica positiva existente (Cloud Coders)" },
+    { "color": "bg-red-200", "label": "Gap de estandarización" },
+    { "color": "bg-indigo-200", "label": "Sistema / herramienta core" }
+  ],
+  "tables": [
+    { "label": "Madurez de ingeniería (survey)", "value": "4/5" },
+    {
+      "label": "Tools IA en uso (survey)",
+      "value": "Claude Code (Anthropic) · JetBrains (en migración)"
+    },
+    { "label": "Tools de diseño (discovery)", "value": "Google AI Studio · Figma · Figma Make" },
+    { "label": "Calidad output IA (survey)", "value": "Alta" },
+    {
+      "label": "Integración en workflow (survey)",
+      "value": "Frecuente pero no estructurada · Medio"
+    },
+    { "label": "Adecuación de tooling (survey)", "value": "Bajo (no cubre necesidades)" },
+    {
+      "label": "Knowledge sharing (survey)",
+      "value": "Bajo · Pero existe canal #Cloud Coders (discovery)"
+    },
+    { "label": "Guidelines de IA claras (survey)", "value": "No" },
+    { "label": "Standards valuable (survey)", "value": "It would be helpful" },
+    {
+      "label": "AI use cases actuales (survey)",
+      "value": "Writing/improving tests · Refactoring · Code generation/autocomplete · Debugging · Documentation"
+    },
+    {
+      "label": "Riesgos IA percibidos (survey)",
+      "value": "Incorrect outputs reaching production · Copy/paste sin entendimiento · Inconsistent usage cross-teams"
+    },
+    { "label": "Actitud del equipo (survey)", "value": "Mixed, with clear early adopters" },
+    {
+      "label": "Early adopters identificados",
+      "value": "Sí (survey) · Luis Marco, Pedro, Ramón, Dídac (discovery)"
+    },
+    {
+      "label": "Proyecto de skills (discovery)",
+      "value": "En marcha · DevOps + Tech Leads + Plataforma"
+    },
+    { "label": "MCP Grafana", "value": "Evaluado como opción, no adoptado (Ramón)" },
+    {
+      "label": "Top 3 prioridades programa (survey)",
+      "value": "1) Dev speed & productivity · 2) Code quality consistente · 3) E2E coverage + maintainability"
+    },
+    {
+      "label": "Métricas de éxito esperadas (survey)",
+      "value": "↓ task lead time · ↑ features/sprint · ↓ bug-fix lead time · Fewer AI bugs than human-introduced"
+    },
+    {
+      "label": "Tribe Compras piloto (discovery)",
+      "value": "Driver propuesto (tentativo): Adrián Louro — pendiente confirmar por Álvaro/David"
+    },
+    { "label": "Riesgo de adopción (survey)", "value": "No ver la IA como game changer" }
+  ]
+}

@@ -1,26 +1,37 @@
 #!/bin/sh
 
 # =============================================================================
-# Pre-commit Hook - Husky
+# Pre-commit Hook (root)
 # =============================================================================
-# This hook runs before every commit to ensure code quality:
-# 1. Format staged files with prettier (via lint-staged)
-# 2. Block commits containing sensitive files
+# Unified hook for lidr-ecosystem monorepo (.agents/ + app/)
+#
+# 1. Block staged sensitive files (.env, .pem, .key, secrets/, credentials/)
+# 2. Run root lint-staged (prettier on .agents/, docs/, etc.)
+# 3. If app/ files are staged, also run app's lint-staged (ESLint + prettier)
 # =============================================================================
 
-# Run lint-staged for formatting
-npx lint-staged
-
-# Check for sensitive files in staged changes
+# 1. Sensitive files check (covers entire repo)
 SENSITIVE_PATTERNS=".env .pem .key secrets/ credentials/"
-
 for pattern in $SENSITIVE_PATTERNS; do
   if git diff --cached --name-only | grep -q "$pattern"; then
     echo "❌ ERROR: Attempting to commit sensitive file matching pattern: $pattern"
-    echo "   Remove the file from staging with: git reset HEAD <file>"
+    echo "   Remove from staging with: git reset HEAD <file>"
     echo "   Or add it to .gitignore if it shouldn't be tracked"
     exit 1
   fi
 done
+
+# 2. Root lint-staged (prettier on top-level files)
+npx lint-staged
+
+# 3. If app/ files are staged, run app's lint-staged too
+APP_STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^app/' || true)
+if [ -n "$APP_STAGED" ]; then
+  echo "📦 app/ files staged — running app lint-staged..."
+  (cd app && npx lint-staged) || {
+    echo "❌ App lint-staged failed"
+    exit 1
+  }
+fi
 
 echo "✅ Pre-commit checks passed"

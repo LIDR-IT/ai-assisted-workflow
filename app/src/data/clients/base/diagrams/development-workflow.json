@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "id": "development-workflow",
+    "title": "Development Workflow",
+    "description": "Generic development and delivery workflow adaptable to any technology stack",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["development", "workflow", "delivery"]
+  },
+  "configuration": {
+    "height": 700,
+    "exportName": "Development Workflow",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "planning",
+      "x": 50,
+      "y": 100,
+      "label": "Sprint Planning",
+      "variant": "purple",
+      "subtitle": "User stories & capacity planning"
+    },
+    {
+      "id": "development",
+      "x": 250,
+      "y": 100,
+      "label": "Development",
+      "variant": "blue",
+      "subtitle": "Coding & unit testing"
+    },
+    {
+      "id": "code-review",
+      "x": 450,
+      "y": 100,
+      "label": "Code Review",
+      "variant": "cyan",
+      "subtitle": "Peer review & quality gates"
+    },
+    {
+      "id": "qa-testing",
+      "x": 250,
+      "y": 250,
+      "label": "QA Testing",
+      "variant": "orange",
+      "subtitle": "Integration & system testing"
+    },
+    {
+      "id": "security-review",
+      "x": 450,
+      "y": 250,
+      "label": "Security Review",
+      "variant": "red",
+      "subtitle": "Vulnerability & compliance check"
+    },
+    {
+      "id": "staging-deploy",
+      "x": 650,
+      "y": 100,
+      "label": "Staging Deploy",
+      "variant": "indigo",
+      "subtitle": "Pre-production validation"
+    },
+    {
+      "id": "prod-deploy",
+      "x": 850,
+      "y": 100,
+      "label": "Production Deploy",
+      "variant": "green",
+      "subtitle": "Live release"
+    },
+    {
+      "id": "monitoring",
+      "x": 850,
+      "y": 250,
+      "label": "Monitoring",
+      "variant": "teal",
+      "subtitle": "Performance & health tracking"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "planning",
+      "target": "development",
+      "label": "Start Sprint"
+    },
+    {
+      "id": "e2",
+      "source": "development",
+      "target": "code-review",
+      "label": "Pull Request"
+    },
+    {
+      "id": "e3",
+      "source": "code-review",
+      "target": "qa-testing",
+      "label": "Approved"
+    },
+    {
+      "id": "e4",
+      "source": "qa-testing",
+      "target": "security-review",
+      "label": "QA Pass"
+    },
+    {
+      "id": "e5",
+      "source": "security-review",
+      "target": "staging-deploy",
+      "label": "Security Clear"
+    },
+    {
+      "id": "e6",
+      "source": "staging-deploy",
+      "target": "prod-deploy",
+      "label": "UAT Pass"
+    },
+    {
+      "id": "e7",
+      "source": "prod-deploy",
+      "target": "monitoring",
+      "label": "Monitor"
+    },
+    {
+      "id": "e8",
+      "source": "qa-testing",
+      "target": "development",
+      "label": "Bug Fix",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444"
+    },
+    {
+      "id": "e9",
+      "source": "code-review",
+      "target": "development",
+      "label": "Changes Requested",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#ef4444"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Planning" },
+    { "color": "bg-blue-200", "label": "Development" },
+    { "color": "bg-cyan-200", "label": "Code Quality" },
+    { "color": "bg-orange-200", "label": "QA Testing" },
+    { "color": "bg-red-200", "label": "Security" },
+    { "color": "bg-indigo-200", "label": "Pre-Production" },
+    { "color": "bg-green-200", "label": "Production" },
+    { "color": "bg-teal-200", "label": "Operations" }
+  ]
+}

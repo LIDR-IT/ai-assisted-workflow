@@ -1,0 +1,556 @@
+# Project Type Detection Patterns
+# Inspired by BMAD Method's 13-type classification system
+# Extended with biometric domain intelligence
+
+version: "1.0.0"
+last_updated: "2026-03-15"
+
+# Project Type Patterns (BMAD-Compatible)
+project_types:
+  web:
+    name: "Web Application"
+    indicators:
+      files:
+        required_any:
+          - "package.json"
+          - "yarn.lock"
+          - "pnpm-lock.yaml"
+        tech_patterns:
+          - "react"
+          - "vue"
+          - "angular"
+          - "svelte"
+          - "next.js"
+          - "nuxt"
+          - "vite"
+          - "webpack"
+      directories:
+        required_any:
+          - "src/"
+          - "app/"
+          - "pages/"
+          - "components/"
+          - "public/"
+          - "static/"
+      scripts:
+        indicators:
+          - "build"
+          - "dev"
+          - "start"
+          - "serve"
+    documentation_requirements:
+      critical:
+        - "prd-funcional"
+        - "prd-tecnico"
+        - "architecture-doc"
+        - "test-plan"
+      recommended:
+        - "ux-design-spec"
+        - "security-checklist"
+        - "performance-nfr"
+      optional:
+        - "accessibility-checklist"
+        - "seo-requirements"
+
+  mobile:
+    name: "Mobile Application"
+    indicators:
+      files:
+        required_any:
+          - "pubspec.yaml" # Flutter
+          - "package.json + react-native"
+          - "Podfile" # iOS
+          - "build.gradle" # Android
+          - "app.json" # Expo
+          - "capacitor.config.*" # Ionic
+      directories:
+        required_any:
+          - "ios/"
+          - "android/"
+          - "screens/"
+          - "navigation/"
+          - "mobile/"
+      tech_patterns:
+        - "flutter"
+        - "react-native"
+        - "ionic"
+        - "cordova"
+        - "expo"
+        - "xamarin"
+    documentation_requirements:
+      critical:
+        - "prd-funcional"
+        - "prd-tecnico"
+        - "test-plan"
+        - "ux-design-spec"
+      recommended:
+        - "security-checklist"
+        - "device-compatibility"
+        - "app-store-requirements"
+      optional:
+        - "push-notification-spec"
+        - "offline-mode-spec"
+
+  backend:
+    name: "Backend Service/API"
+    indicators:
+      files:
+        required_any:
+          - "requirements.txt" # Python
+          - "go.mod" # Go
+          - "pom.xml" # Java
+          - "Cargo.toml" # Rust
+          - "Gemfile" # Ruby
+          - "composer.json" # PHP
+          - "package.json + express|fastify|koa"
+      directories:
+        required_any:
+          - "api/"
+          - "services/"
+          - "controllers/"
+          - "models/"
+          - "routes/"
+          - "handlers/"
+          - "cmd/"
+      tech_patterns:
+        - "express"
+        - "django"
+        - "flask"
+        - "gin"
+        - "echo"
+        - "spring"
+        - "laravel"
+    documentation_requirements:
+      critical:
+        - "prd-tecnico"
+        - "architecture-doc"
+        - "api-documentation"
+        - "test-plan"
+      recommended:
+        - "security-checklist"
+        - "performance-nfr"
+        - "deployment-guide"
+      optional:
+        - "monitoring-setup"
+        - "scaling-guide"
+
+  cli:
+    name: "Command Line Tool"
+    indicators:
+      files:
+        required_any:
+          - "setup.py + click|argparse"
+          - "go.mod + cobra"
+          - "Cargo.toml + clap"
+          - "package.json + commander|yargs"
+      directories:
+        required_any:
+          - "cmd/"
+          - "cli/"
+          - "bin/"
+          - "commands/"
+      patterns:
+        - "#!/usr/bin/env"
+        - "main.go"
+        - "cli.py"
+        - "bin/*"
+    documentation_requirements:
+      critical:
+        - "user-guide"
+        - "installation-guide"
+        - "command-reference"
+      recommended:
+        - "examples"
+        - "troubleshooting"
+      optional:
+        - "plugin-development"
+
+  library:
+    name: "Library/SDK"
+    indicators:
+      files:
+        required_any:
+          - "setup.py + sdist"
+          - "package.json + publish"
+          - "Cargo.toml + crate"
+          - "*.gemspec"
+          - "pom.xml + deploy"
+      directories:
+        required_any:
+          - "lib/"
+          - "src/"
+          - "dist/"
+          - "build/"
+      patterns:
+        - "export"
+        - "module.exports"
+        - "__all__"
+        - "pub fn"
+    documentation_requirements:
+      critical:
+        - "api-reference"
+        - "installation-guide"
+        - "examples"
+      recommended:
+        - "migration-guide"
+        - "changelog"
+      optional:
+        - "contributing-guide"
+
+  desktop:
+    name: "Desktop Application"
+    indicators:
+      files:
+        required_any:
+          - "tauri.conf.json"
+          - "electron.js"
+          - "*.csproj + WPF"
+          - "CMakeLists.txt"
+          - "main.py + tkinter|qt"
+      directories:
+        required_any:
+          - "src-tauri/"
+          - "electron/"
+          - "renderer/"
+          - "main/"
+          - "resources/"
+      tech_patterns:
+        - "electron"
+        - "tauri"
+        - "qt"
+        - "wpf"
+        - "gtk"
+    documentation_requirements:
+      critical:
+        - "prd-funcional"
+        - "ux-design-spec"
+        - "installation-guide"
+      recommended:
+        - "security-checklist"
+        - "packaging-guide"
+      optional:
+        - "cross-platform-notes"
+
+  embedded:
+    name: "Embedded System"
+    indicators:
+      files:
+        required_any:
+          - "platformio.ini"
+          - "*.ino"
+          - "CMakeLists.txt + ARM"
+          - "mbed-os.lib"
+          - "*.ioc" # STM32
+      directories:
+        required_any:
+          - "firmware/"
+          - "drivers/"
+          - "hal/"
+          - "bsp/"
+      tech_patterns:
+        - "arduino"
+        - "mbed"
+        - "freertos"
+        - "zephyr"
+        - "esp32"
+    documentation_requirements:
+      critical:
+        - "hardware-spec"
+        - "firmware-guide"
+        - "pinout-diagram"
+      recommended:
+        - "calibration-guide"
+        - "troubleshooting"
+      optional:
+        - "schematic"
+
+  infra:
+    name: "Infrastructure/DevOps"
+    indicators:
+      files:
+        required_any:
+          - "*.tf"
+          - "*.tfvars"
+          - "Dockerfile"
+          - "docker-compose*.yml"
+          - "ansible.cfg"
+          - "k8s/*.yaml"
+      directories:
+        required_any:
+          - "terraform/"
+          - "k8s/"
+          - "ansible/"
+          - "charts/"
+          - "infra/"
+      tech_patterns:
+        - "terraform"
+        - "kubernetes"
+        - "ansible"
+        - "helm"
+        - "pulumi"
+    documentation_requirements:
+      critical:
+        - "infrastructure-guide"
+        - "deployment-guide"
+        - "security-checklist"
+      recommended:
+        - "disaster-recovery"
+        - "monitoring-setup"
+      optional:
+        - "cost-optimization"
+
+  data:
+    name: "Data Pipeline/Analytics"
+    indicators:
+      files:
+        required_any:
+          - "dbt_project.yml"
+          - "airflow.cfg"
+          - "requirements.txt + pandas|spark"
+          - "Pipfile + data"
+      directories:
+        required_any:
+          - "dags/"
+          - "pipelines/"
+          - "etl/"
+          - "notebooks/"
+          - "sql/"
+      tech_patterns:
+        - "airflow"
+        - "dbt"
+        - "spark"
+        - "pandas"
+        - "jupyter"
+    documentation_requirements:
+      critical:
+        - "data-architecture"
+        - "pipeline-guide"
+        - "data-dictionary"
+      recommended:
+        - "monitoring-guide"
+        - "data-quality"
+      optional:
+        - "ml-model-docs"
+
+  game:
+    name: "Game Development"
+    indicators:
+      files:
+        required_any:
+          - "*.unity"
+          - "project.godot"
+          - "*.uproject" # Unreal
+          - "game.json"
+      directories:
+        required_any:
+          - "Assets/"
+          - "Scenes/"
+          - "Scripts/"
+          - "Prefabs/"
+          - "Content/"
+      tech_patterns:
+        - "unity"
+        - "godot"
+        - "unreal"
+        - "pygame"
+        - "love2d"
+    documentation_requirements:
+      critical:
+        - "game-design-doc"
+        - "technical-design"
+        - "art-style-guide"
+      recommended:
+        - "level-design"
+        - "audio-guide"
+      optional:
+        - "mod-development"
+
+  extension:
+    name: "Browser Extension"
+    indicators:
+      files:
+        required:
+          - "manifest.json"
+        optional:
+          - "wxt.config.ts"
+          - "package.json + webextension"
+      directories:
+        required_any:
+          - "popup/"
+          - "content/"
+          - "background/"
+          - "extension/"
+      tech_patterns:
+        - "webextension"
+        - "chrome-extension"
+        - "firefox-addon"
+    documentation_requirements:
+      critical:
+        - "extension-guide"
+        - "permissions-doc"
+        - "store-submission"
+      recommended:
+        - "security-review"
+        - "privacy-policy"
+      optional:
+        - "cross-browser-notes"
+
+  # CUSTOM: Biometric Domain (Our Specialization)
+  biometric:
+    name: "Biometric Identity Verification"
+    indicators:
+      files:
+        patterns:
+          - "*biometric*"
+          - "*identity*"
+          - "*verification*"
+          - "*liveness*"
+          - "*face*"
+          - "*voice*"
+          - "*document*"
+        tech_indicators:
+          - "opencv"
+          - "tensorflow"
+          - "pytorch"
+          - "face-api"
+          - "web-speech"
+      directories:
+        biometric_patterns:
+          - "biometric/"
+          - "identity/"
+          - "verification/"
+          - "liveness/"
+          - "face-recognition/"
+          - "voice-recognition/"
+      content_patterns:
+        - "GDPR Article 9"
+        - "biometric template"
+        - "liveness detection"
+        - "anti-spoofing"
+        - "face verification"
+        - "voice verification"
+        - "document verification"
+        - "identity onboarding"
+      compliance_indicators:
+        - "PSD2"
+        - "eIDAS"
+        - "GDPR"
+        - "ISO 30107"
+        - "ISO 19795"
+    documentation_requirements:
+      critical:
+        - "prd-funcional"
+        - "prd-tecnico"
+        - "security-checklist"
+        - "vuln-assessment"
+        - "architecture-doc"
+      recommended:
+        - "pentest-report"
+        - "gdpr-compliance"
+        - "performance-benchmarks"
+        - "anti-spoofing-tests"
+      biometric_specific:
+        - "biometric-template-security"
+        - "liveness-accuracy-report"
+        - "false-accept-reject-analysis"
+        - "presentation-attack-tests"
+        - "privacy-impact-assessment"
+      regulatory:
+        - "gdpr-art9-compliance"
+        - "psd2-sca-compliance"
+        - "eidas-compliance"
+        - "iso-30107-compliance"
+
+# Technology Stack Patterns
+tech_stacks:
+  frontend:
+    react:
+      indicators: ["react", "jsx", "tsx"]
+      frameworks: ["next.js", "gatsby", "create-react-app"]
+    vue:
+      indicators: ["vue", "nuxt"]
+      frameworks: ["nuxt.js", "quasar", "vuetify"]
+    angular:
+      indicators: ["angular", "@angular"]
+      frameworks: ["ionic", "ng-bootstrap"]
+
+  backend:
+    node:
+      indicators: ["express", "fastify", "koa", "nest"]
+      databases: ["mongodb", "postgresql", "mysql"]
+    python:
+      indicators: ["django", "flask", "fastapi"]
+      databases: ["postgresql", "sqlite", "redis"]
+    go:
+      indicators: ["gin", "echo", "fiber"]
+      databases: ["postgresql", "redis", "mongodb"]
+
+  mobile:
+    react_native:
+      indicators: ["react-native", "expo"]
+      platforms: ["ios", "android"]
+    flutter:
+      indicators: ["flutter", "dart"]
+      platforms: ["ios", "android", "web"]
+
+  biometric:
+    computer_vision:
+      indicators: ["opencv", "dlib", "face-recognition"]
+      frameworks: ["tensorflow", "pytorch", "onnx"]
+    voice:
+      indicators: ["speech-recognition", "pyaudio", "web-speech-api"]
+      frameworks: ["speechbrain", "wav2vec"]
+    document:
+      indicators: ["tesseract", "ocr", "document-scanner"]
+      frameworks: ["paddle-ocr", "easyocr"]
+
+# Complexity Assessment Rules
+complexity_rules:
+  indicators:
+    low:
+      - "Single service/component"
+      - "< 10 features/endpoints"
+      - "Basic CRUD operations"
+      - "No external integrations"
+      - "< 5 team members"
+
+    medium:
+      - "Multiple services/components"
+      - "10-50 features/endpoints"
+      - "Some external integrations"
+      - "Authentication/authorization"
+      - "5-15 team members"
+
+    high:
+      - "Microservices architecture"
+      - "50+ features/endpoints"
+      - "Complex business logic"
+      - "Multiple external integrations"
+      - "Compliance requirements"
+      - "15+ team members"
+
+    very_high:
+      - "Distributed systems"
+      - "100+ features/endpoints"
+      - "Real-time processing"
+      - "Multi-region deployment"
+      - "Strict compliance (GDPR, PSD2)"
+      - "Biometric data processing"
+
+# Domain Classification
+domains:
+  biometric:
+    keywords: ["biometric", "identity", "verification", "liveness", "face", "voice", "document"]
+    compliance: ["GDPR Article 9", "PSD2", "eIDAS", "ISO 30107"]
+
+  fintech:
+    keywords: ["payment", "banking", "financial", "transaction", "wallet"]
+    compliance: ["PCI DSS", "PSD2", "SOX", "Basel III"]
+
+  healthcare:
+    keywords: ["health", "medical", "patient", "clinical", "healthcare"]
+    compliance: ["HIPAA", "FDA", "ISO 13485", "IEC 62304"]
+
+  enterprise:
+    keywords: ["enterprise", "business", "corporate", "saas", "b2b"]
+    compliance: ["SOC 2", "ISO 27001", "GDPR"]

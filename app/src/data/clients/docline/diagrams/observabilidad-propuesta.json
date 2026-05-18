@@ -1,0 +1,225 @@
+{
+  "metadata": {
+    "id": "observabilidad-propuesta",
+    "title": "Docline Observability Pipeline — Proposed",
+    "description": "Proposed HIPAA-compliant healthcare monitoring strategy: from basic Grafana logs to comprehensive clinical system observability with PHI-aware alerting and patient safety metrics",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": [
+      "monitoring",
+      "observability",
+      "grafana",
+      "alerting",
+      "metrics",
+      "proposed",
+      "hipaa-compliant",
+      "clinical-monitoring",
+      "patient-safety"
+    ]
+  },
+  "configuration": {
+    "height": 750,
+    "exportName": "Docline Observability Pipeline",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "current-state",
+      "x": 100,
+      "y": 50,
+      "label": "Current State: Basic Logging",
+      "variant": "amber",
+      "subtitle": "Log visualization only — no clinical alerts or healthcare dashboards"
+    },
+    {
+      "id": "app-services",
+      "x": 350,
+      "y": 50,
+      "label": "Healthcare Platform Services",
+      "variant": "purple",
+      "subtitle": "Telemedicine Platform, FHIR APIs, EHR Integration, Clinical Workflows"
+    },
+    {
+      "id": "log-collection",
+      "x": 100,
+      "y": 180,
+      "label": "HIPAA-Compliant Log Collection",
+      "variant": "blue",
+      "subtitle": "PHI-aware structured logging with audit trail requirements"
+    },
+    {
+      "id": "metrics-collection",
+      "x": 300,
+      "y": 180,
+      "label": "Clinical Metrics Collection",
+      "variant": "blue",
+      "subtitle": "Patient session metrics, FHIR API performance, telemedicine quality indicators"
+    },
+    {
+      "id": "health-checks",
+      "x": 500,
+      "y": 180,
+      "label": "Clinical System Health Checks",
+      "variant": "blue",
+      "subtitle": "Healthcare service availability, EHR connectivity & patient safety probes"
+    },
+    {
+      "id": "grafana-enhanced",
+      "x": 300,
+      "y": 330,
+      "label": "Healthcare Grafana Platform",
+      "variant": "green",
+      "subtitle": "Clinical dashboards + HIPAA-compliant alerting + PHI-aware log analysis"
+    },
+    {
+      "id": "dashboard-ops",
+      "x": 80,
+      "y": 470,
+      "label": "Clinical Operations Dashboard",
+      "variant": "teal",
+      "subtitle": "Healthcare service health, patient safety indicators, clinical system uptime"
+    },
+    {
+      "id": "dashboard-business",
+      "x": 300,
+      "y": 470,
+      "label": "Clinical Business Dashboard",
+      "variant": "teal",
+      "subtitle": "Patient consultations, clinical workflow efficiency, provider utilization"
+    },
+    {
+      "id": "dashboard-perf",
+      "x": 520,
+      "y": 470,
+      "label": "Clinical Performance Dashboard",
+      "variant": "teal",
+      "subtitle": "Telemedicine session quality, FHIR API latency, EHR integration performance"
+    },
+    {
+      "id": "alert-rules",
+      "x": 100,
+      "y": 600,
+      "label": "Clinical Alert Rules",
+      "variant": "red",
+      "subtitle": "Patient safety thresholds, PHI access anomalies, clinical system failures"
+    },
+    {
+      "id": "notification-channels",
+      "x": 350,
+      "y": 600,
+      "label": "Healthcare Notification Channels",
+      "variant": "red",
+      "subtitle": "Clinical incident alerts, HIPAA breach notifications, provider on-call system"
+    },
+    {
+      "id": "incident-response",
+      "x": 550,
+      "y": 600,
+      "label": "Clinical Incident Response",
+      "variant": "indigo",
+      "subtitle": "Healthcare-specific runbooks, patient safety protocols, HIPAA incident procedures"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "current-state",
+      "target": "log-collection",
+      "label": "Evolves Into",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#f59e0b"
+    },
+    {
+      "id": "e2",
+      "source": "app-services",
+      "target": "log-collection",
+      "label": "Structured Logs"
+    },
+    {
+      "id": "e3",
+      "source": "app-services",
+      "target": "metrics-collection",
+      "label": "Prometheus Metrics"
+    },
+    {
+      "id": "e4",
+      "source": "app-services",
+      "target": "health-checks",
+      "label": "HTTP Probes"
+    },
+    {
+      "id": "e5",
+      "source": "log-collection",
+      "target": "grafana-enhanced",
+      "label": "Log Data"
+    },
+    {
+      "id": "e6",
+      "source": "metrics-collection",
+      "target": "grafana-enhanced",
+      "label": "Time Series"
+    },
+    {
+      "id": "e7",
+      "source": "health-checks",
+      "target": "grafana-enhanced",
+      "label": "Status"
+    },
+    {
+      "id": "e8",
+      "source": "grafana-enhanced",
+      "target": "dashboard-ops",
+      "label": "Ops View"
+    },
+    {
+      "id": "e9",
+      "source": "grafana-enhanced",
+      "target": "dashboard-business",
+      "label": "Business View"
+    },
+    {
+      "id": "e10",
+      "source": "grafana-enhanced",
+      "target": "dashboard-perf",
+      "label": "Perf View"
+    },
+    {
+      "id": "e11",
+      "source": "grafana-enhanced",
+      "target": "alert-rules",
+      "label": "Threshold Breach"
+    },
+    {
+      "id": "e12",
+      "source": "alert-rules",
+      "target": "notification-channels",
+      "label": "Triggered Alert"
+    },
+    {
+      "id": "e13",
+      "source": "notification-channels",
+      "target": "incident-response",
+      "label": "Notify Team"
+    },
+    {
+      "id": "e14",
+      "source": "incident-response",
+      "target": "app-services",
+      "label": "Fix & Deploy",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#6366f1"
+    }
+  ],
+  "legend": [
+    { "color": "bg-amber-200", "label": "Current State (Logs Only)" },
+    { "color": "bg-purple-200", "label": "Application Layer" },
+    { "color": "bg-blue-200", "label": "Data Collection" },
+    { "color": "bg-green-200", "label": "Grafana Platform" },
+    { "color": "bg-teal-200", "label": "Dashboards" },
+    { "color": "bg-red-200", "label": "Alerting" },
+    { "color": "bg-indigo-200", "label": "Incident Response" }
+  ]
+}

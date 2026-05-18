@@ -1,0 +1,211 @@
+{
+  "metadata": {
+    "id": "gestion-portafolio",
+    "title": "Gestión de Portafolio (PME)",
+    "description": "Equipo de Portfolio Management que supervisa ~500 proyectos activos y define estándares organizacionales",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["portfolio", "management", "governance", "processes", "metrics"]
+  },
+  "configuration": {
+    "height": 580,
+    "exportName": "Doble Rol Equipo PME",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "pme",
+      "x": 280,
+      "y": 0,
+      "label": "Equipo PME",
+      "variant": "indigo",
+      "subtitle": "~500 proyectos activos bajo gestión"
+    },
+    {
+      "id": "portfolio",
+      "x": 80,
+      "y": 140,
+      "label": "PME (Portfolio Mgmt)",
+      "variant": "blue",
+      "subtitle": "Procedimientos · Mejores prácticas"
+    },
+    {
+      "id": "pm",
+      "x": 520,
+      "y": 140,
+      "label": "Project Manager (Interno)",
+      "variant": "green",
+      "subtitle": "Gestión delivery hacia clientes"
+    },
+    {
+      "id": "proc",
+      "x": 10,
+      "y": 300,
+      "label": "Define Procesos",
+      "variant": "violet",
+      "subtitle": "Estándares organizacionales"
+    },
+    {
+      "id": "monitor",
+      "x": 250,
+      "y": 300,
+      "label": "Monitorea Plazos",
+      "variant": "amber",
+      "subtitle": "Todos los proyectos"
+    },
+    {
+      "id": "delivery",
+      "x": 520,
+      "y": 300,
+      "label": "Gestiona Delivery",
+      "variant": "amber",
+      "subtitle": "Rastrear entregas vs compromisos"
+    },
+    {
+      "id": "metrics",
+      "x": 420,
+      "y": 470,
+      "label": "Métricas e Indicadores",
+      "variant": "emerald",
+      "subtitle": "Equipo PME (4 miembros)"
+    },
+    {
+      "id": "360",
+      "x": 80,
+      "y": 470,
+      "label": "LIDR Framework Implementation",
+      "variant": "cyan",
+      "subtitle": "Validates methodology for scaling"
+    },
+    {
+      "id": "wp-ret1",
+      "x": 790,
+      "y": 490,
+      "label": "Feedback Point 1",
+      "variant": "slate-solid"
+    },
+    {
+      "id": "wp-ret2",
+      "x": 790,
+      "y": 20,
+      "label": "Feedback Point 2",
+      "variant": "slate-solid"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "pme",
+      "target": "portfolio",
+      "label": "Rol 1"
+    },
+    {
+      "id": "e2",
+      "source": "pme",
+      "target": "pm",
+      "label": "Rol 2"
+    },
+    {
+      "id": "e3",
+      "source": "portfolio",
+      "target": "proc",
+      "label": "Define"
+    },
+    {
+      "id": "e3b",
+      "source": "portfolio",
+      "target": "monitor",
+      "label": "Monitorea"
+    },
+    {
+      "id": "e5",
+      "source": "pm",
+      "target": "delivery",
+      "label": "Ejecuta"
+    },
+    {
+      "id": "e6",
+      "source": "proc",
+      "target": "metrics",
+      "label": "Alimenta"
+    },
+    {
+      "id": "e6b",
+      "source": "monitor",
+      "target": "metrics",
+      "label": "Alimenta"
+    },
+    {
+      "id": "e7",
+      "source": "delivery",
+      "target": "metrics",
+      "label": "Alimenta"
+    },
+    {
+      "id": "e10",
+      "source": "metrics",
+      "target": "360",
+      "label": "Define éxito del piloto",
+      "sourceHandle": "source-left-top",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e11",
+      "source": "360",
+      "target": "metrics",
+      "label": "Resultados del piloto",
+      "sourceHandle": "source-right-bottom",
+      "targetHandle": "target-left-bottom"
+    },
+    {
+      "id": "e12a",
+      "source": "metrics",
+      "target": "wp-ret1",
+      "label": "",
+      "sourceHandle": "source-right-top",
+      "targetHandle": "left",
+      "style": "dashed",
+      "markerEnd": false
+    },
+    {
+      "id": "e12b",
+      "source": "wp-ret1",
+      "target": "wp-ret2",
+      "label": "",
+      "sourceHandle": "source-top",
+      "targetHandle": "target-bottom",
+      "style": "dashed",
+      "markerEnd": false
+    },
+    {
+      "id": "e12c",
+      "source": "wp-ret2",
+      "target": "pme",
+      "label": "Retroalimenta",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right-top",
+      "style": "dashed"
+    }
+  ],
+  "legend": [
+    { "color": "bg-indigo-200", "label": "Equipo PME" },
+    { "color": "bg-blue-200", "label": "Rol: Portfolio Management" },
+    { "color": "bg-green-200", "label": "Rol: Project Manager" },
+    { "color": "bg-amber-200", "label": "Gestión de Delivery" },
+    { "color": "bg-violet-200", "label": "Gobernanza / Procesos" },
+    { "color": "bg-emerald-200", "label": "Métricas e Indicadores" },
+    { "color": "bg-cyan-200", "label": "Transparencia / Documentación" }
+  ],
+  "tables": [
+    { "label": "Equipo PME", "value": "4 miembros especialistas en Portfolio Management" },
+    { "label": "Proyectos activos", "value": "~500 bajo gestión simultánea" },
+    { "label": "Cumplimiento de plazos", "value": "% de proyectos entregados a tiempo" },
+    { "label": "Adherencia a procesos", "value": "Auditoría trimestral de cumplimiento" },
+    { "label": "Satisfacción del cliente", "value": "NPS interno por proyecto" },
+    {
+      "label": "Riesgo principal",
+      "value": "Inconsistencia en procesos - Templates estandarizados"
+    }
+  ]
+}

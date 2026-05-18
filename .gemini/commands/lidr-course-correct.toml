@@ -1,0 +1,466 @@
+description = "Mid-project course correction for managing deviations and realigning projects"
+
+prompt = """
+
+<!--
+COMMAND: course-correct
+VERSION: 1.0.0
+AUTHOR: SDLC Team
+LAST UPDATED: 2026-03-15
+
+PURPOSE:
+Mid-project course correction orchestrator following LIDR SDLC course-correction pattern.
+Detects project drift (scope, timeline, budget, quality) and guides realignment with
+stakeholder involvement. 60% automation level targeting 120+ hours/year ROI.
+
+USAGE:
+  /course-correct {{CLIENT_CODE}}-sdk scope        -> Scope drift correction
+  /course-correct mobile-app timeline     -> Timeline realignment
+  /course-correct identity-platform quality -> Quality degradation recovery
+  /course-correct domain-specific-api full      -> Comprehensive review
+
+ARGUMENTS:
+  project-name: Project identifier (required)
+  correction-type: scope | timeline | budget | quality | full (optional, defaults to 'full')
+
+CORRECTION TYPES:
+  scope     = Scope creep/reduction detection and management
+  timeline  = Schedule deviation analysis and recovery planning
+  budget    = Resource allocation realignment
+  quality   = Technical debt and quality degradation recovery
+  full      = Comprehensive 360° project health assessment
+
+REQUIREMENTS:
+  - .claude/rules/ configured (org.md, project.md, workflows.md)
+  - Current sprint data accessible via Jira/tools
+  - Previous retrospective and risk-log data available
+  - Stakeholder contact information in project documentation
+
+RELATED SKILLS:
+  retrospective - For data-driven analysis foundation
+  risk-log      - For risk reassessment and mitigation updates
+  epic-review   - For scope and delivery analysis
+
+OUTPUT TEMPLATE:
+  command-specific output (no template needed) (new template)
+
+AUTOMATION LEVEL: 60%
+- Automated: Data collection, drift detection, pattern analysis
+- Human: Stakeholder decisions, priority changes, resource reallocation
+
+ROI TARGET: 120+ hours/year
+- Prevents project failures through early intervention
+- Reduces emergency firefighting with proactive corrections
+- Standardizes course correction across portfolio
+
+CHANGELOG:
+  v1.0.0 (2026-03-15): Initial release - LIDR SDLC pattern implementation
+-->
+
+# Course Correction for Project $1
+
+Load context from rules FIRST:
+- @../rules/org.md -> organizational standards, escalation paths, change management
+- @../rules/project.md -> current project context, team, roadmap
+- @../rules/workflows.md -> role permissions, stakeholder communication
+- @../rules/documentation.md -> documentation update requirements
+
+## Step 1: Validate Input and Authorization
+
+**Validate project name:**
+If "$1" is empty or invalid:
+  ERROR: Project name required.
+  Usage: /course-correct [project-name] [scope|timeline|budget|quality|full]
+  Exit.
+
+**Determine correction type:**
+If "$2" is empty: set correction_type = "full"
+Else: set correction_type = "$2"
+
+Valid correction types: scope, timeline, budget, quality, full
+If invalid type provided:
+  ERROR: Invalid correction type. Must be: scope | timeline | budget | quality | full
+  Exit.
+
+**Verify role authorization:**
+Check @../rules/workflows.md for authorized roles.
+Authorized roles for /course-correct: PME, PO, Tech Lead.
+
+Use AskUserQuestion to confirm role and urgency:
+- question: "¿Cuál es tu rol y el nivel de urgencia de esta corrección de curso?"
+- header: "Autorización y Contexto"
+- options:
+  - PME - Urgencia Alta (Riesgo de fallo del proyecto)
+  - PME - Urgencia Media (Deriva significativa detectada)
+  - PO - Urgencia Alta (Scope creep crítico)
+  - PO - Urgencia Media (Realineación de prioridades)
+  - Tech Lead - Urgencia Alta (Deuda técnica crítica)
+  - Tech Lead - Urgencia Media (Calidad en degradación)
+
+If role not authorized -> "Solo PME, PO y Tech Lead pueden ejecutar /course-correct." Exit.
+
+## Step 2: Drift Detection and Analysis
+
+**Load current project state:**
+- Read project documentation: `docs/projects/$1.md` (if exists)
+- Read latest retrospective: search for most recent retrospective output
+- Read current risk log: search for most recent risk-log output
+- Read current sprint status from team tools/Jira (if available)
+
+**Automated drift detection based on correction type:**
+
+### If correction_type = "scope" OR "full":
+**Scope Drift Analysis:**
+- Compare current epic/user stories against original project scope (from business case)
+- Count: total_stories_original vs total_stories_current
+- Analyze: stories added without formal change request
+- Calculate scope_creep_percentage = ((current - original) / original) * 100
+- Flag: stories >40h that weren't in original scope
+- Red flags: >20% scope increase, unplanned integrations, new technical requirements
+
+**Evidence to collect:**
+- Original business case scope section
+- Current sprint backlog and epic breakdown
+- Change requests (approved vs unapproved scope additions)
+- Resource allocation changes
+
+### If correction_type = "timeline" OR "full":
+**Timeline Drift Analysis:**
+- Compare original project timeline vs current trajectory
+- Calculate: planned_completion vs projected_completion (based on current velocity)
+- Analyze: sprints with <80% completion, work carryover trends
+- Calculate velocity_variance = current_velocity / planned_velocity
+- Red flags: >30% timeline overrun, multiple sprint goal failures, blocked dependencies
+
+**Evidence to collect:**
+- Original project timeline/milestones
+- Sprint velocity over last 3+ sprints
+- Outstanding dependencies and blockers
+- Resource availability changes (vacation, sick leave, departures)
+
+### If correction_type = "budget" OR "full":
+**Budget/Resource Drift Analysis:**
+- Compare planned vs actual resource allocation
+- Analyze: overtime trends, external vendor costs, tool/license additions
+- Calculate: budget_variance_percentage = ((actual - planned) / planned) * 100
+- Red flags: >15% budget overrun, unplanned tool purchases, consultant time
+
+**Evidence to collect:**
+- Original budget allocation by sprint/phase
+- Actual time tracking data
+- Vendor/tool cost increases
+- Team capacity changes (additions, departures)
+
+### If correction_type = "quality" OR "full":
+**Quality Drift Analysis:**
+- Analyze technical debt trends from latest retrospectives
+- Review: bug escape rate, test coverage degradation, code quality metrics
+- Calculate: quality_degradation_score based on multiple factors
+- Red flags: increasing bug counts, test coverage <80%, performance regressions
+
+**Evidence to collect:**
+- Recent bug reports and escape rates
+- Code quality metrics (SonarQube, linting results)
+- Test coverage trends
+- Performance metrics and user feedback
+
+## Step 3: Stakeholder Impact Assessment
+
+**Identify affected stakeholders based on drift type:**
+
+Use AskUserQuestion to gather stakeholder context:
+- question: "¿Quiénes son los stakeholders principales afectados por esta deriva?"
+- header: "Identificación de Stakeholders"
+- options:
+  - Sponsor/CTO (budget/timeline impact)
+  - Product Manager (scope/feature impact)
+  - Engineering Team (quality/technical impact)
+  - QA Team (quality/testing impact)
+  - Customer Success (user impact)
+  - Legal/Compliance (regulatory impact)
+  - All of the above (comprehensive impact)
+
+**For each identified stakeholder:**
+- Document their primary concern (scope, timeline, budget, quality)
+- Assess impact level: High, Medium, Low
+- Determine communication urgency: Immediate, This Sprint, This Week
+
+## Step 4: Root Cause Analysis
+
+**Automated pattern analysis:**
+Based on the drift type and evidence collected, analyze common root causes:
+
+### Scope Drift Root Causes:
+- Unclear initial requirements (check: PRD quality, stakeholder alignment)
+- Customer feedback incorporation without change control
+- Technical discovery revealing new requirements
+- Competitive pressure driving feature additions
+- Stakeholder authority confusion (multiple decision makers)
+
+### Timeline Drift Root Causes:
+- Underestimated complexity (check: original estimates vs reality)
+- Team capacity overestimation (planned vs actual availability)
+- External dependencies delays (vendor, legal, compliance)
+- Technical challenges/refactoring needs
+- Quality issues requiring rework
+
+### Budget Drift Root Causes:
+- Scope creep without budget adjustment
+- Resource cost increases (salary, vendor rates)
+- Unplanned tool/infrastructure needs
+- Extended timeline requiring more resources
+- Expertise gaps requiring consulting
+
+### Quality Drift Root Causes:
+- Pressure to deliver faster (check: recent sprint commitments)
+- Technical debt accumulation
+- Testing shortcuts
+- Team knowledge gaps
+- Insufficient code review rigor
+
+**Generate root cause hypothesis:**
+Based on the evidence and patterns, generate 2-3 most likely root causes with supporting evidence.
+
+## Step 5: Correction Strategy Development
+
+**For each identified drift, develop correction strategies:**
+
+### Scope Correction Strategies:
+- **Freeze scope:** No new features until current sprint completes
+- **Prioritize ruthlessly:** Use MoSCoW to cut low-value features
+- **Formal change control:** All scope changes require sponsor approval
+- **Split project:** Move non-essential features to Phase 2
+- **Resource addition:** Add team members (if budget allows)
+
+### Timeline Correction Strategies:
+- **Parallel workstreams:** Identify tasks that can be parallelized
+- **Scope reduction:** Cut features to meet original timeline
+- **Resource reallocation:** Move people from other projects
+- **Milestone adjustment:** Negotiate new delivery dates with stakeholders
+- **Risk mitigation:** Address blockers aggressively
+
+### Budget Correction Strategies:
+- **Scope reduction:** Cut features to fit budget
+- **Resource optimization:** Replace expensive resources with internal
+- **Tool consolidation:** Eliminate redundant tools/services
+- **Timeline acceleration:** Deliver faster to reduce resource costs
+- **Budget increase:** Request additional funding with business justification
+
+### Quality Correction Strategies:
+- **Technical debt sprint:** Dedicate 1 sprint to debt paydown
+- **Testing reinforcement:** Add automated tests, increase coverage
+- **Code review rigor:** Implement stricter review standards
+- **Refactoring plan:** Systematic improvement of problem areas
+- **Quality gates:** Implement stricter DoD/acceptance criteria
+
+## Step 6: Stakeholder Alignment Session Plan
+
+**Generate alignment session plan:**
+
+**Session agenda template:**
+1. **Current State Presentation (10 min):** Present drift analysis with data
+2. **Root Cause Discussion (15 min):** Review hypotheses, gather input
+3. **Strategy Options (20 min):** Present correction strategies with pros/cons
+4. **Impact Assessment (10 min):** Discuss business/technical implications
+5. **Decision Making (15 min):** Choose strategy and assign owners
+6. **Action Planning (10 min):** Define next steps with timeline
+
+**Required attendees based on drift type:**
+- Scope: Sponsor, PO, key stakeholders
+- Timeline: PME, PO, Tech Lead, Sponsor
+- Budget: PME, Sponsor, Finance (if applicable)
+- Quality: Tech Lead, QA Lead, Sponsor
+- Full: All above stakeholders
+
+**Pre-work for attendees:**
+- Send course correction report 24h before meeting
+- Include specific questions for each stakeholder role
+- Request prepared position on suggested strategies
+
+## Step 7: Generate Course Correction Report
+
+**Create comprehensive report using the following structure:**
+
+markdown
+# Course Correction Report: $1
+
+| Campo | Valor |
+|-------|-------|
+| **Proyecto** | $1 |
+| **Tipo de Corrección** | [scope/timeline/budget/quality/full] |
+| **Solicitado por** | [role]: [name] |
+| **Fecha** | [today] |
+| **Urgencia** | [high/medium based on Step 1] |
+
+## Executive Summary
+
+### Drift Detected
+- **Scope:** [percentage change and main additions]
+- **Timeline:** [projected delay and key factors]
+- **Budget:** [variance percentage and main drivers]
+- **Quality:** [degradation score and critical issues]
+
+### Recommended Action
+[Primary strategy recommendation with rationale]
+
+### Stakeholder Impact
+- **High Impact:** [list stakeholders requiring immediate communication]
+- **Medium Impact:** [list stakeholders requiring weekly updates]
+
+## Detailed Analysis
+
+### Current State vs. Original Plan
+[Data comparison tables for relevant drift types]
+
+### Root Cause Assessment
+| Root Cause | Evidence | Probability | Impact |
+|-----------|----------|-------------|--------|
+| [cause 1] | [evidence] | High/Med/Low | High/Med/Low |
+
+### Correction Strategies
+
+#### Strategy 1: [Name] (Recommended)
+- **Description:** [detailed description]
+- **Impact:** [timeline/budget/scope impacts]
+- **Risks:** [implementation risks]
+- **Owner:** [role]
+- **Timeline:** [implementation timeline]
+
+#### Strategy 2: [Name] (Alternative)
+- **Description:** [detailed description]
+- **Impact:** [timeline/budget/scope impacts]
+- **Risks:** [implementation risks]
+- **Owner:** [role]
+- **Timeline:** [implementation timeline]
+
+## Stakeholder Alignment Plan
+
+### Required Decisions
+1. [Decision 1] - Owner: [stakeholder] - Deadline: [date]
+2. [Decision 2] - Owner: [stakeholder] - Deadline: [date]
+
+### Communication Plan
+| Stakeholder | Message | Medium | Timeline |
+|------------|---------|--------|----------|
+| [name/role] | [key message] | [email/meeting/slack] | [when] |
+
+## Action Items
+
+| # | Action | Owner | Deadline | Success Metric |
+|---|--------|-------|----------|----------------|
+| 1 | [specific action] | [role] | [date] | [how we'll verify success] |
+
+## Monitoring and Follow-up
+
+### Health Metrics to Track
+- [metric 1]: Target [value] by [date]
+- [metric 2]: Target [value] by [date]
+
+### Follow-up Schedule
+- **1 Week:** Progress check on critical actions
+- **2 Weeks:** Stakeholder update on strategy implementation
+- **Sprint End:** Full health assessment and next course correction check
+
+## Updated Risk Register
+[Integration with risk-log skill - updated risks based on correction strategy]
+
+## Lessons Learned (for Future Projects)
+[Key insights for preventing similar drift in future projects]
+
+
+**Save report to:** `.claude/course-corrections/course-correct-$1-[today].local.md`
+
+## Step 8: Integration with Existing Skills
+
+**Update project documentation:**
+If project docs exist at `docs/projects/$1.md`:
+- Add course correction reference to project status
+- Update risk log if risk-log outputs exist
+- Update project timeline/milestones if changed
+
+**Generate follow-up skill recommendations:**
+Based on correction strategy chosen:
+- If scope changed: "Run /validate-requirements to update RFs"
+- If timeline changed: "Run sprint-capacity skill to recalculate"
+- If quality issues: "Run tech-debt skill to prioritize improvements"
+- If budget changed: "Update business case with new projections"
+
+**Create retrospective integration:**
+Add findings to next retrospective agenda as dedicated discussion item.
+
+## Step 9: Immediate Actions and Escalation
+
+**Based on urgency level from Step 1:**
+
+### High Urgency Actions:
+- Send course correction report to stakeholders within 2 hours
+- Schedule alignment session within 24 hours
+- Create Jira/project management tickets for immediate action items
+- Notify sponsor/CTO of critical project risk
+
+### Medium Urgency Actions:
+- Send course correction report within 1 business day
+- Schedule alignment session within 1 week
+- Create action items for next sprint planning
+- Add to PME project portfolio review
+
+**Escalation triggers:**
+- Budget variance >25%: Automatic sponsor notification
+- Timeline delay >6 weeks: CTO notification required
+- Quality score <60%: Technical review committee escalation
+- Multiple drift types detected: Executive committee review
+
+## Step 10: Success Metrics and ROI Tracking
+
+**Define success metrics for this course correction:**
+- **Drift reduction:** Target reduction in variance within 2 sprints
+- **Stakeholder satisfaction:** Alignment session success rating >4/5
+- **Velocity recovery:** Return to planned velocity within 3 sprints
+- **Quality recovery:** Defect rate <5% within 2 sprints
+
+**ROI calculation:**
+- **Cost of course correction:** [hours spent on analysis + alignment session]
+- **Cost of no action:** [projected overrun/failure cost]
+- **ROI ratio:** [prevented cost / correction cost]
+
+**Add to automation success tracking:**
+Log this course correction execution for ROI analysis and pattern recognition to improve future automated drift detection.
+
+## Final Output Summary
+
+Present the course correction summary:
+
+
+## /course-correct $1 — Completed
+
+Proyecto: $1
+Tipo: [correction_type]
+Deriva detectada: [summary of main issues]
+Estrategia recomendada: [primary strategy]
+Stakeholders impactados: [count] ([high priority list])
+
+Action Items: [count] items assigned
+Alignment Session: Scheduled for [date] with [attendees]
+Follow-up: Course correction review in [timeframe]
+
+Report saved: .claude/course-corrections/course-correct-$1-[date].local.md
+
+Next recommended commands:
+- /advance-gate [N] (after corrective actions implemented)
+- /validate-project-docs (after documentation updates)
+- Skills to run: [skill recommendations based on drift type]
+
+
+**Automation Success Metrics:**
+- Data collection: 100% automated
+- Analysis generation: 90% automated
+- Stakeholder identification: 70% automated
+- Strategy recommendation: 80% automated
+- Overall automation level: 60% (meeting target)
+
+**Expected ROI contribution:**
+- Early drift detection prevents 1-2 failed projects per year: 2000+ hours saved
+- Standardized course correction reduces emergency firefighting: 500+ hours saved
+- Proactive stakeholder management reduces conflict resolution: 300+ hours saved
+- **Total estimated ROI: 2800+ hours/year** (exceeding 120+ hour target)
+"""

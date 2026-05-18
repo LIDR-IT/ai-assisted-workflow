@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "id": "requisitos-funcionales",
+    "title": "Requisitos Funcionales — AS-IS Aramis",
+    "description": "Aramis adopta Gherkin/BDD para criterios de aceptación dentro del ticket, fortaleza confirmada en discovery. La debilidad es la ausencia de gate ATDD pre-desarrollo, sin trazabilidad formal entre requisito y código, y sin Definition of Done explícita.",
+    "version": "1.1.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["functional-requirements", "bdd", "gherkin", "dod", "trazabilidad", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "partial",
+      "description": "Gherkin presente en tickets (Excelente). Pero sin validación QA antes de Ready for Dev, sin trazabilidad entre requisito y código, y la DoD vive en cabezas individuales.",
+      "evidence": "Pre-kickoff survey l.27, l.38 (AC most of the time, not 100% accurate) + Discovery report PP-03, sec. 4 (Gherkin, DoR, DoD, trazabilidad ausentes; Sheila test plans)"
+    }
+  },
+  "configuration": {
+    "height": 760,
+    "exportName": "Aramis_RFs_AS_IS",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "ticket",
+      "x": 400,
+      "y": 0,
+      "label": "Ticket Redmine",
+      "variant": "blue",
+      "subtitle": "PM/EM redacta · Linkea iniciativa"
+    },
+    {
+      "id": "gherkin",
+      "x": 400,
+      "y": 120,
+      "label": "AC en Gherkin (BDD)",
+      "variant": "emerald",
+      "subtitle": "Given / When / Then · Adoptado consistentemente"
+    },
+    {
+      "id": "ambiguity",
+      "x": 20,
+      "y": 250,
+      "label": "Ambigüedad o vacío",
+      "variant": "amber",
+      "subtitle": "AC 'most of the time' completos (no siempre)"
+    },
+    {
+      "id": "no-atdd",
+      "x": 400,
+      "y": 250,
+      "label": "Sin gate ATDD pre-Dev",
+      "variant": "red",
+      "subtitle": "PP-03 · QA no valida los AC antes de marcar Ready"
+    },
+    {
+      "id": "qa-doc",
+      "x": 780,
+      "y": 250,
+      "label": "Test plans (Sheila)",
+      "variant": "green",
+      "subtitle": "QA Engineer · Único estándar documental existente"
+    },
+    {
+      "id": "ready",
+      "x": 400,
+      "y": 380,
+      "label": "Ready for Dev",
+      "variant": "indigo",
+      "subtitle": "Asignación a developer"
+    },
+    {
+      "id": "no-rtm",
+      "x": 20,
+      "y": 510,
+      "label": "Sin trazabilidad",
+      "variant": "amber",
+      "subtitle": "Requisito → código sin enlace explícito"
+    },
+    {
+      "id": "dev",
+      "x": 400,
+      "y": 510,
+      "label": "Desarrollo",
+      "variant": "violet",
+      "subtitle": "Code review valida AC inconsistentemente"
+    },
+    {
+      "id": "no-dod",
+      "x": 780,
+      "y": 510,
+      "label": "Sin DoD formal",
+      "variant": "red",
+      "subtitle": "Cada dev interpreta 'hecho' diferente"
+    },
+    {
+      "id": "outcome",
+      "x": 400,
+      "y": 640,
+      "label": "Entrega con criterios parciales",
+      "variant": "red",
+      "subtitle": "Bugs llegan a QA o soporte (PP-02)"
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "ticket", "target": "gherkin", "label": "Escribe AC" },
+    {
+      "id": "e2",
+      "source": "gherkin",
+      "target": "ambiguity",
+      "label": "Riesgo",
+      "style": "dashed",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right-top"
+    },
+    { "id": "e3", "source": "gherkin", "target": "no-atdd", "label": "Falta gate", "style": "red" },
+    {
+      "id": "e4",
+      "source": "gherkin",
+      "target": "qa-doc",
+      "label": "Sheila documenta test plan",
+      "style": "dashed",
+      "sourceHandle": "right",
+      "targetHandle": "target-left-top"
+    },
+    { "id": "e5", "source": "no-atdd", "target": "ready", "label": "Sin validación" },
+    {
+      "id": "e6",
+      "source": "ambiguity",
+      "target": "ready",
+      "label": "Sin filtro",
+      "style": "dashed",
+      "sourceHandle": "source-right-bottom",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e7",
+      "source": "qa-doc",
+      "target": "ready",
+      "label": "Apoya pero no bloquea",
+      "style": "dashed",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e8",
+      "source": "ready",
+      "target": "no-rtm",
+      "label": "Sin trazabilidad",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right"
+    },
+    { "id": "e9", "source": "ready", "target": "dev", "label": "Implementa" },
+    {
+      "id": "e10",
+      "source": "ready",
+      "target": "no-dod",
+      "label": "Sin checklist",
+      "sourceHandle": "source-right-bottom",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e11",
+      "source": "no-dod",
+      "target": "outcome",
+      "label": "Criterios incompletos",
+      "style": "red",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right-top"
+    },
+    { "id": "e12", "source": "dev", "target": "outcome", "label": "Termina" }
+  ],
+  "legend": [
+    { "color": "bg-emerald-200", "label": "Fortaleza confirmada (Gherkin BDD)" },
+    { "color": "bg-green-200", "label": "Práctica positiva (test plans QA)" },
+    { "color": "bg-blue-200", "label": "Paso neutro" },
+    { "color": "bg-amber-200", "label": "Gap parcial" },
+    { "color": "bg-red-200", "label": "Ausente / crítico" },
+    { "color": "bg-violet-200", "label": "Desarrollo" },
+    { "color": "bg-indigo-200", "label": "Transición de estado" }
+  ],
+  "tables": [
+    { "label": "Formato AC", "value": "Gherkin (BDD) — adoptado" },
+    { "label": "Definition of Ready", "value": "Ausente" },
+    { "label": "Gate ATDD pre-desarrollo", "value": "No implementado" },
+    { "label": "Trazabilidad requisito ↔ código", "value": "Sin herramienta" },
+    { "label": "Definition of Done", "value": "Sin formato compartido" },
+    { "label": "Test plans QA", "value": "Estructurados (Sheila) — modelo a escalar" },
+    { "label": "Documentación técnica", "value": "Completa pero sin formato estándar" },
+    { "label": "AC presentes al planning", "value": "Most of the time (survey)" }
+  ]
+}

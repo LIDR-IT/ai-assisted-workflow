@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+# =============================================================================
+# commit-msg Hook (root)
+# =============================================================================
+# Validate commit messages with commitlint (conventional commits).
+# Runs from app/ where commitlint is installed (devDependency).
+# Skips silently if app/ or commitlint not available.
+# =============================================================================
+
+MSG_FILE="$1"
+
+if [ ! -d app/node_modules/@commitlint ]; then
+  echo "ℹ️  commitlint not installed in app/ — skipping commit-msg check"
+  exit 0
+fi
+
+if [ ! -f app/commitlint.config.js ]; then
+  echo "ℹ️  app/commitlint.config.js not found — skipping commit-msg check"
+  exit 0
+fi
+
+# commitlint expects the message file path; resolve from repo root
+ABS_MSG="$(pwd)/$MSG_FILE"
+(cd app && npx --no -- commitlint --config commitlint.config.js --edit "$ABS_MSG")

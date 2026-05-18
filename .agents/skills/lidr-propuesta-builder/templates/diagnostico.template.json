@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "id": "placeholder-diagnostico",
+    "title": "Diagnóstico AS-IS — {{CLIENT_NAME}} ({{INDUSTRY_SHORT}})",
+    "description": "TODO 1 línea: número de pain points y qué fortalezas/gaps clave detecta. Ej: '9 pain points priorizados desde la sesión de discovery (YYYY-MM-DD). Identifica fortalezas reales (...) y gaps sistémicos de (...)'.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY_FULL}}",
+    "tags": ["placeholder", "discovery", "as-is", "diagnostico"],
+    "lastUpdated": "{{YYYY-MM-DD}}",
+    "author": "{{PME_NAME}}",
+    "sourceReport": "docs/guides/lidr-core/placeholder-discovery-report.md@{{REPORT_VERSION}}"
+  },
+  "summary": {
+    "executiveSummary": "TODO 5-8 frases: contexto del cliente, fecha de discovery, número de pain points, fortalezas reales encontradas, gaps sistémicos identificados, propuesta de quick wins, driver tentativo del piloto si aplica. Reemplazar este placeholder con resumen real del report.",
+    "fortalezas": [
+      "• TODO fortaleza 1 (preserva — algo que YA funciona y queremos amplificar)",
+      "• TODO fortaleza 2",
+      "• TODO fortaleza 3"
+    ],
+    "oportunidades": [
+      "• TODO oportunidad 1 (qué LIDR skill/agent/gate la resuelve)",
+      "• TODO oportunidad 2",
+      "• TODO oportunidad 3"
+    ],
+    "gapsCriticos": [
+      "• TODO gap crítico 1 con código PP-NN y nivel de impacto",
+      "• TODO gap crítico 2",
+      "• TODO gap crítico 3"
+    ]
+  },
+  "painPoints": [
+    {
+      "id": "PP-01",
+      "fase": "PP-01 · TODO etiqueta corta",
+      "problema": "TODO descripción del problema con cita verbatim del speaker en discovery (entre comillas y atribuido). Ej: \"No tenemos un determinismo...\" (Reme).",
+      "impacto": "Crítico",
+      "mejora": "TODO solución propuesta: qué LIDR skill/agent/gate lo resuelve. Ej: 'CLAUDE.md por repo + skills LIDR estandarizados + commands /create-branch'.",
+      "evidence": "discovery report sec. 3 PP-01 · VTT (speaker)"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "metadata": {
+    "id": "planificacion-sprint",
+    "title": "Docline Sprint Planning Process",
+    "description": "Healthcare-focused 2-week sprint planning with clinical refinement and patient safety validation for telemedicine development",
+    "version": "1.0.0",
+    "client": "Docline",
+    "industry": "Healthcare Technology",
+    "tags": [
+      "sprint-planning",
+      "clinical-sprints",
+      "patient-safety",
+      "healthcare-capacity",
+      "telemedicine"
+    ]
+  },
+  "configuration": {
+    "height": 750,
+    "exportName": "Docline Sprint Planning",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "backlog-grooming",
+      "x": 750,
+      "y": 50,
+      "label": "Clinical Backlog Grooming",
+      "variant": "purple",
+      "subtitle": "Patient journey story refinement"
+    },
+    {
+      "id": "refinement-session",
+      "x": 750,
+      "y": 150,
+      "label": "Clinical Refinement Session",
+      "variant": "purple",
+      "subtitle": "Patient safety validation & clinical acceptance criteria"
+    },
+    {
+      "id": "capacity-planning",
+      "x": 450,
+      "y": 250,
+      "label": "Clinical Team Capacity Planning",
+      "variant": "blue",
+      "subtitle": "Healthcare team: Clinical PO, Medical informatics leads"
+    },
+    {
+      "id": "sprint-planning-meeting",
+      "x": 750,
+      "y": 350,
+      "label": "Sprint Planning Meeting",
+      "variant": "blue",
+      "subtitle": "Tuesday - 2-week sprint start"
+    },
+    {
+      "id": "frontend-planning",
+      "x": 350,
+      "y": 500,
+      "label": "Frontend Planning",
+      "variant": "cyan",
+      "subtitle": "Tech Lead: Hector"
+    },
+    {
+      "id": "backend-planning",
+      "x": 750,
+      "y": 500,
+      "label": "Backend Planning",
+      "variant": "cyan",
+      "subtitle": "Tech Lead: David"
+    },
+    {
+      "id": "qa-planning",
+      "x": 1150,
+      "y": 500,
+      "label": "Clinical QA Planning",
+      "variant": "orange",
+      "subtitle": "Patient safety test scenarios"
+    },
+    {
+      "id": "sprint-commitment",
+      "x": 750,
+      "y": 650,
+      "label": "Clinical Sprint Commitment",
+      "variant": "green",
+      "subtitle": "Patient safety scope & clinical DoD"
+    },
+    {
+      "id": "daily-standups",
+      "x": 750,
+      "y": 800,
+      "label": "Daily Standups",
+      "variant": "teal",
+      "subtitle": "Progress tracking & impediment resolution"
+    },
+    {
+      "id": "sprint-review",
+      "x": 550,
+      "y": 950,
+      "label": "Clinical Sprint Review",
+      "variant": "indigo",
+      "subtitle": "Clinical demo & healthcare stakeholder feedback"
+    },
+    {
+      "id": "retrospective",
+      "x": 950,
+      "y": 950,
+      "label": "Sprint Retrospective",
+      "variant": "indigo",
+      "subtitle": "Process improvement & lessons learned"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "backlog-grooming",
+      "target": "refinement-session",
+      "label": "Continuous"
+    },
+    {
+      "id": "e2",
+      "source": "refinement-session",
+      "target": "capacity-planning",
+      "label": "Ready Stories"
+    },
+    {
+      "id": "e3",
+      "source": "refinement-session",
+      "target": "sprint-planning-meeting",
+      "label": "Ready Stories"
+    },
+    {
+      "id": "e4",
+      "source": "capacity-planning",
+      "target": "sprint-planning-meeting",
+      "label": "Team Availability"
+    },
+    {
+      "id": "e5",
+      "source": "sprint-planning-meeting",
+      "target": "frontend-planning",
+      "label": "Tech Breakdown"
+    },
+    {
+      "id": "e6",
+      "source": "sprint-planning-meeting",
+      "target": "backend-planning",
+      "label": "Tech Breakdown"
+    },
+    {
+      "id": "e7",
+      "source": "sprint-planning-meeting",
+      "target": "qa-planning",
+      "label": "Test Strategy"
+    },
+    {
+      "id": "e8",
+      "source": "frontend-planning",
+      "target": "sprint-commitment",
+      "label": "Estimates"
+    },
+    {
+      "id": "e9",
+      "source": "backend-planning",
+      "target": "sprint-commitment",
+      "label": "Estimates"
+    },
+    {
+      "id": "e10",
+      "source": "qa-planning",
+      "target": "sprint-commitment",
+      "label": "Test Plan"
+    },
+    {
+      "id": "e11",
+      "source": "sprint-commitment",
+      "target": "daily-standups",
+      "label": "Sprint Execution"
+    },
+    {
+      "id": "e12",
+      "source": "daily-standups",
+      "target": "sprint-review",
+      "label": "Sprint End"
+    },
+    {
+      "id": "e13",
+      "source": "daily-standups",
+      "target": "retrospective",
+      "label": "Sprint End"
+    },
+    {
+      "id": "e14",
+      "source": "retrospective",
+      "target": "backlog-grooming",
+      "label": "Process Improvements",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#8b5cf6"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Clinical Backlog Management" },
+    { "color": "bg-blue-200", "label": "Healthcare Sprint Planning" },
+    { "color": "bg-cyan-200", "label": "Technical Planning (EHR Focus)" },
+    { "color": "bg-orange-200", "label": "Patient Safety QA Planning" },
+    { "color": "bg-green-200", "label": "Clinical Sprint Execution" },
+    { "color": "bg-teal-200", "label": "Daily Clinical Operations" },
+    { "color": "bg-indigo-200", "label": "Healthcare Sprint Closure" }
+  ]
+}

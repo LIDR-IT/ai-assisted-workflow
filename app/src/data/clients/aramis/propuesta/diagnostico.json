@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "id": "aramis-diagnostico",
+    "title": "Diagnóstico AS-IS — Grupo Aramis (Polaris + Bridge)",
+    "description": "9 pain points priorizados desde discovery (2026-05-06) y pre-kickoff survey (2026-04-07). v1.6.0: ajuste de scope de consultoría. LIDR entrega el framework .claude/ (61 skills, 23 commands, 5 rules, 5 hooks, 6 agents, 4 MCPs) y forma al equipo en metodología SDD. LIDR NO desarrolla skills a medida, NO co-construye herramientas del cliente (MCP Redmine, Polaris Knowledge Agent, orquestador Luis Marco), NO documenta artefactos internos del cliente (catálogo Bridge, matriz cross-country). Convenciones: ✅ incluido en framework LIDR · 📚 LIDR enseña este patrón · 📌 gap del framework (informativo) · 🏠 responsabilidad del cliente · 💡 sugerencia de encaje de herramienta del cliente.",
+    "version": "1.6.0",
+    "client": "Aramis",
+    "industry": "Automotive Multi-country Retail",
+    "tags": ["aramis", "polaris", "bridge", "discovery", "as-is", "diagnostico"],
+    "lastUpdated": "2026-05-15",
+    "author": "PME: Luis Urdaneta",
+    "sourceReport": "docs/guides/lidr-core/aramis-discovery-report.md@1.4.0"
+  },
+  "summary": {
+    "executiveSummary": "Scope de la consultoría LIDR: (1) entregar el framework .claude/ tal como está (61 skills, 23 commands, 5 rules, 5 hooks, 6 agents, 4 MCPs, 32 integrity tests); (2) formar al equipo en metodología SDD y en los 8 gates; (3) acompañar la adopción en un proyecto piloto; (4) enseñar los patrones de extensión (skill-development, command-development, mcp-integration, hook-development, agent-development) para que Aramis sea autónomo evolucionando el framework. Fuera de scope: desarrollar skills a medida para Aramis, integrar/co-desarrollar herramientas internas (MCP Redmine, Polaris Knowledge Agent, orquestador Luis Marco), documentar artefactos internos (catálogo Bridge, matriz cross-country), optimizar CI/CD. Cobertura del framework actual sobre los 9 pain points: 6 PPs (PP-01, PP-03, PP-04 parcial, PP-07, PP-08, PP-09 parcial) se atacan con skills/commands existentes; 3 PPs (PP-02, PP-05, PP-06) corresponden a gaps del framework que Aramis puede cubrir internamente con skill-development o esperar a futuras versiones LIDR. Driver tentativo del piloto: Adrián Louro (Tribu Compras) — pendiente confirmar con Álvaro/David.",
+    "fortalezas": [
+      "• Scrumban híbrido 2 semanas establecido: Daily + Planning + Retro (gap: sin Sprint Review)",
+      "• Gherkin/BDD ya presente en tickets Redmine; PHPStan en CI; OpenAPI auto-generada (code-first)",
+      "• Pre-Code-Review CI Gate operativo: Unit + Integration + Acceptance + PHPStan + validadores hexagonal custom",
+      "• Tribus Compras/Ventas con Tech Leads; liderazgo compartido Álvaro (Director) + David (Liderazgo técnico)",
+      "• AI innovators internos: Luis Marco (orquestador propio ~70%, Antigravity), Pedro (Polaris Knowledge Agent MCP), equipo Plataforma (MCP Redmine+GitLab proxy)",
+      "• Documentación QA (Sheila) — la única 'bastante normalizada', modelo a escalar",
+      "• Canal Slack #Cloud Coders + proyecto skills colectivo — knowledge sharing IA pre-existente",
+      "• SCA parcial + detección de secretos parcial en CI; equipo Ciberseguridad Aramis Group con VP y plan de hook GDPR (no implementado aún)"
+    ],
+    "oportunidades": [
+      "✅ Formalizar PRDs con skills LIDR existentes: prd-funcional, prd-tecnico, review-cruzado (resuelve 'gran fracaso' del Notion según David)",
+      "📚 Formar al equipo en los 8 gates de SDD y en el uso de los commands /advance-gate, /implement-ticket, /prepare-testing, /create-release-notes",
+      "📚 Enseñar el patrón skill-development para que Aramis evolucione el framework según sus necesidades (incluye documentación y plantillas dentro de .claude/skills/skill-development/)",
+      "📚 Enseñar el patrón mcp-integration para que Aramis conecte sus MCPs internos (Polaris Knowledge Agent, MCP Redmine+GitLab) cuando lo considere oportuno — la integración la ejecuta Aramis",
+      "📌 Gap del framework — skill code-review (PP-02): el framework no incluye esta skill hoy. Aramis puede crearla siguiendo el patrón skill-development o esperar a versiones futuras del framework",
+      "📌 Gap del framework — análisis de impacto sobre catálogo de contratos (PP-05): el framework no lo incluye. Aramis puede desarrollarlo internamente; el análisis sólo es posible si el catálogo de contratos existe (artefacto del cliente)",
+      "📌 Gap del framework — análisis de compatibilidad multi-variante (PP-06): el framework no lo incluye. Aramis puede desarrollarlo internamente; requiere matriz de variantes documentada (artefacto del cliente)",
+      "💡 Sugerencia: el Polaris Knowledge Agent (Pedro) puede consumirse como MCP externo desde skills LIDR durante PRDs y RFs — Aramis ejecuta la integración",
+      "💡 Sugerencia: el orquestador de Luis Marco puede convivir con el framework SDD; conviene mapear sus pasos a skills equivalentes para evitar duplicar esfuerzo — Aramis decide qué mantener",
+      "🏠 Responsabilidad cliente: implementación del hook GDPR planeado por Ciberseguridad Aramis (LIDR enseña el patrón PreToolUse y aporta los skills hook-development y mcp-integration como referencia)"
+    ],
+    "gapsCriticos": [
+      "• PP-01 IA sin estandarización: sin CLAUDE.md, sin guidelines compartidas, resultado depende del developer (Crítico)",
+      "• PP-05 Bridge bomba silenciosa: cambios en Polaris rompen sync sin alertas — 'te cargas un enum' (David) (Crítico)",
+      "• PP-02 Code review inconsistente: dualidad técnico vs. funcional sin protocolo unificado (Alto)",
+      "• PP-03 Sin DoD/DoR formal: Gherkin existe pero sin gate de validación pre-desarrollo (Alto)",
+      "• PP-04 Testing FE débil: Cypress en repo separado, no bloquea CI, redesigns rompen tests sin alertas (Alto)",
+      "• PP-08 Claude Code sin contexto estructurado en BE/FE/Bridge — frontend especialmente afectado (Alto)",
+      "• PP-09 CI pipelines lentos: rompen el flow del developer, CI/CD self-score 3/5 (Alto)",
+      "• PP-06 Cross-country: análisis de impacto manual por EMs en challenge sessions (Medio)",
+      "• PP-07 Sin release notes ni changelog en Polaris — solo parcial en una librería (Medio)"
+    ]
+  },
+  "painPoints": [
+    {
+      "id": "PP-01",
+      "fase": "PP-01 · Uso de IA",
+      "problema": "IA sin estandarización: \"No tenemos un determinismo a la hora de utilizar la IA. El resultado depende del desarrollador\" (Reme). Sin CLAUDE.md, sin guidelines, sin skills compartidos. Cada perfil hace cosas brillantes en su rincón.",
+      "impacto": "Crítico",
+      "mejora": "✅ Generar CLAUDE.md por repo (BE, FE, Bridge) con skill existente generate-rule.\n📚 LIDR forma al equipo en el uso de los skills del framework (skill-development, command-development, mcp-integration, hook-development, agent-development) y los 5 rules.\n📌 Los commands /create-branch, /implement-ticket, /create-pr y /prepare-testing del framework son hoy Jira-only (mcp__jira hard-coded). Aramis puede crear un redmine-adapter (patrón en tracking-integration/adapters/) o variantes de commands si lo necesita — fuera de scope LIDR.\n💡 El orquestador de Luis Marco y el Polaris Knowledge Agent (Pedro) son IP de Aramis: conviene posicionarlos como referencias internas y, si Aramis decide, mapear sus pasos a skills del framework — la decisión y la ejecución son del cliente.",
+      "evidence": "discovery report sec. 3 PP-01 · VTT (Reme)"
+    },
+    {
+      "id": "PP-02",
+      "fase": "PP-02 · Code Review",
+      "problema": "Dualidad técnico/funcional sin protocolo: \"dependiendo del reviewer, algunos se enfocan más en la parte técnica y otros en si se cumplen los criterios de aceptación\" (Reme). Dídac formaliza individualmente con Claude Code (~2 semanas), sin escalar.",
+      "impacto": "Alto",
+      "mejora": "📌 Gap del framework: no existe una skill de code-review en .claude/skills/ hoy.\n✅ El framework sí incluye bdd-patterns (para validar Gherkin) y pr-description (genera la descripción del PR desde diff + ticket); ambos cubren parte del problema.\n📚 LIDR enseña el patrón skill-development por si Aramis decide construir su propia skill code-review interna (Dídac ya formalizó algo similar individualmente; podría escalarlo).\n⚠️ Principio org de LIDR: 'IA copiloto, no piloto'. Cualquier skill de code-review sugiere observaciones, no aprueba.",
+      "evidence": "discovery report sec. 3 PP-02 · VTT (Reme + Dídac)"
+    },
+    {
+      "id": "PP-03",
+      "fase": "PP-03 · DoD/DoR formal",
+      "problema": "Gherkin/BDD existe en tickets pero sin gate de validación pre-desarrollo. Tickets pasan a \"Ready for Dev\" con criterios ambiguos; defectos de especificación se descubren en QA (10x más caro).",
+      "impacto": "Alto",
+      "mejora": "✅ Gate 2 (Especificación → Sprint Planning) cubierto por skills existentes: bdd-patterns, generate-rf y validate-requirements.\n✅ Checklists DoR/DoD incluidos dentro de skills/refinement-notes y skills/pr-description.\n📚 LIDR forma al equipo en el flujo ATDD: QA valida criterios Gherkin antes de 'Ready for Dev'.\n🏠 La configuración en Redmine (campos custom, transiciones de workflow, automatizaciones) es responsabilidad de Aramis — LIDR enseña qué validar, no cablea el tracker.",
+      "evidence": "discovery report sec. 3 PP-03"
+    },
+    {
+      "id": "PP-04",
+      "fase": "PP-04 · Testing FE",
+      "problema": "Frontend con deuda severa: pantallas complejas con lógica condicional sin cobertura, Cypress en repo separado del frontend, no bloquea CI. Redesign rompe tests sin que devs lo sepan: \"no lo pueden probar en local antes de mandarlo\".",
+      "impacto": "Alto",
+      "mejora": "✅ Skills existentes en el framework: test-plan, create-test-cases, regression-suite (impact analysis sobre diff), bug-report y test-execution-report.\n📚 LIDR forma a QA en su uso y en el ATDD pre-dev.\n🏠 Decisión sobre Cypress (mover al repo del frontend o convertirlo en job bloqueante en GitLab) es responsabilidad del cliente — implica consenso David ↔ Dídac ↔ Sheila y trabajo del equipo Plataforma.\n📌 El selector-healing automático sobre redesigns no es una capacidad del framework actual y no se promete como entregable de la consultoría; Aramis puede explorarlo internamente si lo prioriza.",
+      "evidence": "discovery report sec. 3 PP-04 · VTT (Dídac)"
+    },
+    {
+      "id": "PP-05",
+      "fase": "PP-05 · Bridge bomba de tiempo",
+      "problema": "Bridge (PHP separado) sincroniza Polaris ↔ sistemas locales por país. Cambios en Polaris rompen Bridge silenciosamente: \"a veces, cuando desarrollamos dentro de Polaris, estamos rompiendo lo que hay establecido en Bridge para mapeo, lo típico de que te cargas un enum\" (David, Liderazgo técnico). El daño se introduce en desarrollo, no en deploy.",
+      "impacto": "Crítico",
+      "mejora": "📌 Gap del framework: no existe una skill de análisis de impacto sobre catálogo de contratos.\n✅ El framework sí incluye architecture-doc (Arc42/C4 para documentar contratos), adr (decisiones arquitectónicas) y risk-log (catalogar riesgos como el del Bridge).\n🏠 Documentar el catálogo de contratos Bridge (enums, types, rutas API, schema DB) es responsabilidad exclusiva de Aramis — sin este artefacto interno cualquier análisis automático es imposible.\n📚 LIDR enseña architecture-doc para que Aramis lo use con consistencia.\n📚 Si Aramis decide construir su propia skill de análisis de impacto, LIDR enseña el patrón skill-development.",
+      "evidence": "discovery report sec. 3 PP-05 · VTT ≈1:49:14 (David)"
+    },
+    {
+      "id": "PP-06",
+      "fase": "PP-06 · Cross-country",
+      "problema": "Features de Producto pueden chocar con configuraciones de otro país ya implementadas (brand = país). Análisis de impacto manual por EMs en sesiones de challenge — depende del conocimiento individual de quién esté presente.",
+      "impacto": "Medio",
+      "mejora": "📌 Gap del framework: no existe una skill de compatibilidad multi-variante (países, brands, tenants).\n✅ El framework sí incluye risk-log (para registrar riesgos cross-country) y los templates de prd-funcional / generate-rf permiten declarar atributos de alcance.\n📚 LIDR enseña a Aramis a usar estas skills incorporando un atributo 'global vs variant-specific' como convención de equipo en sus PRDs y RFs.\n🏠 Mantener una matriz de configuraciones por país/brand (o extraerla del código) es responsabilidad de Aramis.\n📚 Si Aramis decide construir una skill de compatibilidad, LIDR enseña el patrón skill-development.",
+      "evidence": "discovery report sec. 3 PP-06 · VTT (Reme)"
+    },
+    {
+      "id": "PP-07",
+      "fase": "PP-07 · Release notes",
+      "problema": "Polaris sin proceso de changelog ni release notes (solo parcial en una librería). Soporte difícil, onboarding costoso, sin comunicación documental a stakeholders sobre qué cambió entre versiones.",
+      "impacto": "Medio",
+      "mejora": "✅ Skill release-notes y commands /create-release-notes + /update-changelog incluidos en el framework.\n📚 LIDR forma a DevOps/TL en su uso y en el formato 2-niveles (executive + technical).\n📌 El script de análisis (git-analyzer.py) usa hoy GitHub CLI; Aramis puede correrlo manualmente con la salida de su tracker o adaptarlo a GitLab internamente. La consultoría LIDR no entrega el adaptador GitLab a medida.\n📚 Primer ciclo de release notes ejecutado de forma asistida por LIDR para validar valor antes de cualquier inversión interna.",
+      "evidence": "discovery report sec. 3 PP-07"
+    },
+    {
+      "id": "PP-08",
+      "fase": "PP-08 · Contexto Claude",
+      "problema": "Claude Code funciona bien en backend (más docs) pero pobre en frontend (sin guías). No existe CLAUDE.md en ninguno de los 3 repos (BE, FE, Bridge): \"no se comporta tan bien porque no tenemos bien organizado lo de las guidelines\" (Dídac). El mismo modelo con diferente contexto produce resultados distintos.",
+      "impacto": "Alto",
+      "mejora": "✅ Generación de CLAUDE.md por repo con skill existente generate-rule (stack PHP+Symfony / Angular+Nuxt / PHP Bridge, patrones hexagonal, referencias a tech-stack.md).\n📚 LIDR forma a Dídac (driver inicial sugerido) en el patrón y entrega un workshop CLAUDE.md por repo (BE/FE/Bridge).\n🏠 Las secciones que dependen de IP interna las completa Aramis: catálogo de contratos Bridge (ver PP-05), convenciones de code review (ver PP-02), configuración del MCP Redmine.",
+      "evidence": "discovery report sec. 3 PP-08 · VTT (Dídac)"
+    },
+    {
+      "id": "PP-09",
+      "fase": "PP-09 · CI lento",
+      "problema": "CI feedback time \"Very slow — breaks developer flow\" (survey). CI/CD self-score 3/5. Pipelines lentos = developers no esperan al CI = pierden contexto al corregir. Gate 4 confiable requiere CI rápido.",
+      "impacto": "Alto",
+      "mejora": "🏠 Responsabilidad exclusiva del equipo Plataforma de Aramis (owner CI/CD, no presente en discovery). La optimización de pipelines es trabajo de DevOps específico del cliente y queda fuera del scope de la consultoría LIDR.\n✅ El framework aporta generate-nfr para formalizar tiempo de feedback de CI como NFR medible.\n✅ El framework aporta sprint-health y retrospective para trackear tiempo medio de pipeline como métrica de equipo.\n📚 LIDR forma al equipo en declarar esta dependencia en el plan: sin CI rápido, Gate 4 pierde efectividad porque el equipo lo salta por fricción.",
+      "evidence": "pre-kickoff survey 2026-04-07 · discovery report sec. 3 PP-09"
+    }
+  ]
+}

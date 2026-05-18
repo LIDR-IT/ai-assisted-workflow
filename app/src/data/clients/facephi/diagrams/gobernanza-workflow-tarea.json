@@ -1,0 +1,167 @@
+{
+  "metadata": {
+    "id": "gobernanza-workflow-tarea",
+    "title": "Flujo TAREA — Gobernanza Jira",
+    "description": "Flujo de estados en Jira para Tareas",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["governance", "workflow", "jira", "tasks", "states"]
+  },
+  "configuration": {
+    "height": 450,
+    "exportName": "Flujo Tarea - Gobernanza Jira",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "todo",
+      "x": 300,
+      "y": 0,
+      "label": "TO DO",
+      "variant": "blue-solid",
+      "subtitle": "ALL"
+    },
+    {
+      "id": "dup",
+      "x": 40,
+      "y": 40,
+      "label": "DUPLICATED",
+      "variant": "amber-solid"
+    },
+    {
+      "id": "rej",
+      "x": 40,
+      "y": 110,
+      "label": "REJECTED",
+      "variant": "orange-solid"
+    },
+    {
+      "id": "progress",
+      "x": 300,
+      "y": 150,
+      "label": "IN PROGRESS",
+      "variant": "blue-dark",
+      "subtitle": "DEV"
+    },
+    {
+      "id": "blocked",
+      "x": 580,
+      "y": 20,
+      "label": "BLOCKED",
+      "variant": "red-solid",
+      "subtitle": "ALL"
+    },
+    {
+      "id": "finished",
+      "x": 300,
+      "y": 310,
+      "label": "FINISHED",
+      "variant": "emerald-solid",
+      "subtitle": "PM"
+    },
+    {
+      "id": "reopened",
+      "x": 20,
+      "y": 460,
+      "label": "REOPENED",
+      "variant": "purple-solid"
+    },
+    {
+      "id": "closed",
+      "x": 480,
+      "y": 460,
+      "label": "CLOSED",
+      "variant": "green-solid"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "todo",
+      "target": "progress",
+      "label": "Start development"
+    },
+    {
+      "id": "e2",
+      "source": "todo",
+      "target": "dup",
+      "label": "Duplicate",
+      "sourceHandle": "source-left-top",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e3",
+      "source": "todo",
+      "target": "rej",
+      "label": "Reject",
+      "sourceHandle": "source-left-bottom"
+    },
+    {
+      "id": "e4",
+      "source": "progress",
+      "target": "blocked",
+      "label": "Blocked",
+      "sourceHandle": "source-right-top",
+      "targetHandle": "left",
+      "style": "red",
+      "stroke": "#dc2626"
+    },
+    {
+      "id": "e4b",
+      "source": "blocked",
+      "target": "progress",
+      "label": "Unblock",
+      "type": "default",
+      "targetHandle": "target-right-bottom",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "e5",
+      "source": "progress",
+      "target": "finished",
+      "label": "Finish dev"
+    },
+    {
+      "id": "e6",
+      "source": "finished",
+      "target": "closed",
+      "label": "Close",
+      "sourceHandle": "right",
+      "style": "green",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "e7",
+      "source": "finished",
+      "target": "reopened",
+      "label": "Reopen",
+      "sourceHandle": "source-left",
+      "style": "purple",
+      "stroke": "#9333ea"
+    },
+    {
+      "id": "e8",
+      "source": "reopened",
+      "target": "todo",
+      "label": "Re-assign",
+      "sourceHandle": "source-left",
+      "targetHandle": "left",
+      "style": "purple",
+      "stroke": "#9333ea"
+    }
+  ],
+  "legend": [
+    { "color": "bg-blue-500", "label": "To Do (estado inicial)" },
+    { "color": "bg-blue-600", "label": "In Progress" },
+    { "color": "bg-red-600", "label": "Blocked" },
+    { "color": "bg-amber-400", "label": "Duplicated" },
+    { "color": "bg-orange-500", "label": "Rejected" },
+    { "color": "bg-emerald-200", "label": "Finished" },
+    { "color": "bg-green-500", "label": "Closed" },
+    { "color": "bg-purple-400", "label": "Reopened" }
+  ],
+  "tables": []
+}

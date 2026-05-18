@@ -1,0 +1,274 @@
+{
+  "metadata": {
+    "id": "testing-qa",
+    "title": "Testing & QA — AS-IS Aramis",
+    "description": "Fortaleza en unit tests, acceptance tests y PHPStan; debilidad significativa en integración y E2E. La mayoría del esfuerzo QA hoy es manual; Cypress se está adoptando incrementalmente y vive en repositorio separado del frontend, lo que genera desincronización al redesign y fallos silenciosos en CI.",
+    "version": "1.2.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["testing", "qa", "cypress", "phpstan", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "partial",
+      "description": "Unit tests Highly Effective + acceptance tests + PHPStan integrado (excelente). Integration y E2E con cobertura débil. QA mayoritariamente manual; Cypress en adopción y en repo separado provoca regresiones invisibles cuando el frontend se rediseña.",
+      "evidence": "Pre-kickoff survey + Discovery report PP-04 · VTT ≈1:03:00 (Adrián: acceptance tests distintos de E2E) · VTT ≈24:24 (Sheila: muchísimo test manual)"
+    }
+  },
+  "configuration": {
+    "height": 820,
+    "exportName": "Aramis_Testing_QA_AS_IS",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "dev",
+      "x": 400,
+      "y": 0,
+      "label": "Developer commit",
+      "variant": "blue",
+      "subtitle": "PR contra dev en GitLab"
+    },
+    {
+      "id": "phpstan",
+      "x": 20,
+      "y": 110,
+      "label": "PHPStan + validadores",
+      "variant": "emerald",
+      "subtitle": "SAST + arquitectura hexagonal en CI · Fortaleza"
+    },
+    {
+      "id": "unit",
+      "x": 400,
+      "y": 110,
+      "label": "Unit tests",
+      "variant": "emerald",
+      "subtitle": "Highly Effective (survey)"
+    },
+    {
+      "id": "openapi",
+      "x": 780,
+      "y": 110,
+      "label": "OpenAPI auto-gen",
+      "variant": "green",
+      "subtitle": "Code-first · Documentación de contrato"
+    },
+    {
+      "id": "acceptance",
+      "x": 20,
+      "y": 240,
+      "label": "Acceptance tests",
+      "variant": "green",
+      "subtitle": "Pre-code-review · Distintos de E2E (Adrián)"
+    },
+    {
+      "id": "integration",
+      "x": 400,
+      "y": 240,
+      "label": "Integration tests",
+      "variant": "amber",
+      "subtitle": "Cobertura débil (survey: Weak)"
+    },
+    {
+      "id": "complex-tests",
+      "x": 780,
+      "y": 240,
+      "label": "Tests con 'magic'",
+      "variant": "amber",
+      "subtitle": "Helpers complejos · Onboarding lento"
+    },
+    {
+      "id": "fe-coverage",
+      "x": 780,
+      "y": 360,
+      "label": "FE coverage débil",
+      "variant": "red",
+      "subtitle": "PP-04 · Pantallas complejas sin cobertura"
+    },
+    {
+      "id": "manual-qa",
+      "x": 20,
+      "y": 470,
+      "label": "Test manual (mayoría)",
+      "variant": "amber",
+      "subtitle": "Esfuerzo QA dominante hoy · Cypress en adopción"
+    },
+    {
+      "id": "cypress",
+      "x": 400,
+      "y": 470,
+      "label": "Cypress E2E (repo separado)",
+      "variant": "red",
+      "subtitle": "PP-04 · Antipatrón · Se rompe al redesign sin friction"
+    },
+    {
+      "id": "ci-slow",
+      "x": 780,
+      "y": 470,
+      "label": "CI feedback lento",
+      "variant": "red",
+      "subtitle": "PP-09 · Rompe el flow del developer"
+    },
+    {
+      "id": "qa-engineer",
+      "x": 220,
+      "y": 600,
+      "label": "QA Engineer en squad",
+      "variant": "green",
+      "subtitle": "Sheila · Test plans estructurados · Investigando IA"
+    },
+    {
+      "id": "regressions",
+      "x": 600,
+      "y": 600,
+      "label": "Regresiones invisibles",
+      "variant": "red",
+      "subtitle": "Bug llega a soporte, no a CI"
+    },
+    {
+      "id": "merge",
+      "x": 400,
+      "y": 720,
+      "label": "Merge a dev → main",
+      "variant": "indigo",
+      "subtitle": "Sin checklist QA explícito"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "dev",
+      "target": "phpstan",
+      "label": "Lint estático",
+      "sourceHandle": "source-left"
+    },
+    { "id": "e2", "source": "dev", "target": "unit", "label": "Ejecuta unit" },
+    {
+      "id": "e3",
+      "source": "dev",
+      "target": "openapi",
+      "label": "Regenera spec",
+      "sourceHandle": "right"
+    },
+    { "id": "e4", "source": "phpstan", "target": "acceptance" },
+    { "id": "e5", "source": "unit", "target": "integration" },
+    {
+      "id": "e6",
+      "source": "unit",
+      "target": "complex-tests",
+      "label": "Mantiene",
+      "style": "dashed",
+      "sourceHandle": "right",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e7",
+      "source": "openapi",
+      "target": "fe-coverage",
+      "label": "FE consume",
+      "sourceHandle": "right",
+      "targetHandle": "target-right-top"
+    },
+    { "id": "e8", "source": "acceptance", "target": "manual-qa", "label": "Complementa" },
+    {
+      "id": "e9",
+      "source": "complex-tests",
+      "target": "cypress",
+      "label": "Triggers",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right-top"
+    },
+    {
+      "id": "e10",
+      "source": "fe-coverage",
+      "target": "ci-slow",
+      "label": "Pipeline largo",
+      "style": "red"
+    },
+    {
+      "id": "e11",
+      "source": "manual-qa",
+      "target": "qa-engineer",
+      "label": "Sheila ejecuta",
+      "sourceHandle": "right",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e12",
+      "source": "cypress",
+      "target": "qa-engineer",
+      "label": "Sheila automatiza",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e13",
+      "source": "cypress",
+      "target": "regressions",
+      "label": "Falsos negativos",
+      "style": "red",
+      "sourceHandle": "source-right-bottom",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e14",
+      "source": "qa-engineer",
+      "target": "merge",
+      "label": "Aprueba parcial",
+      "sourceHandle": "source-right-bottom",
+      "targetHandle": "target-left-top"
+    },
+    {
+      "id": "e15",
+      "source": "regressions",
+      "target": "merge",
+      "label": "Silencioso",
+      "style": "dashed",
+      "sourceHandle": "source-left-bottom",
+      "targetHandle": "target-right-top"
+    }
+  ],
+  "legend": [
+    { "color": "bg-emerald-200", "label": "Fortaleza confirmada" },
+    { "color": "bg-green-200", "label": "Práctica positiva" },
+    { "color": "bg-blue-200", "label": "Paso neutro" },
+    { "color": "bg-amber-200", "label": "Gap parcial — cobertura débil" },
+    { "color": "bg-red-200", "label": "Antipatrón / regresión crítica" },
+    { "color": "bg-indigo-200", "label": "Punto de merge" }
+  ],
+  "tables": [
+    { "label": "Adopción global testing (survey)", "value": "Strong and standardized" },
+    { "label": "Unit tests (survey)", "value": "Highly Effective" },
+    { "label": "Integration tests (survey)", "value": "Weak" },
+    { "label": "End-to-end (survey)", "value": "Weak" },
+    {
+      "label": "Acceptance tests (discovery)",
+      "value": "Existen en pre-code-review · Distintos de E2E (Adrián)"
+    },
+    {
+      "label": "Test manual (discovery)",
+      "value": "Mayoría del esfuerzo QA · 'Muchísimo test manual' (Sheila)"
+    },
+    { "label": "QA tool (survey)", "value": "Cypress (en adopción incremental)" },
+    {
+      "label": "Cypress en repo separado (discovery PP-04)",
+      "value": "Antipatrón · Se rompe al redesign"
+    },
+    {
+      "label": "Static analysis (discovery)",
+      "value": "PHPStan + validadores custom de arquitectura hexagonal"
+    },
+    { "label": "API contract (discovery)", "value": "OpenAPI auto-generada (code-first)" },
+    {
+      "label": "QA Engineer (discovery)",
+      "value": "Sheila — test plans estructurados · Investigando IA para test plans"
+    },
+    { "label": "CI feedback (survey)", "value": "Very slow — breaks developer flow" },
+    {
+      "label": "Pain principal QA (survey)",
+      "value": "Tests complejos con 'magic' helpers · Onboarding lento"
+    },
+    {
+      "label": "Anti-patterns (survey)",
+      "value": "Flaky/fragile tests · Tests written after code 'for compliance'"
+    }
+  ]
+}

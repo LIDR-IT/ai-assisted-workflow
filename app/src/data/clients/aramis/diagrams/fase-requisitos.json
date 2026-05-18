@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "id": "fase-requisitos",
+    "title": "Fase de Requisitos — AS-IS Aramis",
+    "description": "Origen y procesamiento de requisitos en Aramis: necesidades de negocio capturadas en Notion, sometidas a sesiones informales de challenge EM/PM/Designer, transformadas en tickets Redmine con criterios Gherkin, pero sin gate formal de Definition of Ready antes de pasar a desarrollo.",
+    "version": "1.2.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["requirements", "redmine", "gherkin", "dor", "as-is", "aramis"],
+    "implementation_status": {
+      "level": "partial",
+      "description": "El equipo escribe criterios de aceptación en Gherkin dentro de los tickets (buena base) y hace sesiones informales de challenge EM↔PM↔Designer (cubren parcialmente cross-country y Bridge), pero no hay revisión formal antes de marcar 'Ready for Dev'. Documentación de producto en Notion no se mantiene tras implementación.",
+      "evidence": "Pre-kickoff survey l.26 (refinement sometimes), l.27 (AC most of the time), l.38 (AC not 100% accurate) + Discovery report sec. 2.5 (Notion, Gherkin) + PP-03 (gate ATDD ausente) · VTT ≈1:18:00 (Reme: challenge sessions)"
+    }
+  },
+  "configuration": {
+    "height": 780,
+    "exportName": "Aramis_Fase_Requisitos_AS_IS",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "business",
+      "x": 400,
+      "y": 60,
+      "label": "Necesidad de negocio",
+      "variant": "blue",
+      "subtitle": "Operaciones · Stakeholders Aramis Group · Brand (país)"
+    },
+    {
+      "id": "notion",
+      "x": 20,
+      "y": 130,
+      "label": "Captura en Notion",
+      "variant": "amber",
+      "subtitle": "PM redacta iniciativa · Formato libre"
+    },
+    {
+      "id": "innovator-pm",
+      "x": 780,
+      "y": 120,
+      "label": "Luis Marco orquestador",
+      "variant": "violet",
+      "subtitle": "PM con flujo ~70% automatizado · Caso aislado"
+    },
+    {
+      "id": "challenge",
+      "x": 400,
+      "y": 190,
+      "label": "Challenge sessions",
+      "variant": "green",
+      "subtitle": "EM ↔ PM ↔ Designer · Cubren parcial cross-country y Bridge · Informal"
+    },
+    {
+      "id": "ticket",
+      "x": 418,
+      "y": 330,
+      "label": "Ticket en Redmine",
+      "variant": "blue",
+      "subtitle": "PM/EM crea con título y descripción"
+    },
+    {
+      "id": "gherkin",
+      "x": 405,
+      "y": 460,
+      "label": "Criterios en Gherkin",
+      "variant": "green",
+      "subtitle": "BDD ya adoptado · Fortaleza confirmada"
+    },
+    {
+      "id": "no-dor",
+      "x": 20,
+      "y": 610,
+      "label": "Sin DoR / gate ATDD",
+      "variant": "red",
+      "subtitle": "PP-03 · Ambigüedades llegan a desarrollo"
+    },
+    {
+      "id": "ready",
+      "x": 426,
+      "y": 610,
+      "label": "Ready for Dev (informal)",
+      "variant": "amber",
+      "subtitle": "Asignación sin validación previa"
+    },
+    {
+      "id": "no-rtm",
+      "x": 780,
+      "y": 600,
+      "label": "Sin trazabilidad",
+      "variant": "amber",
+      "subtitle": "Necesidad → Ticket → PR sin enlace formal"
+    },
+    {
+      "id": "dev",
+      "x": 400,
+      "y": 730,
+      "label": "Entra a desarrollo",
+      "variant": "indigo",
+      "subtitle": "PP-08 · Sin CLAUDE.md → defectos de specs"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "business",
+      "target": "notion",
+      "label": "PM captura",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e2",
+      "source": "business",
+      "target": "innovator-pm",
+      "label": "Caso avanzado",
+      "style": "dashed",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e3",
+      "source": "notion",
+      "target": "challenge",
+      "label": "PM presenta",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e4",
+      "source": "innovator-pm",
+      "target": "challenge",
+      "label": "Story slicing AI",
+      "style": "dashed",
+      "targetHandle": "target-right"
+    },
+    { "id": "e5", "source": "challenge", "target": "ticket", "label": "Resultado a Redmine" },
+    { "id": "e6", "source": "ticket", "target": "gherkin", "label": "Escribe AC" },
+    { "id": "e7", "source": "gherkin", "target": "ready", "label": "Marca listo" },
+    {
+      "id": "e8",
+      "source": "ready",
+      "target": "no-dor",
+      "label": "Gap detectado",
+      "style": "red",
+      "sourceHandle": "source-left",
+      "targetHandle": "target-right"
+    },
+    {
+      "id": "e9",
+      "source": "ready",
+      "target": "no-rtm",
+      "label": "Sin link a origen",
+      "style": "dashed",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    { "id": "e10", "source": "ready", "target": "dev", "label": "Sin gate" },
+    {
+      "id": "e11",
+      "source": "no-dor",
+      "target": "dev",
+      "label": "Defectos pasan",
+      "style": "red",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "left"
+    }
+  ],
+  "legend": [
+    { "color": "bg-green-200", "label": "Práctica establecida (Gherkin BDD · Challenge informal)" },
+    { "color": "bg-blue-200", "label": "Paso neutro / herramienta" },
+    { "color": "bg-amber-200", "label": "Gap parcial" },
+    { "color": "bg-red-200", "label": "Ausente / crítico" },
+    { "color": "bg-violet-200", "label": "Innovador aislado" },
+    { "color": "bg-indigo-200", "label": "Entrega a desarrollo" }
+  ],
+  "tables": [
+    { "label": "Herramienta de captura", "value": "Notion + Redmine" },
+    { "label": "Formato AC", "value": "Gherkin (BDD) — adoptado" },
+    {
+      "label": "Challenge sessions",
+      "value": "EM ↔ PM ↔ Designer · Informal · Cubren cross-country y Bridge parcialmente"
+    },
+    { "label": "Gate de validación formal", "value": "No existe" },
+    { "label": "Definition of Ready", "value": "Ausente" },
+    { "label": "Trazabilidad requisito ↔ código", "value": "Sin herramienta" },
+    { "label": "Documentación producto", "value": "Notion sin mantenimiento activo" },
+    { "label": "Refinement frequency", "value": "A veces, cuando hay tiempo" },
+    { "label": "AC al planning", "value": "La mayoría de las veces (no siempre)" }
+  ]
+}

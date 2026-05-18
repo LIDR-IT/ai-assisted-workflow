@@ -1,0 +1,328 @@
+{
+  "metadata": {
+    "id": "agents-architecture",
+    "title": "Agents Orchestration",
+    "description": "Arquitectura de subagentes para automatización del ecosistema SDLC — triggers, agents, outputs y validación humana",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["agents", "automation", "orchestration", "triggers", "sdlc"]
+  },
+  "configuration": {
+    "height": 850,
+    "exportName": "Agents Orchestration",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "t-jira",
+      "x": 50,
+      "y": 0,
+      "label": "Ticket -> \"Ready for QA\"",
+      "variant": "cyan",
+      "subtitle": "QA Lead invoca CLI"
+    },
+    {
+      "id": "t-gh",
+      "x": 50,
+      "y": 150,
+      "label": "Merge a main / release branch",
+      "variant": "emerald",
+      "subtitle": "PME invoca CLI"
+    },
+    {
+      "id": "t-ci",
+      "x": 50,
+      "y": 300,
+      "label": "Scan SAST/DAST completado",
+      "variant": "red",
+      "subtitle": "Sec Lead invoca CLI"
+    },
+    {
+      "id": "t-man",
+      "x": 50,
+      "y": 400,
+      "label": "Invocacion manual via CLI",
+      "variant": "purple",
+      "subtitle": "TL/PO invoca CLI"
+    },
+    {
+      "id": "t-docs",
+      "x": 50,
+      "y": 500,
+      "label": "Cambios en docs/ o .claude/",
+      "variant": "indigo",
+      "subtitle": "Dev/TL invoca CLI post-sesion"
+    },
+    {
+      "id": "t-sprint",
+      "x": 50,
+      "y": 600,
+      "label": "Cierre de sprint",
+      "variant": "amber",
+      "subtitle": "TL invoca CLI al cierre"
+    },
+    {
+      "id": "a-qa",
+      "x": 250,
+      "y": 0,
+      "label": "qa-agent",
+      "variant": "sky",
+      "subtitle": "test-plan + create-test-cases + regression"
+    },
+    {
+      "id": "a-release",
+      "x": 250,
+      "y": 150,
+      "label": "release-agent",
+      "variant": "emerald",
+      "subtitle": "release-notes + change-request + rollback"
+    },
+    {
+      "id": "a-sec",
+      "x": 250,
+      "y": 300,
+      "label": "security-agent",
+      "variant": "red",
+      "subtitle": "vuln-assessment + dast + security-checklist"
+    },
+    {
+      "id": "a-onboard",
+      "x": 250,
+      "y": 400,
+      "label": "onboarding-agent",
+      "variant": "purple",
+      "subtitle": "architecture-doc + help ecosystem"
+    },
+    {
+      "id": "a-docs",
+      "x": 250,
+      "y": 500,
+      "label": "docs-agent",
+      "variant": "indigo",
+      "subtitle": "32 integrity tests + sync 8 fuentes + rule staleness"
+    },
+    {
+      "id": "a-metrics",
+      "x": 250,
+      "y": 600,
+      "label": "metrics-agent",
+      "variant": "amber",
+      "subtitle": "retrospective + sprint-capacity"
+    },
+    {
+      "id": "o-xray",
+      "x": 650,
+      "y": 0,
+      "label": "Xray: Test Cases",
+      "variant": "sky",
+      "subtitle": "Output automatico"
+    },
+    {
+      "id": "o-conf",
+      "x": 650,
+      "y": 150,
+      "label": "Confluence: Release Notes",
+      "variant": "emerald",
+      "subtitle": "Output automatico"
+    },
+    {
+      "id": "o-jira",
+      "x": 650,
+      "y": 300,
+      "label": "Jira: Tickets Remediacion",
+      "variant": "red",
+      "subtitle": "Output automatico"
+    },
+    {
+      "id": "o-plan",
+      "x": 650,
+      "y": 400,
+      "label": "Plan Onboarding",
+      "variant": "purple",
+      "subtitle": "Output + FAQ"
+    },
+    {
+      "id": "o-sync",
+      "x": 650,
+      "y": 500,
+      "label": "Docs Sincronizados",
+      "variant": "indigo",
+      "subtitle": "Drift corregido"
+    },
+    {
+      "id": "o-dash",
+      "x": 650,
+      "y": 600,
+      "label": "Dashboard Metricas",
+      "variant": "amber",
+      "subtitle": "Sprint + DORA"
+    },
+    {
+      "id": "h-qa",
+      "x": 920,
+      "y": 0,
+      "label": "QA Lead: Sign-off",
+      "variant": "slate",
+      "subtitle": "Humano valida"
+    },
+    {
+      "id": "h-sec",
+      "x": 920,
+      "y": 300,
+      "label": "Sec Lead: Sign-off",
+      "variant": "slate",
+      "subtitle": "Humano valida"
+    },
+    {
+      "id": "h-cr",
+      "x": 920,
+      "y": 150,
+      "label": "Comite: CR Aprobado",
+      "variant": "slate",
+      "subtitle": "Humano decide"
+    }
+  ],
+  "edges": [
+    {
+      "id": "t1",
+      "source": "t-jira",
+      "target": "a-qa",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t2",
+      "source": "t-gh",
+      "target": "a-release",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t3",
+      "source": "t-ci",
+      "target": "a-sec",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t4a",
+      "source": "t-man",
+      "target": "a-onboard",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t5",
+      "source": "t-docs",
+      "target": "a-docs",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "t6",
+      "source": "t-sprint",
+      "target": "a-metrics",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o1",
+      "source": "a-qa",
+      "target": "o-xray",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o2",
+      "source": "a-release",
+      "target": "o-conf",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o3",
+      "source": "a-sec",
+      "target": "o-jira",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o4",
+      "source": "a-onboard",
+      "target": "o-plan",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o5",
+      "source": "a-docs",
+      "target": "o-sync",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "o6",
+      "source": "a-metrics",
+      "target": "o-dash",
+      "label": "",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "h1",
+      "source": "o-xray",
+      "target": "h-qa",
+      "label": "QA Lead revisa",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#64748b"
+    },
+    {
+      "id": "h2",
+      "source": "o-conf",
+      "target": "h-cr",
+      "label": "Comite revisa",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#64748b"
+    },
+    {
+      "id": "h3",
+      "source": "o-jira",
+      "target": "h-sec",
+      "label": "Sec Lead valida",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "style": "dashed",
+      "strokeDasharray": "5 5",
+      "stroke": "#64748b"
+    }
+  ],
+  "legend": [
+    { "color": "bg-cyan-200", "label": "Triggers - QA/Testing" },
+    { "color": "bg-emerald-200", "label": "Triggers - Release/Deploy" },
+    { "color": "bg-red-200", "label": "Triggers - Security" },
+    { "color": "bg-purple-200", "label": "Triggers - Manual/Onboarding" },
+    { "color": "bg-indigo-200", "label": "Triggers - Documentation" },
+    { "color": "bg-amber-200", "label": "Triggers - Sprint/Metrics" },
+    { "color": "bg-sky-200", "label": "Agents - Automated Processing" },
+    { "color": "bg-slate-200", "label": "Human Validation - Sign-offs" }
+  ],
+  "tables": []
+}

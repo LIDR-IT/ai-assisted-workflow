@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "id": "proceso-prd",
+    "title": "Proceso de PRD",
+    "description": "Product Requirements Document — Documento maestro que conecta las necesidades de negocio con la ejecución técnica",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": ["prd", "requirements", "business-analysis", "sdlc"]
+  },
+  "configuration": {
+    "height": 780,
+    "exportName": "Proceso_PRD_SDLC",
+    "layout": "TB"
+  },
+  "nodes": [
+    {
+      "id": "capture",
+      "x": 200,
+      "y": 0,
+      "label": "1. Captura de Requisitos de Alto Nivel",
+      "variant": "purple",
+      "subtitle": "Negocio proporciona directrices generales"
+    },
+    {
+      "id": "assimil",
+      "x": 200,
+      "y": 100,
+      "label": "2. Asimilación por Producto",
+      "variant": "green",
+      "subtitle": "Equipo Producto · Escuchar, entender, aterrizar"
+    },
+    {
+      "id": "conflu",
+      "x": 200,
+      "y": 200,
+      "label": "3. Creación del PRD en Confluence",
+      "variant": "cyan",
+      "subtitle": "Documento vivo · Iterativo"
+    },
+    {
+      "id": "ai",
+      "x": 200,
+      "y": 300,
+      "label": "4. Generación de RFs con IA",
+      "variant": "violet",
+      "subtitle": "Robo/RoboFlow + ChatGPT · Borradores"
+    },
+    {
+      "id": "review",
+      "x": 200,
+      "y": 400,
+      "label": "5. Revisión de Coherencia",
+      "variant": "yellow",
+      "subtitle": "Interna · Entre RFs · Con PRD Técnico"
+    },
+    {
+      "id": "deps",
+      "x": 200,
+      "y": 500,
+      "label": "6. Mapeo de Dependencias",
+      "variant": "orange",
+      "subtitle": "Entre RFs · Entre módulos · Orden implementación"
+    },
+    {
+      "id": "us",
+      "x": 200,
+      "y": 600,
+      "label": "7. Derivación de User Stories",
+      "variant": "teal",
+      "subtitle": "Criterios de aceptación heredados"
+    },
+    {
+      "id": "sprint",
+      "x": 200,
+      "y": 700,
+      "label": "8. Sprint Planning",
+      "variant": "indigo",
+      "subtitle": "Backlog Jira · Priorización por PO + Governance"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "capture",
+      "target": "assimil",
+      "label": "Input negocio"
+    },
+    {
+      "id": "e2",
+      "source": "assimil",
+      "target": "conflu",
+      "label": "Documenta"
+    },
+    {
+      "id": "e3",
+      "source": "conflu",
+      "target": "ai",
+      "label": "Genera con IA"
+    },
+    {
+      "id": "e4",
+      "source": "ai",
+      "target": "review",
+      "label": "Borrador RFs"
+    },
+    {
+      "id": "e5",
+      "source": "review",
+      "target": "deps",
+      "label": "Validados"
+    },
+    {
+      "id": "e6",
+      "source": "deps",
+      "target": "us",
+      "label": "Orden definido"
+    },
+    {
+      "id": "e7",
+      "source": "us",
+      "target": "sprint",
+      "label": "Backlog"
+    }
+  ],
+  "legend": [
+    { "color": "bg-purple-200", "label": "Captura inicial (Negocio)" },
+    { "color": "bg-green-200", "label": "Equipo de Producto" },
+    { "color": "bg-cyan-200", "label": "Documentación PRD" },
+    { "color": "bg-violet-200", "label": "Generación con IA" },
+    { "color": "bg-yellow-200", "label": "Revisión y validación" },
+    { "color": "bg-teal-200", "label": "Requisitos Funcionales" },
+    { "color": "bg-indigo-200", "label": "User Stories / Sprint" }
+  ],
+  "tables": []
+}
