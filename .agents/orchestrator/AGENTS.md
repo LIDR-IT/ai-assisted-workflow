@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Note:** This file is the single orchestrator for all AI agents. Root-level files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are symlinks to this orchestrator file. Each platform reads from its preferred file:
 
-- **Cursor / Claude Code:** Read `CLAUDE.md`
+- **Claude Code:** Read `CLAUDE.md`
+- **Cursor:** Read `CLAUDE.md` + `AGENTS.md`
 - **Gemini CLI / Antigravity:** Read `GEMINI.md` (shared, no duplicates)
 - **Copilot (VSCode):** Reads `CLAUDE.md` + `AGENTS.md` + `copilot-instructions.md` — no separate orchestrator needed
 

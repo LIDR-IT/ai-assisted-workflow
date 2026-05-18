@@ -316,7 +316,7 @@ gemini_hooks() {
               hooks: [{
                 name: .key,
                 type: "command",
-                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${GEMINI_PROJECT_DIR}/.agents")),
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${GEMINI_PROJECT_DIR}/.gemini")),
                 timeout: (.value.timeout * 1000)
               }]
             }
@@ -333,7 +333,7 @@ gemini_hooks() {
               hooks: [{
                 name: .key,
                 type: "command",
-                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${GEMINI_PROJECT_DIR}/.agents")),
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${GEMINI_PROJECT_DIR}/.gemini")),
                 timeout: (.value.timeout * 1000)
               }]
             }
@@ -350,7 +350,7 @@ gemini_hooks() {
               hooks: [{
                 name: .key,
                 type: "command",
-                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${GEMINI_PROJECT_DIR}/.agents")),
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${GEMINI_PROJECT_DIR}/.gemini")),
                 timeout: (.value.timeout * 1000)
               }]
             }

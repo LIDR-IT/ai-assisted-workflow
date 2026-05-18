@@ -85,7 +85,7 @@ claude_hooks() {
               matcher: .value.matcher,
               hooks: [{
                 type: "command",
-                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.agents")),
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.claude")),
                 timeout: .value.timeout
               }]
             }
@@ -101,7 +101,7 @@ claude_hooks() {
               matcher: .value.matcher,
               hooks: [{
                 type: "command",
-                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.agents")),
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.claude")),
                 timeout: .value.timeout
               }]
             }
@@ -117,7 +117,7 @@ claude_hooks() {
               matcher: .value.matcher,
               hooks: [{
                 type: "command",
-                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.agents")),
+                command: (.value.command | gsub("\\$\\{PLUGIN_ROOT\\}"; "${CLAUDE_PROJECT_DIR}/.claude")),
                 timeout: .value.timeout
               }]
             }
