@@ -35,13 +35,14 @@ CHANGELOG:
 ## Validate
 
 If "$1" is empty or doesn't match semver pattern:
-  ❌ Version required in semver format.
-  Usage: /update-changelog v1.2.0
-  Exit.
+❌ Version required in semver format.
+Usage: /update-changelog v1.2.0
+Exit.
 
 Check if CHANGELOG.md exists: !`test -f CHANGELOG.md && echo "EXISTS" || echo "MISSING"`
 
 If MISSING: create CHANGELOG.md with standard header:
+
 ```markdown
 # Changelog
 
@@ -62,23 +63,23 @@ Last tag: !`git describe --tags --abbrev=0 2>/dev/null || echo "none"`
 PRs since last tag: !`git log {last-tag}..HEAD --merges --oneline`
 
 If release notes already generated (`.claude/releases/$1-release-notes.local.md`):
-  Reuse technical release notes as source.
+Reuse technical release notes as source.
 Else:
-  Parse PRs and conventional commit prefixes from merge commits.
+Parse PRs and conventional commit prefixes from merge commits.
 
 ## Classify Changes
 
 Parse each PR/commit by conventional commit prefix:
 
-| Prefix | CHANGELOG Section |
-|--------|------------------|
-| feat:  | Added |
-| fix:   | Fixed |
-| perf:  | Changed |
-| refactor: | Changed |
-| security: | Security |
-| BREAKING CHANGE: | Breaking Changes |
-| deprecate: | Deprecated |
+| Prefix             | CHANGELOG Section              |
+| ------------------ | ------------------------------ |
+| feat:              | Added                          |
+| fix:               | Fixed                          |
+| perf:              | Changed                        |
+| refactor:          | Changed                        |
+| security:          | Security                       |
+| BREAKING CHANGE:   | Breaking Changes               |
+| deprecate:         | Deprecated                     |
 | docs:/test:/chore: | Skip (unless --include-chores) |
 
 Detect dependency changes: !`git diff {last-tag}..HEAD -- package.json`
@@ -91,21 +92,27 @@ Generate CHANGELOG entry in Keep a Changelog format:
 ## [$1] - {YYYY-MM-DD}
 
 ### Added
+
 - {functional description} ({TICKET-ID})
 
 ### Changed
+
 - {description} ({TICKET-ID})
 
 ### Fixed
+
 - {description} ({TICKET-ID})
 
 ### Security
+
 - {description} ({TICKET-ID})
 
 ### Breaking Changes
+
 - {description + migration guide} ({TICKET-ID})
 
 ### Dependencies
+
 - {package}: {old} → {new}
 ```
 
@@ -114,10 +121,11 @@ Generate CHANGELOG entry in Keep a Changelog format:
 Show generated entry to user.
 
 If {{{ input }}} contains "--dry-run":
-  Show entry and exit without modifying files.
-  Exit.
+Show entry and exit without modifying files.
+Exit.
 
 Use AskUserQuestion:
+
 - question: "¿El CHANGELOG entry es correcto?"
 - header: "Confirmar"
 - options:
@@ -128,6 +136,7 @@ Use AskUserQuestion:
 ## Write to File
 
 Insert new entry in CHANGELOG.md:
+
 - After `## [Unreleased]`
 - Before the previous version entry
 - Clear `[Unreleased]` section
@@ -140,11 +149,11 @@ Update comparison links at bottom of file.
 !`git commit -m "docs: update CHANGELOG for $1"`
 
 If {{{ input }}} does NOT contain "--no-tag":
-  !`git tag -a $1 -m "Release $1"`
-  !`git push origin HEAD --tags`
+!`git tag -a $1 -m "Release $1"`
+!`git push origin HEAD --tags`
 
-  If GitHub CLI (gh) available:
-    Create GitHub Release with changelog entry as body.
+If GitHub CLI (gh) available:
+Create GitHub Release with changelog entry as body.
 
 ## Report
 

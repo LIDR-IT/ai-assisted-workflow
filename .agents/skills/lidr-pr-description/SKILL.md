@@ -1,4 +1,5 @@
 ---
+name: lidr-pr-description
 id: pr-description
 version: "1.1.0"
 last_updated: "2026-04-06"

@@ -29,6 +29,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 ## When to Use
 
 ### ✅ Use `/quick-spec` for:
+
 - Feature enhancements (< 40h development effort)
 - Bug fixes with functional impact
 - API endpoint additions
@@ -37,6 +38,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 - Technical improvements with user impact
 
 ### ❌ Don't use for:
+
 - New products or major features (use full PRD process)
 - Architectural changes (use `adr` skill)
 - Security-critical features (require full security review)
@@ -49,6 +51,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 ```
 
 ### Examples
+
 ```bash
 /quick-spec user-avatar-upload --type=enhancement --effort=24
 /quick-spec biometric-timeout-fix --type=bugfix --effort=8
@@ -58,12 +61,14 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 ## Command Flow
 
 ### Phase 1: Context Gathering (5 minutes)
+
 1. **Load project context** from `rules/project.md`
 2. **Identify stakeholders** and affected systems
 3. **Estimate complexity** (Simple/Medium/Complex)
 4. **Check prerequisites** (dependencies, blockers)
 
 ### Phase 2: Rapid Specification (15-20 minutes)
+
 1. **Generate User Story** with acceptance criteria
 2. **Create Functional Requirements** (3-8 RFs max)
 3. **Define API contract** (if applicable)
@@ -71,6 +76,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 5. **Risk assessment** (technical/business risks)
 
 ### Phase 3: Validation & Output (5-10 minutes)
+
 1. **Validate against DoR** checklist
 2. **Generate implementation guidance**
 3. **Create Jira-ready output**
@@ -79,10 +85,12 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 ## Templates Used
 
 ### Quick Spec Document Template
-```markdown
+
+````markdown
 # Quick Spec: {Feature Name}
 
 ## Overview
+
 **Feature**: {Brief description}
 **Type**: Enhancement/Bugfix/Integration/API
 **Effort**: {X} hours
@@ -90,11 +98,13 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 **Sprint Target**: {Sprint number}
 
 ## User Story
+
 **As a** {user type}
 **I want** {functionality}
 **So that** {business value}
 
 ### Acceptance Criteria
+
 - [ ] {Criterion 1 with measurable outcome}
 - [ ] {Criterion 2 with measurable outcome}
 - [ ] {Criterion 3 with measurable outcome}
@@ -102,6 +112,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 ## Functional Requirements
 
 ### RF-QS-01: {Main Function}
+
 **Given** {precondition}
 **When** {user action}
 **Then** {system response}
@@ -110,6 +121,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 **Complexity**: Simple/Medium/Complex
 
 ### RF-QS-02: {Validation/Error Handling}
+
 **Given** {error condition}
 **When** {user action}
 **Then** {error handling}
@@ -120,6 +132,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 ## Technical Specification
 
 ### API Changes (if applicable)
+
 ```json
 {
   "endpoint": "POST /api/v1/feature",
@@ -127,27 +140,33 @@ Rapidly generate lightweight requirements specification for small features (≤ 
   "response": { "result": "success" }
 }
 ```
+````
 
 ### UI Changes (if applicable)
+
 - **Components**: List affected components
 - **Wireframes**: Link to designs or describe layout
 - **Responsive**: Mobile/tablet considerations
 
 ### Database Changes (if applicable)
+
 - **Tables**: New/modified tables
 - **Migrations**: Required schema changes
 
 ## Test Scenarios
 
 ### Happy Path
+
 1. {Step 1 - normal flow}
 2. {Step 2 - expected result}
 
 ### Edge Cases
+
 1. {Edge case 1 - boundary conditions}
 2. {Edge case 2 - error conditions}
 
 ### Biometric-Specific Tests (if applicable)
+
 1. **Liveness detection**: Test with various attack vectors
 2. **Performance**: Response time under load
 3. **Accuracy**: FAR/FRR metrics validation
@@ -155,29 +174,35 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 ## Dependencies & Risks
 
 ### Dependencies
+
 - [ ] {External system/team dependency}
 - [ ] {Technical prerequisite}
 
 ### Technical Risks
+
 - **Risk**: {Description}
   **Mitigation**: {Strategy}
 
 ### Business Risks
+
 - **Risk**: {Impact on users/business}
   **Mitigation**: {Strategy}
 
 ## Implementation Guidance
 
 ### Development Approach
+
 1. {Step 1 - implementation order}
 2. {Step 2 - key considerations}
 
 ### Testing Strategy
+
 - **Unit tests**: {Coverage expectations}
 - **Integration tests**: {Key scenarios}
 - **Manual testing**: {Verification steps}
 
 ## Definition of Done
+
 - [ ] Code review completed by Tech Lead
 - [ ] Unit tests written and passing (≥80% coverage)
 - [ ] Integration tests covering happy path
@@ -188,13 +213,15 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 - [ ] Stakeholder sign-off
 
 ## Regulatory Compliance (if applicable)
+
 - [ ] GDPR Art. 9 compliance (biometric data)
 - [ ] PSD2 SCA requirements
 - [ ] ISO 30107 PAD testing
 - [ ] Accessibility (WCAG 2.1 AA)
 
 
-*Generated by Quick Spec v1.0 | Validation required by: {PO/Tech Lead}*
+_Generated by Quick Spec v1.0 | Validation required by: {PO/Tech Lead}_
+
 ```
 
 ## Integration with Skills
@@ -277,13 +304,15 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 
 ### ROI Calculation
 ```
+
 Traditional small feature specification: 4-6 hours
 Quick spec process: 30-45 minutes
 Time saved per feature: 3.5-5.5 hours
 Features per year: ~50 small features
 Annual savings: 175-275 hours
 Conservative ROI: 150+ hours/year
-```
+
+````
 
 ## Anti-patterns to Avoid
 
@@ -332,24 +361,27 @@ async function executeQuickSpec(featureName: string, options: QuickSpecOptions) 
     implementationGuidance: generateGuidance(complexity)
   };
 }
-```
+````
 
 ## Integration Points
 
 ### With Existing Commands
+
 - **Pre**: `/validate-project-docs` to ensure project context is current
 - **Post**: `/implement-ticket` can use quick spec as input
 - **Chain**: `/quick-spec` → `/create-test-cases` → `/implement-ticket`
 
 ### With Skills
+
 - Uses lightweight versions of `generate-rf` and `user-stories`
 - Can trigger `validate-requirements` for consistency check
 - Integrates with `create-test-cases` for automated test generation
 
 ### With Tools
+
 - **Jira**: Direct ticket creation from output
 - **Confluence**: Quick spec doc can be published
 - **GitHub**: Issues can be created from template
 
 
-*Command Tier: 2 (Tactical) | Model: Sonnet | Est. Duration: 30-45 minutes*
+_Command Tier: 2 (Tactical) | Model: Sonnet | Est. Duration: 30-45 minutes_

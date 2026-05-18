@@ -43,8 +43,8 @@ Ecosystem navigation question. Agent provides guided tour of QA-relevant artifac
 
 ## Templates
 
-| Code | Name | Role |
-|------|------|------|
+| Code      | Name             | Role    |
+| --------- | ---------------- | ------- |
 | T-ORI-002 | Acta de Kick-off | consume |
 
 ## Memory Instructions

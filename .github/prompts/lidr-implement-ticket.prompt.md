@@ -39,6 +39,7 @@ CHANGELOG:
 # Implement Ticket $1
 
 Load rules context FIRST:
+
 - @../rules/org.md
 - @../rules/tech-stack.md
 - @../rules/project.md
@@ -46,15 +47,16 @@ Load rules context FIRST:
 ## Step 1: Validate and Load Ticket
 
 If "$1" is empty:
-  ❌ ERROR: Ticket ID required.
-  Usage: /implement-ticket [TICKET-ID]
-  Example: /implement-ticket PROJ-123
-  Exit.
+❌ ERROR: Ticket ID required.
+Usage: /implement-ticket [TICKET-ID]
+Example: /implement-ticket PROJ-123
+Exit.
 
 Read ticket from Jira MCP: GET /issue/$1
 Extract: title, description, acceptance criteria (BDD), linked User Story, linked RF, priority, sprint, component, attachments.
 
 Validate:
+
 - If ticket status is NOT "Ready for Dev" or "In Progress":
   ⚠️ Ticket $1 is in status "{status}". Expected "Ready for Dev" or "In Progress".
 
@@ -74,10 +76,12 @@ Validate:
 Read ticket links from Jira: GET /issue/$1?expand=issuelinks
 
 For each "is blocked by" or "depends on" link:
+
 - Check status of blocking ticket
 - If status != "Done": ⚠️ "Dependency {DEP-ID} not resolved (status: {status})"
 
 Use AskUserQuestion if blockers found:
+
 - question: "Hay dependencias no resueltas. ¿Cómo proceder?"
 - header: "Dependencias"
 - options:
@@ -92,6 +96,7 @@ Current branch: !`git branch --show-current`
 If not already on a feature branch for this ticket:
 
 Determine branch type from Jira issue type:
+
 - Story → feature/
 - Bug → bugfix/
 - Task → task/
@@ -109,6 +114,7 @@ Jira MCP: transition $1 to "In Progress" (if not already).
 Based on: ticket description + BDD criteria + linked RF + project rules
 
 Generate:
+
 ```
 Implementation Plan — $1
 ═══════════════════════════
@@ -132,6 +138,7 @@ Implementation Plan — $1
 ```
 
 Use AskUserQuestion:
+
 - question: "¿El plan de implementación es correcto?"
 - header: "Plan"
 - options:
@@ -145,12 +152,14 @@ Help the developer implement following the approved plan.
 Keep rules loaded at all times for convention compliance.
 
 During implementation:
+
 - Verify each function against BDD criteria from ticket
 - If code introduces a TODO without ticket: WARN
 - If tech-debt detected: use tech-debt skill to register, create Jira subtask
 - If architectural decision needed: suggest creating ADR with adr skill
 
 Run validations continuously:
+
 - !`npm run lint` → fix suggestions if warnings
 - !`npm run test` → ensure green
 - !`npm run build` → ensure builds
@@ -170,6 +179,7 @@ If any FAIL → suggest specific fixes before continuing.
 ## Step 7: Create PR
 
 Generate PR description using pr-description skill:
+
 - Input: !`git diff origin/develop...HEAD --stat` and ticket context
 - Output: structured PR body with:
   - What changed (functional language)
@@ -179,6 +189,7 @@ Generate PR description using pr-description skill:
   - Checklist
 
 Create PR via GitHub CLI (gh): POST /repos/{owner}/{repo}/pulls
+
 - title: "$1: {ticket title}"
 - body: generated PR description
 - head: {branch-name}
@@ -191,6 +202,7 @@ Add labels: type, component, priority, size.
 ## Step 8: Generate Handoff Dev→QA
 
 Use dev-handoff-qa skill to generate handoff document:
+
 - Ticket reference and linked RF
 - What was implemented (functional language, not technical)
 - Relevant changes (endpoints, DB, config, feature flags)
@@ -209,6 +221,7 @@ Slack MCP: notify QA channel:
 "Ticket $1 ready for QA. Handoff attached. PR: {link}. Environment: staging."
 
 Report:
+
 ```
 ## /implement-ticket $1 ✅
 

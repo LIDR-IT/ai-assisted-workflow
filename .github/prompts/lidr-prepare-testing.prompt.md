@@ -41,32 +41,36 @@ Load: @../rules/org.md and @../rules/project.md
 ## Validate
 
 If "$1" is empty:
-  ❌ Ticket ID required. Usage: /prepare-testing [TICKET-ID]
-  Exit.
+❌ Ticket ID required. Usage: /prepare-testing [TICKET-ID]
+Exit.
 
 Read ticket from manual or script: ticket $1
 If status != "Ready for QA":
-  ⚠️ Ticket $1 is "{status}", not "Ready for QA".
+⚠️ Ticket $1 is "{status}", not "Ready for QA".
 
-  Use AskUserQuestion:
-  - question: "Ticket no está en Ready for QA. ¿Continuar?"
-  - header: "Estado"
-  - options:
-    - Sí (Preparar testing de todas formas)
-    - No (Esperar a que Dev termine)
+Use AskUserQuestion:
+
+- question: "Ticket no está en Ready for QA. ¿Continuar?"
+- header: "Estado"
+- options:
+  - Sí (Preparar testing de todas formas)
+  - No (Esperar a que Dev termine)
 
 ## Gather Context
 
 From Jira ticket:
+
 - BDD acceptance criteria (Given/When/Then)
 - Linked User Story and RF
 - Dev→QA handoff document (attachment)
 
 From Git (if available):
+
 - PR diff: read changed files to understand what was implemented
 - !`git diff origin/develop...HEAD --stat`
 
 From handoff document:
+
 - What was implemented (functional description)
 - Endpoints, DB changes, config changes
 - How to test (dev's suggestions)
@@ -75,6 +79,7 @@ From handoff document:
 ## Generate Test Plan
 
 Using test-plan skill, generate test plan:
+
 - Scope: what to test based on changes
 - Strategy: functional + BDD + regression + edge cases
 - Entry criteria: staging deployed, data available
@@ -86,12 +91,14 @@ Using test-plan skill, generate test plan:
 Using create-test-cases skill, generate test cases for each BDD criterion:
 
 For each acceptance criterion:
+
 1. **Happy path** test case (Given/When/Then as specified)
 2. **Edge cases** (boundary values, empty inputs, max values)
 3. **Error cases** (invalid data, unauthorized, timeout)
 4. **Regression candidates** (related functionality that might break)
 
 Format each test case:
+
 ```
 TC-{number}: {title}
 Preconditions: {setup needed}
@@ -106,6 +113,7 @@ Priority: Critical / High / Medium / Low
 ## Suggest Regression Suite
 
 Using regression-suite skill:
+
 - Analyze changed files to determine impact radius
 - Suggest existing test cases that should be re-executed
 - Flag areas of risk based on coupling analysis
@@ -113,6 +121,7 @@ Using regression-suite skill:
 ## Write to Test Management
 
 Generate CSV export for Xray import:
+
 - Create test plan and test cases in CSV format
 - Save to `.claude/testing/$1-test-suite.csv`
 - Ready for import-to-xray.sh script execution

@@ -22,11 +22,11 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
 
 ## Parámetros
 
-| Parámetro | Tipo | Descripción | Default |
-|-----------|------|-------------|---------|
-| `TICKET-ID` | Required | ID del ticket Jira (ej: SDLC-123) | - |
-| `--type` | Optional | Tipo de cambio: `fix`, `feat`, `docs`, `style`, `refactor`, `test` | `fix` |
-| `--skip-tests` | Flag | Saltear generación de tests (solo para fixes menores) | false |
+| Parámetro      | Tipo     | Descripción                                                        | Default |
+| -------------- | -------- | ------------------------------------------------------------------ | ------- |
+| `TICKET-ID`    | Required | ID del ticket Jira (ej: SDLC-123)                                  | -       |
+| `--type`       | Optional | Tipo de cambio: `fix`, `feat`, `docs`, `style`, `refactor`, `test` | `fix`   |
+| `--skip-tests` | Flag     | Saltear generación de tests (solo para fixes menores)              | false   |
 
 
 ## Criterios de Elegibilidad
@@ -67,12 +67,14 @@ flowchart TD
 ```
 
 **Validaciones automáticas**:
+
 - Ticket status = "Ready for Dev" o "In Progress"
 - Estimación ≤ 8 horas (en description o comments)
 - Story points ≤ 5 (si se usan)
 - No labels: `epic`, `breaking-change`, `security-review`
 
 **Branch naming**: `quick/{type}/{TICKET-ID}-{description}`
+
 - Ejemplo: `quick/fix/SDLC-123-login-timeout`
 
 ### Fase 2: Implementation Assistant (15-45 min)
@@ -89,12 +91,14 @@ flowchart TD
 ```
 
 **Características del micro-plan**:
+
 - **3-5 pasos máximo**: Breakdown simple y ejecutable
 - **File targets**: Archivos específicos a modificar
 - **Test strategy**: Si aplica, qué testear (happy path only)
 - **Validation checklist**: 2-3 items críticos
 
 **Code assistance**:
+
 - Genera código siguiendo tech-stack.md
 - Applica patterns del proyecto actual
 - Sugiere imports y dependencies
@@ -111,6 +115,7 @@ flowchart TD
 ```
 
 **PR auto-description** incluye:
+
 - **Type + scope**: `fix(auth): resolve login timeout`
 - **Change summary**: 1-2 bullets de qué cambió
 - **Testing**: Qué se validó (manual + tests si existen)
@@ -119,15 +124,15 @@ flowchart TD
 
 ## Diferencias vs `/implement-ticket`
 
-| Aspecto | `/quick-dev` | `/implement-ticket` |
-|---------|--------------|-------------------|
-| **Duración target** | 1-3 horas end-to-end | 4-40 horas |
-| **Planning** | Micro-plan (3-5 pasos) | Full breakdown + handoff |
-| **Testing** | Basic + optional skip | Comprehensive test plan |
-| **Documentation** | PR description only | Full dev handoff |
-| **Review process** | Peer review | TL + peer review |
-| **DoD compliance** | Simplified (5 items) | Full DoD (20+ items) |
-| **Gate validation** | Pre-merge CI only | Gate 4 formal |
+| Aspecto             | `/quick-dev`           | `/implement-ticket`      |
+| ------------------- | ---------------------- | ------------------------ |
+| **Duración target** | 1-3 horas end-to-end   | 4-40 horas               |
+| **Planning**        | Micro-plan (3-5 pasos) | Full breakdown + handoff |
+| **Testing**         | Basic + optional skip  | Comprehensive test plan  |
+| **Documentation**   | PR description only    | Full dev handoff         |
+| **Review process**  | Peer review            | TL + peer review         |
+| **DoD compliance**  | Simplified (5 items)   | Full DoD (20+ items)     |
+| **Gate validation** | Pre-merge CI only      | Gate 4 formal            |
 
 
 ## Templates y Outputs
@@ -138,22 +143,27 @@ flowchart TD
 ## Quick Dev Plan: {TICKET-ID}
 
 ### Summary
+
 **Type**: {fix|feat|docs|style|refactor|test}
 **Estimated time**: {X} hours
 **Files affected**: {list}
 
 ### Implementation Steps
+
 1. **Step 1**: {action} → {expected outcome}
 2. **Step 2**: {action} → {expected outcome}
 3. **Step 3**: {action} → {expected outcome}
 
 ### Quick Validation
+
 - [ ] {critical item 1}
 - [ ] {critical item 2}
 - [ ] {critical item 3}
 
 ### Test Strategy
+
 {if not --skip-tests}
+
 - **Happy path**: {what to test}
 - **Error case**: {if applicable}
 ```
@@ -168,16 +178,19 @@ flowchart TD
 **Estimated effort**: {X}h
 
 ### Changes
+
 - {bullet 1}
 - {bullet 2}
 
 ### Testing
+
 - [x] Manual verification: {what was tested}
 - [x] Existing tests pass
-{if new tests}
+      {if new tests}
 - [x] New tests added: {what they cover}
 
 ### Quick Checklist
+
 - [x] Code follows project conventions
 - [x] No breaking changes
 - [x] No security implications
@@ -204,27 +217,27 @@ tools_sequence:
     - generate_micro_plan
 
   implementation:
-    - code_assistance        # Interactive guidance
-    - quick_validation       # Basic DoD items
-    - test_generation        # If not skipped
+    - code_assistance # Interactive guidance
+    - quick_validation # Basic DoD items
+    - test_generation # If not skipped
 
   pr_creation:
     - git_add_changes
     - git_commit
     - git_push_branch
     - github_create_pr
-    - request_reviewers      # Peer only, not TL
+    - request_reviewers # Peer only, not TL
 ```
 
 ### Error Handling
 
-| Error | Action |
-|-------|--------|
-| Ticket no elegible | Suggest `/implement-ticket` with reasoning |
-| Estimación > 8h | Force escalation to full process |
-| Security flags | Block + require security review |
-| Breaking changes detected | Block + require ADR |
-| CI failures | Guide to fix + re-run |
+| Error                     | Action                                     |
+| ------------------------- | ------------------------------------------ |
+| Ticket no elegible        | Suggest `/implement-ticket` with reasoning |
+| Estimación > 8h           | Force escalation to full process           |
+| Security flags            | Block + require security review            |
+| Breaking changes detected | Block + require ADR                        |
+| CI failures               | Guide to fix + re-run                      |
 
 
 ## Metrics y Monitoring
@@ -242,11 +255,13 @@ tools_sequence:
 ## Quick Dev Analytics
 
 **This Sprint**:
+
 - Quick dev PRs: {N}
 - Avg time to PR: {X} hours
 - Pass rate: {Y}%
 
 **Top Types**:
+
 1. Bug fixes: {X}%
 2. Docs: {Y}%
 3. Style: {Z}%
@@ -263,11 +278,11 @@ tools_sequence:
 
 ### Con Skills
 
-| Skill | Cuándo se usa |
-|-------|---------------|
+| Skill            | Cuándo se usa                            |
+| ---------------- | ---------------------------------------- |
 | `pr-description` | Auto-invoked para generar PR description |
-| `bug-report` | Si se detecta bug durante implementation |
-| `tech-debt` | Si se identifica debt técnico |
+| `bug-report`     | Si se detecta bug durante implementation |
+| `tech-debt`      | Si se identifica debt técnico            |
 
 ### Con Hooks
 
@@ -283,6 +298,7 @@ tools_sequence:
 **Regla de oro**: Si dudas, usa `/implement-ticket`. `/quick-dev` es solo para cambios que claramente cumplen criterios de elegibilidad.
 
 **Examples**:
+
 - ✅ Fix typo en UI: `/quick-dev`
 - ✅ Add logging statement: `/quick-dev`
 - ✅ Update doc: `/quick-dev`
@@ -293,6 +309,7 @@ tools_sequence:
 ### ¿Puede saltar testing completamente?
 
 **Solo con `--skip-tests` y criterios**:
+
 - Bug fix sin lógica nueva
 - Documentation change
 - Style/formatting only
@@ -301,6 +318,7 @@ tools_sequence:
 ### ¿Qué pasa si el scope crece durante implementation?
 
 Command detecta automáticamente y sugiere:
+
 1. **Continuar**: Si crecimiento menor (1-2 files más)
 2. **Escalar**: A `/implement-ticket` si scope duplica
 3. **Split**: Crear segundo ticket para scope adicional
@@ -308,6 +326,6 @@ Command detecta automáticamente y sugiere:
 
 ## Changelog
 
-| Versión | Fecha | Autor | Cambios |
-|---------|-------|-------|---------|
-| 1.0.0 | 2026-03-15 | AI Agent: Claude Sonnet | Versión inicial basada en LIDR SDLC quick-dev pattern |
+| Versión | Fecha      | Autor                   | Cambios                                               |
+| ------- | ---------- | ----------------------- | ----------------------------------------------------- |
+| 1.0.0   | 2026-03-15 | AI Agent: Claude Sonnet | Versión inicial basada en LIDR SDLC quick-dev pattern |

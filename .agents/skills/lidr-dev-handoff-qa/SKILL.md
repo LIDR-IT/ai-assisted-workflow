@@ -1,4 +1,5 @@
 ---
+name: lidr-dev-handoff-qa
 id: dev-handoff-qa
 version: "1.2.0"
 last_updated: "2026-03-16"

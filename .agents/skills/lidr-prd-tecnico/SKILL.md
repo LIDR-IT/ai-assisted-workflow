@@ -1,4 +1,5 @@
 ---
+name: lidr-prd-tecnico
 id: prd-tecnico
 version: "1.2.0"
 last_updated: "2026-03-26"

@@ -13,40 +13,81 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repository Is
 
-This is a **multi-agent AI configuration template** demonstrating centralized management across 5 platforms: Cursor, Claude Code, Gemini CLI, Antigravity, and GitHub Copilot (VSCode). It's a production tool for teams, not a documentation wiki.
+This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
+
+1. **LIDR SDLC Methodology** — a complete software development lifecycle
+   framework with 62 specialized skills (one per SDLC artifact), 23
+   orchestrator commands, 5 governance rules, 6 autonomous agents.
+   Authored by LIDR Consultorias for multi-client SDLC implementation.
+2. **ai-assisted-workflow** — a source-of-truth pattern (`.agents/`) with
+   automated synchronization to 5 AI platforms (Cursor, Claude Code, Gemini
+   CLI, Antigravity, GitHub Copilot).
+3. **React documentation app** (`app/`) — interactive visualization of the
+   LIDR SDLC Methodology with multi-client support (FacePhi, Docline, Aramis,
+   base template) using React Flow + React Router v7.
 
 **Core Architecture:** Source-of-truth pattern with automated synchronization
 
-- Edit once in `.agents/` → automatically synced to all platforms
-- 17 rules across 8 categories (coding standards, workflows)
-- 12 reusable skills (progressive disclosure pattern)
-- 7 slash commands + 3 autonomous agents
-- MCP integration (Context7 for library documentation)
-- Git hooks patterns (auto-format, protect-secrets, notify)
+- Edit once in `.agents/` → automatically synced to all 5 platforms
+- **22 rules** in 10 categories (5 LIDR SDLC + 17 generic)
+- **74 skills** (62 LIDR SDLC `lidr-*` + 12 generic meta-skills)
+- **30 commands** (23 LIDR `lidr-*` + 7 generic)
+- **9 subagents** (6 LIDR `lidr-*` + 3 generic)
+- **8 hooks** (4 LIDR + 4 generic, registered in `.agents/hooks/hooks.json`)
+- MCP integration (Context7)
+- Git hooks via husky at repo root (pre-commit, commit-msg, pre-push)
+- React app in `app/` with Playwright validation
 
-**Key Stats:** 287 files (40% reduction from 482), 576 lines of hooks (59% reduction)
+**Naming convention:** all artifacts inherited from the LIDR SDLC methodology
+are prefixed with `lidr-` (skills, commands, subagents, hooks; rules live in
+`lidr-sdlc/` subdirectory). Generic artifacts have no prefix.
+
+**Pre-merge originals** are preserved untouched:
+
+- `../LIDR - AI powered workflow 2026/` — original LIDR repo
+- `../ai-assisted-workflow/` — original template
+- `.agents/.archive/2026-05-18-pre-lidr-merge/` — diff reports + inventories
+  - archived versions of any file that was overwritten
 
 ---
 
 ## Essential Commands
 
-### Development Workflow
+### Development Workflow (root)
 
 ```bash
-# Documentation site
-npm run docs:dev          # Start VitePress dev server (port 5173)
+# Documentation site (VitePress, lives in docs/)
+npm run docs:dev          # Start VitePress dev server
 npm run docs:build        # Build static documentation
 npm run docs:preview      # Preview built site
 
-# Linting and Formatting
+# Linting and Formatting (top-level files)
 npm run format            # Format all files with Prettier
 npm run format:check      # Check formatting without changes
-
-# Git Pre-commit (Husky + lint-staged)
-# Automatically runs on commit:
-# - Prettier formatting on staged files
-# - Configured in package.json "lint-staged" section
 ```
+
+### React App (in app/)
+
+```bash
+cd app
+npm install               # Install app dependencies (once)
+npm run dev               # Vite dev server (http://localhost:5173)
+npm run build             # Production build
+npm run test              # Vitest unit tests
+npm run validate:coherence    # LIDR coherence checks
+npm run client:list           # List registered clients (base, docline, facephi, aramis)
+node scripts/multi-client-smoke.mjs    # Playwright smoke test: 4 clients × 14 routes
+```
+
+### Git Hooks (Husky at root, not in app/)
+
+The unified repo has ONE git directory at root. `app/.husky/` was archived as
+inert. Active hooks:
+
+- **pre-commit**: sensitive-file guard + root lint-staged + app lint-staged
+  (when app/ files are staged)
+- **commit-msg**: validates conventional commits via `app/commitlint.config.js`
+- **pre-push**: enforces branch naming convention
 
 ### Synchronization (Critical)
 
@@ -104,39 +145,60 @@ ls .github/agents/*.agent.md
 
 ```
 .agents/                      # ← SINGLE SOURCE OF TRUTH
-├── rules/                    # 17 rules (coding standards)
+├── rules/                    # 22 rules (5 LIDR + 17 generic)
+│   ├── lidr-sdlc/            # ← LIDR: org, project, tech-stack, workflows, documentation
 │   ├── code/                 # principles.md, style.md
 │   ├── content/              # copywriting.md
 │   ├── design/               # web-design.md (800+ line accessibility)
 │   ├── frameworks/           # react-native.md
 │   ├── process/              # git-workflow.md, documentation.md
-│   ├── quality/              # testing.md, testing-scripts.md
-│   ├── team/                 # skills-management.md, third-party-security.md
-│   └── tools/                # use-context7.md, claude-code-extensions.md
+│   ├── product/, quality/, team/, tools/
 │
-├── skills/                   # 12 skills (progressive disclosure)
-│   ├── team-skill-creator/   # Meta-skill for creating components
-│   ├── command-development/  # Command creation workflows
-│   ├── agent-development/    # Agent patterns
-│   ├── skill-development/    # Skill architecture
+├── skills/                   # 74 skills (62 lidr-* + 12 generic)
+│   ├── lidr-business-case/   # ← LIDR Phase 1: Originación
+│   ├── lidr-prd-tecnico/     # ← LIDR Phase 2: Discovery
+│   ├── lidr-generate-rf/     # ← LIDR Phase 3: Specification
+│   ├── lidr-user-stories/    # ← LIDR Phase 4: Sprint Planning
+│   ├── lidr-adr/             # ← LIDR Phase 5: Development
+│   ├── lidr-test-plan/       # ← LIDR Phase 6: QA
+│   ├── lidr-security-checklist/  # ← LIDR Phase 7: Security
+│   ├── lidr-release-notes/   # ← LIDR Phase 8: Deployment
+│   ├── team-skill-creator/   # Generic meta-skill
+│   ├── command-development/  # Generic
+│   └── ...                   # (62 LIDR total spanning all 9 SDLC phases)
+│
+├── commands/                 # 30 commands (23 lidr-* + 7 generic)
+│   ├── lidr-advance-gate.md  # ← LIDR orchestrator: gate evaluation + handoff
+│   ├── lidr-implement-ticket.md  # ← LIDR: dev workflow
+│   ├── lidr-prepare-testing.md   # ← LIDR: QA workflow
+│   ├── lidr-help.md          # ← LIDR ecosystem help (formerly /lidr-help)
+│   ├── commit.md             # Generic
+│   ├── sync-setup.md         # Generic
 │   └── ...
 │
-├── commands/                 # 7 slash commands
-│   ├── commit.md             # Smart commit generation
-│   ├── improve-docs.md       # Doc auditing
-│   └── sync-setup.md         # Run sync.sh
-│
-├── subagents/                # 3 autonomous agents
-│   ├── doc-improver.md       # Documentation auditor
-│   ├── pr-validator.md       # PR standards validator
-│   └── ticket-enricher.md    # Ticket completeness validator
+├── subagents/                # 9 agents (6 lidr-* + 3 generic)
+│   ├── lidr-qa-agent.md      # ← LIDR: QA automation
+│   ├── lidr-security-agent.md
+│   ├── lidr-release-agent.md
+│   ├── lidr-onboarding-agent.md
+│   ├── lidr-docs-agent.md
+│   ├── lidr-metrics-agent.md
+│   ├── doc-improver.md       # Generic
+│   ├── pr-validator.md       # Generic
+│   └── ticket-enricher.md    # Generic
 │
 ├── mcp/                      # MCP server configs
 │   └── mcp-servers.json      # ← Source (universal format)
 │
 ├── hooks/                    # Git workflow automation
-│   ├── hooks.json            # ← Source (hook definitions)
-│   └── scripts/              # notify.sh, auto-format.sh, protect-secrets.sh
+│   ├── hooks.json            # ← Source (hook definitions, supports 5 events)
+│   ├── scripts/              # notify.sh, auto-format.sh, protect-secrets.sh
+│   └── lidr/                 # ← LIDR: frontmatter-guard, load-context,
+│                             #   validate-ecosystem-counts (Claude-only)
+│
+├── _shared/lidr/             # ← LIDR shared validators (BDD, AC, coherence)
+├── memory/lidr/              # ← LIDR persistent memory (docs-agent)
+├── .archive/                 # ← Pre-merge backups + diff reports + inventories
 │
 ├── orchestrator/             # Orchestrator docs
 │   └── AGENTS.md             # ← This file
@@ -929,3 +991,73 @@ ln -s ../.agents/skills .cursor/skills
 - [skills.sh](https://skills.sh) - Skills ecosystem documentation
 - [Context7](https://context7.com) - MCP documentation server
 - [Conventional Commits](https://www.conventionalcommits.org/)
+
+---
+
+## LIDR SDLC Methodology — quick context for the AI
+
+The LIDR SDLC defines a phase-gate workflow that the `lidr-*` skills, commands,
+and subagents collectively implement. When the user references "fase X",
+"gate Y", or any LIDR artifact, use this map.
+
+### The 9 phases (0-8)
+
+| Phase | Name            | Primary skills                                                                                                                           |
+| ----- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 0     | Preparación     | `lidr-project-classifier`, `lidr-document-discovery`                                                                                     |
+| 1     | Originación     | `lidr-business-case`, `lidr-business-model`, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`                         |
+| 2     | Discovery & PRD | `lidr-prd-tecnico`, `lidr-prd-funcional`, `lidr-review-cruzado`, `lidr-risk-log`, `lidr-poc-report`, `lidr-use-cases`, `lidr-design-doc` |
+| 3     | Especificación  | `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements`, `lidr-epic-breakdown`, `lidr-bdd-patterns`                        |
+| 4     | Sprint Planning | `lidr-user-stories`, `lidr-sprint-capacity`, `lidr-refinement-notes`                                                                     |
+| 5     | Desarrollo      | `lidr-pr-description`, `lidr-adr`, `lidr-tech-debt`, `lidr-dev-handoff-qa`                                                               |
+| 6     | QA & Testing    | `lidr-test-plan`, `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report`, `lidr-regression-suite`                     |
+| 7     | Seguridad       | `lidr-vuln-assessment`, `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-security-checklist`                                     |
+| 8     | Despliegue      | `lidr-change-request`, `lidr-rollback-plan`, `lidr-release-notes`, `lidr-retrospective`, `lidr-postmortem`                               |
+
+### The 8 gates (G0 → G7)
+
+Each phase ends with a formal gate. **Never advance without evaluating the
+gate.** Use `lidr-advance-gate.md` command to transition formally.
+
+| Gate | Transition                                      | Owner            |
+| ---- | ----------------------------------------------- | ---------------- |
+| G0   | Intake → Discovery                              | PME + Sponsor    |
+| G1   | Discovery → Especificación (PRDs approved)      | Product + R&D    |
+| G2   | Especificación → Sprint Planning (RFs complete) | Product + QA     |
+| G3   | Sprint Planning → Desarrollo (Sprint committed) | PO + TL          |
+| G4   | Desarrollo → QA (DoD met)                       | Dev + Security   |
+| G5   | QA → Seguridad (QA sign-off)                    | QA Lead          |
+| G6   | Seguridad → Despliegue (Security sign-off)      | CISO             |
+| G7   | Despliegue → Producción (CR approved)           | Change Committee |
+
+### Roles + permissions
+
+See `.agents/rules/lidr-sdlc/workflows.md` for the full RACI matrix and which
+roles can execute which commands. Quick reference:
+
+- **PME** (Project Management Execution): Governance, gates, portfolio
+- **PO** (Product Owner): PRDs, requirements, business value
+- **TL** (Tech Lead): Architecture, code quality, ADRs
+- **Dev**: Implementation, PRs, handoffs
+- **QA / QA Lead**: Testing, sign-off
+- **Sec / CISO**: Vulnerability assessment, security sign-off
+- **DevOps**: CI/CD, deployment, rollback
+- **SM** (Scrum Master): Facilitation, capacity, ceremonies
+
+### React app: multi-client architecture
+
+The `app/` directory hosts the React visualization. Each client has its own
+configuration in `app/src/data/clients/{clientId}/` (currently registered:
+`base`, `docline`, `facephi`, `aramis`). Routes follow `/{clientId}/{page}`
+(e.g. `/facephi/prd`, `/aramis/sprint`).
+
+When working with the app, see `app/CLAUDE.md` for the React/TypeScript-specific
+guidance.
+
+### Where to read more
+
+- `.agents/rules/lidr-sdlc/org.md` — full methodology, RACI, security policy
+- `.agents/rules/lidr-sdlc/project.md` — current project context (active client)
+- `.agents/rules/lidr-sdlc/workflows.md` — workflow orchestration map
+- `.agents/rules/lidr-sdlc/documentation.md` — DTC ("Docs Travel with Code") governance
+- `.agents/.archive/2026-05-18-pre-lidr-merge/lidr-claude-root/CLAUDE.md` — original LIDR ecosystem index (v2.8.8)

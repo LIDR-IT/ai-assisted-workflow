@@ -1,4 +1,5 @@
 ---
+name: lidr-technical-research
 id: technical-research
 version: "1.0.2"
 last_updated: "2026-03-25"

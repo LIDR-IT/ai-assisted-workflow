@@ -1,4 +1,5 @@
 ---
+name: lidr-sprint-capacity
 id: sprint-capacity
 version: "1.2.0"
 last_updated: "2026-03-25"

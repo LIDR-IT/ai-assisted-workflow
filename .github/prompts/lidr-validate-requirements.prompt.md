@@ -47,22 +47,24 @@ Load: @../rules/org.md and @../rules/tech-stack.md and @../rules/project.md
 ## Validate Preconditions
 
 If "$1" is empty:
-  ❌ Project name required. Usage: /validate-requirements [project-name]
-  Exit.
+❌ Project name required. Usage: /validate-requirements [project-name]
+Exit.
 
 Check for approved PRDs:
+
 - Look for `docs/projects/$1/prd.md` or equivalent PRD documents
 - Verify PRD status is "Aprobado" (from frontmatter or cross-review sign-off)
 
 If PRDs not found or not approved:
-  ⚠️ PRDs for "$1" not found or not approved.
-  
-  Use AskUserQuestion:
-  - question: "PRDs no están aprobados. ¿Continuar igualmente?"
-  - header: "Precondiciones"
-  - options:
-    - Sí, tengo los PRDs en otro formato (continuar)
-    - No, necesito completar Discovery primero (cancelar)
+⚠️ PRDs for "$1" not found or not approved.
+
+Use AskUserQuestion:
+
+- question: "PRDs no están aprobados. ¿Continuar igualmente?"
+- header: "Precondiciones"
+- options:
+  - Sí, tengo los PRDs en otro formato (continuar)
+  - No, necesito completar Discovery primero (cancelar)
 
 ## Step 1: Generate Functional Requirements (RFs)
 
@@ -75,6 +77,7 @@ Using skill `generate-rf`:
 5. Validate with @../skills/generate-rf/checklists/rf-coherence.md
 
 Use AskUserQuestion:
+
 - question: "¿Quieres revisar los RFs generados antes de continuar con NFRs?"
 - header: "Checkpoint RF"
 - options:
@@ -97,6 +100,7 @@ Using skill `generate-nfr`:
 6. Generate NFR Summary Matrix
 
 Special attention for {{CLIENT_NAME}} domain-specific projects:
+
 - FAR/FRR thresholds
 - domain-specific matching latency
 - GDPR Art. 9 compliance NFRs
@@ -111,29 +115,34 @@ Using skill `validate-requirements`:
 Execute 5 validation passes:
 
 ### Pass 1: Functional Coverage (PRD-F → RFs)
+
 For each functionality in PRD-F §2.4:
-  ✅ At least 1 RF traces to this functionality
-  ❌ GAP if functionality has 0 RFs
+✅ At least 1 RF traces to this functionality
+❌ GAP if functionality has 0 RFs
 
 ### Pass 2: Technical Coverage (PRD-T → NFRs)
+
 For each NFR category in PRD-T §5:
-  ✅ At least 1 standalone NFR exists
-  ❌ CRITICAL if Security/Compliance missing for domain-specific project
+✅ At least 1 standalone NFR exists
+❌ CRITICAL if Security/Compliance missing for domain-specific project
 
 ### Pass 3: NFR Allocation (NFRs → RFs)
+
 For each NFR:
-  ✅ Maps to ≥1 RF or is system-wide
-  ❌ GAP if orphan NFR
+✅ Maps to ≥1 RF or is system-wide
+❌ GAP if orphan NFR
 
 ### Pass 4: Internal Coherence
-  ✅ No contradictions between RFs
-  ✅ No circular dependencies
-  ✅ NFR thresholds are consistent
+
+✅ No contradictions between RFs
+✅ No circular dependencies
+✅ NFR thresholds are consistent
 
 ### Pass 5: Testability & Sprint Readiness
-  ✅ All RFs have ≥3 BDD scenarios
-  ✅ All NFRs have measurable metrics
-  ✅ Implementation clusters identified
+
+✅ All RFs have ≥3 BDD scenarios
+✅ All NFRs have measurable metrics
+✅ Implementation clusters identified
 
 Generate RTM using @../skills/validate-requirements/templates/rtm.md
 Output: `docs/projects/$1/rtm.md`
@@ -141,6 +150,7 @@ Output: `docs/projects/$1/rtm.md`
 ## Step 4: Epic Breakdown (Optional)
 
 Use AskUserQuestion:
+
 - question: "RTM generado. ¿Deseas descomponer la épica master en sub-épicas?"
 - header: "Epic Breakdown"
 - options:
@@ -149,6 +159,7 @@ Use AskUserQuestion:
   - Sí, pero déjame revisar el RTM primero
 
 If yes, using skill `epic-breakdown`:
+
 1. Read master epic (from tracking tool or tracking-integration output)
 2. Group RFs into feature epics by cluster + business cohesion
 3. Assign NFRs to epics
@@ -202,13 +213,13 @@ Next: /advance-gate 2 (if PASS)
 ## Error Handling
 
 If Jira MCP unavailable:
-  → Operate with local files, skip Jira ticket creation
-  → Output JSON for manual Jira population
+→ Operate with local files, skip Jira ticket creation
+→ Output JSON for manual Jira population
 
 If Confluence MCP unavailable:
-  → Save all documents as local markdown
-  → Provide instructions for manual Confluence upload
+→ Save all documents as local markdown
+→ Provide instructions for manual Confluence upload
 
 If PRDs are incomplete:
-  → Generate partial RFs/NFRs with explicit markers for gaps
-  → Report gaps as FAIL items in Gate 2 readiness
+→ Generate partial RFs/NFRs with explicit markers for gaps
+→ Report gaps as FAIL items in Gate 2 readiness

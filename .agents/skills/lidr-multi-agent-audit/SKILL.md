@@ -1,4 +1,5 @@
 ---
+name: lidr-multi-agent-audit
 id: multi-agent-audit
 version: "1.1.0"
 last_updated: "2026-03-16"

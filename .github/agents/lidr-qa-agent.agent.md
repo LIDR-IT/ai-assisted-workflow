@@ -45,12 +45,12 @@ Explicit request for test generation on security-critical code. qa-agent reads d
 
 ## Templates
 
-| Code | Name | Role |
-|------|------|------|
-| T-QA-001 | Test Plan Template | produce |
-| T-QA-002 | Test Case Template (BDD) | produce |
-| T-QA-006 | Regression Test Suite | produce |
-| T-IA-DEV-003 | Handoff Dev->QA | consume |
+| Code         | Name                     | Role    |
+| ------------ | ------------------------ | ------- |
+| T-QA-001     | Test Plan Template       | produce |
+| T-QA-002     | Test Case Template (BDD) | produce |
+| T-QA-006     | Regression Test Suite    | produce |
+| T-IA-DEV-003 | Handoff Dev->QA          | consume |
 
 ## Memory Instructions
 

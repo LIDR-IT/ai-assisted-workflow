@@ -49,11 +49,11 @@ Pre-deploy security evaluation. Agent runs security-checklist skill against code
 
 ## Templates
 
-| Code | Name | Role |
-|------|------|------|
+| Code      | Name                            | Role    |
+| --------- | ------------------------------- | ------- |
 | T-SEC-001 | Vulnerability Assessment Report | produce |
-| T-SEC-002 | DAST Scan Report | produce |
-| T-SEC-005 | Security Compliance Checklist | produce |
+| T-SEC-002 | DAST Scan Report                | produce |
+| T-SEC-005 | Security Compliance Checklist   | produce |
 
 ## Memory Instructions
 

@@ -1,4 +1,5 @@
 ---
+name: lidr-test-plan
 id: test-plan
 version: "1.3.0"
 last_updated: "2026-04-06"

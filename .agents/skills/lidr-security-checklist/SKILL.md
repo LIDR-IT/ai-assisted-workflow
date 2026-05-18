@@ -1,4 +1,5 @@
 ---
+name: lidr-security-checklist
 id: security-checklist
 version: "1.0.1"
 last_updated: "2026-03-16"

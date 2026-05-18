@@ -49,11 +49,11 @@ Hotfix merge triggers fast-track release documentation generation.
 
 ## Templates
 
-| Code | Name | Role |
-|------|------|------|
+| Code      | Name                    | Role    |
+| --------- | ----------------------- | ------- |
 | T-DEP-001 | Change Request Template | produce |
-| T-DEP-002 | Rollback Plan Template | produce |
-| T-DEP-003 | Release Notes Template | produce |
+| T-DEP-002 | Rollback Plan Template  | produce |
+| T-DEP-003 | Release Notes Template  | produce |
 
 ## Memory Instructions
 

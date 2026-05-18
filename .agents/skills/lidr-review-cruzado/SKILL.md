@@ -1,4 +1,5 @@
 ---
+name: lidr-review-cruzado
 id: review-cruzado
 version: "1.0.1"
 last_updated: "2026-03-16"

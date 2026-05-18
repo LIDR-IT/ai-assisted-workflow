@@ -59,6 +59,7 @@ authorized_roles:
 ```
 
 Load rules context FIRST:
+
 - @../rules/org.md
 - @../rules/project.md
 - @../rules/documentation.md
@@ -66,16 +67,18 @@ Load rules context FIRST:
 ## Step 1: Validate Input and Context
 
 If "$1" is empty:
-  ❌ ERROR: Product name required.
-  Usage: /product-brief [PRODUCT-NAME] [--type=product|feature|enhancement] [--urgency=low|medium|high|critical]
-  Example: /product-brief identity-platform-v2 --type=product --urgency=high
-  Exit.
+❌ ERROR: Product name required.
+Usage: /product-brief [PRODUCT-NAME] [--type=product|feature|enhancement] [--urgency=low|medium|high|critical]
+Example: /product-brief identity-platform-v2 --type=product --urgency=high
+Exit.
 
 Extract options from arguments:
+
 - Parse `--type=` (default: product)
 - Parse `--urgency=` (default: medium)
 
 Validate product name:
+
 - Must be alphanumeric + hyphens
 - 3-50 characters
 - No spaces (suggest hyphen replacement)
@@ -85,21 +88,25 @@ Validate product name:
 Use AskUserQuestion for rapid discovery (LIDR SDLC pattern - keep it fast):
 
 **Question 1: Core Problem**
+
 - question: "Describe the core problem this product will solve in 2-3 sentences"
 - header: "Problem Discovery"
 - placeholder: "Current situation causes X impact for Y users, resulting in Z business consequences"
 
 **Question 2: Target Users**
+
 - question: "Who are the primary users and what's their main need?"
 - header: "User Context"
 - placeholder: "Banking customers need faster identity verification during onboarding"
 
 **Question 3: Success Definition**
+
 - question: "How will you know this product is successful? (measurable outcomes)"
 - header: "Success Metrics"
 - placeholder: "Reduce verification time from 5min to 30sec, increase conversion by 15%"
 
 **Question 4: Scope Boundaries**
+
 - question: "What's explicitly IN scope for MVP and what's OUT of scope?"
 - header: "Scope Definition"
 - placeholder: "IN: Mobile face verification, document OCR. OUT: Voice biometrics, behavioral analysis"
@@ -109,6 +116,7 @@ Use AskUserQuestion for rapid discovery (LIDR SDLC pattern - keep it fast):
 Based on project.md rules, enhance with domain-specific context:
 
 For biometric/identity products, auto-add:
+
 - Regulatory considerations (GDPR Art. 9, eIDAS, PSD2)
 - Security requirements (biometric template protection)
 - Performance expectations (FAR/FRR metrics)
@@ -123,6 +131,7 @@ Using template skills/business-case/templates/product-brief.md, generate structu
 ```markdown
 # Product Brief: {$1}
 
+
 id: pb-{$1}-{YYYY}-{MM}
 version: "1.0.0"
 last_updated: "{current_date}"
@@ -131,9 +140,10 @@ status: draft
 type: {type_from_args}
 urgency: {urgency_from_args}
 classification:
-  domain: "{domain_from_project_context}"
-  complexity: "{auto_assessed_complexity}"
-  regulatory_impact: "{auto_detected_compliance}"
+domain: "{domain_from_project_context}"
+complexity: "{auto_assessed_complexity}"
+regulatory_impact: "{auto_detected_compliance}"
+
 
 ## 1. Resumen Ejecutivo
 
@@ -144,31 +154,38 @@ classification:
 **Estado**: Borrador
 
 ### Elevator Pitch
+
 {Generated 2-3 sentence summary combining problem + solution + value}
 
 ### Métricas de Éxito Clave
-| Métrica | Objetivo | Plazo |
-|---------|----------|-------|
+
+| Métrica    | Objetivo   | Plazo         |
+| ---------- | ---------- | ------------- |
 | {metric_1} | {target_1} | {timeframe_1} |
 | {metric_2} | {target_2} | {timeframe_2} |
 
 ## 2. Problema y Oportunidad
 
 ### Situación Actual
+
 {Problem description from discovery}
 
 ### Impacto del Problema
+
 {Auto-generated impact assessment based on domain context}
 
 ### Oportunidad de Mercado
+
 {Market context relevant to biometric/identity domain if applicable}
 
 ## 3. Solución Propuesta
 
 ### Visión del Producto
+
 {Solution vision in business terms}
 
 ### Funcionalidades MVP
+
 **Incluye:**
 {Scope IN items from discovery}
 
@@ -176,14 +193,17 @@ classification:
 {Scope OUT items from discovery}
 
 ### Diferenciadores Clave
+
 {Auto-suggested differentiators based on domain expertise}
 
 ## 4. Usuarios y Casos de Uso
 
 ### Usuarios Primarios
+
 {Enhanced user profiles based on discovery + domain patterns}
 
 ### Casos de Uso Principales
+
 1. {Use case 1 with user journey}
 2. {Use case 2 with user journey}
 3. {Use case 3 with user journey}
@@ -191,12 +211,15 @@ classification:
 ## 5. Consideraciones Técnicas
 
 ### Stack Propuesto
+
 {Auto-suggested based on project.md tech stack + product type}
 
 ### Integraciones Críticas
+
 {Domain-specific integrations - e.g., identity providers, banking systems}
 
 ### Restricciones Técnicas
+
 {Auto-added domain restrictions + user-specified constraints}
 
 ## 6. Requisitos Regulatorios y Compliance
@@ -205,11 +228,11 @@ classification:
 
 ## 7. Timeline Estimado
 
-| Fase | Duración Estimada | Hitos Clave |
-|------|------------------|-------------|
-| Discovery & PRD | {auto_estimated} | PRD aprobado |
-| MVP Desarrollo | {auto_estimated} | Beta lista |
-| Testing & Launch | {auto_estimated} | Go-live |
+| Fase             | Duración Estimada | Hitos Clave  |
+| ---------------- | ----------------- | ------------ |
+| Discovery & PRD  | {auto_estimated}  | PRD aprobado |
+| MVP Desarrollo   | {auto_estimated}  | Beta lista   |
+| Testing & Launch | {auto_estimated}  | Go-live      |
 
 ## 8. Riesgos Iniciales
 
@@ -218,26 +241,28 @@ classification:
 ## 9. Próximos Pasos
 
 ### Inmediatos (próximos 7 días)
+
 - [ ] Validación del brief con stakeholders clave
 - [ ] Identificación del Product Owner definitivo
 - [ ] Asignación del tech lead
 
 ### Corto plazo (próximos 30 días)
+
 - [ ] Desarrollo del PRD completo (si necesario)
 - [ ] Prototipado/wireframes
 - [ ] Estimación detallada de recursos
 
 ## 10. Aprobación
 
-| Rol | Aprobador | Decisión | Fecha | Notas |
-|-----|-----------|----------|-------|-------|
-| Sponsor | {TBD} | Pendiente | | |
-| Product Owner | {TBD} | Pendiente | | |
-| Tech Lead | {TBD} | Pendiente | | |
+| Rol           | Aprobador | Decisión  | Fecha | Notas |
+| ------------- | --------- | --------- | ----- | ----- |
+| Sponsor       | {TBD}     | Pendiente |       |       |
+| Product Owner | {TBD}     | Pendiente |       |       |
+| Tech Lead     | {TBD}     | Pendiente |       |       |
 
 
-*Generado por /product-brief v1.0 | Patrón LIDR SDLC*
-*Validación requerida por: Product Owner + Sponsor*
+_Generado por /product-brief v1.0 | Patrón LIDR SDLC_
+_Validación requerida por: Product Owner + Sponsor_
 ```
 
 ## Step 5: Quality Assessment (LIDR SDLC Pattern)
@@ -245,6 +270,7 @@ classification:
 Automatically assess the brief quality using LIDR SDLC criteria:
 
 ### Completeness Score (1-5 scale)
+
 - **5.0**: Complete, ready for approval
 - **4.0**: Minor gaps, needs brief review
 - **3.0**: Some sections need refinement
@@ -252,6 +278,7 @@ Automatically assess the brief quality using LIDR SDLC criteria:
 - **1.0**: Incomplete, not ready
 
 ### Quality Indicators
+
 - ✅ Problem clearly defined in business terms
 - ✅ Success metrics are measurable and time-bound
 - ✅ Scope has explicit inclusions AND exclusions
@@ -265,6 +292,7 @@ Automatically assess the brief quality using LIDR SDLC criteria:
 Based on complexity and urgency, recommend next steps:
 
 ### If Complexity = LOW + Urgency = LOW/MEDIUM:
+
 ```
 ✅ Product Brief is sufficient for now
 📋 Next: /quick-spec for detailed feature specs
@@ -272,6 +300,7 @@ Based on complexity and urgency, recommend next steps:
 ```
 
 ### If Complexity = MEDIUM/HIGH OR Urgency = HIGH/CRITICAL:
+
 ```
 ⚠️ Consider full PRD process for this product
 📋 Next: business-case skill for full business case
@@ -280,6 +309,7 @@ Based on complexity and urgency, recommend next steps:
 ```
 
 ### If Regulatory Impact = HIGH:
+
 ```
 🛡️ Compliance review required before proceeding
 📋 Next: Engage Legal/Compliance team
@@ -292,11 +322,13 @@ Based on complexity and urgency, recommend next steps:
 Save product brief to: `docs/projects/{$1}/product-brief.md`
 
 Create follow-up artifacts:
+
 1. **Jira Epic** template (copy-paste ready)
 2. **Stakeholder communication** email template
 3. **Next steps** checklist with owners
 
 Use AskUserQuestion for immediate next step:
+
 - question: "¿Qué quieres hacer ahora con este Product Brief?"
 - header: "Próximos Pasos"
 - options:
@@ -329,6 +361,6 @@ Use AskUserQuestion for immediate next step:
 ```
 
 
-*Command Tier: 2 (Tactical) | Model: Sonnet | Duration: 15-30 minutes*
-*Pattern: LIDR SDLC create-product-brief adapted for biometric domain*
-*ROI: 200+ hours/year through 80% automation of lightweight product briefs*
+_Command Tier: 2 (Tactical) | Model: Sonnet | Duration: 15-30 minutes_
+_Pattern: LIDR SDLC create-product-brief adapted for biometric domain_
+_ROI: 200+ hours/year through 80% automation of lightweight product briefs_

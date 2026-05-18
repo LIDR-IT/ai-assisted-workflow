@@ -1,4 +1,5 @@
 ---
+name: lidr-hook-development
 id: hook-development
 version: "2.3.0"
 last_updated: "2026-03-25"

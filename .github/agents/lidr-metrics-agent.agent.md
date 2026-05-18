@@ -43,10 +43,10 @@ On-demand metrics request. Agent queries Jira via manual export for historical s
 
 ## Templates
 
-| Code | Name | Role |
-|------|------|------|
+| Code      | Name                      | Role    |
+| --------- | ------------------------- | ------- |
 | T-DEP-005 | Retrospectiva Data-Driven | produce |
-| T-SPR-003 | Sprint Capacity Template | consume |
+| T-SPR-003 | Sprint Capacity Template  | consume |
 
 ## Memory Instructions
 

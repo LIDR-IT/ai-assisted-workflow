@@ -1,4 +1,5 @@
 ---
+name: lidr-sdlc-tracking
 id: sdlc-tracking
 version: "1.0.0"
 last_updated: "2026-03-17"

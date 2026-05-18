@@ -1,4 +1,5 @@
 ---
+name: lidr-bdd-patterns
 id: bdd-patterns
 version: "1.1.1"
 last_updated: "2026-03-25"

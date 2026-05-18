@@ -1,4 +1,5 @@
 ---
+name: lidr-kickoff
 id: kickoff
 version: "1.4.0"
 last_updated: "2026-03-25"

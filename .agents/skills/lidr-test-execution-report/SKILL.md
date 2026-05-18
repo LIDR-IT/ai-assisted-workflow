@@ -1,4 +1,5 @@
 ---
+name: lidr-test-execution-report
 id: test-execution-report
 version: "1.4.0"
 last_updated: "2026-04-06"

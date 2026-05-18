@@ -1,4 +1,5 @@
 ---
+name: lidr-generate-nfr
 id: generate-nfr
 version: "2.3.0"
 last_updated: "2026-03-25"

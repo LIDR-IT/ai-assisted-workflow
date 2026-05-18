@@ -58,6 +58,7 @@ CHANGELOG:
 # Check Implementation Readiness for $1
 
 Load context from rules FIRST:
+
 - @../rules/org.md -> organizational standards, roles, readiness criteria
 - @../rules/project.md -> current project context, team composition
 - @../rules/tech-stack.md -> technical dependencies and standards
@@ -67,29 +68,32 @@ Load context from rules FIRST:
 ## Step 1: Validate Project Name and Prerequisites
 
 If "$1" is empty:
-  ❌ Project name required. Usage: /check-readiness [project-name]
-  Exit.
+❌ Project name required. Usage: /check-readiness [project-name]
+Exit.
 
 Check gate prerequisites:
+
 - Look for Gate 1 handoff: `docs/projects/$1/handoffs/gate-1-handoff.md`
 - Look for Gate 2 handoff: `docs/projects/$1/handoffs/gate-2-handoff.md`
 - Verify RTM exists: `docs/projects/$1/rtm.md`
 
 If prerequisites missing:
-  ⚠️ Prerequisites for implementation readiness not met.
+⚠️ Prerequisites for implementation readiness not met.
 
-  Use AskUserQuestion:
-  - question: "Gates 1-2 o RTM faltantes. ¿Continuar evaluación de todos modos?"
-  - header: "Prerequisites"
-  - options:
-    - Sí, hacer evaluación con lo disponible
-    - No, completar gates primero (recomendado)
+Use AskUserQuestion:
+
+- question: "Gates 1-2 o RTM faltantes. ¿Continuar evaluación de todos modos?"
+- header: "Prerequisites"
+- options:
+  - Sí, hacer evaluación con lo disponible
+  - No, completar gates primero (recomendado)
 
 ## Step 2: Verify Role Authorization
 
 Check @../rules/workflows.md for authorized roles: PME, PO, Tech Lead, QA Lead.
 
 Use AskUserQuestion to confirm role:
+
 - question: "¿Cuál es tu rol para esta evaluación de readiness?"
 - header: "Role Verification"
 - options:
@@ -100,14 +104,15 @@ Use AskUserQuestion to confirm role:
   - Otro (especificar)
 
 If "Dev" or unauthorized:
-  ❌ Este comando requiere rol PME, PO, Tech Lead o QA Lead.
-  Usa /implement-ticket para desarrollo específico.
+❌ Este comando requiere rol PME, PO, Tech Lead o QA Lead.
+Usa /implement-ticket para desarrollo específico.
 
 ## Step 3: Initialize Readiness Assessment Report
 
 Create output file: `.claude/assessments/readiness-assessment-$1-{date}.md`
 
 Initialize with frontmatter:
+
 ```yaml
 id: readiness-assessment-$1
 version: "1.0.0"
@@ -116,10 +121,11 @@ updated_by: "{role}: {user_name}"
 status: in_progress
 project_name: "$1"
 assessment_type: implementation_readiness
-stepsCompleted: ['step-01-initialization']
+stepsCompleted: ["step-01-initialization"]
 ```
 
 Report header:
+
 ```markdown
 # Implementation Readiness Assessment — $1
 
@@ -144,25 +150,30 @@ Following LIDR SDLC micro-file pattern, discover and inventory all artifacts:
 Search patterns for each required document type:
 
 **A. PRD Documents**
+
 - `docs/projects/$1/prd*.md`
 - `docs/projects/$1/prd/`
 - Look for PRD-F (funcional) and PRD-T (técnico)
 
 **B. Requirements Documents**
+
 - `docs/projects/$1/rfs/` (functional requirements)
 - `docs/projects/$1/nfrs/` (non-functional requirements)
 - `docs/projects/$1/rtm.md` (requirements traceability matrix)
 
 **C. Epic and Story Documents**
+
 - `docs/projects/$1/epics/`
 - `docs/projects/$1/stories/`
 - Epic breakdown from validate-requirements
 
 **D. Architecture Documents**
+
 - `docs/projects/$1/architecture.md`
 - Technical specification documents
 
 **E. Team and Planning Documents**
+
 - `docs/projects/$1/team.md` or team assignments
 - Capacity planning documents
 
@@ -174,20 +185,25 @@ For each document type found, append to assessment:
 ## Document Inventory
 
 ### PRD Documents Found
+
 **Whole Documents:**
+
 - prd-funcional.md (last_modified: {date}, status: {status})
 - prd-tecnico.md (last_modified: {date}, status: {status})
 
 **Issues Identified:**
+
 - Missing technical PRD
 - Functional PRD outdated (>30 days)
 
 ### Requirements Documents Found
+
 **RFs:** {count} functional requirements
 **NFRs:** {count} non-functional requirements
 **RTM Coverage:** {percentage}%
 
 **Issues Identified:**
+
 - {issue_list}
 ```
 
@@ -202,6 +218,7 @@ Following LIDR SDLC sequential approach, analyze PRD completeness:
 For each PRD found, validate:
 
 **PRD-F (Functional) Requirements:**
+
 - Section 1: Executive Summary (exists, non-empty)
 - Section 2: Functional Requirements (>5 requirements minimum)
 - Section 2.4: Key Features (detailed descriptions)
@@ -209,6 +226,7 @@ For each PRD found, validate:
 - Stakeholder sign-offs present
 
 **PRD-T (Technical) Requirements:**
+
 - Section 3: Architecture overview
 - Section 4: Technical constraints
 - Section 5: NFRs (performance, security, scalability)
@@ -218,13 +236,13 @@ For each PRD found, validate:
 
 Score each PRD on 0-100 scale:
 
-| Criteria | Weight | Score | Comments |
-|----------|--------|-------|----------|
-| Completeness | 30% | {score}/100 | Missing sections identified |
-| Clarity | 25% | {score}/100 | Ambiguous requirements |
-| Measurability | 20% | {score}/100 | Success criteria defined |
-| Technical Detail | 15% | {score}/100 | Implementation guidance |
-| Stakeholder Buy-in | 10% | {score}/100 | Approvals documented |
+| Criteria           | Weight | Score       | Comments                    |
+| ------------------ | ------ | ----------- | --------------------------- |
+| Completeness       | 30%    | {score}/100 | Missing sections identified |
+| Clarity            | 25%    | {score}/100 | Ambiguous requirements      |
+| Measurability      | 20%    | {score}/100 | Success criteria defined    |
+| Technical Detail   | 15%    | {score}/100 | Implementation guidance     |
+| Stakeholder Buy-in | 10%    | {score}/100 | Approvals documented        |
 
 **PRD-F Score:** {composite_score}%
 **PRD-T Score:** {composite_score}%
@@ -239,6 +257,7 @@ Update frontmatter: `stepsCompleted: ['...previous...', 'step-03-prd-analysis']`
 Validate team setup against project requirements:
 
 Use AskUserQuestion:
+
 - question: "¿Está el equipo completamente formado y asignado al proyecto?"
 - header: "Team Readiness"
 - options:
@@ -247,6 +266,7 @@ Use AskUserQuestion:
   - No, equipo aún en formación
 
 **Required Roles for Implementation:**
+
 - Developers: {count} required vs {assigned} assigned
 - QA Engineer: {required} vs {assigned}
 - Tech Lead: assigned {yes/no}
@@ -255,6 +275,7 @@ Use AskUserQuestion:
 ### 6.2 Capacity and Availability
 
 Check capacity planning:
+
 - Sprint duration: {weeks} weeks
 - Team capacity: {hours} total development hours
 - Planned velocity: {story_points} story points
@@ -263,6 +284,7 @@ Check capacity planning:
 ### 6.3 Skill Gap Analysis
 
 For domain-specific projects ({{CLIENT_NAME}} domain):
+
 - domain-specific algorithm expertise: available {yes/no}
 - Security/GDPR compliance knowledge: available {yes/no}
 - Mobile SDK integration experience: available {yes/no}
@@ -279,12 +301,14 @@ Update frontmatter: `stepsCompleted: ['...previous...', 'step-04-team-assessment
 Validate all technical prerequisites:
 
 **Infrastructure Dependencies:**
+
 - Development environment: ready {yes/no}
 - CI/CD pipeline: configured {yes/no}
 - Testing environments: available {yes/no}
 - Monitoring setup: deployed {yes/no}
 
 **Third-party Dependencies:**
+
 - External APIs: access confirmed {yes/no}
 - SDK licenses: valid {yes/no}
 - Database schema: migrated {yes/no}
@@ -293,6 +317,7 @@ Validate all technical prerequisites:
 ### 7.2 Business Dependencies
 
 **Stakeholder Dependencies:**
+
 - Product Owner: available for sprint {yes/no}
 - Business stakeholders: engaged {yes/no}
 - Compliance team: requirements signed-off {yes/no}
@@ -300,9 +325,9 @@ Validate all technical prerequisites:
 
 ### 7.3 Dependency Risk Assessment
 
-| Dependency | Status | Risk Level | Mitigation Plan |
-|------------|---------|------------|-----------------|
-| {dependency} | {status} | High/Medium/Low | {plan} |
+| Dependency   | Status   | Risk Level      | Mitigation Plan |
+| ------------ | -------- | --------------- | --------------- |
+| {dependency} | {status} | High/Medium/Low | {plan}          |
 
 **Dependency Readiness Score:** {score}%
 
@@ -315,6 +340,7 @@ Update frontmatter: `stepsCompleted: ['...previous...', 'step-05-dependency-chec
 Review epic decomposition from /validate-requirements:
 
 **Epic Structure Quality:**
+
 - Clear epic hierarchy: {yes/no}
 - Stories properly sized (2-40h): {percentage}%
 - Acceptance criteria defined: {percentage}% of stories
@@ -323,6 +349,7 @@ Review epic decomposition from /validate-requirements:
 ### 8.2 Implementation Readiness per Epic
 
 For each epic:
+
 - All dependencies resolved: {yes/no}
 - Technical approach defined: {yes/no}
 - Risk assessment complete: {yes/no}
@@ -339,6 +366,7 @@ Update frontmatter: `stepsCompleted: ['...previous...', 'step-06-epic-review']`
 Check technical foundation:
 
 **Architecture Documentation:**
+
 - High-level architecture defined: {yes/no}
 - Technology stack approved: {yes/no}
 - Security architecture reviewed: {yes/no}
@@ -349,12 +377,14 @@ Check technical foundation:
 Validate technical standards per @../rules/tech-stack.md:
 
 **Code Standards:**
+
 - Coding guidelines documented: {yes/no}
 - Code review process defined: {yes/no}
 - Testing strategy established: {yes/no}
 - CI/CD pipeline functional: {yes/no}
 
 **Security Standards:**
+
 - Security requirements defined: {yes/no}
 - Vulnerability scanning configured: {yes/no}
 - GDPR compliance verified: {yes/no} (for domain-specific projects)
@@ -368,22 +398,22 @@ Update frontmatter: `stepsCompleted: ['...previous...', 'step-07-technical-readi
 
 ### 10.1 Weighted Readiness Score Calculation
 
-| Assessment Dimension | Weight | Score | Weighted |
-|---------------------|--------|-------|----------|
-| PRD Completeness | 25% | {score}% | {weighted} |
-| Team Readiness | 20% | {score}% | {weighted} |
-| Dependency Resolution | 20% | {score}% | {weighted} |
-| Epic Quality | 15% | {score}% | {weighted} |
-| Technical Readiness | 20% | {score}% | {weighted} |
-| **TOTAL** | **100%** | | **{total_score}%** |
+| Assessment Dimension  | Weight   | Score    | Weighted           |
+| --------------------- | -------- | -------- | ------------------ |
+| PRD Completeness      | 25%      | {score}% | {weighted}         |
+| Team Readiness        | 20%      | {score}% | {weighted}         |
+| Dependency Resolution | 20%      | {score}% | {weighted}         |
+| Epic Quality          | 15%      | {score}% | {weighted}         |
+| Technical Readiness   | 20%      | {score}% | {weighted}         |
+| **TOTAL**             | **100%** |          | **{total_score}%** |
 
 ### 10.2 Readiness Verdict
 
-| Range | Verdict | Action |
-|-------|---------|--------|
-| >= 85% | READY | Proceed to Sprint Planning (Gate 3) |
-| 70-84% | CONDITIONAL | Address critical items within 1 week |
-| < 70% | NOT READY | Resolve blocking issues before implementation |
+| Range  | Verdict     | Action                                        |
+| ------ | ----------- | --------------------------------------------- |
+| >= 85% | READY       | Proceed to Sprint Planning (Gate 3)           |
+| 70-84% | CONDITIONAL | Address critical items within 1 week          |
+| < 70%  | NOT READY   | Resolve blocking issues before implementation |
 
 **VERDICT: {verdict}**
 
@@ -391,22 +421,25 @@ Update frontmatter: `stepsCompleted: ['...previous...', 'step-07-technical-readi
 
 If CONDITIONAL or NOT READY:
 
-| Priority | Issue | Owner | Target Date | Status |
-|----------|-------|-------|-------------|---------|
-| Critical | {issue} | {role} | {date} | Open |
-| High | {issue} | {role} | {date} | Open |
+| Priority | Issue   | Owner  | Target Date | Status |
+| -------- | ------- | ------ | ----------- | ------ |
+| Critical | {issue} | {role} | {date}      | Open   |
+| High     | {issue} | {role} | {date}      | Open   |
 
 ### 10.4 Recommendations
 
 Based on assessment results:
 
 **Immediate Actions:**
+
 - {recommendation_list}
 
 **Before Sprint Planning:**
+
 - {sprint_prep_recommendations}
 
 **Risk Mitigations:**
+
 - {risk_mitigation_plans}
 
 Update frontmatter: `stepsCompleted: ['...all_previous...', 'step-08-final-assessment']`
@@ -417,32 +450,34 @@ Update status: `status: complete`
 ### 11.1 Gate 3 Prerequisites Update
 
 If READY verdict:
-  Create gate prerequisites summary:
-  ```markdown
-  ## Gate 3 Prerequisites Summary
+Create gate prerequisites summary:
 
-  **Implementation Readiness:** CONFIRMED ✅
-  **Readiness Score:** {total_score}%
-  **Assessment Date:** {date}
-  **Critical Dependencies:** All resolved
-  **Team Capacity:** Confirmed for sprint
-  **Epic Quality:** Sprint-ready
+```markdown
+## Gate 3 Prerequisites Summary
 
-  **Recommended next command:** `/advance-gate 3`
-  ```
+**Implementation Readiness:** CONFIRMED ✅
+**Readiness Score:** {total_score}%
+**Assessment Date:** {date}
+**Critical Dependencies:** All resolved
+**Team Capacity:** Confirmed for sprint
+**Epic Quality:** Sprint-ready
+
+**Recommended next command:** `/advance-gate 3`
+```
 
 If CONDITIONAL or NOT READY:
-  Create action plan:
-  ```markdown
-  ## Required Actions Before Gate 3
+Create action plan:
 
-  **Blocking Issues:** {count}
-  **Target Resolution:** {date}
-  **Re-assessment Required:** Yes
-  **Responsible Parties:** {roles}
+```markdown
+## Required Actions Before Gate 3
 
-  **Recommended:** Resolve action items, then re-run `/check-readiness {project}`
-  ```
+**Blocking Issues:** {count}
+**Target Resolution:** {date}
+**Re-assessment Required:** Yes
+**Responsible Parties:** {roles}
+
+**Recommended:** Resolve action items, then re-run `/check-readiness {project}`
+```
 
 ### 11.2 Handoff Package Generation
 
@@ -452,12 +487,14 @@ Generate handoff summary for Sprint Planning:
 ## Handoff to Sprint Planning
 
 **What Sprint Planning needs to know:**
+
 - Team capacity: {hours} available
 - Epic priority: {epic_order}
 - Technical constraints: {constraint_summary}
 - Critical dependencies: {dependency_status}
 
 **Sprint Planning inputs ready:**
+
 - Backlog prioritized: {yes/no}
 - Story estimates complete: {percentage}%
 - Acceptance criteria defined: {percentage}%
@@ -492,16 +529,19 @@ Present final summary to user:
 Based on verdict:
 
 **If READY (>= 85%):**
+
 - `/advance-gate 3` - Proceed to Sprint Planning
 - `/sprint-capacity {project}` - Confirm team capacity
 - `/refinement-notes {project}` - Document backlog refinement
 
 **If CONDITIONAL (70-84%):**
+
 - Address {count} action items
 - Re-run `/check-readiness {project}` after fixes
 - `/risk-log {project}` - Update project risks
 
 **If NOT READY (<70%):**
+
 - `/validate-requirements {project}` - Re-validate requirements if needed
 - `/epic-breakdown {project}` - Improve epic decomposition
 - `/stakeholder-map {project}` - Re-engage stakeholders
@@ -509,15 +549,18 @@ Based on verdict:
 ### 12.3 ROI Tracking
 
 Log automation metrics:
+
 ```markdown
 ## Automation ROI Metrics
 
 **Time Savings:**
+
 - Manual assessment time: 6 hours
 - Automated assessment time: 30 minutes
 - Time saved: 5.5 hours (92% reduction)
 
 **Quality Improvements:**
+
 - Standardized assessment criteria: ✅
 - Consistent scoring methodology: ✅
 - Actionable recommendations: ✅
@@ -529,5 +572,5 @@ Save final report to: `.claude/assessments/readiness-assessment-$1-{date}.md`
 Update CLAUDE.md inventory if needed.
 
 
-*Generated by `/check-readiness` v1.0.0 following LIDR SDLC Methodology methodology*
-*Template: command-specific assessment (no template needed) (to be created)*
+_Generated by `/check-readiness` v1.0.0 following LIDR SDLC Methodology methodology_
+_Template: command-specific assessment (no template needed) (to be created)_

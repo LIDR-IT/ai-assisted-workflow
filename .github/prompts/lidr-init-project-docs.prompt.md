@@ -46,27 +46,29 @@ Load: @../rules/project.md for project context.
 ## Validate
 
 If "$1" is empty:
-  ❌ Project name required.
-  Usage: /init-project-docs [project-name]
-  Example: /init-project-docs {{CLIENT_CODE}}-enrollment
-  Exit.
+❌ Project name required.
+Usage: /init-project-docs [project-name]
+Example: /init-project-docs {{CLIENT_CODE}}-enrollment
+Exit.
 
 Check if docs already exist: !`test -d docs/projects/$1 && echo "EXISTS" || echo "NEW"`
 
 If EXISTS:
-  Use AskUserQuestion:
-  - question: "Ya existen docs para '$1'. ¿Qué hacer?"
-  - header: "Ya existe"
-  - options:
-    - Sobrescribir (Regenerar desde templates — DESTRUCTIVO)
-    - Complementar (Solo crear archivos faltantes)
-    - Cancelar
+Use AskUserQuestion:
+
+- question: "Ya existen docs para '$1'. ¿Qué hacer?"
+- header: "Ya existe"
+- options:
+  - Sobrescribir (Regenerar desde templates — DESTRUCTIVO)
+  - Complementar (Solo crear archivos faltantes)
+  - Cancelar
 
 ## Gather Project Context
 
 Use AskUserQuestion to collect project info:
 
 Question 1:
+
 - question: "¿Qué tipo de proyecto es?"
 - header: "Tipo"
 - options:
@@ -76,6 +78,7 @@ Question 1:
   - Platform (Infraestructura / Plataforma)
 
 Question 2:
+
 - question: "¿Cuál es el stack tecnológico principal?"
 - header: "Stack"
 - options:
@@ -85,6 +88,7 @@ Question 2:
   - Python + FastAPI
 
 Question 3:
+
 - question: "¿Qué documentos necesitas?"
 - header: "Docs"
 - multiSelect: true
@@ -104,26 +108,28 @@ Create: docs/projects/$1/specs/
 Available templates: !`find .claude/skills/*/templates -name "*.md" -type f | head -20`
 
 For each relevant skill template:
-  Read template file from skills/{skill}/templates/
-  Generate project-specific version:
-  - Replace all {placeholders} with project context
-  - Add frontmatter per @../rules/documentation.md:
-    ```yaml
-    ---
-    id: {doc-type}-$1
-    version: "1.0.0"
-    last_updated: "{today}"
-    updated_by: "IA: init-project-docs"
-    status: draft
-    type: project
-    review_cycle: 60
-    owner_role: "Tech Lead"
-    ---
-    ```
-  - Mark all sections as ⚠️ TODO where project-specific content needed
-  - Pre-fill what can be inferred from project context
+Read template file from skills/{skill}/templates/
+Generate project-specific version:
+
+- Replace all {placeholders} with project context
+- Add frontmatter per @../rules/documentation.md:
+  ```yaml
+  ---
+  id: {doc-type}-$1
+  version: "1.0.0"
+  last_updated: "{today}"
+  updated_by: "IA: init-project-docs"
+  status: draft
+  type: project
+  review_cycle: 60
+  owner_role: "Tech Lead"
+  ---
+  ```
+- Mark all sections as ⚠️ TODO where project-specific content needed
+- Pre-fill what can be inferred from project context
 
 Files to create (using self-contained templates):
+
 - docs/projects/$1/business-case.md (from .claude/skills/business-case/templates/business-case.md)
 - docs/projects/$1/prd-funcional.md (from .claude/skills/prd-funcional/templates/prd.md)
 - docs/projects/$1/prd-tecnico.md (from .claude/skills/prd-tecnico/templates/prd-technical.md)
@@ -139,6 +145,7 @@ Files to create (using self-contained templates):
 ## Update Project Rule
 
 Update @../rules/project.md to reference new project docs:
+
 - Add: `@../../docs/projects/$1/` as active project context
 
 ## Generate Rule Files
@@ -148,19 +155,21 @@ Use the `generate-rule` skill to create or update rule files in `.claude/rules/`
 Check if rules exist: !`ls .claude/rules/*.md 2>/dev/null | wc -l`
 
 If no rules exist (new ecosystem):
-  Use skill `generate-rule` to create all 5 rules from project context:
-  - .claude/rules/org.md (from company info + regulatory context)
-  - .claude/rules/tech-stack.md (from stack selection in Question 2)
-  - .claude/rules/project.md (from project name, type, objectives)
-  - .claude/rules/documentation.md (standard DTC governance)
-  - .claude/rules/workflows.md (from commands catalog)
+Use skill `generate-rule` to create all 5 rules from project context:
+
+- .claude/rules/org.md (from company info + regulatory context)
+- .claude/rules/tech-stack.md (from stack selection in Question 2)
+- .claude/rules/project.md (from project name, type, objectives)
+- .claude/rules/documentation.md (standard DTC governance)
+- .claude/rules/workflows.md (from commands catalog)
   Template reference: skills/generate-rule/templates/rule.md
   Guide reference: @../../docs/guides/claude-code/rule-development.md
 
 If rules already exist (existing ecosystem):
-  Use skill `generate-rule` to update `.claude/rules/project.md` only:
-  - Add new project reference: @../../docs/projects/$1/
-  - Update current state section
+Use skill `generate-rule` to update `.claude/rules/project.md` only:
+
+- Add new project reference: @../../docs/projects/$1/
+- Update current state section
 
 ## Report
 

@@ -39,14 +39,15 @@ Load: @../rules/project.md
 ## Validate
 
 If "$1" is empty:
-  Use AskUserQuestion:
-  - question: "¿Qué scope de sync necesitas?"
-  - header: "Scope"
-  - options:
-    - all (Sincronizar todo el ecosistema)
-    - architecture (Arquitectura + specs técnicos)
-    - staleness (Solo verificar frescura de docs)
-    - frontmatter (Solo verificar/corregir metadata)
+Use AskUserQuestion:
+
+- question: "¿Qué scope de sync necesitas?"
+- header: "Scope"
+- options:
+  - all (Sincronizar todo el ecosistema)
+  - architecture (Arquitectura + specs técnicos)
+  - staleness (Solo verificar frescura de docs)
+  - frontmatter (Solo verificar/corregir metadata)
 
 ## Detect Current State
 
@@ -72,30 +73,36 @@ Read each doc's frontmatter and content for comparison.
 Compare code state vs documented state:
 
 **Architecture drift:**
+
 - Dependencies in code NOT in architecture.md
 - Directory structure changed vs documented
 - New patterns not documented
 
 **Routes drift:**
+
 - Routes in router config NOT in specs/routes.md
 - Documented routes that NO LONGER exist
 - Auth requirements changed
 
 **DB drift:**
+
 - Tables/models in code NOT in db-schema.md
 - Column changes not reflected
 - New indexes not documented
 
 **Components drift:**
+
 - Exported components NOT in specs/components.md
 - Props changed vs documented
 - Documented components that no longer exist
 
 **Deployment drift:**
+
 - New env vars NOT in deployment.md
 - CI/CD pipeline changes not documented
 
 For each drift item, classify:
+
 - ✅ AUTO-FIX: New addition → add to doc
 - ⚠️ CONFIRM: Removal or change → ask human
 - ❌ MANUAL: Security/architecture change → human review required
@@ -103,23 +110,26 @@ For each drift item, classify:
 ## Apply Auto-Fixes
 
 For each AUTO-FIX item:
+
 - Update the relevant document
 - Bump version (PATCH for additions)
 - Update frontmatter: last_updated, updated_by: "IA: sync-docs"
 - Add changelog entry
 
 For CONFIRM items:
-  Use AskUserQuestion:
-  - question: "Se detectaron {N} cambios que requieren confirmación. ¿Aplicar?"
-  - header: "Confirmar"
-  - options:
-    - Aplicar todos (Aceptar todos los cambios)
-    - Revisar uno a uno (Confirmar cada cambio)
-    - Solo reportar (No modificar nada)
+Use AskUserQuestion:
+
+- question: "Se detectaron {N} cambios que requieren confirmación. ¿Aplicar?"
+- header: "Confirmar"
+- options:
+  - Aplicar todos (Aceptar todos los cambios)
+  - Revisar uno a uno (Confirmar cada cambio)
+  - Solo reportar (No modificar nada)
 
 ## Check Staleness
 
 Per @../rules/documentation.md, for ALL .md files in ecosystem:
+
 - Calculate freshness indicator (🟢🟡🔴⚫)
 - Flag stale documents
 - Verify frontmatter compliance
@@ -131,34 +141,43 @@ Find TODOs: !`grep -rn "TODO\\|TBD\\|⚠️ TODO" docs/ rules/ commands/ 2>/dev/
 
 markdown
 ## Documentation Sync Report
+
 Date: {today}
 Scope: $1
 
 ### Health Score: {X}%
 
 ### Drift Detected: {N} items
-| # | Document | Type | Detail | Severity | Auto-fixed |
-|---|----------|------|--------|----------|-----------|
+
+| #   | Document | Type | Detail | Severity | Auto-fixed |
+| --- | -------- | ---- | ------ | -------- | ---------- |
+
 {drift items table}
 
 ### Auto-Updates Applied: {N}
+
 | Document | Change | Version |
-|----------|--------|---------|
+| -------- | ------ | ------- |
+
 {auto-fixes applied}
 
 ### Staleness
-| Indicator | Count | Documents |
-|-----------|-------|-----------|
-| 🟢 Fresh | {N} | {list} |
-| 🟡 Due Soon | {N} | {list} |
-| 🔴 Stale | {N} | {list} |
-| ⚫ Critical | {N} | {list} |
+
+| Indicator   | Count | Documents |
+| ----------- | ----- | --------- |
+| 🟢 Fresh    | {N}   | {list}    |
+| 🟡 Due Soon | {N}   | {list}    |
+| 🔴 Stale    | {N}   | {list}    |
+| ⚫ Critical | {N}   | {list}    |
 
 ### Frontmatter: {N}/{total} compliant
+
 ### Broken References: {N}
+
 ### TODOs Remaining: {N}
 
 ### Priority Actions
+
 1. 🔴 {critical}
 2. 🟡 {important}
 3. 🟢 {nice-to-have}

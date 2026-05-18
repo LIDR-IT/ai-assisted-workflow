@@ -56,6 +56,7 @@ CHANGELOG:
 # Help — Ecosystem Guide
 
 Load the master context FIRST:
+
 - @../rules/workflows.md → command catalog, role matrix, SDLC flow, chaining
 - @../rules/org.md → roles, gates, methodology
 - @../rules/project.md → current project context
@@ -100,16 +101,19 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 ### Skills (57) — Knowledge libraries loaded on demand
 
 **F0 — Preparacion (2):**
+
 - `project-classifier` → 🤖 AUTOMATED (2-8h→30s): Auto-detecta tipo de proyecto (13 tipos: web, mobile, backend, library, cli, etc.) con inteligencia domain-specifica. Triggers: "classify project", "detect project type", "auto-detect"
 - `document-discovery` → LIDR SDLC Step 1: inventario de documentos + resolucion de conflictos (whole vs sharded). Triggers: "document inventory", "document discovery", "LIDR SDLC step 1"
 
 **Fase 1 — Originacion (4):**
+
 - `business-case` → Genera Business Case. Triggers: "create business case", "justify this project", "new initiative", "Gate 0 preparation"
 - `kickoff` → Genera acta de kick-off. Triggers: "create kickoff", "start project", "kick-off meeting"
 - `stakeholder-map` → Mapa de interesados. Triggers: "map stakeholders", "stakeholder analysis"
 - `tracking-integration` → Crea proyecto en herramienta de seguimiento (Jira/Linear/Notion). Triggers: "create project", "track epic", "setup tracking"
 
 **Fase 2 — Discovery (7):**
+
 - `prd-tecnico` → PRD Tecnico con arquitectura y NFRs. Triggers: "create technical PRD", "architecture design"
 - `prd-funcional` → PRD Funcional con journeys y personas. Triggers: "create functional PRD", "product requirements"
 - `review-cruzado` → Compara PRD-T vs PRD-F. Triggers: "cross review", "compare PRDs"
@@ -119,6 +123,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `technical-research` → LIDR SDLC technical feasibility investigation y architecture evaluation. Triggers: "technical feasibility", "architecture research", "evaluate technology"
 
 **Fase 3 — Especificacion (5):**
+
 - `generate-rf` → RFs completos con BDD desde PRDs. Triggers: "generate requirements", "create RFs", "BDD scenarios"
 - `generate-nfr` → NFRs standalone y medibles desde PRD-T §5: performance, security, scalability, availability, compliance. Critico para domain-specificos (FAR/FRR, latencia, GDPR Art. 9). Triggers: "generate NFRs", "non-functional requirements", "performance requirements", "SLA definition"
 - `validate-requirements` → 🤖 AUTOMATED (6h→5min): 5-pass validation. Valida RFs + NFRs contra PRDs: completitud, coherencia, trazabilidad. Genera RTM, detecta gaps, agrupa en clusters. Triggers: "validate requirements", "requirements traceability", "RTM", "check completeness"
@@ -126,17 +131,20 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `bdd-patterns` → LIDR SDLC BDD patterns para Given-When-Then validation y Gherkin compliance. Triggers: "validate BDD", "write Gherkin", "check acceptance criteria", "BDD compliance"
 
 **Fase 4 — Sprint Planning (3):**
+
 - `user-stories` → 🤖 AUTOMATED (3h→15min): RF slicing con 8 patrones. User Stories con criterios BDD. Triggers: "create user stories", "write stories", "sprint backlog"
 - `sprint-capacity` → Capacidad del sprint. Triggers: "sprint capacity", "calculate capacity", "team velocity"
 - `refinement-notes` → Notas de refinement. Triggers: "refinement notes", "backlog refinement"
 
 **Fase 5 — Desarrollo (4):**
+
 - `pr-description` → PR description desde diff + ticket. Triggers: "PR description", "pull request"
 - `adr` → Architecture Decision Record (MADR). Triggers: "document decision", "create ADR", "buy vs build"
 - `tech-debt` → 🤖 AUTOMATED (6h→5min): SonarQube integration con User Stories. Registro de deuda tecnica. Triggers: "tech debt", "code smell", "refactoring needed"
 - `dev-handoff-qa` → Handoff Dev→QA. Triggers: "handoff to QA", "ready for QA"
 
 **Fase 6 — QA (5):**
+
 - `test-plan` → Test plan comprehensivo. Triggers: "create test plan", "QA strategy", "Gate 5 preparation"
 - `create-test-cases` → Test cases BDD. Triggers: "create test cases", "BDD test cases"
 - `bug-report` → Estructura bug reports. Triggers: "report bug", "found a bug", "defect report"
@@ -144,12 +152,14 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `regression-suite` → 🤖 AUTOMATED (8h→30min): Impact analysis basado en git. Suite de regresion. Triggers: "regression suite", "impact analysis", "what to retest"
 
 **Fase 7 — Seguridad (4):**
+
 - `vuln-assessment` → Interpreta SAST/SCA. Triggers: "vulnerability scan", "SAST results", "SonarQube results"
 - `dast-interpretation` → Resume hallazgos DAST. Triggers: "DAST results", "dynamic scan"
 - `pentest-report` → Reporte pen testing. Triggers: "pentest report", "penetration test"
 - `security-checklist` → OWASP Top 10 checklist. Triggers: "security checklist", "OWASP check"
 
 **Fase 8 — Despliegue (5):**
+
 - `change-request` → Pre-llena Change Request. Triggers: "change request", "deployment request"
 - `rollback-plan` → Plan de rollback. Triggers: "rollback plan", "how to revert"
 - `release-notes` → Changelog ejecutivo + tecnico. Triggers: "release notes", "changelog"
@@ -157,6 +167,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `postmortem` → Postmortem blameless. Triggers: "postmortem", "incident review", "root cause analysis"
 
 **Cross-cutting (9):**
+
 - `generate-rule` → Genera/actualiza rules desde contexto del proyecto. Triggers: "generate rule", "create rule", "update rule", "init rules"
 - `architecture-doc` → Documenta arquitectura completa. Triggers: "document architecture", "system design doc"
 - `ux-design-spec` → Especificacion UX desde PRD. Triggers: "UX spec", "design specification"
@@ -168,6 +179,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `brainstorming` → LIDR SDLC Methodology-based structured innovation para domain-specific domain. Triggers: "brainstorm", "creative solutions", "innovation session", "problem solving"
 
 **Development Tools (6):**
+
 - `skill-creator` → Crea nuevos skills con estructura completa. Triggers: "create skill", "new skill", "skill development"
 - `skill-development` → Documenta y mejora skills existentes. Triggers: "improve skill", "update skill", "skill maintenance"
 - `command-development` → Crea y mantiene commands. Triggers: "create command", "new command", "command development"
@@ -177,49 +189,49 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 
 ### Rules (5) — Persistent context, ALWAYS loaded
 
-| Rule | Purpose |
-|------|---------|
-| `org.md` | Organization standards: identity, markets, regulation, methodology, roles, gates, metrics |
-| `tech-stack.md` | Tech conventions: React, TypeScript, Tailwind, Node.js, PostgreSQL, naming, testing, security |
-| `project.md` | Active project: team, architecture, environments, ADRs, current status |
-| `documentation.md` | Doc governance: frontmatter, versioning, staleness detection, naming conventions |
-| `workflows.md` | Orchestration map: who can run what command, in what order, chaining rules |
+| Rule               | Purpose                                                                                       |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| `org.md`           | Organization standards: identity, markets, regulation, methodology, roles, gates, metrics     |
+| `tech-stack.md`    | Tech conventions: React, TypeScript, Tailwind, Node.js, PostgreSQL, naming, testing, security |
+| `project.md`       | Active project: team, architecture, environments, ADRs, current status                        |
+| `documentation.md` | Doc governance: frontmatter, versioning, staleness detection, naming conventions              |
+| `workflows.md`     | Orchestration map: who can run what command, in what order, chaining rules                    |
 
 ### Hooks (4) — Reactive guards, auto-triggered
 
-| Hook | Event | Type | Purpose |
-|------|-------|------|---------|
-| **dtc-write-guard** | PreToolUse: Write\|Edit | prompt | Validates DTC rule + detects hardcoded secrets before any file write. Blocks if secrets found; warns if docs need updating. |
-| **dtc-session-check** | Stop | prompt | Verifies all 8 sources of truth are synchronized before session ends. Blocks if drift detected. |
-| **notify-desktop** | Notification | command | Desktop alerts (macOS/Linux/WSL) for long-running sessions. Script: .claude/hooks/notify.sh |
-| **context-loader** | SessionStart | command | Loads project context (type, framework, DTC status, stale docs count) into env vars. Script: .claude/hooks/load-context.sh |
+| Hook                  | Event                   | Type    | Purpose                                                                                                                     |
+| --------------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **dtc-write-guard**   | PreToolUse: Write\|Edit | prompt  | Validates DTC rule + detects hardcoded secrets before any file write. Blocks if secrets found; warns if docs need updating. |
+| **dtc-session-check** | Stop                    | prompt  | Verifies all 8 sources of truth are synchronized before session ends. Blocks if drift detected.                             |
+| **notify-desktop**    | Notification            | command | Desktop alerts (macOS/Linux/WSL) for long-running sessions. Script: .claude/hooks/notify.sh                                 |
+| **context-loader**    | SessionStart            | command | Loads project context (type, framework, DTC status, stale docs count) into env vars. Script: .claude/hooks/load-context.sh  |
 
 ### MCPs (3) — External tool connections
 
-| MCP | URL | Capabilities | Used by |
-|-----|-----|-------------|---------|
+| MCP            | URL                                     | Capabilities                               | Used by                                            |
+| -------------- | --------------------------------------- | ------------------------------------------ | -------------------------------------------------- |
 | **filesystem** | @modelcontextprotocol/server-filesystem | read/write files, search, list directories | implement-ticket, sync-docs, validate-project-docs |
-| **memory** | @modelcontextprotocol/server-memory | store/retrieve/search knowledge graph | all skills (persistent memory) |
-| **fetch** | @modelcontextprotocol/server-fetch | fetch URLs, extract content, process HTML | research tasks, vuln-assessment |
+| **memory**     | @modelcontextprotocol/server-memory     | store/retrieve/search knowledge graph      | all skills (persistent memory)                     |
+| **fetch**      | @modelcontextprotocol/server-fetch      | fetch URLs, extract content, process HTML  | research tasks, vuln-assessment                    |
 
 ### Checklists (8) — Evaluated by hooks and gates
 
-| Checklist | Gate | Evaluated by |
-|-----------|------|-------------|
-| `skills/refinement-notes/checklists/dor.md` | Gate 3 | user-stories skill, sprint planning |
-| `skills/pr-description/checklists/dod.md` | Gate 4 | hook dtc-write-guard (PreToolUse: Write\|Edit), implement-ticket |
-| `skills/generate-rf/checklists/rf-coherence.md` | Gate 2 | generate-rf skill |
-| `skills/review-cruzado/checklists/review-cruzado.md` | Gate 1 | review-cruzado skill |
-| `skills/security-checklist/checklists/security-compliance.md` | Gate 6 | security-checklist skill |
-| `skills/change-request/checklists/post-deploy.md` | Gate 7 | DevOps manual + /advance-gate 7 |
-| `skills/generate-nfr/checklists/nfr-compliance.md` | Gate 5-6 | NFR verification: performance, scalability, availability, security, compliance, observability, accessibility |
-| `skills/kickoff/checklists/repo-structure.md` | Gate 0 | /init-project-docs, /validate-project-docs — repo governance, CI/CD, API contracts, architecture |
+| Checklist                                                     | Gate     | Evaluated by                                                                                                 |
+| ------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| `skills/refinement-notes/checklists/dor.md`                   | Gate 3   | user-stories skill, sprint planning                                                                          |
+| `skills/pr-description/checklists/dod.md`                     | Gate 4   | hook dtc-write-guard (PreToolUse: Write\|Edit), implement-ticket                                             |
+| `skills/generate-rf/checklists/rf-coherence.md`               | Gate 2   | generate-rf skill                                                                                            |
+| `skills/review-cruzado/checklists/review-cruzado.md`          | Gate 1   | review-cruzado skill                                                                                         |
+| `skills/security-checklist/checklists/security-compliance.md` | Gate 6   | security-checklist skill                                                                                     |
+| `skills/change-request/checklists/post-deploy.md`             | Gate 7   | DevOps manual + /advance-gate 7                                                                              |
+| `skills/generate-nfr/checklists/nfr-compliance.md`            | Gate 5-6 | NFR verification: performance, scalability, availability, security, compliance, observability, accessibility |
+| `skills/kickoff/checklists/repo-structure.md`                 | Gate 0   | /init-project-docs, /validate-project-docs — repo governance, CI/CD, API contracts, architecture             |
 
 ### Sign-offs (2)
 
-| Sign-off | Gate | Signed by |
-|----------|------|-----------|
-| `skills/test-execution-report/signoffs/qa-signoff.md` | Gate 5 | QA Lead |
+| Sign-off                                                 | Gate   | Signed by            |
+| -------------------------------------------------------- | ------ | -------------------- |
+| `skills/test-execution-report/signoffs/qa-signoff.md`    | Gate 5 | QA Lead              |
 | `skills/security-checklist/signoffs/security-signoff.md` | Gate 6 | Security Lead / CISO |
 
 ### Templates — distributed in skills/ (self-contained architecture)
@@ -228,6 +240,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 `rf-format.md`, `product-brief.md`, `prd.md`, `architecture.md`, `epics.md`, `ux-design-spec.md`, `db-schema.md`, `deployment.md`, `phases.md`, `specs/routes.md`, `specs/components.md`, `specs/storage.md`
 
 **Extended templates (9):**
+
 - Templates available in respective skills (gate-evaluation.md` — Gate Evaluation Report: template estandarizado de output para /advance-gate (scoring ponderado, coherencia cruzada, evidencia)
 - Templates available in respective skills (nfr-format.md` — Formato NFR: metricas medibles, umbrales, escenarios de validacion
 - Templates available in respective skills (rtm.md` — Requirements Traceability Matrix: BC → PRD → RF/NFR → Epicas
@@ -238,6 +251,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `guidelines/Guidelines.md` — Directrices de desarrollo operativas
 
 **Governance + Catch-up templates (11):**
+
 - Templates available in respective skills (readme.md` — Template base para README.md del repositorio
 - Templates available in respective skills (contributing.md` — Template para CONTRIBUTING.md (Git Flow, PRs, convenciones)
 - Templates available in respective skills (security-policy.md` — Template para SECURITY.md (responsible disclosure, GDPR Art. 9)
@@ -253,6 +267,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 ### Agents (6 — planned, future evolution)
 
 Commands evolve to agents after sufficient usage:
+
 - `/advance-gate` → agent after >=24 executions
 - `/implement-ticket` → agent after >=30 tickets
 - `/prepare-testing` → agent after >=20 suites
@@ -264,24 +279,26 @@ Commands evolve to agents after sufficient usage:
 ## Step 1: Parse Query
 
 If "$1" is empty (no query provided):
-  Show the interactive menu (go to Step 1b).
+Show the interactive menu (go to Step 1b).
 
 If "$1" is not empty:
-  Classify the query into one or more of these intents:
-  - **ROLE_QUERY**: "what can {role} do", "I am a {role}", "as a QA"
-  - **PHASE_QUERY**: "phase 3", "during discovery", "in sprint planning"
-  - **GATE_QUERY**: "gate 5", "what do I need for gate", "gate criteria"
-  - **ARTIFACT_QUERY**: "what is {name}", "explain {skill/command}", "how does {tool} work"
-  - **ACTION_QUERY**: "how do I {action}", "I need to {action}", "help me {action}"
-  - **WORKFLOW_QUERY**: "what's the process for", "steps to", "workflow for"
-  - **CATCHUP_QUERY**: "my project has no PRDs", "missing requirements", "project already started without docs", "regularize project", "catch-up", "retrofit", "no tenemos PRDs", "faltan requisitos", "proyecto sin documentacion", "deuda documental", "sprints sin estandar"
-  - **BROWSE_QUERY**: "list all", "show me everything", "what exists"
+Classify the query into one or more of these intents:
 
-  Go to Step 2.
+- **ROLE_QUERY**: "what can {role} do", "I am a {role}", "as a QA"
+- **PHASE_QUERY**: "phase 3", "during discovery", "in sprint planning"
+- **GATE_QUERY**: "gate 5", "what do I need for gate", "gate criteria"
+- **ARTIFACT_QUERY**: "what is {name}", "explain {skill/command}", "how does {tool} work"
+- **ACTION_QUERY**: "how do I {action}", "I need to {action}", "help me {action}"
+- **WORKFLOW_QUERY**: "what's the process for", "steps to", "workflow for"
+- **CATCHUP_QUERY**: "my project has no PRDs", "missing requirements", "project already started without docs", "regularize project", "catch-up", "retrofit", "no tenemos PRDs", "faltan requisitos", "proyecto sin documentacion", "deuda documental", "sprints sin estandar"
+- **BROWSE_QUERY**: "list all", "show me everything", "what exists"
+
+Go to Step 2.
 
 ### Step 1b: Interactive Menu (no query)
 
 Use AskUserQuestion:
+
 - question: "Que necesitas? Selecciona una opcion o escribe tu pregunta con /lidr-help [tu pregunta]"
 - header: "Centro de Ayuda SDLC — LIDR SDLC Enhanced"
 - options:
@@ -300,13 +317,14 @@ Use AskUserQuestion:
 Based on selection, set $1 to the appropriate query text and continue to Step 2.
 
 If "Mi proyecto ya esta en marcha y le falta documentacion (catch-up)":
-  Set $1 = "regularize project catch-up missing PRDs requirements"
+Set $1 = "regularize project catch-up missing PRDs requirements"
 
 ## Step 2: Search and Match
 
 Search the registry above for artifacts matching the query.
 
 Matching strategy (priority order):
+
 1. **Exact name match**: query contains artifact name (e.g., "implement-ticket" → /implement-ticket)
 2. **Trigger match**: query matches known trigger phrases (e.g., "create business case" → business-case skill)
 3. **Role match**: query mentions a role (e.g., "QA" → all artifacts with QA in roles)
@@ -328,20 +346,22 @@ Based on matched artifacts, generate a structured response:
 
 **Commands que puedes ejecutar:**
 
-| Command | Proposito |
-|---------|----------|
+| Command  | Proposito   |
+| -------- | ----------- |
 | /command | description |
 
 **Skills que puedes invocar:**
 
-| Skill | Fase | Proposito |
-|-------|------|----------|
+| Skill      | Fase   | Proposito   |
+| ---------- | ------ | ----------- |
 | skill-name | Fase N | description |
 
 **Checklists relevantes:**
+
 - checklist (Gate N)
 
 **Tip: Flujo tipico para {Role}**
+
 1. Step → artifact
 2. Step → artifact
 
@@ -356,10 +376,10 @@ Criterios: [from workflows.md]
 
 **Artefactos de esta fase:**
 
-| Tipo | Nombre | Proposito |
-|------|--------|----------|
-| Skill | name | desc |
-| Command | name | desc |
+| Tipo    | Nombre | Proposito |
+| ------- | ------ | --------- |
+| Skill   | name   | desc      |
+| Command | name   | desc      |
 
 **Gate de salida:** Gate {N}
 Criterios: [from workflows.md]
@@ -373,17 +393,21 @@ Criterios: [from workflows.md]
 #### Recomendacion: {action description}
 
 **Workflow sugerido:**
+
 1. [Skill/Command] → {action} — Rol: {role}
 2. [Skill/Command] → {action} — Rol: {role}
 3. ...
 
 **Prerequisitos:**
+
 - {prerequisite}
 
 **Commands relevantes:**
+
 - /command [args] — {when to use}
 
 **Skills relevantes:**
+
 - skill-name — {when to use}
 
 ### For CATCHUP_QUERY:
@@ -396,38 +420,38 @@ Tu proyecto ya esta en desarrollo pero le faltan PRDs, RFs/NFRs, o sprints estan
 
 **Fase A — Linea base documental (1-2 semanas) — PO + TL:**
 
-| # | Skill/Command | Que produce | Quien |
-|---|--------------|-------------|-------|
-| 1 | `prd-funcional` | PRD Funcional retroactivo — journeys, personas, requisitos de negocio desde conocimiento existente | PO |
-| 2 | `prd-tecnico` | PRD Tecnico — arquitectura actual, NFRs implicitos, decisiones ya tomadas | TL |
-| 3 | `review-cruzado` | PO revisa PRD-T, TL revisa PRD-F — detecta gaps entre vision y realidad | PO + TL |
-| 4 | `risk-log` | Riesgos conocidos pero no documentados | TL |
-| 5 | `/advance-gate 1` | Gate 1 retroactivo (probablemente CONDITIONAL — y eso esta bien) | PO |
+| #   | Skill/Command     | Que produce                                                                                        | Quien   |
+| --- | ----------------- | -------------------------------------------------------------------------------------------------- | ------- |
+| 1   | `prd-funcional`   | PRD Funcional retroactivo — journeys, personas, requisitos de negocio desde conocimiento existente | PO      |
+| 2   | `prd-tecnico`     | PRD Tecnico — arquitectura actual, NFRs implicitos, decisiones ya tomadas                          | TL      |
+| 3   | `review-cruzado`  | PO revisa PRD-T, TL revisa PRD-F — detecta gaps entre vision y realidad                            | PO + TL |
+| 4   | `risk-log`        | Riesgos conocidos pero no documentados                                                             | TL      |
+| 5   | `/advance-gate 1` | Gate 1 retroactivo (probablemente CONDITIONAL — y eso esta bien)                                   | PO      |
 
 **Fase B — Requisitos formales (1 semana) — PO + TL:**
 
-| # | Skill/Command | Que produce | Quien |
-|---|--------------|-------------|-------|
-| 1 | `/validate-requirements` | **Orquesta todo**: genera RFs + NFRs + RTM + detecta gaps + epic breakdown | PO + TL |
-| 2 | `/advance-gate 2` | Gate 2 — especificacion formal | PO |
+| #   | Skill/Command            | Que produce                                                                | Quien   |
+| --- | ------------------------ | -------------------------------------------------------------------------- | ------- |
+| 1   | `/validate-requirements` | **Orquesta todo**: genera RFs + NFRs + RTM + detecta gaps + epic breakdown | PO + TL |
+| 2   | `/advance-gate 2`        | Gate 2 — especificacion formal                                             | PO      |
 
 **Fase C — Estandarizar sprints (ongoing) — SM + PO:**
 
-| # | Skill/Command | Que produce | Quien |
-|---|--------------|-------------|-------|
-| 1 | `user-stories` | US con criterios BDD desde RFs | PO |
-| 2 | `sprint-capacity` | Capacidad real con velocidad historica | SM |
-| 3 | `refinement-notes` | Notas de refinement estructuradas | SM + PO |
-| 4 | `/advance-gate 3` | Gate 3 — Sprint Committed con DoR | PO + TL |
+| #   | Skill/Command      | Que produce                            | Quien   |
+| --- | ------------------ | -------------------------------------- | ------- |
+| 1   | `user-stories`     | US con criterios BDD desde RFs         | PO      |
+| 2   | `sprint-capacity`  | Capacidad real con velocidad historica | SM      |
+| 3   | `refinement-notes` | Notas de refinement estructuradas      | SM + PO |
+| 4   | `/advance-gate 3`  | Gate 3 — Sprint Committed con DoR      | PO + TL |
 
 **Fase D — Deuda tecnica (paralelo) — Dev + TL:**
 
-| # | Skill/Command | Que produce | Quien |
-|---|--------------|-------------|-------|
-| 1 | `tech-debt` | Registro formal de cada deuda | Dev + TL |
-| 2 | `adr` | ADRs retroactivos para decisiones ya tomadas | TL |
-| 3 | `epic-review` | Plan vs actual al cerrar cada epica | TL + PME |
-| 4 | `/validate-project-docs` | Valida completitud de docs | TL |
+| #   | Skill/Command            | Que produce                                  | Quien    |
+| --- | ------------------------ | -------------------------------------------- | -------- |
+| 1   | `tech-debt`              | Registro formal de cada deuda                | Dev + TL |
+| 2   | `adr`                    | ADRs retroactivos para decisiones ya tomadas | TL       |
+| 3   | `epic-review`            | Plan vs actual al cerrar cada epica          | TL + PME |
+| 4   | `/validate-project-docs` | Valida completitud de docs                   | TL       |
 
 **Clave**: Las Fases A y B se hacen una sola vez como catch-up. La Fase C se convierte en el nuevo normal. La Fase D es continua. Los Gates retroactivos probablemente saldran CONDITIONAL con action items — y eso es perfectamente valido.
 
@@ -443,16 +467,20 @@ Tu proyecto ya esta en desarrollo pero le faltan PRDs, RFs/NFRs, o sprints estan
 - **Modelo**: {model}
 
 **Cuando usarlo:**
+
 - {trigger phrase 1}
 - {trigger phrase 2}
 
 **MCPs que usa:**
+
 - {mcp list}
 
 **Prerequisitos:**
+
 - {precondition}
 
 **Relacionados:**
+
 - {related skills/commands}
 
 **Ejemplo de uso:**
@@ -464,25 +492,26 @@ Tu proyecto ya esta en desarrollo pero le faltan PRDs, RFs/NFRs, o sprints estan
 
 #### Ecosistema SDLC Completo
 
-| Tipo | Cantidad | Descripcion |
-|------|----------|-------------|
-| Skills | 57 | Bibliotecas de conocimiento por fase (9 🤖 automatizados: 775+ horas/año ROI) |
-| Commands | 23 | Workflows orquestadores (10 Tier 1 + 12 Tier 2 + 1 Utility) |
-| Rules | 5 | Contexto persistente (siempre cargado) |
-| Hooks | 4 | Guardias reactivos automaticos |
-| MCPs | 3 | Conexiones externas (filesystem, memory, fetch) |
-| Checklists | 8 | Criterios evaluados por gates y hooks |
-| Sign-offs | 2 | Formatos de aprobacion formal |
-| Templates | 40 | Formatos estandar + context-aware (web/mobile) |
-| Agents | 6 | Evolucion futura de commands maduros (planificados) |
-| Docs | 28 | Discovery, guias SDK, propuestas, referencia, herramientas |
-| **TOTAL** | **195** | **LIDR SDLC Methodology-inspired with domain-specific domain intelligence** |
+| Tipo       | Cantidad | Descripcion                                                                   |
+| ---------- | -------- | ----------------------------------------------------------------------------- |
+| Skills     | 57       | Bibliotecas de conocimiento por fase (9 🤖 automatizados: 775+ horas/año ROI) |
+| Commands   | 23       | Workflows orquestadores (10 Tier 1 + 12 Tier 2 + 1 Utility)                   |
+| Rules      | 5        | Contexto persistente (siempre cargado)                                        |
+| Hooks      | 4        | Guardias reactivos automaticos                                                |
+| MCPs       | 3        | Conexiones externas (filesystem, memory, fetch)                               |
+| Checklists | 8        | Criterios evaluados por gates y hooks                                         |
+| Sign-offs  | 2        | Formatos de aprobacion formal                                                 |
+| Templates  | 40       | Formatos estandar + context-aware (web/mobile)                                |
+| Agents     | 6        | Evolucion futura de commands maduros (planificados)                           |
+| Docs       | 28       | Discovery, guias SDK, propuestas, referencia, herramientas                    |
+| **TOTAL**  | **195**  | **LIDR SDLC Methodology-inspired with domain-specific domain intelligence**   |
 
 ## Step 4: Offer Follow-up
 
 After presenting recommendations:
 
 Use AskUserQuestion:
+
 - question: "Quieres mas detalle sobre algo especifico?"
 - header: "Siguiente paso"
 - options:
@@ -493,16 +522,16 @@ Use AskUserQuestion:
   - "Estoy listo, gracias"
 
 If "Ejecutar un comando recomendado":
-  Ask which command and execute it.
+Ask which command and execute it.
 
 If "Ver el documento de un skill/command":
-  Read and display the file content.
+Read and display the file content.
 
 If "Explicar un workflow completo paso a paso":
-  Read @../rules/workflows.md and walk through the relevant workflow.
+Read @../rules/workflows.md and walk through the relevant workflow.
 
 If "Buscar otra cosa":
-  Use AskUserQuestion for new query and loop to Step 2.
+Use AskUserQuestion for new query and loop to Step 2.
 
 If "Estoy listo":
-  Exit with: "Recuerda: puedes usar /lidr-help [pregunta] en cualquier momento."
+Exit with: "Recuerda: puedes usar /lidr-help [pregunta] en cualquier momento."

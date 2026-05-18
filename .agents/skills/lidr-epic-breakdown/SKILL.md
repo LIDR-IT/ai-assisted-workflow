@@ -1,4 +1,5 @@
 ---
+name: lidr-epic-breakdown
 id: epic-breakdown
 version: "2.2.0"
 last_updated: "2026-03-25"

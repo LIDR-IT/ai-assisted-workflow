@@ -1,4 +1,5 @@
 ---
+name: lidr-audit-standards
 id: audit-standards
 version: "2.0.0"
 last_updated: "2026-03-25"

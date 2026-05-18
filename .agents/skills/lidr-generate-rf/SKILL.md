@@ -1,4 +1,5 @@
 ---
+name: lidr-generate-rf
 id: generate-rf
 version: "1.5.0"
 last_updated: "2026-03-25"

@@ -8,42 +8,43 @@ description: LIDR SDLC: Workflow orchestration map — authorized roles per comm
 > **Carga**: Bajo demanda — se carga automáticamente cuando se ejecuta un command o se consulta el workflow SDLC.
 > **Propósito**: Define QUIÉN puede ejecutar QUÉ comando, en qué ORDEN, y cómo se encadenan.
 > **La IA lee esta rule ANTES de ejecutar cualquier command** para verificar:
->   1. ¿El rol del humano tiene permiso para este command?
->   2. ¿Las precondiciones (gates anteriores) se cumplieron?
->   3. ¿Qué commands se encadenan después?
+>
+> 1. ¿El rol del humano tiene permiso para este command?
+> 2. ¿Las precondiciones (gates anteriores) se cumplieron?
+> 3. ¿Qué commands se encadenan después?
 
 
 ## 1. Catálogo de Commands por Tier
 
 ### Tier 1 — Orchestrators (encadenan múltiples skills + MCPs)
 
-| Command | Propósito | Roles Autorizados | Precondición |
-|---------|----------|-------------------|-------------|
-| `/advance-gate [N]` | Evalúa gate, genera handoff, transiciona fase | PME, PO, Tech Lead, QA Lead, Security Lead, DevOps | Gate N-1 PASS |
-| `/implement-ticket [ID]` | Dev workflow completo: ticket → PR → handoff QA | Dev, Tech Lead | Ticket status "Ready for Dev" |
-| `/prepare-testing [ID]` | Genera suite de testing completa | QA, QA Lead | Ticket status "Ready for QA" |
-| `/validate-requirements [name]` | Orquesta Fase 3: genera RFs + NFRs, valida RTM, epic breakdown | PO, Tech Lead | Gate 1 PASS (PRDs aprobados) |
-| `/validate-prd [name]` | LIDR SDLC PRD quality validation con scoring automático y recomendaciones accionables | PO, Tech Lead, QA Lead, PME | PRDs en draft completados |
-| `/init-project-docs [name]` | Crea documentación de proyecto desde templates | Tech Lead, PO, PME | Proyecto nuevo aprobado |
-| `/validate-project-docs [name]` | Valida docs contra criterios de templates | Tech Lead, PO, QA Lead, PME | Docs existentes en docs/projects/ |
+| Command                         | Propósito                                                                             | Roles Autorizados                                  | Precondición                      |
+| ------------------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------- | --------------------------------- |
+| `/advance-gate [N]`             | Evalúa gate, genera handoff, transiciona fase                                         | PME, PO, Tech Lead, QA Lead, Security Lead, DevOps | Gate N-1 PASS                     |
+| `/implement-ticket [ID]`        | Dev workflow completo: ticket → PR → handoff QA                                       | Dev, Tech Lead                                     | Ticket status "Ready for Dev"     |
+| `/prepare-testing [ID]`         | Genera suite de testing completa                                                      | QA, QA Lead                                        | Ticket status "Ready for QA"      |
+| `/validate-requirements [name]` | Orquesta Fase 3: genera RFs + NFRs, valida RTM, epic breakdown                        | PO, Tech Lead                                      | Gate 1 PASS (PRDs aprobados)      |
+| `/validate-prd [name]`          | LIDR SDLC PRD quality validation con scoring automático y recomendaciones accionables | PO, Tech Lead, QA Lead, PME                        | PRDs en draft completados         |
+| `/init-project-docs [name]`     | Crea documentación de proyecto desde templates                                        | Tech Lead, PO, PME                                 | Proyecto nuevo aprobado           |
+| `/validate-project-docs [name]` | Valida docs contra criterios de templates                                             | Tech Lead, PO, QA Lead, PME                        | Docs existentes en docs/projects/ |
 
 ### Tier 2 — Tactical (workflow enfocado, pueden invocarse standalone o encadenados)
 
-| Command | Propósito | Roles Autorizados | Precondición |
-|---------|----------|-------------------|-------------|
-| `/create-release-notes` | Genera changelog desde PRs mergeados | DevOps, Tech Lead, Release Manager | PRs mergeados desde último tag |
-| `/create-branch [ID]` | Crea feature branch desde ticket Jira | Dev, Tech Lead | Ticket asignado al dev |
-| `/create-pr [ID]` | Crea PR con description auto-generada | Dev, Tech Lead | Branch con commits listos |
-| `/quick-spec [feature]` | Especificación ligera para features ≤40h | PO, Tech Lead, Dev | Feature < 40h effort estimate |
-| `/update-changelog [version]` | Actualiza CHANGELOG.md con version nueva | DevOps, Tech Lead, Release Manager | Release notes generadas |
-| `/sync-docs [scope]` | Sincroniza documentación tras cambios de código | Dev, Tech Lead, QA Lead | Cambios mergeados |
-| `/sprint-health [sprint-id]` | Monitoreo activo de salud del sprint con detección de riesgos | SM, PME, Tech Lead, QA Lead | Sprint activo en progreso |
+| Command                       | Propósito                                                     | Roles Autorizados                  | Precondición                   |
+| ----------------------------- | ------------------------------------------------------------- | ---------------------------------- | ------------------------------ |
+| `/create-release-notes`       | Genera changelog desde PRs mergeados                          | DevOps, Tech Lead, Release Manager | PRs mergeados desde último tag |
+| `/create-branch [ID]`         | Crea feature branch desde ticket Jira                         | Dev, Tech Lead                     | Ticket asignado al dev         |
+| `/create-pr [ID]`             | Crea PR con description auto-generada                         | Dev, Tech Lead                     | Branch con commits listos      |
+| `/quick-spec [feature]`       | Especificación ligera para features ≤40h                      | PO, Tech Lead, Dev                 | Feature < 40h effort estimate  |
+| `/update-changelog [version]` | Actualiza CHANGELOG.md con version nueva                      | DevOps, Tech Lead, Release Manager | Release notes generadas        |
+| `/sync-docs [scope]`          | Sincroniza documentación tras cambios de código               | Dev, Tech Lead, QA Lead            | Cambios mergeados              |
+| `/sprint-health [sprint-id]`  | Monitoreo activo de salud del sprint con detección de riesgos | SM, PME, Tech Lead, QA Lead        | Sprint activo en progreso      |
 
 ### Tier 3 — Utility (informacional, sin efectos secundarios)
 
-| Command | Propósito | Roles Autorizados | Precondición |
-|---------|----------|-------------------|-------------|
-| `/lidr-help [query]` | Busca en el ecosistema y recomienda skills, commands, workflows | TODOS | Ninguna |
+| Command              | Propósito                                                       | Roles Autorizados | Precondición |
+| -------------------- | --------------------------------------------------------------- | ----------------- | ------------ |
+| `/lidr-help [query]` | Busca en el ecosistema y recomienda skills, commands, workflows | TODOS             | Ninguna      |
 
 
 ## 2. Matriz de Roles → Commands
@@ -70,16 +71,16 @@ description: LIDR SDLC: Workflow orchestration map — authorized roles per comm
 
 ### Roles Definidos
 
-| Abrev. | Rol Completo | Responsabilidad Principal |
-|--------|-------------|--------------------------|
-| PME | Project Manager / Execution | Governance, gates, stakeholders |
-| PO | Product Owner | Valor de negocio, priorización, validación funcional |
-| TL | Tech Lead / R&D Lead | Decisiones técnicas, architecture, calidad de código |
-| Dev | Developer | Implementación, tests, PRs |
-| QA | QA Engineer / QA Lead | Testing, calidad, sign-off |
-| Sec | Security Lead / CISO | Vulnerabilidades, compliance, security sign-off |
-| DevOps | DevOps Engineer | CI/CD, despliegue, infraestructura, monitoring |
-| SM | Scrum Master | Facilitación, impedimentos, sprint ceremonies, capacity |
+| Abrev. | Rol Completo                | Responsabilidad Principal                               |
+| ------ | --------------------------- | ------------------------------------------------------- |
+| PME    | Project Manager / Execution | Governance, gates, stakeholders                         |
+| PO     | Product Owner               | Valor de negocio, priorización, validación funcional    |
+| TL     | Tech Lead / R&D Lead        | Decisiones técnicas, architecture, calidad de código    |
+| Dev    | Developer                   | Implementación, tests, PRs                              |
+| QA     | QA Engineer / QA Lead       | Testing, calidad, sign-off                              |
+| Sec    | Security Lead / CISO        | Vulnerabilidades, compliance, security sign-off         |
+| DevOps | DevOps Engineer             | CI/CD, despliegue, infraestructura, monitoring          |
+| SM     | Scrum Master                | Facilitación, impedimentos, sprint ceremonies, capacity |
 
 
 ## 3. Flujo Completo del SDLC — Quién ejecuta qué, cuándo
@@ -165,7 +166,7 @@ FASE 5: DESARROLLO (por cada ticket)
       ├── skill: adr               → Genera ADR si hay decisión arquitectónica
       ├── hook: dtc-write-guard   → Valida DTC + DoD en PreToolUse:Write|Edit
       └── /create-pr [ID]          → Crea PR (puede ser standalone)
-  
+
   TL ejecuta:
     /advance-gate 4          → Agregador: ¿todos los tickets del sprint PASS?
                               → AUTO: notifica QA team
@@ -367,22 +368,22 @@ skills/retrospective                    → Retro data-driven del ciclo
 
 Los siguientes skills se usan transversalmente y no aparecen en una fase específica del flujo:
 
-| Skill | Fases donde aplica | Descripción |
-|-------|-------------------|-------------|
-| `architecture-doc` | F2 Discovery → F5 Dev → POST-DEPLOY | Genera/actualiza doc de arquitectura (Arc42/C4) |
-| `ux-design-spec` | F2 Discovery → F4 Planning | Spec UX/UI desde PRD + wireframes |
-| `implementation-phases` | F4 Planning → F5 Dev | Descompone proyecto en fases incrementales |
-| `epic-review` | POST-DEPLOY | Review formal: plan vs actual, lecciones, follow-up epics |
+| Skill                   | Fases donde aplica                  | Descripción                                               |
+| ----------------------- | ----------------------------------- | --------------------------------------------------------- |
+| `architecture-doc`      | F2 Discovery → F5 Dev → POST-DEPLOY | Genera/actualiza doc de arquitectura (Arc42/C4)           |
+| `ux-design-spec`        | F2 Discovery → F4 Planning          | Spec UX/UI desde PRD + wireframes                         |
+| `implementation-phases` | F4 Planning → F5 Dev                | Descompone proyecto en fases incrementales                |
+| `epic-review`           | POST-DEPLOY                         | Review formal: plan vs actual, lecciones, follow-up epics |
 
 
 ## 6. Hooks — Guardias automáticos activos
 
-| Hook | Evento Claude Code | Cuándo se dispara | Acción |
-|------|-------------------|-------------------|--------|
-| `dtc-write-guard` | PreToolUse: Write\|Edit | Cada vez que la IA intenta escribir/editar archivos | Valida DTC + DoD + detecta secrets |
-| `dtc-session-check` | Stop | Al finalizar sesión | Verifica sincronización de 8 fuentes de verdad |
-| `notify-desktop` | Notification | Eventos relevantes (build roto, vuln crítica) | Alerta desktop macOS/Linux |
-| `context-loader` | SessionStart | Al iniciar sesión | Carga contexto proyecto + DTC status |
+| Hook                | Evento Claude Code      | Cuándo se dispara                                   | Acción                                         |
+| ------------------- | ----------------------- | --------------------------------------------------- | ---------------------------------------------- |
+| `dtc-write-guard`   | PreToolUse: Write\|Edit | Cada vez que la IA intenta escribir/editar archivos | Valida DTC + DoD + detecta secrets             |
+| `dtc-session-check` | Stop                    | Al finalizar sesión                                 | Verifica sincronización de 8 fuentes de verdad |
+| `notify-desktop`    | Notification            | Eventos relevantes (build roto, vuln crítica)       | Alerta desktop macOS/Linux                     |
+| `context-loader`    | SessionStart            | Al iniciar sesión                                   | Carga contexto proyecto + DTC status           |
 
 
 ## 7. Reglas de Ejecución para la IA
@@ -392,7 +393,7 @@ Los siguientes skills se usan transversalmente y no aparecen en una fase especí
 ```
 1. VERIFICAR ROL: ¿El humano tiene permiso? (ver matriz arriba)
    → Si NO: "Este comando requiere rol {X}. Tu rol actual: {Y}."
-   
+
 2. VERIFICAR PRECONDICIONES: ¿Gates anteriores PASS?
    → Si NO: "Gate {N-1} no pasado. Ejecutar /advance-gate {N-1} primero."
    → EXCEPCIÓN: Dev puede ejecutar /create-branch sin gate previo si tiene ticket asignado
@@ -400,7 +401,7 @@ Los siguientes skills se usan transversalmente y no aparecen en una fase especí
 3. VERIFICAR HERRAMIENTAS: ¿Herramientas necesarias disponibles?
    → Si acceso a Jira falta: DEGRADE (operar con contexto manual)
    → Si GitHub CLI falta: DEGRADE (instrucciones manuales para git)
-   
+
 4. CARGAR RULES: SIEMPRE antes de ejecutar
    → org.md → estándares
    → tech-stack.md → convenciones
@@ -424,21 +425,22 @@ Si el rol no está claro → PREGUNTAR antes de ejecutar commands restringidos
 
 ## 8. Evolución: De Commands a Agents
 
-| Command | Cuándo evoluciona a Agent | Señal de activación |
-|---------|--------------------------|---------------------|
-| `/advance-gate` | Tras ≥24 ejecuciones (3 por gate) | Artefactos completos detectados en Jira/Confluence |
-| `/implement-ticket` | Tras ≥30 tickets implementados | Ticket asignado al dev + status "In Progress" |
-| `/prepare-testing` | Tras ≥20 suites generadas | Ticket con status "Ready for QA" |
-| `/create-release-notes` | Tras ≥10 releases | Tag creado en GitHub |
-| `/sync-docs` | Tras ≥10 syncs manuales | PR mergeado con cambios en src/ |
-| `/validate-project-docs` | Tras ≥10 validaciones | Commit en docs/projects/ |
+| Command                  | Cuándo evoluciona a Agent         | Señal de activación                                |
+| ------------------------ | --------------------------------- | -------------------------------------------------- |
+| `/advance-gate`          | Tras ≥24 ejecuciones (3 por gate) | Artefactos completos detectados en Jira/Confluence |
+| `/implement-ticket`      | Tras ≥30 tickets implementados    | Ticket asignado al dev + status "In Progress"      |
+| `/prepare-testing`       | Tras ≥20 suites generadas         | Ticket con status "Ready for QA"                   |
+| `/create-release-notes`  | Tras ≥10 releases                 | Tag creado en GitHub                               |
+| `/sync-docs`             | Tras ≥10 syncs manuales           | PR mergeado con cambios en src/                    |
+| `/validate-project-docs` | Tras ≥10 validaciones             | Commit en docs/projects/                           |
 
 **Un command se promueve a agent cuando:**
+
 1. ≥N ejecuciones exitosas sin intervención correctiva del humano
 2. 0 falsos positivos o acciones incorrectas
 3. El responsable del proceso confirma confianza
 4. Se documenta en `.claude/agents/` con criterios de activación
 
 
-*Esta rule se carga bajo demanda (via description) cuando se ejecuta un command o se consulta el workflow SDLC.*
-*Referencia: docs/standards/org.md para detalle de roles y gates.*
+_Esta rule se carga bajo demanda (via description) cuando se ejecuta un command o se consulta el workflow SDLC._
+_Referencia: docs/standards/org.md para detalle de roles y gates._

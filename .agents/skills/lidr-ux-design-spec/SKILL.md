@@ -1,4 +1,5 @@
 ---
+name: lidr-ux-design-spec
 id: ux-design-spec
 version: "1.0.1"
 last_updated: "2026-03-16"

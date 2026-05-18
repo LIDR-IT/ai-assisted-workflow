@@ -1,4 +1,5 @@
 ---
+name: lidr-poc-report
 id: poc-report
 version: "1.3.0"
 last_updated: "2026-03-25"

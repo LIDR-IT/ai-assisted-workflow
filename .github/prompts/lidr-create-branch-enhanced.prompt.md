@@ -52,19 +52,21 @@ Load: @../skills/sdlc-tracking/SKILL.md for tracking operations.
 ## Input Validation and Project Detection
 
 If "$1" is empty:
-  ❌ Usage: /create-branch-enhanced [TICKET-ID] [--project=PROJECT-ID] [--sync=true|false]
-  Examples:
-    /create-branch-enhanced PROJ-123
-    /create-branch-enhanced PROJ-123 --project=PROJ-2026-001
-  Exit.
+❌ Usage: /create-branch-enhanced [TICKET-ID] [--project=PROJECT-ID] [--sync=true|false]
+Examples:
+/create-branch-enhanced PROJ-123
+/create-branch-enhanced PROJ-123 --project=PROJ-2026-001
+Exit.
 
 Extract flags:
+
 - --project={project-id}: Override automatic project detection
 - --sync={true|false}: Enable/disable external tool synchronization (default: true)
 
 ## Enhanced Project Context Loading
 
 ### Automatic Project Detection
+
 ```typescript
 // Try multiple detection methods:
 // 1. Explicit --project flag
@@ -76,21 +78,23 @@ Extract flags:
 Use Skill: sdlc-tracking with action "detect-project" for ticket $1.
 
 If multiple projects found:
-  Use AskUserQuestion:
-  - question: "Multiple projects found for ticket $1. Select project:"
-  - header: "Project Selection"
-  - options: {list of detected projects with names and IDs}
+Use AskUserQuestion:
+
+- question: "Multiple projects found for ticket $1. Select project:"
+- header: "Project Selection"
+- options: {list of detected projects with names and IDs}
 
 If no project found:
-  ⚠️ Warning: No SDLC tracking project found for $1. Creating branch without tracking integration.
-  Continue with basic branch creation.
+⚠️ Warning: No SDLC tracking project found for $1. Creating branch without tracking integration.
+Continue with basic branch creation.
 
 ## Load Story Context from SDLC Tracking
 
 If project detected:
-  Use Skill: sdlc-tracking with action "get-story" for story-id derived from $1.
+Use Skill: sdlc-tracking with action "get-story" for story-id derived from $1.
 
 Extract story metadata:
+
 - Story title and description
 - Epic relationship
 - Story estimation and priority
@@ -101,7 +105,9 @@ Extract story metadata:
 ## Enhanced Ticket Reading
 
 ### Multi-Tool Ticket Loading
+
 Read ticket from available sources (priority order):
+
 1. Jira MCP: GET /issue/$1
 2. Linear (if story has linear ref): GraphQL query
 3. Local story file: implementation/stories/story-{project-id}-{nnn}.md
@@ -109,32 +115,37 @@ Read ticket from available sources (priority order):
 Combine ticket data with story metadata for complete context.
 
 If ticket not found in any source:
-  ❌ "Ticket $1 not found in Jira, Linear, or local story tracking." Exit.
+❌ "Ticket $1 not found in Jira, Linear, or local story tracking." Exit.
 
 ### Enhanced Assignment Validation
+
 If ticket not assigned to current user:
-  ⚠️ Ticket $1 assigned to {assignee}, not to current user.
+⚠️ Ticket $1 assigned to {assignee}, not to current user.
 
-  Check story metadata for additional context:
-  - Sprint assignment
-  - Story status
-  - Recent activity
+Check story metadata for additional context:
 
-  Use AskUserQuestion:
-  - question: "Ticket assigned to {assignee}. Story status: {status}. Continue with branch creation?"
-  - header: "Assignment Verification"
-  - options:
-    - "Yes (Create branch anyway)"
-    - "No (Cancel operation)"
-    - "Reassign to me first"
+- Sprint assignment
+- Story status
+- Recent activity
+
+Use AskUserQuestion:
+
+- question: "Ticket assigned to {assignee}. Story status: {status}. Continue with branch creation?"
+- header: "Assignment Verification"
+- options:
+  - "Yes (Create branch anyway)"
+  - "No (Cancel operation)"
+  - "Reassign to me first"
 
 If "Reassign to me first" selected:
-  Update assignment in external tools and local tracking.
+Update assignment in external tools and local tracking.
 
 ## Smart Branch Naming with Story Context
 
 ### Enhanced Branch Prefix Detection
+
 Map issue type + story context to branch prefix:
+
 - Story (feature) → feature/
 - Story (enhancement) → enhance/
 - Bug → bugfix/
@@ -145,6 +156,7 @@ Map issue type + story context to branch prefix:
 - Hotfix (priority: Critical) → hotfix/
 
 ### Context-Aware Slug Generation
+
 ```typescript
 // Enhanced slug generation with story context
 const generateSlug = (ticket: string, title: string, epic?: string) => {
@@ -154,10 +166,10 @@ const generateSlug = (ticket: string, title: string, epic?: string) => {
   // Generate slug: lowercase, spaces to hyphens, max 50 chars
   let slug = sourceTitle
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
     .substring(0, 50)
-    .replace(/-+$/, '');
+    .replace(/-+$/, "");
 
   // Add epic context if meaningful
   if (epic && !slug.includes(epic.toLowerCase())) {
@@ -174,7 +186,9 @@ Example: feature/PROJ-123-biometric-enrollment-flow
 ## SDLC-Aware Base Branch Detection
 
 ### Project-Specific Branch Strategy
+
 From project's sdlc-tracking.yaml:
+
 ```yaml
 development:
   branching_strategy: "git-flow" | "github-flow" | "trunk-based"
@@ -186,35 +200,38 @@ development:
 ```
 
 ### Intelligent Base Selection
+
 ```typescript
 // Load project branching strategy
 const branchStrategy = await loadProjectConfig(projectId);
 
 // Determine base branch with context
 const getBaseBranch = (issueType: string, priority: string) => {
-  if (priority === 'Critical' && issueType === 'Bug') {
-    return 'main'; // Hotfix workflow
+  if (priority === "Critical" && issueType === "Bug") {
+    return "main"; // Hotfix workflow
   }
 
-  if (branchStrategy.type === 'trunk-based') {
-    return 'main';
+  if (branchStrategy.type === "trunk-based") {
+    return "main";
   }
 
-  return branchStrategy.base_branches[issueType] || 'develop';
+  return branchStrategy.base_branches[issueType] || "develop";
 };
 ```
 
 Current branches: !`git branch -r --list "origin/*" | head -20`
 
 If base branch unclear or not found:
-  Use AskUserQuestion with project context:
-  - question: "Project uses {branchStrategy.type}. Select base branch:"
-  - header: "Base Branch Selection"
-  - options: {available branches with descriptions}
+Use AskUserQuestion with project context:
+
+- question: "Project uses {branchStrategy.type}. Select base branch:"
+- header: "Base Branch Selection"
+- options: {available branches with descriptions}
 
 ## Enhanced Branch Creation with Tracking
 
 ### Git Operations with Validation
+
 ```bash
 # Ensure clean working directory
 !`git status --porcelain`
@@ -241,14 +258,17 @@ If error:
 ```
 
 ### Update SDLC Tracking
+
 If project context available:
-  Use Skill: sdlc-tracking with action "update-story":
-  - story-id: {derived from ticket}
-  - branch: {branch-name}
-  - status: "in_progress"
-  - started_date: {current timestamp}
+Use Skill: sdlc-tracking with action "update-story":
+
+- story-id: {derived from ticket}
+- branch: {branch-name}
+- status: "in_progress"
+- started_date: {current timestamp}
 
 Write story file update:
+
 ```yaml
 # Update implementation/stories/story-{project-id}-{nnn}.md
 development:
@@ -264,35 +284,40 @@ workflow:
 ## External Tool Synchronization
 
 If --sync=true (default):
-  Use Skill: external-sync with project context:
+Use Skill: external-sync with project context:
 
 ### Jira Updates
+
 - Transition ticket to "In Progress"
 - Add branch reference in ticket comments
 - Update development start timestamp
 - Link to story documentation
 
 ### Linear Updates
+
 - Update issue state to "In Progress"
 - Add branch reference to issue description
 - Update assignee if changed
 - Link to SDLC tracking
 
 ### Notion Updates
+
 - Update page status to "In Progress"
 - Add branch property
 - Update last modified timestamp
 - Cross-reference to other tools
 
 ### Sync Error Handling
+
 If external sync fails:
-  ⚠️ Warning: External tool sync failed for {tool}. Branch created successfully.
-  Continue with local operations.
-  Log: {sync error details}
+⚠️ Warning: External tool sync failed for {tool}. Branch created successfully.
+Continue with local operations.
+Log: {sync error details}
 
 ## Enhanced Reporting with Context
 
 ### Success Report
+
 ```
 /create-branch-enhanced $1 ✅
 
@@ -326,7 +351,9 @@ If external sync fails:
 ```
 
 ### Error Recovery Guidance
+
 If any step fails:
+
 ```
 ❌ Branch creation failed at: {step-name}
 
@@ -345,6 +372,7 @@ If any step fails:
 ## Portfolio Integration Features
 
 ### Batch Branch Creation (Future Enhancement)
+
 ```bash
 # Create branches for entire sprint
 /create-branch-enhanced --sprint=2026-03 --project=PROJ-2026-001
@@ -354,13 +382,16 @@ If any step fails:
 ```
 
 ### Analytics and Tracking
+
 - Track branch creation patterns
 - Monitor sync success rates
 - Measure developer velocity improvements
 - Generate portfolio metrics
 
 ### Quality Gates Integration
+
 Validate branch creation against quality gates:
+
 - Story must be in "Ready for Development" status
 - All dependencies resolved
 - Test plan available
@@ -373,6 +404,7 @@ Existing `/create-branch` command remains available for backward compatibility.
 `/create-branch-enhanced` provides full Phase 5 functionality.
 
 Gradual migration path:
+
 1. Use enhanced command for new projects
 2. Migrate existing projects to SDLC tracking
 3. Deprecate basic command in Phase 6
@@ -381,12 +413,14 @@ Gradual migration path:
 ## Performance Optimizations
 
 ### Caching and Speed
+
 - Project context cached for 1 hour
 - External tool connections reused
 - Parallel sync operations where possible
 - Local-first with background sync
 
 ### Error Resilience
+
 - Graceful degradation if external tools unavailable
 - Retry logic with exponential backoff
 - Comprehensive error logging
@@ -396,12 +430,14 @@ Gradual migration path:
 ## Security and Compliance
 
 ### Access Control
+
 - Verify user permissions for project
 - Validate branch creation rights
 - Audit trail of all operations
 - Secure credential handling
 
 ### Data Privacy
+
 - No sensitive data in branch names
 - Encrypted communication with external tools
 - GDPR-compliant logging

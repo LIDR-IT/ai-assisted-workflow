@@ -1,4 +1,5 @@
 ---
+name: lidr-playwright-cli
 id: playwright-cli
 version: "1.0.0"
 last_updated: "2026-03-25"

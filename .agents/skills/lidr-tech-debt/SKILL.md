@@ -1,4 +1,5 @@
 ---
+name: lidr-tech-debt
 id: tech-debt
 version: "2.2.0"
 last_updated: "2026-03-25"

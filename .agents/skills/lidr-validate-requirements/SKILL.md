@@ -1,4 +1,5 @@
 ---
+name: lidr-validate-requirements
 id: validate-requirements
 version: "1.2.0"
 last_updated: "2026-04-06"

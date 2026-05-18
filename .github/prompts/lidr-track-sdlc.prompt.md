@@ -47,6 +47,7 @@ CHANGELOG:
 # Track SDLC $1 $2
 
 Load context from rules FIRST:
+
 - @../rules/org.md -> organizational standards, roles, portfolio structure
 - @../rules/project.md -> current project context
 - @../rules/workflows.md -> role permissions
@@ -54,35 +55,36 @@ Load context from rules FIRST:
 ## Step 1: Validate Arguments
 
 If "$1" is empty:
-  ERROR: Project ID required.
-  Usage: /track-sdlc [project-id] [action]
-  Actions: init | update | sync | health | dashboard
+ERROR: Project ID required.
+Usage: /track-sdlc [project-id] [action]
+Actions: init | update | sync | health | dashboard
 
 If "$1" == "portfolio" and "$2" == "dashboard":
-  → Jump to Step 8 (Portfolio Dashboard)
+→ Jump to Step 8 (Portfolio Dashboard)
 
 Valid actions: init, update, sync, health
 If "$2" is not one of these:
-  ERROR: Invalid action. Use: init | update | sync | health
+ERROR: Invalid action. Use: init | update | sync | health
 
 ## Step 2: Verify Project Exists
 
 Check if project directory exists: `docs/projects/$1/`
 
 If not found AND action != "init":
-  ERROR: Project $1 not found in docs/projects/
-  Run: /track-sdlc $1 init
+ERROR: Project $1 not found in docs/projects/
+Run: /track-sdlc $1 init
 
 If action == "init" AND directory exists:
-  WARNING: Project $1 already exists.
+WARNING: Project $1 already exists.
 
-  Use AskUserQuestion:
-  - question: "Project already exists. Reinitialize or update?"
-  - header: "Action"
-  - options:
-    - Reinitialize (overwrite sdlc-tracking.yaml)
-    - Update (preserve existing data)
-    - Cancel
+Use AskUserQuestion:
+
+- question: "Project already exists. Reinitialize or update?"
+- header: "Action"
+- options:
+  - Reinitialize (overwrite sdlc-tracking.yaml)
+  - Update (preserve existing data)
+  - Cancel
 
 ## Step 3: Action - Initialize Project Tracking
 
@@ -91,6 +93,7 @@ If action == "init":
 ### 3a: Gather Project Information
 
 Use AskUserQuestion for project details:
+
 - question: "Project type?"
 - options:
   - Enhancement
@@ -100,6 +103,7 @@ Use AskUserQuestion for project details:
   - Infrastructure
 
 Use AskUserQuestion for business priority:
+
 - question: "PME priority level?"
 - options:
   - P1 (Critical business impact)
@@ -107,6 +111,7 @@ Use AskUserQuestion for business priority:
   - P3 (Standard priority)
 
 Use AskUserQuestion for effort estimate:
+
 - question: "Effort estimate?"
 - options:
   - S (1-2 sprints)
@@ -124,7 +129,7 @@ project:
   id: "$1"
   name: "[USER INPUT: Project name]"
   type: "[USER SELECTION]"
-  domain: "Biometric Authentication"  # Default from project.md
+  domain: "Biometric Authentication" # Default from project.md
 
 portfolio:
   pme_priority: "[USER SELECTION]"
@@ -148,7 +153,7 @@ team:
   pme: "[FROM project.md CONTEXT]"
   po: "[FROM project.md CONTEXT]"
   tl: "[FROM project.md CONTEXT]"
-  dev_count: 3  # Default
+  dev_count: 3 # Default
   qa_lead: "[FROM project.md CONTEXT]"
 
 implementation:
@@ -249,11 +254,12 @@ If action == "update":
 Read current `sdlc-tracking.yaml` from project root.
 
 If not found:
-  ERROR: No tracking file found. Run: /track-sdlc $1 init
+ERROR: No tracking file found. Run: /track-sdlc $1 init
 
 ### 4b: Detect Changes Since Last Update
 
 Scan implementation folder for changes:
+
 - New epics in `epics/` folder
 - New stories in `stories/` folder
 - Updated story status from frontmatter
@@ -266,7 +272,7 @@ Scan implementation folder for changes:
 ```javascript
 // Automatic progress calculation
 const totalStories = stories.length;
-const completedStories = stories.filter(s => s.status === 'done').length;
+const completedStories = stories.filter((s) => s.status === "done").length;
 const overallProgress = completedStories / totalStories;
 
 const avgVelocity = calculateVelocityFromSprints();
@@ -299,6 +305,7 @@ If action == "sync":
 ### 5a: Validate External Connections
 
 Check connectivity to configured external tools:
+
 - Jira: Test API connection with project_key
 - Linear: Test API connection with team_id
 - Notion: Test database access with database_id
@@ -306,12 +313,14 @@ Check connectivity to configured external tools:
 ### 5b: Bidirectional Synchronization
 
 **From External → Tracking:**
+
 - Pull epic/story status updates from Jira/Linear
 - Pull sprint assignments and velocity metrics
 - Pull bug counts and resolution data
 - Update tracking YAML with external data
 
 **From Tracking → External:**
+
 - Push progress updates to external systems
 - Create missing epics/stories in external tools
 - Update status and assignments
@@ -320,6 +329,7 @@ Check connectivity to configured external tools:
 ### 5c: Conflict Resolution
 
 If external data conflicts with tracking data:
+
 - Timestamp-based resolution (most recent wins)
 - Manual review for critical conflicts
 - Log all conflicts for review
@@ -338,34 +348,41 @@ Generate comprehensive project health report:
 
 ```markdown
 # Project Health Report - $1
+
 Generated: [TIMESTAMP]
 
 ## Executive Summary
+
 - **Health**: [COLOR] [HEALTH_SCORE]/100
 - **Progress**: [XX]% complete ([Y] of [Z] stories done)
 - **Schedule**: [ON TRACK / X days behind]
 - **Quality**: [QUALITY_SCORE]/100
 
 ## Phase Progress
+
 - Current Phase: [N] ([PHASE_NAME])
 - Current Gate: [GN] - [STATUS]
 - Next Milestone: [DATE] ([DESCRIPTION])
 
 ## Metrics Dashboard
-| Metric | Current | Target | Trend |
-|--------|---------|--------|-------|
-| Velocity | [X] sp/sprint | [Y] sp/sprint | [TREND] |
-| Code Coverage | [X]% | 80% | [TREND] |
-| Security Score | [X]% | 95% | [TREND] |
-| Bug Count | [X] | 0 | [TREND] |
+
+| Metric         | Current       | Target        | Trend   |
+| -------------- | ------------- | ------------- | ------- |
+| Velocity       | [X] sp/sprint | [Y] sp/sprint | [TREND] |
+| Code Coverage  | [X]%          | 80%           | [TREND] |
+| Security Score | [X]%          | 95%           | [TREND] |
+| Bug Count      | [X]           | 0             | [TREND] |
 
 ## Risk Assessment
+
 [LIST OF ACTIVE RISKS WITH PROBABILITY × IMPACT]
 
 ## Recent Activity
+
 [LAST 5 SIGNIFICANT UPDATES]
 
 ## Recommendations
+
 [AUTOMATED RECOMMENDATIONS BASED ON METRICS]
 ```
 
@@ -391,6 +408,7 @@ if (ecosystemHealth.overallHealth < 70) {
 ### 7b: Tracking File Validation
 
 Validate sdlc-tracking.yaml structure:
+
 - All required fields present
 - Valid enums for status fields
 - Consistent date formats
@@ -399,6 +417,7 @@ Validate sdlc-tracking.yaml structure:
 ### 7c: Implementation Folder Integrity
 
 Verify folder structure integrity:
+
 - All required folders exist
 - No orphaned files
 - Frontmatter consistency in story files
@@ -418,16 +437,16 @@ Scan all `docs/projects/*/sdlc-tracking.yaml` files.
 const portfolioAnalytics = {
   overview: {
     totalProjects: allProjects.length,
-    activeProjects: allProjects.filter(p => p.state.health !== 'Completed').length,
-    projectsOnTrack: allProjects.filter(p => p.state.health === 'Green').length,
-    projectsAtRisk: allProjects.filter(p => p.state.health === 'Yellow').length,
-    projectsBlocked: allProjects.filter(p => p.state.health === 'Red').length
+    activeProjects: allProjects.filter((p) => p.state.health !== "Completed").length,
+    projectsOnTrack: allProjects.filter((p) => p.state.health === "Green").length,
+    projectsAtRisk: allProjects.filter((p) => p.state.health === "Yellow").length,
+    projectsBlocked: allProjects.filter((p) => p.state.health === "Red").length,
   },
 
   phaseDistribution: calculatePhaseDistribution(allProjects),
   velocityTrends: calculateVelocityTrends(allProjects),
   riskHeatMap: generateRiskHeatMap(allProjects),
-  resourceUtilization: calculateResourceUtilization(allProjects)
+  resourceUtilization: calculateResourceUtilization(allProjects),
 };
 ```
 
@@ -437,10 +456,12 @@ Create comprehensive portfolio dashboard:
 
 ```markdown
 # PME Portfolio Dashboard
+
 Generated: [TIMESTAMP]
 Coverage: [N] projects tracked
 
 ## Portfolio Health Overview
+
 - **Total Projects**: [N]
 - **Active Projects**: [N] ([XX]% of total)
 - **Projects On Track**: [N] ([XX]% green health)
@@ -448,22 +469,29 @@ Coverage: [N] projects tracked
 - **Projects Blocked**: [N] ([XX]% red health)
 
 ## Phase Distribution
-| Phase | Count | % |
-|-------|-------|---|
+
+| Phase | Count | %   |
+| ----- | ----- | --- |
+
 [TABLE OF PHASE DISTRIBUTION]
 
 ## Top Risks Across Portfolio
+
 [TOP 10 RISKS BY IMPACT × PROBABILITY]
 
 ## Resource Utilization
+
 | Team | Capacity | Utilization | Availability |
-|------|----------|-------------|--------------|
+| ---- | -------- | ----------- | ------------ |
+
 [TEAM UTILIZATION TABLE]
 
 ## Velocity Trends
+
 [PORTFOLIO-WIDE VELOCITY ANALYSIS]
 
 ## Recommendations
+
 [TOP 5 PORTFOLIO-LEVEL RECOMMENDATIONS]
 ```
 
@@ -474,6 +502,7 @@ SUCCESS: Portfolio dashboard generated with [N] projects.
 ### 9a: CI/CD Integration
 
 If tracking file updated, trigger:
+
 - Dashboard refresh
 - Notification to PME
 - External tool sync (if configured)
@@ -481,6 +510,7 @@ If tracking file updated, trigger:
 ### 9b: Command Integration
 
 Register tracking updates with related commands:
+
 - `/advance-gate` updates gate status
 - `/implement-ticket` updates story progress
 - `/sprint-health` reads from tracking

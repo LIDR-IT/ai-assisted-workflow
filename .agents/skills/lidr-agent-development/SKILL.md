@@ -1,4 +1,5 @@
 ---
+name: lidr-agent-development
 id: agent-development
 version: "1.1.0"
 last_updated: "2026-03-16"

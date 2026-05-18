@@ -1,4 +1,5 @@
 ---
+name: lidr-business-model
 id: business-model
 version: "1.0.0"
 last_updated: "2026-03-26"

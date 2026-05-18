@@ -34,8 +34,8 @@ Load: @../rules/tech-stack.md for branching strategy.
 ## Validate Input
 
 If "$1" is empty:
-  ❌ Ticket ID required. Usage: /create-branch [TICKET-ID]
-  Exit.
+❌ Ticket ID required. Usage: /create-branch [TICKET-ID]
+Exit.
 
 ## Read Ticket
 
@@ -45,18 +45,20 @@ Extract: issue type (Story, Bug, Task, Spike, Sub-task), title, assignee.
 If ticket not found: ❌ "Ticket $1 not found in Jira." Exit.
 
 If ticket not assigned to current user:
-  ⚠️ Ticket $1 assigned to {assignee}, not to you.
+⚠️ Ticket $1 assigned to {assignee}, not to you.
 
-  Use AskUserQuestion:
-  - question: "Ticket no está asignado a ti. ¿Continuar?"
-  - header: "Asignación"
-  - options:
-    - Sí (Crear branch de todos modos)
-    - No (Cancelar)
+Use AskUserQuestion:
+
+- question: "Ticket no está asignado a ti. ¿Continuar?"
+- header: "Asignación"
+- options:
+  - Sí (Crear branch de todos modos)
+  - No (Cancelar)
 
 ## Determine Branch Name
 
 Map issue type to branch prefix:
+
 - Story → feature/
 - Bug → bugfix/
 - Task → task/
@@ -71,6 +73,7 @@ Example: feature/PROJ-123-facial-enrollment-flow
 ## Determine Base Branch
 
 From @../rules/tech-stack.md branching strategy:
+
 - Story/Task/Spike → develop (or main if trunk-based)
 - Bug → develop
 - Hotfix (if "hotfix" label) → main
@@ -78,13 +81,14 @@ From @../rules/tech-stack.md branching strategy:
 Current branches: !`git branch -r --list "origin/*" | head -20`
 
 If base branch unclear:
-  Use AskUserQuestion:
-  - question: "¿Desde qué branch base crear?"
-  - header: "Base branch"
-  - options:
-    - develop
-    - main
-    - release/{latest}
+Use AskUserQuestion:
+
+- question: "¿Desde qué branch base crear?"
+- header: "Base branch"
+- options:
+  - develop
+  - main
+  - release/{latest}
 
 ## Create Branch
 

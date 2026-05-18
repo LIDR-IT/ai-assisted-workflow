@@ -51,6 +51,7 @@ CHANGELOG:
 # Advance Gate $1
 
 Load context from rules FIRST:
+
 - @../rules/org.md -> organizational standards, roles, gate criteria
 - @../rules/tech-stack.md -> technical conventions
 - @../rules/project.md -> current project context
@@ -60,9 +61,9 @@ Load context from rules FIRST:
 ## Step 1: Validate Gate Number
 
 If "$1" is empty or not a number 0-7:
-  ERROR: Gate number required (0-7).
-  Usage: /advance-gate [0-7]
-  Show gate map and exit.
+ERROR: Gate number required (0-7).
+Usage: /advance-gate [0-7]
+Show gate map and exit.
 
 ## Step 2: Verify Role Authorization
 
@@ -70,6 +71,7 @@ Check @../rules/workflows.md for the role permissions matrix.
 Authorized roles for /advance-gate: PME, PO, Tech Lead, QA Lead, Security Lead, DevOps.
 
 Use AskUserQuestion to confirm role:
+
 - question: "Cual es tu rol para esta evaluacion de gate?"
 - header: "Tu rol"
 - options:
@@ -88,26 +90,29 @@ If $1 > 0, check that Gate ($1 - 1) has been passed.
 Look for previous handoff package: `docs/projects/{project}/handoffs/gate-{N-1}-handoff.md`
 
 If not found:
-  WARNING: Gate {N-1} handoff not found. Previous gate may not be passed.
+WARNING: Gate {N-1} handoff not found. Previous gate may not be passed.
 
-  Use AskUserQuestion:
-  - question: "Gate anterior no registrado. Continuar de todos modos?"
-  - header: "Confirmar"
-  - options:
-    - Si (Continuar con la evaluacion)
-    - No (Cancelar y resolver primero)
+Use AskUserQuestion:
 
-  If "No" -> Exit.
+- question: "Gate anterior no registrado. Continuar de todos modos?"
+- header: "Confirmar"
+- options:
+  - Si (Continuar con la evaluacion)
+  - No (Cancelar y resolver primero)
+
+If "No" -> Exit.
 
 ## Step 4: Evaluate Gate Criteria — Existence + CONTENT Validation
 
 Based on gate number $1, evaluate the specific criteria.
 
 **CRITICAL: For EVERY artifact, validate TWO dimensions:**
+
 1. **Existence**: The artifact file/document exists
 2. **Content validity**: The artifact has meaningful content (not empty, not placeholder)
 
 **Content validation rules:**
+
 - File must have >50 characters of meaningful content (excluding frontmatter)
 - Required sections must be present AND populated (not "TBD", "TODO", "N/A" without justification)
 - Frontmatter must be valid: id, version, last_updated, status fields present
@@ -115,6 +120,7 @@ Based on gate number $1, evaluate the specific criteria.
 - An empty or placeholder artifact is WORSE than a missing one — it gives false confidence
 
 **Gate 0 (Originacion -> Discovery):**
+
 - Check: Business Case exists AND contains: problem statement, proposed solution, expected ROI, sponsor approval
 - Check: Acta de Kick-off exists AND contains: attendees, decisions, action items (non-empty lists)
 - Check: Stakeholder Map exists AND has at least 1 stakeholder with role and interest level (desirable)
@@ -123,6 +129,7 @@ Based on gate number $1, evaluate the specific criteria.
 - Content guard: BC must have success metrics defined (not empty/TBD), sponsor field must reference a real person
 
 **Gate 1 (Discovery -> Especificacion):**
+
 - Check: PRD Tecnico published AND contains: scope, architecture overview, technical constraints, dependencies
 - Check: PRD Funcional published AND contains: user flows, functional requirements summary, acceptance criteria
 - Check: Review Cruzado completed (checklist @../skills/review-cruzado/checklists/review-cruzado.md passed)
@@ -131,6 +138,7 @@ Based on gate number $1, evaluate the specific criteria.
 - Content guard: PRD sections (PoC, limitations, roadmap, scope) must not be empty placeholders
 
 **Gate 2 (Especificacion -> Sprint Planning):**
+
 - Check: All RFs documented with BDD criteria
 - **RF-BDD Counter**: Count RF_total and RF_with_BDD (RFs that have at least 1 Given/When/Then scenario). RF_with_BDD / RF_total must be 100%. If <100% -> FAIL with list of RFs missing BDD
 - **RNF Measurability Counter**: Count RNF_total and RNF_with_metric (RNFs that have: quantifiable metric + threshold + measurement method). RNF_with_metric / RNF_total must be 100%. If <100% -> FAIL (without measurable NFRs, cl-nfr in Gates 5/6 cannot evaluate)
@@ -139,6 +147,7 @@ Based on gate number $1, evaluate the specific criteria.
 - Check: QA confirms testability of BDD criteria
 
 **Gate 3 (Sprint Planning -> Desarrollo):**
+
 - Check: All User Stories meet DoR (@../skills/refinement-notes/checklists/dor.md) — evaluate EACH US individually, not globally
 - Check: Sprint capacity calculated with >=15% buffer
 - Check: Sprint commitment signed (PO + Tech Lead)
@@ -146,6 +155,7 @@ Based on gate number $1, evaluate the specific criteria.
 - Content guard: EACH US has: title, description, acceptance criteria (Given/When/Then), estimation
 
 **Gate 4 (Desarrollo -> QA — Sprint Aggregator):**
+
 - Check: ALL tickets in sprint have status "Ready for QA" or "Done"
 - Check: ALL PRs merged with approved code reviews
 - Check: ALL DoD checklists passed (@../skills/pr-description/checklists/dod.md) — check EACH ticket individually
@@ -154,6 +164,7 @@ Based on gate number $1, evaluate the specific criteria.
 - Content guard: Handoff documents must contain: changes summary, test suggestions, risks identified
 
 **Gate 5 (QA -> Seguridad):**
+
 - Check: Test execution report generated with actual test results (not empty template)
 - Check: 0 blocker/critical bugs open
 - Check: Regression suite executed without regressions
@@ -162,6 +173,7 @@ Based on gate number $1, evaluate the specific criteria.
 - Content guard: Sign-off must be dated AFTER last test execution
 
 **Gate 6 (Seguridad -> Despliegue):**
+
 - Check: SAST/SCA results: 0 Critical, 0 High
 - Check: DAST results: 0 Critical, 0 High
 - Check: OWASP Top 10 checklist PASS (@../skills/security-checklist/checklists/security-compliance.md)
@@ -170,6 +182,7 @@ Based on gate number $1, evaluate the specific criteria.
 - Content guard: Sign-off must reference specific scan report (not generic)
 
 **Gate 7 (Despliegue -> Produccion — Gate Final):**
+
 - Check: Change Request approved by Change Committee (CR must have approval date and approver)
 - Check: Rollback plan documented with specific steps, estimated time, and responsible person
 - Check: Release notes generated (/create-release-notes) with actual content
@@ -206,10 +219,12 @@ console.log(`✅ Ecosystem health: ${ecosystemResult.score.toFixed(1)}/5.0 for G
 
 
 **Ecosystem requirements by gate:**
+
 - Gates 0,1,2,7 (critical): Require ≥90% ecosystem health
 - Gates 3,4,5,6 (operational): Require ≥70% ecosystem health
 
 If ecosystem health fails, provide specific actions to fix:
+
 1. Run ecosystem synchronization script
 2. Fix count drift between filesystem and tracking
 3. Resolve validation script issues
@@ -221,21 +236,23 @@ Validate referential integrity BETWEEN artifacts across phases:
 
 **Cross-reference checks:**
 
-| Source | Target | Validation |
-|--------|--------|------------|
-| RF -> PRD | Each RF must reference a valid PRD section | Read RF, extract PRD ref, verify PRD section exists |
-| US -> RF | Each US must trace to a valid RF | Read US, extract RF ref, verify RF exists |
-| BDD -> AC | Each BDD scenario must map to acceptance criteria | Read test, extract AC ref, verify in US |
-| Test -> RF (RTM) | Each RF must have at least 1 linked test | Cross RTM matrix with test execution |
-| Checklist -> Artifact | Each checklist item must reference a real artifact | Verify paths in checklist evaluations |
+| Source                | Target                                             | Validation                                          |
+| --------------------- | -------------------------------------------------- | --------------------------------------------------- |
+| RF -> PRD             | Each RF must reference a valid PRD section         | Read RF, extract PRD ref, verify PRD section exists |
+| US -> RF              | Each US must trace to a valid RF                   | Read US, extract RF ref, verify RF exists           |
+| BDD -> AC             | Each BDD scenario must map to acceptance criteria  | Read test, extract AC ref, verify in US             |
+| Test -> RF (RTM)      | Each RF must have at least 1 linked test           | Cross RTM matrix with test execution                |
+| Checklist -> Artifact | Each checklist item must reference a real artifact | Verify paths in checklist evaluations               |
 
 **Process:**
+
 1. For the current gate, identify all SOURCE artifacts (produced in current/previous phases)
 2. For each source, extract references to TARGET artifacts
 3. Attempt to READ each referenced target — if not found, mark as BROKEN REF
 4. Calculate: refs_valid / refs_total = coherence_score
 
 **Gate-specific coherence:**
+
 - Gate 2: RF->PRD traceability + BDD coverage per RF
 - Gate 3: US->RF traceability + DoR per US
 - Gate 4: PR->Ticket traceability + DoD per ticket
@@ -251,6 +268,7 @@ If overall result is PASS or CONDITIONAL:
 Generate handoff package using **tpl-gate-evaluation** template (@../skills/gate-evaluation/templates/gate-evaluation.md) and save to `.claude/handoffs/gate-$1-handoff.local.md`.
 
 The output MUST follow the tpl-gate-evaluation schema:
+
 - Header: gate, evaluator, date, project, sprint, epic
 - Artifacts Evaluation table with existence + content validation
 - Checklists Evaluation table with item-level pass/fail
@@ -266,6 +284,7 @@ The output MUST follow the tpl-gate-evaluation schema:
 ## Step 8: Execute Transitions
 
 If PASS:
+
 - Jira: transition epic/tickets to next phase status (manual or script)
 - Notification: notify next phase's team with handoff summary
 - If Gate 1 PASS -> suggest: "Run generate-rf skill to draft RFs from PRDs"
@@ -274,11 +293,13 @@ If PASS:
 - If Gate 6 PASS -> suggest: "Run /create-release-notes then /update-changelog"
 
 If CONDITIONAL:
+
 - Jira: transition epic/tickets to next phase BUT add comment with action items (manual or script)
 - Notification: notify with "CONDITIONAL" status and list mandatory action items with deadlines
 - Create Jira subtasks for each action item (assigned to owner role)
 
 If FAIL:
+
 - List ALL failed criteria with specific actions to fix each
 - Suggest who should fix each item (based on role from workflows.md)
 - Do NOT transition Jira status
@@ -288,21 +309,23 @@ If FAIL:
 
 Apply the weighted scoring model:
 
-| Dimension | Weight | Calculation |
-|-----------|--------|-------------|
-| Artifacts | 40% | (artifacts_pass / artifacts_total) * 100 |
-| Checklists | 35% | (checklist_items_pass / checklist_items_total) * 100 |
-| Coherence | 15% | (refs_valid / refs_total) * 100 |
-| Signoffs | 10% | (signoffs_signed / signoffs_required) * 100 |
+| Dimension  | Weight | Calculation                                           |
+| ---------- | ------ | ----------------------------------------------------- |
+| Artifacts  | 40%    | (artifacts_pass / artifacts_total) \\* 100             |
+| Checklists | 35%    | (checklist_items_pass / checklist_items_total) \\* 100 |
+| Coherence  | 15%    | (refs_valid / refs_total) \\* 100                      |
+| Signoffs   | 10%    | (signoffs_signed / signoffs_required) \\* 100          |
 
-**Total = (Artifacts * 0.40) + (Checklists * 0.35) + (Coherence * 0.15) + (Signoffs * 0.10)**
+**Total = (Artifacts _ 0.40) + (Checklists _ 0.35) + (Coherence _ 0.15) + (Signoffs _ 0.10)**
 
 **Verdict thresholds:**
-- >= 90%: PASS — proceed to next phase
+
+- > = 90%: PASS — proceed to next phase
 - 70-89%: CONDITIONAL — proceed with mandatory action items (deadline required)
 - < 70%: FAIL — block advancement, resolve all FAIL items
 
 **Special rules:**
+
 - Any single Critical artifact missing -> automatic FAIL regardless of score
 - Any signoff missing when required (Gates 5/6) -> automatic FAIL
 - RF BDD coverage <100% at Gate 2 -> automatic FAIL
@@ -347,6 +370,7 @@ Via Jira (manual or script), register the gate evaluation result:
    - Label: `gate-remediation`
 
 3. **Add Comment to Epic**:
+
    
    Gate {N} Evaluation — {verdict} ({score}%)
    Evaluator: {role}

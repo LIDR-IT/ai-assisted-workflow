@@ -56,31 +56,34 @@ Load: @../rules/org.md and @../rules/project.md and @../rules/documentation.md
 ## Validate Preconditions
 
 If "$1" is empty:
-  ❌ Project name required. Usage: /validate-prd [project-name] [prd-type]
-  Exit.
+❌ Project name required. Usage: /validate-prd [project-name] [prd-type]
+Exit.
 
 Set prd_type = "$2" or "both" if empty
 
 Check for project context:
+
 - Look for `docs/projects/$1/` directory or project documentation
 - Verify business case exists and is approved
 
 If project not found:
-  ⚠️ Project "$1" not found in project registry.
+⚠️ Project "$1" not found in project registry.
 
-  Use AskUserQuestion:
-  - question: "Proyecto no encontrado. ¿Continuar con validación independiente?"
-  - header: "Contexto de Proyecto"
-  - options:
-    - Sí, validar PRDs sin contexto de proyecto
-    - No, necesito configurar el proyecto primero
-    - Usar contexto de otro proyecto similar
+Use AskUserQuestion:
+
+- question: "Proyecto no encontrado. ¿Continuar con validación independiente?"
+- header: "Contexto de Proyecto"
+- options:
+  - Sí, validar PRDs sin contexto de proyecto
+  - No, necesito configurar el proyecto primero
+  - Usar contexto de otro proyecto similar
 
 ## Phase 1: LIDR SDLC Methodology 13-Step Validation Framework
 
 ### Discovery & Context Analysis (Steps 1-3)
 
 #### Step 1: Project Discovery
+
 Using enhanced project-classifier pattern:
 
 1. **Domain Context Analysis**:
@@ -98,6 +101,7 @@ Using enhanced project-classifier pattern:
 Output: Context score (0-100%), domain classification, complexity assessment
 
 #### Step 2: Format Detection & Template Compliance
+
 Load: skills/prd-funcional and skills/prd-tecnico
 
 1. **Structural Validation**:
@@ -132,6 +136,7 @@ Output: Information density score (0-100%), fluff detection report
 ### Requirements Analysis (Steps 4-7)
 
 #### Step 4: Scope Coverage & Alignment
+
 Load: @../skills/business-case/SKILL.md for reference
 
 1. **Business Case Alignment**:
@@ -148,6 +153,7 @@ Load: @../skills/business-case/SKILL.md for reference
 Output: Coverage score (0-100%), scope gaps analysis
 
 #### Step 5: Measurability & Testability
+
 Load: skills/generate-rf/checklists/rf-coherence.md
 
 1. **Acceptance Criteria Analysis**:
@@ -199,6 +205,7 @@ Output: Abstraction score (0-100%), implementation leakage detection
 ### Compliance & Quality Assessment (Steps 8-11)
 
 #### Step 8: Domain Compliance Validation
+
 Load: @../rules/org.md for regulatory context
 
 1. **domain-specific Industry Compliance**:
@@ -285,6 +292,7 @@ Output: Completeness matrix, prioritized gap list, remediation effort
 #### Step 13: Quantitative Scoring & Recommendations
 
 1. **Weighted Scoring Algorithm**:
+
    ```
    Discovery (Steps 1-3): 15% weight
    Requirements (Steps 4-7): 40% weight (highest priority)
@@ -304,6 +312,7 @@ Output: Overall score (0-100%), status determination, action plan
 If both PRD-F and PRD-T exist, execute cross-review using skill `review-cruzado`:
 
 Use AskUserQuestion:
+
 - question: "PRDs individuales validados. ¿Ejecutar validación cruzada PRD-F ↔ PRD-T?"
 - header: "Cross-Review"
 - options:
@@ -312,6 +321,7 @@ Use AskUserQuestion:
   - Sí, pero mostrar resultados individuales primero
 
 If yes, execute cross-review validation:
+
 1. Load both PRDs for alignment analysis
 2. Execute domain-specific-specific cross-validation
 3. Check for contradictions and gaps between PRDs
@@ -321,15 +331,15 @@ If yes, execute cross-review validation:
 
 Evaluate Gate 1 criteria using enhanced validation results:
 
-| Criterion | Weight | Score | Status |
-|-----------|--------|-------|--------|
-| **Format & Template Compliance** | 10% | {score}% | ✅/⚠️/❌ |
-| **Content Quality & Density** | 15% | {score}% | ✅/⚠️/❌ |
-| **Scope Coverage & Traceability** | 25% | {score}% | ✅/⚠️/❌ |
-| **Measurability & Testability** | 20% | {score}% | ✅/⚠️/❌ |
-| **Domain Compliance** | 15% | {score}% | ✅/⚠️/❌ |
-| **Internal Consistency** | 10% | {score}% | ✅/⚠️/❌ |
-| **Cross-PRD Alignment** | 5% | {score}% | ✅/⚠️/❌ |
+| Criterion                         | Weight | Score    | Status   |
+| --------------------------------- | ------ | -------- | -------- |
+| **Format & Template Compliance**  | 10%    | {score}% | ✅/⚠️/❌ |
+| **Content Quality & Density**     | 15%    | {score}% | ✅/⚠️/❌ |
+| **Scope Coverage & Traceability** | 25%    | {score}% | ✅/⚠️/❌ |
+| **Measurability & Testability**   | 20%    | {score}% | ✅/⚠️/❌ |
+| **Domain Compliance**             | 15%    | {score}% | ✅/⚠️/❌ |
+| **Internal Consistency**          | 10%    | {score}% | ✅/⚠️/❌ |
+| **Cross-PRD Alignment**           | 5%     | {score}% | ✅/⚠️/❌ |
 
 **Overall Gate 1 Score**: {weighted_score}%
 **Status**: PASS / CONDITIONAL / FAIL
@@ -348,6 +358,7 @@ Evaluate Gate 1 criteria using enhanced validation results:
 ## Executive Summary
 
 ### Quality Assessment
+
 - **Validation Steps Completed**: 13/13
 - **Pass Rate**: {pass_count}/{total_count} steps
 - **Critical Issues**: {critical_count}
@@ -355,6 +366,7 @@ Evaluate Gate 1 criteria using enhanced validation results:
 - **Medium Priority Issues**: {medium_count}
 
 ### Domain Context
+
 - **Project Type**: {project_type}
 - **Domain**: {domain}
 - **Complexity**: {complexity_level}
@@ -363,61 +375,70 @@ Evaluate Gate 1 criteria using enhanced validation results:
 ## Detailed Validation Results
 
 ### 🔴 Critical Issues (Gate Blocking)
+
 [List of critical issues that prevent Gate 1 passage]
 
 | Issue ID | Description | Impact | Owner | Deadline |
-|----------|-------------|--------|-------|----------|
+| -------- | ----------- | ------ | ----- | -------- |
 
 ### ⚠️ High Priority Issues
+
 [Issues that should be resolved for optimal quality]
 
 | Issue ID | Description | Recommendation | Owner | Deadline |
-|----------|-------------|----------------|-------|----------|
+| -------- | ----------- | -------------- | ----- | -------- |
 
 ### 🟡 Medium Priority Issues
+
 [Nice-to-have improvements]
 
 | Issue ID | Description | Suggestion | Owner | Timeline |
-|----------|-------------|------------|-------|----------|
+| -------- | ----------- | ---------- | ----- | -------- |
 
 ## LIDR SDLC 13-Step Validation Breakdown
 
 ### Discovery & Context (Steps 1-3)
-| Step | Score | Status | Key Findings |
-|------|-------|--------|-------------|
-| 1. Project Discovery | {score}% | {status} | {findings} |
-| 2. Format Detection | {score}% | {status} | {findings} |
-| 3. Information Density | {score}% | {status} | {findings} |
+
+| Step                   | Score    | Status   | Key Findings |
+| ---------------------- | -------- | -------- | ------------ |
+| 1. Project Discovery   | {score}% | {status} | {findings}   |
+| 2. Format Detection    | {score}% | {status} | {findings}   |
+| 3. Information Density | {score}% | {status} | {findings}   |
 
 ### Requirements Analysis (Steps 4-7)
-| Step | Score | Status | Key Findings |
-|------|-------|--------|-------------|
-| 4. Scope Coverage | {score}% | {status} | {findings} |
-| 5. Measurability | {score}% | {status} | {findings} |
-| 6. Traceability | {score}% | {status} | {findings} |
-| 7. Implementation Independence | {score}% | {status} | {findings} |
+
+| Step                           | Score    | Status   | Key Findings |
+| ------------------------------ | -------- | -------- | ------------ |
+| 4. Scope Coverage              | {score}% | {status} | {findings}   |
+| 5. Measurability               | {score}% | {status} | {findings}   |
+| 6. Traceability                | {score}% | {status} | {findings}   |
+| 7. Implementation Independence | {score}% | {status} | {findings}   |
 
 ### Compliance & Quality (Steps 8-11)
-| Step | Score | Status | Key Findings |
-|------|-------|--------|-------------|
-| 8. Domain Compliance | {score}% | {status} | {findings} |
-| 9. Infrastructure Alignment | {score}% | {status} | {findings} |
-| 10. Success Criteria | {score}% | {status} | {findings} |
-| 11. Internal Consistency | {score}% | {status} | {findings} |
+
+| Step                        | Score    | Status   | Key Findings |
+| --------------------------- | -------- | -------- | ------------ |
+| 8. Domain Compliance        | {score}% | {status} | {findings}   |
+| 9. Infrastructure Alignment | {score}% | {status} | {findings}   |
+| 10. Success Criteria        | {score}% | {status} | {findings}   |
+| 11. Internal Consistency    | {score}% | {status} | {findings}   |
 
 ### Final Assessment (Steps 12-13)
-| Step | Score | Status | Key Findings |
-|------|-------|--------|-------------|
-| 12. Completeness | {score}% | {status} | {findings} |
-| 13. Final Scoring | {score}% | {status} | {findings} |
+
+| Step              | Score    | Status   | Key Findings |
+| ----------------- | -------- | -------- | ------------ |
+| 12. Completeness  | {score}% | {status} | {findings}   |
+| 13. Final Scoring | {score}% | {status} | {findings}   |
 
 ## Cross-PRD Alignment (if applicable)
 
 ### Alignment Matrix
+
 | PRD-F Section | PRD-T Section | Aligned | Issues |
-|--------------|--------------|---------|--------|
+| ------------- | ------------- | ------- | ------ |
 
 ### Cross-Validation Findings
+
 [Results of review-cruzado execution]
 
 ## Gate 1 Transition Recommendation
@@ -427,9 +448,11 @@ Evaluate Gate 1 criteria using enhanced validation results:
 **Rationale**: [Based on validation results]
 
 **Conditions** (if conditional):
+
 - [Specific conditions that must be met]
 
 **Next Steps**:
+
 - If APPROVE: Proceed to `/advance-gate 1`
 - If CONDITIONAL: Complete remediation actions, then re-validate
 - If REJECT: Address critical issues, complete re-write if necessary
@@ -437,22 +460,27 @@ Evaluate Gate 1 criteria using enhanced validation results:
 ## Improvement Opportunities
 
 ### Quality Enhancements
+
 [Specific suggestions for improving PRD quality]
 
 ### Process Improvements
+
 [Recommendations for better PRD creation process]
 
 ### Template Updates
+
 [Suggestions for improving PRD templates based on findings]
 
 ## Validation Artifacts
 
 ### Generated Documents
+
 📄 `docs/projects/$1/validation/prd-validation-{timestamp}.md`
 📄 `docs/projects/$1/validation/gate-1-readiness-{timestamp}.md`
 📄 `docs/projects/$1/validation/cross-review-{timestamp}.md` (if applicable)
 
 ### Traceability Data
+
 📊 `docs/projects/$1/validation/traceability-matrix-{timestamp}.csv`
 📊 `docs/projects/$1/validation/gap-analysis-{timestamp}.csv`
 📊 `docs/projects/$1/validation/scoring-breakdown-{timestamp}.json`
@@ -468,48 +496,54 @@ Evaluate Gate 1 criteria using enhanced validation results:
 ## Error Handling & Graceful Degradation
 
 ### Missing Context Handling
+
 If business case not available:
-  → Generate validation with generic project assumptions
-  → Flag missing context as medium priority issue
-  → Provide recommendations for obtaining missing context
+→ Generate validation with generic project assumptions
+→ Flag missing context as medium priority issue
+→ Provide recommendations for obtaining missing context
 
 ### Partial PRD Availability
+
 If only PRD-F exists:
-  → Complete functional validation only
-  → Flag missing technical PRD as critical issue
-  → Skip cross-validation steps
+→ Complete functional validation only
+→ Flag missing technical PRD as critical issue
+→ Skip cross-validation steps
 
 If only PRD-T exists:
-  → Complete technical validation only
-  → Flag missing functional PRD as critical issue
-  → Focus on technical completeness and consistency
+→ Complete technical validation only
+→ Flag missing functional PRD as critical issue
+→ Focus on technical completeness and consistency
 
 ### Tool Unavailability
+
 If Jira MCP unavailable:
-  → Skip traceability to Jira tickets
-  → Generate local validation report only
-  → Provide instructions for manual Jira integration
+→ Skip traceability to Jira tickets
+→ Generate local validation report only
+→ Provide instructions for manual Jira integration
 
 If Confluence MCP unavailable:
-  → Save all reports as local markdown
-  → Provide instructions for manual Confluence upload
-  → Include formatted content ready for copy-paste
+→ Save all reports as local markdown
+→ Provide instructions for manual Confluence upload
+→ Include formatted content ready for copy-paste
 
 ## Success Metrics & Continuous Improvement
 
 ### Performance Targets
+
 - **Validation Speed**: Complete 13-step validation in <45 minutes
 - **Accuracy**: 95% correlation with manual expert review
 - **Gate Pass Rate**: 95% first-time pass after addressing critical issues
 - **Team Adoption**: 100% of PRDs validated before Gate 1
 
 ### Feedback Integration
+
 - Capture validation accuracy vs actual Gate 1 outcomes
 - Collect team feedback on recommendation quality
 - Adjust scoring weights based on real project outcomes
 - Continuously improve validation criteria based on lessons learned
 
 ### ROI Tracking
+
 - **Time Savings**: Track actual vs estimated time savings
 - **Quality Improvements**: Measure reduction in post-Gate 1 changes
 - **Process Efficiency**: Monitor validation to Gate 1 passage time
@@ -518,6 +552,7 @@ If Confluence MCP unavailable:
 ## Validation Engine Integration
 
 This command integrates with:
+
 - **validate-requirements**: Enhanced with LIDR SDLC patterns for Phase 3
 - **review-cruzado**: Cross-PRD validation engine
 - **advance-gate**: Quantitative scoring for gate decisions

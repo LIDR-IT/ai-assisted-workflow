@@ -1,4 +1,5 @@
 ---
+name: lidr-user-stories
 id: user-stories
 version: "2.3.0"
 last_updated: "2026-04-06"

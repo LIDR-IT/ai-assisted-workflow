@@ -1,4 +1,5 @@
 ---
+name: lidr-create-test-cases
 id: create-test-cases
 version: "2.2.0"
 last_updated: "2026-03-25"

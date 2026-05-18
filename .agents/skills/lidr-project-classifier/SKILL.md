@@ -1,4 +1,5 @@
 ---
+name: lidr-project-classifier
 id: project-classifier
 version: "1.0.1"
 last_updated: "2026-03-16"
