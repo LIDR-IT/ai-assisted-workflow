@@ -6,9 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- **LIDR documentation skills** — Four new skills covering the doc lifecycle:
+  - `lidr-adr` — Architecture Decision Record generator with biometric and generic templates plus validation reports
+  - `lidr-architecture-doc` — Five-level technical architecture docs (architecture, db-schema, routes, components, storage)
+  - `lidr-document-discovery` — BMAD-style document discovery and inventory workflow
+  - `lidr-generate-rule` — Generator for Claude Code rule files with correct frontmatter, scope, and structure
+- **`/validate-project-docs` command** — Scores project documentation against template criteria
+- **LIDR × BMAD method reference volumes** — Five HTML + PDF volumes (Atlas, Flujos de Proyecto, Plan de Sesiones, Catálogo de Skills, Protocolo TEA) under `lidr-and-bmad-method/`
+
+### Changed
+
+- **Generated platform configs regenerated** via `./.agents/sync.sh` after adapter + skill changes (Gemini/Copilot indexes, MCP configs, hook paths)
+
 ### Fixed
 
 - **VitePress docs site** — Removed broken `Modules` and `Guidelines` nav entries (referenced directories removed in prior refactors) and the empty Spanish locale (`docs/es/` was deleted in commit `5df69f4`). Promoted English to the root locale so `/` now serves the home page directly. Replaced the legacy bilingual `docs/index.md` selector with a hero pointing to `/en/`.
+- **Hook `${PLUGIN_ROOT}` substitution** — Claude and Gemini adapters now resolve `${PLUGIN_ROOT}` to `.claude/` and `.gemini/` respectively (platforms execute hooks from their own dir where scripts are symlinked), not the source `.agents/` dir.
+
+### Removed
+
+- **`/validate-pr` command** — Superseded by the `pr-validator` agent invoked via the orchestrator
+- **Legacy `1.PRD/` folder** — Early PRD reference material (Atlassian/ClickUp/LIDR samples + older template); active PRD lives under `docs/en/PRD/`
 
 ## [0.7.2] - 2026-03-09
 
