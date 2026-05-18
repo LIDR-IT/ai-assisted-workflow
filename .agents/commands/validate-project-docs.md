@@ -1,0 +1,204 @@
+---
+description: Validate project docs against template criteria
+argument-hint: [project-name]
+allowed-tools: Read, Grep, Bash(find:*), Bash(wc:*), AskUserQuestion
+model: sonnet
+---
+
+<!--
+COMMAND: validate-project-docs
+VERSION: 3.0.0
+AUTHOR: SDLC Team
+LAST UPDATED: 2026-03-09
+
+PURPOSE:
+Validates project documentation against template criteria: checks completeness,
+frontmatter compliance, required sections, cross-references, and staleness.
+
+USAGE:
+  /validate-project-docs my-project
+  /validate-project-docs my-project --fix-frontmatter
+
+ARGUMENTS:
+  project-name: Project folder name (required)
+  Flags: --fix-frontmatter (auto-fix missing frontmatter)
+
+RELATED COMMANDS:
+  /init-project-docs - Creates docs this command validates
+  /sync-docs         - Updates docs to match code
+
+SKILLS USED:
+  generate-rule      - Referenced for rule validation criteria
+
+CHANGELOG:
+  v3.0.0 (2026-03-09): Added rule file validation (section 7)
+  v2.0.0 (2025-03-05): Rewritten to official command format
+  v1.0.0 (2025-02-20): Initial version
+-->
+
+# Validate Project Docs: $1
+
+Load: @../rules/documentation.md for validation standards.
+
+## Validate Input
+
+If "$1" is empty:
+❌ Project name required.
+Usage: /validate-project-docs [project-name]
+Exit.
+
+Check project exists: !`test -d docs/projects/$1 && echo "EXISTS" || echo "MISSING"`
+
+If MISSING:
+❌ No docs found at docs/projects/$1/
+Run /init-project-docs $1 first.
+Exit.
+
+## Inventory Documents
+
+List all docs: !`find docs/projects/$1 -name "*.md" -type f`
+
+For each document, check:
+
+### 1. Frontmatter Compliance
+
+Per @../rules/documentation.md, verify YAML frontmatter has:
+
+- id: present and non-empty
+- version: valid semver
+- last_updated: valid date
+- updated_by: present
+- status: draft | active | deprecated
+- type: project
+- review_cycle: number
+
+Score: {compliant}/{total} docs
+
+### 2. Required Sections
+
+Compare each doc against its template in skill-specific templates/:
+
+- Read template to identify required sections (## headings)
+- Check project doc has those sections
+- Check sections have content (not just heading)
+- Flag sections with ⚠️ TODO or {placeholder} as incomplete
+
+Score: {complete sections}/{total required sections}
+
+### 3. Content Completeness
+
+For each doc, check:
+
+- Word count > minimum threshold (varies by doc type)
+- No empty tables (headers without rows)
+- No placeholder text remaining ({...}, TBD, TODO)
+- Code examples present where expected
+
+### 4. Cross-References
+
+Find all @references:
+
+- !`grep -rn "@../../docs/" docs/projects/$1/`
+- Verify each referenced file exists
+- Flag broken references
+
+### 5. Staleness Check
+
+Per review_cycle in frontmatter:
+
+- Calculate days since last_updated
+- 🟢 Fresh: < review_cycle/2
+- 🟡 Due Soon: between review_cycle/2 and review_cycle
+- 🔴 Stale: > review_cycle
+- ⚫ Critical: > review_cycle \* 2
+
+### 6. Consistency Check
+
+- Architecture doc matches actual stack (compare with package.json if available)
+- Routes doc matches actual routes (if router config available)
+- DB schema matches actual models (if ORM schemas available)
+
+### 7. Rule File Validation
+
+Check rule files in `.claude/rules/`:
+List rules: !`find .claude/rules -name "*.md" -type f 2>/dev/null`
+
+For each rule file, validate per @../../docs/guides/claude-code/rule-development.md:
+
+- Header block present: Nivel, Carga, Proposito fields in `>` quotes
+- `@` references point to existing files in `docs/`
+- No content duplicated from referenced `docs/` files
+- NEVER/ALWAYS constraints are bold uppercase
+- Sections numbered (`## N. Title`)
+- Size under 400 lines
+- No secrets, PII, or credentials
+- Staleness: rules have 180-day TTL — flag if last_updated > 180 days
+
+Expected rule types (5):
+
+- [ ] org.md — organizational identity and policies
+- [ ] tech-stack.md — coding conventions and stack
+- [ ] project.md — active project context
+- [ ] documentation.md — doc governance and DTC
+- [ ] workflows.md — command orchestration map
+
+Flag missing rule types as ⚠️ — suggest `/init-project-docs` or skill `generate-rule` to create them.
+
+Score: {existing rules}/{5 expected} + {valid references}/{total references}
+
+## Auto-Fix (if --fix-frontmatter)
+
+If $ARGUMENTS contains "--fix-frontmatter":
+For each doc missing frontmatter:
+
+- Generate compliant frontmatter based on filename and doc type
+- Insert at top of file
+- Report what was fixed
+
+## Generate Report
+
+```markdown
+## Validation Report — $1
+
+### Overall Score: {X}% healthy
+
+| Check                  | Score                | Status   |
+| ---------------------- | -------------------- | -------- |
+| Frontmatter compliance | {N}/{total}          | ✅/⚠️/❌ |
+| Required sections      | {N}/{total}          | ✅/⚠️/❌ |
+| Content completeness   | {N}/{total}          | ✅/⚠️/❌ |
+| Cross-references valid | {N}/{total}          | ✅/⚠️/❌ |
+| Freshness              | {N} fresh, {M} stale | ✅/⚠️/❌ |
+
+### Documents Detail
+
+| Document         | Frontmatter | Sections | Content | Freshness |
+| ---------------- | ----------- | -------- | ------- | --------- |
+| product-brief.md | ✅/❌       | {N}/{M}  | {%}     | 🟢/🟡/🔴  |
+| architecture.md  | ✅/❌       | {N}/{M}  | {%}     | 🟢/🟡/🔴  |
+
+{... for each doc}
+
+### TODOs Remaining: {N}
+
+| Document | TODO | Line |
+| -------- | ---- | ---- |
+
+{list of remaining TODOs}
+
+### Broken References: {N}
+
+{list of broken @references}
+
+### Actions Required (priority order)
+
+1. 🔴 {critical action}
+2. 🟡 {important action}
+3. 🟢 {improvement}
+```
+
+Present report and suggest:
+
+- "Run /sync-docs $1 to auto-update docs from code"
+- "Fix TODOs manually for project-specific content"
+- "Run /validate-project-docs $1 --fix-frontmatter to auto-fix metadata"
