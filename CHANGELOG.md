@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-_No unreleased changes._
+### Fixed
+
+- **VitePress docs site** — Removed broken `Modules` and `Guidelines` nav entries (referenced directories removed in prior refactors) and the empty Spanish locale (`docs/es/` was deleted in commit `5df69f4`). Promoted English to the root locale so `/` now serves the home page directly. Replaced the legacy bilingual `docs/index.md` selector with a hero pointing to `/en/`.
 
 ## [0.7.2] - 2026-03-09
 
