@@ -38,3 +38,6 @@ credentials/
 # Cache
 .cache/
 *.log
+
+# Reference content (raw exports, do not reformat)
+lidr-and-bmad-method/

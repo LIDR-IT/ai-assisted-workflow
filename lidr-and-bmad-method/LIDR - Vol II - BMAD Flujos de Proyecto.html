@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>BMAD Flujos de Proyecto · Libro 2 de 5 | LIDR.co</title>
+<style>
+  /* ─────────────────────────────────────────────
+     RESET + ROOT
+  ───────────────────────────────────────────── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1A1A1A;
+    --ink-soft: #333;
+    --ink-mute: #666;
+    --gold: #F6DE82;
+    --gold-deep: #D4B85C;
+    --cream: #FBEFC0;
+    --cream-soft: #FFF8E1;
+    --paper: #FFFFFF;
+    --line: #E6E6E6;
+    --line-strong: #1A1A1A;
+
+    --mod-bmm: #E2B324;
+    --mod-tea: #27AE60;
+    --mod-cis: #9B59B6;
+    --mod-bmb: #3498DB;
+    --mod-core: #95A5A6;
+
+    --req:  #C0392B;
+    --rec:  #D4B85C;
+    --opc:  #B0B0B0;
+
+    --lidr-vision: #4A4A8A;
+    --lidr-recom:  #C97D2A;
+
+    --info:    #2E86C1;
+    --tip:     #229954;
+    --caution: #D4AC0D;
+    --important: #C0392B;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink-soft);
+    background: var(--paper);
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  /* ─────────────────────────────────────────────
+     COVER
+  ───────────────────────────────────────────── */
+  .cover {
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    background: var(--ink);
+    color: #fff;
+    padding: 60px 50px;
+  }
+  .cover .vol-tag {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .cover h1 span { color: var(--gold); }
+  .cover .subtitle {
+    font-size: 16px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+  .cover .logo-bar {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+    border-radius: 2px;
+    margin: 24px auto;
+  }
+  .cover .meta {
+    font-size: 12px;
+    color: #cccccc;
+    line-height: 1.9;
+    max-width: 460px;
+  }
+  .cover .meta strong { color: var(--gold); }
+  .cover .cover-version {
+    font-size: 10px;
+    color: #999;
+    margin-top: 48px;
+    letter-spacing: 1px;
+  }
+
+  /* ─────────────────────────────────────────────
+     CONTENT WRAPPER
+  ───────────────────────────────────────────── */
+  .content {
+    padding: 36px 52px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  /* ─────────────────────────────────────────────
+     HEADINGS
+  ───────────────────────────────────────────── */
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 36px 0 6px 0;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--gold);
+    letter-spacing: -0.2px;
+  }
+  h2:first-child { margin-top: 0; }
+  h2 .num {
+    color: var(--gold-deep);
+    font-weight: 800;
+    margin-right: 10px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 22px 0 8px 0;
+    letter-spacing: -0.1px;
+  }
+  h3 .num { color: var(--gold-deep); margin-right: 6px; }
+
+  h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 16px 0 6px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  h5 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 12px 0 4px 0;
+  }
+
+  /* ─────────────────────────────────────────────
+     PARAGRAPHS, LISTS
+  ───────────────────────────────────────────── */
+  p, li {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  ul, ol { margin: 6px 0 14px 22px; }
+  li { margin-bottom: 4px; }
+  strong { color: var(--ink); }
+  em { font-style: italic; }
+
+  .lead {
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  /* ─────────────────────────────────────────────
+     TABLES
+  ───────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 18px 0;
+    font-size: 10px;
+  }
+  thead th {
+    background: var(--ink);
+    color: var(--gold);
+    font-weight: 600;
+    text-align: left;
+    padding: 9px 11px;
+    border-bottom: 2px solid var(--gold);
+    font-size: 10px;
+    letter-spacing: 0.2px;
+  }
+  tbody td {
+    padding: 8px 11px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+  tbody tr:nth-child(even) { background: #FAFAF6; }
+  tbody tr:nth-child(odd)  { background: #ffffff; }
+  tbody td strong { color: var(--ink); }
+
+  table.bordered td { border: 1px solid var(--line); }
+
+  /* ─────────────────────────────────────────────
+     CODE
+  ───────────────────────────────────────────── */
+  code {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: var(--cream);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 9.5px;
+    color: var(--ink);
+    border: 1px solid #E6D98A;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* ─────────────────────────────────────────────
+     MODULE DOTS
+  ───────────────────────────────────────────── */
+  .mod {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 4px;
+    margin-left: 2px;
+  }
+  .mod.bmm  { background: var(--mod-bmm); }
+  .mod.tea  { background: var(--mod-tea); }
+  .mod.cis  { background: var(--mod-cis); }
+  .mod.bmb  { background: var(--mod-bmb); }
+  .mod.core { background: var(--mod-core); }
+
+  /* ─────────────────────────────────────────────
+     REQUIREMENT BADGES
+  ───────────────────────────────────────────── */
+  .req-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 5px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .req-badge.req { background: var(--req); color: #fff; }
+  .req-badge.rec { background: var(--gold); color: var(--ink); }
+  .req-badge.opc { background: #E8E8E8; color: #555; border: 1px solid #B0B0B0; }
+  .req-badge.req-tea { background: #D5EDE2; color: #1B6B45; border: 1px solid #27AE60; }
+
+  /* ─────────────────────────────────────────────
+     LIDR BADGES
+  ───────────────────────────────────────────── */
+  .lidr-badge {
+    display: inline-block;
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    margin-right: 8px;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #fff;
+    vertical-align: middle;
+  }
+  .lidr-badge.vision { background: var(--lidr-vision); }
+  .lidr-badge.recomendacion { background: var(--lidr-recom); }
+
+  .lidr-mark {
+    display: block;
+    border-left: 3px solid var(--lidr-recom);
+    padding: 2px 0 2px 12px;
+    margin: 8px 0;
+  }
+  .lidr-mark.vision {
+    border-left-color: var(--lidr-vision);
+  }
+  .lidr-mark .lidr-badge {
+    margin-bottom: 4px;
+  }
+
+  /* ─────────────────────────────────────────────
+     SKILL META
+  ───────────────────────────────────────────── */
+  .skill-meta {
+    display: block;
+    margin-top: 2px;
+    font-size: 8.5px;
+    color: var(--ink-mute);
+    line-height: 1.2;
+  }
+  .skill-meta strong { color: var(--ink-soft); }
+
+  /* ─────────────────────────────────────────────
+     CALLOUTS
+  ───────────────────────────────────────────── */
+  .callout {
+    padding: 11px 14px 11px 16px;
+    margin: 14px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .callout strong { color: var(--ink); }
+  .callout .head {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .callout.info {
+    background: #EAF4FA;
+    border-left: 3px solid var(--info);
+  }
+  .callout.info .head { color: var(--info); }
+
+  .callout.tip {
+    background: #E9F7EF;
+    border-left: 3px solid var(--tip);
+  }
+  .callout.tip .head { color: var(--tip); }
+
+  .callout.caution {
+    background: #FCF6E1;
+    border-left: 3px solid var(--caution);
+  }
+  .callout.caution .head { color: #9C8004; }
+
+  .callout.important {
+    background: #FBEAE5;
+    border-left: 3px solid var(--important);
+  }
+  .callout.important .head { color: var(--important); }
+
+  /* Specialized TEA/CIS callouts */
+  .callout.tea {
+    background: #E8F5EE;
+    border-left: 3px solid var(--mod-tea);
+  }
+  .callout.tea .head { color: #1B6B45; }
+
+  .callout.cis {
+    background: #F4ECFA;
+    border-left: 3px solid var(--mod-cis);
+  }
+  .callout.cis .head { color: #6C2E91; }
+
+  /* ─────────────────────────────────────────────
+     PHASE BADGE (in heading row)
+  ───────────────────────────────────────────── */
+  .phase-pill {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--gold);
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 3px;
+    margin-right: 10px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .phase-pill.cycle {
+    background: #2C2C2C;
+    color: var(--gold);
+    border: 1px solid var(--gold-deep);
+  }
+
+  /* ─────────────────────────────────────────────
+     DIVIDERS, PAGE BREAKS
+  ───────────────────────────────────────────── */
+  .section-divider {
+    border: none;
+    border-top: 1px dashed var(--gold-deep);
+    margin: 28px 0;
+  }
+  .page-break { page-break-before: always; }
+
+  /* ─────────────────────────────────────────────
+     LEGEND
+  ───────────────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    margin: 8px 0 14px 0;
+    font-size: 10px;
+    color: var(--ink-soft);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+
+  /* ─────────────────────────────────────────────
+     SUMMARY BOX (e.g., total proyecto)
+  ───────────────────────────────────────────── */
+  .summary-box {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin: 14px 0;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .summary-box em { color: #ccc; font-style: italic; font-weight: 500; }
+
+  /* ─────────────────────────────────────────────
+     MERMAID
+  ───────────────────────────────────────────── */
+  .diagram {
+    margin: 16px 0 20px 0;
+    padding: 16px;
+    background: #FCFCFA;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    text-align: center;
+  }
+  .diagram .caption {
+    margin-top: 10px;
+    font-size: 9.5px;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+  .mermaid { font-size: 12px !important; }
+
+  /* ─────────────────────────────────────────────
+     PAGE — A4 con pie LIDR + área de notas al pie
+  ───────────────────────────────────────────── */
+  @page {
+    size: A4;
+    margin: 18mm 16mm 22mm 16mm;
+
+    @bottom-left {
+      content: "LIDR.co · BMAD Flujos de Proyecto · Volumen II · Libro 2 de 5";
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #888;
+      vertical-align: top;
+      padding-top: 4mm;
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #888;
+      vertical-align: top;
+      padding-top: 4mm;
+    }
+
+    @footnote {
+      border-top: 0.5pt solid #D4B85C;
+      padding-top: 4pt;
+      margin-top: 8pt;
+      font-size: 8.5pt;
+      line-height: 1.45;
+      color: #444;
+    }
+  }
+
+  @page :first {
+    margin: 0;
+    @top-left { content: none; }
+    @top-center { content: none; }
+    @top-right { content: none; }
+    @bottom-left { content: none; }
+    @bottom-center { content: none; }
+    @bottom-right { content: none; }
+  }
+
+  .footnote {
+    float: footnote;
+    font-size: 8.5pt;
+    color: #444;
+  }
+  .footnote::footnote-call {
+    content: counter(footnote);
+    font-size: 0.62em;
+    vertical-align: super;
+    line-height: 0;
+    color: var(--gold-deep);
+    font-weight: 700;
+    margin-left: 1px;
+  }
+  .footnote::footnote-marker {
+    content: counter(footnote) ". ";
+    font-weight: 700;
+    color: var(--gold-deep);
+  }
+  .footnote strong { color: var(--ink); }
+
+  /* ─────────────────────────────────────────────
+     TABLE PAGINATION — repite cabecera, evita huérfanos
+  ───────────────────────────────────────────── */
+  table { page-break-inside: auto; break-inside: auto; }
+  thead { display: table-header-group; }
+  thead tr { break-after: avoid; page-break-after: avoid; break-inside: avoid; page-break-inside: avoid; }
+  tbody tr { break-inside: avoid; page-break-inside: avoid; }
+  tbody tr:first-child { break-before: avoid; page-break-before: avoid; }
+  tfoot { display: table-footer-group; }
+
+  /* Continuación de tabla — texto inyectado por paged.js handler */
+  tfoot.continued tr td {
+    text-align: right;
+    font-style: italic;
+    font-size: 8.5pt;
+    color: #888;
+    padding: 4px 8px 0 8px;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* OVERRIDE — permitir que las cards largas y bloques pre se partan
+     entre páginas para evitar huecos grandes al final de página */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box,
+  pre,
+  pre.codeblock{
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Las cabeceras de las cards no deben quedar huérfanas */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+
+  @media print {
+    body { font-size: 10.5px; }
+    .content { padding: 24px 40px; }
+    h2 { page-break-after: avoid; }
+    h3, h4 { page-break-after: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+    .callout { page-break-inside: avoid; }
+    .diagram { page-break-inside: avoid; }
+  }
+
+  /* GAP FIX — permitir que cards largas se partan sin quedar atrapadas por sus headers */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+  /* Los headers internos sí evitan break dentro de sí mismos, pero NO fuerzan
+     a su contenedor a permanecer junto al siguiente bloque. */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+  /* En @media print, asegurar override final */
+  @media print {
+    .framework-card, .skill-card, .session-card, .scenario-card, .decision-card, .toolkit-box, .callout {
+      page-break-inside: auto !important;
+      break-inside: auto !important;
+    }
+    .framework-header, .session-header, .skill-card-header, .scenario-header, .card-header {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+  }
+
+/* MermaidTooltip fix */
+  /* Mermaid crea un tooltip invisible que paged.js coloca en una página vacía */
+  .mermaidTooltip { display: none !important; position: absolute !important; }
+  div:has(> .mermaidTooltip:only-child) { display: none !important; }
+
+</style>
+</head>
+<body>
+
+<!-- ═════════════════════════════════════════════════════════
+     COVER
+═════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="vol-tag">Volumen II &middot; Libro 2 de 5</div>
+  <h1>BMAD Flujos de <span>Proyecto</span></h1>
+  <div class="subtitle">El recorrido completo, fase a fase, para proyectos nuevos y existentes</div>
+  <div class="logo-bar"></div>
+  <div class="meta">
+    Cómo se encadenan los workflows del método.<br>
+    Greenfield y brownfield, paralelismos, dependencias y roles.<br>
+    Acompaña al Libro 1 (Atlas) con el detalle del proceso.<br><br>
+    <strong>BMAD Method &middot; CIS &middot; TEA &middot; BMB &middot; Core</strong>
+  </div>
+  <div class="cover-version">2026-05-07 &middot; LIDR.co</div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════════
+     CONTENT
+═════════════════════════════════════════════════════════ -->
+<div class="content">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 0 — BIENVENIDA
+───────────────────────────────────────────── -->
+<h2><span class="num">0</span>Bienvenida</h2>
+
+<p class="lead">Este es el segundo libro de la biblioteca. Asume que el lector ya conoce el vocabulario y los módulos del método (Libro 1 &mdash; Atlas). Su función es mostrar <strong>cómo se enlazan los workflows en el tiempo</strong>: qué viene antes, qué se puede paralelizar y qué decisiones bloquean al equipo si se saltan.</p>
+
+<p>Cubre dos escenarios completos:</p>
+<ul>
+  <li><strong>Flujo greenfield</strong> &mdash; proyecto nuevo desde la idea inicial hasta la implementación continua.</li>
+  <li><strong>Flujo brownfield</strong> &mdash; proyecto ya iniciado al que se incorpora el método.</li>
+</ul>
+
+<p>También recoge la tabla de paralelismos, el resumen de roles por fase, el mapeo a las sesiones operativas (Libro 3) y el conjunto de skills que <em>no</em> forman parte del flujo principal pero conviene conocer.</p>
+
+<h3><span class="num">0.1</span>Cómo está organizado este libro</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:18%">Sección</th>
+      <th style="width:50%">Contenido</th>
+      <th style="width:32%">Para qué la usas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sec. 1</strong> Convenciones</td>
+      <td>Insignias de obligatoriedad, módulos y aportes LIDR. Resumen rápido del lenguaje visual del libro.</td>
+      <td>Hojear antes de leer si es la primera vez.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 2</strong> Flujo greenfield</td>
+      <td>Las cuatro fases secuenciales con los workflows de cada una, los roles implicados y el conocimiento que cada workflow espera.</td>
+      <td>Para proyectos que arrancan desde cero.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 3</strong> Flujo brownfield</td>
+      <td>Documentación del proyecto existente y árbol de decisión para elegir camino según la magnitud del cambio.</td>
+      <td>Para proyectos en marcha que adoptan BMAD.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 4</strong> Paralelismo</td>
+      <td>Qué se puede hacer en simultáneo y qué cadenas son estrictamente secuenciales.</td>
+      <td>Para planificar sesiones y distribuir trabajo.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 5</strong> Roles</td>
+      <td>Tabla de roles del equipo, fases en las que participan y agrupaciones típicas en equipos pequeños.</td>
+      <td>Para asignar responsables.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 6</strong> Mapeo a sesiones</td>
+      <td>Cómo encajan estas fases en el calendario S1&ndash;S6 del Libro 3.</td>
+      <td>Para preparar la agenda real de adopción.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 7</strong> Fuera de scope</td>
+      <td>Skills que existen en el método pero no forman parte del flujo del proyecto.</td>
+      <td>Para saber dónde mirar cuando una skill no aparece en el flujo.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 8</strong> Recomendaciones operativas</td>
+      <td>Buenas prácticas transversales: contexto persistente, ventana fresca, validación cruzada.</td>
+      <td>Para evitar errores comunes al ejecutar.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 1 — CONVENCIONES
+───────────────────────────────────────────── -->
+<h2><span class="num">1</span>Convenciones</h2>
+
+<p>El libro reutiliza el sistema visual del Libro 1. Esta sección lo resume para uso rápido.</p>
+
+<h3><span class="num">1.1</span>Punto de color del módulo</h3>
+<div class="legend">
+  <div class="legend-item"><span class="mod bmm"></span> <strong>BMM</strong> &middot; flujo principal</div>
+  <div class="legend-item"><span class="mod tea"></span> <strong>TEA</strong> &middot; testing</div>
+  <div class="legend-item"><span class="mod cis"></span> <strong>CIS</strong> &middot; pensamiento creativo</div>
+  <div class="legend-item"><span class="mod bmb"></span> <strong>BMB</strong> &middot; extensión del método</div>
+  <div class="legend-item"><span class="mod core"></span> <strong>Core</strong> &middot; utilidades transversales</div>
+</div>
+
+<h3><span class="num">1.2</span>Insignias de obligatoriedad</h3>
+<p style="margin-bottom: 4px;">
+  <span class="req-badge req">REQ</span> obligatoria para avanzar de fase &middot;
+  <span class="req-badge rec">REC</span> recomendada fuertemente &middot;
+  <span class="req-badge opc">OPC</span> opcional según necesidad &middot;
+  <span class="req-badge req-tea">REQ TEA</span> obligatoria si el equipo adopta TEA.
+</p>
+
+<div class="callout info">
+  <span class="head">Lectura de las insignias</span>
+  La insignia refleja lo que el método declara en su instalación: qué workflows son obligatorios para avanzar de fase. Cuando un workflow figura como opcional pero conviene tratarlo como recomendado, lo verás marcado con la insignia <span class="req-badge rec">REC</span> y, si la recomendación es nuestra, con la insignia adicional <span class="lidr-badge recomendacion">Recomendación LIDR</span>.
+</div>
+
+<h3><span class="num">1.3</span>Insignias de aporte LIDR</h3>
+<p>Cuando una afirmación del libro es interpretación o recomendación nuestra &mdash; no parte del método oficial &mdash; aparece marcada con una insignia.</p>
+<p style="margin-bottom: 4px;">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  framing conceptual: cómo entendemos o reorganizamos el método.
+</p>
+<p style="margin-bottom: 4px;">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  sugerencia operativa basada en nuestra experiencia aplicando el método con equipos.
+</p>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2 — FLUJO GREENFIELD
+───────────────────────────────────────────── -->
+<h2><span class="num">2</span>Flujo greenfield &mdash; proyecto nuevo</h2>
+
+<p class="lead">Recorrido completo desde la idea inicial hasta la implementación continua. Las fases son secuenciales: cada una produce los artefactos que la siguiente necesita.</p>
+
+<div class="callout tea">
+  <span class="head">Cómo opera TEA en este flujo</span>
+  El módulo de testing no es una cadena lineal única. Funciona en tres bloques con dependencias internas:
+  <ul style="margin-top:4px; margin-bottom:0;">
+    <li><strong>Arranque</strong> en Fase 3 &mdash; <code>test-design</code> &rarr; <code>framework</code> &rarr; <code>ci</code>.</li>
+    <li><strong>Por historia</strong> en Fase 4 &mdash; <code>atdd</code> &rarr; <code>dev-story</code> &rarr; <code>test-automate</code> &rarr; <code>code-review</code>.</li>
+    <li><strong>Por épica o hito</strong> en Fase 4 &mdash; <code>test-review</code>, <code>trace</code> y <code>nfr</code>.</li>
+  </ul>
+  Dentro de cada bloque el orden es estricto. Entre bloques el orden natural es arranque &rarr; por historia &rarr; por épica.
+</div>
+
+<div class="callout caution">
+  <span class="head">Adoptar TEA es opcional, ejecutarlo no</span>
+  Si el equipo decide adoptar TEA, las dependencias críticas son: <strong>(1)</strong> el framework instalado antes del primer ATDD; <strong>(2)</strong> la pipeline de integración continua antes del primer merge; <strong>(3)</strong> los umbrales no funcionales (latencia, RPS<span class="footnote"><strong>RPS:</strong> <em>requests per second</em>. Métrica de carga que indica cuántas peticiones por segundo soporta un sistema. Se usa para fijar los umbrales no funcionales del PRD junto con la latencia P95.</span>, seguridad) fijados antes del primer release. El mínimo viable es <code>test-design</code> &rarr; <code>framework</code> &rarr; <code>atdd</code>. Saltarse esto deja al equipo sin red de seguridad y la suite degrada en pocas semanas.
+</div>
+
+<h3><span class="num">2.1</span><span class="phase-pill">Fase 1 &mdash; Análisis</span> &nbsp; 1&ndash;2 sesiones</h3>
+
+<p>Genera el contexto del producto: idea de negocio, mercado, dominio y restricciones técnicas. Toda la fase es opcional; si el equipo llega con visión cristalizada, brief sólido y research previo, puede saltarse. Cada hora invertida aquí ahorra retrabajo posterior.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Sesión / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sesión 1</strong> (2&ndash;3 h)<br><span class="skill-meta"><strong>Roles:</strong> PO, Stakeholder</span></td>
+      <td><code>/bmad-brainstorming</code><span class="skill-meta"><span class="mod bmm"></span> Brainstorming <span class="req-badge opc">OPC</span></span></td>
+      <td>Idea de negocio, problemas a resolver, mercado al que apunta el producto.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 1</strong><br><span class="skill-meta"><strong>Roles:</strong> PO, Stakeholder</span></td>
+      <td><code>/bmad-product-brief</code><span class="skill-meta"><span class="mod bmm"></span> Product Brief <span class="req-badge rec">REC</span></span></td>
+      <td>Visión del producto, usuarios objetivo, alcance.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 2</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> PO, experto de dominio</span></td>
+      <td><code>/bmad-market-research</code><span class="skill-meta"><span class="mod bmm"></span> Market Research <span class="req-badge opc">OPC</span></span></td>
+      <td>Competidores, regulación del sector, comportamiento del cliente.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 2</strong><br><span class="skill-meta"><strong>Roles:</strong> PO, experto de dominio</span></td>
+      <td><code>/bmad-domain-research</code><span class="skill-meta"><span class="mod bmm"></span> Domain Research <span class="req-badge opc">OPC</span></span></td>
+      <td>Terminología, procesos del sector, marco regulatorio.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 2</strong><br><span class="skill-meta"><strong>Roles:</strong> Tech Lead, DevOps</span></td>
+      <td><code>/bmad-technical-research</code><span class="skill-meta"><span class="mod bmm"></span> Technical Research <span class="req-badge opc">OPC</span></span></td>
+      <td>Restricciones técnicas, stack candidato, infraestructura disponible.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout cis">
+  <span class="head">Alternativas creativas para la ideación</span>
+  <code>/bmad-brainstorming</code> es ideal cuando la idea aún no está cristalizada. Si el PO llega con visión clara, se puede saltar. Si el equipo necesita un enfoque más estructurado, hay dos opciones del módulo creativo: <code>/bmad-cis-design-thinking</code> centra la ideación en empatía con el usuario y <code>/bmad-cis-innovation-strategy</code> aborda enfoques disruptivos. Ninguna de estas tres es prerrequisito de las siguientes fases &mdash; son herramientas para activar al equipo.
+</div>
+
+<div class="callout info">
+  <span class="head">Cuándo saltar la Fase 1</span>
+  Solo es prudente saltarla con tres condiciones simultáneas: brief redactado, research previo verificado y visión del producto cristalizada. Sin alguna de estas, vuelves a esta fase semanas después con coste mayor.
+</div>
+
+<h3><span class="num">2.2</span><span class="phase-pill">Fase 2 &mdash; Planificación</span> &nbsp; 2&ndash;3 sesiones</h3>
+
+<p>Produce el PRD<span class="footnote"><strong>PRD:</strong> <em>Product Requirements Document</em>. Documento que describe lo que el producto debe hacer (requisitos funcionales) y cómo de bien debe hacerlo (requisitos no funcionales). Es el contrato entre producto y equipo técnico.</span> y, si el producto tiene UI, la especificación de UX. Es el primer hito con un workflow obligatorio: sin PRD no hay arquitectura ni épicas.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Sesión / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sesión 3</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> PO, Tech Lead</span></td>
+      <td><code>/bmad-create-prd</code><span class="skill-meta"><span class="mod bmm"></span> Create PRD <span class="req-badge req">REQ</span></span></td>
+      <td>Brief del producto, requisitos funcionales y no funcionales esperados.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 4</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> PO, Tech Lead</span></td>
+      <td><code>/bmad-validate-prd</code><span class="skill-meta"><span class="mod bmm"></span> Validate PRD <span class="req-badge rec">REC</span></span></td>
+      <td>PRD terminado.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 4</strong><br><span class="skill-meta"><strong>Roles:</strong> UX, PO</span></td>
+      <td><code>/bmad-create-ux-design</code><span class="skill-meta"><span class="mod bmm"></span> Create UX Design <span class="req-badge rec">REC si UI</span></span></td>
+      <td>PRD, flujos de usuario esperados.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 4</strong><br><span class="skill-meta"><strong>Roles:</strong> QA, Tech Lead, DevOps (consultor)</span></td>
+      <td><code>/bmad-testarch-nfr</code> <em>(setup)</em><span class="skill-meta"><span class="mod tea"></span> NFR Setup <span class="req-badge rec">REC</span></span></td>
+      <td>PRD completo. Fija umbrales cuantificables (latencia P95, RPS, SLO<span class="footnote"><strong>SLO:</strong> <em>Service Level Objective</em>. Objetivo cuantificable de calidad de servicio que el equipo se compromete a cumplir &mdash; por ejemplo, "el 99,9 % de las peticiones responde en menos de 200 ms". Sin SLO, no hay forma objetiva de saber si el sistema funciona bien.</span>). DevOps consulta sobre capacidad real de la infraestructura.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  El método marca <code>/bmad-validate-prd</code> como opcional. Recomendamos tratarlo como paso recomendado: saltar la validación es la causa más frecuente de retrabajo en Fase 4, porque los huecos del PRD viajan al backlog y se hacen visibles cuando el equipo ya está implementando.
+</div>
+
+<div class="callout tea">
+  <span class="head">PRD testeable: dos verificaciones</span>
+  <ul style="margin-top:4px; margin-bottom:0;">
+    <li><strong>Requisitos funcionales con criterios Given/When/Then</strong><span class="footnote"><strong>Given/When/Then:</strong> estructura de criterios de aceptación que describe un escenario en tres partes &mdash; dado un contexto inicial (Given), cuando ocurre un evento (When), entonces se espera un resultado (Then). Es el formato estándar de BDD (Behavior&#8209;Driven Development).</span> durante <code>/bmad-validate-prd</code>. Un requisito no testeable aquí se convierte en una historia no testeable en Fase 4.</li>
+    <li><strong>NFR<span class="footnote"><strong>NFR:</strong> <em>Non-Functional Requirement</em>. Requisito que describe cómo de bien debe comportarse el sistema (rendimiento, seguridad, fiabilidad, escalabilidad), en contraposición a los <em>functional requirements</em>, que describen qué debe hacer. Sin umbrales cuantificables, los NFR son intenciones sin contrato.</span> con umbrales cuantificables</strong> a través de <code>/bmad-testarch-nfr</code> en modo setup: por ejemplo, "P95 de la API por debajo de 200 ms con 100 RPS", no "el sistema debe ser rápido". Sin baseline aquí, el gate antes del release no tiene contra qué validar.</li>
+  </ul>
+</div>
+
+<div class="lidr-mark vision">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  En el instalador, NFR es una sola skill con tres modos. Nosotros la pensamos como <strong>tres momentos del proyecto</strong>: <em>setup</em> en Fase 2 para fijar umbrales, <em>check</em> a mitad del ciclo de implementación para detectar desviaciones tempranas y <em>gate</em> antes del release como decisión final go/no-go. Esta separación facilita la conversación con el equipo y deja claro qué se evalúa cada vez.
+</div>
+
+<h3><span class="num">2.3</span><span class="phase-pill">Fase 3 &mdash; Solución</span> &nbsp; 3&ndash;4 sesiones</h3>
+
+<p>Diseña la arquitectura, arranca la infraestructura de testing y descompone el alcance en épicas e historias. Es la fase con más obligatoriedad: la arquitectura, el backlog y la verificación de readiness son requeridos para pasar a implementación.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Sesión / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sesión 5</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> Architect / Tech Lead, DevOps</span></td>
+      <td><code>/bmad-create-architecture</code><span class="skill-meta"><span class="mod bmm"></span> Create Architecture <span class="req-badge req">REQ</span></span></td>
+      <td>PRD, UX, stack preferido, restricciones de infraestructura.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 6</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> QA, Tech Lead</span></td>
+      <td><code>/bmad-testarch-test-design</code><span class="skill-meta"><span class="mod tea"></span> Test Design <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Arquitectura y PRD para planificación basada en riesgo.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 6</strong><br><span class="skill-meta"><strong>Roles:</strong> QA, Tech Lead</span></td>
+      <td><code>/bmad-testarch-framework</code><span class="skill-meta"><span class="mod tea"></span> Test Framework <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Test Design, stack tecnológico decidido.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 6</strong><br><span class="skill-meta"><strong>Roles:</strong> QA, DevOps</span></td>
+      <td><code>/bmad-testarch-ci</code><span class="skill-meta"><span class="mod tea"></span> CI Setup <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Framework instalado, plataforma de integración continua.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 7</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> PO, Tech Lead, SM</span></td>
+      <td><code>/bmad-create-epics-and-stories</code><span class="skill-meta"><span class="mod bmm"></span> Create Epics &amp; Stories <span class="req-badge req">REQ</span></span></td>
+      <td>PRD, arquitectura, estimaciones.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 8</strong> (1 h)<br><span class="skill-meta"><strong>Roles:</strong> Tech Lead, PO</span></td>
+      <td><code>/bmad-check-implementation-readiness</code><span class="skill-meta"><span class="mod bmm"></span> Check Readiness <span class="req-badge req">REQ</span></span></td>
+      <td>Todos los artefactos anteriores completos.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tea">
+  <span class="head">Por qué TEA arranca después de la arquitectura</span>
+  El bloque <code>test-design</code> &rarr; <code>framework</code> &rarr; <code>ci</code> se ejecuta tras la arquitectura porque depende de las decisiones de stack. Las tres skills son secuenciales entre sí. Si el equipo no tiene QA dedicado, el Tech Lead puede asumir el bloque sin perder rigor.
+</div>
+
+<div class="callout tea">
+  <span class="head">Gate de testabilidad post-arquitectura</span>
+  Antes de Test Design, conviene aplicar el <em>ADR Quality Readiness Checklist</em>: 29 criterios en 8 categorías que verifican si las decisiones arquitectónicas son testeables. ADRs<span class="footnote"><strong>ADR:</strong> <em>Architecture Decision Record</em>. Documento corto que captura una decisión técnica (qué se eligió, qué se descartó y por qué), con sus trade-offs. Es el rastro auditable de las decisiones de arquitectura, distinto del documento general de arquitectura.</span> ambiguos producen tests imposibles de diseñar. El detalle del checklist vive en el Libro 5 (Protocolo TEA).
+</div>
+
+<div class="callout tea">
+  <span class="head">API testing como prioridad</span>
+  En arquitecturas con muchas APIs, la estrategia recomendada es preferir niveles bajos de testing &mdash; unitario por encima de integración, integración por encima de end-to-end. La decisión se toma al diseñar el plan, no al final, cuando ya está la suite construida. El detalle vive en el Libro 5.
+</div>
+
+<div class="callout cis">
+  <span class="head">Cuando arquitectura y producto chocan</span>
+  Si la arquitectura impone restricciones que entran en conflicto con el PRD, <code>/bmad-cis-problem-solving</code> guía al equipo con metodologías estructuradas para resolver el conflicto antes de descomponer en épicas. Forzar el avance sin resolverlo arrastra el conflicto hasta el código.
+</div>
+
+<div class="callout important">
+  <span class="head">Gate de proceso: Check Readiness</span>
+  <code>/bmad-check-implementation-readiness</code> debe terminar en estado <em>READY</em> antes de avanzar a Fase 4. Si devuelve <em>NEEDS WORK</em>, los puntos pendientes se resuelven primero. Saltarse este gate es la causa principal de retrabajo en implementación.
+</div>
+
+<h3><span class="num">2.4</span><span class="phase-pill cycle">Fase 4 &mdash; Implementación</span> &nbsp; ciclo continuo</h3>
+
+<p>Es la fase más larga y la única no acotada en el tiempo: dura tantos sprints como el proyecto necesite. Se compone de cuatro bloques: arranque del sprint, ciclo por historia, cierre de épica e invocaciones puntuales del NFR.</p>
+
+<h4>2.4.1 Arranque del sprint</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Cuándo / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Kick-off</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> SM, Tech Lead, Devs</span></td>
+      <td><code>/bmad-sprint-planning</code><span class="skill-meta"><span class="mod bmm"></span> Sprint Planning <span class="req-badge req">REQ</span></span></td>
+      <td>Épicas, historias, capacidad del equipo.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>2.4.2 Ciclo por historia &mdash; orden estricto</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Cuándo / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1.</strong> Por historia<br><span class="skill-meta"><strong>Roles:</strong> Dev asignado</span></td>
+      <td><code>/bmad-create-story</code> <em>(create)</em><span class="skill-meta"><span class="mod bmm"></span> Create Story <span class="req-badge req">REQ</span></span></td>
+      <td>Story spec, arquitectura, historias previas.</td>
+    </tr>
+    <tr>
+      <td><strong>2.</strong> Por historia<br><span class="skill-meta"><strong>Roles:</strong> Dev asignado, Tech Lead</span></td>
+      <td><code>/bmad-create-story</code> <em>(validate)</em><span class="skill-meta"><span class="mod bmm"></span> Validate Story <span class="req-badge rec">REC</span></span></td>
+      <td>Historia recién creada. Verifica que está completa antes de pasar al desarrollo.</td>
+    </tr>
+    <tr>
+      <td><strong>3.</strong> Por historia<br><span class="skill-meta"><strong>Roles:</strong> QA, Dev</span></td>
+      <td><code>/bmad-testarch-atdd</code><span class="skill-meta"><span class="mod tea"></span> ATDD <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Historia con criterios de aceptación.</td>
+    </tr>
+    <tr>
+      <td><strong>4.</strong> Por historia<br><span class="skill-meta"><strong>Roles:</strong> Dev asignado</span></td>
+      <td><code>/bmad-dev-story</code><span class="skill-meta"><span class="mod bmm"></span> Dev Story <span class="req-badge req">REQ</span></span></td>
+      <td>Historia validada, patrones del proyecto.</td>
+    </tr>
+    <tr>
+      <td><strong>5.</strong> Por historia<br><span class="skill-meta"><strong>Roles:</strong> QA</span></td>
+      <td><code>/bmad-testarch-automate</code><span class="skill-meta"><span class="mod tea"></span> Test Automation <span class="req-badge rec">REC</span></span></td>
+      <td>Código implementado (entre Dev Story y Code Review).</td>
+    </tr>
+    <tr>
+      <td><strong>6.</strong> Por historia<br><span class="skill-meta"><strong>Roles:</strong> Dev + Tech Lead</span></td>
+      <td><code>/bmad-code-review</code><span class="skill-meta"><span class="mod bmm"></span> Code Review <span class="req-badge rec">REC</span></span></td>
+      <td>Código y tests completos &mdash; gate antes del merge.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  El método marca <code>/bmad-code-review</code> y <code>/bmad-create-story</code> en modo <em>validate</em> como opcionales. Recomendamos tratar ambos como paso recomendado del ciclo: el <em>validate</em> intercepta historias mal formadas antes de que el agente Dev las implemente; el code review captura defectos antes del merge usando un LLM distinto al que implementó. Saltarlos abarata el ciclo a corto plazo y lo encarece a medio plazo.
+</div>
+
+<div class="callout tea">
+  <span class="head">Cómo encaja el ciclo TEA por historia</span>
+  ATDD genera tests que fallan (fase roja del ciclo red&#8209;green&#8209;refactor<span class="footnote"><strong>red&#8209;green&#8209;refactor:</strong> ciclo de Test&#8209;Driven Development en tres pasos. Rojo: escribir un test que falle. Verde: implementar lo mínimo para que el test pase. Refactor: limpiar el código manteniendo el test verde. Se repite por cada incremento.</span>) <em>antes</em> de Dev Story. Test Automation expande la cobertura (unitario, casos de borde, regresión) <em>antes</em> del Code Review. El code review actúa como gate final viendo código y tests juntos. Al final de cada épica, Test Review audita la calidad de los tests acumulados y Traceability verifica la cobertura contra requisitos.
+</div>
+
+<h4>2.4.3 Cierre de épica</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Cuándo / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1.</strong> Fin de épica<br><span class="skill-meta"><strong>Roles:</strong> QA</span></td>
+      <td><code>/bmad-testarch-test-review</code><span class="skill-meta"><span class="mod tea"></span> Test Review <span class="req-badge opc">OPC</span></span></td>
+      <td>Tests acumulados de la épica. Devuelve puntuación 0&ndash;100 y hallazgos por dimensión.</td>
+    </tr>
+    <tr>
+      <td><strong>2.</strong> Fin de épica<br><span class="skill-meta"><strong>Roles:</strong> QA, Tech Lead</span></td>
+      <td><code>/bmad-testarch-trace</code><span class="skill-meta"><span class="mod tea"></span> Traceability <span class="req-badge opc">OPC</span></span></td>
+      <td>Matriz de cobertura requisitos&harr;tests, decisión de gate (después de Test Review).</td>
+    </tr>
+    <tr>
+      <td><strong>3.</strong> Fin de épica<br><span class="skill-meta"><strong>Roles:</strong> Todo el equipo</span></td>
+      <td><code>/bmad-retrospective</code><span class="skill-meta"><span class="mod bmm"></span> Retrospective <span class="req-badge opc">OPC</span></span></td>
+      <td>Salidas de Test Review y Traceability como entradas para lecciones y action items.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout caution">
+  <span class="head">Trazabilidad viva, no retroactiva</span>
+  La matriz de requisitos contra tests se mantiene historia a historia: ATDD ata cada test a su requisito funcional al crearlo. <code>/bmad-testarch-trace</code> al cierre de épica es el gate, no la primera vez que el equipo construye la matriz. Si se deja para el final, la matriz se vuelve arqueología retroactiva: alguien intenta reconstruir qué test cubre qué requisito a partir del nombre del archivo, y se generan huecos invisibles.
+</div>
+
+<h4>2.4.4 NFR a mitad del ciclo y antes del release</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Cuándo / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Mid-ciclo</strong><br><span class="skill-meta"><strong>Roles:</strong> QA, Tech Lead, DevOps</span></td>
+      <td><code>/bmad-testarch-nfr</code> <em>(check)</em><span class="skill-meta"><span class="mod tea"></span> NFR Check <span class="req-badge rec">REC</span></span></td>
+      <td>Revisión intermedia. Detecta desviaciones temprano frente a los umbrales fijados en setup.</td>
+    </tr>
+    <tr>
+      <td><strong>Pre-release</strong><br><span class="skill-meta"><strong>Roles:</strong> QA, Tech Lead, DevOps</span></td>
+      <td><code>/bmad-testarch-nfr</code> <em>(gate)</em><span class="skill-meta"><span class="mod tea"></span> NFR Gate <span class="req-badge rec">REC</span></span></td>
+      <td>Rendimiento, seguridad, fiabilidad y escalabilidad. Firma final: PASS, CONCERNS, WAIVED o FAIL.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">2.5</span>Total estimado</h3>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  En proyectos nuevos típicos, las Fases 1 a 3 ocupan unas <strong>10&ndash;14 sesiones de dos horas</strong>; la Fase 4 es ciclo continuo y dura lo que dure el proyecto. La estimación es nuestra, basada en sesiones reales con equipos: el método no fija una duración objetivo. Si el equipo es más pequeño o más experimentado, el rango se acorta; si el alcance es muy regulado o el dominio nuevo, se alarga.
+</div>
+
+<div class="summary-box">
+  Total proyecto greenfield: <strong>~10&ndash;14 sesiones</strong> de 2 h (Fases 1&ndash;3) + ciclo continuo (Fase 4)
+  <em>&nbsp;&middot; cifra orientativa, no contractual</em>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 3 — FLUJO BROWNFIELD
+───────────────────────────────────────────── -->
+<h2><span class="num">3</span>Flujo brownfield &mdash; proyecto existente</h2>
+
+<p class="lead">Cuando el código ya existe, BMAD se incorpora en dos pasos: primero se documenta lo que hay, después se elige el camino según la magnitud del cambio que se quiere abordar.</p>
+
+<h3><span class="num">3.1</span>Paso 0 &mdash; documentar lo existente</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Sesión / Roles</th>
+      <th style="width:40%">Workflow</th>
+      <th style="width:36%">Conocimiento que necesita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sesión 1</strong> (2 h)<br><span class="skill-meta"><strong>Roles:</strong> Tech Lead, Dev senior</span></td>
+      <td><code>/bmad-document-project</code><span class="skill-meta"><span class="mod bmm"></span> Document Project <span class="req-badge opc">OPC</span></span></td>
+      <td>Acceso al repositorio, decisiones históricas, deuda técnica conocida.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión 1</strong><br><span class="skill-meta"><strong>Roles:</strong> Tech Lead</span></td>
+      <td><code>/bmad-generate-project-context</code><span class="skill-meta"><span class="mod bmm"></span> Generate Project Context <span class="req-badge opc">OPC</span></span></td>
+      <td>Proyecto documentado.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">3.2</span>Después: ¿qué camino tomar?</h3>
+
+<p>El siguiente árbol resume cómo se elige el camino en función del tipo de cambio que el proyecto necesita.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  Start{"¿Qué cambio<br/>necesita el proyecto?"}
+  Start -- "Cambio pequeño<br/>o feature simple" --> Quick["/bmad-quick-dev<br/>(1 Dev con contexto)"]
+  Start -- "Feature grande<br/>o módulo nuevo" --> Big["Entrar en Fase 2<br/>desde /bmad-create-prd<br/>(igual que greenfield)"]
+  Start -- "Corrección de rumbo<br/>mid-sprint" --> Course["/bmad-correct-course<br/>(PO + Tech Lead + SM)"]
+  Start -- "Falta estrategia<br/>de testing" --> TEA["Bloque TEA completo:<br/>test-design → framework<br/>→ ci → automate"]
+  Start -- "Cobertura retroactiva<br/>de un módulo aislado" --> QA["/bmad-qa-generate-e2e-tests<br/>(QA)"]
+
+classDef start fill:#1A1A1A,stroke:#D4B85C,stroke-width:2px,color:#F6DE82;
+classDef decision fill:#FBEFC0,stroke:#D4B85C,stroke-width:1.5px,color:#1A1A1A;
+classDef leaf fill:#FFFFFF,stroke:#1A1A1A,stroke-width:1px,color:#1A1A1A;
+class Start decision;
+class Quick,Big,Course,TEA,QA leaf;</div>
+<div class="caption">Figura 3.1 &mdash; Árbol de decisión para elegir el camino tras documentar el proyecto.</div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Escenario</th>
+      <th style="width:30%">Camino BMM</th>
+      <th style="width:22%">CIS / TEA aplicable</th>
+      <th style="width:24%">Quién</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Cambio pequeño o feature simple</strong></td>
+      <td><code>/bmad-quick-dev</code></td>
+      <td>&mdash;</td>
+      <td>Un Dev con contexto del proyecto.</td>
+    </tr>
+    <tr>
+      <td><strong>Feature grande o módulo nuevo</strong></td>
+      <td>Entrar en el flujo de <strong>Fase 2 (PRD)</strong> en adelante, igual que en greenfield.</td>
+      <td><span class="mod bmm"></span> Brainstorming si la feature aún no está clara.<br><span class="mod tea"></span> Todo el bloque TEA aplica.</td>
+      <td>Mismos roles que las Fases 2&ndash;4.</td>
+    </tr>
+    <tr>
+      <td><strong>Corrección de rumbo mid-sprint</strong></td>
+      <td><code>/bmad-correct-course</code></td>
+      <td><span class="mod cis"></span> Problem Solving si hay conflictos de dirección.</td>
+      <td>PO, Tech Lead, SM.</td>
+    </tr>
+    <tr>
+      <td><strong>Falta estrategia de testing</strong></td>
+      <td>&mdash;</td>
+      <td><span class="mod tea"></span> Test Design &rarr; Framework &rarr; CI &rarr; Automation.</td>
+      <td>QA, Tech Lead.</td>
+    </tr>
+    <tr>
+      <td><strong>Cobertura retroactiva en módulo aislado</strong></td>
+      <td>&mdash;</td>
+      <td><span class="mod tea"></span> <code>/bmad-qa-generate-e2e-tests</code>.</td>
+      <td>QA.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tea">
+  <span class="head">TEA en proyectos brownfield</span>
+  Si el proyecto existente no tiene tests o tiene cobertura baja, el bloque TEA completo (Design &rarr; Framework &rarr; CI &rarr; Automation) puede ejecutarse de forma independiente sin pasar por las fases BMM. Es la única secuencia del método que admite ejecución autónoma.
+</div>
+
+<div class="summary-box">
+  Total proyecto brownfield: <strong>1&ndash;2 sesiones</strong> de onboarding + lo que corresponda según el camino elegido.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 4 — PARALELISMO
+───────────────────────────────────────────── -->
+<h2><span class="num">4</span>Paralelismo y secuencialidad</h2>
+
+<p class="lead">Referencia rápida para planificar sesiones y distribuir trabajo entre varias personas. El principio: <strong>respetar las dependencias declaradas es obligatorio; el paralelismo entre cadenas independientes es oportunidad, no obligación</strong>.</p>
+
+<h3><span class="num">4.1</span>Lo que se puede hacer en paralelo</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:28%">Grupo paralelizable</th>
+      <th style="width:42%">Workflows</th>
+      <th style="width:30%">Condición o prerrequisito</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Fase 1 completa</strong></td>
+      <td>brainstorming, product-brief, market-research, domain-research, technical-research</td>
+      <td>Ninguno depende de otro. Diferentes expertos pueden trabajar en paralelo.</td>
+    </tr>
+    <tr>
+      <td><strong>Fase 2 después del PRD</strong></td>
+      <td>validate-prd <code>||</code> create-ux-design <code>||</code> testarch-nfr (setup)</td>
+      <td>Los tres parten del PRD terminado y son independientes entre sí. Si el equipo tiene UX, QA y Tech Lead dedicados, las tres líneas avanzan a la vez.</td>
+    </tr>
+    <tr>
+      <td><strong>Fase 3 línea BMM y línea TEA</strong></td>
+      <td>(create-epics-and-stories &rarr; check-readiness) <code>||</code> (test-design &rarr; framework &rarr; ci)</td>
+      <td>Ambas líneas necesitan la arquitectura terminada. Avanzan en paralelo si el equipo tiene PO+Tech Lead para la línea BMM y QA+DevOps para la línea TEA.</td>
+    </tr>
+    <tr>
+      <td><strong>Fase 4 historias del mismo sprint</strong></td>
+      <td>Story A ciclo completo <code>||</code> Story B ciclo completo <code>||</code> Story C&hellip;</td>
+      <td>Devs distintos por historia y <em>sin conflictos de código compartido</em>. Es el paralelismo nativo de Agile.</td>
+    </tr>
+    <tr>
+      <td><strong>Cierre de épica con NFR check</strong></td>
+      <td>(test-review &rarr; trace &rarr; retrospective) <em>secuencial</em> &middot; nfr (check) <code>||</code> cualquiera del trío</td>
+      <td>El trío de cierre es secuencial: la retro consume la puntuación y la decisión de gate como entradas. NFR check (si se invoca aquí) sí puede paralelizarse con cualquiera del trío.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="head">Paralelismo lógico vs declarado</span>
+  En la Fase 2 después del PRD, el método no declara paralelismo formal. Lo que declara es que las tres skills <em>tienen el mismo prerrequisito</em> (PRD terminado) y ninguna depende de las otras dos. Esa equivalencia es la que habilita el paralelismo lógico cuando el equipo tiene los roles disponibles.
+</div>
+
+<h3><span class="num">4.2</span>Lo que NO se puede hacer en paralelo</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:38%">Cadena estricta (secuencial)</th>
+      <th style="width:62%">Por qué es secuencial</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>create-prd &rarr; validate-prd &rarr; edit-prd</td>
+      <td>Cada paso valida o corrige el anterior. Adelantar no aporta nada porque no hay sobre qué validar.</td>
+    </tr>
+    <tr>
+      <td>create-prd &rarr; create-ux-design</td>
+      <td>Dependencia declarada: la UX no puede diseñarse sin PRD.</td>
+    </tr>
+    <tr>
+      <td>create-architecture &rarr; create-epics-and-stories &rarr; check-implementation-readiness</td>
+      <td>Las épicas necesitan arquitectura; el check audita las épicas.</td>
+    </tr>
+    <tr>
+      <td>testarch-test-design &rarr; testarch-framework &rarr; testarch-ci</td>
+      <td>El framework implementa el plan del test-design; la pipeline usa el framework instalado.</td>
+    </tr>
+    <tr>
+      <td>create-story &rarr; testarch-atdd &rarr; dev-story &rarr; testarch-automate &rarr; code-review</td>
+      <td>Ciclo TDD red/green más expansión de cobertura más gate final. Orden estricto.</td>
+    </tr>
+    <tr>
+      <td>testarch-automate &rarr; testarch-test-review &rarr; testarch-trace</td>
+      <td>Test Review audita los tests producidos por Test Automation; Traceability verifica la cobertura sobre el suite ya revisado.</td>
+    </tr>
+    <tr>
+      <td>testarch-nfr (setup) &rarr; testarch-nfr (check) &rarr; testarch-nfr (gate)</td>
+      <td>Cada momento usa los umbrales fijados en el anterior como baseline.</td>
+    </tr>
+    <tr>
+      <td>sprint-planning &rarr; create-story</td>
+      <td>Las historias se crean a partir del plan del sprint.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout caution">
+  <span class="head">Dependencias declaradas y dependencias lógicas</span>
+  El método declara dependencias explícitas en su instalación (campo <code>after</code>). Hay otras dependencias <em>lógicas</em> que no están declaradas pero el método espera que el equipo respete: <strong>(1)</strong> <code>create-architecture</code> sin PRD = diseño en el vacío; <strong>(2)</strong> <code>testarch-atdd</code> sin framework = pseudocódigo no ejecutable; <strong>(3)</strong> <code>testarch-nfr (check)</code> sin observabilidad = revisión sin datos reales. Conviene respetar ambas.
+</div>
+
+<div class="callout tea">
+  <span class="head">Nota sobre dev-story y testarch-automate</span>
+  La dependencia declarada de <code>testarch-automate</code> es <code>testarch-atdd</code>, no <code>dev-story</code>. En la práctica, el orden recomendado es ATDD (red) &rarr; dev-story (green) &rarr; automate (expansión de cobertura): ATDD genera tests fallidos, dev-story los hace pasar y automate añade unitarios y casos de borde. Si se invoca automate antes de dev-story, los tests recién creados encuentran el código vacío y fallan, lo que ensucia la pipeline. La declaración del método es flexible; el orden recomendado es el descrito.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 5 — ROLES
+───────────────────────────────────────────── -->
+<h2><span class="num">5</span>Roles del equipo</h2>
+
+<p class="lead">El flujo del proyecto distribuye el trabajo entre varios roles. La tabla siguiente resume cuándo es imprescindible cada uno y qué conocimiento aporta. La sección <strong>5.2</strong> explica las agrupaciones típicas en equipos pequeños.</p>
+
+<h3><span class="num">5.1</span>Tabla de roles</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:18%">Rol</th>
+      <th style="width:32%">Cuándo es imprescindible</th>
+      <th style="width:50%">Qué debe saber</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Product Owner</strong></td>
+      <td>Fases 1&ndash;3, Sprint Planning.</td>
+      <td>Visión de negocio, usuarios objetivo, prioridades, presupuesto.</td>
+    </tr>
+    <tr>
+      <td><strong>Tech Lead / Architect</strong></td>
+      <td>Fases 2&ndash;4, bloque TEA (Test Design, CI).</td>
+      <td>Stack tecnológico, restricciones técnicas, patrones de diseño, costes de ejecución.</td>
+    </tr>
+    <tr>
+      <td><strong>UX Designer</strong></td>
+      <td>Fase 2 si el producto tiene UI.</td>
+      <td>Flujos de usuario, sistema de diseño, accesibilidad.</td>
+    </tr>
+    <tr>
+      <td><strong>QA</strong></td>
+      <td>Fase 3 (bloque TEA), Fase 4 (ATDD, automation, reviews, NFR).</td>
+      <td>Estrategia de testing, herramientas de automatización, criterios de calidad por riesgo.</td>
+    </tr>
+    <tr>
+      <td><strong>Scrum Master</strong></td>
+      <td>Fase 4 (ciclo continuo).</td>
+      <td>Velocidad del equipo, capacidad, impedimentos, gestión del backlog.</td>
+    </tr>
+    <tr>
+      <td><strong>Desarrollador(es)</strong></td>
+      <td>Fase 4.</td>
+      <td>Código, arquitectura, historias asignadas, patrones del proyecto.</td>
+    </tr>
+    <tr>
+      <td><strong>DevOps / Platform / SRE</strong></td>
+      <td>Fase 1 (technical research, opcional), Fase 2 (NFR setup, consultor), Fase 3 (arquitectura y CI Setup), Fase 4 (NFR check y gate).</td>
+      <td>Infraestructura, integración y despliegue continuos, pipelines, entornos de test, observabilidad, capacidad, plan de rollback, cumplimiento operacional.</td>
+    </tr>
+    <tr>
+      <td><strong>Stakeholder / Sponsor</strong></td>
+      <td>Fase 1, validaciones clave.</td>
+      <td>Presupuesto, objetivos de negocio, fechas críticas.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="head">Nomenclatura de DevOps</span>
+  &laquo;DevOps&raquo; aquí es un término paraguas. Equivalentes habituales: Platform Engineer, Site Reliability Engineer (SRE), Infrastructure Engineer, Release Engineer, Cloud Engineer. En equipos pequeños, suele estar absorbido por el Tech Lead. Lo importante es identificar quién opera la infraestructura, las pipelines de integración y despliegue, los entornos, la observabilidad y los releases.
+</div>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  En equipos que adoptan TEA, recomendamos que DevOps participe activamente en CI Setup y en NFR Gate, aunque el método los marque como opcionales. La pipeline y los umbrales no funcionales son los puntos donde infraestructura, equipo de calidad y producto deben hablar el mismo idioma; si DevOps llega tarde, los criterios se acuerdan sin contar con la realidad de la infraestructura y se ajustan a posteriori, lo que retrasa el release.
+</div>
+
+<h3><span class="num">5.2</span>Una persona, varios roles</h3>
+
+<p>La tabla anterior lista <em>roles funcionales</em>, no personas. En equipos pequeños o medianos es habitual que varios roles los cubra la misma persona:</p>
+<ul>
+  <li>El <strong>Tech Lead</strong> suele cubrir también: facilitador del método, Architect (si no hay arquitecto dedicado) y DevOps (si no hay Platform Engineer).</li>
+  <li>El <strong>Product Owner</strong> suele cubrir también: Scrum Master (cuando no hay SM dedicado) y UX Designer (cuando producto lidera la UX).</li>
+  <li>Cuando una tabla del libro lista &laquo;PO + SM&raquo; como participantes distintos, pueden ser la misma persona cambiando de sombrero.</li>
+</ul>
+
+<div class="lidr-mark vision">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  En nuestras adopciones llamamos <strong>BMAD Master</strong> a la persona que facilita la introducción del método en el equipo: alguien con dominio suficiente del proceso para guiar las primeras sesiones y resolver dudas en directo. No es un agente del método ni una skill: es un rol humano que LIDR define para acompañar la curva de adopción. En equipos con un Tech Lead experimentado, el BMAD Master puede coincidir con el Tech Lead.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 6 — MAPEO A SESIONES
+───────────────────────────────────────────── -->
+<h2><span class="num">6</span>Mapeo a sesiones operativas</h2>
+
+<p class="lead">Si el equipo trabaja con el calendario comprimido del Libro 3 (BMAD Plan de Sesiones), las fases de este libro se agrupan en seis sesiones operativas (S1&ndash;S6).</p>
+
+<div class="lidr-mark vision">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  El calendario S1&ndash;S6 es nuestro framing para llevar el método a equipos en formato taller. El método oficial no prescribe sesiones; deja la planificación a cada equipo. Lo que sigue resume cómo hemos visto que encajan las cuatro fases en sesiones reales.
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:14%">Sesión</th>
+      <th style="width:42%">Qué cubre del flujo</th>
+      <th style="width:44%">Notas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>S1</strong></td>
+      <td>Fase 1 + Fase 2 comprimidas (research, brief, PRD).</td>
+      <td>NFR Setup ocurre al final, como cierre de S1.</td>
+    </tr>
+    <tr>
+      <td><strong>S2</strong></td>
+      <td>Primer tramo de la Fase 3: arquitectura y arranque del bloque TEA.</td>
+      <td>Tras S2, el equipo dispone de un &laquo;toolkit&raquo; de skills para correcciones asíncronas (<code>edit-prd</code>, <code>correct-course</code>) sin necesidad de convocar nueva sesión.</td>
+    </tr>
+    <tr>
+      <td><strong>S3</strong></td>
+      <td>Cierre de Fase 3 e inicio de Fase 4: épicas, sprint planning, primera historia y ATDD.</td>
+      <td>El equipo termina con la primera historia lista para implementar.</td>
+    </tr>
+    <tr>
+      <td><strong>S4</strong></td>
+      <td>Transición operativa a la implementación.</td>
+      <td>
+        <span class="lidr-mark">
+          <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+          En esta sesión recomendamos cerrar tres decisiones operativas obligatorias (herramienta principal, estrategia de ramas, flujo de estados de la historia) y una opcional (uso de <em>worktrees</em> o multi-agente si el equipo trabaja con Claude Code). Sin estas decisiones persistidas en <code>project-context.md</code>, cada skill aplica defaults diferentes.
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>S5</strong></td>
+      <td>Fase 4 en modo continuo: ciclo iterativo por historia.</td>
+      <td>
+        <span class="lidr-mark">
+          <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+          Recomendamos planificar <strong>al menos dos épicas</strong>: épica 1 dedicada a configuración e infraestructura y épica 2 en adelante para features de negocio. Forzar features de negocio en la primera épica suele saltarse el setup TEA.
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>S6</strong></td>
+      <td>Cierre formal de la primera épica: <code>test-review</code> &rarr; <code>trace</code> &rarr; <code>retrospective</code>.</td>
+      <td>A partir de la segunda épica, el equipo ejecuta el cierre en autonomía sin sesión facilitada.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="head">Sesión S0 (opcional)</span>
+  El Libro 3 incluye una sesión preliminar S0 para equipos que adoptan disciplina de testing por primera vez (<code>/bmad-teach-me-testing</code>). No forma parte del flujo del proyecto: es preadopción, no fase. El detalle vive en el Libro 3.
+</div>
+
+<p style="color: var(--ink-mute);">El detalle por sesión (duración exacta, agenda, participantes y entregables) vive en el <strong>Libro 3 &mdash; BMAD Plan de Sesiones</strong>.</p>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 7 — FUERA DE SCOPE
+───────────────────────────────────────────── -->
+<h2><span class="num">7</span>Skills fuera del flujo principal</h2>
+
+<p class="lead">Este libro cubre el <strong>flujo del proyecto</strong>: las skills que se ejecutan en orden para llevarlo de la idea al release. El método incluye otras skills útiles que no encajan en una fase concreta porque resuelven necesidades transversales o paralelas. Las listamos para evitar la falsa impresión de que no existen.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:32%">Skill</th>
+      <th style="width:18%">Cuándo se invoca</th>
+      <th style="width:50%">Qué hace</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>/bmad-prfaq</code><span class="skill-meta"><span class="mod bmm"></span> Working Backwards</span></td>
+      <td>Antes de la Fase 1, alternativa al brief.</td>
+      <td>Forja el concepto de producto mediante el formato Working Backwards (press release imaginado y FAQ). Útil cuando la idea aún no está validada y el equipo quiere ponerla a prueba antes de invertir en research.</td>
+    </tr>
+    <tr>
+      <td><code>/bmad-edit-prd</code><span class="skill-meta"><span class="mod bmm"></span> Edit PRD</span></td>
+      <td>Tras Fase 2, en cualquier momento.</td>
+      <td>Modifica un PRD existente (cambios menores de alcance, refinamiento de requisitos). No reescribe; aplica edits dirigidos.</td>
+    </tr>
+    <tr>
+      <td><code>/bmad-correct-course</code><span class="skill-meta"><span class="mod bmm"></span> Correct Course</span></td>
+      <td>Mid-sprint, cuando aparece desviación.</td>
+      <td>Gestiona cambios significativos durante la implementación: drift entre arquitectura y PRD, cambio de prioridades, ajuste de alcance.</td>
+    </tr>
+    <tr>
+      <td><code>/bmad-sprint-status</code><span class="skill-meta"><span class="mod bmm"></span> Sprint Status</span></td>
+      <td>En cualquier momento del sprint.</td>
+      <td>Resume el estado del sprint y enruta al siguiente workflow recomendado (qué historia toca, en qué fase del ciclo está cada una).</td>
+    </tr>
+    <tr>
+      <td><code>/bmad-checkpoint-preview</code><span class="skill-meta"><span class="mod bmm"></span> Checkpoint Preview</span></td>
+      <td>Antes de un merge o release.</td>
+      <td>Revisión asistida humano-en-el-bucle para entender un cambio: propósito, contexto, detalles. Útil cuando el revisor tiene poco contexto.</td>
+    </tr>
+    <tr>
+      <td><code>/bmad-customize</code><span class="skill-meta"><span class="mod core"></span> Customize</span></td>
+      <td>Anytime.</td>
+      <td>Añade hechos persistentes, cambia plantillas, inserta hooks de activación o personaliza menús. Escribe los overrides en <code>_bmad/custom/</code> y verifica el merge.</td>
+    </tr>
+    <tr>
+      <td><code>/bmad-cis-*</code><span class="skill-meta"><span class="mod cis"></span> Pensamiento creativo</span></td>
+      <td>Cuando el equipo se atasca.</td>
+      <td>Cuatro workflows del módulo creativo: design thinking (empatía con el usuario), problem solving (resolución estructurada), innovation strategy (enfoque disruptivo) y storytelling (narrativa). Ninguno es prerrequisito de otra fase.</td>
+    </tr>
+    <tr>
+      <td>Agentes con persona<span class="skill-meta">Mary, John, Winston, Sally, Amelia, Paige, Murat, Sophia, Maya, Carson, Dr.&nbsp;Quinn, Victor, Caravaggio</span></td>
+      <td>Anytime.</td>
+      <td>Trece agentes especializados (analyst, PM, architect, UX, dev, tech writer, test architect y seis del módulo creativo). Útiles para conversación abierta en su área de experiencia, sin estructura de workflow.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="head">Catálogo completo</span>
+  El catálogo exhaustivo de las 65 skills del método (con propósito, prerrequisitos, salidas, sub-pasos y duración estimada) vive en el <strong>Libro 4 &mdash; BMAD Catálogo de Skills</strong>. Este libro solo cubre el flujo del proyecto.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 8 — RECOMENDACIONES OPERATIVAS
+───────────────────────────────────────────── -->
+<h2><span class="num">8</span>Recomendaciones operativas</h2>
+
+<p class="lead">Buenas prácticas transversales al flujo. Aplican a cualquier proyecto, greenfield o brownfield.</p>
+
+<h3><span class="num">8.1</span>Contexto persistente del proyecto</h3>
+
+<div class="callout tea">
+  <span class="head">project-context.md como contrato del equipo</span>
+  Muchas skills (<code>create-story</code>, <code>dev-story</code>, <code>sprint-status</code>, <code>code-review</code> y varias del bloque TEA) leen <code>project-context.md</code> como punto de partida cuando se invocan en una conversación nueva. Las decisiones operativas que conviene persistir ahí: herramienta principal del equipo, estrategia de ramas, flujo de estados de la historia y, opcionalmente, uso de <em>worktrees</em> o multi-agente si se usa Claude Code. Sin esto, cada skill aplica defaults distintos y las convenciones quedan solo en la memoria del equipo.
+</div>
+
+<h3><span class="num">8.2</span>Ventana fresca por workflow</h3>
+
+<div class="callout tip">
+  <span class="head">Una conversación por skill</span>
+  Cada workflow se ejecuta en una nueva conversación o contexto fresco para evitar contaminación. Mezclar dos skills en la misma ventana arrastra suposiciones de la primera a la segunda y produce resultados difusos.
+</div>
+
+<h3><span class="num">8.3</span>Validación cruzada entre LLMs</h3>
+
+<div class="callout tip">
+  <span class="head">Diferente LLM para validar</span>
+  Para los workflows de validación (<code>/bmad-validate-prd</code>, <code>/bmad-check-implementation-readiness</code>) y para el code review, usa un LLM distinto al que generó el artefacto que se valida. Ganas objetividad: el LLM original tiende a confirmar sus propios huecos.
+</div>
+
+<h3><span class="num">8.4</span>Pensamiento creativo no bloquea</h3>
+
+<div class="callout cis">
+  <span class="head">CIS como herramienta del facilitador</span>
+  Ninguna skill del módulo creativo es prerrequisito de otra fase. Son herramientas que el facilitador activa según la dinámica del equipo. Si la sesión va con tiempo limitado, se omiten sin impacto en el flujo.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 9 — VERIFICACIÓN
+───────────────────────────────────────────── -->
+<h2><span class="num">9</span>Verificación y fuentes</h2>
+
+<table>
+  <tbody>
+    <tr><td style="width:30%"><strong>Fecha de publicación</strong></td><td>2026-05-07</td></tr>
+    <tr><td><strong>Versión BMAD verificada</strong></td><td>BMAD v6.6.0 (Core 6.6.0 &middot; BMM 6.6.0 &middot; BMB 1.7.0 &middot; CIS 0.2.0 &middot; TEA 1.15.1)</td></tr>
+    <tr><td><strong>Origen de las dependencias</strong></td><td>Campo <code>after</code> de <code>_bmad/_config/bmad-help.csv</code> &mdash; instalación local del proyecto.</td></tr>
+    <tr><td><strong>Fuentes consultadas</strong></td><td>Repositorios oficiales <code>bmad-code-org/bmad-method</code>, <code>bmad-code-org/bmad-method-test-architecture-enterprise</code>, <code>bmad-code-org/bmad-builder</code>, <code>bmad-code-org/bmad-module-creative-intelligence-suite</code>.</td></tr>
+  </tbody>
+</table>
+
+</div><!-- /content -->
+
+<!-- ═════════════════════════════════════════════════════════
+     MERMAID + PAGED.JS
+═════════════════════════════════════════════════════════ -->
+<script>
+  window.PagedConfig = {
+    auto: false,
+    after: () => { window.__PAGED_DONE__ = true; }
+  };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    securityLevel: 'loose',
+    themeVariables: {
+      fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
+      fontSize: '12px',
+
+      primaryColor: '#FBEFC0',
+      primaryTextColor: '#1A1A1A',
+      primaryBorderColor: '#D4B85C',
+
+      secondaryColor: '#1A1A1A',
+      secondaryTextColor: '#F6DE82',
+      secondaryBorderColor: '#1A1A1A',
+
+      tertiaryColor: '#FFFFFF',
+      tertiaryTextColor: '#1A1A1A',
+      tertiaryBorderColor: '#1A1A1A',
+
+      lineColor: '#1A1A1A',
+      textColor: '#1A1A1A',
+
+      mainBkg: '#FFFFFF',
+      nodeBorder: '#1A1A1A',
+      clusterBkg: '#FAFAF6',
+      clusterBorder: '#D4B85C',
+
+      titleColor: '#1A1A1A',
+      edgeLabelBackground: '#FFFFFF'
+    },
+    flowchart: {
+      curve: 'basis',
+      htmlLabels: true,
+      padding: 18,
+      nodeSpacing: 40,
+      rankSpacing: 50,
+      diagramPadding: 16
+    }
+  });
+</script>
+
+<script src="https://unpkg.com/pagedjs@0.4.3/dist/paged.polyfill.js"></script>
+
+<script>
+  (async function () {
+    if (document.readyState !== 'complete') {
+      await new Promise(r => window.addEventListener('load', r));
+    }
+
+    try {
+      await mermaid.run({ querySelector: '.mermaid' });
+    } catch (e) {
+      console.warn('Mermaid:', e);
+    }
+
+    document.querySelectorAll('.mermaidTooltip').forEach(el => {
+      const parent = el.parentElement;
+      el.remove();
+      if (parent && parent.children.length === 0 && parent.tagName === 'DIV' && !parent.className && !parent.id) {
+        parent.remove();
+      }
+    });
+
+
+  // Handler que añade indicador "↓ continúa" al pie cuando una tabla cruza páginas.
+  class TableContinueHandler extends Paged.Handler {
+    constructor(chunker, polisher, caller) {
+      super(chunker, polisher, caller);
+    }
+    afterPageLayout(pageElement, page, breakToken) {
+      try {
+        if (!breakToken || !breakToken.node) return;
+        let node = breakToken.node;
+        while (node && node.nodeName !== 'TABLE' && node.nodeType !== 9) {
+          node = node.parentNode;
+        }
+        if (!node || node.nodeName !== 'TABLE') return;
+
+        const tablesInPage = pageElement.querySelectorAll('table');
+        if (tablesInPage.length === 0) return;
+        const lastTable = tablesInPage[tablesInPage.length - 1];
+        if (lastTable.querySelector('tfoot.continued')) return;
+
+        const tfoot = document.createElement('tfoot');
+        tfoot.className = 'continued';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = lastTable.querySelectorAll('thead th').length || 1;
+        td.textContent = '↓ continúa en la página siguiente';
+        tr.appendChild(td);
+        tfoot.appendChild(tr);
+        lastTable.appendChild(tfoot);
+      } catch (e) { console.warn('TableContinueHandler:', e); }
+    }
+  }
+  Paged.registerHandlers(TableContinueHandler);
+
+    const previewer = new window.Paged.Previewer();
+    await previewer.preview();
+    if (!window.__PAGED_DONE__) window.__PAGED_DONE__ = true;
+  })();
+</script>
+
+</body>
+</html>
