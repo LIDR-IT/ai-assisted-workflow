@@ -1,13 +1,43 @@
 {
-  "experimental": {
-    "enableAgents": true
-  },
-  "context": {
-    "fileName": [
-      "AGENTS.md",
-      "CONTEXT.md",
-      "GEMINI.md",
-      "CLAUDE.md"
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "notify",
+            "type": "command",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.gemini/hooks/scripts/notify.sh\"",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "Read|read_file|Edit|Write|write_file|replace",
+        "hooks": [
+          {
+            "name": "protect-secrets",
+            "type": "command",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.gemini/hooks/scripts/protect-secrets.sh\"",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "Edit|Write|write_file|replace",
+        "hooks": [
+          {
+            "name": "auto-format",
+            "type": "command",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.gemini/hooks/scripts/auto-format.sh\"",
+            "timeout": 30000
+          }
+        ]
+      }
     ]
   },
   "mcpServers": {
@@ -34,46 +64,5 @@
       ],
       "env": {}
     }
-  },
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "name": "notify",
-            "type": "command",
-            "command": "bash \"${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/notify.sh\"",
-            "timeout": 5000
-          }
-        ]
-      }
-    ],
-    "BeforeTool": [
-      {
-        "matcher": "Read|read_file|Edit|Write|write_file|replace",
-        "hooks": [
-          {
-            "name": "protect-secrets",
-            "type": "command",
-            "command": "bash \"${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/protect-secrets.sh\"",
-            "timeout": 10000
-          }
-        ]
-      }
-    ],
-    "AfterTool": [
-      {
-        "matcher": "Edit|Write|write_file|replace",
-        "hooks": [
-          {
-            "name": "auto-format",
-            "type": "command",
-            "command": "bash \"${GEMINI_PROJECT_DIR}/.agents/hooks/scripts/auto-format.sh\"",
-            "timeout": 30000
-          }
-        ]
-      }
-    ]
   }
 }

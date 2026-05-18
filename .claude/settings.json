@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.agents/hooks/scripts/notify.sh\"",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/notify.sh\"",
             "timeout": 5
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.agents/hooks/scripts/protect-secrets.sh\"",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/protect-secrets.sh\"",
             "timeout": 10
           }
         ]
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.agents/hooks/scripts/auto-format.sh\"",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/auto-format.sh\"",
             "timeout": 30
           }
         ]
