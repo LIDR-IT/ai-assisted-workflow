@@ -42,8 +42,11 @@ const scanDirectory = (dirPath: string, extension: string): number => {
 
 const getMCPCount = (): number => {
   try {
-    const mcpConfigPath = '.mcp.json';
-    if (!fs.existsSync(mcpConfigPath)) {
+    // Try local .mcp.json first (legacy LIDR layout), then repo-root one level up
+    // (lidr-ecosystem monorepo: app/ is subdir, .mcp.json lives at repo root)
+    const candidates = ['.mcp.json', '../.mcp.json'];
+    const mcpConfigPath = candidates.find((p) => fs.existsSync(p));
+    if (!mcpConfigPath) {
       return 0;
     }
     const mcpConfig = JSON.parse(fs.readFileSync(mcpConfigPath, 'utf8'));
@@ -54,16 +57,72 @@ const getMCPCount = (): number => {
   }
 };
 
-// Dynamic filesystem-based counts
+// Try a list of candidate paths and use the first that exists.
+// Supports both legacy LIDR layout (.claude/* at app root) and the unified
+// lidr-ecosystem monorepo (.agents/* one level up).
+const scanFirstExisting = (candidates: string[], extension: string): number => {
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      return scanDirectory(p, extension);
+    }
+  }
+  return 0;
+};
+
+// Dynamic filesystem-based counts.
+// Each entry counts only the LIDR-specific artifacts (the methodology this app
+// documents). After the 2026-05-18 merge into lidr-ecosystem, LIDR artifacts
+// live under ../.agents/{rules/lidr-sdlc,subagents/lidr-*,hooks/lidr,
+// skills/lidr-*,_shared/lidr/validators}. The legacy `.claude/...` paths are
+// kept as fallback so the original repo continues to work standalone.
 const dynamicCounts = {
-  rules: () => scanDirectory('.claude/rules', '.md'),
-  hooks: () => scanDirectory('.claude/hooks', '.sh'),
-  agents: () => scanDirectory('.claude/agents', '.md'),
-  docsSupport: () => scanDirectory('docs', '.md'),
+  rules: () => scanFirstExisting(['.claude/rules', '../.agents/rules/lidr-sdlc'], '.md'),
+  hooks: () => scanFirstExisting(['.claude/hooks', '../.agents/hooks/lidr'], '.sh'),
+  agents: () => {
+    // Prefer legacy path; if absent, count only lidr-*.md in subagents/
+    if (fs.existsSync('.claude/agents')) {
+      return scanDirectory('.claude/agents', '.md');
+    }
+    const subagentsDir = '../.agents/subagents';
+    if (!fs.existsSync(subagentsDir)) {
+      return 0;
+    }
+    try {
+      return fs.readdirSync(subagentsDir).filter((f) => f.startsWith('lidr-') && f.endsWith('.md'))
+        .length;
+    } catch {
+      return 0;
+    }
+  },
+  docsSupport: () => scanFirstExisting(['docs', '../docs'], '.md'),
   validationScripts: () => {
-    const sharedValidators = scanDirectory('.claude/_shared/validators', '.ts') - 2; // Exclude index.ts, types.ts
-    const skillValidators = scanDirectory('.claude/skills', 'validate-examples.ts');
-    return Math.max(0, sharedValidators) + skillValidators;
+    // Legacy: .claude/_shared/validators/*.ts + .claude/skills/**/validate-examples.ts
+    if (fs.existsSync('.claude/_shared/validators') || fs.existsSync('.claude/skills')) {
+      const sharedValidators = scanDirectory('.claude/_shared/validators', '.ts') - 2;
+      const skillValidators = scanDirectory('.claude/skills', 'validate-examples.ts');
+      return Math.max(0, sharedValidators) + skillValidators;
+    }
+    // Monorepo: ../.agents/_shared/lidr/validators + ../.agents/skills/lidr-*/scripts/validate-examples.ts
+    const sharedDir = '../.agents/_shared/lidr/validators';
+    const skillsDir = '../.agents/skills';
+    let shared = 0;
+    if (fs.existsSync(sharedDir)) {
+      shared = Math.max(0, scanDirectory(sharedDir, '.ts') - 2);
+    }
+    let skillValidators = 0;
+    if (fs.existsSync(skillsDir)) {
+      try {
+        for (const d of fs.readdirSync(skillsDir)) {
+          if (!d.startsWith('lidr-')) {
+            continue;
+          }
+          skillValidators += scanDirectory(path.join(skillsDir, d), 'validate-examples.ts');
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return shared + skillValidators;
   },
   mcps: getMCPCount,
 };
