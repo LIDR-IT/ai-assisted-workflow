@@ -19,9 +19,10 @@ This repository is the result of merging two projects:
   automated synchronization to 5 AI platforms (Cursor, Claude Code, Gemini CLI,
   Antigravity, GitHub Copilot).
 
-The merge happened on **2026-05-18**. See
-[`.agents/.archive/2026-05-18-pre-lidr-merge/POST-MERGE-INVENTORY.md`](.agents/.archive/2026-05-18-pre-lidr-merge/POST-MERGE-INVENTORY.md)
-for the full inventory.
+The merge happened on **2026-05-18**. Pre-merge originals remain available
+outside this repo (`../LIDR - AI powered workflow 2026/` and
+`../ai-assisted-workflow/`); git history covers everything that was
+overwritten or replaced.
 
 ---
 
@@ -42,18 +43,17 @@ lidr-ecosystem/
 │   ├── subagents/                 # 9 agents
 │   │   ├── lidr-*.md              # 6 LIDR autonomous agents (qa, release, security, ...)
 │   │   └── *.md                   # 3 generic agents (doc-improver, pr-validator, ticket-enricher)
-│   ├── hooks/                     # 8 hooks
-│   │   ├── lidr/                  # 4 LIDR bash hooks (frontmatter-guard, load-context, ...)
-│   │   ├── scripts/               # 4 generic hooks (notify, auto-format, protect-secrets)
-│   │   └── hooks.json             # Cross-platform hook registry
+│   ├── hooks/                     # 6 hooks registered in hooks.json
+│   │   ├── lidr/                  # 3 LIDR bash hooks (frontmatter-guard, load-context, validate-ecosystem-counts)
+│   │   ├── scripts/               # 3 generic hooks (notify, auto-format, protect-secrets)
+│   │   └── hooks.json             # Cross-platform hook registry (5 events: PreToolUse, PostToolUse, Notification, SessionStart, Stop)
 │   ├── mcp/                       # MCP server configs (Context7)
 │   ├── _shared/lidr/              # LIDR shared validators
 │   ├── memory/lidr/               # LIDR persistent memory (docs-agent)
 │   ├── adapters/                  # Platform-specific transformations (cursor, claude, gemini, ...)
 │   ├── sync/                      # Component orchestrators
 │   ├── lib/                       # Shared bash libraries
-│   ├── sync.sh                    # ← Unified sync CLI
-│   └── .archive/                  # Pre-merge backups, diff reports, inventories
+│   └── sync.sh                    # ← Unified sync CLI
 │
 ├── app/                           ← React app: LIDR SDLC documentation UI
 │   ├── src/                       # React 18 + TypeScript + Vite + React Flow
@@ -189,9 +189,9 @@ Run `./.agents/sync.sh --help` for filtering by component or platform.
 - **pre-push**: enforces branch naming convention (`feature/PROJ-123-desc`,
   `release/vX.Y.Z`, `hotfix/PROJ-123-desc`, etc.).
 
-The original `app/.husky/` was archived to
-`.agents/.archive/2026-05-18-pre-lidr-merge/app-husky-inert/` (inert because
-only the root husky is effective — only one `.git/` exists in this monorepo).
+The original `app/.husky/` is no longer present in the repo — only the root
+husky is effective, since only one `.git/` exists in this monorepo. Git history
+preserves the inert hooks if they're ever needed for reference.
 
 ---
 
@@ -201,10 +201,9 @@ only the root husky is effective — only one `.git/` exists in this monorepo).
   tech stack conventions, workflow orchestration map
 - **Skills catalog**: Each skill has a `SKILL.md` with frontmatter (`name`, `id`,
   `description`, triggers, phase)
-- **Original LIDR `CLAUDE.md` (legacy)**: archived at
-  `.agents/.archive/2026-05-18-pre-lidr-merge/lidr-claude-root/CLAUDE.md`
-- **Original template README**: archived at
-  `.agents/.archive/2026-05-18-pre-lidr-merge/ORIGINAL-TEMPLATE-README.md`
+- **Pre-merge originals**: `../LIDR - AI powered workflow 2026/` (LIDR repo) and
+  `../ai-assisted-workflow/` (template). Git history covers everything removed
+  during the unification.
 
 ---
 
@@ -224,17 +223,17 @@ npm run client:list               # List registered clients
 
 ## Where things live
 
-| Looking for...                           | Look in...                                    |
-| ---------------------------------------- | --------------------------------------------- |
-| A LIDR skill (PRD, RF, ADR, sprint, ...) | `.agents/skills/lidr-{name}/SKILL.md`         |
-| A LIDR slash command                     | `.agents/commands/lidr-{name}.md`             |
-| A LIDR autonomous agent                  | `.agents/subagents/lidr-{name}.md`            |
-| The 8 SDLC phases and gates              | `.agents/rules/lidr-sdlc/org.md` (§4)         |
-| Project-specific context                 | `.agents/rules/lidr-sdlc/project.md`          |
-| Client configurations                    | `app/src/data/clients/{clientId}/`            |
-| Client registry                          | `app/src/data/client-registry.ts`             |
-| The unified sync logic                   | `.agents/sync.sh` + `.agents/sync/*.sh`       |
-| Pre-merge backups & diffs                | `.agents/.archive/2026-05-18-pre-lidr-merge/` |
+| Looking for...                           | Look in...                                                        |
+| ---------------------------------------- | ----------------------------------------------------------------- |
+| A LIDR skill (PRD, RF, ADR, sprint, ...) | `.agents/skills/lidr-{name}/SKILL.md`                             |
+| A LIDR slash command                     | `.agents/commands/lidr-{name}.md`                                 |
+| A LIDR autonomous agent                  | `.agents/subagents/lidr-{name}.md`                                |
+| The 8 SDLC phases and gates              | `.agents/rules/lidr-sdlc/org.md` (§4)                             |
+| Project-specific context                 | `.agents/rules/lidr-sdlc/project.md`                              |
+| Client configurations                    | `app/src/data/clients/{clientId}/`                                |
+| Client registry                          | `app/src/data/client-registry.ts`                                 |
+| The unified sync logic                   | `.agents/sync.sh` + `.agents/sync/*.sh`                           |
+| Pre-merge originals (read-only)          | `../LIDR - AI powered workflow 2026/`, `../ai-assisted-workflow/` |
 
 ---
 

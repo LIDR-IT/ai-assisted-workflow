@@ -33,7 +33,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 - **74 skills** (62 LIDR SDLC `lidr-*` + 12 generic meta-skills)
 - **30 commands** (23 LIDR `lidr-*` + 7 generic)
 - **9 subagents** (6 LIDR `lidr-*` + 3 generic)
-- **8 hooks** (4 LIDR + 4 generic, registered in `.agents/hooks/hooks.json`)
+- **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
 - MCP integration (Context7)
 - Git hooks via husky at repo root (pre-commit, commit-msg, pre-push)
 - React app in `app/` with Playwright validation
@@ -42,12 +42,11 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 are prefixed with `lidr-` (skills, commands, subagents, hooks; rules live in
 `lidr-sdlc/` subdirectory). Generic artifacts have no prefix.
 
-**Pre-merge originals** are preserved untouched:
+**Pre-merge originals** live outside this repo (git history covers everything
+that was deleted from `.agents/` during the merge):
 
 - `../LIDR - AI powered workflow 2026/` — original LIDR repo
 - `../ai-assisted-workflow/` — original template
-- `.agents/.archive/2026-05-18-pre-lidr-merge/` — diff reports + inventories
-  - archived versions of any file that was overwritten
 
 ---
 
@@ -188,14 +187,13 @@ ls .github/agents/*.agent.md
 │   └── mcp-servers.json      # ← Source (universal format)
 │
 ├── hooks/                    # Git workflow automation
-│   ├── hooks.json            # ← Source (hook definitions, supports 5 events)
+│   ├── hooks.json            # ← Source (6 hooks across 5 events: PreToolUse, PostToolUse, Notification, SessionStart, Stop)
 │   ├── scripts/              # notify.sh, auto-format.sh, protect-secrets.sh
 │   └── lidr/                 # ← LIDR: frontmatter-guard, load-context,
 │                             #   validate-ecosystem-counts (Claude-only)
 │
 ├── _shared/lidr/             # ← LIDR shared validators (BDD, AC, coherence)
 ├── memory/lidr/              # ← LIDR persistent memory (docs-agent)
-├── .archive/                 # ← Pre-merge backups + diff reports + inventories
 │
 ├── orchestrator/             # Orchestrator docs
 │   └── AGENTS.md             # ← This file
@@ -644,77 +642,116 @@ See [Adding an MCP Server](#adding-an-mcp-server) section above.
 
 ## Git Hooks System
 
-### Available Hooks (3)
+### Available Hooks (6 — verified against official docs)
 
-**1. notify.sh** - Notification events
+**Generic (3):**
 
-- Platform: Claude Code, Gemini CLI (NOT Cursor/Copilot - no Notification event)
-- Purpose: Send notifications for important events
-- Example: Notify on sync completion
+| Hook                 | Event          | Platforms                       | Purpose                                     |
+| -------------------- | -------------- | ------------------------------- | ------------------------------------------- |
+| `notify.sh`          | `Notification` | claude, gemini                  | Desktop notification when AI needs input    |
+| `auto-format.sh`     | `PostToolUse`  | claude, gemini, cursor, copilot | Run prettier on edited files                |
+| `protect-secrets.sh` | `PreToolUse`   | claude, gemini, copilot         | Block edits to `.env`, `.key`, `.pem`, etc. |
 
-**2. auto-format.sh** - Code formatting
+**LIDR (3, Claude-only):**
 
-- Platform: Claude Code, Gemini CLI, Cursor, Copilot
-- Purpose: Auto-format code before operations
-- Example: Run Prettier before commit
+| Hook                             | Event          | Purpose                                                       |
+| -------------------------------- | -------------- | ------------------------------------------------------------- |
+| `lidr-frontmatter-guard`         | `PreToolUse`   | Block .md writes missing YAML frontmatter in docs/agents      |
+| `lidr-load-context`              | `SessionStart` | Load project context (PROJECT_TYPE, DTC, stale-docs counters) |
+| `lidr-validate-ecosystem-counts` | `Stop`         | Sync 8 sources of truth, block on count drift                 |
 
-**3. protect-secrets.sh** - Secret detection
+### Hook Configuration Locations (actual schemas, verified May 2026)
 
-- Platform: Claude Code, Gemini CLI, Copilot
-- Purpose: Prevent committing secrets
-- Example: Block commit if `.env` file in staging
-
-### Hook Configuration Locations
-
-**Claude Code:** `.claude/settings.json` (PascalCase events)
+**Claude Code:** `.claude/settings.json` — events in PascalCase, field is `command`, timeout in seconds.
 
 ```json
 {
   "hooks": {
-    "PreToolUse": [{ "scriptPath": ".claude/hooks/protect-secrets.sh" }],
-    "PostToolUse": [{ "scriptPath": ".claude/hooks/auto-format.sh" }],
-    "Notification": [{ "scriptPath": ".claude/hooks/notify.sh" }]
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/protect-secrets.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
 ```
 
-**Gemini CLI:** `.gemini/settings.json` (BeforeTool/AfterTool)
+**Gemini CLI:** `.gemini/settings.json` — events `BeforeTool`/`AfterTool`/`Notification`, field `command`, **timeout in milliseconds**, `name` required.
 
 ```json
 {
   "hooks": {
-    "BeforeTool": [{ "scriptPath": ".gemini/hooks/protect-secrets.sh" }],
-    "AfterTool": [{ "scriptPath": ".gemini/hooks/auto-format.sh" }],
-    "Notification": [{ "scriptPath": ".gemini/hooks/notify.sh" }]
+    "AfterTool": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "name": "auto-format",
+            "type": "command",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.gemini/hooks/scripts/auto-format.sh\"",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
   }
 }
 ```
 
-**Cursor:** `.cursor/hooks.json` (camelCase, NO Notification)
+**Cursor:** `.cursor/hooks.json` — `version: 1`, events `afterFileEdit`/`afterTabFileEdit` (for PostToolUse mapping), field `command`, timeout in seconds. Cursor **does** support blocking via `preToolUse`/`beforeShellExecution`/`beforeReadFile`/`beforeMCPExecution` (current setup doesn't use these; protect-secrets relies on Husky pre-commit).
 
 ```json
 {
   "version": 1,
   "hooks": {
-    "preToolUse": [{ "scriptPath": ".cursor/hooks/protect-secrets.sh" }],
-    "postToolUse": [{ "scriptPath": ".cursor/hooks/auto-format.sh" }]
+    "afterFileEdit": [{ "command": "bash .cursor/hooks/scripts/auto-format.sh", "timeout": 30 }],
+    "afterTabFileEdit": [{ "command": "bash .cursor/hooks/scripts/auto-format.sh", "timeout": 30 }]
   }
 }
 ```
 
-**Copilot (VSCode):** `.github/hooks/hooks.json` (camelCase, NO Notification)
+**Copilot (VSCode):** `.github/hooks/hooks.json` — `version: 1`, events in PascalCase (`PreToolUse`/`PostToolUse`), field `type: "command"` **required**, timeout in seconds. VSCode parses `matcher` but **does not enforce it** (hooks run on every tool use). Notification event not supported.
 
 ```json
 {
   "version": 1,
   "hooks": {
-    "preToolUse": [{ "command": "bash .github/hooks/scripts/protect-secrets.sh" }],
-    "postToolUse": [{ "command": "bash .github/hooks/scripts/auto-format.sh" }]
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "type": "command",
+        "command": "bash .github/hooks/scripts/protect-secrets.sh",
+        "timeout": 10
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "type": "command",
+        "command": "bash .github/hooks/scripts/auto-format.sh",
+        "timeout": 30
+      }
+    ]
   }
 }
 ```
 
-**Scripts:** Symlinked from `.agents/hooks/scripts/`
+**Scripts:** Symlinked from `.agents/hooks/scripts/` (generic) and `.agents/hooks/lidr/` (LIDR-specific).
+
+**Official references:**
+
+- Claude Code hooks: https://code.claude.com/docs/en/hooks
+- Cursor hooks: https://cursor.com/docs/agent/hooks
+- Gemini CLI hooks: https://geminicli.com/docs/hooks
+- VSCode Copilot hooks: https://code.visualstudio.com/docs/copilot/customization/hooks
+- GitHub Copilot hooks reference: https://docs.github.com/en/copilot/reference/hooks-configuration
 
 ---
 
@@ -1040,4 +1077,3 @@ guidance.
 - `.agents/rules/lidr-sdlc/project.md` — current project context (active client)
 - `.agents/rules/lidr-sdlc/workflows.md` — workflow orchestration map
 - `.agents/rules/lidr-sdlc/documentation.md` — DTC ("Docs Travel with Code") governance
-- `.agents/.archive/2026-05-18-pre-lidr-merge/lidr-claude-root/CLAUDE.md` — original LIDR ecosystem index (v2.8.8)

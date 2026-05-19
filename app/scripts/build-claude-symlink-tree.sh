@@ -50,10 +50,10 @@ link() {
 }
 
 # ─── Top-level: CLAUDE.md, settings.json ──────────────────────────────────
-# Original LIDR ecosystem index preserved in .archive/
-link "$AGENTS_ABS/.archive/2026-05-18-pre-lidr-merge/lidr-claude-root/CLAUDE.md" \
+# Active orchestrator (root symlink → .agents/orchestrator/AGENTS.md)
+link "$APP_ABS/../CLAUDE.md" \
      ".claude/CLAUDE.md" \
-     "../../.agents/.archive/2026-05-18-pre-lidr-merge/lidr-claude-root/CLAUDE.md"
+     "../../CLAUDE.md"
 
 link "$APP_ABS/../.claude/settings.json" \
      ".claude/settings.json" \
