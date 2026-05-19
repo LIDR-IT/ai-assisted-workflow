@@ -8,27 +8,25 @@ sync_orchestrator() {
 
   require_file "$AGENTS_DIR/orchestrator/AGENTS.md" "Orchestrator source"
 
-  echo "Creating root-level symlinks..."
-
-  if run_or_dry "create root symlinks (AGENTS.md, CLAUDE.md, GEMINI.md)"; then
-    return 0
+  if [ "${NO_SYMLINKS:-false}" = true ]; then
+    echo "Copying root-level orchestrator (standalone)..."
+  else
+    echo "Creating root-level symlinks..."
   fi
 
+  # Let create_symlink emit per-file dry-run messages — it knows the mode.
   create_symlink ".agents/orchestrator/AGENTS.md" "$PROJECT_ROOT/AGENTS.md" "AGENTS.md"
   create_symlink ".agents/orchestrator/AGENTS.md" "$PROJECT_ROOT/CLAUDE.md" "CLAUDE.md"
   create_symlink ".agents/orchestrator/AGENTS.md" "$PROJECT_ROOT/GEMINI.md" "GEMINI.md"
+
+  [ "$DRY_RUN" = true ] && return 0
 
   echo ""
   echo "Verifying..."
 
   local errors=0
   for file in AGENTS.md CLAUDE.md GEMINI.md; do
-    if [ -L "$PROJECT_ROOT/$file" ]; then
-      log_info "$file → $(readlink "$PROJECT_ROOT/$file")"
-    else
-      log_error "$file: NOT a symlink"
-      ((errors++))
-    fi
+    verify_link_or_copy "$PROJECT_ROOT/$file" "$file" || ((errors++))
   done
 
   if [ $errors -gt 0 ]; then

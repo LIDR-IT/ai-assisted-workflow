@@ -8,6 +8,8 @@
 # Options:
 #   --platform=<list>       Sync only these platforms (comma-separated)
 #   --only=<list>           Sync only these components (comma-separated)
+#   --no-symlinks           Replace every symlink with a standalone copy so each
+#                           platform directory becomes independent of .agents/
 #   --dry-run               Preview changes without applying them
 #   --verbose               Show debug output
 #   --skip-yaml-check       Skip YAML frontmatter validation for rules
@@ -18,6 +20,7 @@
 #   ./sync.sh --platform=copilot           # Sync only Copilot
 #   ./sync.sh --platform=cursor,claude     # Sync Cursor and Claude
 #   ./sync.sh --only=rules,mcp            # Sync only rules and MCP
+#   ./sync.sh --no-symlinks                # Make platform dirs standalone copies
 #   ./sync.sh --platform=copilot --only=rules --dry-run
 #
 # Components: orchestrator, rules, skills, commands, agents, mcp, hooks
@@ -50,6 +53,7 @@ show_help() {
   echo "                        Available: $(list_platforms | tr '\n' ', ' | sed 's/,$//')"
   echo "  --only=<list>         Components to sync (comma-separated)"
   echo "                        Available: orchestrator, rules, skills, commands, agents, mcp, hooks"
+  echo "  --no-symlinks         Copy instead of symlinking — platform dirs become standalone"
   echo "  --dry-run             Preview changes without applying them"
   echo "  --verbose             Show debug output"
   echo "  --skip-yaml-check     Skip YAML frontmatter validation"
@@ -59,6 +63,7 @@ show_help() {
   echo "  ./sync.sh                            # Full sync"
   echo "  ./sync.sh --platform=copilot         # Sync only Copilot"
   echo "  ./sync.sh --only=rules,mcp           # Sync only rules and MCP"
+  echo "  ./sync.sh --no-symlinks              # Standalone copies (no symlinks to .agents/)"
   echo "  ./sync.sh --dry-run                  # Preview all changes"
   exit 0
 }
@@ -69,11 +74,13 @@ ALL_COMPONENTS=(orchestrator rules skills commands agents mcp hooks)
 SELECTED_PLATFORMS=()
 SELECTED_COMPONENTS=()
 SKIP_YAML_CHECK=false
+NO_SYMLINKS=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --platform=*)  IFS=',' read -ra SELECTED_PLATFORMS <<< "${1#*=}" ;;
     --only=*)      IFS=',' read -ra SELECTED_COMPONENTS <<< "${1#*=}" ;;
+    --no-symlinks) NO_SYMLINKS=true ;;
     --dry-run)     DRY_RUN=true ;;
     --verbose)     VERBOSE=true ;;
     --skip-yaml-check) SKIP_YAML_CHECK=true ;;
@@ -92,7 +99,7 @@ fi
 [ ${#SELECTED_COMPONENTS[@]} -eq 0 ] && SELECTED_COMPONENTS=("${ALL_COMPONENTS[@]}")
 
 # Export for child scripts
-export DRY_RUN VERBOSE SKIP_YAML_CHECK
+export DRY_RUN VERBOSE SKIP_YAML_CHECK NO_SYMLINKS
 
 # ── Validate selections ──────────────────────────────────────
 for p in "${SELECTED_PLATFORMS[@]}"; do
@@ -123,6 +130,11 @@ echo ""
 
 if [ "$DRY_RUN" = true ]; then
   log_warn "DRY RUN MODE - No changes will be made"
+  echo ""
+fi
+
+if [ "$NO_SYMLINKS" = true ]; then
+  log_warn "NO-SYMLINKS MODE - Platform directories will be standalone copies"
   echo ""
 fi
 
