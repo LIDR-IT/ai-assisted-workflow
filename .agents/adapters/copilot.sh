@@ -267,12 +267,19 @@ copilot_agents() {
   local count=0
   for md_file in "$AGENTS_DIR/subagents"/*.md; do
     [ -f "$md_file" ] || continue
-    local base_name
+    local base_name source_ext
     base_name=$(basename "$md_file" .md)
+    # Strip trailing ".agent" if the source already uses BMad's `.agent.md` convention,
+    # so we don't produce `foo.agent.agent.md` after re-appending `.agent.md` below.
+    source_ext=".md"
+    if [[ "$base_name" == *.agent ]]; then
+      base_name=${base_name%.agent}
+      source_ext=".agent.md"
+    fi
     local agent_file="$COPILOT_DIR/agents/${base_name}.agent.md"
 
     _copilot_convert_to_agent "$md_file" "$agent_file"
-    log_detail "${base_name}.md → ${base_name}.agent.md"
+    log_detail "${base_name}${source_ext} → ${base_name}.agent.md"
     ((count++))
   done
 
@@ -468,9 +475,16 @@ copilot_verify() {
 
   # Agents
   if [ -d "$COPILOT_DIR/agents" ]; then
-    local agent_count
+    local agent_count double_ext_count
     agent_count=$(find "$COPILOT_DIR/agents" -name "*.agent.md" 2>/dev/null | wc -l | tr -d ' ')
     log_info "copilot agents: $agent_count .agent.md files"
+    # Regression guard: source files using BMad's .agent.md convention were producing
+    # foo.agent.agent.md before the fix in copilot_agents(). Fail loudly if it returns.
+    double_ext_count=$(find "$COPILOT_DIR/agents" -name "*.agent.agent.md" 2>/dev/null | wc -l | tr -d ' ')
+    if [ "$double_ext_count" -gt 0 ]; then
+      log_error "copilot agents: $double_ext_count file(s) with double extension .agent.agent.md (sync bug regressed)"
+      ((errors++))
+    fi
   else
     log_error "copilot agents: Directory not found"
     ((errors++))
