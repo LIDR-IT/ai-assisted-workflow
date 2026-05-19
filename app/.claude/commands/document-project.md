@@ -1,0 +1,1 @@
+../../../.agents/commands/lidr-document-project.md

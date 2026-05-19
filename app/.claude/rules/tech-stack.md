@@ -1,0 +1,1 @@
+../../../.agents/rules/lidr-sdlc/tech-stack.md

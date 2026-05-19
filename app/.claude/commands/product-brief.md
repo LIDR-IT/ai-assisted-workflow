@@ -1,0 +1,1 @@
+../../../.agents/commands/lidr-product-brief.md

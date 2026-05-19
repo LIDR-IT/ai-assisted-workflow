@@ -1,0 +1,1 @@
+../../../.agents/commands/lidr-course-correct.md

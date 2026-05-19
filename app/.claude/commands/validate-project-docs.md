@@ -1,0 +1,1 @@
+../../../.agents/commands/lidr-validate-project-docs.md

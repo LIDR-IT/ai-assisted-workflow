@@ -1,0 +1,1 @@
+../../../.agents/commands/lidr-sync-docs.md

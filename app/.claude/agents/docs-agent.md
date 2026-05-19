@@ -1,0 +1,1 @@
+../../../.agents/subagents/lidr-docs-agent.md

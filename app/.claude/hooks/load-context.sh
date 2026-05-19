@@ -1,0 +1,1 @@
+../../../.agents/hooks/lidr/load-context.sh
