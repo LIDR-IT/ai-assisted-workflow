@@ -56,10 +56,7 @@ are prefixed with `lidr-` (skills, commands, subagents, hooks; rules live in
 ### Development Workflow (root)
 
 ```bash
-# Documentation site (VitePress, lives in docs/)
-npm run docs:dev          # Start VitePress dev server
-npm run docs:build        # Build static documentation
-npm run docs:preview      # Preview built site
+# Documentation site lives in app/ (React + Vite). See "React App (in app/)" below.
 
 # Linting and Formatting (top-level files)
 npm run format            # Format all files with Prettier

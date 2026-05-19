@@ -57,13 +57,53 @@ const getMCPCount = (): number => {
   }
 };
 
-// Try a list of candidate paths and use the first that exists.
-// Supports both legacy LIDR layout (.claude/* at app root) and the unified
-// lidr-ecosystem monorepo (.agents/* one level up).
+// Runtime environment detection.
+// `fs` and `path` are Node-only. In the browser (Vite dev/build), they are
+// externalized stubs that THROW on property access. Every filesystem helper
+// below short-circuits to a safe fallback when not running in Node.
+const IS_NODE =
+  typeof process !== 'undefined' &&
+  typeof process.versions !== 'undefined' &&
+  typeof process.versions.node === 'string';
+
+// Hardcoded fallbacks for the browser (where filesystem scanning is impossible).
+// These reflect the LIDR SDLC ecosystem state captured at merge time
+// (2026-05-18). The Vitest/Node side uses real scans and overrides this.
+const BROWSER_FALLBACK_COUNTS = {
+  rules: 5, // .agents/rules/lidr-sdlc/*.md (org, project, tech-stack, workflows, documentation)
+  hooks: 4, // .agents/hooks/lidr/*.sh
+  agents: 6, // .agents/subagents/lidr-*.md (qa, release, security, onboarding, docs, metrics)
+  docsSupport: 33, // .agents/.archive/.../lidr-claude-root/.../docs/ count snapshot
+  validationScripts: 55, // skill validators + shared validators
+  mcps: 4, // .mcp.json servers
+} as const;
+
+// Wrap a Node-only computation: returns BROWSER_FALLBACK_COUNTS[key] in the
+// browser, the result of `fn()` (with try/catch) in Node, 0 on any error.
+const nodeOnly = <K extends keyof typeof BROWSER_FALLBACK_COUNTS>(
+  key: K,
+  fn: () => number
+): number => {
+  if (!IS_NODE) {
+    return BROWSER_FALLBACK_COUNTS[key];
+  }
+  try {
+    return fn();
+  } catch {
+    return BROWSER_FALLBACK_COUNTS[key];
+  }
+};
+
+// Try a list of candidate paths and use the first that exists. Node-only.
 const scanFirstExisting = (candidates: string[], extension: string): number => {
   for (const p of candidates) {
-    if (fs.existsSync(p)) {
-      return scanDirectory(p, extension);
+    try {
+      if (fs.existsSync(p)) {
+        return scanDirectory(p, extension);
+      }
+    } catch {
+      // fs externalized in browser → try the next candidate (will also throw,
+      // but the wrapping nodeOnly() catches at the top level)
     }
   }
   return 0;
@@ -76,55 +116,52 @@ const scanFirstExisting = (candidates: string[], extension: string): number => {
 // skills/lidr-*,_shared/lidr/validators}. The legacy `.claude/...` paths are
 // kept as fallback so the original repo continues to work standalone.
 const dynamicCounts = {
-  rules: () => scanFirstExisting(['.claude/rules', '../.agents/rules/lidr-sdlc'], '.md'),
-  hooks: () => scanFirstExisting(['.claude/hooks', '../.agents/hooks/lidr'], '.sh'),
-  agents: () => {
-    // Prefer legacy path; if absent, count only lidr-*.md in subagents/
-    if (fs.existsSync('.claude/agents')) {
-      return scanDirectory('.claude/agents', '.md');
-    }
-    const subagentsDir = '../.agents/subagents';
-    if (!fs.existsSync(subagentsDir)) {
-      return 0;
-    }
-    try {
+  rules: () =>
+    nodeOnly('rules', () =>
+      scanFirstExisting(['.claude/rules', '../.agents/rules/lidr-sdlc'], '.md')
+    ),
+  hooks: () =>
+    nodeOnly('hooks', () => scanFirstExisting(['.claude/hooks', '../.agents/hooks/lidr'], '.sh')),
+  agents: () =>
+    nodeOnly('agents', () => {
+      if (fs.existsSync('.claude/agents')) {
+        return scanDirectory('.claude/agents', '.md');
+      }
+      const subagentsDir = '../.agents/subagents';
+      if (!fs.existsSync(subagentsDir)) {
+        return 0;
+      }
       return fs.readdirSync(subagentsDir).filter((f) => f.startsWith('lidr-') && f.endsWith('.md'))
         .length;
-    } catch {
-      return 0;
-    }
-  },
-  docsSupport: () => scanFirstExisting(['docs', '../docs'], '.md'),
-  validationScripts: () => {
-    // Legacy: .claude/_shared/validators/*.ts + .claude/skills/**/validate-examples.ts
-    if (fs.existsSync('.claude/_shared/validators') || fs.existsSync('.claude/skills')) {
-      const sharedValidators = scanDirectory('.claude/_shared/validators', '.ts') - 2;
-      const skillValidators = scanDirectory('.claude/skills', 'validate-examples.ts');
-      return Math.max(0, sharedValidators) + skillValidators;
-    }
-    // Monorepo: ../.agents/_shared/lidr/validators + ../.agents/skills/lidr-*/scripts/validate-examples.ts
-    const sharedDir = '../.agents/_shared/lidr/validators';
-    const skillsDir = '../.agents/skills';
-    let shared = 0;
-    if (fs.existsSync(sharedDir)) {
-      shared = Math.max(0, scanDirectory(sharedDir, '.ts') - 2);
-    }
-    let skillValidators = 0;
-    if (fs.existsSync(skillsDir)) {
-      try {
+    }),
+  docsSupport: () => nodeOnly('docsSupport', () => scanFirstExisting(['docs', '../docs'], '.md')),
+  validationScripts: () =>
+    nodeOnly('validationScripts', () => {
+      // Legacy: .claude/_shared/validators/*.ts + .claude/skills/**/validate-examples.ts
+      if (fs.existsSync('.claude/_shared/validators') || fs.existsSync('.claude/skills')) {
+        const sharedValidators = scanDirectory('.claude/_shared/validators', '.ts') - 2;
+        const skillValidators = scanDirectory('.claude/skills', 'validate-examples.ts');
+        return Math.max(0, sharedValidators) + skillValidators;
+      }
+      // Monorepo: ../.agents/_shared/lidr/validators + ../.agents/skills/lidr-*/scripts/validate-examples.ts
+      const sharedDir = '../.agents/_shared/lidr/validators';
+      const skillsDir = '../.agents/skills';
+      let shared = 0;
+      if (fs.existsSync(sharedDir)) {
+        shared = Math.max(0, scanDirectory(sharedDir, '.ts') - 2);
+      }
+      let skillValidators = 0;
+      if (fs.existsSync(skillsDir)) {
         for (const d of fs.readdirSync(skillsDir)) {
           if (!d.startsWith('lidr-')) {
             continue;
           }
           skillValidators += scanDirectory(path.join(skillsDir, d), 'validate-examples.ts');
         }
-      } catch {
-        // ignore
       }
-    }
-    return shared + skillValidators;
-  },
-  mcps: getMCPCount,
+      return shared + skillValidators;
+    }),
+  mcps: () => nodeOnly('mcps', getMCPCount),
 };
 
 // Artifact Counts (automatically computed)
