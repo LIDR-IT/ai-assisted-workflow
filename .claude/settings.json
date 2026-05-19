@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/lidr/frontmatter-guard.sh\"",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/frontmatter-guard.sh\"",
             "timeout": 10
           }
         ]
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/lidr/load-context.sh\"",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/load-context.sh\"",
             "timeout": 15
           }
         ]
@@ -64,7 +64,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/lidr/validate-ecosystem-counts.sh\"",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/validate-ecosystem-counts.sh\"",
             "timeout": 30
           }
         ]

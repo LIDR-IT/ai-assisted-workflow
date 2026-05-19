@@ -24,6 +24,17 @@
             "timeout": 10000
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "name": "frontmatter-guard",
+            "type": "command",
+            "command": "bash \"${GEMINI_PROJECT_DIR}/.gemini/hooks/scripts/frontmatter-guard.sh\"",
+            "timeout": 10000
+          }
+        ]
       }
     ],
     "AfterTool": [

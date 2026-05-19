@@ -3,9 +3,11 @@
   "description": "Cross-platform hooks for AI-assisted development workflow",
   "_notes": {
     "platforms": "Valid values: cursor, claude, gemini, copilot",
-    "cursor_limitation": "Cursor lacks PreToolUse (no blocking). auto-format is 'nice to have', Husky pre-commit guarantees formatting",
-    "copilot_limitation": "Copilot uses same format as Cursor (camelCase events, no Notification)",
-    "sync_behavior": "sync.sh --only=hooks reads 'platforms' field to generate platform-specific configs"
+    "cursor_note": "Cursor does support blocking hooks (preToolUse, beforeShellExecution, beforeReadFile, beforeMCPExecution) with failClosed:true. Current setup deploys only auto-format → afterFileEdit/afterTabFileEdit; protect-secrets relies on Husky pre-commit for now.",
+    "copilot_note": "VSCode/Copilot reads .github/hooks/hooks.json with PascalCase event names + required type:'command' field. Matchers are parsed but NOT enforced by VSCode (hooks run on every tool use). Notification event is not supported.",
+    "timeout_units": "Source uses seconds. Adapters convert: Claude/Cursor/Copilot keep seconds; Gemini multiplies by 1000 (ms).",
+    "sync_behavior": "sync.sh --only=hooks reads 'platforms' field to generate platform-specific configs",
+    "event_support": "SessionStart and Stop are emitted only by the claude adapter; the gemini/cursor/copilot adapters do not generate those events even if a hook lists them in 'platforms'."
   },
   "hooks": {
     "notify": {
@@ -14,7 +16,7 @@
       "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/notify.sh\"",
       "timeout": 5,
       "platforms": ["claude", "gemini"],
-      "description": "Desktop notifications for task completion"
+      "description": "Desktop notification when the agent needs attention or finishes a task."
     },
     "auto-format": {
       "event": "PostToolUse",
@@ -22,7 +24,7 @@
       "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/auto-format.sh\"",
       "timeout": 30,
       "platforms": ["claude", "gemini", "cursor", "copilot"],
-      "description": "Auto-format files with prettier after edits (Cursor/Copilot: best-effort, Husky guarantees)"
+      "description": "Run prettier on the edited file after each Edit/Write. Cursor/Copilot deploy this best-effort; Husky pre-commit guarantees formatting at commit time."
     },
     "protect-secrets": {
       "event": "PreToolUse",
@@ -30,31 +32,31 @@
       "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/protect-secrets.sh\"",
       "timeout": 10,
       "platforms": ["claude", "gemini", "copilot"],
-      "description": "Block edits to sensitive files (.env, .key, .pem, etc.)"
+      "description": "Block reads/edits to sensitive files (.env, .key, .pem, secrets/, credentials/)."
     },
-    "lidr-frontmatter-guard": {
+    "frontmatter-guard": {
       "event": "PreToolUse",
       "matcher": "Edit|Write",
-      "command": "bash \"${PLUGIN_ROOT}/hooks/lidr/frontmatter-guard.sh\"",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/frontmatter-guard.sh\"",
       "timeout": 10,
-      "platforms": ["claude"],
-      "description": "LIDR SDLC: enforce YAML frontmatter on .md files in docs/, .agents/rules/, .agents/skills/. Blocks on missing frontmatter, warns on stale last_updated."
+      "platforms": ["claude", "gemini", "copilot"],
+      "description": "Enforce YAML frontmatter on .md files under docs/, .agents/rules/, .agents/skills/. Blocks creation without frontmatter; warns on stale last_updated. Claude reads the JSON decision; other platforms block via non-zero exit."
     },
-    "lidr-load-context": {
+    "load-context": {
       "event": "SessionStart",
       "matcher": "*",
-      "command": "bash \"${PLUGIN_ROOT}/hooks/lidr/load-context.sh\"",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/load-context.sh\"",
       "timeout": 15,
       "platforms": ["claude"],
-      "description": "LIDR SDLC: load project context at session start (PROJECT_TYPE, DTC_ACTIVE, stale docs detection)."
+      "description": "Load project context at session start: PROJECT_TYPE, DTC_ACTIVE, stale docs count, ecosystem artifact counts. Only Claude's adapter currently emits SessionStart hooks."
     },
-    "lidr-validate-ecosystem-counts": {
+    "validate-ecosystem-counts": {
       "event": "Stop",
       "matcher": "*",
-      "command": "bash \"${PLUGIN_ROOT}/hooks/lidr/validate-ecosystem-counts.sh\"",
+      "command": "bash \"${PLUGIN_ROOT}/hooks/scripts/validate-ecosystem-counts.sh\"",
       "timeout": 30,
       "platforms": ["claude"],
-      "description": "LIDR SDLC: sync 8 sources of truth at session end, block on count drift (skills, commands, rules, etc.)."
+      "description": "At session end, count actual artifacts under .agents/ and report drift vs. CLAUDE.md. Only Claude's adapter currently emits Stop hooks."
     }
   }
 }

@@ -1,18 +1,24 @@
 #!/bin/bash
-# ═══════════════════════════════════════════════════════════════
-# Hook: context-loader
-# Evento: SessionStart (Claude Code)
-# Proposito: Carga contexto del proyecto al iniciar sesion
-# Doc: docs/hooks/context-loader.md
-# ═══════════════════════════════════════════════════════════════
+# load-context.sh — SessionStart hook
+#
+# Reads project state from the .agents/ source-of-truth and the working tree,
+# then exports a set of context variables Claude can read on session start.
+#
+# Currently emitted only by the claude adapter (Cursor/Copilot don't support
+# SessionStart, and Gemini's adapter doesn't yet generate it). The script is
+# platform-agnostic in its file probes so it can be reused when other adapters
+# add SessionStart support.
+
 set -euo pipefail
 
-# Set working directory to project root
+# Resolve project root: prefer the platform's hook env var, fall back to
+# walking up from the script location (works for any caller).
 if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
   PROJECT_DIR="$CLAUDE_PROJECT_DIR"
+elif [ -n "${GEMINI_PROJECT_DIR:-}" ]; then
+  PROJECT_DIR="$GEMINI_PROJECT_DIR"
 else
-  # Default to current working directory when not set
-  PROJECT_DIR="$(pwd)"
+  PROJECT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 fi
 cd "$PROJECT_DIR" || exit 1
 
@@ -56,7 +62,8 @@ elif [ -f "pom.xml" ] || [ -f "build.gradle" ]; then
 fi
 
 # ── 2. DTC (Docs Travel With Code) status ──
-if [ -f ".claude/rules/documentation.md" ]; then
+# Read from the source-of-truth tree so the check works on any platform.
+if [ -f ".agents/rules/lidr-sdlc/documentation.md" ]; then
   echo "export DTC_ACTIVE=true" >> "$ENV_FILE"
 else
   echo "export DTC_ACTIVE=false" >> "$ENV_FILE"
@@ -65,37 +72,37 @@ fi
 # ── 3. Contar docs stale (last_updated > 90 dias) ──
 stale_count=0
 if command -v find &> /dev/null; then
-  stale_count=$(find docs/ .claude/rules/ -name "*.md" -mtime +90 2>/dev/null | wc -l | tr -d ' ')
+  stale_count=$(find docs/ .agents/rules/ -name "*.md" -mtime +90 2>/dev/null | wc -l | tr -d ' ')
 fi
 echo "export STALE_DOCS_COUNT=$stale_count" >> "$ENV_FILE"
 
 # ── 4. Detectar integridad ──
-if [ -f "src/app/components/diagrams/IntegrityTests.tsx" ]; then
+if [ -f "app/src/app/components/features/integrity-tests/IntegrityTests.tsx" ] \
+  || [ -f "src/app/components/diagrams/IntegrityTests.tsx" ]; then
   echo "export HAS_INTEGRITY_TESTS=true" >> "$ENV_FILE"
 fi
 
-# ── 5. Contar artefactos del ecosistema ──
+# ── 5. Contar artefactos del ecosistema (siempre desde .agents/) ──
 skill_count=0
 command_count=0
 rule_count=0
 hook_count=0
 checklist_count=0
 
-if [ -d ".claude/skills" ]; then
-  skill_count=$(find .claude/skills/ -name "SKILL.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+if [ -d ".agents/skills" ]; then
+  skill_count=$(find .agents/skills/ -name "SKILL.md" -type f 2>/dev/null | wc -l | tr -d ' ')
 fi
-if [ -d ".claude/commands" ]; then
-  command_count=$(find .claude/commands/ -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+if [ -d ".agents/commands" ]; then
+  command_count=$(find .agents/commands/ -maxdepth 1 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
 fi
-if [ -d ".claude/rules" ]; then
-  rule_count=$(find .claude/rules/ -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+if [ -d ".agents/rules" ]; then
+  rule_count=$(find .agents/rules/ -name "*.md" -type f ! -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
 fi
-if [ -d "docs/hooks" ]; then
-  # Exclude README.md — count individual hook docs only
-  hook_count=$(find docs/hooks/ -name "*.md" -not -name "README.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+if [ -d ".agents/hooks/scripts" ]; then
+  hook_count=$(find .agents/hooks/scripts/ -maxdepth 1 -name "*.sh" -type f 2>/dev/null | wc -l | tr -d ' ')
 fi
-if [ -d "docs/checklists" ]; then
-  checklist_count=$(find .claude/skills/ -name "checklists" -type d 2>/dev/null | wc -l | tr -d ' ')
+if [ -d ".agents/skills" ]; then
+  checklist_count=$(find .agents/skills/ -name "checklists" -type d 2>/dev/null | wc -l | tr -d ' ')
 fi
 
 echo "export ECOSYSTEM_SKILLS=$skill_count" >> "$ENV_FILE"

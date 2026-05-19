@@ -7,6 +7,12 @@
         "type": "command",
         "command": "bash .github/hooks/scripts/protect-secrets.sh",
         "timeout": 10
+      },
+      {
+        "matcher": "Edit|Write",
+        "type": "command",
+        "command": "bash .github/hooks/scripts/frontmatter-guard.sh",
+        "timeout": 10
       }
     ],
     "PostToolUse": [
