@@ -73,7 +73,7 @@ export function ArtifactList({ artifacts, itemsPerPage = 20 }: ArtifactListProps
                   className={`inline-block px-2 py-0.5 text-[10px] font-semibold tracking-wider rounded-md ${
                     artifact.source === 'bmad'
                       ? 'bg-amber-100 text-amber-800'
-                      : artifact.source === 'generic'
+                      : artifact.source === 'anytime'
                         ? 'bg-slate-200 text-slate-700'
                         : 'bg-emerald-100 text-emerald-800'
                   }`}

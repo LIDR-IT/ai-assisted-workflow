@@ -3,7 +3,7 @@
  * Centralizes all skills data to eliminate duplication across components
  */
 
-export type SkillSource = 'lidr' | 'bmad' | 'generic';
+export type SkillSource = 'lidr' | 'bmad' | 'anytime';
 
 export interface Skill {
   id: string;
@@ -504,7 +504,7 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/postmortem/SKILL.md',
   },
 
-  // Cross-cutting (3)
+  // Cross-cutting (5 in this section; total Cross-cutting incl. additional below = 9)
   {
     id: 'generate-rule',
     name: 'generate-rule',
@@ -540,14 +540,67 @@ export const skills: Skill[] = [
     gateContribution: 'All Gates',
     docPath: '.claude/skills/gate-evaluation/SKILL.md',
   },
+  {
+    id: 'commit-management',
+    name: 'commit-management',
+    phase: 'Cross-cutting',
+    phaseNum: 99,
+    source: 'anytime',
+    description:
+      'Git commit best practices: conventional commits, fix/amend/rebase/squash, atomic commits, commit history management',
+    triggers: [
+      'conventional commits',
+      'fix commit',
+      'amend commit',
+      'rewrite history',
+      'rebase squash',
+    ],
+    roles: ['Dev', 'TL', 'DevOps'],
+    docPath: '.claude/skills/commit-management/SKILL.md',
+  },
+  {
+    id: 'ticket-validation',
+    name: 'ticket-validation',
+    phase: 'Cross-cutting',
+    phaseNum: 99,
+    source: 'anytime',
+    description:
+      'Validate ticket structure: YAML frontmatter, acceptance criteria specificity, Definition of Done, BDD scenarios. Used pre-refinement and pre-PR.',
+    triggers: [
+      'validate ticket',
+      'check YAML frontmatter',
+      'verify acceptance criteria',
+      'validate DoD',
+      'validate BDD',
+    ],
+    roles: ['PO', 'QA', 'Dev'],
+    docPath: '.claude/skills/ticket-validation/SKILL.md',
+  },
 
-  // Development (3)
+  // Development (4)
+  {
+    id: 'agents-architecture',
+    name: 'agents-architecture',
+    phase: 'Development',
+    phaseNum: 100,
+    source: 'anytime',
+    description:
+      'Meta-skill entry-point for .agents/ ecosystem authoring: create skills/commands/subagents with automatic sync across 5 AI platforms (Cursor, Claude Code, Gemini, Antigravity, Copilot)',
+    triggers: [
+      'create a skill',
+      'create a subagent',
+      'add command to .agents',
+      'agents architecture',
+    ],
+    roles: ['TL'],
+    docPath: '.claude/skills/agents-architecture/SKILL.md',
+  },
   {
     id: 'command-development',
     name: 'command-development',
     phase: 'Development',
     phaseNum: 100,
-    source: 'generic',
+    source: 'anytime',
     description:
       'Design and implement slash commands for Claude Code with YAML frontmatter structure',
     triggers: ['command development', 'slash command', 'create command'],

@@ -26,7 +26,7 @@ export type ArtifactType =
   | 'agent'
   | 'doc';
 
-export type ArtifactSource = 'lidr' | 'bmad' | 'generic';
+export type ArtifactSource = 'lidr' | 'bmad' | 'anytime';
 
 export interface Artifact {
   id: string;
