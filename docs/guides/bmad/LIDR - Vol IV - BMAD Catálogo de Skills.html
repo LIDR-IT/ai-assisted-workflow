@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>BMAD Catálogo de Skills · Libro 4 de 5 | LIDR.co</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1A1A1A; --ink-soft: #333; --ink-mute: #666;
+    --gold: #F6DE82; --gold-deep: #D4B85C;
+    --cream: #FBEFC0; --cream-soft: #FFF8E1;
+    --paper: #FFFFFF; --line: #E6E6E6; --line-strong: #1A1A1A;
+
+    --mod-bmm: #E2B324; --mod-tea: #27AE60; --mod-cis: #9B59B6;
+    --mod-bmb: #3498DB; --mod-core: #95A5A6;
+
+    --req: #C0392B; --rec: #D4B85C; --opc: #B0B0B0;
+
+    --lidr-vision: #4A4A8A; --lidr-recom: #C97D2A;
+
+    --info: #2E86C1; --tip: #229954; --caution: #D4AC0D; --important: #C0392B;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink-soft); background: var(--paper);
+    font-size: 11px; line-height: 1.6;
+  }
+
+  /* COVER */
+  .cover {
+    page-break-after: always;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    min-height: 100vh; text-align: center;
+    background: var(--ink); color: #fff; padding: 60px 50px;
+  }
+  .cover .vol-tag {
+    font-size: 11px; color: var(--gold);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 18px; font-weight: 600;
+  }
+  .cover h1 {
+    font-size: 42px; font-weight: 700; color: #fff;
+    margin-bottom: 8px; letter-spacing: -0.5px;
+  }
+  .cover h1 span { color: var(--gold); }
+  .cover .subtitle {
+    font-size: 16px; color: var(--gold);
+    font-weight: 500; margin-bottom: 36px; max-width: 480px;
+  }
+  .cover .logo-bar {
+    width: 80px; height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+    border-radius: 2px; margin: 24px auto;
+  }
+  .cover .meta {
+    font-size: 12px; color: #cccccc;
+    line-height: 1.9; max-width: 460px;
+  }
+  .cover .meta strong { color: var(--gold); }
+  .cover .cover-version {
+    font-size: 10px; color: #999;
+    margin-top: 48px; letter-spacing: 1px;
+  }
+
+  /* CONTENT */
+  .content { padding: 36px 52px; max-width: 920px; margin: 0 auto; }
+
+  h2 {
+    font-size: 22px; font-weight: 700; color: var(--ink);
+    margin: 36px 0 6px 0; padding-bottom: 8px;
+    border-bottom: 3px solid var(--gold); letter-spacing: -0.2px;
+  }
+  h2:first-child { margin-top: 0; }
+  h2 .num { color: var(--gold-deep); font-weight: 800; margin-right: 10px; }
+
+  h3 {
+    font-size: 15px; font-weight: 700; color: var(--ink);
+    margin: 22px 0 8px 0; letter-spacing: -0.1px;
+  }
+  h3 .num { color: var(--gold-deep); margin-right: 6px; }
+
+  h4 {
+    font-size: 12px; font-weight: 700; color: var(--ink);
+    margin: 16px 0 6px 0; text-transform: uppercase; letter-spacing: 0.6px;
+  }
+
+  h5 {
+    font-size: 9.5px; font-weight: 800; color: var(--ink-mute);
+    margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+
+  p, li { font-size: 11px; color: var(--ink-soft); margin-bottom: 5px; }
+  ul, ol { margin: 4px 0 8px 18px; }
+  li { margin-bottom: 3px; }
+  strong { color: var(--ink); }
+  em { font-style: italic; }
+
+  .lead { font-size: 12.5px; color: var(--ink); line-height: 1.7; margin-bottom: 12px; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 10px 0 18px 0; font-size: 10px;
+  }
+  thead th {
+    background: var(--ink); color: var(--gold);
+    font-weight: 600; text-align: left; padding: 9px 11px;
+    border-bottom: 2px solid var(--gold); font-size: 10px; letter-spacing: 0.2px;
+  }
+  tbody td {
+    padding: 7px 10px; border-bottom: 1px solid var(--line);
+    vertical-align: top; color: var(--ink-soft);
+  }
+  tbody tr:nth-child(even) { background: #FAFAF6; }
+  tbody tr:nth-child(odd) { background: #ffffff; }
+  tbody td strong { color: var(--ink); }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: var(--cream); padding: 1px 6px;
+    border-radius: 3px; font-size: 9.5px; color: var(--ink);
+    border: 1px solid #E6D98A; display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* MODULE DOTS */
+  .mod {
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; vertical-align: middle;
+    margin-right: 4px; margin-left: 2px;
+  }
+  .mod.bmm { background: var(--mod-bmm); }
+  .mod.tea { background: var(--mod-tea); }
+  .mod.cis { background: var(--mod-cis); }
+  .mod.bmb { background: var(--mod-bmb); }
+  .mod.core { background: var(--mod-core); }
+
+  /* BADGES */
+  .req-badge {
+    display: inline-block; font-size: 8px; font-weight: 700;
+    padding: 2px 7px; border-radius: 3px; vertical-align: middle;
+    margin-left: 5px; letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .req-badge.req { background: var(--req); color: #fff; }
+  .req-badge.rec { background: var(--gold); color: var(--ink); }
+  .req-badge.opc { background: #E8E8E8; color: #555; border: 1px solid #B0B0B0; }
+  .req-badge.req-tea { background: #D5EDE2; color: #1B6B45; border: 1px solid #27AE60; }
+
+  .lidr-badge {
+    display: inline-block; font-size: 8.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 3px;
+    margin-right: 8px; margin-bottom: 2px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #fff; vertical-align: middle;
+  }
+  .lidr-badge.vision { background: var(--lidr-vision); }
+  .lidr-badge.recomendacion { background: var(--lidr-recom); }
+
+  .lidr-mark {
+    display: block;
+    border-left: 3px solid var(--lidr-recom);
+    padding: 2px 0 2px 12px; margin: 8px 0;
+  }
+  .lidr-mark.vision { border-left-color: var(--lidr-vision); }
+  .lidr-mark .lidr-badge { margin-bottom: 4px; }
+
+  /* CALLOUTS */
+  .callout {
+    padding: 11px 14px 11px 16px; margin: 14px 0;
+    border-radius: 0 4px 4px 0; font-size: 10.5px;
+    color: var(--ink-soft); line-height: 1.6;
+  }
+  .callout strong { color: var(--ink); }
+  .callout .head {
+    display: block; font-size: 9.5px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;
+  }
+  .callout.info { background: #EAF4FA; border-left: 3px solid var(--info); }
+  .callout.info .head { color: var(--info); }
+  .callout.tip { background: #E9F7EF; border-left: 3px solid var(--tip); }
+  .callout.tip .head { color: var(--tip); }
+  .callout.caution { background: #FCF6E1; border-left: 3px solid var(--caution); }
+  .callout.caution .head { color: #9C8004; }
+  .callout.important { background: #FBEAE5; border-left: 3px solid var(--important); }
+  .callout.important .head { color: var(--important); }
+
+  /* SKILL CARD */
+  .skill-card {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold-deep);
+    border-radius: 4px;
+    margin: 14px 0;
+    padding: 12px 14px;
+    background: #FFFFFF;
+    page-break-inside: avoid;
+  }
+  .skill-card.tea-card { border-left-color: var(--mod-tea); }
+  .skill-card.bmm-card { border-left-color: var(--mod-bmm); }
+
+  .card-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 6px; margin-bottom: 8px;
+    padding-bottom: 6px; border-bottom: 1px dashed var(--line);
+  }
+  .card-num {
+    background: var(--ink); color: var(--gold);
+    font-size: 9px; font-weight: 800;
+    padding: 2px 7px; border-radius: 3px;
+    letter-spacing: 0.4px;
+  }
+  .card-cmd {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: var(--cream); padding: 2px 7px;
+    border-radius: 3px; font-size: 10.5px; color: var(--ink);
+    border: 1px solid #E6D98A; font-weight: 700;
+  }
+  .card-mod {
+    font-size: 9.5px; color: var(--ink-mute);
+    font-weight: 600; letter-spacing: 0.2px;
+  }
+  .card-phase {
+    font-size: 8.5px; font-weight: 700; color: var(--ink);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    background: #F5F0E6; padding: 2px 8px;
+    border-radius: 3px; margin-left: auto;
+  }
+
+  .card-resolves {
+    font-size: 11px; color: var(--ink);
+    background: var(--cream-soft);
+    padding: 8px 11px; border-radius: 3px;
+    margin-bottom: 9px;
+    line-height: 1.55;
+  }
+  .card-resolves .label {
+    font-size: 8.5px; font-weight: 800; color: var(--gold-deep);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-right: 5px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin-bottom: 8px;
+  }
+  .card-block { font-size: 10.5px; }
+  .card-block ul { margin: 2px 0 0 16px; }
+  .card-block li { font-size: 10.5px; margin-bottom: 2px; line-height: 1.45; }
+  .card-block.full { grid-column: 1 / -1; }
+
+  .card-footer {
+    margin-top: 6px; padding-top: 6px;
+    border-top: 1px dashed var(--line);
+    font-size: 10px; color: var(--ink-mute);
+  }
+  .card-footer strong { color: var(--ink); }
+
+  /* APPENDIX TABLE */
+  .appendix-table { font-size: 10.5px; }
+  .appendix-table tbody td { padding: 7px 10px; }
+  .appendix-table .skill-name {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    font-weight: 700; color: var(--ink); font-size: 10px;
+  }
+  .appendix-table .persona {
+    font-style: italic; color: var(--ink-mute); font-size: 9.5px;
+  }
+
+  /* DIVIDERS */
+  .section-divider {
+    border: none; border-top: 1px dashed var(--gold-deep); margin: 26px 0;
+  }
+  .page-break { page-break-before: always; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+    margin: 8px 0 14px 0; font-size: 10px; color: var(--ink-soft);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+
+  /* PAGE — A4 + footnotes */
+  @page {
+    size: A4; margin: 18mm 16mm 22mm 16mm;
+
+    @bottom-left {
+      content: "LIDR.co · BMAD Catálogo de Skills · Volumen IV · Libro 4 de 5";
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt; color: #888; vertical-align: top; padding-top: 4mm;
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt; color: #888; vertical-align: top; padding-top: 4mm;
+    }
+    @footnote {
+      border-top: 0.5pt solid #D4B85C;
+      padding-top: 4pt; margin-top: 8pt;
+      font-size: 8.5pt; line-height: 1.45; color: #444;
+    }
+  }
+  @page :first {
+    margin: 0;
+    @top-left { content: none; } @top-center { content: none; } @top-right { content: none; }
+    @bottom-left { content: none; } @bottom-center { content: none; } @bottom-right { content: none; }
+  }
+  .footnote { float: footnote; font-size: 8.5pt; color: #444; }
+  .footnote::footnote-call {
+    content: counter(footnote); font-size: 0.62em;
+    vertical-align: super; line-height: 0;
+    color: var(--gold-deep); font-weight: 700; margin-left: 1px;
+  }
+  .footnote::footnote-marker {
+    content: counter(footnote) ". ";
+    font-weight: 700; color: var(--gold-deep);
+  }
+  .footnote strong { color: var(--ink); }
+
+  /* ─────────────────────────────────────────────
+     TABLE PAGINATION — repite cabecera, evita huérfanos
+  ───────────────────────────────────────────── */
+  table { page-break-inside: auto; break-inside: auto; }
+  thead { display: table-header-group; }
+  thead tr { break-after: avoid; page-break-after: avoid; break-inside: avoid; page-break-inside: avoid; }
+  tbody tr { break-inside: avoid; page-break-inside: avoid; }
+  tbody tr:first-child { break-before: avoid; page-break-before: avoid; }
+  tfoot { display: table-footer-group; }
+
+  /* Continuación de tabla — texto inyectado por paged.js handler */
+  tfoot.continued tr td {
+    text-align: right;
+    font-style: italic;
+    font-size: 8.5pt;
+    color: #888;
+    padding: 4px 8px 0 8px;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* OVERRIDE — permitir que las cards largas y bloques pre se partan
+     entre páginas para evitar huecos grandes al final de página */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box,
+  pre,
+  pre.codeblock{
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Las cabeceras de las cards no deben quedar huérfanas */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+
+  @media print {
+    body { font-size: 10.5px; }
+    .content { padding: 24px 40px; }
+    h2, h3, h4 { page-break-after: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+    .callout, .skill-card { page-break-inside: avoid; }
+  }
+
+  /* GAP FIX — permitir que cards largas se partan sin quedar atrapadas por sus headers */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+  /* Los headers internos sí evitan break dentro de sí mismos, pero NO fuerzan
+     a su contenedor a permanecer junto al siguiente bloque. */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+  /* En @media print, asegurar override final */
+  @media print {
+    .framework-card, .skill-card, .session-card, .scenario-card, .decision-card, .toolkit-box, .callout {
+      page-break-inside: auto !important;
+      break-inside: auto !important;
+    }
+    .framework-header, .session-header, .skill-card-header, .scenario-header, .card-header {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+  }
+
+/* MermaidTooltip fix */
+  /* Mermaid crea un tooltip invisible que paged.js coloca en una página vacía */
+  .mermaidTooltip { display: none !important; position: absolute !important; }
+  div:has(> .mermaidTooltip:only-child) { display: none !important; }
+
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="vol-tag">Volumen IV &middot; Libro 4 de 5</div>
+  <h1>BMAD Catálogo de <span>Skills</span></h1>
+  <div class="subtitle">Referencia comando a comando: el diccionario del método</div>
+  <div class="logo-bar"></div>
+  <div class="meta">
+    Ficha completa de las 32 skills del flujo del proyecto:<br>
+    propósito, prerrequisitos, salidas, sub&#8209;pasos y duración.<br>
+    Apéndice con las 34 skills complementarias.<br><br>
+    <strong>BMAD Method &middot; CIS &middot; TEA &middot; BMB &middot; Core</strong>
+  </div>
+  <div class="cover-version">2026-05-07 &middot; LIDR.co</div>
+</div>
+
+<div class="content">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 0 — BIENVENIDA
+═════════════════════════════════════════════ -->
+<h2><span class="num">0</span>Bienvenida</h2>
+
+<p class="lead">Este libro es la referencia comando a comando del método. No está pensado para leerse de principio a fin: se consulta cuando vas a invocar una skill concreta y necesitas saber qué espera, qué produce y cuánto tarda.</p>
+
+<p>El método incluye <strong>66 skills</strong> en total. Este catálogo cubre las <strong>32 que componen el flujo del proyecto</strong> (módulos BMM y TEA) con detalle pleno, y deja las otras 34 como apéndice resumido (módulos CIS, BMB, Core, agentes con persona y skills auxiliares de BMM).</p>
+
+<h3><span class="num">0.1</span>Cómo está organizado el catálogo</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:22%">Sección</th>
+      <th style="width:38%">Contenido</th>
+      <th style="width:40%">Cuándo la usas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sec. 1</strong> Convenciones</td>
+      <td>Anatomía de la ficha de skill, módulos, insignias.</td>
+      <td>Hojear la primera vez para entender el formato.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 2</strong> Catálogo detallado</td>
+      <td>32 fichas, una por skill, agrupadas por fase del flujo.</td>
+      <td>Antes de invocar una skill concreta.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 3</strong> Apéndice</td>
+      <td>34 skills complementarias en una línea cada una.</td>
+      <td>Cuando una skill no aparece en Sec. 2 y quieres saber para qué sirve.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 4</strong> Verificación</td>
+      <td>Versión BMAD verificada, fuentes consultadas.</td>
+      <td>Para auditar que el catálogo está al día.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">0.2</span>¿Qué es una skill?</h3>
+
+<p>Una <strong>skill</strong> es un workflow ejecutable que sigue una serie de pasos estructurados para producir un artefacto concreto (un documento, un test, una decisión, una refactorización). Se invoca con un <code>/comando</code> en el agente de IA.</p>
+
+<p>En el sistema instalado, cada skill vive en <code>.claude/skills/&lt;nombre-de-la-skill&gt;/</code>. Dentro hay un archivo principal (<code>SKILL.md</code>) que orquesta la ejecución y, en muchas skills, una carpeta de sub&#8209;pasos. La carpeta <code>_bmad/</code> contiene la configuración del método (manifests, módulos), no las skills en sí.</p>
+
+<div class="callout info">
+  <span class="head">Modos CEV en las skills TEA</span>
+  Las nueve skills TEA usan un patrón uniforme con tres modos: <strong>Create</strong> (genera el artefacto desde cero, en <code>steps-c/</code>), <strong>Edit</strong> (modifica un artefacto existente, en <code>steps-e/</code>) y <strong>Validate</strong> (audita el artefacto sin tocarlo, en <code>steps-v/</code>). El modo se selecciona automáticamente según el contexto, o se fuerza con un argumento.
+</div>
+
+<h3><span class="num">0.3</span>Anatomía de una ficha</h3>
+
+<p>Cada ficha del Sec. 2 sigue siempre el mismo orden, para que el lector localice la información en el mismo sitio sin tener que leerla entera:</p>
+
+<ol>
+  <li><strong>Cabecera</strong> &mdash; comando, módulo, fase y obligatoriedad.</li>
+  <li><strong>Resuelve</strong> &mdash; el problema que aborda en una sola frase.</li>
+  <li><strong>Cuándo invocarla</strong> &mdash; tres situaciones concretas.</li>
+  <li><strong>Necesita antes</strong> &mdash; prerrequisitos verificables.</li>
+  <li><strong>Produce</strong> &mdash; artefacto de salida y dónde se guarda.</li>
+  <li><strong>Cómo funciona</strong> &mdash; sub&#8209;pasos o fases internas.</li>
+  <li><strong>Cuánto tarda</strong> &mdash; rango orientativo.</li>
+  <li><strong>Consultar también</strong> &mdash; skills relacionadas (cuando aplica).</li>
+</ol>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 1 — CONVENCIONES
+═════════════════════════════════════════════ -->
+<h2><span class="num">1</span>Convenciones</h2>
+
+<h3><span class="num">1.1</span>Punto de color del módulo</h3>
+<div class="legend">
+  <div class="legend-item"><span class="mod bmm"></span> <strong>BMM</strong> &middot; flujo principal</div>
+  <div class="legend-item"><span class="mod tea"></span> <strong>TEA</strong> &middot; testing</div>
+  <div class="legend-item"><span class="mod cis"></span> <strong>CIS</strong> &middot; pensamiento creativo</div>
+  <div class="legend-item"><span class="mod bmb"></span> <strong>BMB</strong> &middot; extensión del método</div>
+  <div class="legend-item"><span class="mod core"></span> <strong>Core</strong> &middot; utilidades transversales</div>
+</div>
+
+<h3><span class="num">1.2</span>Insignias de obligatoriedad</h3>
+<p style="margin-bottom: 4px;">
+  <span class="req-badge req">REQ</span> obligatoria para avanzar de fase &middot;
+  <span class="req-badge rec">REC</span> recomendada fuertemente &middot;
+  <span class="req-badge opc">OPC</span> opcional según necesidad &middot;
+  <span class="req-badge req-tea">REQ TEA</span> obligatoria si el equipo adopta TEA.
+</p>
+
+<h3><span class="num">1.3</span>Insignias de aporte LIDR</h3>
+<p style="margin-bottom: 4px;">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  framing conceptual nuestro &middot;
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  sugerencia operativa basada en nuestra experiencia.
+</p>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 2 — CATÁLOGO DETALLADO
+═════════════════════════════════════════════ -->
+<h2><span class="num">2</span>Catálogo detallado &mdash; 32 skills del flujo del proyecto</h2>
+
+<p class="lead">Las skills se presentan en orden natural de invocación: Fase 0 (aprendizaje opcional) &rarr; Fase 1 &rarr; Fase 2 &rarr; Fase 3 &rarr; Fase 4 &rarr; toolkit anytime &rarr; brownfield.</p>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2.0 — FASE 0
+───────────────────────────────────────────── -->
+<h3><span class="num">2.0</span>Fase 0 &mdash; Aprendizaje (opcional, solo si se adopta TEA)</h3>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">01</span>
+    <code class="card-cmd">/bmad-teach-me-testing</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 0</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Forma al equipo en testing antes de adoptar TEA mediante un programa autodirigido con persistencia de progreso entre sesiones.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>El equipo adopta TEA por primera vez.</li>
+        <li>Onboarding de Dev o QA al stack de testing.</li>
+        <li>Antes de <code>/bmad-testarch-test-design</code> si los conceptos base no están claros.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Configuración del módulo TEA (idioma, nombre del proyecto).</li>
+        <li>No depende de PRD ni arquitectura.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Notas de cada sesión + archivo de progreso reanudable. Al final, certificado de finalización del programa.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      12 sub&#8209;pasos en modo <em>Create</em>, de los que 7 son las sesiones académicas (<code>step-04-session-01</code> a <code>session-07</code>). Incluye modos <em>Validate</em> y <em>Edit</em> para auditar o modificar el progreso.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      2&ndash;4 h por sesión &times; 7 sesiones = entre 14 y 28 h, distribuidas en una o dos semanas.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      Libro 5 (Protocolo TEA) para la estrategia de testing en proyecto real.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2.1 — FASE 1
+───────────────────────────────────────────── -->
+<h3><span class="num">2.1</span>Fase 1 &mdash; Análisis</h3>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">02</span>
+    <code class="card-cmd">/bmad-brainstorming</code>
+    <span class="mod core"></span><span class="card-mod">Core / BMM</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 1</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Genera más de cien ideas estructuradas mediante un catálogo de técnicas creativas con protocolo anti&#8209;sesgo que pivota dominio cada diez ideas.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Greenfield sin claridad de alcance.</li>
+        <li>Bloqueo del equipo generando opciones.</li>
+        <li>Antes de <code>/bmad-product-brief</code> si la idea aún es difusa.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Configuración del módulo (idioma, carpeta de salida, nivel del usuario).</li>
+        <li>Opcional: archivo de contexto previo.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Archivo append&#8209;only por sesión, con marca de tiempo, en <code>{output}/brainstorming/</code>. Conserva todo el historial; se puede retomar.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Ocho sub&#8209;pasos (setup, continue, técnica seleccionada por usuario, técnica recomendada, técnica aleatoria, flujo progresivo, ejecución, organización). Catálogo de <strong>60 técnicas</strong> distintas.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      60&ndash;120 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-cis-design-thinking</code> y <code>/bmad-cis-innovation-strategy</code> para enfoques alternativos.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">03</span>
+    <code class="card-cmd">/bmad-product-brief</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge rec">REC</span>
+    <span class="card-phase">Fase 1</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Produce un brief de producto persuasivo de una a dos páginas, listo para alimentar el PRD, mediante descubrimiento colaborativo y análisis de artefactos previos.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras brainstorm y research, antes del PRD.</li>
+        <li>Para alinear stakeholders en una página.</li>
+        <li>Para refrescar un brief antiguo sin reescribirlo desde cero.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Idea inicial o brief existente.</li>
+        <li>Opcional: outputs previos de brainstorming, market o domain research.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Brief ejecutivo en la carpeta de planificación. Opcionalmente, un resumen comprimido optimizado para alimentar al LLM al crear el PRD.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Cinco etapas (entender intención, descubrimiento contextual, elicitación guiada, redacción y revisión, finalización). Tres modos: <em>guiado</em>, <em>rápido</em> y <em>autónomo</em>.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      Guiado: 45&ndash;90 min. Rápido y autónomo: ~30 min.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-prfaq</code> (apéndice) como alternativa cuando la idea aún no está validada.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">04</span>
+    <code class="card-cmd">/bmad-market-research</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 1</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Investigación de mercado con búsqueda web obligatoria y citas verificables; cubre comportamiento del cliente, problemas, factores de decisión y análisis competitivo.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Necesidad de datos actualizados sobre competencia o mercado.</li>
+        <li>Antes del Product Brief en sectores cambiantes.</li>
+        <li>Cuando el cliente pide validación de mercado pre-PRD.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Tema de investigación definido.</li>
+        <li>Acceso a búsqueda web (la skill aborta si no está disponible).</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Informe en <code>{planning}/research/market-{tema}-{fecha}.md</code> con narrativa estructurada y citas verificables.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Seis sub&#8209;pasos (init, comportamiento del cliente, problemas, decisiones, análisis competitivo, finalización).
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      90&ndash;120 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-domain-research</code> para foco regulatorio y de sector.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">05</span>
+    <code class="card-cmd">/bmad-domain-research</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 1</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Mapea la industria entera (regulación, tendencias técnicas, panorama competitivo) en lugar del producto específico. Crítica en sectores regulados.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Industria nueva para el equipo.</li>
+        <li>Mapear contexto regulatorio antes de PRD.</li>
+        <li>Generar informe de sector pre-presupuesto.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Dominio o industria definido.</li>
+        <li>Acceso a búsqueda web.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Informe en <code>{planning}/research/domain-{tema}-{fecha}.md</code>.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Seis sub&#8209;pasos (init, análisis de dominio, panorama competitivo, foco regulatorio, tendencias técnicas, síntesis).
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      90&ndash;120 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-market-research</code> para foco en cliente y competencia directa.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">06</span>
+    <code class="card-cmd">/bmad-technical-research</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 1</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Spike técnico breve basado en evidencia web: evaluación de tecnologías, comparativa de arquitecturas y trade&#8209;offs antes de tomar una decisión cargada.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Decisión arquitectónica con dos o tres candidatos serios.</li>
+        <li>Antes de <code>/bmad-create-architecture</code>.</li>
+        <li>Migraciones o upgrades mayores.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Tecnologías candidatas listadas.</li>
+        <li>Acceso a búsqueda web.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Informe en <code>{planning}/research/technical-{tema}-{fecha}.md</code> con comparativa estructurada y trade&#8209;offs.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Seis sub&#8209;pasos paralelos al market research, adaptados a contexto técnico.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      90&ndash;120 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-create-architecture</code> consume directamente el informe.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2.2 — FASE 2
+───────────────────────────────────────────── -->
+<h3><span class="num">2.2</span>Fase 2 &mdash; Planificación</h3>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">07</span>
+    <code class="card-cmd">/bmad-create-prd</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge req">REQ</span>
+    <span class="card-phase">Fase 2</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Produce el PRD<span class="footnote"><strong>PRD:</strong> <em>Product Requirements Document</em>. Documento que describe lo que el producto debe hacer (requisitos funcionales) y cómo de bien debe hacerlo (requisitos no funcionales). Es el contrato entre producto y equipo técnico.</span> exhaustivo del producto desde cero, con seguimiento de progreso entre sesiones.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Greenfield: primer PRD del proyecto.</li>
+        <li>Brownfield: épica grande con alcance independiente.</li>
+        <li>Refresh completo de un PRD obsoleto.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Product Brief.</li>
+        <li>Recomendado: market y domain research.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{planning}/prd.md</code>. Incluye seguimiento de pasos completados en el frontmatter para reanudar.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>15 sub&#8209;pasos</strong> en <code>steps-c/</code>: init, continue, discovery, vision, executive summary, success criteria, journeys, domain, innovation, project type, scoping, FRs, NFRs, polish, complete.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      3&ndash;5 horas distribuidas en dos o tres sesiones.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-validate-prd</code> al terminar; <code>/bmad-edit-prd</code> para correcciones posteriores.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">08</span>
+    <code class="card-cmd">/bmad-validate-prd</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge rec">REC</span>
+    <span class="card-phase">Fase 2</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Audita el PRD contra trece dimensiones de calidad y produce un reporte de incidencias priorizadas.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras <code>/bmad-create-prd</code>, antes de arquitectura o UX.</li>
+        <li>Revisión de un PRD escrito por otra persona.</li>
+        <li>Antes de <code>/bmad-check-implementation-readiness</code>.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Path al PRD a validar.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Reporte en formato markdown con incidencias categorizadas por dimensión y recomendaciones priorizadas.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>14 sub&#8209;pasos</strong> de validación en <code>steps-v/</code>: descubrimiento, formato, paridad, densidad, cobertura del brief, medibilidad, trazabilidad, intrusión de implementación, dominio, tipo de proyecto, heurísticas, calidad holística, completitud, reporte.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      60&ndash;90 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-edit-prd</code> para resolver las incidencias detectadas.
+    </div>
+  </div>
+</article>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  El método marca <code>/bmad-validate-prd</code> como opcional. Recomendamos tratarla como recomendada porque saltarla es la causa más frecuente de retrabajo en Fase 4: los huecos del PRD viajan al backlog y se hacen visibles cuando el equipo ya está implementando. Para ganar objetividad, conviene ejecutarla con un LLM distinto al que produjo el PRD.
+</div>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">09</span>
+    <code class="card-cmd">/bmad-create-ux-design</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge rec">REC si UI</span>
+    <span class="card-phase">Fase 2</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Especificación UX completa: descubrimiento, experiencia central, sistema de diseño, viajes de usuario, estrategia de componentes, patrones, accesibilidad y diseño responsivo.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Producto con interfaz de usuario relevante.</li>
+        <li>Tras PRD aprobado, antes de la arquitectura.</li>
+        <li>Saltar si el producto es 100&nbsp;% backend, CLI o API.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>PRD existente o, en su defecto, Product Brief.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{planning}/ux-design-specification.md</code> basado en plantilla.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>15 sub&#8209;pasos</strong>: init, continue, discovery, experiencia central, respuesta emocional, inspiración, sistema de diseño, experiencia que define al producto, fundamentos visuales, direcciones de diseño, viajes de usuario, estrategia de componentes, patrones de UX, responsivo y accesibilidad, completar.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      4&ndash;6 horas distribuidas.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      Libro 3 (Plan de Sesiones) para encajarla en la sesión correspondiente.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">10</span>
+    <code class="card-cmd">/bmad-testarch-nfr</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge rec">REC</span>
+    <span class="card-phase">Fase 2 &amp; 4</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Evalúa los requisitos no funcionales (rendimiento, seguridad, fiabilidad, escalabilidad) con validación basada en evidencia y desenlace determinista.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>En Fase 2 (modo <em>setup</em>) para fijar umbrales en el PRD.</li>
+        <li>Mid&#8209;ciclo (modo <em>check</em>) para detectar desviaciones.</li>
+        <li>Pre&#8209;release (modo <em>gate</em>) como decisión final.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>PRD con NFR<span class="footnote"><strong>NFR:</strong> <em>Non-Functional Requirement</em>. Requisito que describe cómo de bien debe comportarse el sistema (rendimiento, seguridad, fiabilidad, escalabilidad), en contraposición a los <em>functional requirements</em> que describen qué debe hacer.</span> identificados.</li>
+        <li>Para <em>check</em> y <em>gate</em>: evidencia (load tests, security scans, métricas de fiabilidad).</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Reporte por categoría con scoring, evidencia recogida y recomendaciones. Modo <em>gate</em> emite firma final: PASS, CONCERNS, WAIVED o FAIL.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em>: 11 sub&#8209;pasos con sub&#8209;agentes paralelos por categoría (security, performance, reliability, scalability). Modos <em>Validate</em> y <em>Edit</em>: dos pasos cada uno.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      50&ndash;75 minutos por invocación.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      Libro 5 (Protocolo TEA) para el detalle de cada categoría.
+    </div>
+  </div>
+</article>
+
+<div class="lidr-mark vision">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  En el método, NFR es una sola skill con tres modos. Nosotros la pensamos como tres momentos del proyecto &mdash; setup en Fase 2, check a mitad del ciclo, gate antes del release &mdash; porque cada momento responde una pregunta distinta: setup fija el contrato, check vigila la deriva, gate firma la salida. El catálogo solo lista la skill una vez; las invocaciones son tres.
+</div>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2.3 — FASE 3
+───────────────────────────────────────────── -->
+<h3><span class="num">2.3</span>Fase 3 &mdash; Solución</h3>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">11</span>
+    <code class="card-cmd">/bmad-create-architecture</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge req">REQ</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Documenta las decisiones arquitectónicas para asegurar consistencia entre desarrolladores y agentes IA: patrones, estructura de carpetas y convenciones.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras PRD aprobado, antes de épicas e historias.</li>
+        <li>Cambios arquitectónicos mayores (refactor o migración de stack).</li>
+        <li>Onboarding de agentes IA al proyecto.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>PRD completado.</li>
+        <li>Recomendado: technical research previo si la decisión es cargada.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{planning}/architecture.md</code> con decisiones técnicas, patrones y restricciones.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>9 sub&#8209;pasos</strong>: init, continue, contexto, starter, decisiones, patrones, estructura, validación, complete.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      60&ndash;90 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-test-design</code> después, para validar testabilidad.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">12</span>
+    <code class="card-cmd">/bmad-testarch-test-design</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Plan de testing basado en riesgo con clasificación de prioridades (P0&ndash;P3), criterios de entrada y salida y orden de ejecución.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Pre&#8209;gate de la fase de solución, para validar testabilidad arquitectónica.</li>
+        <li>Por cada épica grande en Fase 4 (modo epic&#8209;level).</li>
+        <li>Para fijar criterios de entrada y salida con QA.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>System&#8209;level: arquitectura y ADR<span class="footnote"><strong>ADR:</strong> <em>Architecture Decision Record</em>. Documento corto que captura una decisión técnica (qué se eligió, qué se descartó y por qué), con sus trade-offs. Es el rastro auditable de las decisiones de arquitectura, distinto del documento general de arquitectura.</span>.</li>
+        <li>Epic&#8209;level: épica + historias + PRD.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Plan de testing y matriz de riesgos. Plantillas: system, epic, qa, handoff y architecture.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em> con 6 sub&#8209;pasos: detect mode, load context, riesgos y testabilidad, plan de cobertura, generación de salida, resume. Auto&#8209;detecta si está en system&#8209;level o epic&#8209;level.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      30&ndash;45 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-framework</code> después, en cadena estricta.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">13</span>
+    <code class="card-cmd">/bmad-testarch-framework</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Andamiaje del framework de tests listo para producción (Playwright o Cypress) con fixtures, helpers, configuración y buenas prácticas.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Inicializar testing en proyecto nuevo o repositorio sin tests.</li>
+        <li>Migración entre frameworks.</li>
+        <li>Tests sueltos sin estructura coherente.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Test Design ejecutado.</li>
+        <li>Stack tecnológico decidido.</li>
+        <li>Acceso de escritura al repositorio.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>playwright.config.ts</code> o <code>cypress.config.ts</code>; fixtures, helpers, page objects, scripts; README de setup.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em> con 6 sub&#8209;pasos: preflight, selección de framework, scaffolding, docs y scripts, validación, resume. Configurable por preferencia, tamaño del proyecto y uso de TypeScript.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      25&ndash;35 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-ci</code> después, para enlazar la pipeline.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">14</span>
+    <code class="card-cmd">/bmad-testarch-ci</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Pipeline de integración continua multiplataforma con ejecución de tests, ciclos de <em>burn&#8209;in</em> para detectar tests inestables, sharding paralelo, recolección de artefactos y notificaciones.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras framework configurado, antes de Fase 4.</li>
+        <li>Pipeline existente sin gates de calidad.</li>
+        <li>Para detectar y aislar tests inestables.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Framework instalado.</li>
+        <li>Plataforma de CI elegida.</li>
+        <li>Acceso al repositorio.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Pipeline específico de la plataforma: GitHub Actions, GitLab CI, Azure Pipelines, Jenkins o Harness. Incluye gates de calidad, recolección de artefactos y plantillas de notificación.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em> con 5 sub&#8209;pasos: preflight, generación de pipeline, configuración de gates, validación, resume.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      20&ndash;30 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-atdd</code> en Fase 4 ya con la pipeline activa.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">15</span>
+    <code class="card-cmd">/bmad-create-epics-and-stories</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge req">REQ</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Descompone el PRD y la arquitectura en épicas e historias organizadas por valor, con criterios de aceptación Given/When/Then<span class="footnote"><strong>Given/When/Then:</strong> estructura de criterios de aceptación que describe un escenario en tres partes &mdash; dado un contexto inicial (Given), cuando ocurre un evento (When), entonces se espera un resultado (Then).</span>, requisitos técnicos y pistas de implementación.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras PRD y arquitectura aprobados.</li>
+        <li>Refresh del backlog cuando el alcance del PRD cambia.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>PRD completado.</li>
+        <li>Arquitectura completada.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{planning}/epics.md</code> o, si el equipo lo prefiere, varias <code>epics/*.md</code> divididas. Cada historia con criterios de aceptación, requisitos técnicos, dependencias y pistas de origen.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>4 sub&#8209;pasos</strong>: validación de prerrequisitos, diseño de épicas, creación de historias, validación final.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      45&ndash;60 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-check-implementation-readiness</code> como gate inmediato después.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">16</span>
+    <code class="card-cmd">/bmad-check-implementation-readiness</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge req">REQ</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Audita que los cuatro documentos de planificación (PRD, UX, arquitectura, épicas) están completos, alineados entre sí y listos para implementar.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Justo antes de Fase 4 &mdash; gate obligatorio.</li>
+        <li>Tras cambios significativos en cualquiera de los cuatro documentos.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>PRD, arquitectura, épicas e historias y, si aplica, UX, todos completados.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Reporte de readiness con huecos detectados, severidad y recomendaciones de resolución.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>6 sub&#8209;pasos</strong>: descubrimiento de documentos, análisis del PRD, validación de cobertura por épica, alineación con UX, revisión de calidad de épicas, evaluación final.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      60&ndash;90 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-correct-course</code> si el reporte detecta huecos significativos.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2.4 — FASE 4
+───────────────────────────────────────────── -->
+<h3><span class="num">2.4</span>Fase 4 &mdash; Implementación</h3>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">17</span>
+    <code class="card-cmd">/bmad-sprint-planning</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge req">REQ</span>
+    <span class="card-phase">Fase 4 &middot; inicio</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Genera el archivo <code>sprint-status.yaml</code> a partir del documento de épicas. Construye la máquina de estados que el resto de la fase consume.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Inicio de Fase 4.</li>
+        <li>Re&#8209;sincronización tras cambios en <code>epics.md</code>.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li><code>epics.md</code> o <code>epics/*.md</code> completados.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{implementation}/sprint-status.yaml</code> con el estado actual detectado para cada historia (backlog, lista para dev, en progreso, en revisión, hecha).
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Cinco fases: parseo de épicas, construcción de la estructura, detección inteligente del estado actual, generación del YAML, validación y reporte. Sin carpeta de sub&#8209;pasos: la lógica vive en <code>SKILL.md</code> y la plantilla.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      15&ndash;20 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-sprint-status</code> para consultar el estado a lo largo del sprint.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">18</span>
+    <code class="card-cmd">/bmad-create-story</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge req">REQ</span>
+    <span class="card-phase">Fase 4 &middot; ciclo</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Crea el archivo de la historia con todo el contexto que el agente Dev necesita: análisis del PRD, arquitectura, UX, historias previas, historial de Git e investigación web actualizada.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Antes de cada <code>/bmad-dev-story</code>.</li>
+        <li>Para preparar la siguiente historia del backlog.</li>
+        <li>Para crear una historia específica solicitada por el usuario.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li><code>epics.md</code>, <code>prd.md</code>, <code>architecture.md</code>, UX si aplica.</li>
+        <li><code>sprint-status.yaml</code>.</li>
+        <li>Acceso al historial de Git.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{implementation}/{story-key}.md</code> con requisitos, criterios de aceptación, tareas, notas técnicas, inteligencia de Git, investigación web y referencia a <code>project-context.md</code>.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Dos acciones: <strong><code>create</code></strong> (REQ) genera la siguiente historia y <strong><code>validate</code></strong> (REC) verifica su completitud antes del desarrollo. Seis fases: determinar objetivo, cargar artefactos, análisis arquitectónico, investigación web, creación del archivo, actualización del sprint&#8209;status. Sin carpeta de sub&#8209;pasos.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      40&ndash;60 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-atdd</code> después, en cadena estricta.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">19</span>
+    <code class="card-cmd">/bmad-testarch-atdd</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 4 &middot; ciclo</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Genera tests de aceptación que fallan (fase roja del ciclo red&#8209;green&#8209;refactor<span class="footnote"><strong>red&#8209;green&#8209;refactor:</strong> ciclo de Test&#8209;Driven Development en tres pasos. Rojo: escribir un test que falle. Verde: implementar lo mínimo para que el test pase. Refactor: limpiar el código manteniendo el test verde.</span>) antes de la implementación, en niveles apropiados (E2E, API, componente).
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras <code>/bmad-create-story</code>, antes de <code>/bmad-dev-story</code>.</li>
+        <li>Cuando el equipo quiere ATDD/TDD estricto.</li>
+        <li>Para convertir criterios de aceptación en tests ejecutables.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Historia con criterios de aceptación y requisitos técnicos.</li>
+        <li>Framework configurado (<code>/bmad-testarch-framework</code>).</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Tests fallidos por nivel + fixtures + helpers; checklist de implementación; trazabilidad criterios&harr;tests.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em> con 9 sub&#8209;pasos y sub&#8209;agentes paralelos por nivel (API, E2E). Modos <em>Validate</em> y <em>Edit</em> disponibles.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      40&ndash;60 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-dev-story</code> implementa lo que estos tests piden (fase verde).
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">20</span>
+    <code class="card-cmd">/bmad-dev-story</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge req">REQ</span>
+    <span class="card-phase">Fase 4 &middot; ciclo</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Implementa la historia siguiendo su archivo de especificación con el ciclo red&#8209;green&#8209;refactor: tareas, tests, validaciones y marca la historia como <code>review</code>.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Historia en estado <em>ready&#8209;for&#8209;dev</em>.</li>
+        <li>Continuación tras code review (cuando vuelve con cambios).</li>
+        <li>Tras tests ATDD en rojo.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Archivo de historia con tareas, criterios y notas.</li>
+        <li><code>sprint-status.yaml</code>.</li>
+        <li>Repositorio Git en estado limpio o committable.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Código nuevo o modificado, tests unitarios y de integración, archivo de historia actualizado (tareas marcadas, change log, lista de archivos, estado <em>review</em>) y sprint&#8209;status actualizado.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Diez fases: localizar la siguiente historia lista, cargar contexto, detectar continuación tras review, marcar en progreso, implementar red&#8209;green&#8209;refactor, autorar tests, ejecutar validaciones, marcar completa, finalizar, comunicar. Sin carpeta de sub&#8209;pasos.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      120&ndash;180 minutos por historia (variable según complejidad).
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-automate</code> después; <code>/bmad-code-review</code> antes del merge.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">21</span>
+    <code class="card-cmd">/bmad-testarch-automate</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge rec">REC</span>
+    <span class="card-phase">Fase 4 &middot; ciclo</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Expansión de la cobertura tras la implementación: genera tests priorizados a nivel E2E, API, componente y unitario usando sub&#8209;agentes paralelos.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras <code>/bmad-dev-story</code> y <code>/bmad-code-review</code>, para ampliar más allá de los criterios de aceptación.</li>
+        <li>En proyectos brownfield que necesitan cobertura retroactiva.</li>
+        <li>Para alcanzar un umbral de cobertura antes del release.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Codebase existente.</li>
+        <li>Modo <em>BMad-Integrated</em>: historia, PRD y test design. Modo <em>Standalone</em>: solo código.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Tests por nivel + reporte de cobertura (actual contra objetivo); fixtures, helpers y cola de implementación.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em> con 9 sub&#8209;pasos: preflight, identificar objetivos, generar tests, sub&#8209;agentes API, backend y E2E, agregar, validar, resume.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      45&ndash;60 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-test-review</code> para auditar la calidad de los tests acumulados.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">22</span>
+    <code class="card-cmd">/bmad-code-review</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge rec">REC</span>
+    <span class="card-phase">Fase 4 &middot; ciclo</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Revisión adversarial pre&#8209;merge usando tres capas paralelas: <em>Blind Hunter</em> (busca bugs sin contexto), <em>Edge Case Hunter</em> (recorre ramas y condiciones límite) y <em>Acceptance Auditor</em> (valida cumplimiento de criterios de aceptación).
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras <code>/bmad-dev-story</code> con la historia en <em>review</em>.</li>
+        <li>Antes de mergear a la rama principal.</li>
+        <li>Cuando hay dudas sobre la calidad del cambio.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Archivo de historia con lista de archivos modificados y criterios de aceptación.</li>
+        <li>Código implementado.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Sección "Senior Developer Review (AI)" añadida al archivo de historia, con triage en categorías de severidad (alta, media, baja) y lista de seguimiento accionable.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>4 sub&#8209;pasos</strong>: recolectar contexto, revisar (las tres capas paralelas), triar, presentar.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      30&ndash;50 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      Recomendamos usar un LLM distinto al que implementó para máxima objetividad.
+    </div>
+  </div>
+</article>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  El método marca <code>/bmad-code-review</code> como opcional. Recomendamos tratarlo como recomendado del ciclo: el code review captura defectos antes del merge usando un LLM distinto al que implementó. Saltarlo abarata el ciclo a corto plazo y lo encarece a medio plazo, porque los defectos llegan a la pipeline o a producción.
+</div>
+
+<h4>2.4.1 Cierre de épica</h4>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">23</span>
+    <code class="card-cmd">/bmad-testarch-test-review</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 4 &middot; cierre</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Auditoría de calidad del conjunto de tests con puntuación de 0 a 100 y hallazgos accionables por dimensión: determinismo, aislamiento, mantenibilidad y rendimiento.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Sospechas de tests inestables o lentos.</li>
+        <li>Cierre de épica (paso 1 del cierre formal).</li>
+        <li>Pre&#8209;release o auditoría trimestral.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Suite de tests escrita.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Reporte de calidad con puntuación 0&ndash;100 y hallazgos por dimensión.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em> con 10 sub&#8209;pasos y sub&#8209;agentes especializados por dimensión (determinismo, aislamiento, mantenibilidad, rendimiento).
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      40&ndash;55 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-testarch-trace</code> para cobertura de requisitos (queda fuera del scope de esta skill).
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">24</span>
+    <code class="card-cmd">/bmad-testarch-trace</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 4 &middot; cierre</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Matriz de trazabilidad requisitos&harr;tests + análisis de huecos + decisión opcional de gate de calidad (PASS / CONCERNS / FAIL / WAIVED) basada en evidencia. Salida go/no&#8209;go antes del release.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Cierre de épica (paso 2, después del test review).</li>
+        <li>Pre&#8209;release.</li>
+        <li>Auditoría regulatoria.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Requisitos documentados (PRD + épicas).</li>
+        <li>Suite de tests implementado.</li>
+        <li>Recomendado: output de <code>/bmad-testarch-test-review</code>.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Matriz de trazabilidad + reporte de cobertura + decisión de gate.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Create</em> con 6 sub&#8209;pasos: load context, descubrir tests, mapear criterios, analizar huecos, decisión de gate, resume.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      25&ndash;35 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-retrospective</code> después, para cerrar formalmente la épica.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">25</span>
+    <code class="card-cmd">/bmad-retrospective</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 4 &middot; cierre</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Retrospectiva formal tras épica: extrae lecciones aprendidas, evalúa el éxito y prepara la próxima épica. Formato conversacional multi&#8209;agente facilitado por el Scrum Master.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras completar todas las historias de una épica + test review + traceability.</li>
+        <li>Final de un sprint largo con aprendizajes acumulados.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li><code>sprint-status.yaml</code> y archivos de historias.</li>
+        <li>Recomendado: outputs de test review y trace como input concreto.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{implementation}/epic-{N}-retrospective.md</code> con lecciones aprendidas, métricas de éxito, action items con responsable y preparación de la siguiente épica.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Cuatro fases: descubrimiento de la épica, facilitación en formato party mode, revisión, preparación de la próxima épica. Sin carpeta de sub&#8209;pasos.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      45&ndash;75 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-correct-course</code> si aparecen issues mayores en la retro.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2.5 — TOOLKIT ANYTIME
+───────────────────────────────────────────── -->
+<h3><span class="num">2.5</span>Toolkit anytime &mdash; correcciones y consulta</h3>
+
+<p>Skills invocables en cualquier momento del ciclo, una vez producidos los artefactos correspondientes. Resuelven necesidades puntuales sin obligar a planificar nueva sesión.</p>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">26</span>
+    <code class="card-cmd">/bmad-edit-prd</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Anytime &middot; post&#8209;PRD</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Edición guiada de un PRD existente para resolver incidencias detectadas por la validación o aplicar cambios de alcance.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Resolver issues de <code>/bmad-validate-prd</code> sistemáticamente.</li>
+        <li>Cambio de alcance que afecta varias secciones.</li>
+        <li>Migrar un PRD antiguo al formato actual.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Path al PRD existente.</li>
+        <li>Opcional: reporte de <code>/bmad-validate-prd</code>.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      PRD actualizado en su path original, con seguimiento de pasos completados.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Modo <em>Edit</em> con <strong>5 sub&#8209;pasos</strong>: descubrimiento, conversión legacy, revisión, edición, completar.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      45&ndash;90 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-validate-prd</code> antes y después para verificar el efecto.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">27</span>
+    <code class="card-cmd">/bmad-correct-course</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Anytime &middot; mid&#8209;sprint</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Gestión de cambios significativos durante la implementación. Analiza el impacto en PRD, épicas, arquitectura y UX, y produce una propuesta estructurada de cambio con handoff.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Requisito o restricción nueva mid&#8209;sprint.</li>
+        <li>Bug crítico que fuerza re&#8209;priorización.</li>
+        <li>Ajuste solicitado por stakeholder.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>PRD y épicas presentes (la skill aborta si faltan).</li>
+        <li>Descripción del trigger del cambio.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{planning}/sprint-change-proposal-{fecha}.md</code> con análisis de impacto, cambios propuestos y handoff. Posibles updates a épicas, historias y PRD.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Seis fases: inicializar navegación, ejecutar checklist de análisis, redactar propuestas, generar Sprint Change Proposal, finalizar y enrutar, completar.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      60&ndash;90 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-edit-prd</code> y <code>/bmad-create-story</code> según las decisiones que salgan.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">28</span>
+    <code class="card-cmd">/bmad-sprint-status</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Anytime &middot; consulta</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Resumen rápido del estado del sprint con visibilidad accionable y recomendación de la siguiente acción.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Antes de empezar el día o antes de <code>/bmad-create-story</code>.</li>
+        <li>Cierre de sprint o de épica.</li>
+        <li>Tras pausas largas para reorientar al equipo.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li><code>sprint-status.yaml</code> producido por sprint planning.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Reporte conversacional con progreso, próxima acción y riesgos detectados. Modo <em>data</em>: salida JSON para scripts o pipelines.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Tres modos: <em>interactive</em>, <em>data</em>, <em>validate</em>. Seis fases activas: determinar modo, localizar el sprint&#8209;status, parsear y clasificar, seleccionar próxima acción, mostrar resumen, ofrecer acciones.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      5&ndash;10 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-sprint-planning</code> si el archivo de estado falta o está obsoleto.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2.6 — BROWNFIELD
+───────────────────────────────────────────── -->
+<h3><span class="num">2.6</span>Brownfield &mdash; proyectos existentes</h3>
+
+<p>Skills específicas para proyectos con código ya implementado. Tres se ejecutan al onboardear el proyecto al método; una se usa para cambios pequeños sin pasar por las cuatro fases.</p>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">29</span>
+    <code class="card-cmd">/bmad-document-project</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Brownfield</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Documenta proyectos brownfield para alimentar contexto a agentes IA. Router que delega en sub&#8209;workflows: full&#8209;scan (rápido / profundo / exhaustivo) o deep&#8209;dive (revisión literal sin muestreo).
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Onboarding de un agente IA a un repositorio legacy sin documentación.</li>
+        <li>Brownfield, antes de <code>/bmad-create-architecture</code>.</li>
+        <li>Refresh tras desincronización entre código y docs.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Acceso de lectura al repositorio.</li>
+        <li>Opcional: estado previo del scan.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      Documentación en <code>{project_knowledge}/</code>; <code>project-scan-report.json</code>; <code>index.md</code> de navegación.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Router en <code>SKILL.md</code> + dos sub&#8209;workflows (full&#8209;scan, deep&#8209;dive), cada uno con sus propias instrucciones.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      Quick: 30&ndash;60 min. Deep: 2&ndash;4 h. Exhaustivo: 4&ndash;8 h.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      <code>/bmad-generate-project-context</code> después, para destilar las reglas críticas.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">30</span>
+    <code class="card-cmd">/bmad-generate-project-context</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Brownfield</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Genera un <code>project-context.md</code> conciso con reglas críticas, patrones y guías no obvias que los agentes IA deben recordar al implementar.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Tras decisiones operativas del equipo (S4 del Libro 3).</li>
+        <li>Brownfield, después de <code>/bmad-document-project</code>.</li>
+        <li>Refresh cuando un patrón se viola repetidamente en code reviews.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Conocimiento del equipo (entrevista guiada).</li>
+        <li>Opcional: <code>project_knowledge/</code> de <code>/bmad-document-project</code>.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{output}/project-context.md</code> optimizado para alimentar el LLM, con frontmatter de seguimiento.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      <strong>3 sub&#8209;pasos</strong>: descubrir, generar, completar.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      45&ndash;75 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      Skills downstream (<code>create-story</code>, <code>dev-story</code>, <code>code-review</code>) lo leen como contexto.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card bmm-card">
+  <header class="card-header">
+    <span class="card-num">31</span>
+    <code class="card-cmd">/bmad-quick-dev</code>
+    <span class="mod bmm"></span><span class="card-mod">BMad Method</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Brownfield</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Workflow unificado intent&rarr;código que produce un artefacto reviewable en cinco pasos, sin pasar por PRD, arquitectura ni historias.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Bug fix puntual, refactor pequeño, retoque de UI o UX.</li>
+        <li>Feature menor sin necesidad de PRD.</li>
+        <li>Brownfield sin artefactos del método.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Intent inicial del usuario.</li>
+        <li>Opcional: <code>project-context.md</code> y archivos de memoria del agente.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{implementation}/spec-wip.md</code> append&#8209;only; código implementado y presentación final (resumen, tests, diff).
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Cinco pasos numerados (clarify and route, plan, implement, review, present) más un <em>oneshot</em> agresivo. No tiene carpeta <code>steps/</code>: archivos planos en la raíz.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      20&ndash;90 minutos según el alcance.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      No usar para features grandes ni cambios arquitectónicos: ahí entra el flujo completo de la Fase 2.
+    </div>
+  </div>
+</article>
+
+<article class="skill-card tea-card">
+  <header class="card-header">
+    <span class="card-num">32</span>
+    <code class="card-cmd">/bmad-qa-generate-e2e-tests</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Brownfield</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Generación rápida de tests E2E y de API para código ya implementado (cobertura retroactiva). Auto&#8209;detecta el framework existente.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      <ul>
+        <li>Brownfield con feature en producción sin tests.</li>
+        <li>Tras dev story y code review cuando el dev no produjo todos los tests.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Necesita antes</h5>
+      <ul>
+        <li>Código fuente existente.</li>
+        <li><code>package.json</code> con framework detectable (Playwright, Jest, Vitest, Cypress).</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Produce</h5>
+      <code>{implementation}/tests/test-{feature}.spec.ts</code> ya validados; <code>test-summary.md</code> con cobertura y próximos pasos.
+    </div>
+    <div class="card-block">
+      <h5>Cómo funciona</h5>
+      Cinco fases: detectar framework, identificar features, generar tests de API, generar tests E2E, ejecutar y crear resumen. Sin carpeta de sub&#8209;pasos.
+    </div>
+    <div class="card-block">
+      <h5>Cuánto tarda</h5>
+      20&ndash;40 minutos.
+    </div>
+    <div class="card-block">
+      <h5>Consultar también</h5>
+      No es sustituto de <code>/bmad-code-review</code> ni de <code>/bmad-create-story</code> en modo validate.
+    </div>
+  </div>
+</article>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 3 — APÉNDICE
+═════════════════════════════════════════════ -->
+<h2><span class="num">3</span>Apéndice &mdash; 34 skills complementarias</h2>
+
+<p class="lead">Skills que existen en el método pero no forman parte del flujo del proyecto. Aquí aparecen como referencia rápida; no se documentan en detalle porque no se invocan en el ciclo principal.</p>
+
+<h3><span class="num">3.1</span>Skills BMM auxiliares</h3>
+
+<table class="appendix-table">
+  <thead>
+    <tr>
+      <th style="width:24%">Skill</th>
+      <th style="width:18%">Cuándo</th>
+      <th style="width:58%">Para qué sirve</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="skill-name">/bmad-prfaq</span></td>
+      <td>Pre&#8209;Fase 1</td>
+      <td>Forja el concepto de producto con el formato Working Backwards (press release imaginado + FAQ). Alternativa al brief cuando la idea aún no está validada.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-checkpoint-preview</span></td>
+      <td>Pre&#8209;merge / pre&#8209;release</td>
+      <td>Revisión asistida humano&#8209;en&#8209;el&#8209;bucle para entender un cambio: propósito, contexto, detalles. Útil cuando el revisor llega con poco contexto.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">3.2</span>Agentes con persona &mdash; BMM</h3>
+
+<p>Seis agentes especializados invocables para conversación abierta en su área de experiencia, sin estructura de workflow.</p>
+
+<table class="appendix-table">
+  <thead>
+    <tr>
+      <th style="width:30%">Skill</th>
+      <th style="width:20%">Persona</th>
+      <th style="width:50%">Especialidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="skill-name">/bmad-agent-analyst</span></td>
+      <td><strong>Mary</strong> <span class="persona">Business Analyst</span></td>
+      <td>Análisis estratégico, evidencia verificable, pirámide de Minto.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-agent-pm</span></td>
+      <td><strong>John</strong> <span class="persona">Product Manager</span></td>
+      <td>Jobs&#8209;to&#8209;be&#8209;Done, valor de usuario primero, viabilidad técnica como restricción.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-agent-architect</span></td>
+      <td><strong>Winston</strong> <span class="persona">System Architect</span></td>
+      <td>Trade&#8209;offs sobre verdades, productividad del desarrollador como criterio arquitectónico.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-agent-ux-designer</span></td>
+      <td><strong>Sally</strong> <span class="persona">UX Designer</span></td>
+      <td>Empatía con rigor en casos de borde; cada decisión sirve a una necesidad real del usuario.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-agent-dev</span></td>
+      <td><strong>Amelia</strong> <span class="persona">Senior Software Engineer</span></td>
+      <td>Test&#8209;first, 100&nbsp;% pass antes de revisión, comunicación tipo terminal.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-agent-tech-writer</span></td>
+      <td><strong>Paige</strong> <span class="persona">Technical Writer</span></td>
+      <td>Diagramas sobre prosa, cada palabra ganándose su sitio.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">3.3</span>Agente con persona &mdash; TEA</h3>
+
+<table class="appendix-table">
+  <thead>
+    <tr>
+      <th style="width:30%">Skill</th>
+      <th style="width:20%">Persona</th>
+      <th style="width:50%">Especialidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="skill-name">/bmad-tea</span></td>
+      <td><strong>Murat</strong> <span class="persona">Test Architect</span></td>
+      <td>Estrategia basada en riesgo, arquitectura de fixtures, ATDD, contract testing, performance y chaos. Opiniones fuertes, débilmente sostenidas.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">3.4</span>Workflows del módulo CIS</h3>
+
+<table class="appendix-table">
+  <thead>
+    <tr>
+      <th style="width:30%">Skill</th>
+      <th style="width:18%">Cuándo</th>
+      <th style="width:52%">Para qué sirve</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-design-thinking</span></td>
+      <td>Anytime</td>
+      <td>Procesos centrados en humanos: empatía, definición, ideación, prototipado, test.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-innovation-strategy</span></td>
+      <td>Anytime</td>
+      <td>Identificar oportunidades de disrupción y diseñar innovación de modelo de negocio.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-problem-solving</span></td>
+      <td>Anytime</td>
+      <td>Aplicar metodologías sistemáticas de resolución de problemas a desafíos complejos.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-storytelling</span></td>
+      <td>Anytime</td>
+      <td>Construir narrativas convincentes con frameworks de historia.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">3.5</span>Agentes con persona &mdash; CIS</h3>
+
+<table class="appendix-table">
+  <thead>
+    <tr>
+      <th style="width:32%">Skill</th>
+      <th style="width:22%">Persona</th>
+      <th style="width:46%">Especialidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-agent-storyteller</span></td>
+      <td><strong>Sophia</strong> <span class="persona">Master Storyteller</span></td>
+      <td>Narrativa con rigor estructural y arco mítico.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-agent-design-thinking-coach</span></td>
+      <td><strong>Maya</strong> <span class="persona">Design Thinking Maestro</span></td>
+      <td>Diseño centrado en humanos; tratar fracaso como feedback.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-agent-brainstorming-coach</span></td>
+      <td><strong>Carson</strong> <span class="persona">Brainstorming Specialist</span></td>
+      <td>Seguridad psicológica para liberar ideas salvajes.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-agent-creative-problem-solver</span></td>
+      <td><strong>Dr.&nbsp;Quinn</strong> <span class="persona">Master Problem Solver</span></td>
+      <td>Sistemas, causa raíz, la pregunta correcta vence a la respuesta rápida.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-agent-innovation-strategist</span></td>
+      <td><strong>Victor</strong> <span class="persona">Innovation Oracle</span></td>
+      <td>Disrupción, estrategia Blue Ocean, modelos de negocio.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-cis-agent-presentation-master</span></td>
+      <td><strong>Caravaggio</strong> <span class="persona">Presentation Expert</span></td>
+      <td>Arquitectura de presentaciones, jerarquía visual, regla de los 3 segundos.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">3.6</span>Skills del módulo BMB</h3>
+
+<p>Meta&#8209;skills para extender BMAD: crear agentes propios, módulos personalizados o workflows nuevos. Solo aplica a equipos que vayan a personalizar el método.</p>
+
+<table class="appendix-table">
+  <thead>
+    <tr>
+      <th style="width:30%">Skill</th>
+      <th style="width:70%">Para qué sirve</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="skill-name">/bmad-bmb-setup</span></td>
+      <td>Configura el módulo BMB en un proyecto.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-agent-builder</span></td>
+      <td>Construye, edita o analiza agentes mediante descubrimiento conversacional.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-module-builder</span></td>
+      <td>Planifica, crea y valida módulos BMad nuevos.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-workflow-builder</span></td>
+      <td>Construye, convierte y analiza workflows y skills.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">3.7</span>Skills del módulo Core</h3>
+
+<p>Utilidades transversales del método. Invocables según necesidad operativa.</p>
+
+<table class="appendix-table">
+  <thead>
+    <tr>
+      <th style="width:30%">Skill</th>
+      <th style="width:70%">Para qué sirve</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="skill-name">/bmad-help</span></td>
+      <td>Analiza el estado actual y la consulta del usuario para responder preguntas BMAD o recomendar la siguiente skill.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-customize</span></td>
+      <td>Autora overrides de personalización: hechos persistentes, plantillas, hooks, menús. Escribe en <code>_bmad/custom/</code> y verifica el merge.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-shard-doc</span></td>
+      <td>Divide documentos markdown grandes en archivos más pequeños y organizados por secciones de nivel 2.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-index-docs</span></td>
+      <td>Genera o actualiza un <code>index.md</code> que referencia todos los documentos de una carpeta.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-distillator</span></td>
+      <td>Compresión sin pérdida de documentos optimizada para LLM.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-party-mode</span></td>
+      <td>Orquesta discusiones grupales entre agentes BMAD instalados con pensamiento independiente.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-advanced-elicitation</span></td>
+      <td>Empuja al LLM a reconsiderar, refinar y mejorar su output reciente (Socrático, primeros principios, pre&#8209;mortem, red team).</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-editorial-review-prose</span></td>
+      <td>Revisa un texto frase por frase y detecta problemas de claridad, ambigüedad o redundancia. Devuelve tabla de hallazgos con sugerencias.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-editorial-review-structure</span></td>
+      <td>Editor estructural: propone cortes, reorganización y simplificación preservando comprensión.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-review-adversarial-general</span></td>
+      <td>Revisión cínica de un artefacto y producción de un reporte de hallazgos.</td>
+    </tr>
+    <tr>
+      <td><span class="skill-name">/bmad-review-edge-case-hunter</span></td>
+      <td>Recorre toda ruta de bifurcación y condición límite del contenido y reporta solo los casos de borde no manejados.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 4 — VERIFICACIÓN
+═════════════════════════════════════════════ -->
+<h2><span class="num">4</span>Verificación y fuentes</h2>
+
+<table>
+  <tbody>
+    <tr><td style="width:30%"><strong>Fecha de publicación</strong></td><td>2026-05-07</td></tr>
+    <tr><td><strong>Versión BMAD verificada</strong></td><td>BMAD v6.6.0 (Core 6.6.0 &middot; BMM 6.6.0 &middot; BMB 1.7.0 &middot; CIS 0.2.0 &middot; TEA 1.15.1)</td></tr>
+    <tr><td><strong>Total de skills</strong></td><td>66. Distribución: BMM 30 (incluye 6 agentes con persona y 2 auxiliares) &middot; Core 12 &middot; TEA 10 (incluye 1 agente Murat) &middot; CIS 10 (incluye 6 agentes) &middot; BMB 4.</td></tr>
+    <tr><td><strong>Origen de los conteos de sub&#8209;pasos</strong></td><td>Recuento directo de archivos en <code>.claude/skills/&lt;skill&gt;/steps&#8209;c/</code>, <code>steps&#8209;e/</code> y <code>steps&#8209;v/</code>.</td></tr>
+    <tr><td><strong>Origen de obligatoriedad y dependencias</strong></td><td>Campo <code>required</code> y campo <code>after</code> de <code>_bmad/_config/bmad-help.csv</code>.</td></tr>
+    <tr><td><strong>Fuentes consultadas</strong></td><td>Repositorios oficiales <code>bmad-code-org/bmad-method</code>, <code>bmad-code-org/bmad-method-test-architecture-enterprise</code>, <code>bmad-code-org/bmad-builder</code>, <code>bmad-code-org/bmad-module-creative-intelligence-suite</code>.</td></tr>
+  </tbody>
+</table>
+
+</div><!-- /content -->
+
+<!-- ═════════════════════════════════════════════
+     PAGED.JS (sin Mermaid en este libro)
+═════════════════════════════════════════════ -->
+<script>
+  window.PagedConfig = {
+    auto: false,
+    after: () => { window.__PAGED_DONE__ = true; }
+  };
+</script>
+
+<script src="https://unpkg.com/pagedjs@0.4.3/dist/paged.polyfill.js"></script>
+
+<script>
+  (async function () {
+    if (document.readyState !== 'complete') {
+      await new Promise(r => window.addEventListener('load', r));
+    }
+
+  // Handler que añade indicador "↓ continúa" al pie cuando una tabla cruza páginas.
+  class TableContinueHandler extends Paged.Handler {
+    constructor(chunker, polisher, caller) {
+      super(chunker, polisher, caller);
+    }
+    afterPageLayout(pageElement, page, breakToken) {
+      try {
+        if (!breakToken || !breakToken.node) return;
+        let node = breakToken.node;
+        while (node && node.nodeName !== 'TABLE' && node.nodeType !== 9) {
+          node = node.parentNode;
+        }
+        if (!node || node.nodeName !== 'TABLE') return;
+
+        const tablesInPage = pageElement.querySelectorAll('table');
+        if (tablesInPage.length === 0) return;
+        const lastTable = tablesInPage[tablesInPage.length - 1];
+        if (lastTable.querySelector('tfoot.continued')) return;
+
+        const tfoot = document.createElement('tfoot');
+        tfoot.className = 'continued';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = lastTable.querySelectorAll('thead th').length || 1;
+        td.textContent = '↓ continúa en la página siguiente';
+        tr.appendChild(td);
+        tfoot.appendChild(tr);
+        lastTable.appendChild(tfoot);
+      } catch (e) { console.warn('TableContinueHandler:', e); }
+    }
+  }
+  Paged.registerHandlers(TableContinueHandler);
+
+    const previewer = new window.Paged.Previewer();
+    await previewer.preview();
+    if (!window.__PAGED_DONE__) window.__PAGED_DONE__ = true;
+  })();
+</script>
+
+</body>
+</html>

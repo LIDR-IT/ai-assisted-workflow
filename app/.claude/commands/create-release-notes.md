@@ -1,1 +1,0 @@
-../../../.agents/commands/lidr-create-release-notes.md

@@ -1,1 +1,0 @@
-../../../.agents/hooks/lidr/validate-ecosystem-counts.sh

@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>BMAD Plan de Sesiones · Libro 3 de 5 | LIDR.co</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1A1A1A; --ink-soft: #333; --ink-mute: #666;
+    --gold: #F6DE82; --gold-deep: #D4B85C;
+    --cream: #FBEFC0; --cream-soft: #FFF8E1;
+    --paper: #FFFFFF; --line: #E6E6E6; --line-strong: #1A1A1A;
+
+    --mod-bmm: #E2B324; --mod-tea: #27AE60; --mod-cis: #9B59B6;
+    --mod-bmb: #3498DB; --mod-core: #95A5A6;
+
+    --req: #C0392B; --rec: #D4B85C; --opc: #B0B0B0;
+
+    --lidr-vision: #4A4A8A; --lidr-recom: #C97D2A;
+
+    --info: #2E86C1; --tip: #229954; --caution: #D4AC0D; --important: #C0392B;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink-soft); background: var(--paper);
+    font-size: 11px; line-height: 1.6;
+  }
+
+  /* COVER */
+  .cover {
+    page-break-after: always;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    min-height: 100vh; text-align: center;
+    background: var(--ink); color: #fff; padding: 60px 50px;
+  }
+  .cover .vol-tag {
+    font-size: 11px; color: var(--gold);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 18px; font-weight: 600;
+  }
+  .cover h1 {
+    font-size: 42px; font-weight: 700; color: #fff;
+    margin-bottom: 8px; letter-spacing: -0.5px;
+  }
+  .cover h1 span { color: var(--gold); }
+  .cover .subtitle {
+    font-size: 16px; color: var(--gold);
+    font-weight: 500; margin-bottom: 36px; max-width: 480px;
+  }
+  .cover .logo-bar {
+    width: 80px; height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+    border-radius: 2px; margin: 24px auto;
+  }
+  .cover .meta {
+    font-size: 12px; color: #cccccc;
+    line-height: 1.9; max-width: 460px;
+  }
+  .cover .meta strong { color: var(--gold); }
+  .cover .cover-version {
+    font-size: 10px; color: #999;
+    margin-top: 48px; letter-spacing: 1px;
+  }
+
+  /* CONTENT */
+  .content { padding: 36px 52px; max-width: 920px; margin: 0 auto; }
+
+  h2 {
+    font-size: 22px; font-weight: 700; color: var(--ink);
+    margin: 36px 0 6px 0; padding-bottom: 8px;
+    border-bottom: 3px solid var(--gold); letter-spacing: -0.2px;
+  }
+  h2:first-child { margin-top: 0; }
+  h2 .num { color: var(--gold-deep); font-weight: 800; margin-right: 10px; }
+
+  h3 {
+    font-size: 15px; font-weight: 700; color: var(--ink);
+    margin: 22px 0 8px 0; letter-spacing: -0.1px;
+  }
+  h3 .num { color: var(--gold-deep); margin-right: 6px; }
+
+  h4 {
+    font-size: 12px; font-weight: 700; color: var(--ink);
+    margin: 16px 0 6px 0; text-transform: uppercase; letter-spacing: 0.6px;
+  }
+
+  h5 {
+    font-size: 9.5px; font-weight: 800; color: var(--ink-mute);
+    margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+
+  p, li { font-size: 11px; color: var(--ink-soft); margin-bottom: 5px; }
+  ul, ol { margin: 4px 0 8px 18px; }
+  li { margin-bottom: 3px; }
+  strong { color: var(--ink); }
+  em { font-style: italic; }
+
+  .lead { font-size: 12.5px; color: var(--ink); line-height: 1.7; margin-bottom: 12px; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 10px 0 18px 0; font-size: 10px;
+  }
+  thead th {
+    background: var(--ink); color: var(--gold);
+    font-weight: 600; text-align: left; padding: 9px 11px;
+    border-bottom: 2px solid var(--gold); font-size: 10px; letter-spacing: 0.2px;
+  }
+  tbody td {
+    padding: 7px 10px; border-bottom: 1px solid var(--line);
+    vertical-align: top; color: var(--ink-soft);
+  }
+  tbody tr:nth-child(even) { background: #FAFAF6; }
+  tbody tr:nth-child(odd) { background: #ffffff; }
+  tbody td strong { color: var(--ink); }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: var(--cream); padding: 1px 6px;
+    border-radius: 3px; font-size: 9.5px; color: var(--ink);
+    border: 1px solid #E6D98A; display: inline-block;
+    white-space: nowrap;
+  }
+
+  pre.codeblock {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: #FBF9EE; color: var(--ink);
+    padding: 11px 14px; border-radius: 4px;
+    border: 1px solid #E6D98A;
+    border-left: 3px solid var(--gold-deep);
+    font-size: 9.5px; line-height: 1.55;
+    overflow-x: auto;
+    margin: 10px 0 14px 0;
+    white-space: pre-wrap;
+  }
+
+  /* MODULE DOTS */
+  .mod {
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; vertical-align: middle;
+    margin-right: 4px; margin-left: 2px;
+  }
+  .mod.bmm { background: var(--mod-bmm); }
+  .mod.tea { background: var(--mod-tea); }
+  .mod.cis { background: var(--mod-cis); }
+  .mod.bmb { background: var(--mod-bmb); }
+  .mod.core { background: var(--mod-core); }
+
+  /* BADGES */
+  .req-badge {
+    display: inline-block; font-size: 8px; font-weight: 700;
+    padding: 2px 7px; border-radius: 3px; vertical-align: middle;
+    margin-left: 5px; letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .req-badge.req { background: var(--req); color: #fff; }
+  .req-badge.rec { background: var(--gold); color: var(--ink); }
+  .req-badge.opc { background: #E8E8E8; color: #555; border: 1px solid #B0B0B0; }
+  .req-badge.req-tea { background: #D5EDE2; color: #1B6B45; border: 1px solid #27AE60; }
+
+  .lidr-badge {
+    display: inline-block; font-size: 8.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 3px;
+    margin-right: 8px; margin-bottom: 2px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #fff; vertical-align: middle;
+  }
+  .lidr-badge.vision { background: var(--lidr-vision); }
+  .lidr-badge.recomendacion { background: var(--lidr-recom); }
+
+  .lidr-mark {
+    display: block;
+    border-left: 3px solid var(--lidr-recom);
+    padding: 2px 0 2px 12px; margin: 8px 0;
+  }
+  .lidr-mark.vision { border-left-color: var(--lidr-vision); }
+  .lidr-mark .lidr-badge { margin-bottom: 4px; }
+
+  /* CALLOUTS */
+  .callout {
+    padding: 11px 14px 11px 16px; margin: 14px 0;
+    border-radius: 0 4px 4px 0; font-size: 10.5px;
+    color: var(--ink-soft); line-height: 1.6;
+  }
+  .callout strong { color: var(--ink); }
+  .callout .head {
+    display: block; font-size: 9.5px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;
+  }
+  .callout.info { background: #EAF4FA; border-left: 3px solid var(--info); }
+  .callout.info .head { color: var(--info); }
+  .callout.tip { background: #E9F7EF; border-left: 3px solid var(--tip); }
+  .callout.tip .head { color: var(--tip); }
+  .callout.caution { background: #FCF6E1; border-left: 3px solid var(--caution); }
+  .callout.caution .head { color: #9C8004; }
+  .callout.important { background: #FBEAE5; border-left: 3px solid var(--important); }
+  .callout.important .head { color: var(--important); }
+  .callout.tea { background: #E8F5EE; border-left: 3px solid var(--mod-tea); }
+  .callout.tea .head { color: #1B6B45; }
+  .callout.cis { background: #F4ECFA; border-left: 3px solid var(--mod-cis); }
+  .callout.cis .head { color: #6C2E91; }
+
+  /* SESSION CARD */
+  .session-card {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold-deep);
+    border-radius: 4px;
+    margin: 16px 0;
+    padding: 14px 16px;
+    background: #FFFFFF;
+    page-break-inside: auto;
+  }
+  .session-card.tea-card { border-left-color: var(--mod-tea); }
+
+  .session-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 8px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--gold-deep);
+  }
+  .session-num {
+    background: var(--ink); color: var(--gold);
+    font-size: 12px; font-weight: 800;
+    padding: 3px 11px; border-radius: 3px;
+    letter-spacing: 0.6px;
+  }
+  .session-title {
+    font-size: 14px; font-weight: 700;
+    color: var(--ink); flex: 1;
+  }
+  .session-duration {
+    font-size: 10.5px; font-weight: 700;
+    color: var(--ink); background: var(--cream);
+    padding: 3px 9px; border-radius: 3px;
+    border: 1px solid #E6D98A;
+  }
+
+  .session-resolves {
+    font-size: 11.5px; color: var(--ink);
+    background: var(--cream-soft);
+    padding: 9px 12px; border-radius: 3px;
+    margin-bottom: 10px;
+    line-height: 1.55;
+  }
+  .session-resolves .label {
+    font-size: 8.5px; font-weight: 800; color: var(--gold-deep);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-right: 6px;
+  }
+
+  .session-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin-bottom: 10px;
+  }
+  .session-meta-grid .block { font-size: 10.5px; }
+  .session-meta-grid .block ul { margin: 2px 0 0 16px; }
+  .session-meta-grid .block li { font-size: 10.5px; margin-bottom: 2px; line-height: 1.45; }
+
+  .agenda-block {
+    margin: 10px 0;
+    padding: 10px 12px;
+    background: #FAFAF6;
+    border-radius: 3px;
+    border-left: 2px solid var(--gold-deep);
+  }
+  .agenda-block h5 { margin-bottom: 6px; }
+  .agenda-block ol { margin-left: 20px; }
+  .agenda-block ol li { font-size: 10.5px; margin-bottom: 4px; line-height: 1.5; }
+  .agenda-block ol li code { font-size: 9.5px; }
+
+  .session-output {
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-size: 10.5px;
+  }
+  .session-output strong { color: var(--ink); }
+
+  /* DECISION SUB-CARD */
+  .decision-card {
+    border: 1px solid #DDD;
+    border-left: 3px solid var(--lidr-recom);
+    border-radius: 3px;
+    margin: 12px 0;
+    padding: 11px 14px;
+    background: #FCFAF5;
+    page-break-inside: avoid;
+  }
+  .decision-card .dec-num {
+    background: var(--lidr-recom); color: #fff;
+    font-size: 9px; font-weight: 800;
+    padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 0.5px;
+    margin-right: 8px;
+  }
+  .decision-card .dec-title {
+    font-size: 12px; font-weight: 700; color: var(--ink);
+  }
+  .decision-card .dec-meta {
+    margin-top: 8px;
+    font-size: 10.5px;
+  }
+  .decision-card .dec-meta dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 10px;
+    margin: 0;
+  }
+  .decision-card .dec-meta dt {
+    font-size: 9px; font-weight: 800;
+    color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    padding-top: 2px;
+  }
+  .decision-card .dec-meta dd { margin: 0; line-height: 1.5; }
+
+  /* TOOLKIT BOX */
+  .toolkit-box {
+    background: #F2EFE3;
+    border: 1px solid #D4B85C;
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .toolkit-box .toolkit-tag {
+    display: inline-block;
+    background: var(--ink); color: var(--gold);
+    font-size: 8.5px; font-weight: 800;
+    padding: 2px 8px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 6px;
+  }
+  .toolkit-box h4 { margin: 0 0 6px 0; }
+
+  /* DIAGRAM */
+  .diagram {
+    margin: 16px 0 20px 0;
+    padding: 16px;
+    background: #FCFCFA;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    text-align: center;
+  }
+  .diagram .caption {
+    margin-top: 10px;
+    font-size: 9.5px;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+  .mermaid { font-size: 12px !important; }
+
+  /* DIVIDERS */
+  .section-divider {
+    border: none; border-top: 1px dashed var(--gold-deep); margin: 26px 0;
+  }
+  .page-break { page-break-before: always; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+    margin: 8px 0 14px 0; font-size: 10px; color: var(--ink-soft);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+
+  /* PAGE — A4 */
+  @page {
+    size: A4; margin: 18mm 16mm 22mm 16mm;
+
+    @bottom-left {
+      content: "LIDR.co · BMAD Plan de Sesiones · Volumen III · Libro 3 de 5";
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt; color: #888; vertical-align: top; padding-top: 4mm;
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt; color: #888; vertical-align: top; padding-top: 4mm;
+    }
+    @footnote {
+      border-top: 0.5pt solid #D4B85C;
+      padding-top: 4pt; margin-top: 8pt;
+      font-size: 8.5pt; line-height: 1.45; color: #444;
+    }
+  }
+  @page :first {
+    margin: 0;
+    @top-left { content: none; } @top-center { content: none; } @top-right { content: none; }
+    @bottom-left { content: none; } @bottom-center { content: none; } @bottom-right { content: none; }
+  }
+  .footnote { float: footnote; font-size: 8.5pt; color: #444; }
+  .footnote::footnote-call {
+    content: counter(footnote); font-size: 0.62em;
+    vertical-align: super; line-height: 0;
+    color: var(--gold-deep); font-weight: 700; margin-left: 1px;
+  }
+  .footnote::footnote-marker {
+    content: counter(footnote) ". ";
+    font-weight: 700; color: var(--gold-deep);
+  }
+  .footnote strong { color: var(--ink); }
+
+  /* ─────────────────────────────────────────────
+     TABLE PAGINATION — repite cabecera, evita huérfanos
+  ───────────────────────────────────────────── */
+  table { page-break-inside: auto; break-inside: auto; }
+  thead { display: table-header-group; }
+  thead tr { break-after: avoid; page-break-after: avoid; break-inside: avoid; page-break-inside: avoid; }
+  tbody tr { break-inside: avoid; page-break-inside: avoid; }
+  tbody tr:first-child { break-before: avoid; page-break-before: avoid; }
+  tfoot { display: table-footer-group; }
+
+  /* Continuación de tabla — texto inyectado por paged.js handler */
+  tfoot.continued tr td {
+    text-align: right;
+    font-style: italic;
+    font-size: 8.5pt;
+    color: #888;
+    padding: 4px 8px 0 8px;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* OVERRIDE — permitir que las cards largas y bloques pre se partan
+     entre páginas para evitar huecos grandes al final de página */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box,
+  pre,
+  pre.codeblock{
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Las cabeceras de las cards no deben quedar huérfanas */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+
+  @media print {
+    body { font-size: 10.5px; }
+    .content { padding: 24px 40px; }
+    h2, h3, h4 { page-break-after: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+    .callout, .toolkit-box, .decision-card { page-break-inside: avoid; }
+    .diagram { page-break-inside: avoid; }
+  }
+
+  /* GAP FIX — permitir que cards largas se partan sin quedar atrapadas por sus headers */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+  /* Los headers internos sí evitan break dentro de sí mismos, pero NO fuerzan
+     a su contenedor a permanecer junto al siguiente bloque. */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+  /* En @media print, asegurar override final */
+  @media print {
+    .framework-card, .skill-card, .session-card, .scenario-card, .decision-card, .toolkit-box, .callout {
+      page-break-inside: auto !important;
+      break-inside: auto !important;
+    }
+    .framework-header, .session-header, .skill-card-header, .scenario-header, .card-header {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+  }
+
+/* MermaidTooltip fix */
+  /* Mermaid crea un tooltip invisible que paged.js coloca en una página vacía */
+  .mermaidTooltip { display: none !important; position: absolute !important; }
+  div:has(> .mermaidTooltip:only-child) { display: none !important; }
+
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="vol-tag">Volumen III &middot; Libro 3 de 5</div>
+  <h1>BMAD Plan de <span>Sesiones</span></h1>
+  <div class="subtitle">El calendario operativo: cómo se llevan a la realidad las cuatro fases</div>
+  <div class="logo-bar"></div>
+  <div class="meta">
+    Seis sesiones operativas para implantar el método.<br>
+    Agendas, participantes, decisiones de equipo y plantillas.<br>
+    Propuesta de adopción de LIDR sobre el flujo BMAD.<br><br>
+    <strong>BMAD Method &middot; CIS &middot; TEA &middot; BMB &middot; Core</strong>
+  </div>
+  <div class="cover-version">2026-05-07 &middot; LIDR.co</div>
+</div>
+
+<div class="content">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 0 — BIENVENIDA
+═════════════════════════════════════════════ -->
+<h2><span class="num">0</span>Bienvenida</h2>
+
+<p class="lead">Este es el tercer libro de la biblioteca. A diferencia de los otros, no documenta lo que el método BMAD prescribe, sino la <strong>propuesta de LIDR para llevarlo a un equipo real</strong>: cómo distribuimos las cuatro fases en sesiones operativas, qué se decide en cada una, cuánto suelen durar y quién participa.</p>
+
+<div class="lidr-mark vision">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  El método oficial no prescribe sesiones: deja la planificación a cada equipo. El calendario S0&ndash;S6 que estructura este libro, los roles de BMAD Master y BMAD Driver, los toolkits asíncronos post&#8209;S2 y post&#8209;S6, y el conjunto de tres decisiones operativas obligatorias en S4 son framing nuestro, no parte de BMAD. El lector verá la insignia "Visión LIDR" en cada framing conceptual y "Recomendación LIDR" en cada sugerencia de práctica.
+</div>
+
+<h3><span class="num">0.1</span>Cómo está organizado el libro</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:18%">Sección</th>
+      <th style="width:48%">Contenido</th>
+      <th style="width:34%">Cuándo la usas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sec. 1</strong> Convenciones</td>
+      <td>Módulos, insignias, anatomía de la ficha de sesión.</td>
+      <td>Hojear la primera vez para entender el formato.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 2</strong> Visión general</td>
+      <td>Resumen de las siete sesiones, calendario en diagrama, mapeo a fases del proyecto y roles fijos del equipo.</td>
+      <td>Para entender el calendario completo antes del detalle.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 3</strong> Sesión preliminar S0</td>
+      <td>Aprendizaje de testing antes de adoptar TEA. Solo si aplica.</td>
+      <td>En equipos sin disciplina previa de testing.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 4&ndash;Sec. 9</strong> Sesiones S1 a S6</td>
+      <td>Una ficha por sesión con resuelve, participantes, requisitos previos, agenda detallada, output y siguiente paso.</td>
+      <td>Para preparar y facilitar cada sesión.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 10</strong> Plantillas operativas</td>
+      <td>Plantilla del archivo <code>project&#8209;context.md</code>, checklist pre&#8209;sesión y checklist de cierre.</td>
+      <td>Como recursos imprimibles para uso del equipo.</td>
+    </tr>
+    <tr>
+      <td><strong>Sec. 11</strong> Verificación y fuentes</td>
+      <td>Versión BMAD verificada, repositorios oficiales consultados.</td>
+      <td>Para auditar la vigencia del libro.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">0.2</span>Sesión, fase y skill: cómo se distinguen</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:18%">Concepto</th>
+      <th style="width:32%">Qué es</th>
+      <th style="width:50%">Dónde se documenta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Skill</strong></td>
+      <td>Workflow ejecutable que produce un artefacto. Se invoca con <code>/comando</code>.</td>
+      <td>Libro 4 (Catálogo de Skills) &mdash; ficha completa por skill.</td>
+    </tr>
+    <tr>
+      <td><strong>Fase</strong></td>
+      <td>Etapa secuencial del flujo del proyecto. Hay cuatro: análisis, planificación, solución, implementación.</td>
+      <td>Libro 2 (Flujos de Proyecto) &mdash; cómo se enlazan las skills en cada fase.</td>
+    </tr>
+    <tr>
+      <td><strong>Sesión</strong></td>
+      <td>Reunión operativa con duración, agenda y participantes definidos. Una sesión cubre uno o varios pasos del flujo.</td>
+      <td><strong>Este libro</strong> &mdash; agenda, requisitos previos y output por sesión.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 1 — CONVENCIONES
+═════════════════════════════════════════════ -->
+<h2><span class="num">1</span>Convenciones</h2>
+
+<h3><span class="num">1.1</span>Punto de color del módulo</h3>
+<div class="legend">
+  <div class="legend-item"><span class="mod bmm"></span> <strong>BMM</strong> &middot; flujo principal</div>
+  <div class="legend-item"><span class="mod tea"></span> <strong>TEA</strong> &middot; testing</div>
+  <div class="legend-item"><span class="mod cis"></span> <strong>CIS</strong> &middot; pensamiento creativo</div>
+  <div class="legend-item"><span class="mod bmb"></span> <strong>BMB</strong> &middot; extensión del método</div>
+  <div class="legend-item"><span class="mod core"></span> <strong>Core</strong> &middot; utilidades transversales</div>
+</div>
+
+<h3><span class="num">1.2</span>Insignias de obligatoriedad por participante</h3>
+<p style="margin-bottom: 4px;">
+  <span class="req-badge req">REQ</span> obligatoria para el objetivo de la sesión &middot;
+  <span class="req-badge rec">REC</span> recomendada fuertemente &middot;
+  <span class="req-badge opc">OPC</span> opcional, la sesión avanza sin ese rol pero pierde valor.
+</p>
+
+<h3><span class="num">1.3</span>Insignias de aporte LIDR</h3>
+<p style="margin-bottom: 4px;">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  framing conceptual nuestro &middot;
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  sugerencia operativa basada en nuestra experiencia.
+</p>
+
+<h3><span class="num">1.4</span>Anatomía de la ficha de sesión</h3>
+
+<p>Cada sesión del Sec. 3 al Sec. 9 sigue siempre el mismo orden, para que el lector localice la información en el mismo sitio sin tener que leerla entera:</p>
+
+<ol>
+  <li><strong>Cabecera</strong> &mdash; identificador (S0&hellip;S6), título y duración recomendada.</li>
+  <li><strong>Resuelve</strong> &mdash; el problema que aborda en una frase.</li>
+  <li><strong>Cuándo se hace</strong> &mdash; qué precede a la sesión.</li>
+  <li><strong>Participantes</strong> &mdash; roles del equipo con su grado de obligatoriedad.</li>
+  <li><strong>Requisitos previos</strong> &mdash; artefactos o estado que debe haber antes.</li>
+  <li><strong>Agenda</strong> &mdash; pasos concretos con duración y skills BMAD que se invocan.</li>
+  <li><strong>Output</strong> &mdash; qué se llevan los participantes al salir.</li>
+  <li><strong>Siguiente paso</strong> &mdash; qué viene después en el calendario.</li>
+</ol>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 2 — VISIÓN GENERAL
+═════════════════════════════════════════════ -->
+<h2><span class="num">2</span>Visión general del calendario</h2>
+
+<h3><span class="num">2.1</span>Las siete sesiones de un vistazo</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:8%">Sesión</th>
+      <th style="width:24%">Objetivo</th>
+      <th style="width:14%">Duración</th>
+      <th style="width:24%">Cubre del flujo</th>
+      <th style="width:30%">Output principal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>S0</strong></td>
+      <td>Aprendizaje de testing &mdash; opcional, solo si se adopta TEA.</td>
+      <td>14&ndash;28 h en 1&ndash;2 semanas (autodirigido).</td>
+      <td>Pre&#8209;adopción.</td>
+      <td>Equipo formado en disciplina de testing.</td>
+    </tr>
+    <tr>
+      <td><strong>S1</strong></td>
+      <td>Análisis del producto: brief, PRD y UX Design.</td>
+      <td>3 h.</td>
+      <td>Fase 1 + Fase 2 comprimidas.</td>
+      <td>PRD validado con NFR cuantificados + UX Design.</td>
+    </tr>
+    <tr>
+      <td><strong>S2</strong></td>
+      <td>Arquitectura técnica y arranque de la estrategia de testing.</td>
+      <td>3 h + toolkit asíncrono.</td>
+      <td>Fase 3 primer tramo.</td>
+      <td>Arquitectura + Test Design + Framework instalado + pipeline de integración continua.</td>
+    </tr>
+    <tr>
+      <td><strong>S3</strong></td>
+      <td>Plan final + arranque de la implementación.</td>
+      <td>3 h 30 min.</td>
+      <td>Fase 3 cierre + Fase 4 inicio.</td>
+      <td>Épicas + readiness aprobado + sprint planificado + primera historia con tests ATDD<span class="footnote"><strong>ATDD:</strong> <em>Acceptance Test&#8209;Driven Development</em>. Variante de TDD donde los tests se derivan directamente de los criterios de aceptación de la historia y se escriben antes del código de producción. Generan la fase roja del ciclo red&#8209;green&#8209;refactor.</span> en rojo.</td>
+    </tr>
+    <tr>
+      <td><strong>S4</strong></td>
+      <td>Convenciones del equipo + ajustes BMAD en vivo.</td>
+      <td>2&ndash;3 h.</td>
+      <td>Transición operativa a la implementación.</td>
+      <td>Sección "Ops Conventions" en <code>project&#8209;context.md</code> commiteada.</td>
+    </tr>
+    <tr>
+      <td><strong>S5</strong></td>
+      <td>Ciclo iterativo por historia.</td>
+      <td>Continuo, post&#8209;S4.</td>
+      <td>Fase 4 en modo continuo.</td>
+      <td>Pull requests mergeados con tests automatizados y revisión.</td>
+    </tr>
+    <tr>
+      <td><strong>S6</strong></td>
+      <td>Cierre formal de la primera épica + toolkit asíncrono NFR Check.</td>
+      <td>2&ndash;3 h.</td>
+      <td>Cierre TEA acompañado.</td>
+      <td>Test Review + Trazabilidad + Retrospectiva + autonomía confirmada.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  En proyectos típicos, S1 a S4 ocupan unas <strong>11&ndash;13 h</strong> distribuidas en una o dos semanas; el equipo entra a S5 con todo lo necesario para operar. Tras S6 (otras 2&ndash;3 h al cerrar la primera épica), el equipo opera autónomo. La cifra es nuestra: el método no fija duraciones, depende del tamaño y la experiencia del equipo.
+</div>
+
+<h3><span class="num">2.2</span>Calendario en una imagen</h3>
+
+<p>El siguiente diagrama resume la secuencia. Las flechas continuas marcan dependencias estrictas; la flecha punteada indica que S0 es opcional.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  S0["S0<br/>Aprendizaje<br/>(opcional)"]
+  S1["S1<br/>Análisis<br/>3 h"]
+  S2["S2<br/>Arquitectura + TEA<br/>3 h"]
+  T2["Toolkit<br/>post-S2<br/>(async)"]
+  S3["S3<br/>Plan + Kickoff<br/>3 h 30"]
+  S4["S4<br/>Convenciones<br/>2-3 h"]
+  S5["S5<br/>Ciclo iterativo<br/>continuo"]
+  S6["S6<br/>Cierre épica 1<br/>2-3 h"]
+  T6["Toolkit<br/>post-S6<br/>(async)"]
+
+  S0 -.->|opcional| S1
+  S1 --> S2
+  S2 --> T2
+  T2 --> S3
+  S3 --> S4
+  S4 --> S5
+  S5 --> S6
+  S6 --> T6
+
+classDef opt fill:#FAFAF6,stroke:#999,stroke-width:1px,color:#666,stroke-dasharray:3 3;
+classDef sess fill:#FBEFC0,stroke:#1A1A1A,stroke-width:1.5px,color:#1A1A1A;
+classDef cont fill:#FFFFFF,stroke:#1A1A1A,stroke-width:1px,color:#1A1A1A;
+classDef tool fill:#F2EFE3,stroke:#D4B85C,stroke-width:1px,color:#1A1A1A,stroke-dasharray:4 2;
+class S0 opt;
+class S1,S2,S3,S4,S6 sess;
+class S5 cont;
+class T2,T6 tool;</div>
+<div class="caption">Figura 2.1 &mdash; Calendario de adopción LIDR sobre el flujo BMAD.</div>
+</div>
+
+<h3><span class="num">2.3</span>Mapeo a fases del proyecto</h3>
+
+<p>Cada sesión cubre una porción concreta del flujo descrito en el Libro 2.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:14%">Sesión</th>
+      <th style="width:40%">Tramo del flujo del Libro 2</th>
+      <th style="width:46%">Por qué se agrupa así</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>S1</strong></td>
+      <td>Fase 1 + Fase 2 comprimidas (research, brief, PRD, UX, NFR setup).</td>
+      <td>Permite cerrar planificación de producto en una sola sesión cuando el equipo es pequeño.</td>
+    </tr>
+    <tr>
+      <td><strong>S2</strong></td>
+      <td>Fase 3 primer tramo: arquitectura + bloque TEA de arranque (test design, framework, pipeline).</td>
+      <td>El bloque TEA depende del stack que la arquitectura fija; se ejecuta en la misma sesión para que las decisiones queden alineadas.</td>
+    </tr>
+    <tr>
+      <td><strong>S3</strong></td>
+      <td>Cierre de Fase 3 (épicas, readiness) + inicio de Fase 4 (sprint planning, primera historia, ATDD).</td>
+      <td>Encadena planificación con kickoff para que el equipo salga con la primera historia lista para implementar.</td>
+    </tr>
+    <tr>
+      <td><strong>S4</strong></td>
+      <td>Transición operativa a Fase 4: decisiones del equipo y ajustes en BMAD.</td>
+      <td>El método no prescribe tool ni branch strategy: estas decisiones se toman aquí y se persisten para que las skills downstream las respeten.</td>
+    </tr>
+    <tr>
+      <td><strong>S5</strong></td>
+      <td>Fase 4 en modo continuo &mdash; ciclo iterativo por historia.</td>
+      <td>No es sesión facilitada: es el modo de operación del equipo entre sesiones.</td>
+    </tr>
+    <tr>
+      <td><strong>S6</strong></td>
+      <td>Cierre formal de la primera épica: <code>test-review</code> &rarr; <code>trace</code> &rarr; <code>retrospective</code>.</td>
+      <td>El primer cierre se facilita con red de seguridad; en épicas posteriores el equipo lo ejecuta solo.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">2.4</span>Roles fijos en todas las sesiones</h3>
+
+<p>Más allá de los roles que cubren cada fase del proyecto (PM, PO, Tech Lead, UX, QA, Dev, SM, DevOps), durante la adopción del método LIDR define dos roles permanentes que aparecen en todas las sesiones facilitadas.</p>
+
+<div class="lidr-mark vision">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  <strong>BMAD Master</strong> y <strong>BMAD Driver</strong> son roles humanos que LIDR define para acompañar la adopción. Ninguno existe en el método como agente o skill. Su función es asegurar que el proceso se ejecute correctamente y que la herramienta no sea un obstáculo para el equipo de producto.
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:18%">Rol</th>
+      <th style="width:14%">Presencia</th>
+      <th style="width:34%">Responsabilidad</th>
+      <th style="width:34%">Perfil típico</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>BMAD Master</strong></td>
+      <td>S1 inicio y cierre, S2 inicio, S3 inicio y cierre, S4 toda la sesión, S6 cierre con Q&amp;A.</td>
+      <td>Facilitador de proceso. Asegura que el método se ejecute correctamente; no valida contenido técnico ni de negocio. En S4 implementa los ajustes de BMAD en vivo.</td>
+      <td>Consultor con dominio del método, o líder de proceso del cliente con experiencia previa en adopciones BMAD. En equipos maduros, puede coincidir con el Tech Lead.</td>
+    </tr>
+    <tr>
+      <td><strong>BMAD Driver</strong></td>
+      <td>Toda la sesión, en todas las sesiones facilitadas.</td>
+      <td>Opera el agente de IA y ejecuta todas las skills BMAD durante la sesión. Traduce el input del equipo de producto en comandos.</td>
+      <td>Tech Lead o desarrollador senior con experiencia en el agente que se está usando.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="head">Dinámica de las sesiones</span>
+  El equipo de producto aporta contenido y decisiones de negocio. El Driver traduce ese input en invocaciones de skills. El Master verifica que los pasos del proceso se completen y que los artefactos producidos sean coherentes con el método. Esta separación de responsabilidades permite que la sesión avance sin que nadie tenga que dominar a la vez producto, técnica y BMAD.
+</div>
+
+<h3><span class="num">2.5</span>Resto de roles del equipo</h3>
+
+<p>Los demás roles aparecen según la sesión. Su presencia y obligatoriedad se detalla en cada ficha. Para la lista completa de responsabilidades por rol, consulta el Libro 2 (BMAD Flujos de Proyecto) sección 5.</p>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 3 — S0 — APRENDIZAJE
+═════════════════════════════════════════════ -->
+<h2><span class="num">3</span>Sesión preliminar S0 &mdash; Aprendizaje</h2>
+
+<article class="session-card tea-card">
+  <div class="session-header">
+    <span class="session-num">S0</span>
+    <span class="session-title">Aprendizaje de testing &mdash; opcional, autodirigido</span>
+    <span class="session-duration">14&ndash;28 h &middot; 1&ndash;2 semanas</span>
+  </div>
+  <div class="session-resolves">
+    <span class="label">Resuelve:</span>
+    Forma al equipo en testing antes de que empiece a usar TEA en sesiones reales. Es la red de seguridad para equipos sin disciplina previa.
+  </div>
+  <div class="session-meta-grid">
+    <div class="block">
+      <h5>Cuándo se hace</h5>
+      Antes de S2 (que es donde aparecen las primeras skills TEA). Solo si el equipo no domina conceptos base de testing.
+    </div>
+    <div class="block">
+      <h5>Participantes</h5>
+      Cualquier integrante del equipo que vaya a tocar TEA: Dev, QA y, opcionalmente, Tech Lead. No requiere facilitación.
+    </div>
+    <div class="block">
+      <h5>Requisitos previos</h5>
+      Acceso al agente de IA con la skill <code>/bmad-teach-me-testing</code> instalada. Sin dependencia de PRD ni arquitectura.
+    </div>
+    <div class="block">
+      <h5>Output</h5>
+      Equipo formado en disciplina de testing y certificación de finalización del programa.
+    </div>
+  </div>
+  <div class="session-output">
+    <strong>Detalle pleno:</strong> esta sesión es un envoltorio del workflow <code>/bmad-teach-me-testing</code>. El detalle del programa, sus 7 micro&#8209;sesiones académicas y los criterios de progreso viven en el Libro 4 (Catálogo de Skills) ficha 01.
+  </div>
+</article>
+
+<div class="callout info">
+  <span class="head">¿Cuándo conviene S0?</span>
+  Si el equipo ya escribe tests automatizados con regularidad, S0 es prescindible. Si los tests existentes son escasos, frágiles o se generan en bloque al final del sprint, conviene activarla. La inversión inicial reduce drásticamente el tiempo perdido en S2 y S3 explicando conceptos básicos.
+</div>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 4 — S1
+═════════════════════════════════════════════ -->
+<h2><span class="num">4</span>Sesión S1 &mdash; Análisis del Producto</h2>
+
+<article class="session-card">
+  <div class="session-header">
+    <span class="session-num">S1</span>
+    <span class="session-title">Análisis del producto &mdash; brief, PRD y UX Design</span>
+    <span class="session-duration">3 h &middot; sesión 1</span>
+  </div>
+  <div class="session-resolves">
+    <span class="label">Resuelve:</span>
+    Convierte una idea de producto en un PRD<span class="footnote"><strong>PRD:</strong> <em>Product Requirements Document</em>. Documento que describe lo que el producto debe hacer (requisitos funcionales) y cómo de bien debe hacerlo (requisitos no funcionales). Es el contrato entre producto y equipo técnico.</span> con NFR<span class="footnote"><strong>NFR:</strong> <em>Non-Functional Requirement</em>. Requisito sobre cómo de bien debe comportarse el sistema (rendimiento, seguridad, fiabilidad, escalabilidad), en contraposición a los requisitos funcionales que describen qué debe hacer.</span> cuantificados y un UX Design listo para arquitectura, todo en una sola sesión.
+  </div>
+  <div class="session-meta-grid">
+    <div class="block">
+      <h5>Cuándo se hace</h5>
+      Primera sesión del proyecto. Sin prerrequisito BMAD; idealmente con research previo asíncrono.
+    </div>
+    <div class="block">
+      <h5>Requisitos previos</h5>
+      <ul>
+        <li>PO y UX traen documentación recaudada (idea, brief si existe).</li>
+        <li>Driver prepara entorno BMAD.</li>
+        <li>Opcional pre&#8209;sesión: <code>/bmad-market-research</code>, <code>/bmad-domain-research</code>, <code>/bmad-technical-research</code> ejecutados en asíncrono.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Participantes</h5>
+      <ul>
+        <li>BMAD Master <span class="req-badge req">REQ</span> &mdash; inicio y cierre.</li>
+        <li>BMAD Driver <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>Product Owner <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>UX Designer <span class="req-badge req">REQ</span> &mdash; primeras 2 h 30.</li>
+        <li>Tech Lead <span class="req-badge req">REQ</span> &mdash; última media hora (NFR setup).</li>
+        <li>DevOps <span class="req-badge opc">OPC</span> &mdash; última media hora.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Output</h5>
+      Brief + PRD validado con NFR cuantificados + UX Design.
+    </div>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Agenda</h5>
+    <ol>
+      <li><strong>Apertura del Master</strong> &mdash; alinea qué se produce, qué necesita cada rol y decide si activar workflows del módulo creativo. ~10 min.</li>
+      <li><strong><code>/bmad-brainstorming</code></strong> <span class="mod core"></span> opcional, si la idea no está cristalizada. PO + UX. Alternativas: <code>/bmad-cis-design-thinking</code>, <code>/bmad-cis-storytelling</code>. ~30&ndash;45 min.</li>
+      <li><strong><code>/bmad-product-brief</code></strong> <span class="mod bmm"></span> &mdash; PO produce el brief. ~30 min.</li>
+      <li><strong><code>/bmad-create-prd</code></strong> <span class="mod bmm"></span> &mdash; PO + UX. Cada requisito funcional debe ser testeable (formato Given/When/Then<span class="footnote"><strong>Given/When/Then:</strong> estructura de criterios de aceptación que describe un escenario en tres partes &mdash; dado un contexto inicial (Given), cuando ocurre un evento (When), entonces se espera un resultado (Then). Es el formato estándar de BDD.</span>). ~45&ndash;60 min.</li>
+      <li><strong><code>/bmad-create-ux-design</code></strong> <span class="mod bmm"></span> &mdash; UX. Tras este paso, UX se retira y entran TL y DevOps. ~30 min.</li>
+      <li><strong><code>/bmad-testarch-nfr</code> en modo <em>setup</em></strong> <span class="mod tea"></span> &mdash; PO + TL + DevOps. Fija umbrales cuantificables (latencia P95<span class="footnote"><strong>P95:</strong> percentil 95 de latencia. Significa que el 95&nbsp;% de las peticiones responden en un tiempo igual o inferior al valor declarado. Se usa porque la media oculta los casos lentos y la P50 (mediana) ignora la cola larga; P95 captura el comportamiento real para el 95&nbsp;% de los usuarios.</span>, RPS<span class="footnote"><strong>RPS:</strong> <em>requests per second</em>. Métrica de carga que indica cuántas peticiones por segundo soporta un sistema. Se usa para fijar los umbrales no funcionales del PRD junto con la latencia P95.</span>, SLO<span class="footnote"><strong>SLO:</strong> <em>Service Level Objective</em>. Objetivo cuantificable de calidad de servicio que el equipo se compromete a cumplir &mdash; por ejemplo, "el 99,9 % de las peticiones responde en menos de 200 ms".</span>). ~25 min.</li>
+      <li><strong>Cierre del Master</strong> &mdash; verificación de proceso. ~10 min.</li>
+      <li><strong>Asíncrono post&#8209;sesión</strong> &mdash; <code>/bmad-validate-prd</code> ejecutado por el Driver con un LLM distinto al que produjo el PRD. ~60 min en otra ventana.</li>
+    </ol>
+  </div>
+
+  <div class="session-output">
+    <strong>Siguiente paso:</strong> S2 &mdash; la arquitectura y el bloque TEA necesitan el PRD con NFR cuantificados.
+  </div>
+</article>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 5 — S2
+═════════════════════════════════════════════ -->
+<h2><span class="num">5</span>Sesión S2 &mdash; Arquitectura y arranque TEA</h2>
+
+<article class="session-card">
+  <div class="session-header">
+    <span class="session-num">S2</span>
+    <span class="session-title">Arquitectura técnica y estrategia de testing</span>
+    <span class="session-duration">3 h &middot; sesión 2</span>
+  </div>
+  <div class="session-resolves">
+    <span class="label">Resuelve:</span>
+    Diseña la arquitectura sobre el PRD y deja lista la estrategia de testing &mdash; plan basado en riesgo, framework instalado y pipeline de integración continua &mdash; antes de que aparezca la primera historia.
+  </div>
+  <div class="session-meta-grid">
+    <div class="block">
+      <h5>Cuándo se hace</h5>
+      Tras S1 cerrada con PRD y NFR cuantificados.
+    </div>
+    <div class="block">
+      <h5>Requisitos previos</h5>
+      <ul>
+        <li>S1 completa con PRD validado y NFR fijados.</li>
+        <li><code>/bmad-validate-prd</code> ejecutado en asíncrono entre S1 y S2.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Participantes</h5>
+      <ul>
+        <li>BMAD Master <span class="req-badge req">REQ</span> &mdash; solo apertura.</li>
+        <li>BMAD Driver <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>Product Owner <span class="req-badge req">REQ</span> &mdash; primeros 30 min para handoff de contexto.</li>
+        <li>Architect / Tech Lead <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>QA <span class="req-badge req">REQ</span> &mdash; última hora y media.</li>
+        <li>DevOps <span class="req-badge req">REQ</span> &mdash; última hora y media.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Output</h5>
+      Arquitectura + plan de testing basado en riesgo + framework instalado + pipeline configurada.
+    </div>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Agenda</h5>
+    <ol>
+      <li><strong>Apertura del Master</strong> y handoff del PO al Architect del contexto del PRD. ~30 min.</li>
+      <li><strong><code>/bmad-create-architecture</code></strong> <span class="mod bmm"></span> &mdash; el Architect define stack, estructura y restricciones. ~60&ndash;90 min.</li>
+      <li><em>Incorporación de QA y DevOps.</em></li>
+      <li><strong><code>/bmad-testarch-test-design</code></strong> <span class="mod tea"></span> &mdash; planificación basada en riesgo. Architect + QA. ~30&ndash;45 min.</li>
+      <li><strong><code>/bmad-testarch-framework</code></strong> <span class="mod tea"></span> &mdash; scaffolding del framework. Architect + QA. ~25&ndash;35 min.</li>
+      <li><strong><code>/bmad-testarch-ci</code></strong> <span class="mod tea"></span> &mdash; pipeline con gates de calidad. Architect + QA + DevOps. ~20&ndash;30 min.</li>
+      <li><strong>Gate de testabilidad post&#8209;arquitectura</strong> &mdash; aplicar el ADR<span class="footnote"><strong>ADR:</strong> <em>Architecture Decision Record</em>. Documento corto que captura una decisión técnica (qué se eligió, qué se descartó y por qué), con sus trade-offs.</span> Quality Readiness Checklist (29 criterios en 8 categorías). El detalle vive en el Libro 5 (Protocolo TEA). ~10 min.</li>
+    </ol>
+  </div>
+
+  <div class="callout important">
+    <span class="head">Dependencias estrictas que esta sesión deja preparadas</span>
+    El framework debe quedar instalado <strong>antes</strong> de S3, porque sin él los tests ATDD no son ejecutables. La pipeline debe estar configurada <strong>antes</strong> del primer merge en S5, no antes; pero se hace aquí mientras DevOps está presente. Saltarse cualquiera de las dos genera retrabajo difícil de localizar.
+  </div>
+
+  <div class="session-output">
+    <strong>Siguiente paso:</strong> S3 &mdash; épicas, sprint planning y kickoff de la implementación. Entre medias, toolkit asíncrono si aparece desviación entre PRD y arquitectura.
+  </div>
+</article>
+
+<div class="toolkit-box">
+  <span class="toolkit-tag">Toolkit post&#8209;S2 &middot; asíncrono &middot; sin sesión nueva</span>
+  <h4>Course&#8209;correction tras S2</h4>
+  <p>Si tras S2 aparece desviación entre el PRD y la arquitectura o la UX, no es necesario convocar sesión nueva. Hay tres rutas asíncronas según la magnitud del cambio:</p>
+  <ul>
+    <li><strong>Cambio menor de alcance, FR o NFR</strong> &rarr; <code>/bmad-edit-prd</code>. Driver + PO. ~45&ndash;90 min.</li>
+    <li><strong>Cambio estructural con impacto en alcance</strong> &rarr; <code>/bmad-correct-course</code>. Driver + PO + Tech Lead. ~60&ndash;90 min.</li>
+    <li><strong>Conflicto entre producto y arquitectura</strong> &rarr; <code>/bmad-cis-problem-solving</code>. Driver + PO + Architect (+ UX si afecta al flujo de usuario). ~60 min.</li>
+  </ul>
+  <p style="margin-top:6px; color: var(--ink-mute);">Activación opcional. Solo escalar a llamada corta de 45&ndash;60 min si aparece desacuerdo no resoluble por chat.</p>
+</div>
+
+<div class="lidr-mark vision">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  El método no contempla un "toolkit asíncrono" entre sesiones: cada skill simplemente se invoca cuando hace falta. Lo nombramos así porque, en una adopción tipo, los huecos descubiertos tras S2 no merecen una sesión completa pero sí necesitan resolverse antes de S3. Tener un nombre y un proceso para esos micro&#8209;ajustes evita que el equipo posponga la corrección hasta que duela.
+</div>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 6 — S3
+═════════════════════════════════════════════ -->
+<h2><span class="num">6</span>Sesión S3 &mdash; Plan Final + Kickoff</h2>
+
+<article class="session-card">
+  <div class="session-header">
+    <span class="session-num">S3</span>
+    <span class="session-title">Plan final y kickoff de la implementación</span>
+    <span class="session-duration">3 h 30 &middot; sesión 3</span>
+  </div>
+  <div class="session-resolves">
+    <span class="label">Resuelve:</span>
+    Cierra la planificación con épicas y readiness, hace el handoff al Scrum Master, planifica el primer sprint y arranca la primera historia con sus tests ATDD en rojo. Todo en un único flujo continuo.
+  </div>
+  <div class="session-meta-grid">
+    <div class="block">
+      <h5>Cuándo se hace</h5>
+      Tras S2 con arquitectura, framework instalado y pipeline operativa. Toolkit post&#8209;S2 aplicado si hubo desviación.
+    </div>
+    <div class="block">
+      <h5>Requisitos previos</h5>
+      <ul>
+        <li>PRD + arquitectura completos.</li>
+        <li>Test framework instalado.</li>
+        <li>Pipeline configurada.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Participantes</h5>
+      <ul>
+        <li>BMAD Master <span class="req-badge req">REQ</span> &mdash; inicio y cierre.</li>
+        <li>BMAD Driver <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>Product Owner <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>Tech Lead <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>QA <span class="req-badge req">REQ</span> &mdash; toda la sesión.</li>
+        <li>Scrum Master <span class="req-badge opc">OPC</span> &mdash; segunda mitad. Si no hay SM, lo absorbe PO o TL.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Output</h5>
+      Épicas e historias + readiness aprobado + sprint planificado + primera historia con contexto + tests ATDD en rojo.
+    </div>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Agenda &mdash; cadena estricta, no paralelizable</h5>
+    <ol>
+      <li><strong>Apertura del Master</strong> &mdash; explica los dos tramos (planificación y kickoff) y el gate de readiness intermedio. ~10 min.</li>
+      <li><strong><code>/bmad-create-epics-and-stories</code></strong> <span class="mod bmm"></span> &mdash; PO + Tech Lead. ~45&ndash;60 min.</li>
+      <li><strong>QA revisa criterios de aceptación</strong> &mdash; verifica que cada criterio sea testeable en formato Given/When/Then. ~20 min.</li>
+      <li><strong><code>/bmad-check-implementation-readiness</code></strong> <span class="mod bmm"></span> &mdash; gate consume todo lo producido en S1, S2 y el toolkit. ~60 min.</li>
+      <li><strong>Handoff formal del PO al SM</strong> &mdash; o auto&#8209;handoff si PO y SM coinciden. ~10 min.</li>
+      <li><strong><code>/bmad-sprint-planning</code></strong> <span class="mod bmm"></span> &mdash; SM o PO con el equipo técnico. ~15&ndash;20 min.</li>
+      <li><strong><code>/bmad-create-story</code></strong> <span class="mod bmm"></span> &mdash; primera historia con todo el contexto. Tech Lead + QA. ~40&ndash;60 min.</li>
+      <li><strong><code>/bmad-testarch-atdd</code></strong> <span class="mod tea"></span> &mdash; fase roja de la primera historia. QA + Tech Lead. ~40&ndash;60 min.</li>
+      <li><strong>Cierre del Master</strong> &mdash; verifica artefactos y alinea hacia S4. ~10 min.</li>
+    </ol>
+  </div>
+
+  <div class="session-output">
+    <strong>Siguiente paso:</strong> S4 &mdash; convenciones del equipo y ajustes en BMAD para que las skills posteriores las respeten.
+  </div>
+</article>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 7 — S4 — CONVENCIONES + 4 DECISIONES
+═════════════════════════════════════════════ -->
+<h2><span class="num">7</span>Sesión S4 &mdash; Convenciones del Equipo</h2>
+
+<article class="session-card">
+  <div class="session-header">
+    <span class="session-num">S4</span>
+    <span class="session-title">Convenciones del equipo + ajustes BMAD en vivo</span>
+    <span class="session-duration">2&ndash;3 h &middot; sesión 4</span>
+  </div>
+  <div class="session-resolves">
+    <span class="label">Resuelve:</span>
+    Cierra las decisiones operativas que el método no prescribe (herramienta de backlog, estrategia de ramas, flujo de estados, multi&#8209;agente) y las persiste en BMAD para que las skills posteriores las respeten automáticamente.
+  </div>
+  <div class="session-meta-grid">
+    <div class="block">
+      <h5>Cuándo se hace</h5>
+      Tras S3 completa, con épicas, sprint planificado y primera historia con ATDD en rojo. El equipo decide convenciones con artefactos concretos en mano, no en abstracto.
+    </div>
+    <div class="block">
+      <h5>Requisitos previos</h5>
+      <ul>
+        <li>S3 cerrada con artefactos concretos.</li>
+        <li>Driver con permisos para editar <code>project-context.md</code> y, si aplica, <code>.gitignore</code> y <code>CLAUDE.md</code>.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Participantes</h5>
+      <ul>
+        <li>BMAD Master <span class="req-badge req">REQ</span> &mdash; toda la sesión, intermediario e implementador.</li>
+        <li>Product Owner <span class="req-badge req">REQ</span>.</li>
+        <li>Tech Lead <span class="req-badge req">REQ</span>.</li>
+        <li>DevOps <span class="req-badge req">REQ</span>.</li>
+        <li>QA <span class="req-badge req">REQ</span>.</li>
+        <li>Scrum Master <span class="req-badge opc">OPC</span>.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Output</h5>
+      Sección "Ops Conventions" en <code>project-context.md</code> commiteada al repositorio + ajustes en hooks o plantillas + (opcional) versión narrativa para onboarding.
+    </div>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Agenda &mdash; dos bloques</h5>
+    <ol>
+      <li><strong>Bloque 1 &mdash; deliberación de las decisiones</strong> (~1&ndash;1 h 30, +15&ndash;20 min si se aborda la decisión 4). Las tres decisiones obligatorias se toman en cualquier orden &mdash; son independientes &mdash; y la decisión 4 al final si aplica.</li>
+      <li><strong>Bloque 2 &mdash; ajustes BMAD en vivo</strong> (~1&ndash;1 h 30). El Master ejecuta <code>/bmad-generate-project-context</code> si el archivo no existe, añade la sección "Ops Conventions" con las decisiones, ajusta hooks o plantillas y, si aplica decisión 4, edita <code>.worktreeinclude</code>, <code>.gitignore</code> y <code>CLAUDE.md</code>. Equipo presente para validar. Commit al repositorio antes de cerrar.</li>
+    </ol>
+  </div>
+
+  <div class="session-output">
+    <strong>Siguiente paso:</strong> S5 &mdash; ciclo iterativo. Las skills downstream (<code>create-story</code>, <code>dev-story</code>, <code>code-review</code>, varias TEA) leen <code>project-context.md</code> como contexto y respetan automáticamente las convenciones acordadas.
+  </div>
+</article>
+
+<div class="lidr-mark">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  Las tres decisiones operativas obligatorias y la opcional son nuestras. El método no las prescribe ni las exige; las hemos identificado como las que más fricción generan cuando un equipo arranca implementación sin acordarlas. La opcional (decisión 4) solo aplica si el equipo trabaja con el agente Claude Code; en cualquier otro contexto se omite.
+</div>
+
+<h3><span class="num">7.1</span>Las cuatro decisiones operativas</h3>
+
+<!-- DECISION 1 -->
+<div class="decision-card">
+  <p><span class="dec-num">D1</span><span class="dec-title">Herramienta de backlog externo</span></p>
+  <div class="dec-meta">
+    <dl>
+      <dt>Resuelve</dt>
+      <dd>Dónde trackea el equipo el backlog día a día. Sin acuerdo, las historias quedan en BMAD pero el negocio no las ve.</dd>
+      <dt>Opciones</dt>
+      <dd>Jira, Linear, Notion, GitHub Projects, Asana, Shortcut. El método no prescribe cuál; sirve cualquiera si se usa con consistencia.</dd>
+      <dt>Quién decide</dt>
+      <dd>El Product Owner. La estructura recomendada es <em>épica padre + historias hija</em>: cada épica como ticket parent al inicio, historias como children en pipeline rodante (solo una o dos épicas siguientes a la actual).</dd>
+      <dt>Reglas de sincronización</dt>
+      <dd>La fuente de verdad son los artefactos BMAD (<code>planning_artifacts/</code>, <code>implementation_artifacts/</code>); la herramienta externa es un espejo. Si BMAD diverge, BMAD gana. Sincronización al inicio (épicas + Epic 1 y 2) y cada vez que se crean historias nuevas (al 80&nbsp;% de la épica actual). Responsable: BMAD Driver o PO.</dd>
+      <dt>Cómo persistirlo</dt>
+      <dd>Sección "Ops Conventions" en <code>project&#8209;context.md</code>: tool elegida + estructura épica/historia + responsable de sincronización.</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- DECISION 2 -->
+<div class="decision-card">
+  <p><span class="dec-num">D2</span><span class="dec-title">Estrategia de ramas y nomenclatura</span></p>
+  <div class="dec-meta">
+    <dl>
+      <dt>Resuelve</dt>
+      <dd>Cómo se gestionan las ramas y los pull requests. Sin acuerdo, los code reviews terminan discutiendo estilo de commits en lugar de código.</dd>
+      <dt>Modelo de ramas</dt>
+      <dd><em>Trunk&#8209;based con feature branches por historia</em> (recomendado por defecto). Alternativas: <em>epic branches</em> para migraciones destructivas o releases atómicos; <em>release branches</em> para productos con calendario rígido.</dd>
+      <dt>Granularidad PR&harr;historia</dt>
+      <dd>Una historia, un pull request (recomendado). Alternativas: <em>stacked PRs</em> (3&ndash;4 PRs encadenados con herramientas como Graphite); <em>chunked PRs con feature flags</em>. Elegir una y mantenerla.</dd>
+      <dt>Nomenclatura de ramas</dt>
+      <dd><code>&lt;tipo&gt;/&lt;ticket-id&gt;-&lt;slug-corto&gt;</code>. Prefijos: <code>feat/</code>, <code>fix/</code>, <code>chore/</code>, <code>refactor/</code>, <code>docs/</code>, <code>test/</code>, <code>perf/</code>. Ejemplo: <code>feat/PROJ-123-add-invoice-pdf</code>.</dd>
+      <dt>Convención de commits</dt>
+      <dd>Conventional Commits (mismos prefijos que las ramas). Habilita changelog automático y versionado semántico.</dd>
+      <dt>Granularidad commit</dt>
+      <dd>Tres opciones: (a) un commit por historia con WIPs locales que se squashean al PR; (b) un commit por sub&#8209;tarea (red, green, refactor, docs) preservando la narrativa; (c) micro&#8209;commits con squash al merge.</dd>
+      <dt>Política de merge</dt>
+      <dd>Squash merge, merge commit o rebase. Reviewers: 1 senior para P1&ndash;P2; 2 (incluyendo Tech Lead) para P0.</dd>
+      <dt>Gates del PR</dt>
+      <dd>Lint + unit + integración + umbral de cobertura + escaneo de seguridad. Configurados en S2 vía <code>/bmad-testarch-ci</code>; aquí se confirma cuáles son obligatorios y cuáles informativos.</dd>
+      <dt>Quién decide</dt>
+      <dd>Tech Lead co&#8209;decide con DevOps (la estrategia debe alinearse con CI/CD). QA valida que los gates incluyan testing.</dd>
+      <dt>Cómo persistirlo</dt>
+      <dd>"Ops Conventions" en <code>project&#8209;context.md</code>: modelo + nomenclatura + convención + granularidad + merge policy + reviewers por prioridad. Las skills <code>dev-story</code> y <code>code-review</code> leen este contexto para sugerir naming y validar gates.</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- DECISION 3 -->
+<div class="decision-card">
+  <p><span class="dec-num">D3</span><span class="dec-title">Flujo de estados del backlog (incluyendo TEA)</span></p>
+  <div class="dec-meta">
+    <dl>
+      <dt>Resuelve</dt>
+      <dd>El flujo Agile estándar (<em>To Do &rarr; In Progress &rarr; Done</em>) oculta los momentos TEA. Sin estados explícitos, ATDD, Test Automation y Code Review no son visibles en el dashboard.</dd>
+      <dt>Workflow por historia</dt>
+      <dd>Ocho estados activos más uno de excepción: <em>Backlog &rarr; To Do &rarr; ATDD &rarr; In Development &rarr; Test Expansion &rarr; Code Review &rarr; Approved &rarr; Done</em>. <em>Blocked</em> es estado paralelo con motivo etiquetado (<code>dep:epic-X</code>, <code>infra</code>, <code>external</code>, <code>waiting:design</code>). Caminos de retorno válidos: Code Review puede regresar a In Development o ATDD si revela huecos en los criterios de aceptación; Test Expansion puede regresar a ATDD.</dd>
+      <dt>Mapeo skill&harr;estado</dt>
+      <dd>Cada estado mapea a una skill BMAD (<code>create-epics-and-stories</code>, <code>sprint-planning</code>, <code>testarch-atdd</code>, <code>dev-story</code>, <code>testarch-automate</code>, <code>code-review</code>).</dd>
+      <dt>Adaptación si la tool tiene menos estados</dt>
+      <dd>Si la herramienta solo soporta cinco estados nativos, fusionar ATDD e In Development en "In Progress" con etiquetas <code>stage:atdd</code> o <code>stage:dev</code>; fusionar Approved y Code Review en "In Review" con etiqueta <code>approved</code>.</dd>
+      <dt>Workflow por épica</dt>
+      <dd>Cinco estados: <em>Planned &rarr; In Progress &rarr; Stories Done &rarr; In TEA Closure &rarr; Done</em>. <em>Stories Done</em> es crítico: dispara la transición al cierre TEA y, para la primera épica, es el trigger de S6 facilitada.</dd>
+      <dt>Validación recomendada en CI</dt>
+      <dd>Validador en <code>sprint&#8209;status.yaml</code> que bloquea épica &rarr; Done sin marcas <code>test-review:done</code>, <code>trace:done</code>, <code>retrospective:done</code>.</dd>
+      <dt>Quién decide</dt>
+      <dd>QA es obligatorio en esta decisión: sin QA el flujo omite ATDD, Test Expansion y Code Review. PO y Tech Lead aprueban. Las transiciones de retorno se configuran en la tool como parte del output, no como excepciones.</dd>
+      <dt>Cómo persistirlo</dt>
+      <dd>"Ops Conventions" en <code>project&#8209;context.md</code> con ambos workflows y el mapping skill&harr;estado.</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- DECISION 4 -->
+<div class="decision-card">
+  <p><span class="dec-num">D4</span><span class="dec-title">Worktrees y multi&#8209;agente <em style="font-weight:400; color:#999;">(opcional &mdash; solo si el equipo usa Claude Code)</em></span></p>
+  <div class="dec-meta">
+    <dl>
+      <dt>Resuelve</dt>
+      <dd>Paralelizar trabajo de Claude Code sin colisiones de entorno (puertos, bases de datos, archivos de configuración). Solo aplica si el equipo usa Claude Code; con otros agentes o sin ellos, omitir.</dd>
+      <dt>Tres aproximaciones (no excluyentes)</dt>
+      <dd>① <em>Worktrees</em> (<code>claude --worktree</code>): sesión humana paralela en otra terminal. ② <em>Subagents con <code>isolation: worktree</code></em>: fan&#8209;out dentro de una sesión. ③ <em>Agent teams</em>: orquestación de múltiples sesiones que se mensajean entre sí.</dd>
+      <dt>Configuración worktree&#8209;native</dt>
+      <dd><code>.worktreeinclude</code> en la raíz (lista de archivos ignorados por Git que deben copiarse al worktree: <code>.env</code>, <code>.env.local</code>, secrets); <code>.gitignore</code> añade <code>.claude/worktrees/</code>; hook <code>WorktreeCreate</code> para puertos parametrizados, <code>COMPOSE_PROJECT_NAME</code> único en Docker o bases de datos con scope.</dd>
+      <dt>Bullet obligatorio en CLAUDE.md</dt>
+      <dd><code>When creating worktrees add to .gitignore, cp any env files into this worktree.</code></dd>
+      <dt>/batch para codemods</dt>
+      <dd>Cinco a treinta sub&#8209;agentes en worktrees aislados, cada uno como un PR independiente. Cada candidata debe traer receta end&#8209;to&#8209;end documentada y ser independiente y mergeable por sí sola. Lista versionada (sugerencia: <code>_bmad&#8209;output/batch&#8209;candidates.md</code>). Anti&#8209;candidatos: refactors con dependencias entre archivos, migraciones de schema, cambios con orden estricto. Aprobación: TL o BMAD Driver, no requiere PO.</dd>
+      <dt>Política de PRs en bloque</dt>
+      <dd>Reviewer único senior si P2 o P3 y codemod determinístico; auto&#8209;merge con etiqueta <code>batch&#8209;codemod</code> y CI verde; excepción P0 (auth, financial, security) requiere TL aunque venga de <code>/batch</code>.</dd>
+      <dt>Cómo persistirlo</dt>
+      <dd>"Ops Conventions" en <code>project&#8209;context.md</code> &mdash; sub&#8209;sección Claude Code &mdash; + <code>.worktreeinclude</code> + ajuste de <code>.gitignore</code> + bullet en <code>CLAUDE.md</code> + hook opcional <code>WorktreeCreate</code> + lista opcional <code>batch&#8209;candidates.md</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<h3><span class="num">7.2</span>Plantilla resumida de la sección "Ops Conventions"</h3>
+
+<p>Al cerrar S4, la sección "Ops Conventions" del archivo <code>project-context.md</code> queda con la siguiente forma. La plantilla completa, lista para copiar, vive en el Sec. 10.</p>
+
+<pre class="codeblock">## Ops Conventions
+
+### D1 — Backlog tool
+tool: &lt;Jira|Linear|Notion|...&gt;
+estructura: epic-parent + story-children
+sync_owner: &lt;BMAD Driver | PO&gt;
+sync_cadence: inicio + cada 80% de épica activa
+
+### D2 — Branch &amp; commit strategy
+branch_model: &lt;trunk-based|epic-branches|release-branches&gt;
+pr_granularity: &lt;1 historia = 1 PR | stacked | chunked-flags&gt;
+branch_naming: feat|fix|chore|refactor|docs|test|perf / TICKET / slug
+commit_convention: conventional-commits
+commit_granularity: &lt;1-por-historia | 1-por-subtarea | micro+squash&gt;
+merge_policy: &lt;squash|merge-commit|rebase&gt;
+reviewers:
+  P0: 2 (incluye Tech Lead)
+  P1-P2: 1 senior
+  P3: 1 senior
+
+### D3 — State workflow
+historia_estados: Backlog,ToDo,ATDD,InDev,TestExp,CodeReview,Approved,Done,Blocked
+epica_estados:    Planned,InProgress,StoriesDone,InTEAClosure,Done
+ci_validator: bloquea épica→Done sin test-review:done + trace:done + retro:done
+
+### D4 — Claude Code (opcional)
+modos: [worktrees, subagents-isolation, agent-teams]
+worktreeinclude: [.env, .env.local, .secrets/*]
+gitignore_addition: .claude/worktrees/
+batch_candidates_file: _bmad-output/batch-candidates.md
+batch_approval: TL or BMAD Driver</pre>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 8 — S5
+═════════════════════════════════════════════ -->
+<h2><span class="num">8</span>Sesión S5 &mdash; Ciclo iterativo</h2>
+
+<article class="session-card">
+  <div class="session-header">
+    <span class="session-num">S5</span>
+    <span class="session-title">Ciclo iterativo por historia</span>
+    <span class="session-duration">Continuo &middot; post&#8209;S4</span>
+  </div>
+  <div class="session-resolves">
+    <span class="label">Resuelve:</span>
+    Implementa todas las historias de cada épica con calidad gobernada por gates, en un ciclo repetible y autónomo. No es sesión facilitada: es el modo de operación del equipo entre S4 y S6.
+  </div>
+  <div class="session-meta-grid">
+    <div class="block">
+      <h5>Cuándo se hace</h5>
+      Tras S4. Aplica al menos a dos épicas: la primera (configuración e infraestructura) y la segunda en adelante (features de negocio). El cierre de la primera épica es S6 facilitada; el cierre de las épicas posteriores se ejecuta en autonomía.
+    </div>
+    <div class="block">
+      <h5>Requisitos previos</h5>
+      <ul>
+        <li>S4 completa con <code>project-context.md</code> commiteado.</li>
+        <li>Framework de tests y pipeline operativos desde S2.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Participantes</h5>
+      <ul>
+        <li>BMAD Driver siempre.</li>
+        <li>Resto de roles según el paso del ciclo (ver agenda).</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Output por historia</h5>
+      Pull request mergeado a la rama principal con tests automatizados y revisión de código superada.
+    </div>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Ciclo por historia &mdash; cadena estricta</h5>
+    <ol>
+      <li><strong><code>/bmad-create-story</code></strong> <span class="mod bmm"></span> &mdash; Driver + SM. La primera historia ya viene de S3.</li>
+      <li><strong><code>/bmad-testarch-atdd</code></strong> <span class="mod tea"></span> &mdash; Driver + QA. Genera tests fallidos (red phase) antes de implementar.</li>
+      <li><strong><code>/bmad-dev-story</code></strong> <span class="mod bmm"></span> &mdash; Driver + Dev (ingeniero asignado, distinto del TL del paso 5). Ciclo red&#8209;green&#8209;refactor<span class="footnote"><strong>red&#8209;green&#8209;refactor:</strong> ciclo de Test&#8209;Driven Development en tres pasos. Rojo: escribir un test que falle. Verde: implementar lo mínimo para que pase. Refactor: limpiar el código manteniendo el test verde.</span>.</li>
+      <li><strong><code>/bmad-testarch-automate</code></strong> <span class="mod tea"></span> &mdash; Driver + QA. Expande la cobertura tras la implementación.</li>
+      <li><strong><code>/bmad-code-review</code></strong> <span class="mod bmm"></span> &mdash; Driver + Tech Lead. Gate antes del merge.</li>
+    </ol>
+    <p style="margin-top: 8px; font-size: 10px; color: var(--ink-mute);">Las historias del mismo sprint pueden ejecutar el ciclo en paralelo si no hay conflictos de código compartido. Es el paralelismo nativo de Agile.</p>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Cierre de épica &mdash; épicas 2+ en autonomía; épica 1 = S6 facilitada</h5>
+    <ol>
+      <li><strong><code>/bmad-testarch-test-review</code></strong> <span class="mod tea"></span> &mdash; puntuación 0&ndash;100. Driver + QA.</li>
+      <li><strong><code>/bmad-testarch-trace</code></strong> <span class="mod tea"></span> &mdash; trazabilidad y decisión de gate. Driver + QA.</li>
+      <li><strong><code>/bmad-retrospective</code></strong> <span class="mod bmm"></span> &mdash; consume las salidas anteriores. Equipo completo.</li>
+    </ol>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Hitos NFR durante o tras la implementación</h5>
+    <ol>
+      <li><strong><code>/bmad-testarch-nfr</code> en modo <em>check</em></strong> &mdash; revisión intermedia. Driver + QA + TL + DevOps.</li>
+      <li><strong><code>/bmad-testarch-nfr</code> en modo <em>gate</em></strong> &mdash; firma final pre&#8209;release. Driver + QA + TL + DevOps + PO. FAIL bloquea release.</li>
+    </ol>
+  </div>
+
+  <div class="lidr-mark">
+    <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+    Recomendamos planificar al menos dos épicas por proyecto. La épica 1 cubre configuración e infraestructura; la épica 2 en adelante, features de negocio. Forzar features de negocio en la primera épica suele saltarse la configuración del bloque TEA, y los problemas aparecen acumulados en el primer NFR Gate.
+  </div>
+
+  <div class="session-output">
+    <strong>Siguiente paso:</strong> S6 al cerrar la primera épica feature&#8209;completa (todas las historias en Done, código mergeado, sprint cerrado).
+  </div>
+</article>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 9 — S6
+═════════════════════════════════════════════ -->
+<h2><span class="num">9</span>Sesión S6 &mdash; Cierre formal de la primera épica</h2>
+
+<article class="session-card">
+  <div class="session-header">
+    <span class="session-num">S6</span>
+    <span class="session-title">Cierre formal de la primera épica</span>
+    <span class="session-duration">2&ndash;3 h &middot; post primera épica</span>
+  </div>
+  <div class="session-resolves">
+    <span class="label">Resuelve:</span>
+    Ejecuta el primer cierre TEA acompañado para que el equipo aprenda el flujo con red de seguridad antes de operar autónomo en épicas posteriores.
+  </div>
+  <div class="session-meta-grid">
+    <div class="block">
+      <h5>Cuándo se hace</h5>
+      Cuando la primera épica tiene todas sus historias en Done, código mergeado a la rama principal y sprint cerrado. Si quedan historias en In Development o Code Review, S6 espera.
+    </div>
+    <div class="block">
+      <h5>Requisitos previos</h5>
+      <ul>
+        <li>Primera épica feature&#8209;completa con todas las historias en Done.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Participantes</h5>
+      <ul>
+        <li>BMAD Master <span class="req-badge req">REQ</span> &mdash; Q&amp;A al cierre, ~15&ndash;20 min.</li>
+        <li>Scrum Master <span class="req-badge req">REQ</span> &mdash; facilita toda la sesión.</li>
+        <li>QA / Test Architect <span class="req-badge req">REQ</span>.</li>
+        <li>Product Owner <span class="req-badge req">REQ</span>.</li>
+        <li>Tech Lead <span class="req-badge req">REQ</span>.</li>
+        <li>Devs de la épica 1 <span class="req-badge req">REQ</span>.</li>
+        <li>DevOps <span class="req-badge req">REQ</span> &mdash; lidera el toolkit post&#8209;S6 si aplica.</li>
+        <li>BMAD Driver <span class="req-badge req">REQ</span>.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h5>Output</h5>
+      Test Review report + matriz de trazabilidad con decisión de gate + retrospectiva con lecciones y action items + confirmación explícita de autonomía del equipo para épicas posteriores.
+    </div>
+  </div>
+
+  <div class="agenda-block">
+    <h5>Agenda &mdash; orden estricto, no paralelizable</h5>
+    <ol>
+      <li><strong>Apertura del SM</strong> &mdash; confirma que la épica está feature&#8209;completa y presenta la agenda.</li>
+      <li><strong><code>/bmad-testarch-test-review</code></strong> <span class="mod tea"></span> &mdash; Driver ejecuta; QA interpreta. Input: suite acumulado.</li>
+      <li><strong><code>/bmad-testarch-trace</code></strong> <span class="mod tea"></span> &mdash; Driver + QA. Consume la puntuación del paso anterior.</li>
+      <li><strong><code>/bmad-retrospective</code></strong> <span class="mod bmm"></span> &mdash; equipo completo. Consume las salidas de los pasos 2 y 3.</li>
+      <li><em>Incorporación del Master.</em> <strong>Q&amp;A operativo</strong> ~15&ndash;20 min &mdash; resuelve dudas del primer cierre y confirma autonomía para épicas posteriores.</li>
+      <li><strong>Cierre del Master</strong> con confirmación explícita de autonomía. Si el equipo no está listo, documenta plan de refuerzo: lectura del Libro 5, mini&#8209;formación asíncrona o nueva sesión facilitada para la épica 2.</li>
+    </ol>
+  </div>
+
+  <div class="session-output">
+    <strong>Siguiente paso:</strong> operación autónoma del equipo en épicas posteriores. La siguiente sesión facilitada típica suele ser de análisis de métricas (fuera del alcance de este libro).
+  </div>
+</article>
+
+<div class="toolkit-box">
+  <span class="toolkit-tag">Toolkit post&#8209;S6 &middot; asíncrono &middot; sin sesión nueva</span>
+  <h4>NFR Check didáctico</h4>
+  <p><strong>NFR es skill de hito o release, no de cierre de épica.</strong> Cómo activarla tras S6 depende del contenido de la primera épica:</p>
+  <ul>
+    <li><strong>La épica 1 incluyó código con impacto NFR</strong> (no es configuración o infraestructura puras) &rarr; <code>/bmad-testarch-nfr</code> en modo <em>check</em>, asíncrono y sin facilitador. Ejecutan QA + TL + DevOps. La salida queda archivada como plantilla para futuros checks y gates.</li>
+    <li><strong>La épica 1 fue configuración o infraestructura puras</strong> (caso típico) &rarr; diferir hasta el cierre de la épica 2, primera con features productivas. Documentar la decisión en el documento de retro.</li>
+    <li><strong>Salida ambigua o evidencia insuficiente</strong> &rarr; consultar a <code>/bmad-tea</code> (Murat). Si no se resuelve por chat, mini&#8209;sesión facilitada de 45&ndash;60 min con el Master.</li>
+  </ul>
+  <div class="lidr-mark">
+    <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+    Reservar al menos una hora tras S6 para que QA, TL y DevOps ejecuten juntos el primer NFR Check. Es la última red de seguridad antes de afrontar TEA solos en las épicas posteriores.
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 10 — PLANTILLAS
+═════════════════════════════════════════════ -->
+<h2><span class="num">10</span>Plantillas operativas</h2>
+
+<p class="lead">Recursos imprimibles para uso del equipo. Las plantillas son nuestras &mdash; reflejan el formato que usamos en adopciones reales. Pueden adaptarse al contexto de cada proyecto.</p>
+
+<h3><span class="num">10.1</span>Plantilla completa de <code>project&#8209;context.md</code></h3>
+
+<p>Estructura recomendada del archivo. Las skills <code>create-story</code>, <code>dev-story</code>, <code>sprint-status</code>, <code>code-review</code> y varias TEA leen este archivo como contexto cuando se invocan en una nueva conversación. La sección "Ops Conventions" se completa en S4.</p>
+
+<pre class="codeblock"># project-context.md
+
+## Identidad del proyecto
+project_name: "&lt;nombre&gt;"
+project_type: "&lt;web|api|cli|mobile|library&gt;"
+stack: "&lt;tecnologías principales&gt;"
+languages: "&lt;es|en|...&gt;"
+team_size: "&lt;número&gt;"
+
+## Reglas críticas
+# Reglas que el agente debe respetar siempre. Una por línea.
+- "todas las funciones públicas exportadas llevan tipos explícitos"
+- "los errores se propagan, no se silencian"
+- "los tests usan el helper testdb, no el helper memdb"
+
+## Patrones del proyecto
+# Patrones de código aceptados, con un ejemplo de cada uno.
+- nombre: "ejemplo-X"
+  cuándo: "..."
+  ejemplo: "..."
+
+## Ops Conventions
+
+### D1 — Backlog tool
+tool: &lt;Jira|Linear|Notion|GitHub Projects|...&gt;
+estructura: epic-parent + story-children
+sync_owner: &lt;BMAD Driver|PO&gt;
+sync_cadence: inicio + cada 80% de épica activa
+
+### D2 — Branch &amp; commit strategy
+branch_model: &lt;trunk-based|epic-branches|release-branches&gt;
+pr_granularity: &lt;1 historia = 1 PR | stacked | chunked-flags&gt;
+branch_naming: "&lt;tipo&gt;/&lt;ticket-id&gt;-&lt;slug-corto&gt;"
+prefijos: [feat, fix, chore, refactor, docs, test, perf]
+commit_convention: conventional-commits
+commit_granularity: &lt;1-por-historia|1-por-subtarea|micro+squash&gt;
+merge_policy: &lt;squash|merge-commit|rebase&gt;
+reviewers:
+  P0: "2 (incluye Tech Lead)"
+  P1-P2: "1 senior"
+  P3: "1 senior"
+pr_gates:
+  obligatorios: [lint, unit, integration, coverage-threshold]
+  informativos: [security-scan]
+
+### D3 — State workflow
+historia_estados:
+  - Backlog
+  - To Do
+  - ATDD          # ↔ /bmad-testarch-atdd
+  - In Development # ↔ /bmad-dev-story
+  - Test Expansion # ↔ /bmad-testarch-automate
+  - Code Review   # ↔ /bmad-code-review
+  - Approved
+  - Done
+  - Blocked       # estado paralelo, motivo etiquetado
+epica_estados:
+  - Planned
+  - In Progress
+  - Stories Done
+  - In TEA Closure
+  - Done
+ci_validator: |
+  bloquea épica→Done sin marcas:
+    test-review:done + trace:done + retrospective:done
+
+### D4 — Claude Code (opcional, omitir si no aplica)
+modos:
+  - worktrees           # claude --worktree
+  - subagents-isolation # isolation: worktree
+  - agent-teams         # multi-sesión
+worktreeinclude:
+  - .env
+  - .env.local
+  - .secrets/*
+gitignore_addition: ".claude/worktrees/"
+claude_md_bullet: |
+  When creating worktrees add to .gitignore, cp any env files into this worktree.
+batch:
+  candidates_file: _bmad-output/batch-candidates.md
+  approval: "TL or BMAD Driver"
+  auto_merge_label: "batch-codemod"
+  auto_merge_when: "P2-P3 + CI green + codemod determinístico"</pre>
+</div><!-- /content -->
+
+<!-- ═════════════════════════════════════════════
+     MERMAID + PAGED.JS
+═════════════════════════════════════════════ -->
+<script>
+  window.PagedConfig = {
+    auto: false,
+    after: () => { window.__PAGED_DONE__ = true; }
+  };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    securityLevel: 'loose',
+    themeVariables: {
+      fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
+      fontSize: '12px',
+      primaryColor: '#FBEFC0',
+      primaryTextColor: '#1A1A1A',
+      primaryBorderColor: '#D4B85C',
+      secondaryColor: '#1A1A1A',
+      secondaryTextColor: '#F6DE82',
+      secondaryBorderColor: '#1A1A1A',
+      tertiaryColor: '#FFFFFF',
+      tertiaryTextColor: '#1A1A1A',
+      tertiaryBorderColor: '#1A1A1A',
+      lineColor: '#1A1A1A',
+      textColor: '#1A1A1A',
+      mainBkg: '#FFFFFF',
+      nodeBorder: '#1A1A1A',
+      clusterBkg: '#FAFAF6',
+      clusterBorder: '#D4B85C',
+      titleColor: '#1A1A1A',
+      edgeLabelBackground: '#FFFFFF'
+    },
+    flowchart: {
+      curve: 'basis',
+      htmlLabels: true,
+      padding: 18,
+      nodeSpacing: 40,
+      rankSpacing: 50,
+      diagramPadding: 16
+    }
+  });
+</script>
+
+<script src="https://unpkg.com/pagedjs@0.4.3/dist/paged.polyfill.js"></script>
+
+<script>
+  (async function () {
+    if (document.readyState !== 'complete') {
+      await new Promise(r => window.addEventListener('load', r));
+    }
+    try {
+      await mermaid.run({ querySelector: '.mermaid' });
+    } catch (e) {
+      console.warn('Mermaid:', e);
+    }
+
+    // Eliminar el tooltip oculto que mermaid añade al final del body
+    // (paged.js lo coloca en una página vacía si no se elimina antes de paginar).
+    document.querySelectorAll('.mermaidTooltip').forEach(el => {
+      const parent = el.parentElement;
+      el.remove();
+      if (parent && parent.children.length === 0 && parent.tagName === 'DIV' && !parent.className && !parent.id) {
+        parent.remove();
+      }
+    });
+
+
+  // Handler que añade indicador "↓ continúa" al pie cuando una tabla cruza páginas.
+  class TableContinueHandler extends Paged.Handler {
+    constructor(chunker, polisher, caller) {
+      super(chunker, polisher, caller);
+    }
+    afterPageLayout(pageElement, page, breakToken) {
+      try {
+        if (!breakToken || !breakToken.node) return;
+        let node = breakToken.node;
+        while (node && node.nodeName !== 'TABLE' && node.nodeType !== 9) {
+          node = node.parentNode;
+        }
+        if (!node || node.nodeName !== 'TABLE') return;
+
+        const tablesInPage = pageElement.querySelectorAll('table');
+        if (tablesInPage.length === 0) return;
+        const lastTable = tablesInPage[tablesInPage.length - 1];
+        if (lastTable.querySelector('tfoot.continued')) return;
+
+        const tfoot = document.createElement('tfoot');
+        tfoot.className = 'continued';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = lastTable.querySelectorAll('thead th').length || 1;
+        td.textContent = '↓ continúa en la página siguiente';
+        tr.appendChild(td);
+        tfoot.appendChild(tr);
+        lastTable.appendChild(tfoot);
+      } catch (e) { console.warn('TableContinueHandler:', e); }
+    }
+  }
+  Paged.registerHandlers(TableContinueHandler);
+
+    const previewer = new window.Paged.Previewer();
+    await previewer.preview();
+    if (!window.__PAGED_DONE__) window.__PAGED_DONE__ = true;
+  })();
+</script>
+
+</body>
+</html>

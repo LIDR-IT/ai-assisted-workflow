@@ -9,7 +9,7 @@ phase: 2
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Essential for PRD alignment validation in software projects - ALWAYS use before Gate 1 approval. CRITICAL for ensuring functional and technical PRDs are aligned on user workflows, data protection compliance, user journeys, and implementation feasibility. Use when validating API integrations, authentication requirements, data processing capabilities, or system architectures. Essential for catching misalignments between user experience and technical constraints in enterprise applications, web platforms, and mobile solutions. Mandatory prerequisite for Gate 1 passage."
+description: "Gate 1 enforcer: validates that bmad-prd output contains both Functional sections (user journeys, personas, business requirements) AND Technical sections (architecture, NFRs, integrations, compliance) complete and aligned. Acts as the LIDR wrapper after bmad-prd in the LIDR-on-BMad architecture. Detects misalignments between business intent and technical feasibility. ALWAYS use after bmad-prd produces the unified PRD, before invoking lidr-gate-evaluation for Gate 1."
 ---
 
 # PRD Cross-Review Facilitator

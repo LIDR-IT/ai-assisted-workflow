@@ -1,1 +1,0 @@
-../../../.agents/commands/lidr-implement-ticket.md
