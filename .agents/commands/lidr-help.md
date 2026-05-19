@@ -53,6 +53,7 @@ CHANGELOG:
   v2.4.0 (2026-03-17): T32 DTC compliance and 8 sources synchronization. Registry stabilized at 134 artifacts (54 skills, 20 commands, 4 mcps, 0 templates, 0 checklists, 0 signoffs, 1 validation script, 6 agents, 40 docs, 5 rules, 4 hooks). Fixed T32 DTC regression with complete consolidation (39 redundant files eliminated). All templates/checklists/signoffs integrated into skills. Complete sources of truth synchronization achieved.
   v2.5.0 (2026-03-17): **CONSOLIDATION COMPLETE**. Self-contained architecture fully achieved. All 8 sources of truth synchronized post-massive cleanup: CLAUDE.md, IntegrityTests.tsx, HelpCenter.tsx, SitemapView.tsx, audit-catalog.md, help-{{CLIENT_CODE}}.md updated. 100% templates/checklists/signoffs eliminated from standalone arrays. Skills now fully autonomous with integrated templates/checklists. Ecosystem streamlined to 134 essential artifacts.
   v2.6.0 (2026-03-17): **8 SOURCES SYNCHRONIZATION FINAL**. All ecosystem counts corrected to reflect filesystem reality: 189 total artifacts (54 skills, 20 commands, 5 rules, 4 hooks, 4 mcps, 55 validation scripts, 6 agents, 41 docs). T6 and T20 integrity tests resolved. Template elimination complete (tpl-rule removed). Skills/commands counts verified against filesystem. Workflow coverage for all 8 gates achieved.
+  v3.0.0 (2026-05-19): LIDR↔BMad consolidation. Removed 17 stale LIDR skills (10 orphans + 7 migrated to .agents/_shared/lidr/). Added BMad Method framework (69 skills in 9 sub-categories). Total: 45 LIDR + 69 BMad + 4 generic = 118 filesystem skills (113 registered in skills.ts). Kept LIDR uniques: pr-description, user-stories, create-test-cases.
 -->
 
 # Help — Ecosystem Guide
@@ -100,12 +101,16 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 |---------|------|---------|-------|--------------|-------|
 | `/lidr-help` | `[query]` | Interactive help: recommend skills, commands, workflows, docs from ecosystem | All roles | None | haiku |
 
-### Skills (57) — Knowledge libraries loaded on demand
+### LIDR Skills (45) + BMad Skills (69) — Knowledge libraries loaded on demand
 
-**F0 — Preparacion (2):**
+> The skills inventory is split into two libraries: the LIDR-curated set (phase-aligned with the SDLC) and the BMad Method framework (added in v3.0.0 as a complementary library). The 17 stale LIDR skills removed in v3.0.0 are now covered by BMad equivalents — pointers appear inline where applicable.
+
+#### LIDR Skills (45)
+
+**F0 — Preparacion (1):**
 
 - `project-classifier` → 🤖 AUTOMATED (2-8h→30s): Auto-detecta tipo de proyecto (13 tipos: web, mobile, backend, library, cli, etc.) con inteligencia domain-specifica. Triggers: "classify project", "detect project type", "auto-detect"
-- `document-discovery` → LIDR SDLC Step 1: inventario de documentos + resolucion de conflictos (whole vs sharded). Triggers: "document inventory", "document discovery", "LIDR SDLC step 1"
+- _(removed in v3.0.0: `document-discovery` → use `bmad-document-project` + `bmad-shard-doc`)_
 
 **Fase 1 — Originacion (4):**
 
@@ -114,23 +119,21 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `stakeholder-map` → Mapa de interesados. Triggers: "map stakeholders", "stakeholder analysis"
 - `tracking-integration` → Crea proyecto en herramienta de seguimiento (Jira/Linear/Notion). Triggers: "create project", "track epic", "setup tracking"
 
-**Fase 2 — Discovery (7):**
+**Fase 2 — Discovery (5):**
 
 - `prd-tecnico` → PRD Tecnico con arquitectura y NFRs. Triggers: "create technical PRD", "architecture design"
 - `prd-funcional` → PRD Funcional con journeys y personas. Triggers: "create functional PRD", "product requirements"
 - `review-cruzado` → Compara PRD-T vs PRD-F. Triggers: "cross review", "compare PRDs"
 - `risk-log` → Registro de riesgos con mitigacion. Triggers: "identify risks", "risk assessment"
 - `poc-report` → Reporte de Proof of Concept. Triggers: "poc report", "proof of concept"
-- `domain-research` → LIDR SDLC systematic domain research y competitive analysis. Triggers: "research domain", "market analysis", "competitive intelligence"
-- `technical-research` → LIDR SDLC technical feasibility investigation y architecture evaluation. Triggers: "technical feasibility", "architecture research", "evaluate technology"
+- _(removed in v3.0.0: `domain-research` → use `bmad-domain-research`; `technical-research` → use `bmad-technical-research`; `design-doc` → use `bmad-create-architecture`)_
 
-**Fase 3 — Especificacion (5):**
+**Fase 3 — Especificacion (3):**
 
 - `generate-rf` → RFs completos con BDD desde PRDs. Triggers: "generate requirements", "create RFs", "BDD scenarios"
 - `generate-nfr` → NFRs standalone y medibles desde PRD-T §5: performance, security, scalability, availability, compliance. Critico para domain-specificos (FAR/FRR, latencia, GDPR Art. 9). Triggers: "generate NFRs", "non-functional requirements", "performance requirements", "SLA definition"
 - `validate-requirements` → 🤖 AUTOMATED (6h→5min): 5-pass validation. Valida RFs + NFRs contra PRDs: completitud, coherencia, trazabilidad. Genera RTM, detecta gaps, agrupa en clusters. Triggers: "validate requirements", "requirements traceability", "RTM", "check completeness"
-- `epic-breakdown` → Descompone epica en sub-epicas de feature basadas en requisitos validados, clusters y dependencias. Triggers: "break down epic", "decompose epic", "create sub-epics", "epic breakdown"
-- `bdd-patterns` → LIDR SDLC BDD patterns para Given-When-Then validation y Gherkin compliance. Triggers: "validate BDD", "write Gherkin", "check acceptance criteria", "BDD compliance"
+- _(removed in v3.0.0: `epic-breakdown` → use `bmad-create-epics-and-stories` (LIDR rules at `.agents/_shared/lidr/references/epic-decomposition-rules.md`); `bdd-patterns` → use `bmad-testarch-atdd`)_
 
 **Fase 4 — Sprint Planning (3):**
 
@@ -145,13 +148,12 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `tech-debt` → 🤖 AUTOMATED (6h→5min): SonarQube integration con User Stories. Registro de deuda tecnica. Triggers: "tech debt", "code smell", "refactoring needed"
 - `dev-handoff-qa` → Handoff Dev→QA. Triggers: "handoff to QA", "ready for QA"
 
-**Fase 6 — QA (5):**
+**Fase 6 — QA (3):**
 
-- `test-plan` → Test plan comprehensivo. Triggers: "create test plan", "QA strategy", "Gate 5 preparation"
-- `create-test-cases` → Test cases BDD. Triggers: "create test cases", "BDD test cases"
+- `create-test-cases` → Test cases BDD (Xray-aligned QA role). Triggers: "create test cases", "BDD test cases"
 - `bug-report` → Estructura bug reports. Triggers: "report bug", "found a bug", "defect report"
 - `test-execution-report` → Interpreta resultados. Triggers: "test results", "execution report"
-- `regression-suite` → 🤖 AUTOMATED (8h→30min): Impact analysis basado en git. Suite de regresion. Triggers: "regression suite", "impact analysis", "what to retest"
+- _(removed in v3.0.0: `test-plan` → use `bmad-testarch-test-design` (LIDR Python scripts at `.agents/_shared/lidr/scripts/test-automation/`); `regression-suite` → use `bmad-testarch-automate` (LIDR Python scripts at `.agents/_shared/lidr/scripts/regression/`))_
 
 **Fase 7 — Seguridad (4):**
 
@@ -160,34 +162,59 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `pentest-report` → Reporte pen testing. Triggers: "pentest report", "penetration test"
 - `security-checklist` → OWASP Top 10 checklist. Triggers: "security checklist", "OWASP check"
 
-**Fase 8 — Despliegue (5):**
+**Fase 8 — Despliegue (4):**
 
 - `change-request` → Pre-llena Change Request. Triggers: "change request", "deployment request"
 - `rollback-plan` → Plan de rollback. Triggers: "rollback plan", "how to revert"
 - `release-notes` → Changelog ejecutivo + tecnico. Triggers: "release notes", "changelog"
-- `retrospective` → Retro data-driven. Triggers: "retrospective", "sprint retro", "lessons learned"
 - `postmortem` → Postmortem blameless. Triggers: "postmortem", "incident review", "root cause analysis"
+- _(removed in v3.0.0: `retrospective` → use `bmad-retrospective`)_
 
-**Cross-cutting (9):**
+**Cross-cutting (4):**
 
 - `generate-rule` → Genera/actualiza rules desde contexto del proyecto. Triggers: "generate rule", "create rule", "update rule", "init rules"
-- `architecture-doc` → Documenta arquitectura completa. Triggers: "document architecture", "system design doc"
-- `ux-design-spec` → Especificacion UX desde PRD. Triggers: "UX spec", "design specification"
-- `implementation-phases` → Fases incrementales. Triggers: "implementation phases", "break into phases"
 - `epic-review` → Review de epica post-delivery: plan vs actual, NFR achievement, tech debt, lecciones, follow-up epics. Triggers: "review epic", "close epic", "epic wrap-up", "epic review"
 - `audit-standards` → Validacion comprensiva de skills contra estandares SDLC del ecosistema. Triggers: "audit standards", "check compliance", "ecosystem quality", "validate ecosystem"
-- `multi-agent-audit` → Coordinador de auditoria multi-agente: 10 agentes paralelos validando 54 skills contra estándares SDLC. Triggers: "audit skills", "validate standards", "compliance check", "skill quality review", "ecosystem health assessment"
 - `playwright-cli` → Automatizacion de navegador para testing web, screenshots y extraccion de datos. Triggers: "browser automation", "screenshot", "web testing", "playwright"
-- `brainstorming` → LIDR SDLC Methodology-based structured innovation para domain-specific domain. Triggers: "brainstorm", "creative solutions", "innovation session", "problem solving"
+- _(removed in v3.0.0: `architecture-doc` → use `bmad-create-architecture` (LIDR templates at `.agents/_shared/lidr/templates/architecture/`); `ux-design-spec` → use `bmad-create-ux-design`; `implementation-phases` → use `bmad-sprint-planning`; `multi-agent-audit` → use `bmad-eval-runner` + `bmad-party-mode`; `brainstorming` → use `bmad-brainstorming`)_
 
-**Development Tools (6):**
+**Development Tools (3):**
 
-- `skill-creator` → Crea nuevos skills con estructura completa. Triggers: "create skill", "new skill", "skill development"
-- `skill-development` → Documenta y mejora skills existentes. Triggers: "improve skill", "update skill", "skill maintenance"
 - `command-development` → Crea y mantiene commands. Triggers: "create command", "new command", "command development"
 - `hook-development` → Desarrolla hooks para eventos. Triggers: "create hook", "new hook", "hook development"
-- `agent-development` → Diseña agentes autónomos. Triggers: "create agent", "agent design", "autonomous workflow"
 - `mcp-integration` → Integra MCPs externos. Triggers: "integrate MCP", "external connection", "tool integration"
+- _(removed in v3.0.0: `skill-creator` → use `bmad-agent-builder` + `bmad-eval-runner` (Anthropic upstream archived at `.agents/_shared/anthropic/skill-creator/`); `skill-development` → use `bmad-agent-builder` + `bmad-workflow-builder`; `agent-development` → use `bmad-agent-builder` + `bmad-workflow-builder`)_
+
+#### BMad Skills (69) — BMad Method framework library (added v3.0.0)
+
+The BMad Method framework provides a complementary library of 69 skills, grouped into 9 sub-categories. Most LIDR skills removed in v3.0.0 are covered by BMad equivalents (pointers above). For LIDR-specific artifacts that remained valuable, the assets were migrated to `.agents/_shared/lidr/` and the relevant BMad skill loads them.
+
+**BMad — Agents (6):**
+`bmad-agent-analyst`, `bmad-agent-architect`, `bmad-agent-dev`, `bmad-agent-pm`, `bmad-agent-tech-writer`, `bmad-agent-ux-designer`
+
+**BMad — CIS / Innovation (10):**
+`bmad-cis-agent-brainstorming-coach`, `bmad-cis-agent-creative-problem-solver`, `bmad-cis-agent-design-thinking-coach`, `bmad-cis-agent-innovation-strategist`, `bmad-cis-agent-presentation-master`, `bmad-cis-agent-storyteller`, `bmad-cis-design-thinking`, `bmad-cis-innovation-strategy`, `bmad-cis-problem-solving`, `bmad-cis-storytelling`
+
+**BMad — Test Architect (11):**
+`bmad-tea`, `bmad-testarch-atdd`, `bmad-testarch-automate`, `bmad-testarch-ci`, `bmad-testarch-framework`, `bmad-testarch-nfr`, `bmad-testarch-test-design`, `bmad-testarch-test-review`, `bmad-testarch-trace`, `bmad-teach-me-testing`, `bmad-qa-generate-e2e-tests`
+
+**BMad — PRD & Product (6):**
+`bmad-prd`, `bmad-create-prd`, `bmad-edit-prd`, `bmad-validate-prd`, `bmad-product-brief`, `bmad-prfaq`
+
+**BMad — Architecture & Stories (8):**
+`bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-create-story`, `bmad-create-ux-design`, `bmad-shard-doc`, `bmad-document-project`, `bmad-index-docs`, `bmad-generate-project-context`
+
+**BMad — Sprint & Process (5):**
+`bmad-sprint-planning`, `bmad-sprint-status`, `bmad-retrospective`, `bmad-check-implementation-readiness`, `bmad-correct-course`
+
+**BMad — Review (5):**
+`bmad-code-review`, `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`, `bmad-editorial-review-prose`, `bmad-editorial-review-structure`
+
+**BMad — Meta (6):**
+`bmad-bmb-setup`, `bmad-customize`, `bmad-help`, `bmad-agent-builder`, `bmad-module-builder`, `bmad-workflow-builder`
+
+**BMad — Utilities (12):**
+`bmad-advanced-elicitation`, `bmad-brainstorming`, `bmad-checkpoint-preview`, `bmad-dev-story`, `bmad-distillator`, `bmad-domain-research`, `bmad-eval-runner`, `bmad-investigate`, `bmad-market-research`, `bmad-party-mode`, `bmad-quick-dev`, `bmad-technical-research`
 
 ### Rules (5) — Persistent context, ALWAYS loaded
 
@@ -495,19 +522,21 @@ Tu proyecto ya esta en desarrollo pero le faltan PRDs, RFs/NFRs, o sprints estan
 
 #### Ecosistema SDLC Completo
 
-| Tipo       | Cantidad | Descripcion                                                                   |
-| ---------- | -------- | ----------------------------------------------------------------------------- |
-| Skills     | 57       | Bibliotecas de conocimiento por fase (9 🤖 automatizados: 775+ horas/año ROI) |
-| Commands   | 23       | Workflows orquestadores (10 Tier 1 + 12 Tier 2 + 1 Utility)                   |
-| Rules      | 5        | Contexto persistente (siempre cargado)                                        |
-| Hooks      | 4        | Guardias reactivos automaticos                                                |
-| MCPs       | 3        | Conexiones externas (filesystem, memory, fetch)                               |
-| Checklists | 8        | Criterios evaluados por gates y hooks                                         |
-| Sign-offs  | 2        | Formatos de aprobacion formal                                                 |
-| Templates  | 40       | Formatos estandar + context-aware (web/mobile)                                |
-| Agents     | 6        | Evolucion futura de commands maduros (planificados)                           |
-| Docs       | 28       | Discovery, guias SDK, propuestas, referencia, herramientas                    |
-| **TOTAL**  | **195**  | **LIDR SDLC Methodology-inspired with domain-specific domain intelligence**   |
+| Tipo           | Cantidad | Descripcion                                                                        |
+| -------------- | -------- | ---------------------------------------------------------------------------------- |
+| LIDR Skills    | 45       | Bibliotecas de conocimiento LIDR por fase (9 🤖 automatizados: 775+ horas/año ROI) |
+| BMad Skills    | 69       | BMad Method framework (9 sub-categorias)                                           |
+| Generic Skills | 4        | Meta-skills genericos (agents-architecture, command-development, etc.)             |
+| Commands       | 23       | Workflows orquestadores (10 Tier 1 + 12 Tier 2 + 1 Utility)                        |
+| Rules          | 5        | Contexto persistente (siempre cargado)                                             |
+| Hooks          | 4        | Guardias reactivos automaticos                                                     |
+| MCPs           | 3        | Conexiones externas (filesystem, memory, fetch)                                    |
+| Checklists     | 8        | Criterios evaluados por gates y hooks                                              |
+| Sign-offs      | 2        | Formatos de aprobacion formal                                                      |
+| Templates      | 40       | Formatos estandar + context-aware (web/mobile)                                     |
+| Agents         | 6        | Evolucion futura de commands maduros (planificados)                                |
+| Docs           | 28       | Discovery, guias SDK, propuestas, referencia, herramientas                         |
+| **TOTAL**      | **237**  | **LIDR SDLC + BMad Method (v3.0.0 consolidation, 2026-05-19)**                     |
 
 ## Step 4: Offer Follow-up
 

@@ -65,9 +65,21 @@ export function ArtifactList({ artifacts, itemsPerPage = 20 }: ArtifactListProps
             className="bg-white rounded-lg p-4 shadow-sm border border-slate-200 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 flex flex-col gap-1">
                 <span className="inline-block px-2 py-1 text-xs font-medium rounded-md bg-blue-100 text-blue-800">
                   {artifact.type}
+                </span>
+                <span
+                  className={`inline-block px-2 py-0.5 text-[10px] font-semibold tracking-wider rounded-md ${
+                    artifact.source === 'bmad'
+                      ? 'bg-amber-100 text-amber-800'
+                      : artifact.source === 'generic'
+                        ? 'bg-slate-200 text-slate-700'
+                        : 'bg-emerald-100 text-emerald-800'
+                  }`}
+                  title={`Skill source: ${artifact.source ?? 'lidr'}`}
+                >
+                  {(artifact.source ?? 'lidr').toUpperCase()}
                 </span>
               </div>
               <div className="flex-1">

@@ -157,7 +157,7 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 0 — Preparación',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '2 skills', color: 'bg-slate-100 text-slate-700' },
+            badge: { label: '1 skill', color: 'bg-slate-100 text-slate-700' },
             children: [
               {
                 name: 'project-classifier/',
@@ -194,9 +194,9 @@ export const projectTree: TreeNode[] = [
                 ],
               },
               {
-                name: 'document-discovery/ + 45 more...',
+                name: '... + 117 more',
                 type: 'file',
-                desc: `Todos los ${ecosystemStats.skills} skills siguen la estructura self-contained mostrada arriba`,
+                desc: `Los ${ecosystemStats.skills} skills (LIDR + BMad) siguen la estructura self-contained mostrada arriba`,
               },
             ],
           },
@@ -236,7 +236,7 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 2 — Discovery',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '7 skills', color: getPhaseColorClass(2) },
+            badge: { label: '5 skills', color: getPhaseColorClass(2) },
             children: [
               {
                 name: 'prd-tecnico/SKILL.md',
@@ -268,25 +268,13 @@ export const projectTree: TreeNode[] = [
                 desc: 'Estructura reporte de PoC',
                 docPath: '.claude/skills/poc-report/SKILL.md',
               },
-              {
-                name: 'domain-research/SKILL.md',
-                type: 'file',
-                desc: 'LIDR SDLC systematic domain research y competitive analysis',
-                docPath: '.claude/skills/domain-research/SKILL.md',
-              },
-              {
-                name: 'technical-research/SKILL.md',
-                type: 'file',
-                desc: 'LIDR SDLC technical feasibility investigation y architecture evaluation',
-                docPath: '.claude/skills/technical-research/SKILL.md',
-              },
             ],
           },
           {
             name: 'Fase 3 — Especificación',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '5 skills', color: getPhaseColorClass(3) },
+            badge: { label: '3 skills', color: getPhaseColorClass(3) },
             children: [
               {
                 name: 'generate-rf/SKILL.md',
@@ -305,18 +293,6 @@ export const projectTree: TreeNode[] = [
                 type: 'file',
                 desc: '🤖 AUTOMATED: 5-pass validation (6h → 5min). Valida RFs + NFRs, genera RTM, detecta gaps',
                 docPath: '.claude/skills/validate-requirements/SKILL.md',
-              },
-              {
-                name: 'epic-breakdown/SKILL.md',
-                type: 'file',
-                desc: 'Descompone epica master en sub-epicas desde requisitos',
-                docPath: '.claude/skills/epic-breakdown/SKILL.md',
-              },
-              {
-                name: 'bdd-patterns/SKILL.md',
-                type: 'file',
-                desc: 'LIDR SDLC BDD patterns library y criteria standards',
-                docPath: '.claude/skills/bdd-patterns/SKILL.md',
               },
             ],
           },
@@ -382,14 +358,8 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 6 — QA',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '5 skills', color: getPhaseColorClass(6) },
+            badge: { label: '3 skills', color: getPhaseColorClass(6) },
             children: [
-              {
-                name: 'test-plan/SKILL.md',
-                type: 'file',
-                desc: '🤖 AUTOMATED: Test plan desde RFs (3h → 5min)',
-                docPath: '.claude/skills/test-plan/SKILL.md',
-              },
               {
                 name: 'create-test-cases/SKILL.md',
                 type: 'file',
@@ -407,12 +377,6 @@ export const projectTree: TreeNode[] = [
                 type: 'file',
                 desc: 'Reporta ejecución de testing',
                 docPath: '.claude/skills/test-execution-report/SKILL.md',
-              },
-              {
-                name: 'regression-suite/SKILL.md',
-                type: 'file',
-                desc: '🤖 AUTOMATED: Selecciona tests de regresión (8h → 30min)',
-                docPath: '.claude/skills/regression-suite/SKILL.md',
               },
             ],
           },
@@ -452,7 +416,7 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 8 — Despliegue',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '5 skills', color: getPhaseColorClass(8) },
+            badge: { label: '4 skills', color: getPhaseColorClass(8) },
             children: [
               {
                 name: 'change-request/SKILL.md',
@@ -473,12 +437,6 @@ export const projectTree: TreeNode[] = [
                 docPath: '.claude/skills/release-notes/SKILL.md',
               },
               {
-                name: 'retrospective/SKILL.md',
-                type: 'file',
-                desc: 'Facilita retrospectiva data-driven',
-                docPath: '.claude/skills/retrospective/SKILL.md',
-              },
-              {
                 name: 'postmortem/SKILL.md',
                 type: 'file',
                 desc: 'Conduce postmortem blameless',
@@ -490,31 +448,13 @@ export const projectTree: TreeNode[] = [
             name: 'Cross-cutting — Documentación',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '12 skills', color: 'bg-indigo-100 text-indigo-700' },
+            badge: { label: '8 skills', color: 'bg-indigo-100 text-indigo-700' },
             children: [
               {
                 name: 'generate-rule/SKILL.md',
                 type: 'file',
                 desc: 'Crea nueva rule del ecosistema',
                 docPath: '.claude/skills/generate-rule/SKILL.md',
-              },
-              {
-                name: 'architecture-doc/SKILL.md',
-                type: 'file',
-                desc: 'Genera doc de arquitectura (Arc42/C4)',
-                docPath: '.claude/skills/architecture-doc/SKILL.md',
-              },
-              {
-                name: 'ux-design-spec/SKILL.md',
-                type: 'file',
-                desc: 'Especifica UX/UI desde PRD',
-                docPath: '.claude/skills/ux-design-spec/SKILL.md',
-              },
-              {
-                name: 'implementation-phases/SKILL.md',
-                type: 'file',
-                desc: 'Descompone proyecto en fases',
-                docPath: '.claude/skills/implementation-phases/SKILL.md',
               },
               {
                 name: 'epic-review/SKILL.md',
@@ -547,18 +487,6 @@ export const projectTree: TreeNode[] = [
                 docPath: '.claude/skills/automated-handoffs/SKILL.md',
               },
               {
-                name: 'brainstorming/SKILL.md',
-                type: 'file',
-                desc: 'LIDR SDLC structured brainstorming techniques',
-                docPath: '.claude/skills/brainstorming/SKILL.md',
-              },
-              {
-                name: 'business-case/SKILL.md',
-                type: 'file',
-                desc: 'LIDR SDLC comprehensive business case framework',
-                docPath: '.claude/skills/business-case/SKILL.md',
-              },
-              {
                 name: 'playwright-cli/SKILL.md',
                 type: 'file',
                 desc: 'LIDR SDLC E2E testing automation con Playwright',
@@ -570,20 +498,8 @@ export const projectTree: TreeNode[] = [
             name: 'Development — Ecosystem',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '6 skills', color: 'bg-cyan-100 text-cyan-700' },
+            badge: { label: '3 skills', color: 'bg-cyan-100 text-cyan-700' },
             children: [
-              {
-                name: 'skill-creator/SKILL.md',
-                type: 'file',
-                desc: 'Meta-skill: crea nuevos skills',
-                docPath: '.claude/skills/skill-creator/SKILL.md',
-              },
-              {
-                name: 'skill-development/SKILL.md',
-                type: 'file',
-                desc: 'LIDR SDLC skill development methodology',
-                docPath: '.claude/skills/skill-development/SKILL.md',
-              },
               {
                 name: 'command-development/SKILL.md',
                 type: 'file',
@@ -595,12 +511,6 @@ export const projectTree: TreeNode[] = [
                 type: 'file',
                 desc: 'LIDR SDLC hook development y automation frameworks',
                 docPath: '.claude/skills/hook-development/SKILL.md',
-              },
-              {
-                name: 'agent-development/SKILL.md',
-                type: 'file',
-                desc: 'LIDR SDLC autonomous agent development',
-                docPath: '.claude/skills/agent-development/SKILL.md',
               },
               {
                 name: 'mcp-integration/SKILL.md',

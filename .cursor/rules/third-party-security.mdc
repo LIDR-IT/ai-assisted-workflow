@@ -353,7 +353,7 @@ Use `file:line` or `path` format (VS Code clickable). Terse findings.
 
 .agents/mcp/mcp-servers.json:15 - "random-mcp" from unverified GitHub repo
 .agents/skills/data-exporter/SKILL.md:23 - External URL fetch detected
-.claude/mcp.json - ✗ Contains credentials in plain text
+.mcp.json - ✗ Contains credentials in plain text
 
 ## Security Risks
 

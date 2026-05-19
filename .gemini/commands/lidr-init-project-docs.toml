@@ -132,14 +132,14 @@ Files to create (using self-contained templates):
 - docs/projects/$1/business-case.md (from .claude/skills/business-case/templates/business-case.md)
 - docs/projects/$1/prd-funcional.md (from .claude/skills/prd-funcional/templates/prd.md)
 - docs/projects/$1/prd-tecnico.md (from .claude/skills/prd-tecnico/templates/prd-technical.md)
-- docs/projects/$1/architecture.md (from .claude/skills/architecture-doc/templates/architecture.md)
+- docs/projects/$1/architecture.md (from .agents/\\_shared/lidr/templates/architecture/architecture.md)
 - docs/projects/$1/user-stories.md (from .claude/skills/user-stories/templates/user-story.md)
-- docs/projects/$1/ux-design-spec.md (from .claude/skills/ux-design-spec/templates/ux-design-spec.md)
+- docs/projects/$1/ux-design-spec.md (from .agents/\\_shared/lidr/templates/ux-design-spec.md)
 - docs/projects/$1/risk-log.md (from .claude/skills/risk-log/templates/risk-log.md)
 - docs/projects/$1/change-request.md (from .claude/skills/change-request/templates/change-request.md)
-- docs/projects/$1/specs/routes.md (from .claude/skills/architecture-doc/templates/specs/routes.md)
-- docs/projects/$1/specs/components.md (from .claude/skills/architecture-doc/templates/specs/components.md)
-- docs/projects/$1/specs/storage.md (from .claude/skills/architecture-doc/templates/specs/storage.md)
+- docs/projects/$1/specs/routes.md (from .agents/\\_shared/lidr/templates/architecture/specs/routes.md)
+- docs/projects/$1/specs/components.md (from .agents/\\_shared/lidr/templates/architecture/specs/components.md)
+- docs/projects/$1/specs/storage.md (from .agents/\\_shared/lidr/templates/architecture/specs/storage.md)
 
 ## Update Project Rule
 
