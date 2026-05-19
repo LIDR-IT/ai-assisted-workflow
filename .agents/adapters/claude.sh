@@ -55,12 +55,10 @@ claude_mcp() {
       ) |
       from_entries
     )
-  }' "$AGENTS_DIR/mcp/mcp-servers.json" > "$PROJECT_ROOT/.mcp.json"
+  }' "$AGENTS_DIR/mcp/mcp-servers.json" | write_if_changed "$PROJECT_ROOT/.mcp.json" ".mcp.json (project root)"
 
   # Remove legacy .claude/mcp.json if it exists
   [ -f "$CLAUDE_DIR/mcp.json" ] && rm "$CLAUDE_DIR/mcp.json"
-
-  log_info "Generated .mcp.json (project root)"
 }
 
 claude_hooks() {
@@ -164,58 +162,23 @@ claude_hooks() {
 
   # Merge hooks into settings.json
   local settings_file="$CLAUDE_DIR/settings.json"
+  local merged
   if [ -f "$settings_file" ]; then
-    jq --argjson hooks "$claude_hooks_json" '.hooks = $hooks' "$settings_file" > "$settings_file.tmp"
-    mv "$settings_file.tmp" "$settings_file"
+    merged=$(jq --argjson hooks "$claude_hooks_json" '.hooks = $hooks' "$settings_file")
   else
-    echo "{\"hooks\": $claude_hooks_json}" | jq '.' > "$settings_file"
+    merged=$(echo "{\"hooks\": $claude_hooks_json}" | jq '.')
   fi
-
-  log_info "Updated .claude/settings.json ($hooks_count hook types)"
+  echo "$merged" | write_if_changed "$settings_file" ".claude/settings.json ($hooks_count hook types)"
 }
 
 claude_verify() {
   local errors=0
 
-  # Rules symlink
-  if [ -L "$CLAUDE_DIR/rules" ]; then
-    log_info "claude rules: $CLAUDE_DIR/rules → $(readlink "$CLAUDE_DIR/rules")"
-  else
-    log_error "claude rules: Not a symlink"
-    ((errors++))
-  fi
-
-  # Skills symlink
-  if [ -L "$CLAUDE_DIR/skills" ]; then
-    log_info "claude skills: $CLAUDE_DIR/skills → $(readlink "$CLAUDE_DIR/skills")"
-  else
-    log_error "claude skills: Not a symlink"
-    ((errors++))
-  fi
-
-  # Commands symlink
-  if [ -L "$CLAUDE_DIR/commands" ]; then
-    log_info "claude commands: $CLAUDE_DIR/commands → $(readlink "$CLAUDE_DIR/commands")"
-  else
-    log_error "claude commands: Not a symlink"
-    ((errors++))
-  fi
-
-  # Agents symlink
-  if [ -L "$CLAUDE_DIR/agents" ]; then
-    log_info "claude agents: $CLAUDE_DIR/agents → $(readlink "$CLAUDE_DIR/agents")"
-  else
-    log_error "claude agents: Not a symlink"
-    ((errors++))
-  fi
-
-  # Hooks symlink
-  if [ -L "$CLAUDE_DIR/hooks" ]; then
-    log_info "claude hooks: symlink OK"
-  else
-    log_error "claude hooks: Missing symlink"
-    ((errors++))
-  fi
+  verify_link_or_copy "$CLAUDE_DIR/rules"    "claude rules"    || ((errors++))
+  verify_link_or_copy "$CLAUDE_DIR/skills"   "claude skills"   || ((errors++))
+  verify_link_or_copy "$CLAUDE_DIR/commands" "claude commands" || ((errors++))
+  verify_link_or_copy "$CLAUDE_DIR/agents"   "claude agents"   || ((errors++))
+  verify_link_or_copy "$CLAUDE_DIR/hooks"    "claude hooks"    || ((errors++))
 
   # Settings.json hooks
   if jq -e '.hooks' "$CLAUDE_DIR/settings.json" > /dev/null 2>&1; then

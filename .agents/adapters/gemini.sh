@@ -8,7 +8,7 @@
 GEMINI_DIR="$PROJECT_ROOT/.gemini"
 
 gemini_rules() {
-  log_verbose "Gemini rules: generate GEMINI.md index"
+  log_verbose "Gemini rules: generate GEMINI.md index (filesystem-driven)"
 
   if run_or_dry "generate GEMINI.md index file"; then
     return 0
@@ -18,8 +18,11 @@ gemini_rules() {
   [ -e "$GEMINI_DIR/rules" ] || [ -L "$GEMINI_DIR/rules" ] && rm -rf "$GEMINI_DIR/rules"
   mkdir -p "$GEMINI_DIR"
 
-  # Generate GEMINI.md index file
-  cat > "$GEMINI_DIR/GEMINI.md" << 'EOF'
+  local out="$GEMINI_DIR/GEMINI.md"
+  local tmp="${out}.tmp"
+
+  {
+    cat <<'EOF'
 # Rules Reference for Gemini CLI
 
 > **Note:** Gemini CLI does not support rules like other agents. This document serves as an index to the project's rules located in `.agents/rules/`.
@@ -30,76 +33,11 @@ All rules are centralized in: `.agents/rules/`
 
 ## Rules by Category
 
-### Code Standards
+EOF
 
-#### **[Principles](../.agents/rules/code/principles.md)**
-Core principles and architectural decisions for the project.
+    _emit_rules_index "../.agents/rules"
 
-#### **[Style](../.agents/rules/code/style.md)**
-Code style guidelines and formatting standards.
-
----
-
-### Content Guidelines
-
-#### **[Copywriting](../.agents/rules/content/copywriting.md)**
-Copywriting and content standards for user-facing text.
-
----
-
-### Design Standards
-
-#### **[Web Design](../.agents/rules/design/web-design.md)**
-Web interface guidelines and accessibility standards.
-
----
-
-### Framework-Specific
-
-#### **[React Native](../.agents/rules/frameworks/react-native.md)**
-React Native best practices and performance optimization.
-
----
-
-### Process & Workflow
-
-#### **[Git Workflow](../.agents/rules/process/git-workflow.md)**
-Git branching strategy, commit conventions, and PR guidelines.
-
-#### **[Documentation](../.agents/rules/process/documentation.md)**
-Documentation standards and writing guidelines.
-
----
-
-### Quality Assurance
-
-#### **[Testing](../.agents/rules/quality/testing.md)**
-Testing philosophy, manual testing checklists, and verification.
-
-#### **[Testing Scripts](../.agents/rules/quality/testing-scripts.md)**
-Bash script testing patterns and best practices.
-
----
-
-### Team Conventions
-
-#### **[Skills Management](../.agents/rules/team/skills-management.md)**
-Guidelines for managing AI agent skills at project level.
-
-#### **[Third-Party Security](../.agents/rules/team/third-party-security.md)**
-Security guidelines for third-party MCP servers and Skills.
-
----
-
-### Tools & Extensions
-
-#### **[Claude Code Extensions](../.agents/rules/tools/claude-code-extensions.md)**
-Reference for extending Claude Code with skills, commands, and agents.
-
-#### **[Use Context7](../.agents/rules/tools/use-context7.md)**
-Guidelines for using Context7 MCP for library/API documentation.
-
----
+    cat <<'EOF'
 
 ## Synchronization
 
@@ -115,24 +53,69 @@ Rules are synchronized across agents using:
 - **Gemini CLI:** Index file (this document) - no native rules support
 - **Copilot (VSCode):** Rules copied as .instructions.md (flattened)
 - **Antigravity:** Rules read natively from .agents/rules/
-
----
-
-## Additional Resources
-
-- **[README](../.agents/rules/README.md)** - Rules best practices and YAML frontmatter guide
-
----
-
-*Last synchronized: [Auto-generated]*
 EOF
+  } > "$tmp"
 
-  # Update timestamp
-  local timestamp
-  timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-  sed -i '' "s/\[Auto-generated\]/$timestamp/" "$GEMINI_DIR/GEMINI.md"
+  _write_if_changed "$tmp" "$out" "GEMINI.md index"
+}
 
-  log_info "Generated GEMINI.md index file"
+# Emit a markdown index of all rules under .agents/rules, grouped by subdir.
+# Reads frontmatter `description` (if present) to provide a human label.
+# Argument: relative_prefix (path used in the generated links, e.g. "../.agents/rules")
+_emit_rules_index() {
+  local rel_prefix=$1
+  local rules_root="$AGENTS_DIR/rules"
+  local prev_subdir=""
+
+  while IFS= read -r rule_file; do
+    local rel
+    rel=$(echo "$rule_file" | sed "s|$rules_root/||")
+    local subdir="${rel%/*}"
+    [ "$subdir" = "$rel" ] && subdir="(root)"
+
+    if [ "$subdir" != "$prev_subdir" ]; then
+      [ -n "$prev_subdir" ] && echo "" && echo "---" && echo ""
+      printf "### %s\n\n" "$(_human_subdir "$subdir")"
+      prev_subdir="$subdir"
+    fi
+
+    local base
+    base=$(basename "$rule_file" .md)
+    local desc
+    desc=$(has_frontmatter "$rule_file" && extract_field "$rule_file" "description" || true)
+    desc=${desc:-"Project rule"}
+
+    printf "#### **[%s](%s/%s)**\n%s\n\n" \
+      "$(_title_case "$base")" "$rel_prefix" "$rel" "$desc"
+  done < <(find "$rules_root" -type f -name "*.md" ! -name "README.md" | sort)
+}
+
+# Pretty-print a subdir name like "lidr-sdlc" → "LIDR SDLC"; "code" → "Code"
+_human_subdir() {
+  local s=$1
+  case "$s" in
+    "(root)")     echo "General" ;;
+    "lidr-sdlc")  echo "LIDR SDLC" ;;
+    *)            echo "$s" | sed 's/^./\U&/' | sed 's/-/ /g' ;;
+  esac
+}
+
+# Title-case a kebab-case filename: "ai-workflow-system" → "Ai Workflow System"
+_title_case() {
+  echo "$1" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++){$i=toupper(substr($i,1,1)) tolower(substr($i,2))}1}'
+}
+
+# Write $tmp to $out only if content differs, to avoid touching git timestamps.
+# Usage: _write_if_changed tmp_file final_file "human description"
+_write_if_changed() {
+  local tmp=$1 out=$2 label=$3
+  if [ -f "$out" ] && cmp -s "$tmp" "$out"; then
+    rm -f "$tmp"
+    log_info "$label unchanged"
+    return 0
+  fi
+  mv "$tmp" "$out"
+  log_info "Updated $label"
 }
 
 gemini_skills() {
@@ -246,24 +229,20 @@ gemini_mcp() {
 
   local settings_file="$GEMINI_DIR/settings.json"
 
+  local merged
   if [ -f "$settings_file" ]; then
-    # Merge preserving experimental, context, and hooks settings
-    jq --argjson mcp "$MCP_SERVERS" '. + $mcp' "$settings_file" > "$settings_file.tmp"
-    mv "$settings_file.tmp" "$settings_file"
+    merged=$(jq --argjson mcp "$MCP_SERVERS" '. + $mcp' "$settings_file")
   else
-    # Create with full configuration
-    jq --argjson mcp "$MCP_SERVERS" '{
+    merged=$(jq --argjson mcp "$MCP_SERVERS" '{
       experimental: { enableAgents: true },
       context: {
         fileName: ["AGENTS.md", "CONTEXT.md", "GEMINI.md", "CLAUDE.md"]
       }
-    } + $mcp' <<< '{}' > "$settings_file"
+    } + $mcp' <<< '{}')
   fi
+  echo "$merged" | write_if_changed "$settings_file" ".gemini/settings.json (MCP)"
 
-  # Also generate antigravity reference config
   _gemini_generate_antigravity_config
-
-  log_info "Updated .gemini/settings.json (MCP servers)"
 }
 
 _gemini_generate_antigravity_config() {
@@ -288,9 +267,7 @@ _gemini_generate_antigravity_config() {
       ) |
       from_entries
     )
-  }' "$AGENTS_DIR/mcp/mcp-servers.json" > "$GEMINI_DIR/mcp_config.json"
-
-  log_info "Generated .gemini/mcp_config.json (Antigravity reference)"
+  }' "$AGENTS_DIR/mcp/mcp-servers.json" | write_if_changed "$GEMINI_DIR/mcp_config.json" ".gemini/mcp_config.json"
 }
 
 gemini_hooks() {
@@ -365,14 +342,13 @@ gemini_hooks() {
 
   # Merge hooks into settings.json
   local settings_file="$GEMINI_DIR/settings.json"
+  local merged
   if [ -f "$settings_file" ]; then
-    jq --argjson hooks "$gemini_hooks_json" '.hooks = $hooks' "$settings_file" > "$settings_file.tmp"
-    mv "$settings_file.tmp" "$settings_file"
+    merged=$(jq --argjson hooks "$gemini_hooks_json" '.hooks = $hooks' "$settings_file")
   else
-    echo "{\"hooks\": $gemini_hooks_json}" | jq '.' > "$settings_file"
+    merged=$(echo "{\"hooks\": $gemini_hooks_json}" | jq '.')
   fi
-
-  log_info "Updated .gemini/settings.json ($hooks_count hook types)"
+  echo "$merged" | write_if_changed "$settings_file" ".gemini/settings.json ($hooks_count hook types)"
 }
 
 gemini_verify() {
@@ -445,13 +421,7 @@ gemini_verify() {
     ((errors++))
   fi
 
-  # Hooks symlink
-  if [ -L "$GEMINI_DIR/hooks" ]; then
-    log_info "gemini hooks: symlink OK"
-  else
-    log_error "gemini hooks: Missing symlink"
-    ((errors++))
-  fi
+  verify_link_or_copy "$GEMINI_DIR/hooks" "gemini hooks" || ((errors++))
 
   return $errors
 }

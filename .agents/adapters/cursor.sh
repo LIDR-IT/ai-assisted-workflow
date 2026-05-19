@@ -19,7 +19,8 @@ cursor_rules() {
   while IFS= read -r -d '' rule_file; do
     local rule_name
     rule_name=$(basename "$rule_file")
-    local rule_base="${rule_name%.md}"
+    local rule_base
+    rule_base=$(flat_rule_basename "$rule_file" "$AGENTS_DIR/rules")
     local dest_file="$CURSOR_DIR/rules/${rule_base}.mdc"
     local subdir
     subdir=$(dirname "$rule_file" | sed "s|$AGENTS_DIR/rules||" | sed 's|^/||')
@@ -79,9 +80,7 @@ cursor_mcp() {
       ) |
       from_entries
     )
-  }' "$AGENTS_DIR/mcp/mcp-servers.json" > "$CURSOR_DIR/mcp.json"
-
-  log_info "Generated .cursor/mcp.json"
+  }' "$AGENTS_DIR/mcp/mcp-servers.json" | write_if_changed "$CURSOR_DIR/mcp.json" ".cursor/mcp.json"
 }
 
 cursor_hooks() {
@@ -137,16 +136,9 @@ cursor_hooks() {
     } | .hooks |= with_entries(select(.value | length > 0))' "$source_file")
   fi
 
-  echo "$cursor_hooks_json" > "$CURSOR_DIR/hooks.json"
-
   local hook_count
   hook_count=$(echo "$cursor_hooks_json" | jq '.hooks | to_entries | length' 2>/dev/null || echo "0")
-
-  if [ "$hook_count" -gt 0 ]; then
-    log_info "Updated .cursor/hooks.json ($hook_count hook types)"
-  else
-    log_info "Updated .cursor/hooks.json (empty - Husky handles formatting/secrets)"
-  fi
+  echo "$cursor_hooks_json" | write_if_changed "$CURSOR_DIR/hooks.json" ".cursor/hooks.json ($hook_count hook types)"
 }
 
 cursor_verify() {
@@ -162,29 +154,9 @@ cursor_verify() {
     ((errors++))
   fi
 
-  # Skills symlink
-  if [ -L "$CURSOR_DIR/skills" ]; then
-    log_info "cursor skills: $CURSOR_DIR/skills → $(readlink "$CURSOR_DIR/skills")"
-  else
-    log_error "cursor skills: Not a symlink"
-    ((errors++))
-  fi
-
-  # Commands symlink
-  if [ -L "$CURSOR_DIR/commands" ]; then
-    log_info "cursor commands: $CURSOR_DIR/commands → $(readlink "$CURSOR_DIR/commands")"
-  else
-    log_error "cursor commands: Not a symlink"
-    ((errors++))
-  fi
-
-  # Agents symlink
-  if [ -L "$CURSOR_DIR/agents" ]; then
-    log_info "cursor agents: $CURSOR_DIR/agents → $(readlink "$CURSOR_DIR/agents")"
-  else
-    log_error "cursor agents: Not a symlink"
-    ((errors++))
-  fi
+  verify_link_or_copy "$CURSOR_DIR/skills"   "cursor skills"   || ((errors++))
+  verify_link_or_copy "$CURSOR_DIR/commands" "cursor commands" || ((errors++))
+  verify_link_or_copy "$CURSOR_DIR/agents"   "cursor agents"   || ((errors++))
 
   # MCP config
   if [ -f "$CURSOR_DIR/mcp.json" ]; then

@@ -1,16 +1,18 @@
 {
   "version": 1,
   "hooks": {
-    "preToolUse": [
+    "PreToolUse": [
       {
         "matcher": "Read|read_file|Edit|Write|write_file|replace",
+        "type": "command",
         "command": "bash .github/hooks/scripts/protect-secrets.sh",
         "timeout": 10
       }
     ],
-    "postToolUse": [
+    "PostToolUse": [
       {
         "matcher": "Edit|Write|write_file|replace",
+        "type": "command",
         "command": "bash .github/hooks/scripts/auto-format.sh",
         "timeout": 30
       }
