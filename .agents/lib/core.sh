@@ -12,6 +12,7 @@ fi
 # Global state (set by sync.sh CLI parser)
 DRY_RUN="${DRY_RUN:-false}"
 VERBOSE="${VERBOSE:-false}"
+NO_SYMLINKS="${NO_SYMLINKS:-false}"
 
 # Logging
 log_info()    { echo -e "  ${GREEN}✅${NC} $1"; }
@@ -60,4 +61,26 @@ require_command() {
     log_error "Required command not found: $1"
     exit 1
   fi
+}
+
+# Write content to a file ONLY if the content differs — avoids touching git
+# timestamps when sync produces the same output it would have produced before.
+# Usage:
+#   echo "content" | write_if_changed "/path/to/file" "label"
+#   write_if_changed "/path/to/file" "label" < /tmp/source
+write_if_changed() {
+  local out=$1 label=${2:-"$(basename "$1")"}
+  local tmp
+  tmp=$(mktemp)
+  cat > "$tmp"
+
+  if [ -f "$out" ] && cmp -s "$tmp" "$out"; then
+    rm -f "$tmp"
+    log_verbose "$label unchanged"
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$out")"
+  mv "$tmp" "$out"
+  log_info "Wrote $label"
 }
