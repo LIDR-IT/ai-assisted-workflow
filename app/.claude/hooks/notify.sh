@@ -1,1 +1,0 @@
-../../../.agents/hooks/lidr/notify.sh

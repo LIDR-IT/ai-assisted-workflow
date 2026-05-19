@@ -130,8 +130,8 @@ Generate project-specific version:
 Files to create (using self-contained templates):
 
 - docs/projects/$1/business-case.md (from .claude/skills/business-case/templates/business-case.md)
-- docs/projects/$1/prd-funcional.md (from .claude/skills/prd-funcional/templates/prd.md)
-- docs/projects/$1/prd-tecnico.md (from .claude/skills/prd-tecnico/templates/prd-technical.md)
+- docs/projects/$1/prd-funcional.md (from .agents/\\_shared/lidr/templates/prd-funcional.md — reference format for bmad-prd F-section)
+- docs/projects/$1/prd-tecnico.md (from .agents/\\_shared/lidr/templates/prd-tecnico.md — reference format for bmad-prd T-section)
 - docs/projects/$1/architecture.md (from .agents/\\_shared/lidr/templates/architecture/architecture.md)
 - docs/projects/$1/user-stories.md (from .claude/skills/user-stories/templates/user-story.md)
 - docs/projects/$1/ux-design-spec.md (from .agents/\\_shared/lidr/templates/ux-design-spec.md)

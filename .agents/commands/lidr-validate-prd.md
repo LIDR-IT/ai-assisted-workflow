@@ -51,10 +51,9 @@ RELATED COMMANDS:
   /validate-requirements - Next command after Gate 1 approval
 
 RELATED SKILLS:
-  review-cruzado        - Cross-validation between PRD-F and PRD-T
-  prd-funcional        - Functional PRD generation
-  prd-tecnico          - Technical PRD generation
-  business-case        - Context for PRD validation
+  bmad-prd              - Unified PRD generation (functional + technical sections)
+  review-cruzado        - Gate 1 enforcer: validates F+T sections completeness on bmad-prd output
+  business-case         - Context for PRD validation
 
 ROI METRICS:
   Manual PRD review: 4-6 hours
@@ -119,7 +118,7 @@ Output: Context score (0-100%), domain classification, complexity assessment
 
 #### Step 2: Format Detection & Template Compliance
 
-Load: skills/prd-funcional and skills/prd-tecnico
+Load: bmad-prd output document (unified F+T sections)
 
 1. **Structural Validation**:
    - Verify frontmatter YAML presence and completeness

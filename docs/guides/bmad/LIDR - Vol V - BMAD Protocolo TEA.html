@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>BMAD Protocolo TEA · Libro 5 de 5 | LIDR.co</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1A1A1A; --ink-soft: #333; --ink-mute: #666;
+    --gold: #F6DE82; --gold-deep: #D4B85C;
+    --cream: #FBEFC0; --cream-soft: #FFF8E1;
+    --paper: #FFFFFF; --line: #E6E6E6; --line-strong: #1A1A1A;
+
+    --mod-bmm: #E2B324; --mod-tea: #27AE60; --mod-cis: #9B59B6;
+    --mod-bmb: #3498DB; --mod-core: #95A5A6;
+
+    --tea-soft: #E8F5EE; --tea-deep: #1B6B45;
+
+    --req: #C0392B; --rec: #D4B85C; --opc: #B0B0B0;
+
+    --lidr-vision: #4A4A8A; --lidr-recom: #C97D2A;
+
+    --info: #2E86C1; --tip: #229954; --caution: #D4AC0D; --important: #C0392B;
+
+    --p0: #C0392B; --p1: #D4730F; --p2: #C9A227; --p3: #58809C;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink-soft); background: var(--paper);
+    font-size: 11px; line-height: 1.6;
+  }
+
+  /* COVER */
+  .cover {
+    page-break-after: always;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    min-height: 100vh; text-align: center;
+    background: var(--ink); color: #fff; padding: 60px 50px;
+  }
+  .cover .vol-tag {
+    font-size: 11px; color: var(--gold);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 18px; font-weight: 600;
+  }
+  .cover h1 {
+    font-size: 42px; font-weight: 700; color: #fff;
+    margin-bottom: 8px; letter-spacing: -0.5px;
+  }
+  .cover h1 span { color: var(--gold); }
+  .cover .subtitle {
+    font-size: 16px; color: var(--gold);
+    font-weight: 500; margin-bottom: 36px; max-width: 480px;
+  }
+  .cover .logo-bar {
+    width: 80px; height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+    border-radius: 2px; margin: 24px auto;
+  }
+  .cover .meta {
+    font-size: 12px; color: #cccccc;
+    line-height: 1.9; max-width: 460px;
+  }
+  .cover .meta strong { color: var(--gold); }
+  .cover .cover-version {
+    font-size: 10px; color: #999;
+    margin-top: 48px; letter-spacing: 1px;
+  }
+
+  /* CONTENT */
+  .content { padding: 36px 52px; max-width: 920px; margin: 0 auto; }
+
+  h2 {
+    font-size: 22px; font-weight: 700; color: var(--ink);
+    margin: 36px 0 6px 0; padding-bottom: 8px;
+    border-bottom: 3px solid var(--gold); letter-spacing: -0.2px;
+  }
+  h2:first-child { margin-top: 0; }
+  h2 .num { color: var(--gold-deep); font-weight: 800; margin-right: 10px; }
+
+  /* PART HEADER (PART A/B/C/D divider) */
+  .part-header {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 18px 22px;
+    margin: 36px 0 0 0;
+    border-radius: 4px;
+    border-left: 6px solid var(--mod-tea);
+    page-break-before: always;
+  }
+  .part-header .tag {
+    display: block;
+    font-size: 9.5px; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--mod-tea);
+    margin-bottom: 4px;
+  }
+  .part-header .title {
+    font-size: 18px; font-weight: 700;
+    color: #fff;
+  }
+  .part-header .subtitle {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #cccccc;
+    line-height: 1.55;
+  }
+
+  h3 {
+    font-size: 15px; font-weight: 700; color: var(--ink);
+    margin: 22px 0 8px 0; letter-spacing: -0.1px;
+  }
+  h3 .num { color: var(--gold-deep); margin-right: 6px; }
+
+  h4 {
+    font-size: 12px; font-weight: 700; color: var(--ink);
+    margin: 16px 0 6px 0; text-transform: uppercase; letter-spacing: 0.6px;
+  }
+
+  h5 {
+    font-size: 9.5px; font-weight: 800; color: var(--ink-mute);
+    margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+
+  p, li { font-size: 11px; color: var(--ink-soft); margin-bottom: 5px; }
+  ul, ol { margin: 4px 0 8px 18px; }
+  li { margin-bottom: 3px; }
+  strong { color: var(--ink); }
+  em { font-style: italic; }
+
+  .lead { font-size: 12.5px; color: var(--ink); line-height: 1.7; margin-bottom: 12px; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 10px 0 18px 0; font-size: 10px;
+  }
+  thead th {
+    background: var(--ink); color: var(--gold);
+    font-weight: 600; text-align: left; padding: 9px 11px;
+    border-bottom: 2px solid var(--gold); font-size: 10px; letter-spacing: 0.2px;
+  }
+  tbody td {
+    padding: 7px 10px; border-bottom: 1px solid var(--line);
+    vertical-align: top; color: var(--ink-soft);
+  }
+  tbody tr:nth-child(even) { background: #FAFAF6; }
+  tbody tr:nth-child(odd) { background: #ffffff; }
+  tbody td strong { color: var(--ink); }
+
+  table.bordered td { border: 1px solid var(--line); text-align: center; }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: var(--cream); padding: 1px 6px;
+    border-radius: 3px; font-size: 9.5px; color: var(--ink);
+    border: 1px solid #E6D98A; display: inline-block;
+    white-space: nowrap;
+  }
+
+  pre.codeblock {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: #FBF9EE; color: var(--ink);
+    padding: 11px 14px; border-radius: 4px;
+    border: 1px solid #E6D98A;
+    border-left: 3px solid var(--gold-deep);
+    font-size: 9.5px; line-height: 1.55;
+    overflow-x: auto;
+    margin: 10px 0 14px 0;
+    white-space: pre-wrap;
+  }
+
+  /* SNIPPET PAIR — bad vs good */
+  .snippet-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 10px 0 14px 0;
+  }
+  .snippet-pair .col {
+    border-radius: 4px;
+    padding: 9px 12px;
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    font-size: 9.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+  .snippet-pair .col.bad {
+    background: #FBEAE5;
+    border-left: 3px solid var(--important);
+  }
+  .snippet-pair .col.good {
+    background: #E9F7EF;
+    border-left: 3px solid var(--tip);
+  }
+  .snippet-pair .col .label {
+    display: block;
+    font-size: 8.5px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 4px;
+    color: var(--ink);
+    font-family: "Helvetica Neue", sans-serif;
+  }
+  .snippet-pair .col.bad .label { color: var(--important); }
+  .snippet-pair .col.good .label { color: var(--tip); }
+
+  /* MODULE DOTS */
+  .mod {
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; vertical-align: middle;
+    margin-right: 4px; margin-left: 2px;
+  }
+  .mod.bmm { background: var(--mod-bmm); }
+  .mod.tea { background: var(--mod-tea); }
+  .mod.cis { background: var(--mod-cis); }
+  .mod.bmb { background: var(--mod-bmb); }
+  .mod.core { background: var(--mod-core); }
+
+  /* BADGES */
+  .req-badge {
+    display: inline-block; font-size: 8px; font-weight: 700;
+    padding: 2px 7px; border-radius: 3px; vertical-align: middle;
+    margin-left: 5px; letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .req-badge.req { background: var(--req); color: #fff; }
+  .req-badge.rec { background: var(--gold); color: var(--ink); }
+  .req-badge.opc { background: #E8E8E8; color: #555; border: 1px solid #B0B0B0; }
+  .req-badge.req-tea { background: #D5EDE2; color: #1B6B45; border: 1px solid #27AE60; }
+
+  .lidr-badge {
+    display: inline-block; font-size: 8.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 3px;
+    margin-right: 8px; margin-bottom: 2px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #fff; vertical-align: middle;
+  }
+  .lidr-badge.vision { background: var(--lidr-vision); }
+  .lidr-badge.recomendacion { background: var(--lidr-recom); }
+
+  .lidr-mark {
+    display: block;
+    border-left: 3px solid var(--lidr-recom);
+    padding: 2px 0 2px 12px; margin: 8px 0;
+  }
+  .lidr-mark.vision { border-left-color: var(--lidr-vision); }
+  .lidr-mark .lidr-badge { margin-bottom: 4px; }
+
+  /* P-LEVEL pills (P0-P3) */
+  .plevel {
+    display: inline-block;
+    font-size: 8.5px; font-weight: 800;
+    padding: 2px 8px; border-radius: 3px;
+    color: #fff; letter-spacing: 0.5px;
+    margin-right: 4px;
+  }
+  .plevel.p0 { background: var(--p0); }
+  .plevel.p1 { background: var(--p1); }
+  .plevel.p2 { background: var(--p2); }
+  .plevel.p3 { background: var(--p3); }
+
+  /* CALLOUTS */
+  .callout {
+    padding: 11px 14px 11px 16px; margin: 14px 0;
+    border-radius: 0 4px 4px 0; font-size: 10.5px;
+    color: var(--ink-soft); line-height: 1.6;
+  }
+  .callout strong { color: var(--ink); }
+  .callout .head {
+    display: block; font-size: 9.5px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;
+  }
+  .callout.info { background: #EAF4FA; border-left: 3px solid var(--info); }
+  .callout.info .head { color: var(--info); }
+  .callout.tip { background: #E9F7EF; border-left: 3px solid var(--tip); }
+  .callout.tip .head { color: var(--tip); }
+  .callout.caution { background: #FCF6E1; border-left: 3px solid var(--caution); }
+  .callout.caution .head { color: #9C8004; }
+  .callout.important { background: #FBEAE5; border-left: 3px solid var(--important); }
+  .callout.important .head { color: var(--important); }
+  .callout.tea { background: var(--tea-soft); border-left: 3px solid var(--mod-tea); }
+  .callout.tea .head { color: var(--tea-deep); }
+
+  /* FRAMEWORK CARD (PARTE A) */
+  .framework-card {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--mod-tea);
+    border-radius: 4px;
+    margin: 16px 0;
+    padding: 14px 16px;
+    background: #FFFFFF;
+    page-break-inside: auto;
+  }
+  .framework-header {
+    display: flex; align-items: baseline;
+    gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--mod-tea);
+  }
+  .framework-tag {
+    background: var(--mod-tea); color: #fff;
+    font-size: 9px; font-weight: 800;
+    padding: 3px 10px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .framework-title {
+    font-size: 14px; font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* SKILL CARD (PARTE B, idéntico a Vol IV) */
+  .skill-card {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--mod-tea);
+    border-radius: 4px;
+    margin: 14px 0;
+    padding: 12px 14px;
+    background: #FFFFFF;
+    page-break-inside: avoid;
+  }
+  .card-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 6px; margin-bottom: 8px;
+    padding-bottom: 6px; border-bottom: 1px dashed var(--line);
+  }
+  .card-num {
+    background: var(--ink); color: var(--gold);
+    font-size: 9px; font-weight: 800;
+    padding: 2px 7px; border-radius: 3px;
+    letter-spacing: 0.4px;
+  }
+  .card-cmd {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: var(--cream); padding: 2px 7px;
+    border-radius: 3px; font-size: 10.5px; color: var(--ink);
+    border: 1px solid #E6D98A; font-weight: 700;
+  }
+  .card-mod { font-size: 9.5px; color: var(--ink-mute); font-weight: 600; }
+  .card-phase {
+    font-size: 8.5px; font-weight: 700; color: var(--ink);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    background: #F5F0E6; padding: 2px 8px;
+    border-radius: 3px; margin-left: auto;
+  }
+
+  .card-resolves {
+    font-size: 11px; color: var(--ink);
+    background: var(--cream-soft);
+    padding: 8px 11px; border-radius: 3px;
+    margin-bottom: 9px;
+    line-height: 1.55;
+  }
+  .card-resolves .label {
+    font-size: 8.5px; font-weight: 800; color: var(--gold-deep);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-right: 5px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin-bottom: 8px;
+  }
+  .card-block { font-size: 10.5px; }
+  .card-block ul { margin: 2px 0 0 16px; }
+  .card-block li { font-size: 10.5px; margin-bottom: 2px; line-height: 1.45; }
+
+  /* SCENARIO CARD (PARTE C) */
+  .scenario-card {
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--lidr-recom);
+    border-radius: 4px;
+    margin: 16px 0;
+    padding: 14px 16px;
+    background: #FCFAF5;
+    page-break-inside: auto;
+  }
+  .scenario-header {
+    display: flex; align-items: baseline;
+    gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--lidr-recom);
+  }
+  .scenario-tag {
+    background: var(--lidr-recom); color: #fff;
+    font-size: 9px; font-weight: 800;
+    padding: 3px 10px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .scenario-title {
+    font-size: 14px; font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* RISK MATRIX styled table */
+  .risk-matrix { font-size: 10px; text-align: center; }
+  .risk-matrix th, .risk-matrix td {
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+  }
+  .risk-matrix .axis {
+    background: var(--ink); color: var(--gold);
+    font-weight: 700;
+  }
+  .risk-matrix .label-h {
+    background: #1A1A1A; color: var(--gold);
+    font-weight: 600; font-size: 9.5px;
+  }
+  .risk-matrix .label-v {
+    background: #1A1A1A; color: var(--gold);
+    font-weight: 600; font-size: 9.5px;
+  }
+  .risk-matrix td.score {
+    font-size: 14px; font-weight: 800; color: #fff;
+  }
+  .risk-matrix td.s1, .risk-matrix td.s2, .risk-matrix td.s3 { background: #58809C; }
+  .risk-matrix td.s4, .risk-matrix td.s5 { background: #C9A227; }
+  .risk-matrix td.s6, .risk-matrix td.s7, .risk-matrix td.s8 { background: #D4730F; }
+  .risk-matrix td.s9 { background: #C0392B; }
+  .risk-matrix td.score .pri {
+    display: block;
+    font-size: 8.5px;
+    margin-top: 2px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* PYRAMID */
+  .pyramid {
+    display: flex; flex-direction: column;
+    align-items: center;
+    margin: 14px 0 18px 0;
+  }
+  .pyramid .row {
+    color: #fff; padding: 7px 14px;
+    font-size: 10.5px; font-weight: 700;
+    text-align: center;
+    margin-bottom: 2px;
+    border-radius: 3px;
+  }
+  .pyramid .row .desc {
+    display: block;
+    font-size: 9px; font-weight: 500;
+    margin-top: 2px;
+  }
+  .pyramid .e2e { background: #C0392B; width: 22%; }
+  .pyramid .api { background: #D4730F; width: 35%; }
+  .pyramid .integ { background: #C9A227; width: 50%; color: var(--ink); }
+  .pyramid .comp { background: #58809C; width: 70%; }
+  .pyramid .unit { background: #229954; width: 92%; }
+
+  /* TIMELINE for hotfix */
+  .timeline {
+    margin: 12px 0 16px 0;
+    border-left: 2px solid var(--gold-deep);
+    padding-left: 14px;
+  }
+  .timeline-item {
+    margin-bottom: 8px;
+    font-size: 10.5px;
+  }
+  .timeline-item .t {
+    display: inline-block;
+    background: var(--ink); color: var(--gold);
+    font-family: 'SF Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 3px;
+    margin-right: 8px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* DIVIDERS, LEGEND */
+  .section-divider {
+    border: none; border-top: 1px dashed var(--gold-deep); margin: 26px 0;
+  }
+  .page-break { page-break-before: always; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+    margin: 8px 0 14px 0; font-size: 10px; color: var(--ink-soft);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+
+  /* DIAGRAM */
+  .diagram {
+    margin: 16px 0 20px 0;
+    padding: 16px;
+    background: #FCFCFA;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    text-align: center;
+  }
+  .diagram .caption {
+    margin-top: 10px;
+    font-size: 9.5px;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+  .mermaid { font-size: 12px !important; }
+
+  /* PAGE — A4 */
+  @page {
+    size: A4; margin: 18mm 16mm 22mm 16mm;
+
+    @bottom-left {
+      content: "LIDR.co · BMAD Protocolo TEA · Volumen V · Libro 5 de 5";
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt; color: #888; vertical-align: top; padding-top: 4mm;
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt; color: #888; vertical-align: top; padding-top: 4mm;
+    }
+    @footnote {
+      border-top: 0.5pt solid #D4B85C;
+      padding-top: 4pt; margin-top: 8pt;
+      font-size: 8.5pt; line-height: 1.45; color: #444;
+    }
+  }
+  @page :first {
+    margin: 0;
+    @top-left { content: none; } @top-center { content: none; } @top-right { content: none; }
+    @bottom-left { content: none; } @bottom-center { content: none; } @bottom-right { content: none; }
+  }
+  .footnote { float: footnote; font-size: 8.5pt; color: #444; }
+  .footnote::footnote-call {
+    content: counter(footnote); font-size: 0.62em;
+    vertical-align: super; line-height: 0;
+    color: var(--gold-deep); font-weight: 700; margin-left: 1px;
+  }
+  .footnote::footnote-marker {
+    content: counter(footnote) ". ";
+    font-weight: 700; color: var(--gold-deep);
+  }
+  .footnote strong { color: var(--ink); }
+
+  /* ─────────────────────────────────────────────
+     TABLE PAGINATION — repite cabecera, evita huérfanos
+  ───────────────────────────────────────────── */
+  table { page-break-inside: auto; break-inside: auto; }
+  thead { display: table-header-group; }
+  thead tr { break-after: avoid; page-break-after: avoid; break-inside: avoid; page-break-inside: avoid; }
+  tbody tr { break-inside: avoid; page-break-inside: avoid; }
+  tbody tr:first-child { break-before: avoid; page-break-before: avoid; }
+  tfoot { display: table-footer-group; }
+
+  /* Continuación de tabla — texto inyectado por paged.js handler */
+  tfoot.continued tr td {
+    text-align: right;
+    font-style: italic;
+    font-size: 8.5pt;
+    color: #888;
+    padding: 4px 8px 0 8px;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* OVERRIDE — permitir que las cards largas y bloques pre se partan
+     entre páginas para evitar huecos grandes al final de página */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box,
+  pre,
+  pre.codeblock{
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Las cabeceras de las cards no deben quedar huérfanas */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+
+  @media print {
+    body { font-size: 10.5px; }
+    .content { padding: 24px 40px; }
+    h2, h3, h4 { page-break-after: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+    .callout, .framework-card, .skill-card, .scenario-card { page-break-inside: avoid; }
+    .diagram { page-break-inside: avoid; }
+  }
+
+  /* GAP FIX — permitir que cards largas se partan sin quedar atrapadas por sus headers */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+  /* Los headers internos sí evitan break dentro de sí mismos, pero NO fuerzan
+     a su contenedor a permanecer junto al siguiente bloque. */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+  /* En @media print, asegurar override final */
+  @media print {
+    .framework-card, .skill-card, .session-card, .scenario-card, .decision-card, .toolkit-box, .callout {
+      page-break-inside: auto !important;
+      break-inside: auto !important;
+    }
+    .framework-header, .session-header, .skill-card-header, .scenario-header, .card-header {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+  }
+
+  .page-break-before { page-break-before: always; break-before: page; }
+  .page-break { page-break-after: always; break-after: page; }
+/* MermaidTooltip fix */
+  /* Mermaid crea un tooltip invisible que paged.js coloca en una página vacía */
+  .mermaidTooltip { display: none !important; position: absolute !important; }
+  div:has(> .mermaidTooltip:only-child) { display: none !important; }
+
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="vol-tag">Volumen V &middot; Libro 5 de 5</div>
+  <h1>BMAD Protocolo <span>TEA</span></h1>
+  <div class="subtitle">El protocolo de calidad: marcos mentales, skills y escenarios reales</div>
+  <div class="logo-bar"></div>
+  <div class="meta">
+    Cuatro partes: marcos mentales, skills en uso,<br>
+    escenarios cross&#8209;cutting y recursos.<br>
+    El libro al que vuelves cuando algo no cuadra.<br><br>
+    <strong>Test Architect &middot; BMAD Method</strong>
+  </div>
+  <div class="cover-version">2026-05-07 &middot; LIDR.co</div>
+</div>
+
+<div class="content">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 0 — BIENVENIDA
+═════════════════════════════════════════════ -->
+<h2><span class="num">0</span>Bienvenida</h2>
+
+<p class="lead">Este es el quinto y último libro de la biblioteca. Es la referencia técnica del módulo Test Architect (TEA): los marcos mentales que estructuran las decisiones de testing, las nueve skills que los aplican, los escenarios reales en los que se usan y los recursos a los que volver cuando algo no cuadra.</p>
+
+<p>A diferencia de los anteriores, este libro tiene un sesgo claro hacia perfiles técnicos &mdash; QA, Tech Lead, Architect &mdash; aunque el Sec. 2 (Por qué TEA) y los Sec. 18&ndash;Sec. 21 (escenarios cross&#8209;cutting) son hojeables por cualquier rol del equipo.</p>
+
+<h3><span class="num">0.1</span>Cómo está organizado el libro</h3>
+
+<p>El libro está dividido en cuatro partes. El orden importa: cada parte construye sobre la anterior.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:14%">Parte</th>
+      <th style="width:24%">Contenido</th>
+      <th style="width:30%">Para qué sirve</th>
+      <th style="width:32%">Quién la lee</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>A &mdash; Marcos mentales</strong></td>
+      <td>Sec. 2&ndash;Sec. 7. Seis marcos transversales que TEA aplica.</td>
+      <td>Establece el vocabulario y el modelo mental antes de tocar ninguna skill.</td>
+      <td>Todos los roles que vayan a interactuar con TEA.</td>
+    </tr>
+    <tr>
+      <td><strong>B &mdash; Skills</strong></td>
+      <td>Sec. 8&ndash;Sec. 17. Mapa rápido y nueve fichas, una por skill.</td>
+      <td>Referencia operativa para cuando se va a invocar una skill concreta.</td>
+      <td>QA y Tech Lead principalmente.</td>
+    </tr>
+    <tr>
+      <td><strong>C &mdash; Escenarios</strong></td>
+      <td>Sec. 18&ndash;Sec. 21. Cuatro patrones de uso reales con runbook paso a paso.</td>
+      <td>Aplicación de los marcos y las skills en situaciones que ocurren en proyectos reales.</td>
+      <td>Tech Lead, Scrum Master, oncall.</td>
+    </tr>
+    <tr>
+      <td><strong>D &mdash; Recursos</strong></td>
+      <td>Sec. 22&ndash;Sec. 25. Persona Murat, listado del knowledge base, plantillas, verificación.</td>
+      <td>Para profundizar en patrones específicos y disponer de plantillas listas.</td>
+      <td>Como referencia, no como lectura lineal.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">0.2</span>Cuándo abrir este libro</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:34%">Situación</th>
+      <th style="width:66%">Sección que toca</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Onboarding al rol QA o Test Architect</td><td>PARTE A entera, después PARTE B mapa (Sec. 8) como índice de skills.</td></tr>
+    <tr><td>Vas a ejecutar una skill TEA</td><td>La ficha correspondiente en PARTE B (Sec. 9&ndash;Sec. 17).</td></tr>
+    <tr><td>Hay un incidente en producción</td><td>Sec. 18 &mdash; Hotfix. Runbook con cronograma.</td></tr>
+    <tr><td>Tests inestables sospechados</td><td>Sec. 19 &mdash; Cuarentena de tests flaky.</td></tr>
+    <tr><td>Equipo nuevo con suite legacy</td><td>Sec. 20 &mdash; Auditoría brownfield (4 etapas).</td></tr>
+    <tr><td>Algo no funciona como esperabas</td><td>Sec. 21 &mdash; Diagnóstico rápido de pitfalls comunes.</td></tr>
+    <tr><td>Necesitas plantilla para presentar a stakeholders</td><td>Sec. 24 &mdash; Plantillas (Risk Matrix, NFR Criteria, Gate Report, ADR Quality Readiness Checklist).</td></tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     Sec. 1 — CONVENCIONES
+═════════════════════════════════════════════ -->
+<h2><span class="num">1</span>Convenciones</h2>
+
+<h3><span class="num">1.1</span>Insignias y colores</h3>
+<div class="legend">
+  <div class="legend-item"><span class="mod tea"></span> <strong>TEA</strong> &middot; testing</div>
+  <div class="legend-item"><span class="mod bmm"></span> <strong>BMM</strong> &middot; flujo principal (cuando aparece)</div>
+</div>
+<p style="margin-bottom: 4px;">
+  <span class="req-badge req-tea">REQ TEA</span> obligatoria si el equipo adopta TEA &middot;
+  <span class="req-badge rec">REC</span> recomendada &middot;
+  <span class="req-badge opc">OPC</span> opcional.
+</p>
+
+<p style="margin: 8px 0 4px 0;">
+  <span class="lidr-badge vision">Visión LIDR</span> framing nuestro &middot;
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span> sugerencia operativa.
+</p>
+
+<p style="margin: 8px 0 4px 0;">Para los niveles de prioridad de tests:</p>
+<p>
+  <span class="plevel p0">P0</span> Critical &middot;
+  <span class="plevel p1">P1</span> High &middot;
+  <span class="plevel p2">P2</span> Medium &middot;
+  <span class="plevel p3">P3</span> Low.
+</p>
+
+<h3><span class="num">1.2</span>Anatomía de las tarjetas</h3>
+<p>Tres tipos de tarjeta aparecen en el libro:</p>
+<ul>
+  <li><strong>Marco</strong> &mdash; cuadro verde con etiqueta "Marco" para los conceptos transversales de la PARTE A.</li>
+  <li><strong>Skill</strong> &mdash; tarjeta con cabecera y siete bloques (resuelve, cuándo, prerrequisitos, salida, sub&#8209;pasos, duración, ver también) idéntica al Libro 4.</li>
+  <li><strong>Escenario</strong> &mdash; cuadro naranja con etiqueta "Escenario" para los patrones de uso de la PARTE C.</li>
+</ul>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     PART A — MARCO MENTAL
+═════════════════════════════════════════════ -->
+<div class="part-header">
+  <span class="tag">Parte A</span>
+  <span class="title">Marco mental &mdash; el porqué antes que el cómo</span>
+  <p class="subtitle">Seis marcos transversales que TEA aplica a cualquier proyecto. Si solo lees una parte de este libro, lee esta. Las skills (Parte B) son la herramienta operativa; los marcos son el lenguaje compartido del equipo.</p>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2 — POR QUÉ TEA
+───────────────────────────────────────────── -->
+<h2><span class="num">2</span>Por qué TEA</h2>
+
+<p class="lead">Antes de hablar de skills, marcos o decisiones, conviene fijar qué problema concreto resuelve el módulo y qué se gana al adoptarlo.</p>
+
+<h3><span class="num">2.1</span>El problema</h3>
+<p>En un equipo que escribe tests sin protocolo común aparecen, con altísima frecuencia, los mismos cuatro síntomas:</p>
+<ul>
+  <li>Suite que crece pero no protege: muchos tests, baja confianza al desplegar.</li>
+  <li>Tests inestables que el equipo aprende a ignorar (o peor, a re&#8209;ejecutar hasta que pasen).</li>
+  <li>Cobertura medida en porcentaje, sin relación con el riesgo real del producto.</li>
+  <li>Ausencia de criterios objetivos para decidir si una release está lista o no.</li>
+</ul>
+
+<h3><span class="num">2.2</span>Lo que aporta TEA</h3>
+<p>El módulo introduce cuatro disciplinas que se sostienen entre sí:</p>
+<ol>
+  <li><strong>Riesgo basado en negocio</strong> &mdash; cada test tiene una prioridad P0&ndash;P3 derivada de probabilidad y de impacto, no de cuándo se ejecuta en CI (Sec. 3).</li>
+  <li><strong>Niveles correctos</strong> &mdash; cada comportamiento se prueba en el nivel más barato que lo cubra: unit antes que integration, integration antes que end&#8209;to&#8209;end (Sec. 4).</li>
+  <li><strong>Calidad de tests medible</strong> &mdash; ocho criterios concretos que un test debe cumplir; los tests que no los cumplen son deuda, no activo (Sec. 5).</li>
+  <li><strong>Decisiones de gate explícitas</strong> &mdash; antes de cada release, una decisión documentada (PASS, CONCERNS, WAIVED, FAIL) basada en evidencia, no en sensaciones (Sec. 6).</li>
+</ol>
+<p>Sobre estas cuatro disciplinas se asientan dos invariantes operativas: la <strong>traceability viva</strong> entre requisitos y tests (Sec. 7) y la <strong>regla bloqueante de orden</strong> entre las skills TEA (Sec. 8.2).</p>
+
+<h3><span class="num">2.3</span>A qué se renuncia</h3>
+<p>Adoptar TEA no es gratis. El equipo asume tres compromisos:</p>
+<ul>
+  <li>Aceptar que <em>no todo se prueba al mismo nivel</em> &mdash; esto requiere conversaciones que no ocurren en suites sin protocolo.</li>
+  <li>Mantener la traceability story&#8209;by&#8209;story, no de manera retroactiva.</li>
+  <li>Bloquear releases con CONCERNS o FAIL aunque el equipo de producto presione para liberar.</li>
+</ul>
+<p>Si alguno de los tres compromisos no es asumible en el contexto del proyecto, conviene posponer la adopción hasta que lo sea.</p>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 3 — RIESGO BASADO EN NEGOCIO
+───────────────────────────────────────────── -->
+<h2><span class="num">3</span>Riesgo basado en negocio</h2>
+
+<p class="lead">Punto de partida del módulo. Sin clasificación de riesgo, la suite trata todos los tests como si fueran igual de importantes; eso resulta en suites grandes y caras que no protegen lo que importa.</p>
+
+<div class="framework-card">
+  <div class="framework-header">
+    <span class="framework-tag">Marco</span>
+    <span class="framework-title">Probability × Impact &rarr; score &rarr; prioridad</span>
+  </div>
+
+  <p>Cada riesgo se evalúa con dos escalas independientes de tres niveles cada una.</p>
+
+  <h4>3.1 Escala de probabilidad</h4>
+  <table>
+    <thead>
+      <tr><th style="width:12%">Nivel</th><th style="width:20%">Etiqueta</th><th style="width:68%">Cuándo aplica</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>1</strong></td><td>Improbable</td><td>Implementación estándar, baja incertidumbre, patrones conocidos.</td></tr>
+      <tr><td><strong>2</strong></td><td>Posible</td><td>Casos de borde o desconocidos parciales; patrón conocido pero con variantes.</td></tr>
+      <tr><td><strong>3</strong></td><td>Probable</td><td>Problemas conocidos, integraciones nuevas, alta ambigüedad de requisitos.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>3.2 Escala de impacto</h4>
+  <table>
+    <thead>
+      <tr><th style="width:12%">Nivel</th><th style="width:20%">Etiqueta</th><th style="width:68%">Qué causa si ocurre</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>1</strong></td><td>Menor</td><td>Problema cosmético o con workaround sencillo del usuario.</td></tr>
+      <tr><td><strong>2</strong></td><td>Degradado</td><td>Pérdida parcial de funcionalidad o requiere workaround manual.</td></tr>
+      <tr><td><strong>3</strong></td><td>Crítico</td><td>Bloqueo total; exposición de datos, seguridad o cumplimiento.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>3.3 Score y prioridad</h4>
+  <p>El score es <em>probabilidad &times; impacto</em>, va de 1 a 9. La prioridad se deriva del score.</p>
+
+  <table class="risk-matrix bordered">
+    <thead>
+      <tr>
+        <th class="axis" colspan="2" rowspan="2"></th>
+        <th class="label-h" colspan="3">Impacto</th>
+      </tr>
+      <tr>
+        <th class="label-h">1 &mdash; Menor</th>
+        <th class="label-h">2 &mdash; Degradado</th>
+        <th class="label-h">3 &mdash; Crítico</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label-v" rowspan="3"><strong>Probabilidad</strong></td>
+        <td class="label-v">3 Probable</td>
+        <td class="score s3">3<span class="pri">P3</span></td>
+        <td class="score s6">6<span class="pri">P1</span></td>
+        <td class="score s9">9<span class="pri">P0</span></td>
+      </tr>
+      <tr>
+        <td class="label-v">2 Posible</td>
+        <td class="score s2">2<span class="pri">P3</span></td>
+        <td class="score s4">4<span class="pri">P2</span></td>
+        <td class="score s6">6<span class="pri">P1</span></td>
+      </tr>
+      <tr>
+        <td class="label-v">1 Improbable</td>
+        <td class="score s1">1<span class="pri">P3</span></td>
+        <td class="score s2">2<span class="pri">P3</span></td>
+        <td class="score s3">3<span class="pri">P3</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Cada celda mapea a una prioridad y a una acción esperada:</p>
+
+  <table>
+    <thead>
+      <tr><th>Score</th><th>Prioridad</th><th>Acción</th><th>Efecto en gate</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>9</td><td><span class="plevel p0">P0</span> Critical Must Test</td><td>Bloquear release si falla.</td><td>FAIL automático.</td></tr>
+      <tr><td>6&ndash;8</td><td><span class="plevel p1">P1</span> High Should Test</td><td>Mitigar antes del release.</td><td>CONCERNS.</td></tr>
+      <tr><td>4&ndash;5</td><td><span class="plevel p2">P2</span> Medium Nice to Test</td><td>Monitorizar.</td><td>Sin efecto en gate.</td></tr>
+      <tr><td>1&ndash;3</td><td><span class="plevel p3">P3</span> Low Test if Time Permits</td><td>Documentar y diferir.</td><td>Sin efecto en gate.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>3.4 Targets de cobertura por prioridad</h4>
+  <table>
+    <thead>
+      <tr><th style="width:14%">Prioridad</th><th>Unit</th><th>Integration</th><th>End&#8209;to&#8209;end</th><th>Tipo de tests</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="plevel p0">P0</span></td><td>&gt; 90&nbsp;%</td><td>&gt; 80&nbsp;%</td><td>todos los caminos críticos</td><td>happy + unhappy + edge + perf bajo carga</td></tr>
+      <tr><td><span class="plevel p1">P1</span></td><td>&gt; 80&nbsp;%</td><td>&gt; 60&nbsp;%</td><td>main happy paths</td><td>happy primarios + errores clave + edge críticos</td></tr>
+      <tr><td><span class="plevel p2">P2</span></td><td>&gt; 60&nbsp;%</td><td>&gt; 40&nbsp;%</td><td>smoke tests</td><td>happy path + error básico</td></tr>
+      <tr><td><span class="plevel p3">P3</span></td><td>&mdash;</td><td>&mdash;</td><td>smoke opcional</td><td>aceptable manual; documentar limitaciones</td></tr>
+    </tbody>
+  </table>
+
+  <h4>3.5 Ajustes que suben o bajan la prioridad</h4>
+  <ul>
+    <li><strong>Sube:</strong> &gt; 50&nbsp;% de usuarios afectados, &gt; 10 K&euro; de pérdida potencial, riesgo de seguridad o cumplimiento, regresiones de bugs reportados, &gt; 500 LOC, dependencias múltiples.</li>
+    <li><strong>Baja:</strong> feature flag con rollout gradual, observabilidad fuerte, rollback fácil, baja frecuencia de uso real.</li>
+  </ul>
+</div>
+
+<div class="callout caution">
+  <span class="head">Error frecuente</span>
+  Confundir <em>cobertura</em> con <em>calidad</em>. Un proyecto puede tener 95&nbsp;% de cobertura y dejar P0 críticos sin testear si la cobertura no se mide por riesgo. La pregunta correcta no es "¿qué porcentaje cubren los tests?" sino "¿qué P0 quedan sin cubrir?".
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 4 — NIVELES DE TEST
+───────────────────────────────────────────── -->
+<h2><span class="num">4</span>Niveles de test y cuándo elegir cada uno</h2>
+
+<p class="lead">Cada comportamiento debe probarse en el nivel más barato que lo cubra. La pirámide es el modelo: muchos tests rápidos abajo, pocos lentos y caros arriba.</p>
+
+<div class="framework-card">
+  <div class="framework-header">
+    <span class="framework-tag">Marco</span>
+    <span class="framework-title">Pirámide de niveles de test</span>
+  </div>
+
+  <div class="pyramid">
+    <div class="row e2e">End&#8209;to&#8209;end &middot; lento, caro <span class="desc">caminos críticos cara al usuario, multi&#8209;sistema, compliance</span></div>
+    <div class="row api">API &middot; medio <span class="desc">endpoints sin UI: request/response, status, persistencia</span></div>
+    <div class="row integ">Integración &middot; medio <span class="desc">DB, contratos servicio, middleware, fronteras entre componentes</span></div>
+    <div class="row comp">Componente &middot; rápido <span class="desc">UI aislada con props + interacciones + estados visuales</span></div>
+    <div class="row unit">Unitario &middot; muy rápido (ms) <span class="desc">funciones puras, sin dependencias externas, lógica de negocio aislada</span></div>
+  </div>
+
+  <h4>4.1 Cuándo elegir cada nivel</h4>
+  <table>
+    <thead>
+      <tr><th style="width:18%">Favorece</th><th>Cuando&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Unit</strong></td><td>la lógica es aislable, no hay efectos secundarios, se necesita feedback rápido, la complejidad ciclomática es alta.</td></tr>
+      <tr><td><strong>Componente / Integración</strong></td><td>se cruzan fronteras (persistencia, contratos, middleware) o la interacción entre piezas es lo que se quiere validar.</td></tr>
+      <tr><td><strong>API</strong></td><td>hay un endpoint público o interno y se quiere validar contrato y persistencia sin UI.</td></tr>
+      <tr><td><strong>End&#8209;to&#8209;end</strong></td><td>el camino atraviesa varios sistemas, es crítico para el usuario o impone compliance regulatorio o regresión visual.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>4.2 Salvaguarda contra cobertura duplicada</h4>
+  <p>Antes de añadir un test nuevo, comprobar tres preguntas. Si alguna se contesta "sí", reconsiderar el nivel:</p>
+  <ol>
+    <li>¿Está ya cubierto a un nivel inferior?</li>
+    <li>¿Puede un unitario cubrir esto en lugar de un test de integración?</li>
+    <li>¿Puede un test de integración cubrirlo en lugar de un end&#8209;to&#8209;end?</li>
+  </ol>
+
+  <h4>4.3 Reglas API&#8209;first para tests end&#8209;to&#8209;end</h4>
+  <ul>
+    <li><strong>Setup vía API, aserciones vía UI.</strong> El setup por API es 10&ndash;50 veces más rápido que por UI.</li>
+    <li><strong>Network&#8209;first interception</strong> antes de la acción del usuario, para evitar carreras.</li>
+    <li><strong>Saltar flujos innecesarios</strong> con la API: verificación por email, signups multi&#8209;paso, semillas de datos.</li>
+    <li><strong>Antipatrón</strong>: validar lógica de negocio en end&#8209;to&#8209;end. Mover la validación a unit y dejar el end&#8209;to&#8209;end para el camino completo.</li>
+  </ul>
+
+  <h4>4.4 Identificador de test</h4>
+  <p>Formato canónico: <code>{EPIC}.{STORY}-{LEVEL}-{SEQ}</code>. Ejemplos: <code>1.3-UNIT-001</code>, <code>1.3-INT-002</code>, <code>1.3-E2E-001</code>. Permite trazar de qué historia y nivel viene cada test.</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 5 — DEFINITION OF DONE DE CALIDAD
+───────────────────────────────────────────── -->
+<h2><span class="num">5</span>Definition of Done de calidad de tests</h2>
+
+<p class="lead">Ocho criterios concretos que un test debe cumplir para considerarse "hecho". Tests que no los cumplen son deuda, no activo: degradan la suite y el equipo aprende a ignorar sus fallos.</p>
+
+<div class="framework-card">
+  <div class="framework-header">
+    <span class="framework-tag">Marco</span>
+    <span class="framework-title">Los 8 criterios &mdash; con ejemplo en cada uno</span>
+  </div>
+
+  <h4>1. Sin esperas duras</h4>
+  <p>Usar <code>waitForResponse</code>, <code>waitForLoadState</code> o estado del elemento. Nunca <code>waitForTimeout</code>.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>await page.waitForTimeout(3000);</div>
+    <div class="col good"><span class="label">Hacer</span>await page.waitForResponse('**/api/dashboard');</div>
+  </div>
+
+  <h4>2. Sin condicionales</h4>
+  <p>El test ejecuta el mismo camino siempre. No <code>if/else</code> ni <code>try/catch</code> para control de flujo.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>if (banner.isVisible()) banner.dismiss();</div>
+    <div class="col good"><span class="label">Hacer</span>setup({ hasSeenWelcome: true });</div>
+  </div>
+
+  <h4>3. Menos de 300 líneas</h4>
+  <p>Si el test crece, dividir en escenarios focalizados y extraer setup a fixtures.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>// 1 test de 400 líneas:
+// signup + create product + permissions + notifs</div>
+    <div class="col good"><span class="label">Hacer</span>// 3 tests de ~60 líneas
+// con fixture adminPage compartido</div>
+  </div>
+
+  <h4>4. Menos de 1 minuto y medio</h4>
+  <p>Optimizar con setup por API, operaciones en paralelo y autenticación compartida.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>// signup vía UI + product vía UI
+// total: 4 minutos</div>
+    <div class="col good"><span class="label">Hacer</span>await Promise.all([
+  apiRequest.post('/users'),
+  apiRequest.post('/products'),
+]);
+// total: 45 segundos con storageState</div>
+  </div>
+
+  <h4>5. Auto&#8209;limpieza</h4>
+  <p>Fixtures con cleanup automático tras <code>use()</code> o <code>afterEach()</code> explícito.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>// email "newuser@example.com"
+// hardcoded sin cleanup</div>
+    <div class="col good"><span class="label">Hacer</span>const email = faker.internet.email();
+createdUsers.push(email);
+// teardown borra el array entero</div>
+  </div>
+
+  <h4>6. Aserciones explícitas</h4>
+  <p>Las llamadas a <code>expect()</code> son visibles en el cuerpo del test, no escondidas en helpers.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>validateUserCreation(response, email);
+// las aserciones quedan ocultas</div>
+    <div class="col good"><span class="label">Hacer</span>expect(response.status()).toBe(201);
+expect(user.email).toBe(email);</div>
+  </div>
+
+  <h4>7. Datos únicos</h4>
+  <p>Usar <code>faker</code> para datos dinámicos. Nunca hard&#8209;codear IDs ni emails.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>const id = Math.random();
+const email = "test@example.com";</div>
+    <div class="col good"><span class="label">Hacer</span>const id = faker.string.uuid();
+const email = faker.internet.email();</div>
+  </div>
+
+  <h4>8. Seguro en paralelo</h4>
+  <p>Los tests no comparten estado y se ejecutan correctamente con <code>--workers=4</code>.</p>
+  <div class="snippet-pair">
+    <div class="col bad"><span class="label">Evitar</span>// test depende del orden:
+// si test_A no corre antes,
+// test_B falla</div>
+    <div class="col good"><span class="label">Hacer</span>// cada test crea/limpia
+// sus propios datos
+// con IDs únicos</div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 6 — DECISIÓN DE GATE
+───────────────────────────────────────────── -->
+<h2><span class="num">6</span>Decisión de gate</h2>
+
+<p class="lead">Antes de cada release, hito o cierre de épica, se firma una decisión. Cuatro estados posibles, cada uno con criterios concretos.</p>
+
+<div class="framework-card">
+  <div class="framework-header">
+    <span class="framework-tag">Marco</span>
+    <span class="framework-title">PASS / CONCERNS / WAIVED / FAIL</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:14%">Decisión</th>
+        <th style="width:36%">Criterios</th>
+        <th style="width:50%">Qué implica para el release</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color: var(--tip);">PASS</strong></td>
+        <td>Todos los tests verdes &middot; cobertura por prioridad cumplida &middot; sin hallazgos altos.</td>
+        <td>Release autorizado sin condiciones.</td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--caution);">CONCERNS</strong></td>
+        <td>Hallazgos de severidad media o ejes NFR<span class="footnote"><strong>NFR:</strong> <em>Non-Functional Requirement</em>. Requisito sobre cómo de bien debe comportarse el sistema (rendimiento, seguridad, fiabilidad, escalabilidad), en contraposición a los requisitos funcionales que describen qué debe hacer.</span> que no cumplen umbral pero ninguno es bloqueante absoluto.</td>
+        <td>Release autorizado con riesgo documentado. Producto firma con conocimiento.</td>
+      </tr>
+      <tr>
+        <td><strong style="color: #6C2E91;">WAIVED</strong></td>
+        <td>Existen huecos significativos pero el negocio acepta el riesgo con justificación escrita.</td>
+        <td>Release autorizado con ticket de deuda obligatorio (owner + deadline). Revisar la decisión en el siguiente cierre.</td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--important);">FAIL</strong></td>
+        <td>P0 sin cobertura &middot; tests rojos &middot; eje NFR rompe compromiso contractual (SLA<span class="footnote"><strong>SLA:</strong> <em>Service Level Agreement</em>. Acuerdo formal entre el proveedor de un servicio y sus usuarios sobre el nivel de calidad esperado (disponibilidad, latencia, etc.). El SLO interno debe ser más estricto que el SLA público.</span> publicado, requisito regulatorio).</td>
+        <td>Release bloqueado. Resolver y volver a evaluar.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>6.1 Severidad de hallazgos</h4>
+  <p>El triage durante <code>/bmad-code-review</code> y <code>/bmad-testarch-test-review</code> clasifica cada hallazgo en una de tres severidades:</p>
+  <ul>
+    <li><strong>Alta:</strong> bloquea o degrada un P0; produce FAIL si no se resuelve.</li>
+    <li><strong>Media:</strong> afecta a P1 o introduce deuda visible; produce CONCERNS.</li>
+    <li><strong>Baja:</strong> mejora opcional, no afecta a la decisión.</li>
+  </ul>
+
+  <h4>6.2 Default ante ambigüedad</h4>
+  <div class="callout caution">
+    <span class="head">Cuando no está claro</span>
+    Si los datos no permiten decidir entre PASS y CONCERNS, la decisión por defecto es <strong>CONCERNS</strong>. Forzar al equipo a clarificar antes de firmar baja drásticamente el riesgo de releases con problemas no detectados.
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 7 — TRACEABILITY VIVA
+───────────────────────────────────────────── -->
+<h2><span class="num">7</span>Traceability viva</h2>
+
+<p class="lead">La trazabilidad entre requisitos y tests no es un documento que se rellena al final. Es un mapa que crece historia a historia y permite responder dos preguntas: ¿qué requisito cubre este test? y ¿qué tests cubren este requisito?</p>
+
+<div class="framework-card">
+  <div class="framework-header">
+    <span class="framework-tag">Marco</span>
+    <span class="framework-title">Mantenimiento incremental, no retroactivo</span>
+  </div>
+
+  <h4>7.1 La regla</h4>
+  <p>Cada vez que <code>/bmad-testarch-atdd</code> genera tests, los ata al requisito funcional o al criterio de aceptación correspondiente. Cada test nuevo entra a la matriz inmediatamente.</p>
+
+  <h4>7.2 Por qué importa</h4>
+  <p>Si la matriz se construye al cierre de la épica (en lugar de mantenerse historia a historia), el ejercicio se vuelve arqueología: alguien intenta reconstruir qué test cubre qué requisito a partir del nombre del archivo, y se generan huecos invisibles. La matriz "viva" evita esto:</p>
+  <ul>
+    <li>El gate al cierre de épica solo confirma; no construye.</li>
+    <li>Los huecos de cobertura se ven en cuanto aparecen, no semanas después.</li>
+    <li>Cuando un requisito cambia, se sabe qué tests revisar.</li>
+  </ul>
+
+  <h4>7.3 Cómo se mantiene</h4>
+  <p>La skill <code>/bmad-testarch-atdd</code> escribe en el archivo de la historia una sub&#8209;sección con la lista de tests generados y su mapping a criterios de aceptación. Al cierre de la épica, <code>/bmad-testarch-trace</code> agrega esos mappings en la matriz definitiva, detecta huecos y emite la decisión de gate.</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     PARTE B — SKILLS
+═════════════════════════════════════════════ -->
+<div class="part-header">
+  <span class="tag">Parte B</span>
+  <span class="title">Las skills TEA en uso</span>
+  <p class="subtitle">Mapa rápido y nueve fichas detalladas. Cada ficha cita los marcos de la Parte A en lugar de redefinirlos. Para el conteo exacto de sub&#8209;pasos y modos CEV, ver el Libro 4 Sec. 2.</p>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 8 — MAPA DE LAS SKILLS
+───────────────────────────────────────────── -->
+<h2><span class="num">8</span>Mapa de las skills TEA</h2>
+
+<h3><span class="num">8.1</span>Las nueve skills de un vistazo</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:24%">Skill</th>
+      <th style="width:14%">Cuándo</th>
+      <th style="width:14%">Obligatoriedad</th>
+      <th style="width:48%">Aplica los marcos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-teach-me-testing</code></td><td>Pre&#8209;adopción</td><td><span class="req-badge opc">OPC</span></td><td>Vocabulario base de Sec. 3, Sec. 4 y Sec. 5.</td></tr>
+    <tr><td><code>/bmad-testarch-test-design</code></td><td>Fase 3</td><td><span class="req-badge req-tea">REQ TEA</span></td><td>Aplica Sec. 3 (riesgo) + Sec. 4 (niveles) + Sec. 7 (traceability).</td></tr>
+    <tr><td><code>/bmad-testarch-framework</code></td><td>Fase 3</td><td><span class="req-badge req-tea">REQ TEA</span></td><td>Infraestructura; respeta Sec. 5 (DoD) en sus plantillas.</td></tr>
+    <tr><td><code>/bmad-testarch-ci</code></td><td>Fase 3</td><td><span class="req-badge req-tea">REQ TEA</span></td><td>Aplica Sec. 5 (DoD) y burn&#8209;in para detectar inestabilidad.</td></tr>
+    <tr><td><code>/bmad-testarch-atdd</code></td><td>Fase 4 ciclo</td><td><span class="req-badge req-tea">REQ TEA</span></td><td>Aplica Sec. 3 + Sec. 4 + Sec. 5 + Sec. 7.</td></tr>
+    <tr><td><code>/bmad-testarch-automate</code></td><td>Fase 4 ciclo</td><td><span class="req-badge rec">REC</span></td><td>Aplica Sec. 4 + Sec. 5.</td></tr>
+    <tr><td><code>/bmad-testarch-test-review</code></td><td>Fase 4 cierre</td><td><span class="req-badge opc">OPC</span></td><td>Aplica Sec. 5 + Sec. 6.</td></tr>
+    <tr><td><code>/bmad-testarch-trace</code></td><td>Fase 4 cierre</td><td><span class="req-badge opc">OPC</span></td><td>Aplica Sec. 6 + Sec. 7.</td></tr>
+    <tr><td><code>/bmad-testarch-nfr</code></td><td>Fase 2 + 4</td><td><span class="req-badge rec">REC</span></td><td>Tres modos &mdash; setup, check, gate &mdash; aplica Sec. 6.</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="num">8.2</span>Regla bloqueante de orden</h3>
+
+<div class="callout important">
+  <span class="head">Dependencias estrictas, no negocian</span>
+  El bloque de arranque tiene un orden fijo: <code>test-design</code> &rarr; <code>framework</code> &rarr; <code>ci</code>. Y dentro del ciclo: <code>framework</code> instalado antes de <code>atdd</code>; <code>atdd</code> antes de <code>dev-story</code>. Saltarse cualquier dependencia genera un fallo silencioso: la skill posterior se ejecuta pero produce salida no útil.
+</div>
+
+<p>Modos uniformes en todas las skills <code>testarch&#8209;*</code>: <strong>Create</strong> (genera el artefacto), <strong>Edit</strong> (modifica el existente), <strong>Validate</strong> (audita sin tocarlo). Detalle en el Libro 4 Sec. 0.2.</p>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 9 — S0 TEACH ME TESTING (BREVE)
+───────────────────────────────────────────── -->
+<h2><span class="num">9</span><code>/bmad-teach-me-testing</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">01</span>
+    <code class="card-cmd">/bmad-teach-me-testing</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Pre&#8209;adopción</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Forma al equipo en disciplina de testing antes de adoptar TEA, con un programa autodirigido y reanudable.
+  </div>
+  <p>Programa de siete sesiones académicas (2&ndash;4 h cada una) con persistencia de progreso. Pensado para equipos sin disciplina previa de testing. Proporciona el vocabulario común que usan Sec. 3, Sec. 4 y Sec. 5.</p>
+  <p style="font-size: 10px; color: var(--ink-mute);">Ficha completa en el <strong>Libro 4 (Catálogo de Skills) Sec. 2.0</strong>. La encajamos en el calendario LIDR como sesión preliminar S0 del Libro 3.</p>
+</article>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 10 — TEST DESIGN
+───────────────────────────────────────────── -->
+<h2><span class="num">10</span><code>/bmad-testarch-test-design</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">02</span>
+    <code class="card-cmd">/bmad-testarch-test-design</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Plan de testing basado en riesgo con clasificación P0&ndash;P3, criterios de entrada y salida y orden de ejecución.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Marcos que aplica</h5>
+      <ul>
+        <li>Sec. 3 Probability&times;Impact &rarr; prioridades P0&ndash;P3.</li>
+        <li>Sec. 4 Niveles &rarr; nivel correcto por requisito.</li>
+        <li>Sec. 7 Traceability &rarr; bootstrap de la matriz.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Auto&#8209;detecta el modo</h5>
+      <ul>
+        <li><em>system&#8209;level</em>: Fase 3, valida testabilidad arquitectónica.</li>
+        <li><em>epic&#8209;level</em>: Fase 4, plan por épica.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Salida</h5>
+      Plan de testing y matriz de riesgos. Plantillas: system, epic, qa, handoff y architecture.
+    </div>
+    <div class="card-block">
+      <h5>Gate de testabilidad post&#8209;arquitectura</h5>
+      Antes de empezar, aplicar el ADR Quality Readiness Checklist (Sec. 24.4): 29 criterios en 8 categorías.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 11 — TEST FRAMEWORK
+───────────────────────────────────────────── -->
+<h2><span class="num">11</span><code>/bmad-testarch-framework</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">03</span>
+    <code class="card-cmd">/bmad-testarch-framework</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Andamiaje del framework de tests listo para producción con fixtures, helpers y configuración alineados al Definition of Done.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Soporta</h5>
+      Playwright o Cypress según preferencia. Configurable por tamaño de proyecto y uso de TypeScript.
+    </div>
+    <div class="card-block">
+      <h5>Lo que deja listo</h5>
+      <code>playwright.config.ts</code> o <code>cypress.config.ts</code>; fixtures, helpers, page objects, scripts y README de setup.
+    </div>
+    <div class="card-block">
+      <h5>Marcos que aplica</h5>
+      Sec. 5 (DoD) en sus plantillas: tests por defecto cumplen ya los ocho criterios.
+    </div>
+    <div class="card-block">
+      <h5>Dependencia bloqueante</h5>
+      Debe quedar instalado antes del primer ATDD. Sin framework, ATDD genera pseudocódigo no ejecutable.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 12 — CI SETUP
+───────────────────────────────────────────── -->
+<h2><span class="num">12</span><code>/bmad-testarch-ci</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">04</span>
+    <code class="card-cmd">/bmad-testarch-ci</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 3</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Pipeline de integración continua multi&#8209;plataforma con ejecución de tests, ciclos de burn&#8209;in para detectar tests inestables, sharding paralelo, recolección de artefactos y notificaciones.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Plataformas soportadas</h5>
+      GitHub Actions, GitLab CI, Azure Pipelines, Jenkins, Harness.
+    </div>
+    <div class="card-block">
+      <h5>Burn&#8209;in</h5>
+      Corre los tests cambiados N veces (típico 10) para detectar inestabilidad antes del merge. 10/10 estable; cualquier fallo bloquea el merge.
+    </div>
+    <div class="card-block">
+      <h5>Marcos que aplica</h5>
+      Sec. 5 (DoD) &mdash; los tests inestables fallan burn&#8209;in y no llegan a main.
+    </div>
+    <div class="card-block">
+      <h5>Dependencia bloqueante</h5>
+      Pipeline debe estar configurada antes del primer merge en Fase 4.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 13 — ATDD
+───────────────────────────────────────────── -->
+<h2><span class="num">13</span><code>/bmad-testarch-atdd</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">05</span>
+    <code class="card-cmd">/bmad-testarch-atdd</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge req-tea">REQ TEA</span>
+    <span class="card-phase">Fase 4 &middot; ciclo</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Genera tests de aceptación que fallan (fase roja) antes de la implementación, en el nivel correcto, atados al requisito que cubren.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Marcos que aplica</h5>
+      <ul>
+        <li>Sec. 3 prioriza el riesgo del requisito.</li>
+        <li>Sec. 4 elige nivel correcto (E2E, API, componente).</li>
+        <li>Sec. 5 los tests cumplen DoD desde el nacimiento.</li>
+        <li>Sec. 7 traceability &mdash; cada test ata al criterio de aceptación.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Sub&#8209;agentes paralelos</h5>
+      Genera tests por nivel en paralelo (API, E2E) usando sub&#8209;agentes especializados.
+    </div>
+    <div class="card-block">
+      <h5>Salida</h5>
+      Tests fallidos en niveles apropiados + fixtures y helpers + checklist de implementación + mapping criterio&harr;test.
+    </div>
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      Tras <code>/bmad-create-story</code>, antes de <code>/bmad-dev-story</code>. Punto de entrada al ciclo TDD<span class="footnote"><strong>TDD:</strong> <em>Test&#8209;Driven Development</em>. Disciplina de desarrollo en la que los tests se escriben antes que el código de producción. ATDD es la variante en la que los tests se derivan de los criterios de aceptación de la historia.</span>.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 14 — TEST AUTOMATION
+───────────────────────────────────────────── -->
+<h2><span class="num">14</span><code>/bmad-testarch-automate</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">06</span>
+    <code class="card-cmd">/bmad-testarch-automate</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge rec">REC</span>
+    <span class="card-phase">Fase 4 &middot; ciclo</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Expansión de la cobertura tras la implementación: genera tests adicionales priorizados a nivel unit, componente, API y end&#8209;to&#8209;end.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Marcos que aplica</h5>
+      <ul>
+        <li>Sec. 4 niveles &mdash; cubre lo que ATDD no cubrió en el nivel adecuado.</li>
+        <li>Sec. 5 DoD &mdash; cada test nuevo cumple los ocho criterios.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Dos modos</h5>
+      <ul>
+        <li><em>BMad&#8209;Integrated</em>: usa historia, PRD y test design.</li>
+        <li><em>Standalone</em>: analiza el código existente sin artefactos BMad &mdash; útil en proyectos brownfield.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Salida</h5>
+      Tests por nivel + reporte de cobertura (actual contra objetivo) + cola de implementación con prioridades.
+    </div>
+    <div class="card-block">
+      <h5>Antipatrón</h5>
+      Sustituir esta skill por code review humano. Ambas se complementan: code review captura defectos, automate añade red.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 15 — TEST REVIEW
+───────────────────────────────────────────── -->
+<h2><span class="num">15</span><code>/bmad-testarch-test-review</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">07</span>
+    <code class="card-cmd">/bmad-testarch-test-review</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 4 &middot; cierre</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Auditoría de calidad del conjunto de tests con puntuación 0&ndash;100 y hallazgos accionables por dimensión.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Dimensiones evaluadas</h5>
+      <ul>
+        <li>Determinismo (¿pasa siempre 10/10?).</li>
+        <li>Aislamiento (¿depende de orden o estado compartido?).</li>
+        <li>Mantenibilidad (¿es legible y refactorizable?).</li>
+        <li>Rendimiento (¿corre en menos del umbral?).</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Marcos que aplica</h5>
+      Sec. 5 (cada hallazgo cita qué criterio del DoD se incumple) y Sec. 6 (alimenta la decisión de gate).
+    </div>
+    <div class="card-block">
+      <h5>Salida</h5>
+      Reporte con puntuación 0&ndash;100, hallazgos por dimensión y severidad, lista priorizada de tests a refactorizar o eliminar.
+    </div>
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      Cierre de épica (paso 1), pre&#8209;release, auditoría trimestral, sospecha de inestabilidad.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 16 — TRACE
+───────────────────────────────────────────── -->
+<h2><span class="num">16</span><code>/bmad-testarch-trace</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">08</span>
+    <code class="card-cmd">/bmad-testarch-trace</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge opc">OPC</span>
+    <span class="card-phase">Fase 4 &middot; cierre</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Matriz de trazabilidad requisitos&harr;tests, análisis de huecos y decisión opcional de gate de calidad basada en evidencia. Salida go/no&#8209;go.
+  </div>
+  <div class="card-grid">
+    <div class="card-block">
+      <h5>Marcos que aplica</h5>
+      <ul>
+        <li>Sec. 7 traceability &mdash; agrega lo que ATDD viene escribiendo historia a historia.</li>
+        <li>Sec. 6 gate decision &mdash; emite PASS / CONCERNS / WAIVED / FAIL.</li>
+      </ul>
+    </div>
+    <div class="card-block">
+      <h5>Cuándo invocarla</h5>
+      Cierre de épica (paso 2, después del test review), pre&#8209;release, auditoría regulatoria.
+    </div>
+    <div class="card-block">
+      <h5>Salida</h5>
+      Matriz de trazabilidad + reporte de cobertura + decisión de gate firmada.
+    </div>
+    <div class="card-block">
+      <h5>Recomendación de orden</h5>
+      Ejecutar siempre tras <code>/bmad-testarch-test-review</code>. La puntuación de calidad alimenta la decisión de gate.
+    </div>
+  </div>
+</article>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 17 — NFR
+───────────────────────────────────────────── -->
+<h2><span class="num">17</span><code>/bmad-testarch-nfr</code></h2>
+
+<article class="skill-card">
+  <header class="card-header">
+    <span class="card-num">09</span>
+    <code class="card-cmd">/bmad-testarch-nfr</code>
+    <span class="mod tea"></span><span class="card-mod">Test Architect</span>
+    <span class="req-badge rec">REC</span>
+    <span class="card-phase">Fase 2 &amp; 4</span>
+  </header>
+  <div class="card-resolves">
+    <span class="label">Resuelve:</span>
+    Evalúa los requisitos no funcionales con validación basada en evidencia y desenlace determinista &mdash; sin sensaciones, sin "el sistema debe ser rápido".
+  </div>
+
+  <div class="lidr-mark vision">
+    <span class="lidr-badge vision">Visión LIDR</span>
+    En el método, NFR es una sola skill con tres modos. Nosotros la pensamos como tres momentos del proyecto: <em>setup</em> en Fase 2 para fijar umbrales, <em>check</em> a mitad del ciclo para detectar deriva, <em>gate</em> antes del release como decisión final. Cada momento responde una pregunta distinta.
+  </div>
+
+  <h4>17.1 Los cuatro ejes y umbrales típicos</h4>
+  <table>
+    <thead>
+      <tr><th style="width:18%">Eje</th><th style="width:32%">Qué evalúa</th><th style="width:50%">Umbrales típicos</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Seguridad</strong></td>
+        <td>Autenticación, autorización (RBAC), token expiry, secret handling, OWASP Top 10.</td>
+        <td>JWT expira en 15 min &middot; passwords nunca en logs ni DOM ni consola &middot; SQL injection bloqueada (no crash) &middot; XSS sanitizado &middot; RBAC retorna 403, no 200.</td>
+      </tr>
+      <tr>
+        <td><strong>Rendimiento</strong></td>
+        <td>SLO<span class="footnote"><strong>SLO:</strong> <em>Service Level Objective</em>. Objetivo cuantificable de calidad de servicio que el equipo se compromete a cumplir &mdash; por ejemplo, "el 99,9 % de las peticiones responde en menos de 200 ms".</span> y SLA validados con load, stress, spike y soak tests. Playwright solo para perceived performance (Core Web Vitals).</td>
+        <td>P95<span class="footnote"><strong>P95:</strong> percentil 95 de latencia. Significa que el 95 % de las peticiones responden en un tiempo igual o inferior al valor declarado.</span> de petición HTTP &lt; 500 ms &middot; P99 de API &lt; 1000 ms &middot; tasa de error &lt; 1 % &middot; soporta ramp 1 m hasta 50 RPS<span class="footnote"><strong>RPS:</strong> <em>requests per second</em>. Métrica de carga que indica cuántas peticiones por segundo soporta un sistema.</span> + sustain 3 m + spike 1 m hasta 100 + ramp down 1 m.</td>
+      </tr>
+      <tr>
+        <td><strong>Fiabilidad</strong></td>
+        <td>Manejo de errores, retries, health checks, circuit breakers, offline, rate limiting.</td>
+        <td>Error 500 &rarr; mensaje friendly + botón retry (no blanco ni stack trace) &middot; 3 reintentos en 503 transitorio &middot; circuit breaker abre tras 5 fallos consecutivos &middot; <code>/api/health</code> retorna 200 con DB, cache y queue UP &middot; 429 respeta <code>Retry-After</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Mantenibilidad</strong></td>
+        <td>Calidad de código medida en herramientas de CI &mdash; no se valida con Playwright.</td>
+        <td>Cobertura &ge; 80 % &middot; duplicación &lt; 5 % (jscpd) &middot; cero vulnerabilidades critical o high (npm audit) &middot; logging estructurado con trace IDs (<code>X&#8209;Trace&#8209;Id</code>) &middot; error tracking activo &middot; header <code>Server&#8209;Timing</code> con <code>db</code> y <code>total</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>17.2 Los tres modos en uso</h4>
+  <table>
+    <thead>
+      <tr><th style="width:14%">Modo</th><th style="width:24%">Cuándo</th><th style="width:62%">Salida</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Setup</strong></td>
+        <td>Fase 2 &mdash; tras PRD.</td>
+        <td>Umbrales numéricos por eje, persistidos en el PRD. Sin esto, gate no tiene contra qué validar.</td>
+      </tr>
+      <tr>
+        <td><strong>Check</strong></td>
+        <td>Mid&#8209;ciclo &mdash; tras cambios de infraestructura, dependencias o arquitectura.</td>
+        <td>Reporte intermedio: ¿vamos camino de cumplir? Si no, qué desviación corregir.</td>
+      </tr>
+      <tr>
+        <td><strong>Gate</strong></td>
+        <td>Pre&#8209;release.</td>
+        <td>Firma final por eje y agregada: PASS, CONCERNS, WAIVED o FAIL. FAIL bloquea release.</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     PARTE C — ESCENARIOS
+═════════════════════════════════════════════ -->
+<div class="part-header">
+  <span class="tag">Parte C</span>
+  <span class="title">Escenarios cross&#8209;cutting</span>
+  <p class="subtitle">Cuatro patrones de uso reales que aparecen en proyectos en marcha. Cada uno aplica varios marcos y skills de las partes anteriores. Pensados como runbooks operativos: si te pasa lo descrito, abres la sección y sigues los pasos.</p>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 18 — HOTFIX
+───────────────────────────────────────────── -->
+<h2><span class="num">18</span>Hotfix &mdash; producción urgente</h2>
+
+<div class="scenario-card">
+  <div class="scenario-header">
+    <span class="scenario-tag">Escenario 1</span>
+    <span class="scenario-title">Incidente en producción que requiere fix inmediato</span>
+  </div>
+
+  <h4>Regla maestra</h4>
+  <p>Un hotfix no exime de la calidad: la reordena en el tiempo. La meta es minimizar el tiempo durante el cual el bug afecta a usuarios sin acumular deuda oculta.</p>
+
+  <h4>Lo que NO se puede saltar</h4>
+  <ul>
+    <li>Reproducción local con test rojo antes de tocar código de producción.</li>
+    <li>Fix mínimo. Solo lo necesario para que el test pase. Sin refactors "de paso".</li>
+    <li>Code review (un Tech Lead, sincrónico o verbal aceptable).</li>
+    <li>Smoke test en pre&#8209;producción.</li>
+    <li>Audit log: quién, cuándo, por qué.</li>
+  </ul>
+
+  <h4>Lo que se puede diferir (con ticket obligatorio)</h4>
+  <ul>
+    <li>Tests adicionales y casos de borde &rarr; pull request separado en 48&ndash;72 h vía <code>/bmad-testarch-automate</code>.</li>
+    <li>ADR<span class="footnote"><strong>ADR:</strong> <em>Architecture Decision Record</em>. Documento corto que captura una decisión técnica (qué se eligió, qué se descartó y por qué), con sus trade-offs.</span> y documentación &rarr; siguiente sprint con ticket.</li>
+    <li>Retrospectiva del incidente &rarr; asíncrona en cinco días.</li>
+    <li>Actualización de Test Design si el bug reveló área no cubierta &rarr; al cierre de la siguiente épica.</li>
+  </ul>
+
+  <h4>Cronograma recomendado</h4>
+  <div class="timeline">
+    <div class="timeline-item"><span class="t">T+0</span> Incidente reportado.</div>
+    <div class="timeline-item"><span class="t">T+5 m</span> Confirmación en producción (ping a oncall o Tech Lead).</div>
+    <div class="timeline-item"><span class="t">T+15 m</span> Test rojo que reproduce el bug, en local.</div>
+    <div class="timeline-item"><span class="t">T+30 m</span> Fix mínimo, test pasa local.</div>
+    <div class="timeline-item"><span class="t">T+45 m</span> PR de emergencia + code review (sincrónico si crítico).</div>
+    <div class="timeline-item"><span class="t">T+60 m</span> Merge + deploy a pre&#8209;producción + smoke.</div>
+    <div class="timeline-item"><span class="t">T+75 m</span> Deploy a producción + monitoreo activo.</div>
+    <div class="timeline-item"><span class="t">T+90 m</span> Incidente cerrado.</div>
+    <div class="timeline-item"><span class="t">T+24 h</span> PR de seguimiento con tests adicionales.</div>
+    <div class="timeline-item"><span class="t">T+48 h</span> Documentación o ADR si aplica.</div>
+    <div class="timeline-item"><span class="t">T+5 d</span> Retrospectiva del incidente.</div>
+  </div>
+
+  <div class="callout important">
+    <span class="head">Trampas comunes a evitar</span>
+    "Después escribimos el test" &mdash; nunca llega. "Aprovechamos para refactorizar" &mdash; el PR crece y deja de ser hotfix. "Saltamos code review por urgencia" &mdash; introduce regresiones en frío. "Es trivial, no necesita smoke" &mdash; cuando algo es trivial es justo cuando se rompe en producción.
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 19 — CUARENTENA FLAKY
+───────────────────────────────────────────── -->
+<h2><span class="num">19</span>Cuarentena de tests inestables</h2>
+
+<div class="scenario-card">
+  <div class="scenario-header">
+    <span class="scenario-tag">Escenario 2</span>
+    <span class="scenario-title">Tests que pasan unas veces sí y otras no</span>
+  </div>
+
+  <h4>Pasos operativos</h4>
+  <ol>
+    <li><strong>Confirmar la inestabilidad con burn&#8209;in.</strong> Correr el test 10 veces. 10/10 verdes = posible incidencia única. 1&ndash;4 fallos = inestable. 5 o más = roto.</li>
+    <li><strong>Clasificar por nivel.</strong> Determinístico (0/10), sospechoso (1/10), inestable (2&ndash;4/10), roto (&ge;5/10).</li>
+    <li><strong>Cuarentena técnica.</strong> Marcar con <code>test.skip</code>, <code>xit</code>, <code>pytest.mark.skip</code> o <code>@Disabled</code>. Nunca borrar sin ticket.</li>
+    <li><strong>Ticket obligatorio.</strong> Título "FLAKY: &lt;nombre del test&gt;", body con los últimos tres fallos, hipótesis, owner y deadline (cierre del sprint siguiente).</li>
+    <li><strong>Recalcular cobertura efectiva</strong> excluyendo el cuarentenado. La métrica no debe quedar inflada.</li>
+    <li><strong>Resolver o eliminar dentro del plazo.</strong> Al cierre del sprint el ticket se cierra de una manera u otra; no se prorroga.</li>
+  </ol>
+
+  <h4>Hipótesis más comunes y solución</h4>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Causa</th><th style="width:70%">Solución</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Race condition en operación asíncrona</td><td>Reemplazar <code>setTimeout</code> por <code>waitFor</code> o <code>expect.poll</code>: esperar la condición, no el tiempo.</td></tr>
+      <tr><td>Dependencia de orden de tests</td><td>Aislar estado: cada test crea y limpia sus datos, sin depender de tests previos.</td></tr>
+      <tr><td>Datos compartidos entre tests</td><td>Data factories con IDs únicos por test (<code>faker</code>).</td></tr>
+      <tr><td>Inestabilidad de red</td><td>Interceptar o mockear las llamadas en el límite correcto. Network&#8209;first.</td></tr>
+      <tr><td>Selectores frágiles</td><td><code>data&#8209;testid</code> o roles ARIA, no clases CSS ni xpath posicional.</td></tr>
+      <tr><td>Animaciones</td><td>Deshabilitar animaciones en el entorno de tests.</td></tr>
+      <tr><td>Fechas y zonas horarias</td><td>Fake timers con fecha fija para toda la suite.</td></tr>
+      <tr><td>Escrituras concurrentes en BD</td><td>Aislar BD por worker (uno por proceso paralelo).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 20 — AUDITORÍA BROWNFIELD
+───────────────────────────────────────────── -->
+<h2><span class="num">20</span>Auditoría de suite legacy (brownfield)</h2>
+
+<div class="scenario-card">
+  <div class="scenario-header">
+    <span class="scenario-tag">Escenario 3</span>
+    <span class="scenario-title">Equipo nuevo recibe un proyecto con tests existentes</span>
+  </div>
+
+  <p>Cuando se adopta TEA en un proyecto que ya tiene suite, lo primero no es invocar test&#8209;design ni framework: es auditar lo que hay. Cuatro etapas, en orden.</p>
+
+  <h4>Etapa 1 &mdash; Inventario (1&ndash;2 días)</h4>
+  <p>Produce: conteo y clasificación por nivel (detecta pirámide invertida); mapa de cobertura por módulo o dominio (no número global, áreas críticas con &lt;50&nbsp;% son P0); tiempo total de la suite (&gt;30 min sugiere pirámide invertida); conteo de tests <em>skipped</em> o <em>disabled</em> (cualquier <code>.skip</code> commiteado es deuda); línea base de inestabilidad (correr la suite cinco veces); línea base de NFR vía <code>/bmad-testarch-nfr</code> en modo check.</p>
+
+  <h4>Etapa 2 &mdash; Evaluación de calidad (2&ndash;3 días)</h4>
+  <p>Muestra de 20&ndash;30 tests por nivel evaluada contra el DoD (Sec. 5). Clasificar tests problemáticos:</p>
+  <ul>
+    <li><strong>Tautológicos</strong>: copia&#8209;pega de la implementación en las aserciones &rarr; reescribir o eliminar.</li>
+    <li><strong>Acoplados a implementación</strong>: rompen al refactorizar sin cambiar comportamiento &rarr; refactorizar a comportamiento observable.</li>
+    <li><strong>Sin aserciones</strong>: solo "no throw" &rarr; añadir aserciones o eliminar.</li>
+    <li><strong>Gigantes</strong> (&gt;100 líneas) &rarr; dividir en tests focalizados.</li>
+    <li><strong>Literales inline</strong>: mock data hardcodeado y duplicado &rarr; extraer a data factories.</li>
+  </ul>
+
+  <h4>Etapa 3 &mdash; Gaps contra Risk Matrix (1&ndash;2 días)</h4>
+  <p>Aplicar el marco Sec. 3 a cada épica del producto. Roadmap por área:</p>
+  <ul>
+    <li><span class="plevel p0">P0</span> con cobertura &lt;50&nbsp;% &rarr; sprint dedicado, <code>/bmad-qa-generate-e2e-tests</code> retroactivo, bloquear features hasta cerrar.</li>
+    <li><span class="plevel p0">P0</span> con 50&ndash;80&nbsp;% &rarr; cobertura incremental, target 90&nbsp;% en 2&ndash;3 sprints.</li>
+    <li><span class="plevel p1">P1</span> con &lt;50&nbsp;% &rarr; próximo sprint, no bloquea features.</li>
+    <li><span class="plevel p2">P2</span> y <span class="plevel p3">P3</span> sin cobertura &rarr; aceptable, smoke opcional.</li>
+  </ul>
+
+  <h4>Etapa 4 &mdash; Decisión de gate y roadmap (medio día)</h4>
+  <p>Aplicar Sec. 6 (Gate Decision). Salidas posibles:</p>
+  <ul>
+    <li><strong>PASS</strong> (raro): la suite cumple el DoD y cubre P0.</li>
+    <li><strong>CONCERNS</strong> (típico): sprints incrementales para cerrar huecos.</li>
+    <li><strong>WAIVED</strong>: huecos significativos pero el negocio acepta el riesgo. Roadmap 6&ndash;12 semanas, revisión cada dos sprints.</li>
+    <li><strong>FAIL</strong>: suite roto o pirámide invertida grave. Freeze de features + sprint de limpieza obligatorio.</li>
+  </ul>
+
+  <p>Output esperado: documento de 2&ndash;4 páginas con inventario + evaluación + gaps + decisión de gate + roadmap a 3&ndash;6 sprints.</p>
+
+  <div class="callout caution">
+    <span class="head">Error frecuente al adoptar TEA en brownfield</span>
+    Saltarse la auditoría y aplicar TEA "a partir de ahora". El flujo asume una línea base mínima de calidad; si la suite anterior tiene tests inestables y pirámide invertida, ATDD se ejecuta sobre suelo movedizo y produce más ruido que señal. Auditar primero, adoptar después.
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 21 — DIAGNÓSTICO RÁPIDO
+───────────────────────────────────────────── -->
+<h2><span class="num">21</span>Diagnóstico rápido &mdash; pitfalls comunes</h2>
+
+<div class="scenario-card">
+  <div class="scenario-header">
+    <span class="scenario-tag">Escenario 4</span>
+    <span class="scenario-title">Tres situaciones diagnósticas</span>
+  </div>
+
+  <h4>21.1 "El equipo adoptó TEA pero los tests nunca corren en CI"</h4>
+  <p><strong>Causa más probable:</strong> CI Setup quedó a medias &mdash; scaffolding sin wiring. El job de la pipeline se creó pero solo ejecuta install, sin step de tests.</p>
+  <p><strong>Acción:</strong> re&#8209;ejecutar <code>/bmad-testarch-ci</code>. Confirmar que la pipeline incluye install &rarr; lint &rarr; ejecución de tests &rarr; reporte. Verificar que el step de tests <em>falla</em> el job (sin <code>continue-on-error: true</code>).</p>
+
+  <h4>21.2 "ATDD genera tests que siempre pasan desde el inicio"</h4>
+  <p><strong>Causa más probable:</strong> el test no cubre comportamiento real. Aserciones vacuas (<code>expect(true).toBe(true)</code>), mocks que devuelven exactamente lo que el test verifica, o ausencia de fase roja del ciclo TDD.</p>
+  <p><strong>Acción:</strong> aplicar el DoD (Sec. 5). Si el test pasa antes de implementar el código, no verifica comportamiento &mdash; reescribir derivándolo del criterio de aceptación de la historia.</p>
+
+  <h4>21.3 "El gate NFR pre&#8209;release devuelve CONCERNS"</h4>
+  <p><strong>Causa más probable:</strong> uno o varios ejes (rendimiento, seguridad, fiabilidad, mantenibilidad) no cumple umbral, pero ninguno es bloqueante absoluto. CONCERNS = riesgo documentado, no compromiso roto.</p>
+  <p><strong>Tres acciones posibles:</strong></p>
+  <ul>
+    <li><strong>Fix antes del release</strong> si el eje es crítico para el caso de uso real (por ejemplo, P95 de latencia en checkout).</li>
+    <li><strong>Aceptar como WAIVED</strong> con justificación escrita y ticket de deuda con owner y deadline, si es aceptable temporalmente.</li>
+    <li><strong>Convertir en FAIL</strong> si rompe un compromiso contractual: SLA publicado o requisito regulatorio.</li>
+  </ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═════════════════════════════════════════════
+     PARTE D — RECURSOS
+═════════════════════════════════════════════ -->
+<div class="part-header">
+  <span class="tag">Parte D</span>
+  <span class="title">Recursos</span>
+  <p class="subtitle">Persona Murat, listado del knowledge base, plantillas listas para imprimir y verificación de fuentes.</p>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     Sec. 22 — MURAT
+───────────────────────────────────────────── -->
+<h2><span class="num">22</span>Murat &mdash; el agente Test Architect</h2>
+
+<p class="lead">Cuando una situación no encaja con ninguna skill concreta, o cuando el equipo necesita criterio en zona gris, se invoca a Murat: el agente con persona del módulo TEA. No produce un artefacto único; conversa.</p>
+
+<h3><span class="num">22.1</span>Voz y enfoque</h3>
+<p>Murat es <em>data&#8209;driven</em>: habla en cálculos de riesgo y evaluaciones de impacto. Su lema es "opiniones fuertes, sostenidas con pinzas". Mezcla rigor cuantitativo con instinto experto. Persiste cuando se invoca otra skill TEA: vuelves a Murat al cerrar la skill hija.</p>
+
+<h3><span class="num">22.2</span>Menú de capabilities</h3>
+<p>Cuando se activa, Murat presenta un menú de nueve capacidades. Cada una corresponde a una skill TEA concreta o a una consulta directa del knowledge base.</p>
+
+<table>
+  <thead>
+    <tr><th style="width:14%">Código</th><th style="width:30%">Capability</th><th style="width:56%">Cuándo pedirla</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>TMT</strong></td><td>Teach Me Testing</td><td>Onboarding de devs, vocabulario compartido pre&#8209;TEA.</td></tr>
+    <tr><td><strong>TF</strong></td><td>Test Framework setup</td><td>"Qué tooling instalo para mi stack?".</td></tr>
+    <tr><td><strong>AT</strong></td><td>ATDD</td><td>"Cómo genero tests rojos para esta historia?".</td></tr>
+    <tr><td><strong>TA</strong></td><td>Test Automation</td><td>"Cómo expando cobertura tras Dev Story?".</td></tr>
+    <tr><td><strong>TD</strong></td><td>Test Design</td><td>"Aplica matriz de riesgo a esta épica".</td></tr>
+    <tr><td><strong>TR</strong></td><td>Test Review</td><td>"Audita la calidad del suite actual".</td></tr>
+    <tr><td><strong>NR</strong></td><td>NFR Assessment</td><td>"Evalúa los cuatro ejes ante el release".</td></tr>
+    <tr><td><strong>CI</strong></td><td>CI Setup</td><td>"Configura pipeline con gates por prioridad".</td></tr>
+    <tr><td><strong>RV</strong></td><td>Trace o Coverage Review</td><td>"Genera matriz de requisitos contra tests".</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="num">22.3</span>Cuándo Murat aporta más que una skill aislada</h3>
+<p>Murat carga el conocimiento contextual del knowledge base completo (fixture architecture, contract testing, ADR Quality Readiness Checklist, networking, etc.). Las skills atómicas no lo cargan por defecto. Cuando la consulta es "qué patrón aplica aquí", Murat es la entrada correcta; cuando la consulta es "haz X", la skill atómica es más eficiente.</p>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 23 — KNOWLEDGE BASE
+───────────────────────────────────────────── -->
+<h2><span class="num">23</span>Knowledge base &mdash; lo que las skills consultan</h2>
+
+<p class="lead">Cada skill TEA carga un conjunto de archivos de conocimiento al ejecutarse. Estos archivos no son código: son guías técnicas concretas (cómo gestionar fixtures, cómo interceptar llamadas de red, cómo aplicar contract testing) que el agente usa para tomar decisiones informadas. La carpeta canónica está en <code>.claude/skills/bmad-tea/resources/knowledge/</code>.</p>
+
+<h3><span class="num">23.1</span>Catálogo (50 archivos)</h3>
+
+<table>
+  <thead>
+    <tr><th style="width:34%">Archivo</th><th style="width:66%">Para qué sirve</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>adr-quality-readiness-checklist.md</code></td><td>29 criterios en 8 categorías para evaluar testabilidad y NFR de un ADR.</td></tr>
+    <tr><td><code>api-request.md</code></td><td>Patrones de petición a API en tests (Playwright, Cypress).</td></tr>
+    <tr><td><code>api-testing-patterns.md</code></td><td>Patrones de testing de APIs: request/response, validación, status codes.</td></tr>
+    <tr><td><code>auth-session.md</code></td><td>Reuso de sesiones de auth vía storageState o setCookie.</td></tr>
+    <tr><td><code>burn-in.md</code></td><td>Selección inteligente de tests con filtros y volumen controlado.</td></tr>
+    <tr><td><code>ci-burn-in.md</code></td><td>Loop tradicional de burn&#8209;in en pipeline (10 iteraciones).</td></tr>
+    <tr><td><code>component-tdd.md</code></td><td>Ciclo TDD a nivel de componente UI.</td></tr>
+    <tr><td><code>contract-testing.md</code></td><td>Conceptos de contract testing (Pact CDC).</td></tr>
+    <tr><td><code>data-factories.md</code></td><td>Factories de datos para tests aislados con identificadores únicos.</td></tr>
+    <tr><td><code>email-auth.md</code></td><td>Testing de flujos de autenticación por email.</td></tr>
+    <tr><td><code>error-handling.md</code></td><td>Patrones de validación de error handling en tests.</td></tr>
+    <tr><td><code>feature-flags.md</code></td><td>Governance de feature flags en tests.</td></tr>
+    <tr><td><code>file-utils.md</code></td><td>Utilidades de manejo de archivos en tests.</td></tr>
+    <tr><td><code>fixture-architecture.md</code></td><td>Arquitectura de fixtures con auto&#8209;cleanup.</td></tr>
+    <tr><td><code>fixtures-composition.md</code></td><td>Composición de fixtures con la API <code>extends</code> de Playwright.</td></tr>
+    <tr><td><code>intercept-network-call.md</code></td><td>Interceptación de llamadas de red en tests.</td></tr>
+    <tr><td><code>log.md</code></td><td>Logging y observabilidad en tests.</td></tr>
+    <tr><td><code>network-error-monitor.md</code></td><td>Monitor de errores de red durante la ejecución.</td></tr>
+    <tr><td><code>network-first.md</code></td><td>Patrón <em>network&#8209;first</em>: interceptar antes de navegar.</td></tr>
+    <tr><td><code>network-recorder.md</code></td><td>Grabación y reproducción de tráfico HAR.</td></tr>
+    <tr><td><code>nfr-criteria.md</code></td><td>Criterios NFR detallados (seguridad, rendimiento, fiabilidad, mantenibilidad).</td></tr>
+    <tr><td><code>overview.md</code></td><td>Visión general e instalación del knowledge base.</td></tr>
+    <tr><td><code>pact-broker-webhooks.md</code></td><td>Webhooks del Pact Broker.</td></tr>
+    <tr><td><code>pact-consumer-di.md</code></td><td>Inyección de dependencias en consumer de Pact.</td></tr>
+    <tr><td><code>pact-consumer-framework-setup.md</code></td><td>Setup de Pact en consumer frameworks.</td></tr>
+    <tr><td><code>pact-mcp.md</code></td><td>Integración Pact con servidores MCP.</td></tr>
+    <tr><td><code>pactjs-utils-consumer-helpers.md</code></td><td>Helpers de pact&#8209;js para consumer.</td></tr>
+    <tr><td><code>pactjs-utils-overview.md</code></td><td>Visión general de utilities de pact&#8209;js.</td></tr>
+    <tr><td><code>pactjs-utils-provider-verifier.md</code></td><td>Verifier del provider en pact&#8209;js.</td></tr>
+    <tr><td><code>pactjs-utils-request-filter.md</code></td><td>Filtros de petición para pact.</td></tr>
+    <tr><td><code>pactjs-utils-zod-to-pact.md</code></td><td>Conversión de schema zod a matchers pact.</td></tr>
+    <tr><td><code>playwright-cli.md</code></td><td>CLI de Playwright (comandos clave).</td></tr>
+    <tr><td><code>playwright-config.md</code></td><td>Configuración de Playwright (workers, timeouts, projects).</td></tr>
+    <tr><td><code>probability-impact.md</code></td><td>Matriz de riesgo 3&times;3, score 1&ndash;9, mapeo a P0&ndash;P3 (Sec. 3).</td></tr>
+    <tr><td><code>recurse.md</code></td><td>Patrón de retry y recursión en tests.</td></tr>
+    <tr><td><code>risk-governance.md</code></td><td>Risk scoring matrix y motor de decisión de gate.</td></tr>
+    <tr><td><code>selective-testing.md</code></td><td>Selección de tests por etiqueta o archivos cambiados.</td></tr>
+    <tr><td><code>selector-resilience.md</code></td><td>Selectores resilientes (data&#8209;testid, roles ARIA).</td></tr>
+    <tr><td><code>test-healing-patterns.md</code></td><td>Auto&#8209;healing de tests rotos.</td></tr>
+    <tr><td><code>test-levels-framework.md</code></td><td>Niveles unit / componente / integración / API / E2E + reglas de elección (Sec. 4).</td></tr>
+    <tr><td><code>test-priorities-matrix.md</code></td><td>P0&ndash;P3 con criterios y targets de cobertura (Sec. 3).</td></tr>
+    <tr><td><code>test-quality.md</code></td><td>Los 8 criterios del Definition of Done (Sec. 5).</td></tr>
+    <tr><td><code>timing-debugging.md</code></td><td>Debugging de problemas de timing.</td></tr>
+    <tr><td><code>visual-debugging.md</code></td><td>Debugging visual: traces, screenshots, vídeo.</td></tr>
+    <tr><td><code>webhook-module-setup.md</code></td><td>Setup del módulo de webhooks.</td></tr>
+    <tr><td><code>webhook-providers.md</code></td><td>Providers de webhooks soportados.</td></tr>
+    <tr><td><code>webhook-risk-guidance.md</code></td><td>Guía de riesgo en testing de webhooks.</td></tr>
+    <tr><td><code>webhook-template-matchers.md</code></td><td>Template matchers para webhooks.</td></tr>
+    <tr><td><code>webhook-testing-fundamentals.md</code></td><td>Fundamentos de testing de webhooks.</td></tr>
+    <tr><td><code>webhook-timeout-error.md</code></td><td>Manejo de timeouts y errores en webhooks.</td></tr>
+    <tr><td><code>webhook-waiting-querying.md</code></td><td>Estrategias de espera y consulta de webhooks.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="head">Notas sobre el catálogo</span>
+  Las nueve skills <code>bmad-testarch-*</code> reusan el mismo set de 49 archivos. La carpeta de <code>bmad-tea</code> incluye uno adicional (<code>pactjs-utils-zod-to-pact.md</code>), totalizando 50. El listado anterior es el de <code>bmad-tea</code>, el más completo.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 24 — PLANTILLAS
+───────────────────────────────────────────── -->
+<h2><span class="num">24</span>Plantillas operativas</h2>
+
+<p class="lead">Cuatro plantillas listas para usar. Cada una refleja un marco o un escenario del libro y se puede copiar a un documento del proyecto.</p>
+
+<h3><span class="num">24.1</span>Risk Matrix &mdash; plantilla por épica</h3>
+
+<pre class="codeblock"># Risk Matrix — Épica &lt;N&gt;
+
+| ID | Riesgo | Probabilidad (1-3) | Impacto (1-3) | Score | Prioridad | Mitigación |
+|----|--------|---------------------|---------------|-------|-----------|------------|
+| R-01 | &lt;descripción&gt;        | 2 | 3 | 6 | P1 | &lt;test específico&gt; |
+| R-02 | &lt;descripción&gt;        | 1 | 3 | 3 | P3 | documentar y monitor |
+| R-03 | &lt;descripción&gt;        | 3 | 3 | 9 | P0 | bloquear release si falla |
+
+## Criterios de entrada (sprint)
+- &lt;criterio 1&gt;
+- &lt;criterio 2&gt;
+
+## Criterios de salida (release)
+- Todos los P0 cubiertos a niveles unit, integración y E2E.
+- P1 cubiertos en main happy path.
+- Decisión de gate firmada (PASS / CONCERNS / WAIVED / FAIL).
+</pre>
+
+<h3><span class="num">24.2</span>NFR Criteria &mdash; plantilla de setup en S1</h3>
+
+<p>Acuerdo explícito de los cuatro NFRs core (seguridad, rendimiento, fiabilidad, mantenibilidad) en S1 de cada épica. Sin esta plantilla, los NFRs son ambiguos hasta el final y suelen fallar en el gate.</p>
+
+<pre class="codeblock"># NFR Criteria &mdash; Épica &lt;N&gt;
+
+## Seguridad
+target: &lt;ej. OWASP ASVS L2 cumplido en endpoints expuestos&gt;
+medición: &lt;cómo se verifica: scan automatizado, pen-test, code review&gt;
+gate_threshold: 0 vulnerabilidades High/Critical en main
+
+## Rendimiento
+target: &lt;ej. P95 &lt; 200 ms en endpoints &lt;X, Y, Z&gt; bajo 100 RPS&gt;
+medición: &lt;k6, Lighthouse, APM real-user metrics&gt;
+gate_threshold: P95 &lt; SLA pactado, sin regresiones &gt; 10% vs baseline
+
+## Fiabilidad
+target: &lt;ej. tasa de error &lt; 0.1% en main flows; recuperación &lt; 30 s&gt;
+medición: &lt;chaos tests, error budget tracking, observabilidad&gt;
+gate_threshold: error budget consumido &lt; 50% en la épica
+
+## Mantenibilidad
+target: &lt;ej. complejidad ciclomática &lt; 10; cobertura branches &gt; 80% en código nuevo&gt;
+medición: &lt;SonarQube, ESLint, code review checklist&gt;
+gate_threshold: zero código sin tests en módulos P0/P1
+</pre>
+
+<h3><span class="num">24.3</span>Trace Matrix &mdash; plantilla AC &rarr; test (Given/When/Then)</h3>
+
+<p>Trazabilidad viva: cada criterio de aceptación de una historia mapea a uno o más tests, expresados en sintaxis Given/When/Then para que el lenguaje sea compartido entre PO, dev y TEA.</p>
+
+<pre class="codeblock"># Trace Matrix &mdash; Historia &lt;HU-NN&gt;
+
+## AC-1: &lt;descripción del criterio de aceptación&gt;
+test_id: T-NN-01
+nivel: &lt;unit | integration | e2e&gt;
+prioridad: &lt;P0 | P1 | P2 | P3&gt;
+Given: &lt;contexto/estado inicial&gt;
+When: &lt;acción del actor&gt;
+Then: &lt;resultado observable&gt;
+archivo: &lt;path/to/test.spec.ts&gt;
+estado: &lt;PASS | FAIL | NOT_RUN&gt;
+
+## AC-2: &lt;descripción&gt;
+test_id: T-NN-02
+nivel: &lt;...&gt;
+prioridad: &lt;...&gt;
+Given: &lt;...&gt;
+When: &lt;...&gt;
+Then: &lt;...&gt;
+archivo: &lt;...&gt;
+estado: &lt;...&gt;
+
+## Cobertura
+total_ACs: &lt;N&gt;
+ACs_cubiertos: &lt;M&gt;
+gaps: &lt;lista de ACs sin test, con justificación o ticket&gt;
+</pre>
+
+<h3 class="page-break-before"><span class="num">24.4</span>ADR Quality Readiness Checklist &mdash; 29 criterios en 8 categorías</h3>
+
+<p>Aplicar a cada ADR antes de iniciar Test Design. Cada criterio puntúa 1 si se cumple, 0 si no. Score = X/29. Decisión: PASS si &ge;25, CONCERNS si 20&ndash;24, FAIL si &lt;20.</p>
+
+<pre class="codeblock"># ADR Quality Readiness Checklist — &lt;ADR-NN&gt;
+
+## 1. Testabilidad y automatización (4)
+[ ] 1.1 Isolation — el servicio se puede testear con todas las deps mockeadas
+[ ] 1.2 Headless interaction — 100% de la lógica accesible vía API
+[ ] 1.3 State control — APIs/scripts para inyectar estados específicos
+[ ] 1.4 Sample requests — cURL/JSON válidos e inválidos en el doc
+
+## 2. Estrategia de datos de test (3)
+[ ] 2.1 Segregation — multi-tenancy o headers para no contaminar prod
+[ ] 2.2 Generation — datos sintéticos o scrubbing PII/RGPD
+[ ] 2.3 Teardown — reset y cleanup post-test destructivo
+
+## 3. Escalabilidad y disponibilidad (4)
+[ ] 3.1 Statelessness — el servicio es stateless o replica session
+[ ] 3.2 Bottlenecks — weak link bajo carga identificado
+[ ] 3.3 SLA definitions — target de availability + redundancia
+[ ] 3.4 Circuit breakers — fail fast si dep falla
+
+## 4. Disaster recovery (3)
+[ ] 4.1 RTO/RPO definidos
+[ ] 4.2 Failover automático o manual, practicado
+[ ] 4.3 Backups inmutables, restoration testeada
+
+## 5. Seguridad (4)
+[ ] 5.1 AuthN/AuthZ — OAuth2/OIDC + Least Privilege granular
+[ ] 5.2 Encryption — at rest + in transit (TLS)
+[ ] 5.3 Secrets — en Vault, no en código/config
+[ ] 5.4 Input validation — sanitización contra SQLi/XSS
+
+## 6. Monitorabilidad y manageability (4)
+[ ] 6.1 Tracing — W3C Trace Context propagado
+[ ] 6.2 Logs — log levels toggle dinámico sin redeploy
+[ ] 6.3 Metrics — RED metrics expuestas (Prometheus, Datadog)
+[ ] 6.4 Config — externalizada, cambios sin rebuild
+
+## 7. QoS y QoE (4)
+[ ] 7.1 Latency — targets P95 y P99
+[ ] 7.2 Throttling — rate limiting contra DDoS
+[ ] 7.3 Perceived performance — optimistic updates / skeletons
+[ ] 7.4 Degradation — mensaje friendly al fallar
+
+## 8. Deployability (3)
+[ ] 8.1 Zero downtime — Blue/Green o Canary
+[ ] 8.2 Backward compatibility — DB changes desacoplados de code
+[ ] 8.3 Rollback — automatizado tras health check failure
+
+## Resultado
+Score: __/29
+Decisión: PASS (≥25) · CONCERNS (20-24) · FAIL (&lt;20)
+Plan de remediación: &lt;si CONCERNS/FAIL&gt;</pre>
+</div><!-- /content -->
+
+<!-- ═════════════════════════════════════════════
+     PAGED.JS (sin Mermaid en este libro)
+═════════════════════════════════════════════ -->
+<script>
+  window.PagedConfig = {
+    auto: false,
+    after: () => { window.__PAGED_DONE__ = true; }
+  };
+</script>
+
+<script src="https://unpkg.com/pagedjs@0.4.3/dist/paged.polyfill.js"></script>
+
+<script>
+  (async function () {
+    if (document.readyState !== 'complete') {
+      await new Promise(r => window.addEventListener('load', r));
+    }
+
+  // Handler que añade indicador "↓ continúa" al pie cuando una tabla cruza páginas.
+  class TableContinueHandler extends Paged.Handler {
+    constructor(chunker, polisher, caller) {
+      super(chunker, polisher, caller);
+    }
+    afterPageLayout(pageElement, page, breakToken) {
+      try {
+        if (!breakToken || !breakToken.node) return;
+        let node = breakToken.node;
+        while (node && node.nodeName !== 'TABLE' && node.nodeType !== 9) {
+          node = node.parentNode;
+        }
+        if (!node || node.nodeName !== 'TABLE') return;
+
+        const tablesInPage = pageElement.querySelectorAll('table');
+        if (tablesInPage.length === 0) return;
+        const lastTable = tablesInPage[tablesInPage.length - 1];
+        if (lastTable.querySelector('tfoot.continued')) return;
+
+        const tfoot = document.createElement('tfoot');
+        tfoot.className = 'continued';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = lastTable.querySelectorAll('thead th').length || 1;
+        td.textContent = '↓ continúa en la página siguiente';
+        tr.appendChild(td);
+        tfoot.appendChild(tr);
+        lastTable.appendChild(tfoot);
+      } catch (e) { console.warn('TableContinueHandler:', e); }
+    }
+  }
+  Paged.registerHandlers(TableContinueHandler);
+
+    const previewer = new window.Paged.Previewer();
+    await previewer.preview();
+    if (!window.__PAGED_DONE__) window.__PAGED_DONE__ = true;
+  })();
+</script>
+
+</body>
+</html>

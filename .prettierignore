@@ -41,3 +41,7 @@ credentials/
 
 # Reference content (raw exports, do not reformat)
 lidr-and-bmad-method/
+
+# BMad guide HTMLs contain embedded Mermaid blocks inside <pre> tags. Prettier
+# treats them as HTML and chokes on Mermaid syntax (class S1,S2 sess; etc).
+docs/guides/bmad/

@@ -107,15 +107,12 @@ FASE 1: ORIGINACIÓN
                               → AUTO: crea subtareas PRD en Jira
                               → AUTO: notifica PO + R&D
 
-FASE 2: DISCOVERY
-  PO ejecuta:
-    skills/prd-funcional     → Genera PRD Funcional
-  TL ejecuta:
-    skills/prd-tecnico       → Genera PRD Técnico
+FASE 2: DISCOVERY (BMad-driven, LIDR wrappers)
   PO + TL ejecutan:
-    skills/review-cruzado    → Review cruzado Tech↔Producto
-    skills/risk-log          → Registra riesgos
-    skills/poc-report        → PoC Report (si aplica)
+    bmad-prd                 → PRD unificado (F+T en un solo doc)
+    skills/review-cruzado    → 🔴 Gate 1 enforcer: valida F+T sections completas
+    skills/risk-log          → 🟡 Risk registry (LIDR-formal)
+    bmad-technical-research  → PoC si aplica (con GO/NO-GO format)
   PO + QA + TL ejecutan:
     /validate-prd my-project → LIDR SDLC 13-step validation, scoring, recomendaciones
                               → AUTO: detecta gaps críticos, genera action plan
@@ -220,10 +217,9 @@ POST-DEPLOY
     /sync-docs               → Actualiza docs con cambios del release
     /validate-project-docs   → Verifica que docs reflejan realidad
   PME + TL ejecutan:
-    skills/epic-review       → Review de épica: plan vs actual, lecciones, next steps
+    bmad-retrospective       → Review de épica + retro data-driven (cubre lo que era epic-review + retrospective)
   PME ejecuta:
-    bmad-retrospective     → Genera retro data-driven
-    skills/postmortem        → Postmortem si hubo incidente
+    skills/postmortem        → 🔴 Postmortem solo si hubo incidente (Five Whys blameless)
 ```
 
 ---
@@ -300,9 +296,8 @@ POST-DEPLOY
 ### Cadena típica: Catch-up (proyecto en marcha sin docs formales)
 
 ```
-skills/prd-funcional                    → PRD retroactivo (PO)
-skills/prd-tecnico                      → PRD retroactivo (TL)
-skills/review-cruzado                   → Review cruzado
+bmad-prd                                → PRD retroactivo (unificado F+T)
+skills/review-cruzado                   → Validación F+T sections
 skills/risk-log                         → Riesgos no documentados
 /advance-gate 1                         → Gate 1 retroactivo (probablemente CONDITIONAL)
   ↓
@@ -367,9 +362,8 @@ skills/adr                              → ADR inicial: stack + patrón
 ### Cadena típica: Cerrar una épica (Epic Review)
 
 ```
-skills/epic-review                      → Plan vs actual + lecciones
+bmad-retrospective                      → Plan vs actual + lecciones + retro data-driven
 skills/tech-debt                        → Consolida deuda acumulada
-bmad-retrospective                    → Retro data-driven del ciclo
 /sync-docs                              → Sincroniza docs final
 /validate-project-docs my-project       → Valida completitud
 ```
@@ -385,7 +379,7 @@ Los siguientes skills se usan transversalmente y no aparecen en una fase especí
 | `bmad-create-architecture` | F2 Discovery → F5 Dev → POST-DEPLOY | Genera/actualiza doc de arquitectura (templates LIDR en `.agents/_shared/lidr/templates/architecture/`) |
 | `bmad-create-ux-design`    | F2 Discovery → F4 Planning          | Spec UX/UI desde PRD + wireframes (template LIDR en `.agents/_shared/lidr/templates/ux-design-spec.md`) |
 | `bmad-sprint-planning`     | F4 Planning → F5 Dev                | Descompone proyecto en fases incrementales                                                              |
-| `epic-review`              | POST-DEPLOY                         | Review formal: plan vs actual, lecciones, follow-up epics                                               |
+| `bmad-retrospective`       | POST-DEPLOY                         | Post-epic retro: plan vs actual, lecciones, follow-up (cubre lo que era epic-review)                    |
 
 ---
 

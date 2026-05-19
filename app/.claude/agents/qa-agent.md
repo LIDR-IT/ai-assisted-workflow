@@ -1,1 +1,0 @@
-../../../.agents/subagents/lidr-qa-agent.md

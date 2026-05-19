@@ -1,1 +1,0 @@
-../../../.agents/commands/lidr-prepare-testing.md

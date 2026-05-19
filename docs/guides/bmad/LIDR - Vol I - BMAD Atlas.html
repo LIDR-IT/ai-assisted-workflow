@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>BMAD Atlas · Libro 1 de 5 | LIDR.co</title>
+<style>
+  /* ─────────────────────────────────────────────
+     RESET + ROOT
+  ───────────────────────────────────────────── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1A1A1A;
+    --ink-soft: #333;
+    --ink-mute: #666;
+    --gold: #F6DE82;
+    --gold-deep: #D4B85C;
+    --cream: #FBEFC0;
+    --cream-soft: #FFF8E1;
+    --paper: #FFFFFF;
+    --line: #E6E6E6;
+    --line-strong: #1A1A1A;
+
+    --mod-bmm: #E2B324;
+    --mod-tea: #27AE60;
+    --mod-cis: #9B59B6;
+    --mod-bmb: #3498DB;
+    --mod-core: #95A5A6;
+
+    --req:  #C0392B;
+    --rec:  #D4B85C;
+    --opc:  #B0B0B0;
+
+    --lidr-vision: #4A4A8A;
+    --lidr-recom:  #C97D2A;
+
+    --info:    #2E86C1;
+    --tip:     #229954;
+    --caution: #D4AC0D;
+    --important: #C0392B;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink-soft);
+    background: var(--paper);
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  /* ─────────────────────────────────────────────
+     COVER
+  ───────────────────────────────────────────── */
+  .cover {
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    background: var(--ink);
+    color: #fff;
+    padding: 60px 50px;
+  }
+  .cover .vol-tag {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .cover h1 span { color: var(--gold); }
+  .cover .subtitle {
+    font-size: 16px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+  .cover .logo-bar {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+    border-radius: 2px;
+    margin: 24px auto;
+  }
+  .cover .meta {
+    font-size: 12px;
+    color: #cccccc;
+    line-height: 1.9;
+    max-width: 460px;
+  }
+  .cover .meta strong { color: var(--gold); }
+  .cover .cover-version {
+    font-size: 10px;
+    color: #999;
+    margin-top: 48px;
+    letter-spacing: 1px;
+  }
+
+  /* ─────────────────────────────────────────────
+     CONTENT WRAPPER
+  ───────────────────────────────────────────── */
+  .content {
+    padding: 36px 52px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  /* ─────────────────────────────────────────────
+     HEADINGS — 6 LEVELS, CLEAR HIERARCHY
+  ───────────────────────────────────────────── */
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 36px 0 6px 0;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--gold);
+    letter-spacing: -0.2px;
+  }
+  h2:first-child { margin-top: 0; }
+  h2 .num {
+    color: var(--gold-deep);
+    font-weight: 800;
+    margin-right: 10px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 22px 0 8px 0;
+    letter-spacing: -0.1px;
+  }
+  h3 .num { color: var(--gold-deep); margin-right: 6px; }
+
+  h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 16px 0 6px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  h5 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 12px 0 4px 0;
+  }
+
+  /* ─────────────────────────────────────────────
+     PARAGRAPHS, LISTS
+  ───────────────────────────────────────────── */
+  p, li {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  ul, ol { margin: 6px 0 14px 22px; }
+  li { margin-bottom: 4px; }
+  strong { color: var(--ink); }
+  em { font-style: italic; }
+
+  .lead {
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  /* ─────────────────────────────────────────────
+     TABLES
+  ───────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 18px 0;
+    font-size: 10px;
+  }
+  thead th {
+    background: var(--ink);
+    color: var(--gold);
+    font-weight: 600;
+    text-align: left;
+    padding: 9px 11px;
+    border-bottom: 2px solid var(--gold);
+    font-size: 10px;
+    letter-spacing: 0.2px;
+  }
+  tbody td {
+    padding: 8px 11px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+  tbody tr:nth-child(even) { background: #FAFAF6; }
+  tbody tr:nth-child(odd)  { background: #ffffff; }
+  tbody td strong { color: var(--ink); }
+
+  table.bordered td { border: 1px solid var(--line); }
+
+  /* ─────────────────────────────────────────────
+     CODE
+  ───────────────────────────────────────────── */
+  code {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    background: var(--cream);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 9.5px;
+    color: var(--ink);
+    border: 1px solid #E6D98A;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* ─────────────────────────────────────────────
+     MODULE DOTS — colored circle next to skill names
+  ───────────────────────────────────────────── */
+  .mod {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 4px;
+    margin-left: 2px;
+  }
+  .mod.bmm  { background: var(--mod-bmm); }
+  .mod.tea  { background: var(--mod-tea); }
+  .mod.cis  { background: var(--mod-cis); }
+  .mod.bmb  { background: var(--mod-bmb); }
+  .mod.core { background: var(--mod-core); }
+
+  /* ─────────────────────────────────────────────
+     REQUIREMENT BADGES — REQ/REC/OPC
+  ───────────────────────────────────────────── */
+  .req-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 5px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .req-badge.req { background: var(--req); color: #fff; }
+  .req-badge.rec { background: var(--gold); color: var(--ink); }
+  .req-badge.opc { background: #E8E8E8; color: #555; border: 1px solid #B0B0B0; }
+  .req-badge.req-tea { background: #D5EDE2; color: #1B6B45; border: 1px solid #27AE60; }
+
+  /* ─────────────────────────────────────────────
+     LIDR BADGES — Visión / Recomendación
+  ───────────────────────────────────────────── */
+  .lidr-badge {
+    display: inline-block;
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    margin-right: 8px;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #fff;
+    vertical-align: middle;
+  }
+  .lidr-badge.vision { background: var(--lidr-vision); }
+  .lidr-badge.recomendacion { background: var(--lidr-recom); }
+
+  /* Inline LIDR marker for paragraphs */
+  .lidr-mark {
+    display: block;
+    border-left: 3px solid var(--lidr-recom);
+    padding: 2px 0 2px 12px;
+    margin: 8px 0;
+  }
+  .lidr-mark.vision {
+    border-left-color: var(--lidr-vision);
+  }
+  .lidr-mark .lidr-badge {
+    margin-bottom: 4px;
+  }
+
+  /* ─────────────────────────────────────────────
+     SKILL META — sub-line under skill name
+  ───────────────────────────────────────────── */
+  .skill-meta {
+    display: block;
+    margin-top: 2px;
+    font-size: 8.5px;
+    color: var(--ink-mute);
+    line-height: 1.2;
+  }
+  .skill-meta strong { color: var(--ink-soft); }
+
+  /* ─────────────────────────────────────────────
+     CALLOUTS — 5 LEVELS WITH SEMANTIC HIERARCHY
+  ───────────────────────────────────────────── */
+  .callout {
+    padding: 11px 14px 11px 16px;
+    margin: 14px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .callout strong { color: var(--ink); }
+  .callout .head {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .callout.info {
+    background: #EAF4FA;
+    border-left: 3px solid var(--info);
+  }
+  .callout.info .head { color: var(--info); }
+
+  .callout.tip {
+    background: #E9F7EF;
+    border-left: 3px solid var(--tip);
+  }
+  .callout.tip .head { color: var(--tip); }
+
+  .callout.caution {
+    background: #FCF6E1;
+    border-left: 3px solid var(--caution);
+  }
+  .callout.caution .head { color: #9C8004; }
+
+  .callout.important {
+    background: #FBEAE5;
+    border-left: 3px solid var(--important);
+  }
+  .callout.important .head { color: var(--important); }
+
+  /* ─────────────────────────────────────────────
+     FAQ
+  ───────────────────────────────────────────── */
+  .faq-q {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 9px 14px;
+    border-radius: 3px;
+    font-size: 11.5px;
+    font-weight: 600;
+    margin: 22px 0 10px 0;
+  }
+  .faq-a { padding: 0 4px; }
+  .faq-a p { margin-bottom: 6px; }
+
+  /* ─────────────────────────────────────────────
+     DIVIDERS, PAGE BREAKS
+  ───────────────────────────────────────────── */
+  .section-divider {
+    border: none;
+    border-top: 1px dashed var(--gold-deep);
+    margin: 28px 0;
+  }
+  .page-break { page-break-before: always; }
+
+  /* ─────────────────────────────────────────────
+     LEGEND DOTS — module reference line
+  ───────────────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    margin: 8px 0 14px 0;
+    font-size: 10px;
+    color: var(--ink-soft);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+
+  /* ─────────────────────────────────────────────
+     INSTALL CHECKLIST
+  ───────────────────────────────────────────── */
+  .install {
+    margin: 12px 0 18px 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .install .row {
+    display: flex;
+    align-items: flex-start;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+  }
+  .install .row:last-child { border-bottom: none; }
+  .install .row.must { background: #F5FBF7; }
+  .install .row.opt  { background: #FFFCF0; }
+  .install .row.skip { background: #FAFAFA; color: var(--ink-mute); }
+  .install .mark {
+    flex: 0 0 24px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 6px;
+    line-height: 1.3;
+  }
+  .install .name {
+    flex: 0 0 240px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-right: 12px;
+  }
+  .install .desc { flex: 1; color: var(--ink-soft); }
+
+  /* ─────────────────────────────────────────────
+     MERMAID — clean container
+  ───────────────────────────────────────────── */
+  .diagram {
+    margin: 16px 0 20px 0;
+    padding: 16px;
+    background: #FCFCFA;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    text-align: center;
+  }
+  .diagram .caption {
+    margin-top: 10px;
+    font-size: 9.5px;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+  .mermaid { font-size: 12px !important; }
+
+  /* ─────────────────────────────────────────────
+     PAGE — A4 con pie LIDR + área de notas al pie
+     (procesado por paged.js)
+  ───────────────────────────────────────────── */
+  @page {
+    size: A4;
+    margin: 18mm 16mm 22mm 16mm;
+
+    @bottom-left {
+      content: "LIDR.co · BMAD Atlas · Volumen I · Libro 1 de 5";
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #888;
+      vertical-align: top;
+      padding-top: 4mm;
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #888;
+      vertical-align: top;
+      padding-top: 4mm;
+    }
+
+    @footnote {
+      border-top: 0.5pt solid #D4B85C;
+      padding-top: 4pt;
+      margin-top: 8pt;
+      font-size: 8.5pt;
+      line-height: 1.45;
+      color: #444;
+    }
+  }
+
+  /* Portada — sin pie ni cabecera, sin márgenes */
+  @page :first {
+    margin: 0;
+    @top-left { content: none; }
+    @top-center { content: none; }
+    @top-right { content: none; }
+    @bottom-left { content: none; }
+    @bottom-center { content: none; }
+    @bottom-right { content: none; }
+  }
+
+  /* Notas al pie — paged.js mueve estos spans al área @footnote */
+  .footnote {
+    float: footnote;
+    font-size: 8.5pt;
+    color: #444;
+  }
+  .footnote::footnote-call {
+    content: counter(footnote);
+    font-size: 0.62em;
+    vertical-align: super;
+    line-height: 0;
+    color: var(--gold-deep);
+    font-weight: 700;
+    margin-left: 1px;
+  }
+  .footnote::footnote-marker {
+    content: counter(footnote) ". ";
+    font-weight: 700;
+    color: var(--gold-deep);
+  }
+  .footnote strong { color: var(--ink); }
+
+  /* ─────────────────────────────────────────────
+     TABLE PAGINATION — repite cabecera, evita huérfanos
+  ───────────────────────────────────────────── */
+  table { page-break-inside: auto; break-inside: auto; }
+  thead { display: table-header-group; }
+  thead tr { break-after: avoid; page-break-after: avoid; break-inside: avoid; page-break-inside: avoid; }
+  tbody tr { break-inside: avoid; page-break-inside: avoid; }
+  tbody tr:first-child { break-before: avoid; page-break-before: avoid; }
+  tfoot { display: table-footer-group; }
+
+  /* Continuación de tabla — texto inyectado por paged.js handler */
+  tfoot.continued tr td {
+    text-align: right;
+    font-style: italic;
+    font-size: 8.5pt;
+    color: #888;
+    padding: 4px 8px 0 8px;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* OVERRIDE — permitir que las cards largas y bloques pre se partan
+     entre páginas para evitar huecos grandes al final de página */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box,
+  pre,
+  pre.codeblock{
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Las cabeceras de las cards no deben quedar huérfanas */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+
+  @media print {
+    body { font-size: 10.5px; }
+    .content { padding: 24px 40px; }
+    h2 { page-break-after: avoid; }
+    h3, h4 { page-break-after: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+    .callout { page-break-inside: avoid; }
+    .diagram { page-break-inside: avoid; }
+  }
+
+  /* GAP FIX — permitir que cards largas se partan sin quedar atrapadas por sus headers */
+  .framework-card,
+  .skill-card,
+  .session-card,
+  .scenario-card,
+  .decision-card,
+  .toolkit-box {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+  /* Los headers internos sí evitan break dentro de sí mismos, pero NO fuerzan
+     a su contenedor a permanecer junto al siguiente bloque. */
+  .card-header,
+  .session-header,
+  .framework-header,
+  .scenario-header {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+  /* En @media print, asegurar override final */
+  @media print {
+    .framework-card, .skill-card, .session-card, .scenario-card, .decision-card, .toolkit-box, .callout {
+      page-break-inside: auto !important;
+      break-inside: auto !important;
+    }
+    .framework-header, .session-header, .skill-card-header, .scenario-header, .card-header {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+  }
+
+/* MermaidTooltip fix */
+  /* Mermaid crea un tooltip invisible que paged.js coloca en una página vacía */
+  .mermaidTooltip { display: none !important; position: absolute !important; }
+  div:has(> .mermaidTooltip:only-child) { display: none !important; }
+
+</style>
+</head>
+<body>
+
+<!-- ═════════════════════════════════════════════════════════
+     COVER
+═════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="vol-tag">Volumen I &middot; Libro 1 de 5</div>
+  <h1>BMAD <span>Atlas</span></h1>
+  <div class="subtitle">Mapa general del método y vocabulario común</div>
+  <div class="logo-bar"></div>
+  <div class="meta">
+    Punto de entrada de la biblioteca BMAD.<br>
+    Define los módulos, las fases del flujo y el catálogo<br>
+    de comandos que se profundizan en los siguientes libros.<br><br>
+    <strong>BMAD Method &middot; CIS &middot; TEA &middot; BMB &middot; Core</strong>
+  </div>
+  <div class="cover-version">2026-05-06 &middot; LIDR.co</div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════════
+     CONTENT
+═════════════════════════════════════════════════════════ -->
+<div class="content">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 0 — BIENVENIDA
+───────────────────────────────────────────── -->
+<h2><span class="num">0</span>Bienvenida</h2>
+
+<p class="lead">Esta es la primera entrega de una biblioteca de cinco libros sobre el método BMAD. Recomendamos leerlo primero porque establece el vocabulario, los módulos y las fases que utilizan los demás. Una vez asimilado, los otros libros se abren en cualquier orden.</p>
+
+<h3><span class="num">0.1</span>¿Qué es BMAD?</h3>
+
+<p><strong>BMAD</strong> (<em>Breakthrough Method for Agile AI&#8209;Driven Development</em>) es un método ágil para construir software con asistencia de inteligencia artificial. Está estructurado en <strong>cuatro fases secuenciales</strong> &mdash; Análisis, Planificación, Solución e Implementación &mdash; y se entrega como un catálogo de <em>skills</em><span class="footnote"><strong>skill:</strong> en BMAD, workflow ejecutable que sigue una serie de pasos estructurados para producir un artefacto concreto (un documento, un test, una decisión). Se invoca con un <code>/comando</code>.</span> invocables, cada una con su <code>/comando</code>, organizadas en módulos especializados.</p>
+
+<p>El valor del método no está en cada skill aislada sino en el <strong>orden</strong> en que se invocan: cada fase produce los artefactos que la siguiente necesita (brief &rarr; PRD<span class="footnote"><strong>PRD:</strong> <em>Product Requirements Document</em>. Documento que describe lo que el producto debe hacer (requisitos funcionales) y cómo de bien debe hacerlo (requisitos no funcionales). Es el contrato entre producto y equipo técnico.</span> &rarr; arquitectura &rarr; épicas &rarr; historias &rarr; código, tests y revisión). Saltarse pasos o reordenar fases es la causa más frecuente de retrabajo en proyectos que adoptan BMAD.</p>
+
+<p style="margin-bottom: 8px;">BMAD se compone de <strong>cinco módulos integrados</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:14%">Módulo</th>
+      <th style="width:86%">Qué hace</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="mod bmm"></span> <strong>BMM</strong></td><td>BMad Method &mdash; flujo principal del proyecto: PRD, arquitectura, historias, desarrollo, revisión de código. Eje central, presente en las cuatro fases.</td></tr>
+    <tr><td><span class="mod tea"></span> <strong>TEA</strong></td><td>Test Architect &mdash; estrategia y arquitectura de testing: diseño de pruebas, framework, CI, ATDD, NFR, trazabilidad. Se incorpora en la Fase 3 (arranque) y opera en la Fase 4 (por historia, por épica y antes de cada release).</td></tr>
+    <tr><td><span class="mod cis"></span> <strong>CIS</strong></td><td>Creative Intelligence Suite &mdash; metodologías de ideación y pensamiento creativo. Útil sobre todo en la Fase 1 (descubrimiento), pero invocable en cualquier momento.</td></tr>
+    <tr><td><span class="mod bmb"></span> <strong>BMB</strong></td><td>BMad Builder &mdash; meta&#8209;módulo para extender BMAD creando agentes, módulos y workflows propios. Solo aplica a equipos que vayan a personalizar el método.</td></tr>
+    <tr><td><span class="mod core"></span> <strong>Core</strong></td><td>Utilidades transversales: división de documentos, indexado, compresión, modo coloquio multi&#8209;agente, revisiones editoriales. Invocables según necesidad operativa.</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="num">0.2</span>La biblioteca BMAD: cinco libros complementarios</h3>
+
+<p>La documentación está organizada en cinco libros. Cada uno cubre una dimensión distinta del método; juntos forman una referencia completa.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:18%">Libro</th>
+      <th style="width:18%">Formato</th>
+      <th style="width:38%">Qué contiene</th>
+      <th style="width:26%">Cuándo leerlo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Libro 1</strong> &mdash; BMAD Atlas <em>(este libro)</em></td>
+      <td>Mapa general &middot; ~25 páginas</td>
+      <td>Vocabulario, módulos, fases, catálogo comprimido de skills, sesiones recomendadas, FAQ y glosario.</td>
+      <td>Primero. Lo leen todos los roles del equipo.</td>
+    </tr>
+    <tr>
+      <td><strong>Libro 2</strong> &mdash; BMAD Flujos de Proyecto</td>
+      <td>Procesos end&#8209;to&#8209;end</td>
+      <td>Flujo greenfield (proyecto nuevo) y flujo brownfield (proyecto existente), workflow por workflow, con paralelismos, dependencias y roles por fase.</td>
+      <td>Para entender el detalle exacto de cada fase y cómo se relacionan los workflows entre sí.</td>
+    </tr>
+    <tr>
+      <td><strong>Libro 3</strong> &mdash; BMAD Plan de Sesiones</td>
+      <td>Sesiones operativas</td>
+      <td>Sesiones S1&ndash;S6 con duración, agenda, participantes y entregables. Incluye la plantilla de <code>project-context.md</code> y el calendario tipo.</td>
+      <td>Para reservar agenda y montar las sesiones reales con stakeholders.</td>
+    </tr>
+    <tr>
+      <td><strong>Libro 4</strong> &mdash; BMAD Catálogo de Skills</td>
+      <td>Referencia comando&#8209;a&#8209;comando</td>
+      <td>Cada skill con su propósito, prerrequisitos, salidas, sub&#8209;pasos y duración estimada. Es el diccionario que se consulta cuando se va a invocar una skill concreta.</td>
+      <td>Como referencia, no como lectura lineal. Se consulta cuando vas a usar una skill.</td>
+    </tr>
+    <tr>
+      <td><strong>Libro 5</strong> &mdash; BMAD Protocolo TEA</td>
+      <td>Especialización en testing</td>
+      <td>Estrategia de testing basada en riesgo, gates de calidad, ATDD, framework, NFR, escenarios cross&#8209;cutting (hotfix, brownfield, flaky).</td>
+      <td>Cuando vayas a ejecutar una skill TEA por primera vez o resolver un problema de testing.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span class="num">0.3</span>¿Qué leer primero según tu rol o momento?</h3>
+
+<p>El siguiente árbol resume la ruta de lectura recomendada en función de tu situación actual.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  Start{"¿Es tu primera vez<br/>con BMAD?"}
+  Start -- "Sí" --> First["Lee este Libro 1 entero<br/>(≈ 1 hora)"]
+  First --> ThenBook3["Después: Libro 3<br/>(visión ejecutiva de las sesiones)"]
+  ThenBook3 --> ThenBook2["Si necesitas el detalle<br/>del flujo: Libro 2"]
+
+  Start -- "No" --> Need{"¿Qué necesitas<br/>ahora?"}
+  Need -- "Facilitar una sesión" --> Sess["Libro 1 Sec. 3<br/>+ Libro 3 (sesión correspondiente)"]
+  Need -- "Saber qué skill toca" --> Skill["Libro 1 Sec. 1<br/>+ Libro 4 como referencia"]
+  Need -- "Implementar TEA" --> TEA["Libro 1 Sec. 1 (vista TEA)<br/>+ Libro 5"]
+  Need -- "Proyecto existente" --> Brown["Libro 1 Sec. 4 P4<br/>+ Libro 2 (brownfield)<br/>+ Libro 5 (escenarios)"]
+  Need -- "Algo se rompió" --> Break["Libro 1 Sec. 4 (FAQ)<br/>+ Libro 5 (escenarios cross-cutting)"]
+
+classDef start fill:#1A1A1A,stroke:#D4B85C,stroke-width:2px,color:#F6DE82;
+classDef decision fill:#FBEFC0,stroke:#D4B85C,stroke-width:1.5px,color:#1A1A1A;
+classDef leaf fill:#FFFFFF,stroke:#1A1A1A,stroke-width:1px,color:#1A1A1A;
+class Start,Need decision;
+class First,ThenBook3,ThenBook2,Sess,Skill,TEA,Brown,Break leaf;</div>
+<div class="caption">Figura 0.1 &mdash; Árbol de decisión para localizar el libro y la sección apropiados.</div>
+</div>
+
+<h3><span class="num">0.4</span>Módulos a instalar</h3>
+
+<p>BMAD se instala desde la raíz del proyecto con el comando <code>npx bmad-method install</code>. El comando lanza un asistente interactivo que pregunta qué módulos activar; cada módulo trae un conjunto distinto de skills, así que conviene marcarlos en el momento de la instalación. Si más adelante se necesita una skill de un módulo no marcado, basta con re&#8209;ejecutar el mismo comando: el instalador detecta lo ya instalado y permite añadir o quitar módulos sin perder el trabajo previo.</p>
+
+<p>Para tener disponibles las skills referenciadas a lo largo de esta biblioteca, marca los siguientes módulos cuando el asistente lo pregunte:</p>
+
+<div class="install">
+  <div class="row must">
+    <div class="mark" style="color: var(--tip);">✓</div>
+    <div class="name">BMad Core Module</div>
+    <div class="desc">Se instala siempre. Provee las utilidades transversales (<code>/bmad-help</code>, <code>/bmad-shard-doc</code>, <code>/bmad-distillator</code>, etc.).</div>
+  </div>
+  <div class="row must">
+    <div class="mark" style="color: var(--tip);">✓</div>
+    <div class="name">BMad Method Agile&#8209;AI Driven&#8209;Development</div>
+    <div class="desc">Módulo principal (BMM). Contiene el flujo del proyecto: PRD, arquitectura, épicas, historias, dev y code review.</div>
+  </div>
+  <div class="row must">
+    <div class="mark" style="color: var(--tip);">✓</div>
+    <div class="name">BMad Creative Intelligence Suite</div>
+    <div class="desc">Módulo CIS. Aporta skills de pensamiento creativo (design thinking, problem solving, storytelling) y los seis agentes con perfil creativo.</div>
+  </div>
+  <div class="row must">
+    <div class="mark" style="color: var(--tip);">✓</div>
+    <div class="name">Test Architect</div>
+    <div class="desc">Módulo TEA. Necesario para todo el Libro 5 y para las skills de testing referenciadas en el flujo.</div>
+  </div>
+  <div class="row opt">
+    <div class="mark" style="color: var(--caution);">○</div>
+    <div class="name">BMad Builder</div>
+    <div class="desc">Opcional. Solo si vas a crear skills propias o módulos personalizados.</div>
+  </div>
+  <div class="row skip">
+    <div class="mark">×</div>
+    <div class="name">BMad Game Dev Studio</div>
+    <div class="desc">Específico para desarrollo de videojuegos. No se cubre en esta biblioteca.</div>
+  </div>
+</div>
+
+<div class="callout info">
+  <span class="head">Nota</span>
+  Los módulos se actualizan de forma independiente: si el instalador muestra una versión nueva, basta con re&#8209;ejecutarlo. La biblioteca está verificada contra la versión instalada en el momento de su publicación (ver pie de cierre del libro).
+</div>
+
+<h3><span class="num">0.5</span>Convenciones del manual</h3>
+
+<p>Para facilitar la lectura, se usan los siguientes elementos visuales de forma consistente en los cinco libros:</p>
+
+<h4>Punto de color del módulo</h4>
+<div class="legend">
+  <div class="legend-item"><span class="mod bmm"></span> <strong>BMM</strong> &middot; flujo principal</div>
+  <div class="legend-item"><span class="mod tea"></span> <strong>TEA</strong> &middot; testing</div>
+  <div class="legend-item"><span class="mod cis"></span> <strong>CIS</strong> &middot; pensamiento creativo</div>
+  <div class="legend-item"><span class="mod bmb"></span> <strong>BMB</strong> &middot; extensión del método</div>
+  <div class="legend-item"><span class="mod core"></span> <strong>Core</strong> &middot; utilidades transversales</div>
+</div>
+
+<h4>Insignia de obligatoriedad</h4>
+<p style="margin-bottom: 4px;">
+  <span class="req-badge req">REQ</span> obligatoria para avanzar de fase &middot;
+  <span class="req-badge rec">REC</span> recomendada fuertemente &middot;
+  <span class="req-badge opc">OPC</span> opcional según necesidad &middot;
+  <span class="req-badge req-tea">REQ TEA</span> obligatoria si el equipo adopta TEA.
+</p>
+
+<h4>Insignias de aporte LIDR</h4>
+<p>Cuando una afirmación del manual es interpretación o recomendación de LIDR &mdash; no parte del método BMAD oficial &mdash; aparece marcada con una insignia:</p>
+<p style="margin-bottom: 4px;">
+  <span class="lidr-badge vision">Visión LIDR</span>
+  framing conceptual nuestro sobre el método (cómo lo entendemos o reorganizamos).
+</p>
+<p style="margin-bottom: 4px;">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  sugerencia operativa basada en nuestra experiencia aplicando el método con equipos.
+</p>
+
+<h4>Llamadas</h4>
+<div class="callout info"><span class="head">Información</span> Explicación didáctica o nota contextual.</div>
+<div class="callout tip"><span class="head">Buena práctica</span> Sugerencia derivada de la experiencia.</div>
+<div class="callout caution"><span class="head">Precaución</span> Detalle al que prestar atención al ejecutar.</div>
+<div class="callout important"><span class="head">Importante</span> Punto crítico que conviene no saltar.</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 1 — MAPA SKILL-A-SKILL
+───────────────────────────────────────────── -->
+<h2><span class="num">1</span>Mapa de skills por fase</h2>
+
+<p class="lead">BMAD ordena el trabajo en cuatro fases secuenciales más una fase opcional de aprendizaje. Cada fase produce los artefactos que la siguiente necesita. Esta sección lista, en orden de invocación, qué skills aplican y qué hace cada una.</p>
+
+<p style="margin-bottom: 4px; color: var(--ink-mute);">El detalle profundo de cada skill (sub&#8209;pasos, prerrequisitos exactos, duración estimada) vive en el <strong>Libro 4 &mdash; BMAD Catálogo de Skills</strong>. El detalle de las skills TEA vive en el <strong>Libro 5 &mdash; BMAD Protocolo TEA</strong>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:22%">Fase</th>
+      <th style="width:48%">Skill</th>
+      <th style="width:30%">Qué hace</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- FASE 0 -->
+    <tr style="background:#F5F0E6;">
+      <td><strong>Fase 0 &mdash; Aprendizaje</strong><br><em>Opcional, solo si se adopta TEA</em></td>
+      <td><code>/bmad-teach-me-testing</code><span class="skill-meta"><span class="mod tea"></span> Teach Me Testing <span class="req-badge opc">OPC</span></span></td>
+      <td>Programa de auto&#8209;aprendizaje en testing dividido en siete sesiones de dos a cuatro horas cada una. El equipo puede pausar y retomar sin perder progreso. Recomendado solo para equipos que adoptan disciplina de testing por primera vez.</td>
+    </tr>
+
+    <!-- FASE 1 -->
+    <tr>
+      <td rowspan="5"><strong>Fase 1 &mdash; Análisis</strong><br><em>Recomendada, todas las skills opcionales</em><br><span style="font-size:9.5px; color:var(--ink-mute);"><strong>Roles:</strong> PO, experto de dominio</span></td>
+      <td><strong>1.</strong> <code>/bmad-brainstorming</code><span class="skill-meta"><span class="mod bmm"></span> Brainstorming <span class="req-badge opc">OPC</span></span></td>
+      <td>Sesión de ideación facilitada con técnicas creativas estructuradas. Incorpora un protocolo anti&#8209;sesgo que obliga a cambiar de dominio creativo cada diez ideas. La meta del workflow es generar más de cien ideas antes de organizarlas.</td>
+    </tr>
+    <tr>
+      <td><strong>2.</strong> <code>/bmad-market-research</code><span class="skill-meta"><span class="mod bmm"></span> Market Research <span class="req-badge opc">OPC</span></span></td>
+      <td>Investigación de mercado basada en búsqueda web obligatoria, con narrativa estructurada y citas verificables. Cubre comportamiento del cliente, problemas, factores de decisión y análisis competitivo. Alimenta el Product Brief y el PRD.</td>
+    </tr>
+    <tr>
+      <td><strong>3.</strong> <code>/bmad-domain-research</code><span class="skill-meta"><span class="mod bmm"></span> Domain Research <span class="req-badge opc">OPC</span></span></td>
+      <td>Investigación profunda del dominio o industria: marco regulatorio, tendencias técnicas y panorama competitivo del sector. El foco es la industria entera, no el producto específico. Crítica en sectores regulados (fiscal, sanidad, fintech).</td>
+    </tr>
+    <tr>
+      <td><strong>4.</strong> <code>/bmad-technical-research</code><span class="skill-meta"><span class="mod bmm"></span> Technical Research <span class="req-badge opc">OPC</span></span></td>
+      <td>Estudio técnico breve basado en evidencia web: evaluación de tecnologías, comparativa de arquitecturas y trade&#8209;offs antes de tomar decisiones. Útil para decisiones cargadas como elegir entre dos frameworks o dos versiones mayores.</td>
+    </tr>
+    <tr>
+      <td><strong>5.</strong> <code>/bmad-product-brief</code><span class="skill-meta"><span class="mod bmm"></span> Product Brief <span class="req-badge rec">REC</span></span></td>
+      <td>Brief de producto persuasivo de una a dos páginas mediante descubrimiento colaborativo, análisis de artefactos previos (brainstorm, research) e investigación web. Tiene tres modos: guiado, rápido y autónomo. Genera opcionalmente un resumen comprimido para alimentar el PRD.</td>
+    </tr>
+
+    <!-- FASE 2 -->
+    <tr style="background:#F5F0E6;">
+      <td rowspan="4"><strong>Fase 2 &mdash; Planificación</strong><br><em>Produce el PRD</em><br><span style="font-size:9.5px; color:var(--ink-mute);"><strong>Roles:</strong> PO, Tech Lead, UX (si hay UI), QA y DevOps (NFR)</span></td>
+      <td><strong>1.</strong> <code>/bmad-create-prd</code><span class="skill-meta"><span class="mod bmm"></span> Create PRD <span class="req-badge req">REQ</span></span></td>
+      <td>PRD comprehensivo desde cero mediante un workflow estructurado. Cubre descubrimiento, visión, resumen ejecutivo, criterios de éxito, viajes de usuario, dominio, innovación, tipo de proyecto, alcance, requisitos funcionales y no funcionales hasta dar el documento por terminado.</td>
+    </tr>
+    <tr style="background:#F5F0E6;">
+      <td><strong>2.</strong> <code>/bmad-validate-prd</code><span class="skill-meta"><span class="mod bmm"></span> Validate PRD <span class="req-badge rec">REC</span></span></td>
+      <td>Auditoría de calidad del PRD contra trece dimensiones (formato, paridad de secciones, densidad, cobertura del brief, medibilidad, trazabilidad, intrusión de implementación, cumplimiento de dominio, ajuste al tipo de proyecto, heurísticas, calidad holística, completitud). Produce un reporte detallado de incidencias con recomendaciones priorizadas.</td>
+    </tr>
+    <tr style="background:#F5F0E6;">
+      <td><strong>3.</strong> <code>/bmad-create-ux-design</code><span class="skill-meta"><span class="mod bmm"></span> Create UX Design <span class="req-badge rec">REC si UI</span></span></td>
+      <td>Especificación de UX completa: descubrimiento, experiencia central, respuesta emocional, inspiración, sistema de diseño, fundamentos visuales, direcciones de diseño, viajes de usuario, estrategia de componentes, patrones de UX y diseño responsivo y de accesibilidad. Pensada para proyectos con UI primaria; si el producto es una API o un servicio backend, esta skill aporta poco.</td>
+    </tr>
+    <tr style="background:#F5F0E6;">
+      <td><strong>4.</strong> <code>/bmad-testarch-nfr</code> <em>(setup)</em><span class="skill-meta"><span class="mod tea"></span> NFR Setup <span class="req-badge rec">REC</span></span></td>
+      <td>
+        Fija umbrales cuantificables (latencia P95, peticiones por segundo, seguridad, fiabilidad, escalabilidad) en el PRD. Sin estos umbrales, el gate previo al release no tiene contra qué validar.
+        <span class="lidr-mark vision">
+          <span class="lidr-badge vision">Visión LIDR</span>
+          NFR es una sola skill en el método. Nosotros la pensamos como tres momentos distintos del proyecto: <em>Setup</em> en Fase 2 para fijar baselines, <em>Check</em> a mitad del ciclo y <em>Gate</em> antes del release. Esta separación facilita la conversación entre equipos.
+        </span>
+      </td>
+    </tr>
+
+    <!-- FASE 3 -->
+    <tr>
+      <td rowspan="6"><strong>Fase 3 &mdash; Solución</strong><br><em>Arquitectura, arranque TEA y backlog</em><br><span style="font-size:9.5px; color:var(--ink-mute);"><strong>Roles:</strong> Tech Lead, Architect, PO, QA, DevOps</span></td>
+      <td><strong>1.</strong> <code>/bmad-create-architecture</code><span class="skill-meta"><span class="mod bmm"></span> Create Architecture <span class="req-badge req">REQ</span></span></td>
+      <td>Documenta las decisiones arquitectónicas en pasos colaborativos. La meta declarada es asegurar que todos los agentes IA implementen de forma consistente: el documento de arquitectura es el contrato que devs y agentes leen para no contradecirse. Incluye patrones de código, estructura de carpetas y convenciones.</td>
+    </tr>
+    <tr>
+      <td><strong>2.</strong> <code>/bmad-testarch-test-design</code><span class="skill-meta"><span class="mod tea"></span> Test Design <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Plan de testing basado en riesgo, con clasificación de prioridades, criterios de entrada y salida y orden de ejecución. Detecta automáticamente el modo: <em>system&#8209;level</em> (Fase 3, valida que la arquitectura sea testeable) o <em>epic&#8209;level</em> (Fase 4, plan por épica).</td>
+    </tr>
+    <tr>
+      <td><strong>3.</strong> <code>/bmad-testarch-framework</code><span class="skill-meta"><span class="mod tea"></span> Test Framework <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Andamiaje del framework de tests listo para producción (Playwright o Cypress) con fixtures, helpers, configuración y buenas prácticas. Configurable por preferencia de framework, tamaño del proyecto y uso de TypeScript.</td>
+    </tr>
+    <tr>
+      <td><strong>4.</strong> <code>/bmad-testarch-ci</code><span class="skill-meta"><span class="mod tea"></span> CI Setup <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Pipeline de integración continua multiplataforma con ejecución de tests, ciclos de <em>burn&#8209;in</em> para detectar tests inestables, sharding paralelo, recolección de artefactos y notificaciones. Soporta GitHub Actions, GitLab CI, Azure Pipelines, Jenkins y Harness.</td>
+    </tr>
+    <tr>
+      <td><strong>5.</strong> <code>/bmad-create-epics-and-stories</code><span class="skill-meta"><span class="mod bmm"></span> Create Epics &amp; Stories <span class="req-badge req">REQ</span></span></td>
+      <td>Descompone el PRD y la arquitectura en épicas e historias de usuario organizadas por valor, con criterios de aceptación en formato Given/When/Then<span class="footnote"><strong>Given/When/Then:</strong> estructura de criterios de aceptación que describe un escenario en tres partes &mdash; dado un contexto inicial (Given), cuando ocurre un evento (When), entonces se espera un resultado (Then). Es el formato estándar de BDD (Behavior&#8209;Driven Development).</span>, requisitos técnicos y pistas de implementación. El backlog producido alimenta el Sprint Planning y la creación de cada historia.</td>
+    </tr>
+    <tr>
+      <td><strong>6.</strong> <code>/bmad-check-implementation-readiness</code><span class="skill-meta"><span class="mod bmm"></span> Check Readiness <span class="req-badge req">REQ</span></span></td>
+      <td>Audita que los cuatro documentos de planificación &mdash; PRD, UX, arquitectura y épicas &mdash; estén completos, alineados entre sí y listos para implementar. Identifica huecos antes de que el equipo (o el agente) empiece a programar y se choque con omisiones. Saltarse este paso es la causa principal de retrabajo en Fase 4.</td>
+    </tr>
+
+    <!-- FASE 4 - SPRINT PLANNING -->
+    <tr style="background:#F5F0E6;">
+      <td><strong>Fase 4 &mdash; Inicio de sprint</strong><br><em>Una vez por sprint</em><br><span style="font-size:9.5px; color:var(--ink-mute);"><strong>Roles:</strong> Dev, QA, Tech Lead</span></td>
+      <td><code>/bmad-sprint-planning</code><span class="skill-meta"><span class="mod bmm"></span> Sprint Planning <span class="req-badge req">REQ</span></span></td>
+      <td>Genera el archivo <code>sprint-status.yaml</code> a partir del documento de épicas. Detecta automáticamente el estado actual de cada historia (backlog, lista para dev, en progreso, en revisión, hecha) buscando los archivos de historia ya creados, y construye la máquina de estados que el resto de la fase consume.</td>
+    </tr>
+
+    <!-- FASE 4 - POR HISTORIA -->
+    <tr>
+      <td rowspan="5"><strong>Fase 4 &mdash; Por cada historia</strong><br><em>Orden estricto, ciclo continuo</em></td>
+      <td><strong>1.</strong> <code>/bmad-create-story</code><span class="skill-meta"><span class="mod bmm"></span> Create Story <span class="req-badge req">REQ</span></span></td>
+      <td>Crea el archivo completo de la historia con todo el contexto que el agente Dev necesita para implementar sin errores: análisis del PRD, arquitectura, UX, historias previas, historial de Git e investigación web actualizada. Tiene dos modos: <code>create</code> (genera la siguiente historia del backlog) y <code>validate</code> (verifica que la historia esté completa antes de pasar al desarrollo).</td>
+    </tr>
+    <tr>
+      <td><strong>2.</strong> <code>/bmad-testarch-atdd</code><span class="skill-meta"><span class="mod tea"></span> ATDD <span class="req-badge req-tea">REQ TEA</span></span></td>
+      <td>Genera tests de aceptación que fallan (fase roja del ciclo red&#8209;green&#8209;refactor<span class="footnote"><strong>red&#8209;green&#8209;refactor:</strong> ciclo de Test&#8209;Driven Development en tres pasos. Rojo: escribir un test que falle. Verde: implementar lo mínimo para que el test pase. Refactor: limpiar el código manteniendo el test verde. Se repite por cada incremento.</span>) antes de la implementación. Produce tests en niveles apropiados (E2E, API y componente) usando sub&#8209;agentes paralelos y un checklist de implementación.</td>
+    </tr>
+    <tr>
+      <td><strong>3.</strong> <code>/bmad-dev-story</code><span class="skill-meta"><span class="mod bmm"></span> Dev Story <span class="req-badge req">REQ</span></span></td>
+      <td>Implementa la historia siguiendo su archivo de spec con el ciclo red&#8209;green&#8209;refactor: tareas y subtareas completas, tests, validaciones y marca de la historia como <code>review</code>. Maneja también la continuación tras code review (cuando vuelve con cambios) y actualiza el sprint-status.</td>
+    </tr>
+    <tr>
+      <td><strong>4.</strong> <code>/bmad-testarch-automate</code><span class="skill-meta"><span class="mod tea"></span> Test Automation <span class="req-badge rec">REC</span></span></td>
+      <td>Expande la cobertura de tests tras la implementación: genera tests priorizados a nivel E2E, API, componente y unitario usando sub&#8209;agentes paralelos. Tiene dos modos: integrado en BMad (usa la historia, el PRD y el test design) y autónomo (analiza el código existente sin artefactos BMad &mdash; útil en proyectos brownfield).</td>
+    </tr>
+    <tr>
+      <td><strong>5.</strong> <code>/bmad-code-review</code><span class="skill-meta"><span class="mod bmm"></span> Code Review <span class="req-badge rec">REC</span></span></td>
+      <td>Revisión adversarial pre&#8209;merge usando tres capas paralelas: <em>Blind Hunter</em> (busca bugs sin contexto), <em>Edge Case Hunter</em> (recorre ramas y condiciones límite) y <em>Acceptance Auditor</em> (valida cumplimiento de criterios de aceptación). Triage estructurado en categorías de severidad (alta, media, baja). Recomendamos usar un LLM distinto al que implementó para máxima objetividad.</td>
+    </tr>
+
+    <!-- FASE 4 - CIERRE DE EPICA -->
+    <tr style="background:#F5F0E6;">
+      <td rowspan="3"><strong>Fase 4 &mdash; Cierre de épica</strong><br><em>Recomendado: secuencial test&#8209;review &rarr; trace &rarr; retro</em></td>
+      <td><code>/bmad-testarch-test-review</code><span class="skill-meta"><span class="mod tea"></span> Test Review <span class="req-badge opc">OPC</span></span></td>
+      <td>Auditoría de calidad del conjunto de tests con puntuación de 0 a 100 y hallazgos accionables por dimensión: determinismo, aislamiento, mantenibilidad y rendimiento. Sub&#8209;agentes especializados por dimensión. Para cobertura de requisitos, usar <code>/bmad-testarch-trace</code>.</td>
+    </tr>
+    <tr style="background:#F5F0E6;">
+      <td><code>/bmad-testarch-trace</code><span class="skill-meta"><span class="mod tea"></span> Traceability <span class="req-badge opc">OPC</span></span></td>
+      <td>Matriz de trazabilidad requisitos&harr;tests, análisis de huecos y decisión opcional de gate de calidad (PASS / CONCERNS / FAIL / WAIVED) basada en evidencia. Salida determinista go/no&#8209;go antes del release.</td>
+    </tr>
+    <tr style="background:#F5F0E6;">
+      <td><code>/bmad-retrospective</code><span class="skill-meta"><span class="mod bmm"></span> Retrospective <span class="req-badge opc">OPC</span></span></td>
+      <td>Retrospectiva tras épica para extraer lecciones aprendidas y evaluar el éxito. Formato conversacional multi&#8209;agente con Scrum Master y agentes de equipo facilitando el diálogo. Análisis de qué funcionó, qué no y action items con responsable claro. Incluye preparación de la próxima épica.</td>
+    </tr>
+
+    <!-- NFR mid-cycle / pre-release -->
+    <tr>
+      <td rowspan="2"><strong>Mid&#8209;ciclo &amp; pre&#8209;release</strong><br><em>Misma skill, dos invocaciones</em></td>
+      <td><code>/bmad-testarch-nfr</code> <em>(check)</em><span class="skill-meta"><span class="mod tea"></span> NFR Check <span class="req-badge rec">REC</span></span></td>
+      <td>Validación intermedia: ¿el proyecto va camino de cumplir los NFR fijados en el setup? Evalúa con validación basada en evidencia (load tests, security scans) y desenlace determinista (PASS / CONCERNS / FAIL).</td>
+    </tr>
+    <tr>
+      <td><code>/bmad-testarch-nfr</code> <em>(gate)</em><span class="skill-meta"><span class="mod tea"></span> NFR Gate <span class="req-badge rec">REC</span></span></td>
+      <td>Gate antes del release que decide PASS, CONCERNS, WAIVED o FAIL en cada hito, basado en evidencia (rendimiento, seguridad, fiabilidad, escalabilidad). Soporte para auditorías de cumplimiento (PCI, HIPAA, RGPD).</td>
+    </tr>
+
+    <!-- BROWNFIELD -->
+    <tr style="background:#F5F0E6;">
+      <td><strong>Brownfield</strong><br><em>Proyecto ya existente</em></td>
+      <td><code>/bmad-qa-generate-e2e-tests</code><span class="skill-meta"><span class="mod tea"></span> QA Generate E2E <span class="req-badge opc">OPC</span></span></td>
+      <td>Generación rápida de tests E2E y de API para código ya implementado (cobertura retroactiva). Detecta automáticamente el framework existente (Playwright, Jest, Vitest, Cypress), genera el camino feliz y los casos de borde críticos, los ejecuta y los valida. No usar para code review ni para validación de historias.</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<!-- Reformulación del antiguo "Toolkit post-artefacto" -->
+<h3>Correcciones tras producir un artefacto</h3>
+
+<p>Si tras producir el PRD o la arquitectura aparecen cambios o ajustes necesarios, no es preciso planificar una nueva sesión. Hay skills específicas para corregir cada caso, invocables en cualquier momento del flujo:</p>
+
+<h4>1. Correcciones en el PRD</h4>
+<ul>
+  <li><strong>Cambios menores de alcance o refinamiento de requisitos</strong> &rarr; <code>/bmad-edit-prd</code>.</li>
+  <li><strong>Conflicto entre lo que pide el negocio y las restricciones técnicas</strong> &rarr; <code>/bmad-cis-problem-solving</code>.</li>
+</ul>
+
+<h4>2. Correcciones en la arquitectura</h4>
+<ul>
+  <li><strong>Drift entre arquitectura y PRD que afecta al alcance</strong> &rarr; <code>/bmad-correct-course</code>.</li>
+  <li><strong>Conflicto entre la decisión técnica y el producto</strong> &rarr; <code>/bmad-cis-problem-solving</code>.</li>
+</ul>
+
+<p style="color: var(--ink-mute);">Más información en Sec. 2.1 (skills operativas) y Sec. 2.2 (skills de pensamiento creativo).</p>
+
+<div class="callout important">
+  <span class="head">Regla bloqueante TEA</span>
+  El módulo TEA tiene un orden estricto en su bloque de arranque: <code>/bmad-testarch-test-design</code> antes de <code>/bmad-testarch-framework</code>; <code>/bmad-testarch-framework</code> antes de <code>/bmad-testarch-ci</code>; el framework instalado antes de <code>/bmad-testarch-atdd</code>. Todo lo demás se puede adaptar al equipo, pero estas dependencias no negocian.
+</div>
+
+<p style="color: var(--ink-mute);"><strong>Vista solo TEA:</strong> filtra por punto verde <span class="mod tea"></span>. Skills bloqueantes en orden: <code>test-design</code> &rarr; <code>framework</code> &rarr; <code>ci</code> (Fase 3) y <code>atdd</code> antes de <code>dev-story</code> (Fase 4). NFR Assessment se invoca en tres momentos: setup en Fase 2, check a mitad del ciclo y gate antes del release.</p>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 2 — SKILLS COMPLEMENTARIAS
+───────────────────────────────────────────── -->
+<h2><span class="num">2</span>Skills complementarias</h2>
+
+<p class="lead">Además de las skills del flujo principal (Sec. 1), BMAD ofrece un conjunto de skills que se invocan según necesidad: utilidades operativas, métodos de pensamiento creativo, agentes&#8209;persona y meta&#8209;skills para extender el método. Esta sección las cataloga.</p>
+
+<h3><span class="num">2.1</span>Skills operativas</h3>
+
+<p>Resuelven una necesidad puntual del proyecto (estado del sprint, documentar código, dividir un documento, etc.). Aunque están etiquetadas como invocables en cualquier momento, no todas son verdaderamente atemporales: algunas requieren que ya existan ciertos artefactos. Las agrupamos por prerrequisito para que sea fácil ubicarlas.</p>
+
+<h4>2.1.a — Sin prerrequisitos</h4>
+<table>
+  <thead>
+    <tr>
+      <th style="width:38%">Comando</th>
+      <th style="width:62%">Qué hace</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-help</code><span class="skill-meta"><span class="mod core"></span> Help</span></td><td>Analiza el estado del proyecto y la pregunta del usuario, responde dudas sobre BMAD o recomienda qué skill invocar a continuación. Punto de entrada cuando no se sabe por dónde seguir.</td></tr>
+    <tr><td><code>/bmad-shard-doc</code><span class="skill-meta"><span class="mod core"></span> Shard Doc</span></td><td>Descompone un documento markdown grande (más de 500 líneas) en archivos por sección de nivel 2, configurable. Útil para PRD o documentos de arquitectura que ya no caben en la ventana de contexto del modelo.</td></tr>
+    <tr><td><code>/bmad-index-docs</code><span class="skill-meta"><span class="mod core"></span> Index Docs</span></td><td>Crea o actualiza un archivo <code>index.md</code> de una carpeta con descripciones derivadas del contenido real de cada documento. Permite que un modelo navegue la documentación sin cargar todos los archivos.</td></tr>
+    <tr><td><code>/bmad-distillator</code><span class="skill-meta"><span class="mod core"></span> Distillator</span></td><td>Compresión sin pérdida y eficiente en tokens: preserva hechos, decisiones y restricciones; elimina prosa redundante. Para alimentar contexto a otras skills sin saturar la ventana del modelo.</td></tr>
+    <tr><td><code>/bmad-party-mode</code><span class="skill-meta"><span class="mod core"></span> Party Mode</span></td><td>Orquesta un debate multi&#8209;agente con todos los agentes BMAD instalados (Mary, John, Winston, Sally, etc.). Útil para retros, decisiones cargadas y validar trade&#8209;offs desde varios roles a la vez.</td></tr>
+    <tr><td><code>/bmad-advanced-elicitation</code><span class="skill-meta"><span class="mod core"></span> Advanced Elicitation</span></td><td>Empuja al modelo a reconsiderar y refinar el último output con técnicas formales (socrático, primeros principios, pre&#8209;mortem, red team). Para profundizar críticas cuando el borrador inicial parece bueno pero podría serlo más.</td></tr>
+    <tr><td><code>/bmad-editorial-review-structure</code><span class="skill-meta"><span class="mod core"></span> Editorial Review (Structure)</span></td><td>Revisa la estructura de un documento y propone cortes, reorganización y simplificación preservando la comprensión. No toca la prosa: opera sobre el orden de las ideas, la jerarquía de los apartados y el layout general.</td></tr>
+    <tr><td><code>/bmad-editorial-review-prose</code><span class="skill-meta"><span class="mod core"></span> Editorial Review (Prose)</span></td><td>Revisa un texto ya redactado frase por frase y detecta problemas de claridad, ambigüedad o redundancia. Devuelve una tabla con cada frase problemática, el problema concreto y una sugerencia de mejora. No reorganiza la estructura, solo afina la prosa.</td></tr>
+    <tr><td><code>/bmad-review-adversarial-general</code><span class="skill-meta"><span class="mod core"></span> Adversarial Review</span></td><td>Revisión adversarial: cuestiona suposiciones y hostiga el output con escepticismo extremo. Reporta al menos diez incidencias o fallas estructurales antes de finalizar el entregable.</td></tr>
+    <tr><td><code>/bmad-review-edge-case-hunter</code><span class="skill-meta"><span class="mod core"></span> Edge Case Hunter</span></td><td>Recorre exhaustivamente cada rama y condición límite del contenido (código, especificación o diff) y reporta solo los casos de borde no manejados. Ortogonal a la revisión adversarial: aquí lo que manda es el método, no la actitud.</td></tr>
+  </tbody>
+</table>
+
+<h4>2.1.b — Requiere PRD existente</h4>
+<table>
+  <thead>
+    <tr><th style="width:38%">Comando</th><th style="width:62%">Qué hace</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-edit-prd</code><span class="skill-meta"><span class="mod bmm"></span> Edit PRD</span></td><td>Edita un PRD existente para incorporar cambios menores (ajustes de alcance, refinamiento de requisitos funcionales o no funcionales) sin regenerarlo desde cero. Incluye conversión para PRD antiguos sin frontmatter de seguimiento de estado.</td></tr>
+  </tbody>
+</table>
+
+<h4>2.1.c — Requiere PRD, arquitectura y épicas</h4>
+<table>
+  <thead>
+    <tr><th style="width:38%">Comando</th><th style="width:62%">Qué hace</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-correct-course</code><span class="skill-meta"><span class="mod bmm"></span> Correct Course</span></td><td>Maneja cambios significativos durante la ejecución del sprint: genera una propuesta de cambio cuando hay desviación entre PRD, arquitectura o backlog activo. Alinea al equipo antes de replanificar.</td></tr>
+    <tr><td><code>/bmad-sprint-status</code><span class="skill-meta"><span class="mod bmm"></span> Sprint Status</span></td><td>Resume el estado del sprint (historias en backlog, en desarrollo, en revisión, hechas) leyendo el archivo <code>sprint-status.yaml</code>, identifica riesgos y bloqueos y enruta hacia la siguiente skill del ciclo.</td></tr>
+  </tbody>
+</table>
+
+<h4>2.1.d — Requiere código existente</h4>
+<table>
+  <thead>
+    <tr><th style="width:38%">Comando</th><th style="width:62%">Qué hace</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-document-project</code><span class="skill-meta"><span class="mod bmm"></span> Document Project</span></td><td>Documenta un proyecto brownfield para alimentar contexto a la IA: análisis arquitectónico automático y extracción de patrones existentes. Salida base para el flujo brownfield (cambios sobre código heredado).</td></tr>
+    <tr><td><code>/bmad-generate-project-context</code><span class="skill-meta"><span class="mod bmm"></span> Generate Context</span></td><td>Escanea el código y produce <code>project-context.md</code> con convenciones, estándares y decisiones técnicas. Es el archivo que <code>/bmad-create-story</code>, <code>/bmad-dev-story</code>, <code>/bmad-code-review</code> y varias skills TEA cargan como contexto base.</td></tr>
+    <tr><td><code>/bmad-quick-dev</code><span class="skill-meta"><span class="mod bmm"></span> Quick Dev</span></td><td>Workflow unificado intent&#8209;in / code&#8209;out: clarifica la intención, planea, implementa y revisa el código en una sola invocación. Para correcciones y features pequeñas que no justifican pasar por épica e historia.</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="num">2.2</span>Skills de pensamiento creativo (CIS)</h3>
+
+<p>Métodos de ideación del módulo Creative Intelligence Suite. Todas son invocables en cualquier momento sin prerrequisitos. Se eligen según la naturaleza del reto: empatía con el usuario, búsqueda de disrupción, problema complejo o construcción de narrativa.</p>
+
+<table>
+  <thead>
+    <tr><th style="width:38%">Comando</th><th style="width:62%">Qué hace</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-cis-design-thinking</code><span class="skill-meta"><span class="mod cis"></span> Design Thinking</span></td><td>Guía un proceso de diseño centrado en el usuario de extremo a extremo (empatía &rarr; ideación &rarr; prototipo &rarr; test) con metodologías basadas en la empatía. Para descubrimiento cuando el problema del usuario no está claro.</td></tr>
+    <tr><td><code>/bmad-cis-innovation-strategy</code><span class="skill-meta"><span class="mod cis"></span> Innovation Strategy</span></td><td>Identifica oportunidades de disrupción y arquitectura de innovación en el modelo de negocio. Para escapar de competencia frontal con incumbentes y buscar ángulos no contestados.</td></tr>
+    <tr><td><code>/bmad-cis-problem-solving</code><span class="skill-meta"><span class="mod cis"></span> Problem Solving</span></td><td>Aplica metodologías sistemáticas (TRIZ, Theory of Constraints, Systems Thinking, Cinco Por Qués) para descomponer retos complejos. Foco en causa raíz frente a síntomas.</td></tr>
+    <tr><td><code>/bmad-cis-storytelling</code><span class="skill-meta"><span class="mod cis"></span> Storytelling</span></td><td>Construye narrativas con frameworks probados (Hero's Journey, StoryBrand, Pixar Pitch). Para pitches a inversores, comunicación interna y materiales de descubrimiento con stakeholders.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="head">Brainstorming en CIS</span>
+  El módulo CIS no tiene una skill de brainstorming propia. Para una sesión sin framework formal usa <code>/bmad-brainstorming</code> (Fase 1, Sec. 1). Para facilitación conversacional avanzada con un coach de ideación, invoca al agente <strong>Carson</strong> (Sec. 2.3) mediante <code>/bmad-cis-agent-brainstorming-coach</code>.
+</div>
+
+<h3><span class="num">2.3</span>Agentes con persona</h3>
+
+<p>Conversación con un rol virtual. Se invocan diciendo "habla con &lt;nombre&gt;" o usando el comando directo. Cada agente concentra el conocimiento y la voz de su dominio.</p>
+
+<table>
+  <thead>
+    <tr><th style="width:42%">Comando / persona</th><th style="width:58%">Qué hace</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-agent-analyst</code><span class="skill-meta"><strong>Mary</strong> &mdash; Business Analyst <span class="mod bmm"></span></span></td><td>Conduce el descubrimiento estratégico de la Fase 1: análisis competitivo, elicitación de requisitos y validación de hipótesis. Combina la rigurosidad estratégica de Porter con el principio de la pirámide de Minto.</td></tr>
+    <tr><td><code>/bmad-agent-pm</code><span class="skill-meta"><strong>John</strong> &mdash; Product Manager <span class="mod bmm"></span></span></td><td>Facilita el descubrimiento de producto, las entrevistas de usuario y la alineación con stakeholders. Pregunta "por qué" repetidamente hasta llegar a la necesidad real detrás de la feature solicitada.</td></tr>
+    <tr><td><code>/bmad-agent-architect</code><span class="skill-meta"><strong>Winston</strong> &mdash; System Architect <span class="mod bmm"></span></span></td><td>Discute diseño técnico de alto nivel, trade&#8209;offs arquitectónicos y sistemas distribuidos. Defiende tecnología sólida y aburrida frente a diseños astronaúticos: la productividad del desarrollador es parte de la arquitectura.</td></tr>
+    <tr><td><code>/bmad-agent-ux-designer</code><span class="skill-meta"><strong>Sally</strong> &mdash; UX Designer <span class="mod bmm"></span></span></td><td>Resuelve dudas de planificación de UX, diseño de interacción, patrones de interfaz y accesibilidad. Pinta historias que hacen sentir el problema antes de proponer la solución.</td></tr>
+    <tr><td><code>/bmad-agent-dev</code><span class="skill-meta"><strong>Amelia</strong> &mdash; Senior Software Engineer <span class="mod bmm"></span></span></td><td>Ejecuta historias con adherencia estricta a los criterios de aceptación y a los estándares del proyecto. Disciplina test&#8209;first: rojo, verde, refactor; el 100% de los tests deben pasar antes de marcar como revisable.</td></tr>
+    <tr><td><code>/bmad-agent-tech-writer</code><span class="skill-meta"><strong>Paige</strong> &mdash; Technical Writer <span class="mod bmm"></span></span></td><td>Produce documentación técnica, diagramas en Mermaid y revisa la claridad de la prosa. Educadora paciente: traduce conceptos complejos a accesibles para audiencias no expertas.</td></tr>
+    <tr><td><code>/bmad-tea</code><span class="skill-meta"><strong>Murat</strong> &mdash; Master Test Architect &amp; Quality Advisor <span class="mod tea"></span></span></td><td>Asesor de calidad con conocimiento profundo del módulo TEA: testing basado en riesgo, arquitectura de fixtures, ATDD, gobernanza de CI/CD, gates NFR. Es el punto de entrada conversacional al Libro 5.</td></tr>
+    <tr><td><code>/bmad-cis-agent-storyteller</code><span class="skill-meta"><strong>Sophia</strong> &mdash; Master Storyteller <span class="mod cis"></span></span></td><td>Construye narrativas con frameworks probados. Voz de bardo épico: cada frase está calculada para enganchar al oyente.</td></tr>
+    <tr><td><code>/bmad-cis-agent-design-thinking-coach</code><span class="skill-meta"><strong>Maya</strong> &mdash; Design Thinking Maestro <span class="mod cis"></span></span></td><td>Guía procesos de diseño centrado en el usuario con énfasis en la empatía. Improvisa como músico de jazz: desafía supuestos jugando, no atacando.</td></tr>
+    <tr><td><code>/bmad-cis-agent-brainstorming-coach</code><span class="skill-meta"><strong>Carson</strong> &mdash; Elite Brainstorming Specialist <span class="mod cis"></span></span></td><td>Facilita sesiones avanzadas de ideación con creatividad sistemática. Modo "yes&#8209;and": celebra ideas salvajes y fuerza diversidad de dominio para combatir el sesgo semántico del modelo.</td></tr>
+    <tr><td><code>/bmad-cis-agent-creative-problem-solver</code><span class="skill-meta"><strong>Dr. Quinn</strong> &mdash; Master Problem Solver <span class="mod cis"></span></span></td><td>Aplica TRIZ, Theory of Constraints y Systems Thinking. Sherlock Holmes con personalidad de científico juguetón: investiga la naturaleza del problema antes de saltar a soluciones.</td></tr>
+    <tr><td><code>/bmad-cis-agent-innovation-strategist</code><span class="skill-meta"><strong>Victor</strong> &mdash; Disruptive Innovation Oracle <span class="mod cis"></span></span></td><td>Identifica oportunidades disruptivas y diseña innovación de modelo de negocio. Gran maestro de ajedrez: declaraciones audaces seguidas de preguntas devastadoras que revelan supuestos no examinados.</td></tr>
+    <tr><td><code>/bmad-cis-agent-presentation-master</code><span class="skill-meta"><strong>Caravaggio</strong> &mdash; Presentation Expert <span class="mod cis"></span></span></td><td>Diseña pitch decks, slide decks y storytelling visual. Director creativo sarcástico: celebra elecciones audaces y exige jerarquía visual estricta (un mensaje por slide).</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="num">2.4</span>Meta&#8209;skills &mdash; extender BMAD</h3>
+
+<div class="callout caution">
+  <span class="head">Para usuarios avanzados</span>
+  Estas skills no forman parte del flujo del proyecto. Sirven para crear o modificar la maquinaria BMAD (agentes, workflows, módulos). Si estás adoptando BMAD por primera vez, ignora esta sección. Solo son útiles para facilitadores BMAD o equipos que vayan a personalizar el método.
+</div>
+
+<table>
+  <thead>
+    <tr><th style="width:38%">Comando</th><th style="width:62%">Qué hace</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/bmad-bmb-setup</code><span class="skill-meta"><span class="mod bmb"></span> BMB Setup</span></td><td>Instala y configura el módulo BMad Builder: recopila preferencias, escribe los archivos de configuración. Prerrequisito para crear agentes o módulos personalizados.</td></tr>
+    <tr><td><code>/bmad-agent-builder</code><span class="skill-meta"><span class="mod bmb"></span> Agent Builder</span></td><td>Construye agentes orientados a resultados mediante descubrimiento conversacional. Guía desde la visión inicial hasta el archivo <code>SKILL.md</code> completo. Modos: crear, editar, analizar.</td></tr>
+    <tr><td><code>/bmad-module-builder</code><span class="skill-meta"><span class="mod bmb"></span> Module Builder</span></td><td>Planifica, crea y valida módulos BMAD enteros. Tres modos: ideación (visión), creación (andamiaje) y validación (revisión). Para extender BMAD con un conjunto coherente de skills nuevas.</td></tr>
+    <tr><td><code>/bmad-workflow-builder</code><span class="skill-meta"><span class="mod bmb"></span> Workflow Builder</span></td><td>Construye workflows orientados a resultados mediante descubrimiento conversacional. Soporta crear nuevo, convertir una skill existente, analizar la calidad y editar. Para refactorizar el toolkit BMAD propio.</td></tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 3 — MAPA DE SESIONES (LIDR)
+───────────────────────────────────────────── -->
+<h2><span class="num">3</span>Mapa de sesiones recomendadas</h2>
+
+<div class="lidr-mark recomendacion">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  Esta sección entera describe un modelo de sesiones diseñado por LIDR para acompañar la adopción de BMAD en equipos. El método BMAD oficial no prescribe sesiones; este calendario es nuestra forma de operacionalizarlo. El detalle de cada sesión (agenda, participantes, plantillas) vive en el <strong>Libro 3 &mdash; BMAD Plan de Sesiones</strong>.
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:14%">Sesión</th>
+      <th style="width:12%">Duración</th>
+      <th style="width:36%">Workflows</th>
+      <th style="width:38%">Entregable clave</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>S0</strong> <em>(opcional)</em></td>
+      <td>7 sesiones</td>
+      <td><code>/bmad-teach-me-testing</code></td>
+      <td>Equipo con vocabulario TEA compartido. Saltar si el equipo es experimentado en testing.</td>
+    </tr>
+    <tr>
+      <td><strong>S1</strong></td>
+      <td>3 h</td>
+      <td><code>/bmad-brainstorming</code> &rarr; <code>/bmad-product-brief</code> &rarr; <code>/bmad-create-prd</code> &rarr; <code>/bmad-create-ux-design</code> &rarr; <code>/bmad-testarch-nfr</code> <em>(setup)</em></td>
+      <td>PRD con NFR cuantificables (no "rápido", sino "p95 &lt; 200 ms").</td>
+    </tr>
+    <tr>
+      <td><strong>S2</strong></td>
+      <td>3 h</td>
+      <td><code>/bmad-create-architecture</code> &rarr; <code>/bmad-testarch-test-design</code> &rarr; <code>/bmad-testarch-framework</code> &rarr; <code>/bmad-testarch-ci</code></td>
+      <td>Arquitectura, plan de testing, framework instalado y pipeline de CI listo.</td>
+    </tr>
+    <tr>
+      <td><strong>Tras S2</strong> <em>(asíncrono, opc.)</em></td>
+      <td>0&ndash;1 h</td>
+      <td>Correcciones tras Arq/UX si hay drift &mdash; <code>/bmad-edit-prd</code> &middot; <code>/bmad-correct-course</code> &middot; <code>/bmad-cis-problem-solving</code></td>
+      <td>Ajustes asíncronos antes de las épicas.</td>
+    </tr>
+    <tr>
+      <td><strong>S3</strong></td>
+      <td>3 h 30 min</td>
+      <td><code>/bmad-create-epics-and-stories</code> &rarr; <code>/bmad-check-implementation-readiness</code> &rarr; <code>/bmad-sprint-planning</code> &rarr; primera historia (<code>/bmad-create-story</code> y <code>/bmad-testarch-atdd</code>)</td>
+      <td>Backlog priorizado y primera historia con tests rojos.</td>
+    </tr>
+    <tr>
+      <td><strong>S4</strong></td>
+      <td>2&ndash;3 h</td>
+      <td>Tres decisiones operativas (herramienta, estrategia de ramas, flujo de estados) más una opcional si se usa Claude Code (worktrees / multi&#8209;agente). Implementación de los cambios en vivo.</td>
+      <td><code>project-context.md</code> con la sección "Ops Conventions" comprometida al repositorio y configuración BMAD ajustada.</td>
+    </tr>
+    <tr>
+      <td><strong>S5</strong></td>
+      <td>continuo</td>
+      <td><strong>Por historia:</strong> <code>create-story</code> &rarr; <code>testarch-atdd</code> &rarr; <code>dev-story</code> &rarr; <code>testarch-automate</code> &rarr; <code>code-review</code>. <strong>Por épica:</strong> <code>testarch-test-review</code> &rarr; <code>testarch-trace</code> &rarr; <code>retrospective</code>. <strong>Por hito:</strong> <code>testarch-nfr</code> <em>(check / gate)</em>.</td>
+      <td>Mínimo dos épicas (épica 1 = configuración e infraestructura; épica 2+ = features). PRs mergeados con quality gate y retros por épica.</td>
+    </tr>
+    <tr>
+      <td><strong>S6</strong></td>
+      <td>2&ndash;3 h</td>
+      <td>Cierre formal de la primera épica facilitado: <code>/bmad-testarch-test-review</code> &rarr; <code>/bmad-testarch-trace</code> &rarr; <code>/bmad-retrospective</code>, más un Q&amp;A operativo de cierre (15&ndash;20 min).</td>
+      <td>Puntuación 0&ndash;100 del suite, matriz de trazabilidad, decisión de gate, documento de retrospectiva y dudas operativas resueltas.</td>
+    </tr>
+    <tr>
+      <td><strong>Tras S6</strong> <em>(asíncrono, opc.)</em></td>
+      <td>~1 h</td>
+      <td><code>/bmad-testarch-nfr</code> <em>(check)</em> didáctico tras S6.</td>
+      <td>Primera ejecución de NFR Check archivada como plantilla para futuras invocaciones en operación autónoma.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <span class="head">Total pre&#8209;implementación</span>
+  Aproximadamente 11,5&ndash;12,5 horas síncronas antes de la primera épica (S1 + S2 + S3 + S4) más 2&ndash;3 horas en S6 al cerrar la épica 1. Las correcciones tras S2 y tras S6 son asíncronas y opcionales. S5 es continuo. Sumar S0 (14&ndash;28 h) si se forma al equipo previamente en testing.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 4 — FAQ
+───────────────────────────────────────────── -->
+<h2><span class="num">4</span>Preguntas frecuentes</h2>
+
+<div class="faq-q">P1. ¿Puedo saltarme la Fase 1 si tengo el brief claro?</div>
+<div class="faq-a">
+  <p>Sí, pero solo si se cumplen las tres condiciones siguientes: (a) brief escrito y validado con stakeholders, (b) investigación previa de mercado, dominio o técnica ya ejecutada, (c) visión cristalizada sin dudas abiertas.</p>
+  <p>Si falta alguna, no la saltes: cada hora de Fase 1 ahorra días en Fase 3 y 4. Los equipos que la saltan sin estas condiciones suelen volver a ella con coste mayor.</p>
+</div>
+
+<div class="faq-q">P2. ¿Puedo adoptar TEA parcialmente (por ejemplo, solo ATDD)?</div>
+<div class="faq-a">
+  <p><strong>No de forma segura.</strong> TEA tiene dependencias duras: <code>/bmad-testarch-framework</code> es prerrequisito de <code>/bmad-testarch-atdd</code>; sin framework instalado, los tests no son ejecutables. Sin <code>/bmad-testarch-ci</code>, los tests se degradan porque no hay enforcement.</p>
+  <p><strong>Mínimo viable TEA:</strong> <code>/bmad-testarch-test-design</code> &rarr; <code>/bmad-testarch-framework</code> &rarr; <code>/bmad-testarch-atdd</code>. Si no se puede comprometer este mínimo, mejor no adoptar TEA y usar BMM puro. Adopción parcial = lo peor de los dos mundos: tests que no corren en CI más una falsa sensación de cobertura.</p>
+</div>
+
+<div class="faq-q">P3. ¿Qué pasa si me salto S4 (convenciones del equipo)?</div>
+<div class="faq-a">
+  <div class="lidr-mark recomendacion">
+    <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+    Las sesiones S0&ndash;S6 son una recomendación de LIDR (ver Sec. 3). S4 en particular cubre las decisiones operativas que el flujo BMAD necesita resolver para arrancar.
+  </div>
+  <p>Saltar S4 genera <strong>deuda operativa</strong>: el ciclo iterativo arranca sin saber qué herramienta de backlog usar, los devs nombran ramas de forma incoherente y el flujo de estados pierde las fases TEA. El resultado típico: code reviews sin tests, PRs mezclando trabajo en curso, suite degradada en semanas.</p>
+  <p>S4 dura entre dos y tres horas y produce un entregable concreto: la sección "Ops Conventions" en <code>project-context.md</code> comprometida al repositorio y la configuración BMAD ajustada. Sin ese commit, BMAD no "ve" las decisiones tomadas.</p>
+</div>
+
+<div class="faq-q">P4. ¿Cómo funciona BMAD en un proyecto con código existente (brownfield)?</div>
+<div class="faq-a">
+  <p>Se usa el <strong>flujo brownfield</strong> (detallado en el Libro 2): primero <code>/bmad-document-project</code> o <code>/bmad-generate-project-context</code> para capturar el estado actual. Luego se decide según la magnitud del cambio:</p>
+  <ul>
+    <li><strong>Cambio grande</strong> (refactor arquitectónico, módulo nuevo) &mdash; flujo greenfield completo con la documentación como entrada.</li>
+    <li><strong>Cambio pequeño</strong> (feature aislada, bug) &mdash; saltar a Fase 4 y usar <code>/bmad-create-story</code> directamente.</li>
+    <li><strong>Cobertura retroactiva</strong> &mdash; <code>/bmad-qa-generate-e2e-tests</code> para features ya implementadas sin tests.</li>
+  </ul>
+</div>
+
+<div class="faq-q">P5. ¿Libro 2 o Libro 3? ¿Qué leo primero?</div>
+<div class="faq-a">
+  <p>Describen el <strong>mismo flujo</strong> en formatos distintos. El Libro 2 (Flujos de Proyecto) es verboso, una fila por workflow, con nivel de detalle alto. El Libro 3 (Plan de Sesiones) comprime varios workflows en sesiones con duración concreta.</p>
+  <ul>
+    <li><strong>Primera lectura u onboarding:</strong> este Libro 1 &rarr; Libro 3 (visión ejecutiva).</li>
+    <li><strong>Consulta puntual de un workflow:</strong> Libro 2 (búsqueda directa).</li>
+    <li><strong>Implementando TEA:</strong> Libro 5 (deep dive por skill).</li>
+  </ul>
+</div>
+
+<div class="faq-q">P6. ¿Cuándo invoco <code>/bmad-testarch-nfr</code>?</div>
+<div class="faq-a">
+  <div class="lidr-mark vision">
+    <span class="lidr-badge vision">Visión LIDR</span>
+    En el repo, <code>/bmad-testarch-nfr</code> es una sola skill. Nosotros la usamos en tres momentos distintos del proyecto, con salidas distintas en cada uno.
+  </div>
+  <ul>
+    <li><strong>Fase 2 &mdash; Setup:</strong> tras <code>/bmad-validate-prd</code>. Fija umbrales cuantificables en el PRD (rendimiento, seguridad, fiabilidad, escalabilidad). Sin umbrales aquí, el gate previo al release no tiene baseline contra qué validar.</li>
+    <li><strong>Fase 4 a mitad de ciclo &mdash; Check:</strong> valida que el sistema va camino de cumplir (entre sprints, a mitad de épica). Si no, <code>/bmad-correct-course</code> antes de profundizar.</li>
+    <li><strong>Fase 4 antes del release &mdash; Gate:</strong> decide PASS / CONCERNS / WAIVED / FAIL antes de cada release o hito. Recomendado obligatorio si se adopta TEA.</li>
+  </ul>
+</div>
+
+<div class="faq-q">P7. ¿Qué hago si Code Review encuentra incidencias?</div>
+<div class="faq-a">
+  <p>La historia <strong>vuelve a estado "in development"</strong>. Si las incidencias revelan huecos que el ATDD no cubrió (casos de borde olvidados), vuelve también a ATDD para añadir tests rojos antes de re&#8209;implementar. Este camino de retorno debe estar documentado en el flujo de estados (decisión 3 de S4).</p>
+  <p><em>Antipatrón:</em> ignorar el feedback y mergear. La suite se degrada rápido y los tests existentes pierden credibilidad.</p>
+</div>
+
+<div class="faq-q">P8. ¿Qué hago si mi PRD tiene NFR cualitativos ("el sistema debe ser rápido")?</div>
+<div class="faq-a">
+  <p>Volver a S1 con <code>/bmad-testarch-nfr</code> en modo Setup y convertir cada NFR cualitativo en <strong>umbral cuantificable</strong>. Sin esto, el gate previo al release no tiene baseline contra qué validar y termina siendo opinión.</p>
+  <p><strong>Ejemplo de transformación:</strong> "rápido" &rarr; "p95 de latencia de la API &lt; 200 ms con 100 RPS sostenidos durante 10 minutos". Aplica a cada eje (rendimiento, seguridad, fiabilidad, escalabilidad). El detalle del proceso vive en el Libro 5.</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     Sec. 5 — GLOSARIO
+───────────────────────────────────────────── -->
+<h2><span class="num">5</span>Glosario</h2>
+
+<p class="lead">Vocabulario que aparece en este libro y en los siguientes. Las entradas marcadas con <span class="lidr-badge recomendacion">Recomendación LIDR</span> describen elementos que LIDR ha definido para operacionalizar BMAD; las que no llevan insignia provienen del método o de la industria.</p>
+
+<h3><span class="num">5.1</span>Códigos del plan de sesiones</h3>
+
+<div class="lidr-mark recomendacion">
+  <span class="lidr-badge recomendacion">Recomendación LIDR</span>
+  Estos códigos pertenecen al modelo de sesiones de LIDR (Sec. 3). El método BMAD oficial no los define.
+</div>
+
+<table>
+  <thead>
+    <tr><th style="width:18%">Código</th><th style="width:82%">Significado</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>S0&ndash;S6</strong></td><td>Sesiones del plan de adopción de LIDR. <code>S0</code> preadopción opcional (Teach Me Testing) &middot; <code>S1</code> Fase 1 + Fase 2 (3 h) &middot; <code>S2</code> Fase 3 arranque (3 h) &middot; <code>S3</code> Fase 3 cierre y kickoff (3 h 30 min) &middot; <code>S4</code> convenciones del equipo (2&ndash;3 h) &middot; <code>S5</code> ciclo iterativo (continuo) &middot; <code>S6</code> cierre formal de la primera épica (2&ndash;3 h).</td></tr>
+    <tr><td><strong>Tras S2 / S6</strong></td><td>Correcciones asíncronas opcionales sin sesión nueva, gestionadas con skills de course&#8209;correction.</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="num">5.2</span>Vocabulario técnico</h3>
+
+<table>
+  <thead>
+    <tr><th style="width:18%">Término</th><th style="width:82%">Definición</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>BMM, TEA, CIS, BMB, Core</strong></td><td>Los cinco módulos de BMAD: BMad Method (flujo principal), Test Architect (calidad), Creative Intelligence Suite (ideación), BMad Builder (extensión del método) y Core (utilidades transversales).</td></tr>
+    <tr><td><strong>PRD</strong></td><td>Product Requirements Document. Documento que describe lo que el producto debe hacer (requisitos funcionales) y cómo de bien debe hacerlo (requisitos no funcionales).</td></tr>
+    <tr><td><strong>UX</strong></td><td>User Experience. La especificación de cómo el usuario interactúa con el producto: flujos, patrones, accesibilidad, sistema de diseño.</td></tr>
+    <tr><td><strong>FR / NFR</strong></td><td>Functional Requirement (qué hace el sistema) y Non&#8209;Functional Requirement (cómo de bien lo hace: rendimiento, seguridad, escalabilidad, fiabilidad).</td></tr>
+    <tr><td><strong>ADR</strong></td><td>Architecture Decision Record. Documento corto que captura una decisión técnica concreta y su trade&#8209;off. Se usa como referencia futura para entender por qué se eligió una opción frente a otra.</td></tr>
+    <tr><td><strong>AC, BDD, Given/When/Then</strong></td><td><em>Acceptance Criteria</em> escritos en formato Behavior&#8209;Driven Development con la estructura "Dado un contexto inicial (Given), cuando ocurre un evento (When), entonces se espera un resultado (Then)".</td></tr>
+    <tr><td><strong>red&#8209;green&#8209;refactor</strong></td><td>Ciclo de Test&#8209;Driven Development. Rojo: escribir un test que falle. Verde: implementar lo mínimo para que pase. Refactor: limpiar el código manteniendo el test verde.</td></tr>
+    <tr><td><strong>ATDD</strong></td><td>Acceptance Test&#8209;Driven Development. Variante de TDD donde los tests se derivan de los criterios de aceptación de la historia y se escriben antes de la implementación.</td></tr>
+    <tr><td><strong>fixture</strong></td><td>En testing, dato o estado preparado de antemano que un test consume. Por ejemplo, un usuario de prueba con un perfil concreto.</td></tr>
+    <tr><td><strong>burn&#8209;in</strong></td><td>Ejecución repetida de un test (decenas de veces) en CI para detectar inestabilidad: si falla a veces y pasa otras, es un test inestable que hay que aislar.</td></tr>
+    <tr><td><strong>flaky</strong></td><td>Adjetivo aplicado a un test que falla de forma intermitente sin que cambie el código. Indica un problema de aislamiento, sincronización o dependencia externa.</td></tr>
+    <tr><td><strong>p95, RPS, SLO</strong></td><td>Métricas de NFR. <em>p95</em> = percentil 95 de latencia (el 95% de las peticiones tardan menos que ese valor) &middot; <em>RPS</em> = peticiones por segundo &middot; <em>SLO</em> = Service Level Objective, objetivo de nivel de servicio.</td></tr>
+    <tr><td><strong>P0, P1, P2, P3</strong></td><td>Prioridades de riesgo en el modelo de testing basado en riesgo (Libro 5). <em>P0</em> = crítico, debe testearse (revenue, seguridad, integridad de datos, cumplimiento) &middot; <em>P1</em> = alto, debería testearse (viajes principales del usuario) &middot; <em>P2</em> = medio, conviene testear (features secundarias) &middot; <em>P3</em> = bajo, testear si hay tiempo.</td></tr>
+    <tr><td><strong>PASS, CONCERNS, WAIVED, FAIL</strong></td><td>Estados del marco de decisión de gates de calidad (Libro 5). <em>PASS</em> = aprobado &middot; <em>CONCERNS</em> = aprobado con riesgo documentado &middot; <em>WAIVED</em> = dispensa justificada con ticket de deuda &middot; <em>FAIL</em> = bloqueante.</td></tr>
+    <tr><td><strong>CI/CD</strong></td><td>Continuous Integration / Continuous Delivery. Pipeline automatizado que ejecuta tests y despliega cambios. En BMAD se le añaden quality gates antes de mergear.</td></tr>
+    <tr><td><strong>Test Quality DoD</strong></td><td>Definition of Done para tests. Conjunto de ocho criterios de calidad mínimos que un test debe cumplir: sin esperas duras, sin condicionales en el cuerpo del test, menos de 300 líneas, ejecución bajo 1,5 minutos, auto&#8209;limpieza tras correr, aserciones explícitas, datos únicos por test y seguro para ejecución paralela. Detalle en el Libro 5.</td></tr>
+    <tr><td><strong>shard / sharding</strong></td><td>Dividir la suite de tests en grupos que se ejecutan en paralelo en CI para reducir el tiempo total. También se usa para dividir documentos largos (<code>/bmad-shard-doc</code>).</td></tr>
+    <tr><td><strong>helper, page object</strong></td><td>Patrones de organización del código de tests. Un <em>helper</em> encapsula operaciones reutilizables; un <em>page object</em> encapsula la interacción con una página (selectores, acciones).</td></tr>
+    <tr><td><strong>scaffold</strong></td><td>Estructura inicial generada automáticamente que sirve de punto de partida (configuración, carpetas, archivos básicos). En BMAD lo produce <code>/bmad-testarch-framework</code>.</td></tr>
+    <tr><td><strong>greenfield / brownfield</strong></td><td>Modos de proyecto. <em>Greenfield</em> = proyecto desde cero. <em>Brownfield</em> = proyecto sobre código existente.</td></tr>
+    <tr><td><strong>RGPD, PCI, HIPAA</strong></td><td>Marcos regulatorios habituales. RGPD = Reglamento General de Protección de Datos (UE). PCI = Payment Card Industry, estándares para procesar tarjetas. HIPAA = Health Insurance Portability and Accountability Act, datos médicos en EE. UU.</td></tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ─────────────────────────────────────────────
+     CIERRE
+───────────────────────────────────────────── -->
+<h2>Cierre del Libro 1</h2>
+
+<p>Este libro establece el vocabulario, los módulos, las fases y el catálogo comprimido de skills que el resto de la biblioteca da por sentado. Si llegaste hasta aquí siguiendo la ruta de primera lectura, el siguiente paso sugerido es el <strong>Libro 3 &mdash; BMAD Plan de Sesiones</strong> para ver cómo el método se traduce en sesiones concretas con stakeholders, o el <strong>Libro 2 &mdash; BMAD Flujos de Proyecto</strong> si necesitas el detalle workflow&#8209;a&#8209;workflow.</p>
+
+<table style="margin-top: 18px;">
+  <thead>
+    <tr>
+      <th style="width:30%">Verificación</th>
+      <th style="width:70%">Detalle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Fecha de publicación</strong></td><td>2026-05-06</td></tr>
+    <tr><td><strong>Versión BMAD verificada</strong></td><td>BMAD v6.6.0 (Core 6.6.0 &middot; BMM 6.6.0 &middot; BMB 1.7.0 &middot; CIS 0.2.0 &middot; TEA 1.15.1)</td></tr>
+    <tr><td><strong>Fuentes consultadas</strong></td><td>Repositorios oficiales <code>bmad-code-org/bmad-method</code>, <code>bmad-code-org/bmad-method-test-architecture-enterprise</code>, <code>bmad-code-org/bmad-builder</code>, <code>bmad-code-org/bmad-module-creative-intelligence-suite</code> y la instalación local del proyecto.</td></tr>
+  </tbody>
+</table>
+
+</div><!-- /content -->
+
+<!-- ═════════════════════════════════════════════════════════
+     MERMAID + PAGED.JS — orden: Mermaid renderiza,
+     después paged.js pagina y mueve las .footnote al pie
+═════════════════════════════════════════════════════════ -->
+<script>
+  // Configurar paged.js antes de cargarlo: NO auto-ejecutar,
+  // y avisar a Puppeteer cuando termine.
+  window.PagedConfig = {
+    auto: false,
+    after: () => { window.__PAGED_DONE__ = true; }
+  };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    securityLevel: 'loose',
+    themeVariables: {
+      fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
+      fontSize: '12px',
+
+      primaryColor: '#FBEFC0',
+      primaryTextColor: '#1A1A1A',
+      primaryBorderColor: '#D4B85C',
+
+      secondaryColor: '#1A1A1A',
+      secondaryTextColor: '#F6DE82',
+      secondaryBorderColor: '#1A1A1A',
+
+      tertiaryColor: '#FFFFFF',
+      tertiaryTextColor: '#1A1A1A',
+      tertiaryBorderColor: '#1A1A1A',
+
+      lineColor: '#1A1A1A',
+      textColor: '#1A1A1A',
+
+      mainBkg: '#FFFFFF',
+      nodeBorder: '#1A1A1A',
+      clusterBkg: '#FAFAF6',
+      clusterBorder: '#D4B85C',
+
+      titleColor: '#1A1A1A',
+      edgeLabelBackground: '#FFFFFF'
+    },
+    flowchart: {
+      curve: 'basis',
+      htmlLabels: true,
+      padding: 18,
+      nodeSpacing: 40,
+      rankSpacing: 50,
+      diagramPadding: 16
+    }
+  });
+</script>
+
+<script src="https://unpkg.com/pagedjs@0.4.3/dist/paged.polyfill.js"></script>
+
+<script>
+  (async function () {
+    // 1) Esperar al onload (asegura que paged.js polyfill esté cargado)
+    if (document.readyState !== 'complete') {
+      await new Promise(r => window.addEventListener('load', r));
+    }
+
+    // 2) Renderizar Mermaid primero — paged.js necesita los SVG ya creados
+    //    para calcular la altura real de cada bloque al paginar.
+    try {
+      await mermaid.run({ querySelector: '.mermaid' });
+    } catch (e) {
+      console.warn('Mermaid:', e);
+    }
+
+    document.querySelectorAll('.mermaidTooltip').forEach(el => {
+      const parent = el.parentElement;
+      el.remove();
+      if (parent && parent.children.length === 0 && parent.tagName === 'DIV' && !parent.className && !parent.id) {
+        parent.remove();
+      }
+    });
+
+    // 3) Disparar paged.js manualmente (auto:false). Esto crea las páginas
+    //    y mueve cada .footnote al área @footnote de la página correspondiente.
+
+
+  // Handler que añade indicador "↓ continúa" al pie cuando una tabla cruza páginas.
+  class TableContinueHandler extends Paged.Handler {
+    constructor(chunker, polisher, caller) {
+      super(chunker, polisher, caller);
+    }
+    afterPageLayout(pageElement, page, breakToken) {
+      try {
+        if (!breakToken || !breakToken.node) return;
+        let node = breakToken.node;
+        while (node && node.nodeName !== 'TABLE' && node.nodeType !== 9) {
+          node = node.parentNode;
+        }
+        if (!node || node.nodeName !== 'TABLE') return;
+
+        const tablesInPage = pageElement.querySelectorAll('table');
+        if (tablesInPage.length === 0) return;
+        const lastTable = tablesInPage[tablesInPage.length - 1];
+        if (lastTable.querySelector('tfoot.continued')) return;
+
+        const tfoot = document.createElement('tfoot');
+        tfoot.className = 'continued';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = lastTable.querySelectorAll('thead th').length || 1;
+        td.textContent = '↓ continúa en la página siguiente';
+        tr.appendChild(td);
+        tfoot.appendChild(tr);
+        lastTable.appendChild(tfoot);
+      } catch (e) { console.warn('TableContinueHandler:', e); }
+    }
+  }
+  Paged.registerHandlers(TableContinueHandler);
+
+    const previewer = new window.Paged.Previewer();
+    await previewer.preview();
+    if (!window.__PAGED_DONE__) window.__PAGED_DONE__ = true;
+  })();
+</script>
+
+</body>
+</html>

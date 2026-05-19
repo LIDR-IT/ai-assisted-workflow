@@ -1,1 +1,0 @@
-../../.agents/.archive/2026-05-18-pre-lidr-merge/lidr-claude-root/CLAUDE.md
