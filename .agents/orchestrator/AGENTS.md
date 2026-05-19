@@ -940,23 +940,7 @@ ln -s ../.agents/skills .cursor/skills
 
 ## Documentation System
 
-**VitePress powered:** Bilingual support (EN/ES)
-
-**Structure:**
-
-- `docs/en/guides/` - How-to guides (task-oriented)
-- `docs/en/references/` - Technical documentation (system-oriented)
-- `docs/en/notes/` - Research, comparisons, explorations
-- `docs/.vitepress/config.js` - Site configuration
-
-**Key References:**
-
-- [Complete Setup Guide](docs/en/guides/setup.md)
-- [MCP Setup Guide](docs/guides/mcp/mcp-setup-guide.md)
-- [Antigravity Limitations](docs/guides/mcp/ANTIGRAVITY_LIMITATION.md)
-- [Rules Documentation](docs/en/references/rules/memory-and-rules.md)
-- [Skills Reference](docs/en/references/skills.md)
-- [MCP Quick Reference](docs/en/references/mcp.md)
+Documentation lives in the **React app at `app/`** (Vite + React Router v7 + React Flow). The previous VitePress-based `docs/` site was removed on 2026-05-19; consult `app/CLAUDE.md` and the routes under `app/src/app/components/diagrams/` for the current docs surface.
 
 ---
 
@@ -964,7 +948,6 @@ ln -s ../.agents/skills .cursor/skills
 
 **Project Documentation:**
 
-- Platform limitations: `docs/guides/mcp/ANTIGRAVITY_LIMITATION.md`
 - Rules guide: `.agents/rules-readme.md`
 - Core principles: `.agents/rules/code/principles.md`
 - Skills management: `.agents/rules/team/skills-management.md`
