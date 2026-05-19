@@ -8,7 +8,13 @@
 # 1. Block staged sensitive files (.env, .pem, .key, secrets/, credentials/)
 # 2. Run root lint-staged (prettier on .agents/, docs/, etc.)
 # 3. If app/ files are staged, also run app's lint-staged (ESLint + prettier)
+#
+# Note: NODE_OPTIONS sets ESLint heap to 4GB. The lint-staged + @typescript-eslint
+# combo can hit the default ~1.5GB cap and get SIGKILLed in constrained environments
+# (CI containers, Claude Code's Bash sandbox). 4GB is a safe headroom.
 # =============================================================================
+
+export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=4096"
 
 # 1. Sensitive files check (covers entire repo)
 SENSITIVE_PATTERNS=".env .pem .key secrets/ credentials/"

@@ -27,12 +27,14 @@ export type ArtifactType =
   | 'doc';
 
 export type ArtifactSource = 'lidr' | 'bmad' | 'anytime';
+export type ArtifactCriticality = 'required' | 'recommended' | 'optional';
 
 export interface Artifact {
   id: string;
   name: string;
   type: ArtifactType;
   source?: ArtifactSource;
+  criticality?: ArtifactCriticality;
   tier?: string;
   phase?: string;
   phaseNum?: number;
@@ -153,41 +155,7 @@ export const skills: Artifact[] = [
     docPath: '.claude/skills/tracking-integration/SKILL.md',
   },
 
-  // Fase 2 — Discovery (5)
-  {
-    id: 'prd-tecnico',
-    name: 'prd-tecnico',
-    type: 'skill',
-    phase: 'Fase 2 — Discovery',
-    phaseNum: 2,
-    description: 'Genera PRD Tecnico con arquitectura, NFRs, decisiones tecnicas y diagramas.',
-    triggers: [
-      'create technical PRD',
-      'PRD tecnico',
-      'architecture design',
-      'technical specification',
-    ],
-    roles: ['TL'],
-    gateContribution: 'Gate 1',
-    docPath: '.claude/skills/prd-tecnico/SKILL.md',
-  },
-  {
-    id: 'prd-funcional',
-    name: 'prd-funcional',
-    type: 'skill',
-    phase: 'Fase 2 — Discovery',
-    phaseNum: 2,
-    description: 'Genera PRD Funcional con journeys, personas, requisitos de negocio.',
-    triggers: [
-      'create functional PRD',
-      'PRD funcional',
-      'product requirements',
-      'functional specification',
-    ],
-    roles: ['PO'],
-    gateContribution: 'Gate 1',
-    docPath: '.claude/skills/prd-funcional/SKILL.md',
-  },
+  // Fase 2 — Discovery (3)
   {
     id: 'review-cruzado',
     name: 'review-cruzado',
@@ -211,19 +179,6 @@ export const skills: Artifact[] = [
     roles: ['PME', 'TL'],
     gateContribution: 'Gate 1',
     docPath: '.claude/skills/risk-log/SKILL.md',
-  },
-  {
-    id: 'poc-report',
-    name: 'poc-report',
-    type: 'skill',
-    phase: 'Fase 2 — Discovery',
-    phaseNum: 2,
-    description:
-      'Essential for documenting PoC results with falsifiable hypotheses and GO/NO-GO recommendations. ALWAYS use when PRD-T identifies technical uncertainty requiring validation. Critical for algorithm validation, new technology assessment, and feasibility studies. Use for API performance evaluation, integration pilots, and new feature prototypes.',
-    triggers: ['poc report', 'proof of concept', 'PoC results', 'prototype evaluation'],
-    roles: ['TL', 'Dev'],
-    gateContribution: 'Gate 1',
-    docPath: '.claude/skills/poc-report/SKILL.md',
   },
 
   // Fase 3 — Especificacion (4)

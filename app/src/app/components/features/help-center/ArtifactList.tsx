@@ -81,6 +81,30 @@ export function ArtifactList({ artifacts, itemsPerPage = 20 }: ArtifactListProps
                 >
                   {(artifact.source ?? 'lidr').toUpperCase()}
                 </span>
+                {artifact.criticality && (
+                  <span
+                    className={`inline-block px-2 py-0.5 text-[10px] font-semibold tracking-wider rounded-md ${
+                      artifact.criticality === 'required'
+                        ? 'bg-rose-100 text-rose-800'
+                        : artifact.criticality === 'recommended'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-slate-100 text-slate-600'
+                    }`}
+                    title={`Criticality: ${artifact.criticality} — ${
+                      artifact.criticality === 'required'
+                        ? 'BMad does not cover this. Skipping leaves a real gap.'
+                        : artifact.criticality === 'recommended'
+                          ? 'BMad covers partially. LIDR adds automation/Spanish/Gate-binding.'
+                          : 'Niche use case (consultancy, multi-tool, Claude Code extension). Skip is fine.'
+                    }`}
+                  >
+                    {artifact.criticality === 'required'
+                      ? 'OBLIGATORIO'
+                      : artifact.criticality === 'recommended'
+                        ? 'RECOMENDABLE'
+                        : 'OPCIONAL'}
+                  </span>
+                )}
               </div>
               <div className="flex-1">
                 <h3 className="font-medium text-slate-900 mb-1">{artifact.name}</h3>

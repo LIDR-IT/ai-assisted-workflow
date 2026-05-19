@@ -5,12 +5,21 @@
 
 export type SkillSource = 'lidr' | 'bmad' | 'anytime';
 
+/**
+ * Criticality of a LIDR skill relative to BMad base flow:
+ * - 'required'    → BMad does NOT cover this; skipping leaves a real gap (mandatory in flow)
+ * - 'recommended' → BMad covers partially; LIDR adds automation/Spanish/Gate-binding (skip degrades quality)
+ * - 'optional'    → Niche use case (consultancy, multi-tool, Claude Code extension); skip is fine
+ */
+export type SkillCriticality = 'required' | 'recommended' | 'optional';
+
 export interface Skill {
   id: string;
   name: string;
   phase: string;
   phaseNum: number;
   source: SkillSource;
+  criticality?: SkillCriticality;
   description: string;
   triggers?: string[];
   roles?: string[];
@@ -31,6 +40,7 @@ export const skills: Skill[] = [
     phase: 'Fase 0 — Preparación',
     phaseNum: 0,
     source: 'lidr',
+    criticality: 'recommended',
     description:
       'Auto-classify project type (Web App, Mobile, Backend, etc.) with confidence scoring and tech stack detection',
     triggers: ['classify project', 'determine project type', 'auto-categorize'],
@@ -47,6 +57,7 @@ export const skills: Skill[] = [
     phase: 'Fase 1 — Originación',
     phaseNum: 1,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Generate a Business Case document from a business problem or initiative request. Essential for budget justification, project approval, ROI analysis.',
     triggers: [
@@ -65,6 +76,7 @@ export const skills: Skill[] = [
     phase: 'Fase 1 — Originación',
     phaseNum: 1,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Project Kickoff Meeting Orchestrator - structures kickoff meetings with stakeholder alignment',
     triggers: ['project kickoff', 'start project', 'initial meeting'],
@@ -78,6 +90,7 @@ export const skills: Skill[] = [
     phase: 'Fase 1 — Originación',
     phaseNum: 1,
     source: 'lidr',
+    criticality: 'required',
     description: 'Generate stakeholder map with power/interest matrix and communication plan',
     triggers: ['map stakeholders', 'identify stakeholders', 'communication plan'],
     roles: ['PME', 'PO'],
@@ -90,6 +103,7 @@ export const skills: Skill[] = [
     phase: 'Fase 1 — Originación',
     phaseNum: 1,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Tracking Integration — Adaptive Project Kickstart for any tracking tool (Jira, Linear, Notion, etc.)',
     triggers: ['create epic', 'tracking setup', 'project tracking', 'initialize tracking'],
@@ -97,53 +111,15 @@ export const skills: Skill[] = [
     gateContribution: 'Gate 0',
     docPath: '.claude/skills/tracking-integration/SKILL.md',
   },
-  {
-    id: 'business-model',
-    name: 'business-model',
-    phase: 'Fase 1 — Originación',
-    phaseNum: 1,
-    source: 'lidr',
-    description:
-      'Generate Business Model section with system description, competitive advantages, feature inventory, and Lean Canvas',
-    triggers: ['business model', 'lean canvas', 'competitive analysis', 'product model'],
-    roles: ['PO'],
-    gateContribution: 'Gate 0',
-    docPath: '.claude/skills/business-model/SKILL.md',
-  },
 
-  // Fase 2 — Discovery (7)
-  {
-    id: 'prd-tecnico',
-    name: 'prd-tecnico',
-    phase: 'Fase 2 — Discovery',
-    phaseNum: 2,
-    source: 'lidr',
-    description:
-      'Essential for technical feasibility documentation in software projects. Critical for documenting architecture, NFRs, integrations, and risks.',
-    triggers: ['technical PRD', 'architecture analysis', 'technical feasibility'],
-    roles: ['Tech Lead', 'TL'],
-    gateContribution: 'Gate 1',
-    docPath: '.claude/skills/prd-tecnico/SKILL.md',
-  },
-  {
-    id: 'prd-funcional',
-    name: 'prd-funcional',
-    phase: 'Fase 2 — Discovery',
-    phaseNum: 2,
-    source: 'lidr',
-    description:
-      'Essential for functional product specification in software projects. Critical for documenting user journeys, personas, business requirements.',
-    triggers: ['functional PRD', 'user journeys', 'product requirements'],
-    roles: ['PO'],
-    gateContribution: 'Gate 1',
-    docPath: '.claude/skills/prd-funcional/SKILL.md',
-  },
+  // Fase 2 — Discovery (4)
   {
     id: 'review-cruzado',
     name: 'review-cruzado',
     phase: 'Fase 2 — Discovery',
     phaseNum: 2,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Essential for PRD alignment validation in software projects. Critical for ensuring functional and technical PRDs alignment.',
     triggers: ['cross review', 'PRD review', 'validate alignment'],
@@ -157,6 +133,7 @@ export const skills: Skill[] = [
     phase: 'Fase 2 — Discovery',
     phaseNum: 2,
     source: 'lidr',
+    criticality: 'recommended',
     description:
       'Essential for software project risk management. Critical for identifying compliance failures, technical accuracy risks, and operational challenges.',
     triggers: ['risk management', 'identify risks', 'risk log'],
@@ -165,37 +142,12 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/risk-log/SKILL.md',
   },
   {
-    id: 'poc-report',
-    name: 'poc-report',
-    phase: 'Fase 2 — Discovery',
-    phaseNum: 2,
-    source: 'lidr',
-    description:
-      'Essential for technical feasibility validation before committing resources. Critical for algorithm validation, performance testing, and technical proof of concepts.',
-    triggers: ['POC report', 'proof of concept', 'technical validation'],
-    roles: ['Tech Lead', 'TL'],
-    gateContribution: 'Gate 1',
-    docPath: '.claude/skills/poc-report/SKILL.md',
-  },
-  {
-    id: 'use-cases',
-    name: 'use-cases',
-    phase: 'Fase 2 — Discovery',
-    phaseNum: 2,
-    source: 'lidr',
-    description:
-      'Generate the 3 main use cases for any software system with descriptions and Mermaid flowchart diagrams',
-    triggers: ['use cases', 'system interactions', 'user flows', 'system usage'],
-    roles: ['PO'],
-    gateContribution: 'Gate 1',
-    docPath: '.claude/skills/use-cases/SKILL.md',
-  },
-  {
     id: 'propuesta-builder',
     name: 'propuesta-builder',
     phase: 'Fase 2 — Discovery',
     phaseNum: 2,
     source: 'lidr',
+    criticality: 'optional',
     description:
       'Generate the three JSON artifacts (diagnostico.json, mejoras.json, flujo.json) that power the Propuesta de Mejora UI for a new client from a structured discovery report markdown. Consultancy onboarding pipeline.',
     triggers: [
@@ -216,6 +168,7 @@ export const skills: Skill[] = [
     phase: 'Fase 3 — Especificación',
     phaseNum: 3,
     source: 'lidr',
+    criticality: 'required',
     description: 'Functional Requirements Generator with BDD criteria from PRDs',
     triggers: ['generate requirements', 'create RFs', 'functional requirements'],
     roles: ['PO'],
@@ -228,6 +181,7 @@ export const skills: Skill[] = [
     phase: 'Fase 3 — Especificación',
     phaseNum: 3,
     source: 'lidr',
+    criticality: 'required',
     description: 'Non-Functional Requirements Generator with measurable metrics',
     triggers: ['generate NFRs', 'non-functional requirements', 'performance requirements'],
     roles: ['TL', 'Tech Lead'],
@@ -240,6 +194,7 @@ export const skills: Skill[] = [
     phase: 'Fase 3 — Especificación',
     phaseNum: 3,
     source: 'lidr',
+    criticality: 'required',
     description:
       'AUTOMATED cross-validation of RFs and NFRs against PRDs. Executes 5-pass validation in <5 minutes vs 6+ hours manual.',
     triggers: ['validate requirements', 'check traceability', 'RTM validation'],
@@ -256,6 +211,7 @@ export const skills: Skill[] = [
     phase: 'Fase 4 — Planning',
     phaseNum: 4,
     source: 'lidr',
+    criticality: 'required',
     description:
       'AUTOMATED User Story generation with intelligent RF slicing using 8 proven patterns. Transforms 2-4 hour manual slicing.',
     triggers: ['generate user stories', 'create stories', 'story slicing'],
@@ -270,6 +226,7 @@ export const skills: Skill[] = [
     phase: 'Fase 4 — Planning',
     phaseNum: 4,
     source: 'lidr',
+    criticality: 'recommended',
     description:
       'Essential for software project sprint planning. Critical for accurately planning feature development and capacity estimation.',
     triggers: ['sprint planning', 'capacity planning', 'team velocity'],
@@ -283,6 +240,7 @@ export const skills: Skill[] = [
     phase: 'Fase 4 — Planning',
     phaseNum: 4,
     source: 'lidr',
+    criticality: 'recommended',
     description: 'Essential for user story refinement during backlog grooming sessions',
     triggers: ['refinement session', 'backlog grooming', 'story refinement'],
     roles: ['SM', 'PO', 'TL'],
@@ -297,6 +255,7 @@ export const skills: Skill[] = [
     phase: 'Fase 5 — Desarrollo',
     phaseNum: 5,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Generate structured Pull Request description from git diff and Jira ticket context',
     triggers: ['PR description', 'pull request', 'code review prep'],
@@ -310,6 +269,7 @@ export const skills: Skill[] = [
     phase: 'Fase 5 — Desarrollo',
     phaseNum: 5,
     source: 'lidr',
+    criticality: 'required',
     description: 'Generate Architecture Decision Record in MADR format for technical choices',
     triggers: ['architecture decision', 'technical decision', 'ADR'],
     roles: ['TL', 'Tech Lead'],
@@ -322,6 +282,7 @@ export const skills: Skill[] = [
     phase: 'Fase 5 — Desarrollo',
     phaseNum: 5,
     source: 'lidr',
+    criticality: 'recommended',
     description:
       'AUTOMATED technical debt identification using SonarQube integration. Transforms 6+ hour analysis.',
     triggers: ['tech debt', 'code quality', 'sonar analysis'],
@@ -336,6 +297,7 @@ export const skills: Skill[] = [
     phase: 'Fase 5 — Desarrollo',
     phaseNum: 5,
     source: 'lidr',
+    criticality: 'required',
     description: 'Generate Dev-to-QA handoff document for Ready for QA transitions',
     triggers: ['handoff to QA', 'development complete', 'QA transition'],
     roles: ['Dev', 'TL'],
@@ -350,6 +312,7 @@ export const skills: Skill[] = [
     phase: 'Fase 6 — QA',
     phaseNum: 6,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Generate executable BDD test cases with concrete data from tickets in Ready for QA',
     triggers: ['create test cases', 'generate TCs', 'BDD scenarios'],
@@ -363,6 +326,7 @@ export const skills: Skill[] = [
     phase: 'Fase 6 — QA',
     phaseNum: 6,
     source: 'lidr',
+    criticality: 'recommended',
     description:
       'Structure comprehensive bug reports that enable developers to reproduce issues in under 5 minutes',
     triggers: ['report bug', 'create bug report', 'file issue'],
@@ -376,6 +340,7 @@ export const skills: Skill[] = [
     phase: 'Fase 6 — QA',
     phaseNum: 6,
     source: 'lidr',
+    criticality: 'required',
     description: 'Essential for QA sign-off - consolidates test execution results',
     triggers: ['test execution', 'QA report', 'test results'],
     roles: ['QA Lead'],
@@ -390,6 +355,7 @@ export const skills: Skill[] = [
     phase: 'Fase 7 — Seguridad',
     phaseNum: 7,
     source: 'lidr',
+    criticality: 'required',
     description: 'Essential for platform security assessment - interpret SAST/SCA scanner results',
     triggers: ['security scan', 'vulnerability assessment', 'SAST results'],
     roles: ['Security'],
@@ -402,6 +368,7 @@ export const skills: Skill[] = [
     phase: 'Fase 7 — Seguridad',
     phaseNum: 7,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Interpret DAST scan reports from OWASP ZAP, Burp Suite, or Nuclei against running applications',
     triggers: ['DAST results', 'ZAP scan', 'runtime security'],
@@ -415,6 +382,7 @@ export const skills: Skill[] = [
     phase: 'Fase 7 — Seguridad',
     phaseNum: 7,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Essential for platform security validation - transforms pen testing findings into reports',
     triggers: ['pen test', 'penetration testing', 'security report'],
@@ -428,6 +396,7 @@ export const skills: Skill[] = [
     phase: 'Fase 7 — Seguridad',
     phaseNum: 7,
     source: 'lidr',
+    criticality: 'required',
     description: 'Essential for platform security validation - OWASP Top 10 and compliance checks',
     triggers: ['security checklist', 'OWASP validation', 'security review'],
     roles: ['Security'],
@@ -443,6 +412,7 @@ export const skills: Skill[] = [
     phase: 'Fase 8 — Despliegue',
     phaseNum: 8,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Generate Change Request for production deployment following ITIL Change Management',
     triggers: ['change request', 'deploy request', 'CAB approval'],
@@ -456,6 +426,7 @@ export const skills: Skill[] = [
     phase: 'Fase 8 — Despliegue',
     phaseNum: 8,
     source: 'lidr',
+    criticality: 'required',
     description:
       'AUTOMATED rollback plan generation with deployment risk analysis using Python automation',
     triggers: ['rollback plan', 'deployment risk', 'recovery plan'],
@@ -470,6 +441,7 @@ export const skills: Skill[] = [
     phase: 'Fase 8 — Despliegue',
     phaseNum: 8,
     source: 'lidr',
+    criticality: 'required',
     description:
       'AUTOMATED release notes generation with business impact analysis using Python automation',
     triggers: ['release notes', 'changelog', 'release communication'],
@@ -479,24 +451,12 @@ export const skills: Skill[] = [
     automated: true,
   },
   {
-    id: 'changelog-generator',
-    name: 'changelog-generator',
-    phase: 'Fase 8 — Despliegue',
-    phaseNum: 8,
-    source: 'lidr',
-    description:
-      'Automatically generate user-facing changelogs from git commits by categorizing and transforming technical messages into customer-friendly release notes. Complements release-notes (formal SDLC) with product-oriented output.',
-    triggers: ['changelog', 'customer changelog', 'release update', 'product changelog'],
-    roles: ['DevOps', 'TL'],
-    gateContribution: 'Post-Gate 7',
-    docPath: '.claude/skills/lidr-changelog-generator/SKILL.md',
-  },
-  {
     id: 'postmortem',
     name: 'postmortem',
     phase: 'Fase 8 — Despliegue',
     phaseNum: 8,
     source: 'lidr',
+    criticality: 'required',
     description: 'Structure blameless incident postmortem using Five Whys root cause analysis',
     triggers: ['postmortem', 'incident analysis', 'root cause'],
     roles: ['TL', 'DevOps'],
@@ -511,21 +471,11 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 99,
     source: 'lidr',
+    criticality: 'optional',
     description: 'Generate Claude Code rule files with correct frontmatter and content structure',
     triggers: ['generate rule', 'create rule', 'project rule'],
     roles: ['TL'],
     docPath: '.claude/skills/generate-rule/SKILL.md',
-  },
-  {
-    id: 'epic-review',
-    name: 'epic-review',
-    phase: 'Cross-cutting',
-    phaseNum: 99,
-    source: 'lidr',
-    description: 'Review epic execution vs original plan after delivery with lessons learned',
-    triggers: ['epic review', 'delivery review', 'project closure'],
-    roles: ['PME', 'PO'],
-    docPath: '.claude/skills/epic-review/SKILL.md',
   },
   {
     id: 'gate-evaluation',
@@ -533,6 +483,7 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 99,
     source: 'lidr',
+    criticality: 'required',
     description:
       'Generate standardized gate evaluation reports for SDLC phase transitions with weighted scoring',
     triggers: ['gate evaluation', 'phase transition', 'gate assessment', 'handoff package'],
@@ -546,6 +497,7 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 99,
     source: 'anytime',
+    criticality: 'optional',
     description:
       'Git commit best practices: conventional commits, fix/amend/rebase/squash, atomic commits, commit history management',
     triggers: [
@@ -564,6 +516,7 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 99,
     source: 'anytime',
+    criticality: 'optional',
     description:
       'Validate ticket structure: YAML frontmatter, acceptance criteria specificity, Definition of Done, BDD scenarios. Used pre-refinement and pre-PR.',
     triggers: [
@@ -584,6 +537,7 @@ export const skills: Skill[] = [
     phase: 'Development',
     phaseNum: 100,
     source: 'anytime',
+    criticality: 'optional',
     description:
       'Meta-skill entry-point for .agents/ ecosystem authoring: create skills/commands/subagents with automatic sync across 5 AI platforms (Cursor, Claude Code, Gemini, Antigravity, Copilot)',
     triggers: [
@@ -601,6 +555,7 @@ export const skills: Skill[] = [
     phase: 'Development',
     phaseNum: 100,
     source: 'anytime',
+    criticality: 'optional',
     description:
       'Design and implement slash commands for Claude Code with YAML frontmatter structure',
     triggers: ['command development', 'slash command', 'create command'],
@@ -613,6 +568,7 @@ export const skills: Skill[] = [
     phase: 'Development',
     phaseNum: 100,
     source: 'lidr',
+    criticality: 'optional',
     description: 'Design Claude Code hooks for event-driven workflow automation and quality gates',
     triggers: ['hook development', 'event automation', 'quality guard'],
     roles: ['TL'],
@@ -624,6 +580,7 @@ export const skills: Skill[] = [
     phase: 'Development',
     phaseNum: 100,
     source: 'lidr',
+    criticality: 'optional',
     description: 'Configure Model Context Protocol servers for external service integration',
     triggers: ['MCP integration', 'external services', 'protocol setup'],
     roles: ['TL'],
@@ -637,6 +594,7 @@ export const skills: Skill[] = [
     phase: 'Fase 0 — Preparación',
     phaseNum: 0,
     source: 'lidr',
+    criticality: 'recommended',
     description:
       'Comprehensive audit skill for validating that all skills comply with established SDLC ecosystem standards. CRITICAL for ensuring frontmatter consistency, domain-agnostic content, methodology uniformity, and structural integrity across the ecosystem.',
     triggers: [
@@ -656,6 +614,7 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 99,
     source: 'lidr',
+    criticality: 'optional',
     description:
       'Browser automation with Playwright CLI for web testing, form filling, screenshots, and data extraction. Use when needing to navigate websites, interact with web pages, fill forms, take screenshots, test web applications.',
     triggers: ['playwright', 'browser automation', 'web testing', 'screenshot', 'form filling'],
@@ -668,6 +627,7 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 0,
     source: 'lidr',
+    criticality: 'recommended',
     description: 'Automated creation of phase transition handoffs',
     triggers: ['automated handoffs', 'handoff automation', 'phase transition'],
     roles: ['Tech Lead', 'QA Lead', 'Security Lead', 'DevOps'],
@@ -682,6 +642,7 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 0,
     source: 'lidr',
+    criticality: 'optional',
     description: 'Bidirectional synchronization between SDLC tracking and external tools',
     triggers: ['external sync', 'tool integration', 'portfolio sync'],
     roles: ['PME', 'TL', 'DevOps'],
@@ -697,6 +658,7 @@ export const skills: Skill[] = [
     phase: 'Cross-cutting',
     phaseNum: 0,
     source: 'lidr',
+    criticality: 'recommended',
     description: 'Centralized SDLC tracking system with sdlc-tracking.yaml management',
     triggers: ['sdlc tracking', 'project tracking', 'phase tracking', 'portfolio dashboard'],
     roles: ['PME', 'SM', 'TL'],
