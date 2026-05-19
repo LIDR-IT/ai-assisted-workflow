@@ -331,9 +331,14 @@ Brief explanation of what this skill does.
 
 See `.agents/skills/agents-architecture/` for a complete, real implementation of this template with:
 
-- ✅ Comprehensive SKILL.md (~680 lines)
-- ✅ 5 reference files in `references/`
-- ✅ 3 example templates in `examples/`
-- ✅ 3 validation scripts in `scripts/`
+- ✅ Comprehensive `SKILL.md`
+- ✅ 5 reference files in `references/` (architecture-overview, sync-system, skill-creation-guide, command-creation-guide, agent-creation-guide)
+- ✅ 3 example templates in `examples/` (skill-template, command-template, agent-template)
+- ✅ 3 validation scripts in `scripts/` (validate-skill, validate-command, validate-agent)
 
 Study that skill to understand how to structure a full-featured skill.
+
+You can also explore production skills:
+
+- **LIDR SDLC skills (62):** `.agents/skills/lidr-*/SKILL.md` — phase 0-8 of the methodology
+- **Generic meta-skills (4):** `.agents/skills/{agents-architecture,command-development,commit-management,ticket-validation}/SKILL.md`

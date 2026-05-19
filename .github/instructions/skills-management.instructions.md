@@ -25,40 +25,37 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Agent directories use symlinks to `.agents/skills/`
 - Prevents duplication, maintains consistency
 
-### CRITICAL - Symlink Structure
+### CRITICAL - Distribution per Platform (verified May 2026)
 
-**Approach 1: Shared Skills (Recommended)**
+Skills follow the [Agent Skills open standard](https://agentskills.io). Each platform looks in different paths:
 
 ```bash
-# From project root - all skills to all agents
+# Claude Code reads .claude/skills/      → symlink to .agents/skills/
 ln -s ../.agents/skills .claude/skills
+
+# Cursor (2.4+, Jan 2026) reads .cursor/skills/  → symlink to .agents/skills/
 ln -s ../.agents/skills .cursor/skills
-# Gemini CLI: reads natively from .agents/skills/ (no symlink needed)
-# Antigravity: reads natively from .agents/skills/ (no symlink needed)
+
+# Gemini CLI: `.agents/skills/` is an official alias (takes precedence over .gemini/skills/)
+#   → NO symlink needed, NO .gemini/skills/ directory
+# Copilot/VSCode: supports `.agents/skills/` natively (also .github/skills/, .claude/skills/)
+#   → NO symlink needed, NO .github/skills/ directory
+# Antigravity: reads `.agents/skills/` natively
+#   → NO symlink needed
 ```
 
-**Approach 2: Selective Skills (Advanced)**
-
-```bash
-# Link specific skills to specific agents only
-ln -s ../../.agents/skills/subagent-creator .claude/skills/subagent-creator
-ln -s ../../.agents/skills/universal-skill .claude/skills/universal-skill
-ln -s ../../.agents/skills/universal-skill .cursor/skills/universal-skill
-```
-
-⚠️ Selective linking = maintenance overhead. Use Approach 1 unless skill genuinely agent-specific.
+⚠️ **Do NOT create `.gemini/skills/` or `.github/skills/`** — would cause duplicate skill detection in Gemini/Copilot (both already read `.agents/skills/`).
 
 ### Directory Structure
 
-**Approach 1:**
-
 ```
 project-root/
-├── .agents/skills/skill-one/SKILL.md    # ← Source of truth
-├── .claude/skills → ../.agents/skills
-├── .cursor/skills → ../.agents/skills
-# Gemini CLI reads natively from .agents/skills/
-# Antigravity reads natively from .agents/skills/
+├── .agents/skills/<name>/SKILL.md    # ← Source of truth
+├── .claude/skills → ../.agents/skills  # Symlink (Claude reads .claude/skills/)
+├── .cursor/skills → ../.agents/skills  # Symlink (Cursor reads .cursor/skills/)
+# Gemini CLI reads `.agents/skills/` natively (official alias)
+# Copilot reads `.agents/skills/` natively (one of 3 supported paths)
+# Antigravity reads `.agents/skills/` natively
 ```
 
 **Approach 2:**
@@ -80,22 +77,31 @@ project-root/
 ## Quick Setup
 
 ```bash
-# Create structure
+# Create source-of-truth directory
 mkdir -p .agents/skills .claude .cursor
 
-# Create symlinks
-ln -s ../.agents/skills .claude/skills
-ln -s ../.agents/skills .cursor/skills
-# Gemini CLI: reads natively from .agents/skills/ (no symlink needed)
-# Antigravity: reads natively from .agents/skills/ (no symlink needed)
+# Create symlinks for platforms that look in their own directories
+ln -s ../.agents/skills .claude/skills    # Claude reads .claude/skills/
+ln -s ../.agents/skills .cursor/skills    # Cursor reads .cursor/skills/ (2.4+, Jan 2026)
+
+# Gemini CLI / Copilot / Antigravity read .agents/skills/ natively per Agent Skills standard.
+# Do NOT create .gemini/skills/ or .github/skills/ — would cause duplicates.
 
 # Verify
-ls -la .*/skills
+ls -la .claude/skills .cursor/skills .agents/skills
 
-# Commit
+# Commit (symlinks auto-restore on clone)
 git add .agents/ .claude .cursor
 git commit -m "feat: initialize skills structure"
 ```
+
+**References (verified May 2026):**
+
+- [Agent Skills open standard](https://agentskills.io)
+- [Claude Code skills](https://code.claude.com/docs/en/skills)
+- [Cursor agent skills](https://cursor.com/docs/context/skills)
+- [Gemini CLI skills](https://geminicli.com/docs/cli/skills/) — `.agents/skills/` alias takes precedence
+- [VSCode Copilot agent skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills) — `.agents/skills/` is supported
 
 ## Installing Skills
 

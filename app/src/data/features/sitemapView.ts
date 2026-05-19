@@ -803,10 +803,10 @@ export const projectTree: TreeNode[] = [
         ],
       },
       {
-        name: '.claude/_shared/validators/',
+        name: '.agents/_shared/lidr/validators/',
         type: 'folder',
         iconName: 'ShieldCheck',
-        desc: 'Master validation scripts para coherencia del ecosistema (12 shared)',
+        desc: 'Master validation scripts para coherencia del ecosistema (9 archivos, ~3,482 LOC)',
       },
       {
         name: 'standards/',

@@ -111,11 +111,11 @@ for p in "${SELECTED_PLATFORMS[@]}"; do
 done
 
 for c in "${SELECTED_COMPONENTS[@]}"; do
-  local_valid=false
-  for valid in "${ALL_COMPONENTS[@]}"; do
-    [ "$c" = "$valid" ] && local_valid=true && break
+  valid=false
+  for v in "${ALL_COMPONENTS[@]}"; do
+    [ "$c" = "$v" ] && valid=true && break
   done
-  if [ "$local_valid" = false ]; then
+  if [ "$valid" = false ]; then
     log_error "Unknown component: $c"
     echo "Available: ${ALL_COMPONENTS[*]}"
     exit 1
@@ -190,16 +190,29 @@ if [ "$DRY_RUN" = false ]; then
   echo ""
   echo "All agent directories now have latest configurations from .agents/"
   echo ""
-  echo "Verify with:"
-  echo "  ls -la {AGENTS,CLAUDE,GEMINI}.md"
-  echo "  ls -la .cursor/{rules,skills,commands,agents}"
-  echo "  ls -la .claude/{rules,skills,commands,agents,hooks}"
-  echo "  ls -la .gemini/{rules,skills,commands,agents,hooks}"
-  echo "  ls -la .github/{rules,skills,prompts,agents,hooks}"
-  echo "  ls -la .agents/workflows"
-  echo "  jq .hooks .claude/settings.json"
-  echo "  jq .hooks .gemini/settings.json"
-  echo "  jq .servers .vscode/mcp.json"
+  echo "Verify with (paths verified against official platform docs, May 2026):"
+  echo ""
+  echo "  # Orchestrator root files (symlinks to .agents/orchestrator/AGENTS.md)"
+  echo "  ls -la AGENTS.md CLAUDE.md GEMINI.md"
+  echo ""
+  echo "  # Cursor: symlinks for skills/commands/agents; copy-flatten for rules (.mdc)"
+  echo "  ls -la .cursor/rules .cursor/skills .cursor/commands .cursor/agents"
+  echo ""
+  echo "  # Claude Code: all symlinks; MCP at repo root (.mcp.json), not .claude/mcp.json"
+  echo "  ls -la .claude/rules .claude/skills .claude/commands .claude/agents .claude/hooks"
+  echo "  jq -e '.servers // .mcpServers' .mcp.json"
+  echo "  jq -e .hooks .claude/settings.json"
+  echo ""
+  echo "  # Gemini CLI: GEMINI.md index + symlinked agents (Apr 2026); skills via .agents/ native alias"
+  echo "  ls -la .gemini/GEMINI.md .gemini/commands .gemini/agents .gemini/hooks"
+  echo "  jq -e .mcpServers .gemini/settings.json"
+  echo ""
+  echo "  # Copilot (VSCode): rules in .github/instructions/, prompts in .github/prompts/, agents in .github/agents/"
+  echo "  ls .github/instructions/*.instructions.md .github/prompts/*.prompt.md .github/agents/*.agent.md"
+  echo "  jq -e .servers .vscode/mcp.json"
+  echo ""
+  echo "  # Antigravity: workflows symlink (commands appear as /workflow-name)"
+  echo "  ls -la .agents/workflows  # symlink → commands"
 else
   echo "Dry run completed. To apply changes, run:"
   echo "  ./.agents/sync.sh"

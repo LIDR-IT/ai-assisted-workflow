@@ -1,5 +1,5 @@
 ---
-name: metrics-agent
+name: lidr-metrics-agent
 description: "Recopila métricas Sprint + DORA desde Jira/GitHub al cierre de sprint"
 model: inherit
 color: yellow

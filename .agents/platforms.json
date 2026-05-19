@@ -40,8 +40,8 @@
         },
         "commands": { "strategy": "convert-toml" },
         "agents": {
-          "strategy": "native",
-          "_note": "Gemini CLI reads .agents/subagents/ natively; symlink causes duplicate detection"
+          "strategy": "symlink",
+          "_note": "Gemini CLI subagents (Apr 2026) — official path .gemini/agents/<name>.md per https://geminicli.com/docs/core/subagents/. No .agents/subagents/ alias documented (unlike skills/rules)."
         },
         "mcp": { "strategy": "generate", "format": "gemini-settings" },
         "hooks": { "strategy": "generate", "format": "gemini-settings" }
@@ -56,6 +56,8 @@
         "rules": {
           "strategy": "copy-flatten",
           "extension": ".instructions.md",
+          "output_subdir": "instructions",
+          "_note": "Official Copilot/VSCode path: .github/instructions/ per https://code.visualstudio.com/docs/copilot/customization/custom-instructions. NOT .github/rules/. Adapter cleans up legacy .github/rules/ if present.",
           "transform_frontmatter": true,
           "generate_index": true
         },

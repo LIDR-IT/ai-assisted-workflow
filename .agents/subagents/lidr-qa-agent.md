@@ -1,5 +1,5 @@
 ---
-name: qa-agent
+name: lidr-qa-agent
 description: "Prepara suite de testing completa al detectar ticket Ready for QA"
 model: inherit
 color: green

@@ -1,5 +1,6 @@
 ---
 description: LIDR SDLC: Workflow orchestration map — authorized roles per command, gate preconditions, skill chaining. Load when executing a command, evaluating a gate, or checking role permissions.
+applyTo: "**"
 ---
 
 # Rule: Workflow Orchestration Map

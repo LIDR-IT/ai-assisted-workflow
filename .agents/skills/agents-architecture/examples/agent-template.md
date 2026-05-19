@@ -1,16 +1,28 @@
-# Agent Template
+---
+id: agent-template
+version: "2.0.0"
+last_updated: "2026-05-19"
+updated_by: "TL: agents-architecture audit"
+status: active
+type: template
+review_cycle: 90
+next_review: "2026-08-19"
+owner_role: "Tech Lead"
+---
 
-This is a copy-paste template for creating new autonomous agents for Claude Code.
+# Subagent Template
 
-## How to Use This Template
+Copy-paste template for creating a new subagent in the `.agents/subagents/` source-of-truth directory.
 
-1. Copy the template below
-2. Replace all `[PLACEHOLDERS]` with your specific content
-3. Create file: `.claude/agents/[agent-name].md`
-4. Test in Claude Code (agents don't need sync)
-5. Iterate based on agent behavior
+## How to use this template
 
-**Important:** Agents are **Claude Code only**. They don't work in Cursor, Gemini CLI, or Antigravity.
+1. Copy the [Template Content](#template-content) block
+2. Replace all `[PLACEHOLDERS]` with your content
+3. Save as `.agents/subagents/[agent-name].md` (filename **must** match `name:` field)
+4. Run `./.agents/sync.sh --only=agents` to distribute
+5. Test by triggering the matching task in any supported platform
+
+**Platform reach:** Claude Code, Cursor, Gemini CLI, Copilot (4 of 5 platforms). Antigravity does not support subagents.
 
 ---
 
@@ -19,19 +31,17 @@ This is a copy-paste template for creating new autonomous agents for Claude Code
 ```markdown
 ---
 name: [agent-name]
-description: [Brief description of agent purpose and triggering conditions]
-tools: [Read, Edit, Grep, Bash]
+description: Use this agent when [trigger condition]. It [primary action] and returns [output type].
+tools: Read, Edit, Grep, Bash
 model: sonnet
-color: [blue|green|purple|orange|red|yellow|pink]
+color: blue
 ---
 
 # [Agent Title]
 
-You are an autonomous agent specialized in [specific task or domain].
+You are an autonomous subagent specialized in [specific task or domain].
 
 ## Your Capabilities
-
-[List what the agent can do]
 
 - [Capability 1]: [Description]
 - [Capability 2]: [Description]
@@ -40,70 +50,43 @@ You are an autonomous agent specialized in [specific task or domain].
 
 ## Your Workflow
 
-[Define step-by-step process the agent follows]
-
 1. **[Step 1 Name]**: [What to do in this step]
    - [Detail or sub-step]
-   - [Another detail]
-
 2. **[Step 2 Name]**: [What to do next]
    - [Detail]
-   - [Detail]
-
 3. **[Step 3 Name]**: [How to proceed]
    - [Detail]
-   - [Detail]
-
 4. **[Step 4 Name]**: [What to do here]
    - [Detail]
-   - [Detail]
-
 5. **[Final Step Name]**: [How to conclude]
-   - [Detail]
    - [Detail]
 
 ## Autonomous Decision-Making
 
-[Define what decisions the agent makes independently]
+You decide independently:
 
-You autonomously decide:
+- [Decision area 1]
+- [Decision area 2]
+- [Decision area 3]
 
-- [Decision area 1]: [What agent decides]
-- [Decision area 2]: [Another area of autonomy]
-- [Decision area 3]: [Another autonomous decision]
-- [Decision area 4]: [More autonomy]
-
-You should ask the user for:
+You escalate to the main agent for:
 
 - [Decision requiring user input 1]
 - [Decision requiring user input 2]
-- [Decision requiring user input 3]
 
 ## Guidelines
-
-[Specific guidelines for agent behavior]
 
 **Quality standards:**
 
 - [Guideline 1]
 - [Guideline 2]
-- [Guideline 3]
 
 **Constraints:**
 
 - [Constraint 1]
 - [Constraint 2]
-- [Constraint 3]
-
-**Best practices:**
-
-- [Practice 1]
-- [Practice 2]
-- [Practice 3]
 
 ## Output Format
-
-[Specify how agent should present results]
 
 ### [Section 1 Name]
 
@@ -112,376 +95,265 @@ You should ask the user for:
 ### [Section 2 Name]
 
 [What this section contains]
-
-### [Section 3 Name]
-
-[What this section contains]
-
-## Examples
-
-### Example Scenario 1
-
-[Description of scenario]
-
-**Expected behavior:**
-
-1. [What agent should do first]
-2. [What agent should do next]
-3. [Final action]
-
-**Expected output:**
-[What output format should look like]
-
-### Example Scenario 2
-
-[Another scenario]
-
-**Expected behavior:**
-
-1. [Action 1]
-2. [Action 2]
-3. [Action 3]
-
-**Expected output:**
-[Output format]
 ```
 
 ---
 
-## Customization Tips
+## Customization tips
 
-### Frontmatter Fields
+### Frontmatter fields
 
-**name (required):**
+| Field         | Required?         | Notes                                                                              |
+| ------------- | ----------------- | ---------------------------------------------------------------------------------- |
+| `name`        | ✅                | Lowercase + hyphens. **Must match filename** (without `.md`).                      |
+| `description` | ✅                | When to invoke this agent. The main agent matches user intent against this string. |
+| `tools`       | optional          | Comma-separated tools the agent can use. Omit to inherit all.                      |
+| `model`       | optional (Claude) | `sonnet` (default), `opus` (heavy reasoning), `haiku` (fast).                      |
+| `color`       | optional (Claude) | UI tint: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `pink`.             |
 
-- Format: lowercase, hyphens
-- Example: `code-reviewer`, `test-generator`, `refactorer`
-- Must be unique
+Cursor / Gemini / Copilot accept the same frontmatter and silently ignore fields they don't recognize.
 
-**description (required):**
+### Writing the description
 
-- Brief description of agent purpose
-- Include triggering conditions
-- Example: `"Autonomous code reviewer for quality analysis and best practices"`
-- Length: 1-2 sentences
+The `description:` field is **the trigger**. The main agent reads it to decide whether to delegate. Be concrete.
 
-**tools (optional):**
+✅ **Good:** `Use this agent for thorough code review on a recent change. Analyzes quality, security, best practices; returns a prioritized markdown report.`
 
-- List of tools agent can use
-- Available: `Read`, `Edit`, `Write`, `Grep`, `Glob`, `Bash`, `Task`
-- Only include tools agent actually needs
-- Example: `[Read, Edit, Grep]` for code reviewer
-- Default: All tools if not specified
+❌ **Poor:** `Reviews code.`
 
-**model (optional):**
+✅ **Good (proactive trigger):** `Use proactively when a ticket transitions to "Ready for QA". Generates test plan + test cases + bug report scaffolding.`
 
-- AI model to use
-- Options: `sonnet` (recommended), `opus`, `haiku`
-- Default: Inherits from parent
-- Use `sonnet` for balanced quality/performance
-- Use `opus` for complex reasoning
-- Use `haiku` for simple, fast operations
+❌ **Poor:** `QA agent.`
 
-**color (optional):**
+### Tool selection
 
-- Visual identifier in Claude Code UI
-- Options: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `pink`
-- Use for easy agent distinction
-- Suggested mapping:
-  - `blue` - Code analysis, review
-  - `green` - Testing, QA
-  - `purple` - Refactoring
-  - `orange` - Documentation
-  - `red` - Security, critical
-  - `yellow` - Performance
+Only grant tools the agent actually uses.
 
-### System Prompt Design
+| Agent type       | Suggested tools           |
+| ---------------- | ------------------------- |
+| Code reviewer    | `Read, Grep, Bash`        |
+| Test generator   | `Read, Write, Grep, Bash` |
+| Refactorer       | `Read, Edit, Grep, Bash`  |
+| Doc auditor      | `Read, Grep, Glob`        |
+| Security scanner | `Read, Grep, Bash`        |
 
-**Define clear role:**
+### Model & color (Claude only, ignored elsewhere)
 
-✅ Good:
+- `model: sonnet` — default for most. Good balance of speed/quality.
+- `model: opus` — heavy reasoning, complex analysis, high-stakes decisions.
+- `model: haiku` — fast, cheap, simple checks.
+- `color: <name>` — visual identifier in the Claude Code UI. Other platforms ignore it.
 
-```markdown
-# Code Review Agent
-
-You are an autonomous agent specialized in comprehensive code review,
-focusing on code quality, security, and best practices.
-```
-
-❌ Poor:
-
-```markdown
-You review code.
-```
-
-**List specific capabilities:**
-
-✅ Good:
-
-```markdown
-## Your Capabilities
-
-- Analyze code structure and identify design patterns
-- Detect code smells and anti-patterns
-- Identify security vulnerabilities (SQL injection, XSS, CSRF)
-- Assess test coverage and suggest test cases
-- Recommend refactoring opportunities
-- Evaluate performance implications of code changes
-```
-
-❌ Poor:
-
-```markdown
-## Capabilities
-
-You can look at code and find problems.
-```
-
-**Specify clear workflow:**
-
-✅ Good:
-
-```markdown
-## Workflow
-
-1. **Understand context**: Read recent changes and related files
-2. **Analyze structure**: Examine code organization and patterns
-3. **Identify issues**: Use Grep to find problematic patterns
-4. **Assess severity**: Categorize each issue (Critical/High/Medium/Low)
-5. **Generate fixes**: Provide specific, actionable recommendations with code examples
-6. **Verify**: Run tests to ensure current behavior is understood
-7. **Report**: Create prioritized summary of findings
-```
-
-❌ Poor:
-
-```markdown
-## Workflow
-
-1. Read code
-2. Find issues
-3. Report problems
-```
-
-**Define autonomy clearly:**
-
-✅ Good:
-
-```markdown
-## Decision-Making
-
-You autonomously decide:
-
-- Which files to analyze (based on change impact and dependencies)
-- Severity ratings for identified issues (Critical/High/Medium/Low)
-- Whether to suggest refactoring or accept current implementation
-- Priority order of recommendations
-- Depth of analysis (surface-level vs deep dive)
-
-You should ask user for:
-
-- Approval for breaking changes
-- Architectural decisions
-- Deployment timing
-```
-
-❌ Poor:
-
-```markdown
-Make decisions about the code.
-```
-
-## Complete Agent Examples
+## Complete examples
 
 ### Example 1: Code Reviewer
 
-````markdown
+**File:** `.agents/subagents/code-reviewer.md`
+
+```markdown
 ---
 name: code-reviewer
-description: Autonomous code review for quality, security, and best practices analysis
-tools: [Read, Grep, Bash]
+description: Use this agent for thorough code review on a recent change. Analyzes quality, security, and best practices; returns a prioritized report.
+tools: Read, Grep, Bash
 model: sonnet
 color: blue
 ---
 
 # Code Review Agent
 
-You are an autonomous agent specialized in comprehensive code review.
+You are an autonomous subagent specialized in comprehensive code review.
 
 ## Your Capabilities
 
 - Analyze code structure and design patterns
 - Identify code smells and anti-patterns
-- Detect security vulnerabilities
-- Assess test coverage
+- Detect security vulnerabilities (SQL injection, XSS, hardcoded secrets)
+- Assess test coverage gaps
 - Recommend refactoring opportunities
 
 ## Your Workflow
 
-1. **Understand context**: Read changed files to understand scope
-2. **Analyze structure**: Examine code organization
-3. **Identify issues**: Use Grep to find patterns:
-   - Hard-coded values
-   - Console.log statements
+1. **Scope**: Read the changed files (use git diff context if available).
+2. **Analyze**: Examine structure, patterns, and dependencies.
+3. **Detect**: Use Grep to find anti-patterns:
+   - Hardcoded credentials
+   - Console statements (`console\.(log|debug)`)
    - TODO/FIXME comments
-4. **Assess severity**: Categorize issues
-5. **Generate recommendations**: Provide specific fixes with code examples
-6. **Run tests**: Execute test suite
-7. **Summarize**: Create prioritized report
+   - Unsafe SQL string concatenation
+4. **Assess**: Rate each finding Critical/High/Medium/Low.
+5. **Recommend**: Provide specific fixes with code examples.
+6. **Verify**: Run the test suite if available.
+7. **Report**: Return a prioritized markdown report.
 
 ## Autonomous Decision-Making
 
-You autonomously decide:
+You decide independently:
 
-- Which files to analyze based on change impact
-- Issue severity ratings
-- Whether to suggest refactoring
-- Priority order of recommendations
+- Which files to analyze based on change scope
+- Severity ratings
+- Whether to suggest refactoring or accept current code
+
+You escalate for:
+
+- Breaking changes
+- Architectural decisions
 
 ## Guidelines
 
-- Focus on actionable feedback with code examples
 - Prioritize security and correctness over style
-- Consider project context
-- Be constructive and specific
+- Use `file:line` format for all locations
+- Be specific and actionable
 
 ## Output Format
 
 ### Summary
 
-- Files analyzed: [count]
-- Total issues: [count]
-- Breakdown: Critical/High/Medium/Low
+- Files analyzed: N
+- Total issues: N (Critical: N | High: N | Medium: N | Low: N)
 
 ### Critical Issues
 
-[List critical issues first]
+[List with file:line, description, fix]
 
 ### Detailed Findings
 
-**Issue**: [Name]
-**Severity**: [Level]
-**File**: [filename:line]
-**Description**: [What's wrong]
-**Fix**: [How to resolve]
-**Example**:
-
-```[language]
-# Before
-[code]
-
-# After
-[improved]
+**Issue:** [name]
+**Severity:** [level]
+**Location:** `file:line`
+**Description:** [what's wrong]
+**Fix:** [specific change]
 ```
-````
-
-````
 
 ### Example 2: Test Generator
+
+**File:** `.agents/subagents/test-generator.md`
 
 ```markdown
 ---
 name: test-generator
-description: Generate comprehensive test suites with coverage analysis
-tools: [Read, Write, Grep, Bash]
+description: Use this agent to generate a test suite for a specified module or file. Determines test cases, writes them following project conventions, and reports coverage.
+tools: Read, Write, Grep, Bash
 model: sonnet
 color: green
 ---
 
 # Test Generation Agent
 
-You are an autonomous agent specialized in generating comprehensive test suites.
+You are an autonomous subagent specialized in generating comprehensive test suites.
 
 ## Your Capabilities
 
-- Analyze code to determine test requirements
+- Analyze code to derive test requirements
 - Generate unit, integration, and edge-case tests
-- Assess current test coverage
-- Write tests following project conventions
+- Assess existing coverage
+- Follow project test conventions
 - Execute tests to verify correctness
 
 ## Your Workflow
 
-1. **Analyze code**: Read source files
-2. **Identify test cases**: Determine happy path, edge cases, errors
-3. **Check existing tests**: Grep for existing patterns
-4. **Generate tests**: Write comprehensive suite
-5. **Execute tests**: Run to verify
-6. **Calculate coverage**: Assess coverage percentage
-7. **Report**: Summarize generation and coverage
+1. **Read** the target source file(s).
+2. **Identify** test cases: happy path, edge cases, error conditions.
+3. **Inspect** existing tests via Grep for naming patterns and framework.
+4. **Generate** the test file following project conventions.
+5. **Execute** the suite to confirm tests pass.
+6. **Estimate** coverage delta.
+7. **Report** what was generated.
 
 ## Autonomous Decision-Making
 
-You autonomously decide:
+You decide independently:
+
 - Which test cases are most important
 - Test structure and organization
-- Mocking strategies
-- Test data generation
+- Mocking strategy
+
+You escalate for:
+
+- Test framework choice (if project has none)
+- Adding new test dependencies
 
 ## Guidelines
 
-- Follow project's existing test patterns
-- Use descriptive test names
-- Test one thing per test case
+- Match existing test patterns
+- One assertion per test where possible
 - Include edge cases and error conditions
-- Add comments for complex setup
 
 ## Output Format
 
 ### Summary
-- Tests created: [count]
-- Coverage: [percentage]
 
-### Generated Files
+- Tests created: N
+- Coverage estimate: X%
+
+### Files
+
 [List]
 
-### Execution Results
-[Pass/fail]
-````
+### Execution
 
-## Platform Limitation
+[pass/fail counts]
 
-**Important:** Agents only work in **Claude Code**.
+### Coverage Gaps
 
-**Not supported:**
+[areas still untested]
+```
 
-- ❌ Cursor
-- ❌ Gemini CLI
-- ❌ Antigravity
+### Example 3: LIDR project-specific agent
 
-**Location:** `.claude/agents/` (not `.agents/`)
+**File:** `.agents/subagents/lidr-qa-agent.md`
 
-**No sync needed:** Agents are platform-specific
+The actual `lidr-qa-agent` (and its 5 siblings: `lidr-docs-agent`, `lidr-metrics-agent`, `lidr-onboarding-agent`, `lidr-release-agent`, `lidr-security-agent`) live in this repo and serve as production reference implementations. Study them for SDLC-integrated agents:
+
+```bash
+ls .agents/subagents/lidr-*.md
+cat .agents/subagents/lidr-qa-agent.md | head -30
+```
+
+## Platform behavior summary
+
+| Platform         | File seen by platform            | Sync method                          |
+| ---------------- | -------------------------------- | ------------------------------------ |
+| Claude Code      | `.claude/agents/{name}.md`       | Symlink → `.agents/subagents/`       |
+| Cursor           | `.cursor/agents/{name}.md`       | Symlink → `.agents/subagents/`       |
+| Gemini CLI       | `.gemini/agents/{name}.md`       | Symlink → `.agents/subagents/`       |
+| Copilot (VSCode) | `.github/agents/{name}.agent.md` | Generated copy (re-sync after edits) |
+| Antigravity      | —                                | Not supported                        |
 
 ## Validation
 
-After creating agent:
+After creating an agent:
 
 ```bash
-./.agents/skills/agents-architecture/scripts/validate-agent.sh [agent-name]
+./.agents/skills/agents-architecture/scripts/validate-agent.sh {name}
 ```
 
-Checks:
+The script checks:
 
-- ✅ File exists at `.claude/agents/[agent-name].md`
-- ✅ YAML frontmatter present
-- ✅ Required fields: name, description
-- ✅ Optional fields valid: tools, model, color
+- ✅ File exists at `.agents/subagents/{name}.md`
+- ✅ YAML frontmatter present and well-formed
+- ✅ Required fields: `name`, `description`
+- ✅ `name:` matches the filename
+- ✅ Optional fields valid: `tools`, `model`, `color`
 
-## Testing Tips
+## Testing workflow
 
-**Test workflow:**
+1. Create the agent following the template
+2. Run `./.agents/sync.sh --only=agents`
+3. Trigger a task matching the `description:` field
+4. Confirm the harness invokes your subagent
+5. Verify the output structure matches your contract
+6. Iterate on the system prompt if behavior diverges
 
-1. Create agent with clear triggers
-2. Trigger in Claude Code
-3. Observe autonomous behavior
-4. Check decision-making quality
-5. Verify output format
-6. Iterate on system prompt
-
-**Common adjustments:**
+Common adjustments:
 
 - Refine workflow steps for clarity
-- Add more specific decision-making guidelines
-- Adjust tool selection
-- Improve output format specification
+- Tighten the `description:` so the trigger is unambiguous
+- Adjust tool list if the agent fails on permissions
+- Improve output format specification so downstream consumers can parse
+
+## Changelog
+
+| Version | Date       | Author                        | Changes                                                                                                                                                                   |
+| ------- | ---------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.0.0   | 2026-05-19 | TL: agents-architecture audit | Source is `.agents/subagents/` (not `.claude/agents/`); 4 platforms supported; updated sync command; matched real LIDR subagent layout; removed "Claude Code only" claim. |
+| 1.0.0   | 2025-Q4    | (original)                    | Initial version — described agents as Claude Code-only with path `.claude/agents/`.                                                                                       |

@@ -513,10 +513,10 @@ This skill provides access to company database schemas and query patterns.
 - Generic: Manual installation
 - `.agents/`: Automatic via `sync.sh`
 
-**Platform awareness:**
+**Platform reach (verified May 2026):**
 
-- Generic: Single platform
-- `.agents/`: 5 platforms (Cursor, Claude Code, Gemini CLI, Antigravity, Copilot)
+- Generic: single platform
+- `.agents/`: all 5 platforms (Cursor, Claude Code, Gemini CLI, Antigravity, Copilot) via the [Agent Skills open standard](https://agentskills.io)
 
 ### Automatic Synchronization
 
@@ -541,18 +541,22 @@ ls -la .claude/skills/{skill-name}
 cat .cursor/skills/{skill-name}/SKILL.md
 ```
 
-### Platform Considerations
+### Platform Considerations (verified May 2026)
 
-**Cursor, Claude Code, Gemini CLI:**
+**Cursor, Claude Code:**
 
-- ✅ Full directory symlinks
+- ✅ Full directory symlinks (`.cursor/skills`, `.claude/skills → ../.agents/skills`)
 - ✅ Instant propagation of edits
 - ✅ No re-sync needed after changes
 
-**Antigravity:**
+**Gemini CLI, Antigravity, Copilot:**
 
-- ⚠️ Selective symlinks (per-skill)
-- ⚠️ Must re-sync after editing: `./.agents/sync.sh`
+- ✅ **Native detection** from `.agents/skills/` per the [Agent Skills open standard](https://agentskills.io)
+- ✅ No symlinks needed (do NOT create `.gemini/skills/` or `.github/skills/` — would cause duplicate detection)
+- ✅ No re-sync needed
+- ⚠️ Antigravity caches at project load; reload the project to see new skills
+
+For complete cross-platform synchronization details (commands, subagents, rules, MCP, hooks), see `sync-system.md` and `architecture-overview.md`.
 
 ### Integration with Team Workflow
 
@@ -568,9 +572,11 @@ cat .cursor/skills/{skill-name}/SKILL.md
 **Maintenance workflow:**
 
 1. Edit files in `.agents/skills/{skill-name}/`
-2. Changes propagate instantly (Cursor/Claude/Gemini)
-3. For Antigravity: Re-run `./.agents/sync.sh`
-4. Verify changes: `cat .cursor/skills/{skill-name}/SKILL.md`
+2. Changes propagate instantly:
+   - Cursor / Claude: via symlinks
+   - Gemini / Antigravity / Copilot: via native detection of `.agents/skills/`
+3. For Antigravity: reload the project (cache is at project-load time)
+4. Verify changes: `cat .agents/skills/{skill-name}/SKILL.md` (single source)
 
 ## Summary Checklist
 
@@ -588,7 +594,8 @@ Creating a skill in `.agents/` system:
 - [ ] Reference bundled resources from SKILL.md
 - [ ] Validate structure: `scripts/validate-skill.sh {skill-name}`
 - [ ] Sync automatically happens (or run manually: `./.agents/sync.sh`)
-- [ ] Verify symlinks: `ls -la .cursor/skills/{skill-name}`
+- [ ] Verify symlinks (Cursor/Claude): `ls -la .cursor/skills/{skill-name} .claude/skills/{skill-name}`
+- [ ] Native platforms (Gemini/Antigravity/Copilot) read `.agents/skills/{skill-name}/` directly — no extra check needed
 - [ ] Test skill with trigger phrases in AI agents
 - [ ] Iterate based on usage feedback
 

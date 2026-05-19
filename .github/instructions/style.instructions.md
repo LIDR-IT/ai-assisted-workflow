@@ -1,5 +1,6 @@
 ---
 description: Code style guidelines and conventions
+applyTo: "**"
 ---
 
 # Code Style Guidelines

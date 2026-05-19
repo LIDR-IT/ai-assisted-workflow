@@ -39,50 +39,51 @@ interface EcosystemCounts {
 async function scanEcosystem(): Promise<EcosystemCounts> {
   console.log('🔍 Scanning filesystem for actual ecosystem counts...');
 
+  // Post-merge layout: source of truth is ../.agents/, .mcp.json at repo root.
+
   // Skills - count all SKILL.md files
-  const skillsCount = await countFiles('.claude/skills', 'SKILL.md');
+  const skillsCount = await countFiles('../.agents/skills', 'SKILL.md');
   console.log(`📚 Skills found: ${skillsCount}`);
 
   // Commands - count all .md files in commands/
-  const commandsCount = await countFiles('.claude/commands', '*.md');
+  const commandsCount = await countFiles('../.agents/commands', '*.md');
   console.log(`⚙️  Commands found: ${commandsCount}`);
 
   // Validation Scripts
-  const sharedValidators = await countFiles('.claude/_shared/validators', '*.ts');
+  const sharedValidators = await countFiles('../.agents/_shared/lidr/validators', '*.ts');
   // Filter out index.ts and types.ts
   const actualSharedValidators = Math.max(0, sharedValidators - 2);
 
-  const skillValidators = await countFiles('.claude/skills', 'validate-examples.ts');
+  const skillValidators = await countFiles('../.agents/skills', 'validate-examples.ts');
   const validationScripts = actualSharedValidators + skillValidators;
   console.log(
     `✅ Validation scripts found: ${validationScripts} (${actualSharedValidators} shared + ${skillValidators} skill-specific)`
   );
 
   // Docs - count all .md files in docs/
-  const docsCount = await countFiles('docs', '*.md');
+  const docsCount = await countFiles('../docs', '*.md');
   console.log(`📝 Docs found: ${docsCount}`);
 
-  // Hooks - count hook .md files (excluding README)
-  const allHookFiles = await countFiles('docs/hooks', '*.md');
-  const hooksCount = Math.max(0, allHookFiles - 1); // Subtract README.md
+  // Hooks - count hook .sh files in .agents/hooks/scripts/
+  const hooksCount = await countFiles('../.agents/hooks/scripts', '*.sh');
   console.log(`🪝 Hooks found: ${hooksCount}`);
 
-  // MCPs - read from .mcp.json
+  // MCPs - read from .mcp.json at repo root
   let mcpsCount = 4;
   try {
-    const mcpConfig = JSON.parse(fs.readFileSync('.mcp.json', 'utf8'));
+    const mcpConfig = JSON.parse(fs.readFileSync('../.mcp.json', 'utf8'));
     mcpsCount = Object.keys(mcpConfig.mcpServers || {}).length;
   } catch {
-    console.warn('⚠️  Could not read .mcp.json, using default value');
+    console.warn('⚠️  Could not read ../.mcp.json, using default value');
   }
   console.log(`🔗 MCPs found: ${mcpsCount}`);
 
   // Rules - count .md files in rules/
-  const rulesCount = await countFiles('.claude/rules', '*.md');
+  const rulesCount = await countFiles('../.agents/rules', '*.md');
   console.log(`📋 Rules found: ${rulesCount}`);
 
-  // Agents - count .md files in agents/
-  const agentsCount = await countFiles('.claude/agents', '*.md');
+  // Agents - count .md files in subagents/
+  const agentsCount = await countFiles('../.agents/subagents', '*.md');
   console.log(`🤖 Agents found: ${agentsCount}`);
 
   // Self-contained items (should be 0)

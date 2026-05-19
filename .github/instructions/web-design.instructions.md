@@ -1,5 +1,6 @@
 ---
 description: Review UI code for Vercel Web Interface Guidelines compliance
+applyTo: "**"
 ---
 
 # Web Interface Guidelines

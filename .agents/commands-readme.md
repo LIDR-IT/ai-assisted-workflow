@@ -1,348 +1,134 @@
-# Commands Directory
+# Commands System
 
-This directory contains user-invocable slash commands that provide convenient interfaces to agents and workflows.
+Source-of-truth for user-invocable slash commands across 5 platforms.
 
-## Overview
+**Source:** `.agents/commands/<name>.md` — 30 commands (23 LIDR `lidr-*` + 7 generic).
 
-Commands are markdown files that register slash commands in Claude Code CLI. They serve as user interfaces that invoke agents, document usage, and accept arguments.
+Each platform calls the feature by a different name and expects a different file format. The adapter generates / symlinks per platform.
 
-## Available Commands
+## Terminology and file layout per platform (verified May 2026)
 
-### /improve-docs
+| Platform           | Feature name                          | Path                                                                                                        | Format            | Frontmatter                                                                                                            |
+| ------------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Claude Code**    | "Custom commands"                     | `.claude/commands/<name>.md`                                                                                | Markdown          | YAML (`description`, `allowed-tools`, `model`, `argument-hint`) — see [docs](https://code.claude.com/docs/en/commands) |
+| **Cursor**         | "Custom slash commands" (Cursor 1.6+) | `.cursor/commands/<name>.md`                                                                                | Plain Markdown    | **None** — plain prompt text                                                                                           |
+| **Gemini CLI**     | "Custom commands"                     | `.gemini/commands/<name>.toml`                                                                              | **TOML required** | TOML: `prompt` (required), `description` (optional) — see [docs](https://geminicli.com/docs/cli/custom-commands)       |
+| **Antigravity**    | "Workflows"                           | `.agents/workflows/<name>.md` (workspace) <br/> `~/.gemini/antigravity/global_workflows/<name>.md` (global) | Markdown          | YAML with `description` — see [docs](https://codelabs.developers.google.com/getting-started-google-antigravity)        |
+| **Copilot/VSCode** | "Prompt files"                        | `.github/prompts/<name>.prompt.md`                                                                          | Markdown          | YAML (`description`, `agent`)                                                                                          |
 
-**Purpose:** Audits and improves project documentation
+**Important Antigravity note:** Newer Google docs use `.agents/workflows/` (plural). Earlier Mete Atamel docs (Nov 2025) used `.agent/workflows/` (singular). The plural form aligns with the Agent Skills cross-platform standard and is current. Our adapter creates the plural symlink and cleans up the singular form if present.
 
-**Arguments:**
+## How sync.sh handles each platform
 
-- `path` (optional) - Path to document or directory to audit
+| Platform    | Method                                                                                                                             |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Claude      | Symlink `.claude/commands` → `../.agents/commands`                                                                                 |
+| Cursor      | Symlink `.cursor/commands` → `../.agents/commands` (frontmatter visible in prompt — Cursor ignores YAML keys it doesn't recognize) |
+| Gemini      | Generate `.gemini/commands/<name>.toml` from `.md` source                                                                          |
+| Antigravity | Symlink `.agents/workflows` → `commands` (inside `.agents/`)                                                                       |
+| Copilot     | Generate `.github/prompts/<name>.prompt.md` from `.md` source (`$ARGUMENTS` → `{{{ input }}}`)                                     |
 
-**What it does:**
-
-- Invokes `doc-improver` agent
-- Analyzes documentation against project standards
-- Identifies gaps and issues
-- Suggests improvements
-- Implements approved changes
-
-**Usage:**
-
-```bash
-# Audit entire project
-/improve-docs
-
-# Audit specific directory
-/improve-docs docs/guides
-
-# Audit specific file
-/improve-docs README.md
-```
-
-**Related:**
-
-- Agent: `.agents/subagents/doc-improver.md`
-- Rule: `.agents/rules/process/documentation.md`
-
-## Command Architecture
-
-Commands are part of the **Command → Agent → Skill** pattern:
-
-```
-┌──────────────┐
-│   COMMAND    │  ← User interface
-│  /name [arg] │     Accepts arguments
-│              │     Documents usage
-└──────┬───────┘     Invokes agent
-       ↓
-┌──────────────┐
-│    AGENT     │  ← Autonomous logic
-│   workflow   │     Multi-step process
-│              │     Uses tools
-└──────┬───────┘     Reads rules
-       ↓             Uses skills
-┌──────────────┐
-│ RULES/SKILLS │  ← Constraints/Knowledge
-└──────────────┘
-```
-
-## Command Structure
-
-Every command file contains:
-
-### 1. YAML Frontmatter
+## Source frontmatter (universal — what each platform uses)
 
 ```yaml
 ---
-name: command-name # How it's invoked (/command-name)
-description: Brief summary # What it does
-args: # Arguments it accepts
-  - name: arg1
-    description: Arg description
-    required: false
----
-```
-
-### 2. Documentation Content
-
-````markdown
-# Command Name
-
-Brief description of what this command does.
-
-## What It Does
-
-- Bullet points of functionality
-
-## Usage
-
-```bash
-/command-name arg1 arg2
-```
-````
-
-## Examples
-
-[Usage examples]
-
-````
-
-## Creating a New Command
-
-See: [Command → Agent → Skill Pattern Guide](../../docs/guides/patterns/command-agent-skill-pattern.md)
-
-### Quick Steps
-
-1. **Create command file:**
-```bash
-touch .agents/commands/your-command.md
-````
-
-2. **Add frontmatter:**
-
-```yaml
----
-name: your-command
-description: What it does
-args:
-  - name: target
-    description: Argument description
-    required: false
----
-```
-
-3. **Document usage:**
-
-```markdown
-# Your Command
-
-Explanation, usage, examples.
-```
-
-4. **Create corresponding agent (if needed):**
-
-```bash
-touch .agents/subagents/your-agent.md
-```
-
-5. **Test:**
-
-```bash
-/your-command
-```
-
-**Or use:**
-
-```bash
-/command-development  # Skill with full guide
-```
-
-## Command Best Practices
-
-### 1. Clear Naming
-
-Use descriptive, action-oriented names:
-
-✅ Good:
-
-- `/improve-docs`
-- `/review-code`
-- `/generate-tests`
-
-❌ Bad:
-
-- `/doc`
-- `/check`
-- `/do`
-
-### 2. Document Arguments
-
-Always describe what each argument does:
-
-```yaml
-args:
-  - name: path
-    description: Path to directory or file to process
-    required: false
-  - name: format
-    description: Output format (json, md, html)
-    required: false
-```
-
-### 3. Provide Examples
-
-Include multiple usage examples:
-
-````markdown
-## Examples
-
-**Example 1: Basic usage**
-
-```bash
-/command
-```
-````
-
-**Example 2: With path**
-
-```bash
-/command src/
-```
-
-**Example 3: Full options**
-
-```bash
-/command src/ --format json
-```
-
-````
-
-### 4. Link to Related Resources
-
-Help users discover related functionality:
-
-```markdown
-## Related
-
-- Agent: `.agents/subagents/agent-name.md`
-- Rule: `.agents/rules/category/rule.md`
-- Skill: Use `/skill-name` for specialized knowledge
-```
-
-## Command vs Agent vs Skill
-
-### Use Command When:
-- ✅ Need user-invocable interface (`/name`)
-- ✅ Want to accept arguments
-- ✅ Documenting usage for team
-- ✅ Providing shortcut to common workflow
-
-### Use Agent When:
-- ✅ Multi-step autonomous workflow
-- ✅ Complex decision logic
-- ✅ Needs multiple tools
-- ✅ Long-running task
-
-### Use Skill When:
-- ✅ Specialized knowledge repository
-- ✅ Reusable across multiple agents
-- ✅ Deep domain expertise
-- ✅ Includes bundled resources
-
-## Common Patterns
-
-### Pattern 1: Simple Command → Agent
-
-```
-/improve-docs → doc-improver agent
-```
-
-Command accepts args, agent does the work.
-
-### Pattern 2: Command → Agent → Skill
-
-```
-/generate-api-docs → api-doc-agent → doc-generator skill
-```
-
-Command invokes agent, agent uses skill for specialized knowledge.
-
-### Pattern 3: Command → Agent → Rules
-
-```
-/review-code → code-reviewer agent → reads code-style.md rule
-```
-
-Agent always reads project rules for constraints.
-
-### Pattern 4: Command with No Agent
-
-```yaml
----
-name: quick-format
-description: Formats current file
+description: Brief description of the command          # All platforms — Cursor ignores
+allowed-tools: Bash(git:*) Read Grep                   # Claude only — pre-approves tools
+model: sonnet                                          # Claude only — override model
+argument-hint: [arg1] [arg2]                           # Claude/Gemini autocomplete hint
+agent: 'agent'                                         # Copilot adapter injects automatically
 ---
 
-# Quick Format
+# Command body
 
-Formats the current file using project standards.
-
-```bash
-prettier --write $FILE
-```
-````
-
-Simple commands can execute bash directly without agents.
-
-## Synchronization
-
-Commands are automatically available from `.agents/commands/` directory:
-
-- **Cursor:** Reads from `.agents/commands/`
-- **Claude Code:** Reads from `.agents/commands/`
-- **Gemini CLI:** Reads from `.agents/commands/`
-- **Antigravity:** May need manual configuration
-
-No sync script needed - commands are read directly from source.
-
-## Testing Commands
-
-### Test Invocation
-
-```bash
-# List available commands
-claude help
-
-# Invoke command
-/your-command
-
-# With arguments
-/your-command arg1 arg2
+Markdown content here. Use $ARGUMENTS for user input.
 ```
 
-### Test Arguments
+**Per-platform field handling:**
+
+- **Claude:** reads all fields documented in [Claude Code commands docs](https://code.claude.com/docs/en/commands)
+- **Cursor:** ignores frontmatter; uses body as prompt
+- **Gemini:** adapter converts MD → TOML, mapping `description` and body → `prompt`. Other fields are dropped (not in Gemini schema)
+- **Antigravity:** reads markdown body; `description` shown in `/` dropdown
+- **Copilot:** adapter injects `agent: 'agent'` + maps `$ARGUMENTS` → `{{{ input }}}`
+
+## Available commands (30)
+
+### Generic (7)
+
+- `/commit` — Conventional commit from staged changes
+- `/create-ticket` — Structured ticket creation
+- `/enrich-ticket` — Validate ticket completeness
+- `/improve-docs` — Documentation audit + improvement
+- `/sync-setup` — Run `./.agents/sync.sh`
+- `/test-hooks` — Test cross-platform hooks
+- `/validate-project-docs` — Audit project docs against templates
+
+### LIDR SDLC (23)
+
+`lidr-advance-gate`, `lidr-check-readiness`, `lidr-course-correct`, `lidr-create-branch`, `lidr-create-branch-enhanced`, `lidr-create-pr`, `lidr-create-pr-enhanced`, `lidr-create-release-notes`, `lidr-document-project`, `lidr-help`, `lidr-implement-ticket`, `lidr-init-project-docs`, `lidr-prepare-testing`, `lidr-product-brief`, `lidr-quick-dev`, `lidr-quick-spec`, `lidr-sprint-health`, `lidr-sync-docs`, `lidr-track-sdlc`, `lidr-update-changelog`, `lidr-validate-prd`, `lidr-validate-project-docs`, `lidr-validate-requirements`
+
+See `.agents/rules/lidr-sdlc/workflows.md` for the role × command matrix.
+
+## Add a new command
 
 ```bash
-# Optional argument not provided
-/improve-docs
-→ Should use default behavior
+# 1. Write the command source
+cat > .agents/commands/my-command.md <<'EOF'
+---
+description: What this command does
+allowed-tools: Bash(npm:*) Read
+argument-hint: [option]
+---
 
-# Optional argument provided
-/improve-docs docs/
-→ Should use specified path
+# My Command
+
+Step 1: do X with $ARGUMENTS
+Step 2: do Y
+EOF
+
+# 2. Sync (symlinks for Claude/Cursor/Antigravity, generates TOML for Gemini, .prompt.md for Copilot)
+./.agents/sync.sh --only=commands
+
+# 3. Verify
+ls .claude/commands/my-command.md            # symlink resolves
+cat .gemini/commands/my-command.toml          # TOML generated
+cat .github/prompts/my-command.prompt.md      # prompt.md generated
+ls .agents/workflows/my-command.md            # Antigravity reads via the symlink
 ```
 
-### Test Documentation
+## Command → Agent → Skill pattern
 
-```bash
-# Command should be self-documenting
-/your-command --help  # if implemented
+Commands are thin invocation wrappers. They typically delegate to a more detailed unit:
 
-# Or read the .md file directly
-cat .agents/commands/your-command.md
+```
+User types /improve-docs docs/guides
+   ↓
+Command (.agents/commands/improve-docs.md) — orchestrator with frontmatter
+   ↓
+Subagent (.agents/subagents/doc-improver.md) — autonomous workflow
+   ↓
+Skill (.agents/skills/lidr-audit-standards/SKILL.md) — domain expertise
+   ↓
+Rule (.agents/rules/process/documentation.md) — standards
 ```
 
-## Related Documentation
+Use a command when the user invokes by name. Use a skill when behavior should be loaded automatically based on context. See `.agents/skills-readme.md` for the command-vs-skill decision.
 
-- [Command → Agent → Skill Pattern](../../docs/guides/patterns/command-agent-skill-pattern.md)
-- [Command Development Skill](../skills/command-development/)
-- [Agent Development Skill](../skills/agent-development/)
-- [Available Agents](../agents/README.md)
+## Common pitfalls
+
+| Symptom                                      | Cause                                     | Fix                                                                                |
+| -------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------- |
+| Cursor shows YAML frontmatter as prompt text | Cursor expects plain markdown             | Tolerable; the prompt still works. Optionally strip in adapter.                    |
+| Gemini command not appearing                 | TOML missing `prompt` field               | Verify `.gemini/commands/<name>.toml` exists and contains `prompt = """..."""`     |
+| Antigravity workflow not appearing           | Wrong directory (`.agent/` vs `.agents/`) | Verify `.agents/workflows/` (plural) exists and contains the symlink               |
+| Copilot prompt missing `agent:` field        | Source omitted it                         | Adapter auto-injects `agent: 'agent'` — re-run `./.agents/sync.sh --only=commands` |
+| `$ARGUMENTS` shown literally in Copilot      | `$ARGUMENTS` not converted                | Adapter converts to `{{{ input }}}` automatically                                  |
+
+## Official references
+
+- [Claude Code commands](https://code.claude.com/docs/en/commands)
+- [Cursor commands (1.6+)](https://cursor.com/docs/agent/chat/commands) — note: docs page mostly redirects to Skills; commands work as plain .md
+- [Gemini CLI custom commands](https://geminicli.com/docs/cli/custom-commands)
+- [Antigravity workflows (Google Codelabs)](https://codelabs.developers.google.com/getting-started-google-antigravity)
+- [VSCode Copilot prompt files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)

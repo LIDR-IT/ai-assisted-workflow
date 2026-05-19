@@ -30,16 +30,25 @@ find .agents/rules -name "*.md" -type f -exec wc -c {} + | awk '$1 > 12000 {prin
 
 All rules in `.agents/rules/` should use universal YAML frontmatter that works across all platforms:
 
-| Field           | Cursor | Claude Code | Gemini CLI | Antigravity | Copilot (VSCode)    |
-| --------------- | ------ | ----------- | ---------- | ----------- | ------------------- |
-| `name`          | ✅     | ❌          | ❌         | ❌          | ❌                  |
-| `description`   | ✅     | ✅          | ✅         | ❌          | ✅                  |
-| `alwaysApply`   | ✅     | ❌          | ❌         | ❌          | ❌                  |
-| `globs`         | ✅     | ❌          | ❌         | ❌          | ❌ (uses `applyTo`) |
-| `trigger`       | ❌     | ❌          | ❌         | ✅          | ❌                  |
-| `argument-hint` | ❌     | ✅          | ✅         | ❌          | ❌                  |
-| `paths`         | ❌     | ✅          | ❌         | ❌          | ❌                  |
-| `applyTo`       | ❌     | ❌          | ❌         | ❌          | ✅                  |
+Verified against official docs (May 2026). `⚠️` = field is non-standard but harmlessly ignored by the platform.
+
+| Field           | Cursor     | Claude Code               | Gemini CLI                | Antigravity | Copilot (VSCode)                      |
+| --------------- | ---------- | ------------------------- | ------------------------- | ----------- | ------------------------------------- |
+| `name`          | ⚠️ ignored | ❌                        | ❌                        | ❌          | ⚠️ ignored                            |
+| `description`   | ✅         | ❌ (uses CLAUDE.md prose) | ❌ (uses GEMINI.md prose) | ❌          | ✅ (shown in UI)                      |
+| `alwaysApply`   | ✅         | ❌                        | ❌                        | ❌          | ❌                                    |
+| `globs`         | ✅         | ❌                        | ❌                        | ❌          | ❌ (adapter converts → `applyTo`)     |
+| `trigger`       | ❌         | ❌                        | ❌                        | ✅          | ❌                                    |
+| `argument-hint` | ❌         | ✅                        | ✅                        | ❌          | ❌                                    |
+| `paths`         | ❌         | ✅                        | ❌                        | ❌          | ❌                                    |
+| `applyTo`       | ❌         | ❌                        | ❌                        | ❌          | ✅ (required by GitHub Cloud Copilot) |
+
+**Source references:**
+
+- Cursor schema: https://cursor.com/docs/context/rules (only `description`/`alwaysApply`/`globs`)
+- Claude path-scoped rules: https://code.claude.com/docs/en/memory
+- Copilot custom instructions: https://code.visualstudio.com/docs/copilot/customization/custom-instructions
+- Gemini context files: https://geminicli.com/docs/cli/gemini-md/
 
 ### Universal Format (Recommended)
 
@@ -47,12 +56,12 @@ Use this format in `.agents/rules/` source files for maximum compatibility:
 
 ```yaml
 ---
-name: rule-name # Cursor
-description: Brief description # All platforms
-alwaysApply: false # Cursor (optional, defaults to false)
-globs: ["**/*.ts"] # Cursor (optional)
+name: rule-name # Non-standard. Harmlessly ignored. Kept for legacy compatibility.
+description: Brief description # Cursor + Copilot use this — recommended
+alwaysApply: false # Cursor (optional)
+globs: ["**/*.ts"] # Cursor (optional). Adapter converts to applyTo for Copilot.
+paths: ["src/**/*.ts"] # Claude (optional) — path-scoped rule loading
 argument-hint: <file-pattern> # Claude/Gemini (optional)
-paths: ["src/**/*.ts"] # Claude (optional)
 trigger: always_on # Antigravity (optional)
 ---
 ```
@@ -76,55 +85,62 @@ All components must use functional components...
 
 ### Field Definitions
 
-**name** (Cursor only)
+**name** (legacy, non-standard)
 
 - **Type:** String
-- **Required:** Yes for Cursor
-- **Description:** Unique identifier for the rule
+- **Required:** No (not in any official platform schema as of May 2026)
+- **Description:** Internal identifier. Per [Cursor docs](https://cursor.com/docs/context/rules) the schema is only `description`/`alwaysApply`/`globs`. Field is preserved in sources for human readability and search-by-name but no platform requires or enforces it.
 - **Example:** `"react-components"`
 
 **description**
 
 - **Type:** String
-- **Required:** Recommended for all platforms
-- **Description:** Brief summary shown in UI
+- **Required:** No, recommended (shown in Cursor/Copilot UI when present)
+- **Description:** Brief summary
 - **Example:** `"React component standards"`
 
-**alwaysApply** (Cursor only)
+**alwaysApply** (Cursor)
 
 - **Type:** Boolean
 - **Required:** No (defaults to `false`)
-- **Values:**
-  - `true` = Rule always active in chat
-  - `false` = AI decides when to apply intelligently
-- **Example:** `false`
+- **Behavior (per Cursor docs):**
+  - `true` → rule always in context; `description`/`globs` ignored
+  - `false` + `globs` → auto-attached when matching file in context
+  - `false` + `description` → agent decides when to apply
+  - `false` + neither → only on `@rule-name` mention
 
-**globs** (Cursor only)
+**globs** (Cursor)
+
+- **Type:** String (comma-separated) or array of strings
+- **Required:** No
+- **Description:** File-matching glob. Cursor uses this directly. Copilot adapter converts to `applyTo` (defaults to `**` when absent).
+- **Example:** `["src/**/*.tsx", "src/**/*.ts"]`
+
+**paths** (Claude Code)
 
 - **Type:** Array of strings
 - **Required:** No
-- **Description:** Glob patterns for file matching
-- **Example:** `["src/**/*.tsx", "src/**/*.ts"]`
+- **Description:** Path-scoped rule loading per [Claude memory docs](https://code.claude.com/docs/en/memory). Rules without `paths` load at launch.
+- **Example:** `["src/api/**/*.ts"]`
+
+**applyTo** (Copilot/VSCode)
+
+- **Type:** String (glob, optionally comma-separated)
+- **Required:** Yes for GitHub Cloud Copilot, optional for VSCode
+- **Description:** Files this instruction applies to. Adapter auto-generates from source `globs` or defaults to `**`.
+- **Example:** `"src/**/*.ts"`
 
 **argument-hint** (Claude/Gemini)
 
 - **Type:** String
 - **Required:** No
-- **Description:** Placeholder text shown in UI for file arguments
+- **Description:** Placeholder text for slash-command arguments
 - **Example:** `"<api-file>"`
 
-**paths** (Claude only)
-
-- **Type:** Array of strings
-- **Required:** No
-- **Description:** Path patterns for conditional rule application
-- **Example:** `["src/api/**/*.ts"]`
-
-**trigger** (Antigravity only)
+**trigger** (Antigravity)
 
 - **Type:** String
 - **Required:** No
-- **Description:** Trigger mode for rule activation
 - **Values:** `always_on` (others undocumented)
 - **Example:** `"always_on"`
 
@@ -196,7 +212,7 @@ After creating a rule, verify it works on:
 - [ ] Claude Code (verify with `/memory`)
 - [ ] Gemini CLI (check `.gemini/GEMINI.md` index)
 - [ ] Antigravity (check in Customizations panel)
-- [ ] Copilot/VSCode (check `.github/rules/` and `.github/copilot-instructions.md`)
+- [ ] Copilot/VSCode (check `.github/instructions/` and `.github/copilot-instructions.md`)
 
 **❌ Don't create platform-specific files:**
 
@@ -532,7 +548,7 @@ ls -la .cursor/rules          # Should contain .mdc files
 ls -la .claude/rules          # Should be symlink → ../.agents/rules
 ls -la .gemini/GEMINI.md      # Should exist (index file)
 ls -la .agents/rules/         # Antigravity reads natively from here (no copy needed)
-ls -la .github/rules/         # Should contain .instructions.md files (Copilot)
+ls -la .github/instructions/  # Should contain .instructions.md files (Copilot) — official path
 ```
 
 ## Checklist for New Rules

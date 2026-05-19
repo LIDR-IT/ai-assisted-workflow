@@ -1,5 +1,5 @@
 ---
-name: onboarding-agent
+name: lidr-onboarding-agent
 description: "Guía a nuevos miembros con plan personalizado por rol"
 model: inherit
 color: magenta

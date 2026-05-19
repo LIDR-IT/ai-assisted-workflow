@@ -1,5 +1,6 @@
 ---
 description: Core principles and architectural decisions
+applyTo: "**"
 ---
 
 # Core Principles

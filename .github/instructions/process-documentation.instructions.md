@@ -1,5 +1,6 @@
 ---
 description: Documentation standards and practices
+applyTo: "**"
 ---
 
 # Documentation Standards

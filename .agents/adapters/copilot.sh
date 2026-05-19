@@ -10,15 +10,26 @@ COPILOT_DIR="$PROJECT_ROOT/.github"
 COPILOT_MCP_DIR="$PROJECT_ROOT/.vscode"
 
 copilot_rules() {
-  log_verbose "Copilot rules: copy-flatten to .instructions.md + index"
+  # Official Copilot/VSCode location is .github/instructions/ (NOT .github/rules/).
+  # Per https://code.visualstudio.com/docs/copilot/customization/custom-instructions
+  # and https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot
+  # VSCode searches .github/instructions/ recursively. Files must end in .instructions.md.
+  # Frontmatter `applyTo` is required for GitHub Cloud Copilot, optional in VSCode (we always emit it).
+  log_verbose "Copilot rules: copy-flatten to .github/instructions/*.instructions.md + index"
 
-  if run_or_dry "copy all .md files to .github/rules/ (.instructions.md) + generate index"; then
+  if run_or_dry "copy all .md files to .github/instructions/ (.instructions.md) + generate index"; then
     return 0
   fi
 
-  # Preserve .github/ but recreate rules/ subdirectory
-  [ -e "$COPILOT_DIR/rules" ] || [ -L "$COPILOT_DIR/rules" ] && rm -rf "$COPILOT_DIR/rules"
-  mkdir -p "$COPILOT_DIR/rules"
+  # Migrate from legacy .github/rules/ if present
+  if [ -d "$COPILOT_DIR/rules" ] || [ -L "$COPILOT_DIR/rules" ]; then
+    rm -rf "$COPILOT_DIR/rules"
+    log_info "Removed legacy .github/rules/ (Copilot reads .github/instructions/)"
+  fi
+
+  # Recreate instructions/ subdirectory
+  [ -e "$COPILOT_DIR/instructions" ] || [ -L "$COPILOT_DIR/instructions" ] && rm -rf "$COPILOT_DIR/instructions"
+  mkdir -p "$COPILOT_DIR/instructions"
 
   local count=0
   while IFS= read -r -d '' rule_file; do
@@ -26,7 +37,7 @@ copilot_rules() {
     rule_name=$(basename "$rule_file")
     local rule_base
     rule_base=$(flat_rule_basename "$rule_file" "$AGENTS_DIR/rules")
-    local dest_file="$COPILOT_DIR/rules/${rule_base}.instructions.md"
+    local dest_file="$COPILOT_DIR/instructions/${rule_base}.instructions.md"
     local subdir
     subdir=$(dirname "$rule_file" | sed "s|$AGENTS_DIR/rules||" | sed 's|^/||')
 
@@ -39,19 +50,28 @@ copilot_rules() {
       local globs
       globs=$(extract_field "$rule_file" "globs")
 
+      # Derive applyTo: prefer source globs, fall back to "**" (apply everywhere).
+      # GitHub Cloud Copilot requires applyTo; VSCode treats it as optional.
+      local apply_to="**"
+      if [ -n "$globs" ]; then
+        apply_to=$(echo "$globs" | sed 's/\[//g' | sed 's/\]//g' | sed 's/"//g' | sed 's/,\s*/, /g')
+      fi
+
       {
         echo "---"
         [ -n "$description" ] && echo "description: $description"
-        if [ -n "$globs" ]; then
-          local apply_to
-          apply_to=$(echo "$globs" | sed 's/\[//g' | sed 's/\]//g' | sed 's/"//g' | sed 's/,\s*/, /g')
-          echo "applyTo: \"$apply_to\""
-        fi
+        echo "applyTo: \"$apply_to\""
         echo "---"
         echo "$body"
       } > "$dest_file"
     else
-      cp "$rule_file" "$dest_file"
+      # No frontmatter in source — emit minimal valid frontmatter for Copilot
+      {
+        echo "---"
+        echo "applyTo: \"**\""
+        echo "---"
+        cat "$rule_file"
+      } > "$dest_file"
     fi
 
     touch "$dest_file"
@@ -65,7 +85,7 @@ copilot_rules() {
   done < <(find "$AGENTS_DIR/rules" -type f -name "*.md" ! -name "sync-*.sh" ! -name "README.md" -print0)
 
   if [ $count -gt 0 ]; then
-    log_info "Copied $count rules to .instructions.md format"
+    log_info "Copied $count rules to .github/instructions/ as .instructions.md format"
   else
     log_warn "No rules found to copy"
   fi
@@ -89,7 +109,7 @@ This project uses a centralized source-of-truth pattern. All rules are in `.agen
 
 ## Project Rules
 
-Individual rules are in `.github/rules/*.instructions.md`. Below is a summary by category.
+Individual rules are in `.github/instructions/*.instructions.md`. Below is a summary by category.
 
 EOF
 
@@ -112,7 +132,7 @@ EOF
       desc=$(has_frontmatter "$rule_file" && extract_field "$rule_file" "description" || true)
       desc=${desc:-"Project rule"}
 
-      printf -- "- **[%s](rules/%s.instructions.md)** — %s\n" \
+      printf -- "- **[%s](instructions/%s.instructions.md)** — %s\n" \
         "$(_title_case_copilot "$flat_base")" "$flat_base" "$desc"
     done < <(find "$rules_root" -type f -name "*.md" ! -name "README.md" | sort)
 
@@ -192,9 +212,10 @@ copilot_commands() {
     local base_name
     base_name=$(basename "$md_file" .md)
 
-    # Skip sync scripts and READMEs
+    # Skip READMEs only. (The `sync-*` exclusion was historical — sync-setup is a
+    # legitimate user-facing command. The *.md glob already excludes .sh scripts.)
     case "$base_name" in
-      sync-*|README|readme) continue ;;
+      README|readme) continue ;;
     esac
 
     local prompt_file="$COPILOT_DIR/prompts/${base_name}.prompt.md"
@@ -398,14 +419,19 @@ copilot_hooks() {
 copilot_verify() {
   local errors=0
 
-  # Rules (copied files)
-  if [ -d "$COPILOT_DIR/rules" ]; then
+  # Rules (copied files at official Copilot location: .github/instructions/)
+  if [ -d "$COPILOT_DIR/instructions" ]; then
     local count
-    count=$(find "$COPILOT_DIR/rules" -type f -name "*.instructions.md" 2>/dev/null | wc -l | tr -d ' ')
-    log_info "copilot rules: $count .instructions.md files"
+    count=$(find "$COPILOT_DIR/instructions" -type f -name "*.instructions.md" 2>/dev/null | wc -l | tr -d ' ')
+    log_info "copilot rules: $count .instructions.md files in .github/instructions/"
   else
-    log_error "copilot rules: Directory not found"
+    log_error "copilot rules: .github/instructions/ directory not found"
     ((errors++))
+  fi
+
+  # Warn if legacy .github/rules/ still exists
+  if [ -d "$COPILOT_DIR/rules" ]; then
+    log_warn "copilot: legacy .github/rules/ still present — run sync to migrate"
   fi
 
   # Instructions index

@@ -1,7 +1,6 @@
 ---
 description: Sincroniza toda la configuración de AI (rules, skills, commands, agents, MCP, hooks)
-allowed-tools: Bash
-model: sonnet
+agent: 'agent'
 ---
 
 # Workflow de Sincronización AI Setup

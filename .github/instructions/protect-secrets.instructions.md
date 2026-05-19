@@ -1,5 +1,6 @@
 ---
 description: Prevent AI from editing sensitive files (environment, keys, certificates)
+applyTo: "**"
 ---
 
 # NEVER Edit Sensitive Files

@@ -1,830 +1,584 @@
 ---
 name: agents-architecture
-description: This skill should be used when the user wants to "create a skill", "add a command to .agents/", "create an agent", "understand .agents/ architecture", "explain how to create components", "what's the difference between skills and commands", or needs guidance on creating skills, commands, or agents within the .agents/ source-of-truth system, with automatic synchronization across all platforms (Cursor, Claude Code, Gemini, Antigravity, Copilot).
-version: 0.2.0
+description: This skill should be used when the user wants to "create a skill", "create a subagent", "add a command to .agents/", "understand .agents/ architecture", "explain how to create components", "what's the difference between skills, commands, and subagents", or needs guidance on creating skills, commands, or subagents within the .agents/ source-of-truth system, with automatic synchronization across all platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode).
+version: 1.0.0
 ---
 
 # Agents Architecture
 
-Create and manage skills, commands, and agents within the `.agents/` centralized architecture with automatic synchronization across all AI platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode).
+Create and manage **skills**, **commands**, and **subagents** within the `.agents/` centralized architecture with automatic synchronization across all five supported AI platforms.
 
 ## Overview
 
-**agents-architecture** (formerly `team-skill-creator`) is the entry-point meta-skill for `.agents/` ecosystem authoring. It combines:
+**agents-architecture** is the entry-point meta-skill for `.agents/` ecosystem authoring. It combines:
 
 - **Understanding** the `.agents/` source-of-truth system
 - **Decision guidance** for choosing the right component type
-- **Creation workflows** for skills, commands, and agents
+- **Creation workflows** for skills, commands, and subagents
 - **Automatic synchronization** across all platforms
 - **Validation** and troubleshooting
 
-### What is the `.agents/` System?
+### What is the `.agents/` system?
 
-The `.agents/` directory serves as the **single source of truth** for all AI agent configurations:
+The `.agents/` directory is the **single source of truth** for every AI agent configuration in this monorepo:
 
 ```
 .agents/
-├── rules/        # Coding standards and best practices
-├── skills/       # Modular knowledge packages
-├── commands/     # Reusable prompt templates
-└── mcp/          # MCP server configurations
+├── rules/          # Coding standards and conventions
+├── skills/         # Modular knowledge packages (lidr-* + generic)
+├── commands/       # Slash-command prompts (lidr-* + generic)
+├── subagents/      # Autonomous workers (lidr-* + generic)
+├── hooks/          # Event-driven scripts + hooks.json
+├── mcp/            # MCP server configurations
+├── _shared/        # Shared validators (TypeScript)
+├── memory/         # Persistent memory for subagents (e.g. docs-agent)
+├── orchestrator/   # AGENTS.md (master orchestrator doc)
+├── adapters/       # Per-platform sync adapters (bash)
+├── lib/            # Shared bash libraries
+├── sync/           # Per-component sync orchestrators
+├── workflows/      # → commands (symlink, Antigravity-facing)
+└── sync.sh         # Unified sync CLI
 ```
 
-**Key principle:** Edit once in `.agents/`, automatically synchronized to all platforms.
+**Key principle:** Edit once in `.agents/`, propagate everywhere.
 
-**Supported platforms:**
+### Supported platforms (verified May 2026)
 
-- **Cursor** - Full symlink support
-- **Claude Code** - Full symlink support
-- **Gemini CLI** - Full symlink support
-- **Antigravity** - Native detection from `.agents/`
-- **Copilot (VSCode)** - Copy+rename (`.instructions.md`, `.prompt.md`, `.agent.md`); reads skills natively from `.agents/`
+| Platform             | Reads what                                                                               | How                                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Claude Code**      | `.claude/{rules,skills,commands,agents,hooks}/`                                          | Symlinks → `.agents/...`                                                                                      |
+| **Cursor**           | `.cursor/{rules,skills,commands,agents}/`                                                | Symlinks (skills/commands/agents); copy-flatten (rules → `.mdc`)                                              |
+| **Gemini CLI**       | `.agents/{skills,rules,subagents}/` natively; `.gemini/{commands,agents}/`               | Native for skills/rules; symlink for `agents`; generated `.toml` for commands                                 |
+| **Antigravity**      | `.agents/{rules,skills,workflows}/`                                                      | Native detection; commands via `workflows → commands` symlink                                                 |
+| **Copilot (VSCode)** | `.agents/skills/` natively; `.github/{instructions,prompts,agents}/`; `.vscode/mcp.json` | Native for skills; copy + rename for rules/commands/subagents (`.instructions.md`, `.prompt.md`, `.agent.md`) |
 
-### Automatic Synchronization
+### Automatic synchronization
 
-After creating any component, this skill automatically runs `./.agents/sync.sh` to:
+After creating any component, run `./.agents/sync.sh` (or `--only=<component>`) to:
 
-1. Create symlinks for Cursor, Claude Code
-2. Native detection for Gemini CLI, Antigravity, Copilot
+1. Create symlinks where supported (Claude, Cursor, Gemini for most components)
+2. Copy + format-convert for Copilot and Cursor rules
 3. Generate platform-specific MCP configs
 4. Verify synchronization success
 
-## Component Types
+## Component types
 
 ### Skills
 
-**Definition:** Modular packages containing specialized knowledge, workflows, and bundled resources (scripts, references, assets).
+**Definition:** Modular packages with specialized knowledge and bundled resources (scripts, references, examples, assets).
 
 **When to use:**
 
 - Reusable across multiple projects or contexts
 - Requires documentation, templates, or scripts
-- Provides domain expertise (e.g., database schemas, testing patterns, API docs)
-- Needs bundled resources
+- Provides domain expertise (e.g. database schemas, testing patterns, API docs)
+- Needs bundled resources beyond a single prompt
 
-**Location:** `.agents/skills/{skill-name}/`
+**Source location:** `.agents/skills/{skill-name}/`
 
 **Structure:**
 
 ```
 .agents/skills/react-testing/
-├── SKILL.md          # Main instructions
-├── references/       # Documentation (loaded on-demand)
-│   └── patterns.md
-├── examples/         # Example files
-├── assets/           # Templates, resources
-│   └── test-template.tsx
-└── scripts/          # Executable code
+├── SKILL.md          # Main instructions (required, lean, ~400-700 lines)
+├── references/       # Loaded on-demand by the AI
+├── examples/         # Copy-paste examples
+├── assets/           # Templates, images, resources
+└── scripts/          # Executable utilities
 ```
 
-**Example use case:** "Create a skill for React component testing with test templates and pattern documentation"
-
-**Detailed guide:** See `references/skill-creation-guide.md`
+**Detailed guide:** see `references/skill-creation-guide.md`
 
 ### Commands
 
-**Definition:** Frequently-used prompts stored as Markdown files, accessible via `/{command-name}`.
+**Definition:** Frequently-used prompts stored as Markdown files, invoked via `/{command-name}`.
 
 **When to use:**
 
 - Quick, single-turn actions
 - Reusable prompts without complex logic
 - No bundled resources needed
-- Simple text-based instructions
 
-**Location:** `.agents/commands/{command-name}.md`
+**Source location:** `.agents/commands/{command-name}.md`
 
-**Structure:**
+**Format varies by platform:** Markdown for Claude/Cursor/Antigravity, TOML for Gemini (auto-converted by sync), `.prompt.md` for Copilot (auto-renamed).
 
-```markdown
-## .agents/commands/security-review.md
+**Detailed guide:** see `references/command-creation-guide.md`
 
-## description: Review code for security issues
+### Subagents
 
-Review this code for common security vulnerabilities:
-
-- SQL injection
-- XSS attacks
-- Authentication bypass
-- CSRF vulnerabilities
-```
-
-**Example use case:** "Add a `/optimize` command to suggest performance improvements"
-
-**Detailed guide:** See `references/command-creation-guide.md`
-
-### Agents
-
-**Definition:** Autonomous subprocesses that handle complex, multi-step tasks independently with decision-making capabilities.
+**Definition:** Autonomous workers spawned by the main agent to handle multi-step tasks with their own context, tool budget, and system prompt.
 
 **When to use:**
 
-- Multi-step workflows requiring autonomy
-- Tasks needing decision-making logic
-- Complex analysis or refactoring
-- Deep codebase exploration
+- Multi-step workflows requiring decisions
+- Tasks that benefit from isolated context
+- Specialists invoked from the main flow (e.g. QA suite generation, security audit)
 
-**Location:** `.claude/agents/{agent-name}.md` (platform-specific, Claude Code only)
+**Source location:** `.agents/subagents/{agent-name}.md` ← **NOT `.claude/agents/`**
 
-**Structure:**
+**Platform support:** 4 of 5 platforms — Claude Code, Cursor, Gemini CLI (Apr 2026), Copilot. Only Antigravity does not support subagents.
 
-```markdown
-## .claude/agents/refactorer.md
+**Detailed guide:** see `references/agent-creation-guide.md`
 
-name: refactorer
-description: Autonomous code refactoring agent
-tools: [Read, Edit, Grep, Bash]
-model: sonnet
-color: blue
+## Decision guide
 
----
-
-Analyze codebase structure and perform autonomous refactoring...
-```
-
-**Example use case:** "Create an agent to automatically review and refactor legacy code"
-
-**Platform note:** Agents are currently only supported in Claude Code.
-
-**Detailed guide:** See `references/agent-creation-guide.md`
-
-## Decision Guide
-
-### Quick Decision Flowchart
+### Quick flowchart
 
 ```
 What do you need to create?
 
 ├─ Reusable knowledge or workflow?
-│  │
 │  ├─ Needs scripts, templates, or documentation?
 │  │  ├─ YES → SKILL
 │  │  └─ NO  → COMMAND
-│  │
 │  └─ Used across multiple projects?
 │     ├─ YES → SKILL
 │     └─ NO  → COMMAND
 │
-├─ Autonomous multi-step task?
-│  └─ AGENT (Claude Code only)
+├─ Autonomous multi-step task with its own context?
+│  └─ SUBAGENT (works in 4 of 5 platforms; Antigravity is the exception)
 │
-└─ Not sure?
-   └─ Answer these questions:
-      • Will it be used multiple times? → SKILL or COMMAND
-      • Does it need to make decisions autonomously? → AGENT
-      • Is it just a prompt template? → COMMAND
-      • Does it include code/docs/assets? → SKILL
+└─ Just a reusable prompt?
+   └─ COMMAND
 ```
 
-### Comparison Table
+### Comparison table
 
-| Aspect          | Skill                  | Command             | Agent                  |
-| --------------- | ---------------------- | ------------------- | ---------------------- |
-| **Complexity**  | High                   | Low                 | High                   |
-| **Autonomy**    | No                     | No                  | Yes                    |
-| **Resources**   | Yes (scripts/refs/etc) | No                  | No                     |
-| **Location**    | `.agents/skills/`      | `.agents/commands/` | `.claude/agents/`      |
-| **Format**      | Directory with files   | Single `.md` file   | Single `.md` file      |
-| **Platforms**   | All 5                  | All 5               | Claude Code only       |
-| **Sync needed** | Yes (automatic)        | Yes (automatic)     | No (platform-specific) |
+| Aspect          | Skill                       | Command                      | Subagent                      |
+| --------------- | --------------------------- | ---------------------------- | ----------------------------- |
+| **Complexity**  | High                        | Low                          | High                          |
+| **Autonomy**    | No                          | No                           | Yes                           |
+| **Resources**   | Yes (scripts/refs/examples) | No                           | No                            |
+| **Source**      | `.agents/skills/{name}/`    | `.agents/commands/{name}.md` | `.agents/subagents/{name}.md` |
+| **Format**      | Directory with `SKILL.md`   | Single `.md` file            | Single `.md` file             |
+| **Platforms**   | All 5                       | All 5                        | 4 of 5 (no Antigravity)       |
+| **Sync needed** | Yes (automatic)             | Yes (automatic)              | Yes (automatic)               |
 
-### Decision Examples
+### Decision examples
 
 **Scenario 1:** "I need to teach AI how to write database queries with our schema"
 
-- **Analysis:** Reusable knowledge + needs schema documentation
-- **Decision:** SKILL (with `references/schema.md`)
+- Reusable knowledge + needs schema documentation → **SKILL** (with `references/schema.md`)
 
 **Scenario 2:** "I want a quick prompt to review code for bugs"
 
-- **Analysis:** Simple prompt, no resources needed
-- **Decision:** COMMAND
+- Simple prompt, no resources → **COMMAND**
 
 **Scenario 3:** "I need AI to analyze and refactor an entire module autonomously"
 
-- **Analysis:** Multi-step, autonomous, decision-making
-- **Decision:** AGENT
+- Multi-step, autonomous, decision-making → **SUBAGENT**
 
-## Creation Workflows
+## Creation workflows
 
-### Workflow: Creating a Skill
+### Workflow: Creating a skill
 
-**Steps:**
-
-1. **Decide name and purpose**
-   - Name: lowercase, hyphens (e.g., `react-testing`)
-   - Purpose: What knowledge/workflow does it provide?
-
-2. **Identify bundled resources**
-   - Scripts needed? (`scripts/`)
-   - Documentation? (`references/`)
-   - Templates? (`assets/` or `examples/`)
-
+1. **Decide name and purpose** (`lowercase-with-hyphens`, e.g. `react-testing`)
+2. **Identify bundled resources** (scripts? references? assets?)
 3. **Create directory structure**
 
    ```bash
-   mkdir -p .agents/skills/{skill-name}/{references,examples,assets,scripts}
+   mkdir -p .agents/skills/{name}/{references,examples,assets,scripts}
    ```
 
-4. **Create SKILL.md with frontmatter**
+4. **Write `SKILL.md`** with frontmatter
 
    ```markdown
    ---
    name: skill-name
-   description: This skill should be used when the user asks to "trigger 1", "trigger 2". Context about skill.
+   description: This skill should be used when the user asks to "trigger 1", "trigger 2". Brief context.
    version: 0.1.0
    ---
 
    # Skill Name
 
-   Instructions for using this skill...
+   Instructions...
    ```
 
-5. **Add bundled resources**
-   - Create files in `references/`, `examples/`, `assets/`, `scripts/`
-   - Reference them from SKILL.md
-
-6. **Automatic synchronization happens**
-   - Skill triggers sync.sh automatically
-   - Symlinks created for all platforms
-
-7. **Verify synchronization**
+5. **Add bundled resources**, reference them from `SKILL.md`
+6. **Sync:** `./.agents/sync.sh --only=skills`
+7. **Verify**
 
    ```bash
-   ls -la .cursor/skills/{skill-name}
-   ls -la .claude/skills/{skill-name}
+   ls .agents/skills/{name}/SKILL.md          # source
+   readlink .claude/skills .cursor/skills      # symlinks → ../.agents/skills
+   # Gemini, Antigravity, Copilot read .agents/skills/ natively
    ```
 
-8. **Test in AI agents**
-   - Trigger the skill with expected phrases
-   - Verify it loads correctly
+8. **Test** with the trigger phrases from your description
 
-**Quick example:**
+**Detailed process:** `references/skill-creation-guide.md`
+**Template:** `examples/skill-template.md`
 
-```
-.agents/skills/react-testing/
-├── SKILL.md
-│   ---
-│   name: react-testing
-│   description: This skill should be used when the user needs help "testing React components", "writing React tests", "testing hooks". Provides patterns and templates.
-│   version: 0.1.0
-│   ---
-│   # React Testing
-│   ## Overview
-│   Provides testing patterns for React components and hooks.
-│   ## Patterns
-│   ...
-│   ## References
-│   - See references/hook-testing.md for hook patterns
-│   - See assets/test-template.tsx for boilerplate
-│
-├── references/
-│   └── hook-testing.md
-│
-└── assets/
-    └── test-template.tsx
-```
+### Workflow: Creating a command
 
-**Detailed process:** See `references/skill-creation-guide.md`
-
-**Template:** See `examples/skill-template.md`
-
-### Workflow: Creating a Command
-
-**Steps:**
-
-1. **Decide name and prompt content**
-   - Name: lowercase, hyphens (e.g., `security-review`)
-   - Prompt: What should the AI do?
-
+1. **Decide name and prompt content** (`lowercase-with-hyphens`, e.g. `security-review`)
 2. **Create file**
 
    ```bash
-   touch .agents/commands/{command-name}.md
+   touch .agents/commands/{name}.md
    ```
 
-3. **Write frontmatter (optional) and content**
+3. **Write frontmatter + content**
 
    ```markdown
    ---
-   description: Brief description of command
+   description: Brief description
    ---
 
    # Command Prompt
 
-   Your prompt instructions here...
+   Your prompt instructions...
    ```
 
-4. **Automatic synchronization happens**
-   - Command triggers sync.sh automatically
-   - Symlinks created for all platforms
-
-5. **Verify synchronization**
+4. **Sync:** `./.agents/sync.sh --only=commands`
+5. **Verify**
 
    ```bash
-   ls -la .cursor/commands/{command-name}.md
-   ls -la .claude/commands/{command-name}.md
+   ls .agents/commands/{name}.md               # source
+   readlink .claude/commands .cursor/commands  # symlinks
+   ls .gemini/commands/{name}.toml             # generated TOML
+   ls .github/prompts/{name}.prompt.md         # Copilot copy
+   ls .agents/workflows/{name}.md              # Antigravity (via symlink)
    ```
 
-6. **Test command**
-   - Use `/{command-name}` in AI agent
-   - Verify prompt executes correctly
+6. **Test** by invoking `/{name}` in your AI agent
 
-**Quick example:**
+**Detailed process:** `references/command-creation-guide.md`
+**Template:** `examples/command-template.md`
 
-```markdown
-## .agents/commands/security-review.md
+### Workflow: Creating a subagent
 
-## description: Review code for security vulnerabilities
-
-Review the provided code for common security issues:
-
-**Check for:**
-
-- SQL injection vulnerabilities
-- XSS (Cross-Site Scripting) attacks
-- Authentication and authorization bypass
-- CSRF (Cross-Site Request Forgery)
-- Insecure data storage
-- Hardcoded secrets or credentials
-
-**Provide:**
-
-- List of vulnerabilities found
-- Severity rating (Critical/High/Medium/Low)
-- Recommended fixes
-```
-
-**Detailed process:** See `references/command-creation-guide.md`
-
-**Template:** See `examples/command-template.md`
-
-### Workflow: Creating an Agent
-
-**Steps:**
-
-1. **Decide name and purpose**
-   - Name: lowercase, hyphens (e.g., `code-reviewer`)
-   - Purpose: What autonomous task will it perform?
-
-2. **Create file** (Claude Code specific)
+1. **Decide name and purpose** (`lowercase-with-hyphens`, e.g. `code-reviewer`; LIDR-specific agents use `lidr-*`)
+2. **Create source file** at `.agents/subagents/{name}.md` (**NOT** `.claude/agents/`)
 
    ```bash
-   touch .claude/agents/{agent-name}.md
+   touch .agents/subagents/{name}.md
    ```
 
-3. **Write frontmatter with agent config**
+3. **Write frontmatter + system prompt**
 
    ```markdown
    ---
    name: agent-name
-   description: Brief description and triggering conditions
-   tools: [Read, Edit, Grep, Bash]
+   description: Use this agent when [trigger]. It [action] and returns [output].
+   tools: Read, Edit, Grep, Bash
    model: sonnet
    color: blue
    ---
+
+   # Agent Title
+
+   You are an autonomous subagent specialized in [task]...
+
+   ## Your Capabilities
+
+   - ...
+
+   ## Your Workflow
+
+   1. ...
+
+   ## Autonomous Decision-Making
+
+   ...
+
+   ## Output Format
+
+   ...
    ```
 
-4. **Write system prompt**
-   - Define agent's role and capabilities
-   - Outline decision-making workflow
-   - Specify autonomous behavior
+4. **Sync:** `./.agents/sync.sh --only=agents`
+   - Creates symlinks: `.claude/agents`, `.cursor/agents`, `.gemini/agents` → `../.agents/subagents`
+   - Generates `.github/agents/{name}.agent.md` for Copilot
+   - Antigravity is skipped (not supported)
 
-5. **No sync needed**
-   - Agents are platform-specific (Claude Code only)
-   - No cross-platform synchronization required
+5. **Verify**
 
-6. **Test in Claude Code**
-   - Trigger agent with expected conditions
-   - Verify autonomous behavior
+   ```bash
+   ls .agents/subagents/{name}.md
+   readlink .claude/agents .cursor/agents .gemini/agents
+   ls .github/agents/{name}.agent.md
+   ```
 
-**Quick example:**
+6. **Test** by triggering a task matching your `description:` field
 
-```markdown
-## .claude/agents/refactorer.md
+**Critical:** the YAML `name:` MUST match the filename (without `.md`). All 6 LIDR subagents were aligned during the May 2026 audit.
 
-name: refactorer
-description: Autonomous code refactoring for improving code quality and maintainability
-tools: [Read, Edit, Grep, Bash]
-model: sonnet
-color: purple
+**Detailed process:** `references/agent-creation-guide.md`
+**Template:** `examples/agent-template.md`
 
----
+## Automatic synchronization
 
-# Code Refactoring Agent
+### What `sync.sh` does
 
-You are an autonomous agent specialized in code refactoring and quality improvement.
-
-## Your Capabilities
-
-- Analyze code structure and identify improvement opportunities
-- Refactor code for better readability and maintainability
-- Apply design patterns and best practices
-- Make autonomous decisions about refactoring approaches
-
-## Your Workflow
-
-1. **Analyze**: Read and understand the codebase structure
-2. **Identify**: Find areas needing refactoring
-3. **Plan**: Decide on refactoring strategy
-4. **Execute**: Autonomously implement improvements
-5. **Verify**: Ensure changes don't break functionality
-6. **Report**: Summarize changes made
-
-## Autonomous Decision-Making
-
-Make independent decisions about:
-
-- Which refactoring patterns to apply
-- How to structure improved code
-- When refactoring provides sufficient value
-```
-
-**Platform limitation:** Agents are currently only supported in **Claude Code**, not in Cursor, Gemini CLI, or Antigravity.
-
-**Detailed process:** See `references/agent-creation-guide.md`
-
-**Template:** See `examples/agent-template.md`
-
-## Automatic Synchronization
-
-### What is sync.sh?
-
-The `.agents/sync.sh` CLI orchestrates synchronization of all components across platforms:
-
-**What it does:**
-
-1. Syncs rules from `.agents/rules/` → All platforms
-2. Syncs skills from `.agents/skills/` → All platforms
-3. Syncs commands from `.agents/commands/` → All platforms
-4. Generates MCP configs from `.agents/mcp/` → Platform-specific files
-
-**Synchronization strategies:**
-
-- **Cursor, Claude Code, Gemini CLI:** Full directory symlinks (instant propagation)
-- **Antigravity:** Selective symlinks per-item (platform limitation)
-- **MCP configs:** Generated platform-specific files
-
-### When Sync Happens
-
-**Automatic:**
-
-- After creating a skill via this skill
-- After creating a command via this skill
-
-**Manual (when needed):**
-
-- After manually editing existing skills/commands
-- After modifying rules or MCP configs
-- When troubleshooting sync issues
-
-### Sync Process (Automatic)
-
-When creating skills/commands, the workflow is:
+The `.agents/sync.sh` CLI orchestrates synchronization of all components across all platforms.
 
 ```
-1. Create component in .agents/skills/ or .agents/commands/
-2. Claude automatically executes: ./.agents/sync.sh
-3. Sync script creates symlinks:
-   - .cursor/skills → ../.agents/skills
-   - .claude/skills → ../.agents/skills
-   - .gemini/skills → ../.agents/skills
-   - Antigravity reads natively from `.agents/skills/` (no symlink needed)
-4. Verification checks run automatically
-5. User receives confirmation: "✅ Synced to all platforms"
+.agents/sync.sh
+├── lib/         # Shared bash utilities (logging, symlink, frontmatter, registry)
+├── adapters/    # Per-platform transformations (claude.sh, cursor.sh, gemini.sh, antigravity.sh, copilot.sh)
+├── sync/        # Per-component orchestrators (rules.sh, skills.sh, commands.sh, agents.sh, mcp.sh, hooks.sh)
+└── platforms.json   # Platform registry: which strategy per platform/component
 ```
 
-### Manual Verification
+### Per-platform sync strategy
 
-Verify synchronization manually:
+| Component     | Cursor                       | Claude Code                       | Gemini CLI                           | Antigravity                             | Copilot                         |
+| ------------- | ---------------------------- | --------------------------------- | ------------------------------------ | --------------------------------------- | ------------------------------- |
+| **Rules**     | Copy + `.mdc` (flatten)      | Symlink                           | Index in `GEMINI.md`                 | Native                                  | Copy `.instructions.md` + index |
+| **Skills**    | Symlink                      | Symlink                           | **Native** (`.agents/skills/` alias) | Native                                  | **Native**                      |
+| **Commands**  | Symlink                      | Symlink                           | Generated `.toml`                    | Native (`.agents/workflows → commands`) | Copy `.prompt.md`               |
+| **Subagents** | Symlink                      | Symlink                           | Symlink (Apr 2026)                   | ❌ not supported                        | Copy `.agent.md`                |
+| **MCP**       | Generated `.cursor/mcp.json` | Generated `.mcp.json` (repo root) | Generated `.gemini/settings.json`    | ❌ global only                          | Generated `.vscode/mcp.json`    |
+| **Hooks**     | Partial (no Notification)    | Full                              | Full                                 | ❌ global only                          | Partial (no Notification)       |
+
+**Key terms:**
+
+- **Symlink** — instant propagation; edits in `.agents/` are seen immediately
+- **Native** — platform detects `.agents/` directly per [Agent Skills open standard](https://agentskills.io); no sync action required
+- **Generated** — adapter transforms source into a platform-specific format (e.g. `.toml`, `.instructions.md`, JSON)
+- **Copy + rename** — adapter writes a renamed copy; re-sync required after source edits
+
+### Manual verification
 
 ```bash
-# Check symlinks exist
-ls -la .cursor/skills .cursor/commands
-ls -la .claude/skills .claude/commands
-ls -la .gemini/skills .gemini/commands
+# Source files exist
+ls .agents/skills/{name}/SKILL.md
+ls .agents/commands/{name}.md
+ls .agents/subagents/{name}.md
 
-# Verify symlink targets
-readlink .cursor/skills   # Should output: ../.agents/skills
-readlink .cursor/commands # Should output: ../.agents/commands
+# Symlinks (where applicable)
+readlink .claude/skills .cursor/skills           # → ../.agents/skills
+readlink .claude/commands .cursor/commands       # → ../.agents/commands
+readlink .claude/agents .cursor/agents .gemini/agents   # → ../.agents/subagents
 
-# Test file access
-ls .cursor/skills/agents-architecture/
-cat .cursor/skills/agents-architecture/SKILL.md | head -20
+# Generated files (re-sync after edits)
+ls .gemini/commands/{name}.toml
+ls .github/{prompts,agents,instructions}/
+ls .mcp.json .cursor/mcp.json .gemini/settings.json .vscode/mcp.json
+
+# Antigravity-facing internal symlink
+readlink .agents/workflows                       # → commands
 ```
 
-### Platform-Specific Notes
+### Platform-specific notes
 
-**Cursor, Claude Code, Gemini CLI:**
+- **Symlinked components** (Claude/Cursor for skills/commands/agents/rules; Gemini for agents): edits propagate instantly. No re-sync after edits.
+- **Native components** (Gemini skills/rules; Antigravity rules/skills/commands; Copilot skills): no sync action needed — the platform reads `.agents/` directly.
+- **Generated/copied components** (Gemini commands `.toml`; Copilot rules/commands/agents; Cursor rules `.mdc`; MCP configs): **must re-sync after source edits**.
+- **Antigravity:** workspace caches at load time. After sync, reload the project to pick up changes.
 
-- ✅ Full directory symlinks
-- ✅ Instant propagation of changes
-- ✅ No re-sync needed after edits
-
-**Antigravity:**
-
-- ⚠️ Selective symlinks (per-skill/command)
-- ⚠️ Must re-run sync after editing existing components
-- ✅ Commands go to `.agents/workflows/` (symlink to `.agents/commands/`)
-- ❌ Agents not supported
-
-**Detailed internals:** See `references/sync-system.md`
+**Detailed internals:** `references/sync-system.md` and `references/architecture-overview.md`
 
 ## Validation
 
-### Validate a Skill
-
-After creating a skill, validate its structure:
+### Validate a skill
 
 ```bash
 ./.agents/skills/agents-architecture/scripts/validate-skill.sh {skill-name}
 ```
 
-**Checks performed:**
+Checks: directory exists, `SKILL.md` present, frontmatter valid, `name`/`description` fields, third-person form.
 
-- ✅ Directory exists at `.agents/skills/{skill-name}/`
-- ✅ SKILL.md file exists
-- ✅ YAML frontmatter is present
-- ✅ Required fields: `name` and `description`
-- ✅ Description uses third-person form
-- ✅ Directory structure is valid
-
-**Example:**
-
-```bash
-$ ./.agents/skills/agents-architecture/scripts/validate-skill.sh react-testing
-🔍 Validating skill: react-testing
-  ✅ Skill directory exists
-  ✅ SKILL.md found
-  ✅ YAML frontmatter valid
-  ✅ Field 'name' present
-  ✅ Field 'description' present
-✅ Skill validation passed
-```
-
-### Validate a Command
+### Validate a command
 
 ```bash
 ./.agents/skills/agents-architecture/scripts/validate-command.sh {command-name}
 ```
 
-**Checks performed:**
+Checks: file exists at `.agents/commands/{name}.md`, valid Markdown, optional frontmatter well-formed.
 
-- ✅ File exists at `.agents/commands/{command-name}.md`
-- ✅ File is readable
-- ✅ Content is valid Markdown
-
-### Validate an Agent
+### Validate a subagent
 
 ```bash
 ./.agents/skills/agents-architecture/scripts/validate-agent.sh {agent-name}
 ```
 
-**Checks performed:**
-
-- ✅ File exists at `.claude/agents/{agent-name}.md`
-- ✅ YAML frontmatter present
-- ✅ Required fields: `name`, `description`
-- ✅ Optional fields valid: `tools`, `model`, `color`
+Checks: file exists at `.agents/subagents/{name}.md`, frontmatter present, `name`/`description` fields, `name:` matches filename, optional `tools`/`model`/`color` valid.
 
 ## Troubleshooting
 
-### Issue: Skill Not Appearing in Agent
-
-**Symptoms:** Created skill doesn't show up or trigger in AI agent
-
-**Diagnosis:**
+### Issue: Skill not appearing
 
 ```bash
-# Check skill exists in source
-ls .agents/skills/{skill-name}/
+# Source exists?
+ls .agents/skills/{name}/SKILL.md
 
-# Check symlink exists
-ls -la .cursor/skills/{skill-name}
+# Symlinks intact?
+readlink .claude/skills .cursor/skills
 
-# Check symlink target
-readlink .cursor/skills/{skill-name}
-```
+# Gemini/Antigravity/Copilot: no symlink — they read .agents/skills/ natively
+ls .agents/skills/{name}/
 
-**Solution:**
-
-```bash
-# Re-run sync manually
-./.agents/sync.sh
-
-# Verify symlinks created
-ls -la .cursor/skills .claude/skills
-
-# Test file access
-cat .cursor/skills/{skill-name}/SKILL.md
-```
-
-### Issue: Command Not Found
-
-**Symptoms:** `/{command-name}` doesn't work
-
-**Diagnosis:**
-
-```bash
-# Check command file exists
-ls .agents/commands/{command-name}.md
-
-# Check synced
-ls -la .cursor/commands/{command-name}.md
-```
-
-**Solution:**
-
-```bash
 # Re-sync
-./.agents/sync.sh
-
-# Verify
-ls .cursor/commands/ | grep {command-name}
+./.agents/sync.sh --only=skills
 ```
 
-### Issue: Agent Not Working
-
-**Symptoms:** Agent doesn't trigger or execute
-
-**Possible causes:**
-
-1. **Platform:** Agents only work in Claude Code, not other platforms
-2. **File location:** Must be in `.claude/agents/`, not `.agents/`
-3. **Frontmatter:** Missing required fields
-
-**Solution:**
+### Issue: Command not found
 
 ```bash
-# Verify file location
-ls .claude/agents/{agent-name}.md
+# Source exists?
+ls .agents/commands/{name}.md
 
-# Validate structure
-./.agents/skills/agents-architecture/scripts/validate-agent.sh {agent-name}
+# Symlinks intact?
+readlink .claude/commands .cursor/commands
 
-# Check frontmatter has: name, description, tools
-cat .claude/agents/{agent-name}.md | head -10
+# Generated for Gemini?
+ls .gemini/commands/{name}.toml
+
+# Generated for Copilot?
+ls .github/prompts/{name}.prompt.md
+
+# Re-sync
+./.agents/sync.sh --only=commands
 ```
 
-### Issue: Changes Not Propagating
+### Issue: Subagent not invoking
 
-**Symptoms:** Edited skill/command but changes not visible
+1. **Check `description:` field** — is it specific enough to match user intent?
+2. **Verify location** — source MUST be at `.agents/subagents/{name}.md`, NOT `.claude/agents/{name}.md`
+3. **Confirm `name:` matches filename** (without `.md`)
+4. **Verify distribution**
 
-**For Cursor, Claude Code, Gemini CLI:**
+   ```bash
+   readlink .claude/agents .cursor/agents .gemini/agents   # → ../.agents/subagents
+   ls .github/agents/{name}.agent.md                       # Copilot copy
+   ```
 
-- Changes should propagate instantly (symlinks)
-- If not: Check symlink is valid: `readlink .cursor/skills`
+5. **Re-sync** if anything is missing: `./.agents/sync.sh --only=agents`
+6. **Antigravity:** subagents are not supported. Use a slash command instead.
 
-**For Antigravity:**
+### Issue: Changes not propagating
 
-- Changes require re-sync (files are copied, not symlinked)
-- Solution: `./.agents/sync.sh`
+- **Symlinked components** (Claude/Cursor/Gemini agents/skills/commands): should be instant. If not, `readlink` and recreate symlink.
+- **Native components** (Gemini skills/rules, Antigravity, Copilot skills): nothing to sync. Try reloading the platform.
+- **Generated components** (Gemini commands `.toml`, Copilot copies, Cursor `.mdc` rules, MCP configs): re-run `./.agents/sync.sh`.
 
-### Issue: Sync Script Fails
-
-**Symptoms:** sync.sh exits with error
-
-**Common causes:**
-
-1. Source directory missing
-2. Permissions issues
-3. Invalid JSON in MCP configs
-
-**Solution:**
+### Issue: Sync script fails
 
 ```bash
-# Check source exists
-ls -la .agents/rules .agents/skills .agents/commands
-
-# Check script executable
-ls -l .agents/sync.sh
-
-# Make executable if needed
-chmod +x .agents/sync.sh
-
-# Re-run
-./.agents/sync.sh
+ls -la .agents/sync.sh                        # exists and executable?
+chmod +x .agents/sync.sh                       # if needed
+./.agents/sync.sh --dry-run                    # preview
+./.agents/sync.sh --verbose                    # debug output
 ```
 
-## Architecture Overview
+## Architecture overview
 
-For detailed understanding of the `.agents/` system, see: `references/architecture-overview.md`
+For a deep dive into the `.agents/` system, see `references/architecture-overview.md`.
 
 **Key concepts:**
 
-- **Source of truth:** `.agents/` directory
-- **Synchronization:** Symlinks for instant propagation
-- **Platform support:** 5 platforms with varying capabilities
-- **Component types:** Rules, Skills, Commands, Agents, MCP
+- **Source of truth:** `.agents/` directory (all components)
+- **Synchronization:** symlinks, native detection, generation, or copy depending on platform/component
+- **Component types:** Rules, Skills, Commands, Subagents, Hooks, MCP
 
-**Platform support matrix:**
+**Platform support matrix (verified May 2026):**
 
-| Platform         | MCP Project | Skills | Commands | Agents  | Rules    |
-| ---------------- | ----------- | ------ | -------- | ------- | -------- |
-| Cursor           | ✅          | ✅ Sym | ✅ Sym   | ✅\*    | ✅ Copy  |
-| Claude Code      | ✅          | ✅ Sym | ✅ Sym   | ✅      | ✅ Sym   |
-| Gemini CLI       | ✅          | ✅ Sym | ✅ Gen   | ✅ Sym  | ❌ Index |
-| Antigravity      | ❌ Global   | ✅ Nat | ✅ Nat   | ❌      | ✅ Nat   |
-| Copilot (VSCode) | ✅          | ✅ Nat | ✅ Copy  | ✅ Copy | ✅ Copy  |
+| Platform         | Rules                           | Skills  | Commands           | Subagents        | MCP                      | Hooks     |
+| ---------------- | ------------------------------- | ------- | ------------------ | ---------------- | ------------------------ | --------- |
+| Cursor           | Copy `.mdc`                     | Symlink | Symlink            | Symlink          | ✅ project               | Partial   |
+| Claude Code      | Symlink                         | Symlink | Symlink            | Symlink          | ✅ (`.mcp.json` at root) | Full      |
+| Gemini CLI       | Index in `GEMINI.md`            | Native  | Generated `.toml`  | Symlink          | ✅ project               | Full      |
+| Antigravity      | Native                          | Native  | Native (workflows) | ❌               | ❌ global                | ❌ global |
+| Copilot (VSCode) | Copy `.instructions.md` + index | Native  | Copy `.prompt.md`  | Copy `.agent.md` | ✅ project               | Partial   |
 
-**Legend:**
+## References & resources
 
-- Sym = Full directory symlink
-- Nat = Native detection from `.agents/`
-- Gen = Generated (format conversion)
-- Copy = Files copied during sync
-- \*Agents may have limited support in Cursor
+### Detailed guides
 
-## References & Resources
-
-### Detailed Guides
-
-- **`references/skill-creation-guide.md`** - Complete process for creating skills with progressive disclosure, bundled resources, and best practices
-- **`references/command-creation-guide.md`** - Detailed workflow for creating commands, frontmatter options, and usage patterns
-- **`references/agent-creation-guide.md`** - Agent creation process, system prompt design, and autonomous workflows
-- **`references/architecture-overview.md`** - Deep dive into `.agents/` system architecture, synchronization strategies, and platform capabilities
-- **`references/sync-system.md`** - Internal workings of sync.sh, adapter-based architecture, and troubleshooting
+- `references/skill-creation-guide.md` — Complete process for creating skills with progressive disclosure
+- `references/command-creation-guide.md` — Detailed workflow for creating commands
+- `references/agent-creation-guide.md` — Subagent creation, system prompt design, multi-platform distribution
+- `references/architecture-overview.md` — Deep dive into `.agents/` architecture and sync strategies
+- `references/sync-system.md` — Internal workings of `sync.sh`, adapters, and troubleshooting
 
 ### Templates
 
-- **`examples/skill-template.md`** - Copy-paste template for creating new skills
-- **`examples/command-template.md`** - Copy-paste template for creating new commands
-- **`examples/agent-template.md`** - Copy-paste template for creating new agents
+- `examples/skill-template.md` — Copy-paste skill template
+- `examples/command-template.md` — Copy-paste command template
+- `examples/agent-template.md` — Copy-paste subagent template
 
-### Validation Scripts
+### Validation scripts
 
-- **`scripts/validate-skill.sh`** - Validate skill structure and frontmatter
-- **`scripts/validate-command.sh`** - Validate command file
-- **`scripts/validate-agent.sh`** - Validate agent structure and frontmatter
+- `scripts/validate-skill.sh`
+- `scripts/validate-command.sh`
+- `scripts/validate-agent.sh`
 
-### Related Skills
+### Related sub-skills (deeper dives)
 
 For specialized creation workflows, see:
 
-- **skill-development** - Deep dive into skill creation (637 lines)
-- **command-development** - Comprehensive command creation (834 lines)
-- **agent-development** - Detailed agent creation (415 lines)
-- **skill-creator** - Generic skill creation workflow (357 lines)
+- **`lidr-skill-development`** — Deep dive into skill authoring
+- **`command-development`** — Generic command authoring patterns
+- **`lidr-agent-development`** — Subagent design and orchestration
+- **`lidr-skill-creator`** — Generic skill creation workflow
 
-**Note:** agents-architecture is a meta-skill that provides architectural context and routing. For in-depth component-specific guidance, the specialized skills above offer comprehensive workflows.
+**Note:** `agents-architecture` is the meta-skill that provides architectural context and routing. For in-depth component-specific guidance, use the specialized skills above.
 
-## Quick Reference
+## Quick reference
 
-### File Locations
+### Source-of-truth locations
 
 ```
-Skills:    .agents/skills/{name}/SKILL.md
-Commands:  .agents/commands/{name}.md
-Agents:    .claude/agents/{name}.md (platform-specific)
-Rules:     .agents/rules/{name}.md
-MCP:       .agents/mcp/mcp-servers.json
+Skills:     .agents/skills/{name}/SKILL.md
+Commands:   .agents/commands/{name}.md
+Subagents:  .agents/subagents/{name}.md
+Rules:      .agents/rules/{category}/{name}.md
+Hooks:      .agents/hooks/hooks.json + .agents/hooks/scripts/
+MCP:        .agents/mcp/mcp-servers.json
 ```
 
-### Sync Commands
+### Sync commands
 
 ```bash
-# Sync everything
-./.agents/sync.sh
-
-# Sync with preview (no changes)
-./.agents/sync.sh --dry-run
-
-# Sync specific components
-./.agents/sync.sh --only=rules
-./.agents/sync.sh --only=skills
+./.agents/sync.sh                              # sync everything
+./.agents/sync.sh --dry-run                    # preview without changes
+./.agents/sync.sh --only=skills                # one component
+./.agents/sync.sh --only=agents                # subagents
 ./.agents/sync.sh --only=commands
+./.agents/sync.sh --only=rules
 ./.agents/sync.sh --only=mcp
+./.agents/sync.sh --only=hooks
+./.agents/sync.sh --platform=claude            # one platform
+./.agents/sync.sh --platform=copilot --only=rules
 ```
 
-### Verification Commands
+### Verification commands
 
 ```bash
-# Check symlinks
-ls -la .cursor/{rules,skills,commands}
-ls -la .claude/{rules,skills,commands}
+# Symlinks
+readlink .claude/skills .cursor/skills          # → ../.agents/skills
+readlink .claude/commands .cursor/commands      # → ../.agents/commands
+readlink .claude/agents .cursor/agents .gemini/agents   # → ../.agents/subagents
 
-# Verify symlink targets
-readlink .cursor/skills    # → ../.agents/skills
-readlink .cursor/commands  # → ../.agents/commands
+# Generated/copied
+ls .gemini/commands/*.toml
+ls .github/instructions/*.instructions.md
+ls .github/prompts/*.prompt.md
+ls .github/agents/*.agent.md
+ls .mcp.json .cursor/mcp.json .vscode/mcp.json .gemini/settings.json
 
-# Test file access
-cat .cursor/skills/agents-architecture/SKILL.md
-ls .claude/skills/
+# Antigravity workflows
+readlink .agents/workflows                      # → commands
 ```
 
-### Validation Commands
+### Validation commands
 
 ```bash
-# Validate skill
-./.agents/skills/agents-architecture/scripts/validate-skill.sh {skill-name}
-
-# Validate command
-./.agents/skills/agents-architecture/scripts/validate-command.sh {command-name}
-
-# Validate agent
-./.agents/skills/agents-architecture/scripts/validate-agent.sh {agent-name}
+./.agents/skills/agents-architecture/scripts/validate-skill.sh {name}
+./.agents/skills/agents-architecture/scripts/validate-command.sh {name}
+./.agents/skills/agents-architecture/scripts/validate-agent.sh {name}
 ```
 
 ---
 
-**Ready to create?** Start by deciding which component type fits your need (skill, command, or agent), then follow the appropriate workflow above. Synchronization happens automatically!
+**Ready to create?** Decide which component fits your need (skill, command, or subagent), then follow the appropriate workflow above. Synchronization is one command away: `./.agents/sync.sh`.
+
+## Changelog
+
+| Version | Date       | Author                        | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ------- | ---------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.0.0   | 2026-05-19 | TL: agents-architecture audit | Major rewrite: corrected subagent source-of-truth to `.agents/subagents/` (was `.claude/agents/`); subagents now correctly described as supported in 4 of 5 platforms (Claude, Cursor, Gemini Apr 2026, Copilot — not Antigravity); Gemini skills/rules marked as native (not symlinked); Copilot copy + rename distribution documented; full directory tree includes `subagents/, hooks/, _shared/, memory/, orchestrator/, adapters/, lib/, sync/, workflows/`; updated cross-references to `lidr-*` sub-skills. |
+| 0.2.0   | 2025-Q4    | (original)                    | Initial version after `team-skill-creator` rename. Claimed agents were Claude Code only; described Gemini as full symlinks (incorrect post-2026 architecture).                                                                                                                                                                                                                                                                                                                                                     |

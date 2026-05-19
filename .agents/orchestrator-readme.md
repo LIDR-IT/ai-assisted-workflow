@@ -89,28 +89,36 @@ Edit the orchestrator documentation by modifying any of these files:
 
 All paths update the same source file due to symlinks.
 
-## Platform Access
+## Platform Access (verified May 2026)
 
-**Cursor:** Reads from root `CLAUDE.md` → orchestrator
-**Claude Code:** Reads from root `CLAUDE.md` → orchestrator
-**Gemini CLI:** Reads from root `GEMINI.md` → orchestrator
-**Antigravity:** Reads from root `AGENTS.md` → orchestrator
+| Platform        | Root file(s) read                                             | Notes                                                   |
+| --------------- | ------------------------------------------------------------- | ------------------------------------------------------- |
+| **Claude Code** | `CLAUDE.md`                                                   | Primary orchestrator                                    |
+| **Cursor**      | `CLAUDE.md` + `AGENTS.md`                                     | Same content via symlink (no duplication)               |
+| **Gemini CLI**  | `GEMINI.md`                                                   | Same content via symlink                                |
+| **Antigravity** | `GEMINI.md` (shared with Gemini CLI)                          | Per Google Codelabs — uses same context file convention |
+| **Copilot**     | `CLAUDE.md` + `AGENTS.md` + `.github/copilot-instructions.md` | Last file is auto-generated index of rules              |
+
+All 3 root files (`CLAUDE.md`, `AGENTS.md`, `GEMINI.md`) are symlinks to the same `.agents/orchestrator/AGENTS.md` source — single edit propagates to every platform.
 
 ## Design Decisions
 
 ### Why Orchestrator?
 
-**Problem:** Different platforms expect agent docs in different locations
+**Problem:** Different platforms expect agent docs at different filenames
 
-- Cursor: Prefers `CLAUDE.md` at root
-- Gemini CLI: Expects `GEMINI.md` or `.gemini/` directory
-- Standards: `AGENTS.md` follows [agents.md](https://agents.md) spec
+- Claude Code: `CLAUDE.md` at root
+- Cursor: `CLAUDE.md` + `AGENTS.md`
+- Gemini CLI / Antigravity: `GEMINI.md` (default context filename)
+- Copilot/VSCode: `CLAUDE.md` + `AGENTS.md` + `.github/copilot-instructions.md`
+- Standards: `AGENTS.md` follows [agents.md](https://agents.md) universal spec
 
-**Solution:** One source, multiple access points via symlinks
+**Solution:** One source, three symlinks — zero duplication
 
-- Single `.agents/orchestrator/AGENTS.md` source
-- Platform-specific symlinks at root
-- Edit anywhere, updates everywhere
+- Source: `.agents/orchestrator/AGENTS.md`
+- Symlinks at repo root: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`
+- Each platform reads its preferred filename; all resolve to the same content
+- Edit any of the symlinks (or the source directly) — all paths see the change instantly
 
 ### Why Symlinks?
 

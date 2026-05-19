@@ -234,15 +234,21 @@ Sync happens automatically after command creation.
 **Verification:**
 
 ```bash
-# Check command exists
+# Source exists
 ls .agents/commands/{command-name}.md
 
-# Verify synced
+# Symlinked platforms (instant)
 ls -la .cursor/commands/{command-name}.md
 ls -la .claude/commands/{command-name}.md
 
-# Test access
-cat .cursor/commands/{command-name}.md
+# Generated for Gemini
+ls .gemini/commands/{command-name}.toml
+
+# Copied for Copilot
+ls .github/prompts/{command-name}.prompt.md
+
+# Antigravity workflow (via internal symlink)
+ls .agents/workflows/{command-name}.md
 ```
 
 ### Step 6: Test Command
@@ -704,22 +710,40 @@ Brief description of what the function does.
 
 ````
 
-## Platform-Specific Notes
+## Platform-Specific Notes (verified May 2026)
 
-### Cursor, Claude Code, Gemini CLI
+### Cursor & Claude Code
 
-**Full support:**
-- ✅ Commands work identically
+**Full symlink support:**
+
 - ✅ Invoked via `/{command-name}`
-- ✅ Symlinked from `.agents/commands/`
-- ✅ Instant propagation of changes
+- ✅ Symlinked from `.agents/commands/` (`.cursor/commands`, `.claude/commands → ../.agents/commands`)
+- ✅ Instant propagation of edits — no re-sync needed
+
+### Gemini CLI
+
+**Format conversion (re-sync required):**
+
+- ✅ Invoked via `/{command-name}`
+- ⚠️ Adapter generates `.gemini/commands/{name}.toml` from your `.md` source
+- ⚠️ Must re-sync after editing: `./.agents/sync.sh --only=commands`
 
 ### Antigravity
 
-**Special considerations:**
-- ✅ Commands available via `.agents/workflows/` (symlink to `.agents/commands/`)
-- ⚠️ Must re-sync after editing: `./.agents/sync.sh`
-- ⚠️ Changes don't propagate instantly (files are copied, not symlinked)
+**Native detection via internal symlink:**
+
+- ✅ Invoked via `/{command-name}` (Antigravity terminology: "workflow")
+- ✅ Accessed through `.agents/workflows → commands` (internal symlink in `.agents/`)
+- ✅ No copy or per-file sync — edits in `.agents/commands/` propagate immediately
+- ⚠️ Antigravity caches at project load; reload to pick up new commands
+
+### Copilot (VSCode)
+
+**Copy + format conversion (re-sync required):**
+
+- ✅ Invoked via the prompts picker
+- ⚠️ Adapter generates `.github/prompts/{name}.prompt.md` from your `.md` source (with `$ARGUMENTS` → `{{{ input }}}` conversion)
+- ⚠️ Must re-sync after editing: `./.agents/sync.sh --only=commands`
 
 ## Validation
 

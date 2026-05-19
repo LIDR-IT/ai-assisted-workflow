@@ -18,16 +18,16 @@ function runCommand(command: string): number {
   }
 }
 
-// Filesystem verification commands
+// Filesystem verification commands (post-merge: source of truth is ../.agents/)
 const verificationCommands = {
-  skills: "find .claude/skills -name 'SKILL.md' | wc -l",
-  rules: "find .claude/rules -name '*.md' | wc -l",
-  hooks: "find .claude/hooks -name '*.sh' | wc -l",
-  agents: "find .claude/agents -name '*.md' | wc -l",
-  docsSupport: "find docs -name '*.md' | wc -l",
+  skills: "find ../.agents/skills -name 'SKILL.md' | wc -l",
+  rules: "find ../.agents/rules -name '*.md' | wc -l",
+  hooks: "find ../.agents/hooks -name '*.sh' | wc -l",
+  agents: "find ../.agents/subagents -name '*.md' | wc -l",
+  docsSupport: "find ../docs -name '*.md' | wc -l",
   sharedValidators:
-    "find .claude/_shared/validators -name '*.ts' | grep -v index.ts | grep -v types.ts | wc -l",
-  skillValidators: "find .claude/skills -name 'validate-examples.ts' | wc -l",
+    "find ../.agents/_shared/lidr/validators -name '*.ts' | grep -v index.ts | grep -v types.ts | wc -l",
+  skillValidators: "find ../.agents/skills -name 'validate-examples.ts' | wc -l",
 };
 
 console.log('🔍 Validating Dynamic Stats vs Filesystem Reality');

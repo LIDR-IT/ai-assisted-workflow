@@ -174,7 +174,7 @@ Key validators:
 
 - `scripts/validate-coherence.ts` - Detects hardcoded values that should use centralized data
 - `scripts/validate-skill-templates.ts` - Ensures skill template integrity
-- `.claude/_shared/validators/validate-domain-agnostic.ts` - Ensures framework portability
+- `.agents/_shared/lidr/validators/validate-domain-agnostic.ts` - Ensures framework portability
 
 ### Quality Gates
 

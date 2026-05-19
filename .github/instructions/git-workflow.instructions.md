@@ -1,5 +1,6 @@
 ---
 description: Git workflow and commit conventions
+applyTo: "**"
 ---
 
 # Git Workflow Guidelines

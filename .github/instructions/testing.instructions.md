@@ -1,5 +1,6 @@
 ---
 description: Testing guidelines and best practices
+applyTo: "**"
 ---
 
 # Testing Guidelines

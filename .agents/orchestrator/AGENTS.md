@@ -116,9 +116,9 @@ readlink .cursor/rules    # Should: ../.agents/rules
 readlink .claude/rules    # Should: ../.agents/rules
 ls -la .cursor/skills     # Should show: lrwxr-xr-x (symlink)
 
-# Validate generated configs
+# Validate generated configs (Claude MCP lives at repo root .mcp.json, NOT .claude/mcp.json)
 jq . .cursor/mcp.json
-jq . .claude/mcp.json
+jq . .mcp.json
 jq .servers .vscode/mcp.json
 jq empty .agents/mcp/mcp-servers.json  # Validate source JSON
 
@@ -358,9 +358,9 @@ jq empty .agents/mcp/mcp-servers.json
 # 3. Generate platform-specific configs
 ./.agents/sync.sh --only=mcp
 
-# 4. Commit BOTH source and generated files
+# 4. Commit BOTH source and generated files (Claude MCP is .mcp.json at repo root)
 git add .agents/mcp/mcp-servers.json
-git add .cursor/mcp.json .claude/mcp.json .gemini/settings.json .vscode/mcp.json
+git add .mcp.json .cursor/mcp.json .gemini/settings.json .gemini/mcp_config.json .vscode/mcp.json
 git commit -m "feat: Add my-server MCP integration"
 
 # 5. Restart Claude Code/Cursor to detect new server
@@ -623,9 +623,9 @@ Command: improve-docs.md (slash command)
     ↓
 Agent: doc-improver.md (autonomous workflow)
     ↓
-Skill: skill-development (progressive disclosure)
+Skill: lidr-audit-standards (domain expertise)
     ↓
-Rule: documentation.md (standards)
+Rule: process/documentation.md (standards)
     ↓
 Result: Audit report with prioritized recommendations
 ```
@@ -634,8 +634,8 @@ Example workflow:
 
 1. User runs `/improve-docs`
 2. Command invokes `doc-improver` agent
-3. Agent reads `documentation.md` rule for standards
-4. Agent uses `skill-development` patterns for structure analysis
+3. Agent reads `process/documentation.md` rule for standards
+4. Agent uses `lidr-audit-standards` skill for structure analysis
 5. Agent outputs audit with high/medium/low priority issues
 6. User approves fixes, agent implements changes
 
@@ -658,8 +658,8 @@ Example workflow:
 **Configuration location:**
 
 - Source: `.agents/mcp/mcp-servers.json`
-- Generated: `.cursor/mcp.json`, `.claude/mcp.json`, `.gemini/settings.json`, `.vscode/mcp.json`
-- Antigravity: `~/.gemini/antigravity/mcp_config.json` (global only)
+- Generated: `.mcp.json` (Claude — at repo root), `.cursor/mcp.json`, `.gemini/settings.json`, `.gemini/mcp_config.json` (Antigravity reference), `.vscode/mcp.json` (Copilot)
+- Antigravity: also `~/.gemini/antigravity/mcp_config.json` (global; needed for Antigravity to pick up MCP)
 
 **API Key:** Set `CONTEXT7_API_KEY` in `.agents/mcp/.env`
 

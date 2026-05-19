@@ -187,16 +187,12 @@ _gemini_convert_to_toml() {
 }
 
 gemini_agents() {
-  # Gemini CLI reads .agents/subagents/ natively — no symlink needed.
-  # Creating .gemini/agents → .agents/subagents causes duplicate detection.
-  # Remove stale symlink if present from previous sync versions.
-  if [ -L "$GEMINI_DIR/agents" ]; then
-    if run_or_dry "remove stale .gemini/agents symlink"; then return 0; fi
-    rm "$GEMINI_DIR/agents"
-    log_info "Removed stale .gemini/agents symlink (Gemini reads .agents/subagents/ natively)"
-  else
-    log_info "Agents: native (.agents/subagents/ — no symlink needed)"
-  fi
+  # Gemini CLI subagents (Apr 2026): official project path is .gemini/agents/*.md
+  # per https://geminicli.com/docs/core/subagents/
+  # Unlike skills/rules, there is NO .agents/subagents/ alias documented.
+  # We create .gemini/agents → .agents/subagents symlink to expose our 9 subagents.
+  mkdir -p "$GEMINI_DIR"
+  create_symlink "../.agents/subagents" "$GEMINI_DIR/agents" "agents"
 }
 
 gemini_mcp() {
@@ -386,17 +382,13 @@ gemini_verify() {
     ((errors++))
   fi
 
-  # Agents (native — no symlink expected)
-  if [ -d "$AGENTS_DIR/subagents" ]; then
+  # Agents (.gemini/agents/ symlink to .agents/subagents/ — official path per Gemini CLI docs)
+  if [ -L "$GEMINI_DIR/agents" ]; then
     local agent_count
-    agent_count=$(find "$AGENTS_DIR/subagents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    log_info "gemini agents: native from .agents/subagents/ ($agent_count agents)"
-    # Warn if stale symlink still exists
-    if [ -L "$GEMINI_DIR/agents" ]; then
-      log_warn "gemini agents: stale .gemini/agents symlink exists (causes conflicts)"
-    fi
+    agent_count=$(find "$AGENTS_DIR/subagents" -maxdepth 1 -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    log_info "gemini agents: $GEMINI_DIR/agents → $(readlink "$GEMINI_DIR/agents") ($agent_count agents)"
   else
-    log_error "gemini agents: .agents/subagents/ not found"
+    log_error "gemini agents: .gemini/agents symlink missing"
     ((errors++))
   fi
 

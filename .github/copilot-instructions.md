@@ -6,59 +6,59 @@ This project uses a centralized source-of-truth pattern. All rules are in `.agen
 
 ## Project Rules
 
-Individual rules are in `.github/rules/*.instructions.md`. Below is a summary by category.
+Individual rules are in `.github/instructions/*.instructions.md`. Below is a summary by category.
 
 ### Ucode
 
-- **[](rules/principles.instructions.md)** — Core principles and architectural decisions
-- **[](rules/style.instructions.md)** — Code style guidelines and conventions
+- **[](instructions/principles.instructions.md)** — Core principles and architectural decisions
+- **[](instructions/style.instructions.md)** — Code style guidelines and conventions
 
 ### Ucontent
 
-- **[](rules/copywriting.instructions.md)** — Review copy for effective copywriting principles and best practices
+- **[](instructions/copywriting.instructions.md)** — Review copy for effective copywriting principles and best practices
 
 ### Udesign
 
-- **[](rules/web-design.instructions.md)** — Review UI code for Vercel Web Interface Guidelines compliance
+- **[](instructions/web-design.instructions.md)** — Review UI code for Vercel Web Interface Guidelines compliance
 
 ### Uframeworks
 
-- **[](rules/react-native.instructions.md)** — Review React Native code for Vercel React Native Best Practices compliance
+- **[](instructions/react-native.instructions.md)** — Review React Native code for Vercel React Native Best Practices compliance
 
 ### LIDR SDLC
 
-- **[](rules/lidr-sdlc-documentation.instructions.md)** — LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Always applies when creating, reading or modifying any .md in the ecosystem.
-- **[](rules/org.instructions.md)** — LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Tier-1 rule, always loaded.
-- **[](rules/project.instructions.md)** — LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded.
-- **[](rules/tech-stack.instructions.md)** — LIDR SDLC: Tech stack conventions — TypeScript strict, React 18+, Node 20 LTS, ESM, Tailwind v4. Load when writing, reviewing or generating code.
-- **[](rules/workflows.instructions.md)** — LIDR SDLC: Workflow orchestration map — authorized roles per command, gate preconditions, skill chaining. Load when executing a command, evaluating a gate, or checking role permissions.
+- **[](instructions/lidr-sdlc-documentation.instructions.md)** — LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Always applies when creating, reading or modifying any .md in the ecosystem.
+- **[](instructions/org.instructions.md)** — LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Tier-1 rule, always loaded.
+- **[](instructions/project.instructions.md)** — LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded.
+- **[](instructions/tech-stack.instructions.md)** — LIDR SDLC: Tech stack conventions — TypeScript strict, React 18+, Node 20 LTS, ESM, Tailwind v4. Load when writing, reviewing or generating code.
+- **[](instructions/workflows.instructions.md)** — LIDR SDLC: Workflow orchestration map — authorized roles per command, gate preconditions, skill chaining. Load when executing a command, evaluating a gate, or checking role permissions.
 
 ### Uprocess
 
-- **[](rules/ai-workflow-system.instructions.md)** — Spec-driven development workflow from ticket creation to PR merge
-- **[](rules/process-documentation.instructions.md)** — Documentation standards and practices
-- **[](rules/git-workflow.instructions.md)** — Git workflow and commit conventions
+- **[](instructions/ai-workflow-system.instructions.md)** — Spec-driven development workflow from ticket creation to PR merge
+- **[](instructions/process-documentation.instructions.md)** — Documentation standards and practices
+- **[](instructions/git-workflow.instructions.md)** — Git workflow and commit conventions
 
 ### Uproduct
 
-- **[](rules/mission.instructions.md)** — LIDR Template product mission, vision, and success metrics
-- **[](rules/roadmap.instructions.md)** — LIDR Template Q1 2026 roadmap with phased delivery timeline
+- **[](instructions/mission.instructions.md)** — LIDR Template product mission, vision, and success metrics
+- **[](instructions/roadmap.instructions.md)** — LIDR Template Q1 2026 roadmap with phased delivery timeline
 
 ### Uquality
 
-- **[](rules/protect-secrets.instructions.md)** — Prevent AI from editing sensitive files (environment, keys, certificates)
-- **[](rules/testing-scripts.instructions.md)** — Review bash scripts for testing patterns and best practices
-- **[](rules/testing.instructions.md)** — Testing guidelines and best practices
+- **[](instructions/protect-secrets.instructions.md)** — Prevent AI from editing sensitive files (environment, keys, certificates)
+- **[](instructions/testing-scripts.instructions.md)** — Review bash scripts for testing patterns and best practices
+- **[](instructions/testing.instructions.md)** — Testing guidelines and best practices
 
 ### Uteam
 
-- **[](rules/skills-management.instructions.md)** — Review project for skills structure and compliance
-- **[](rules/third-party-security.instructions.md)** — Review third-party MCP/Skill security before installation
+- **[](instructions/skills-management.instructions.md)** — Review project for skills structure and compliance
+- **[](instructions/third-party-security.instructions.md)** — Review third-party MCP/Skill security before installation
 
 ### Utools
 
-- **[](rules/claude-code-extensions.instructions.md)** — Review Claude Code extension structure and usage
-- **[](rules/use-context7.instructions.md)** — Always use Context7 MCP for library/API documentation
+- **[](instructions/claude-code-extensions.instructions.md)** — Review Claude Code extension structure and usage
+- **[](instructions/use-context7.instructions.md)** — Always use Context7 MCP for library/API documentation
 
 ## Useful Commands
 

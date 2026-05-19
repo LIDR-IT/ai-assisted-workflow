@@ -1,5 +1,5 @@
 ---
-name: security-agent
+name: lidr-security-agent
 description: "Interpreta SAST/SCA/DAST, prioriza vulnerabilidades, crea tickets de remediación"
 model: inherit
 color: red

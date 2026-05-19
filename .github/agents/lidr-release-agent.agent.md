@@ -1,5 +1,5 @@
 ---
-name: release-agent
+name: lidr-release-agent
 description: "Genera release notes, changelog y Change Request al mergear a main"
 tools:
   - codebase

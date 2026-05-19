@@ -4,7 +4,7 @@
 > multi-platform AI configuration source-of-truth and a React documentation app.
 
 [![Platforms](https://img.shields.io/badge/platforms-Cursor%20%7C%20Claude%20%7C%20Gemini%20%7C%20Antigravity%20%7C%20Copilot-green.svg)](#sync-strategies-per-platform)
-[![Skills](<https://img.shields.io/badge/skills-74%20(62%20LIDR%20%2B%2012%20generic)-blue.svg>)](#repository-structure)
+[![Skills](<https://img.shields.io/badge/skills-67%20(61%20LIDR%20%2B%206%20generic)-blue.svg>)](#repository-structure)
 [![Commands](https://img.shields.io/badge/commands-30-blue.svg)](#repository-structure)
 [![Agents](https://img.shields.io/badge/subagents-9-blue.svg)](#repository-structure)
 [![MCP](https://img.shields.io/badge/MCP-Context7-purple.svg)](https://context7.com)
@@ -34,9 +34,9 @@ lidr-ecosystem/
 │   ├── rules/                     # 22 rules total
 │   │   ├── lidr-sdlc/             # 5 LIDR rules (org, project, tech-stack, workflows, documentation)
 │   │   ├── code/, design/, ...    # 17 generic rules in 9 categories
-│   ├── skills/                    # 74 skills
-│   │   ├── lidr-*/                # 62 LIDR SDLC skills (prefixed to avoid collisions)
-│   │   └── *                      # 12 generic meta-skills (skill-creator, team-skill-creator, ...)
+│   ├── skills/                    # 67 skills (Agent Skills open standard — read natively by Gemini/Copilot/Antigravity)
+│   │   ├── lidr-*/                # 61 LIDR SDLC skills (prefixed to avoid collisions)
+│   │   └── *                      # 6 generic meta-skills (team-skill-creator, command-development, ...)
 │   ├── commands/                  # 30 commands
 │   │   ├── lidr-*.md              # 23 LIDR commands (lidr-advance-gate, lidr-implement-ticket, ...)
 │   │   └── *.md                   # 7 generic commands (/commit, /sync-setup, ...)

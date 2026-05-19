@@ -1,5 +1,5 @@
 ---
-name: docs-agent
+name: lidr-docs-agent
 description: "Mantiene 8 fuentes de verdad sincronizadas, ejecuta 32 integrity tests, corrige drift"
 tools:
   - codebase

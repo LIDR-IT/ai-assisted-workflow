@@ -1,224 +1,111 @@
-# Agents Directory
+# Subagents System
 
-This directory contains autonomous agents that handle complex, multi-step tasks independently.
+Source-of-truth for autonomous subagents across 4 of 5 platforms (Antigravity does not support subagents).
 
-## Overview
+**Source:** `.agents/subagents/<name>.md` — 9 subagents (6 LIDR `lidr-*` + 3 generic).
 
-Agents are specialized subprocesses that execute workflows autonomously. They are triggered by commands or specific user requests, use multiple tools, read project rules, and can invoke skills for specialized knowledge.
+## Terminology and paths per platform (verified May 2026)
 
-## Available Agents
+| Platform           | Feature name           | Project path                     | File format               | Method                            |
+| ------------------ | ---------------------- | -------------------------------- | ------------------------- | --------------------------------- |
+| **Claude Code**    | "Subagents"            | `.claude/agents/<name>.md`       | MD + YAML                 | Symlink → `.agents/subagents/`    |
+| **Cursor**         | "Subagents" (2.4+)     | `.cursor/agents/<name>.md`       | MD + YAML                 | Symlink → `.agents/subagents/`    |
+| **Gemini CLI**     | "Subagents" (Apr 2026) | `.gemini/agents/<name>.md`       | MD + YAML                 | Symlink → `.agents/subagents/`    |
+| **Copilot/VSCode** | "Custom agents"        | `.github/agents/<name>.agent.md` | MD + YAML (max 30KB body) | Copy + rename `.md` → `.agent.md` |
+| **Antigravity**    | — (not supported)      | n/a                              | n/a                       | n/a                               |
 
-### doc-improver
+**No alias for subagents.** Unlike skills (where `.agents/skills/` is a Gemini alias) or rules, the official Gemini docs do NOT recognize `.agents/subagents/` as an alias for `.gemini/agents/`. Each platform requires its own path → we use symlinks.
 
-**Purpose:** Audits and improves project documentation
+## Required frontmatter
 
-**Triggered by:**
-
-- `/improve-docs` command
-- User asks to review/audit/improve documentation
-- Requests to generate missing READMEs
-
-**What it does:**
-
-1. Reads `.agents/rules/process/documentation.md` for project standards
-2. Analyzes documentation structure and content
-3. Identifies gaps, outdated content, broken links
-4. Reports findings with priorities
-5. Implements approved improvements
-
-**Tools used:** Read, Glob, Grep, Edit, Write, Bash, Skill
-
-**Example usage:**
-
-```bash
-# Audit entire project
-/improve-docs
-
-# Audit specific directory
-/improve-docs docs/guides
-
-# Audit specific file
-/improve-docs README.md
-```
-
-## Agent Architecture
-
-Agents follow this pattern:
-
-```
-Command (UI) → Agent (Logic) → Rules (Constraints) + Skills (Knowledge)
-```
-
-### Agent Structure
-
-Every agent file contains:
-
-1. **YAML Frontmatter:**
-   - `name` - Agent identifier
-   - `description` - When to trigger (with examples)
-   - `tools` - Available tools
-   - `model` - Model preference
-   - `color` - UI color
-
-2. **System Prompt:**
-   - Agent role and responsibilities
-   - Working process (phases)
-   - Rules to follow
-   - Skills to use
-   - Output format
-
-### Agent vs Command vs Skill
-
-**Agent:**
-
-- Autonomous subprocess
-- Multi-step workflow
-- Takes decisions
-- Uses multiple tools
-
-**Command:**
-
-- User interface
-- Accepts arguments
-- Invokes agents
-- Documents usage
-
-**Skill:**
-
-- Specialized knowledge
-- Invocable on-demand
-- Reusable across agents
-- Can include bundled resources
-
-## Creating a New Agent
-
-See: [Command → Agent → Skill Pattern Guide](../../docs/guides/patterns/command-agent-skill-pattern.md)
-
-**Quick steps:**
-
-1. Create agent file: `.agents/subagents/your-agent.md`
-2. Define frontmatter with trigger conditions
-3. Write system prompt with workflow
-4. Create invoking command: `.agents/commands/your-command.md`
-5. Test invocation
-
-**Or use:**
-
-```bash
-/agent-development  # Skill with full guide
-```
-
-## Agent Best Practices
-
-### 1. Clear Trigger Conditions
-
-Use examples in description to show when agent should activate:
+Universal minimum (verified across all platforms):
 
 ```yaml
-description: Use this agent when [conditions]. Examples:
-
-<example>
-user: "/command-name"
-assistant: "I'll launch the agent..."
-</example>
+---
+name: agent-name # lowercase + hyphens; should match filename
+description: When to invoke this agent (triggers auto-delegation)
+model: inherit # optional — Claude/Cursor; Gemini also supports
+tools: # optional — restrict tool access
+  - Read
+  - Grep
+---
+# Agent system prompt body (markdown)
 ```
 
-### 2. Always Read Rules First
+**Per-platform field details:**
 
-Agents MUST read relevant project rules:
+- **Claude:** `name`, `description`, `model`, `tools` — see [docs](https://code.claude.com/docs/en/sub-agents)
+- **Cursor:** `name` (required), `description`, `model`, `readonly`, `is_background` — see [docs](https://cursor.com/docs/agent/subagents)
+- **Gemini:** `name` (required), `description` (required), `tools`, `model`, `temperature`, `max_turns`, `timeout_mins` — see [docs](https://geminicli.com/docs/core/subagents/)
+- **Copilot:** `name`, `description`, `model`, `tools` (e.g. `web/fetch`, `search/codebase`); adapter auto-injects `tools: [codebase, editFiles, terminalLastCommand]` if absent — see [docs](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
-```markdown
-## Phase 1: Discovery
+## Invocation per platform
 
-1. Read `.agents/rules/relevant-rule.md`
-2. Understand project standards
-3. Proceed with workflow
-```
+| Platform | Auto-delegation         | Manual invocation                        |
+| -------- | ----------------------- | ---------------------------------------- |
+| Claude   | ✅ (description-driven) | Via Task tool or `/agents` menu          |
+| Cursor   | ✅                      | `/agent-name` or "Use the X subagent..." |
+| Gemini   | ✅                      | `@agent-name` prefix                     |
+| Copilot  | ✅                      | Selected from agent picker in chat UI    |
 
-### 3. Structured Workflow
+## Available subagents (9)
 
-Break agent work into phases:
+### Generic (3)
 
-```markdown
-## Phase 1: Discovery
+- `doc-improver` — Audit and improve documentation
+- `pr-validator` — Validate PRs against standards before opening
+- `ticket-enricher` — Enrich tickets with missing details
 
-- Gather information
-- Read rules
+### LIDR SDLC (6)
 
-## Phase 2: Analysis
+- `lidr-docs-agent` — Documentation maintenance
+- `lidr-metrics-agent` — Sprint + DORA metrics collection
+- `lidr-onboarding-agent` — New team-member onboarding
+- `lidr-qa-agent` — Testing suite preparation
+- `lidr-release-agent` — Release notes + change requests
+- `lidr-security-agent` — Vulnerability triage + remediation tickets
 
-- Process data
-- Identify issues
-
-## Phase 3: Reporting
-
-- Present findings
-- Ask for approval
-
-## Phase 4: Implementation
-
-- Apply changes
-- Verify results
-```
-
-### 4. Use Skills Sparingly
-
-Only invoke skills for deep specialized knowledge:
-
-```markdown
-## When to use skills:
-
-- Need specialized patterns (invoke skill)
-- General task (use agent knowledge)
-```
-
-### 5. Request Approval for Changes
-
-Never modify files without user consent:
-
-```markdown
-## Recommendations
-
-1. Fix broken links
-2. Update outdated examples
-
-**Would you like me to implement these changes?**
-```
-
-## Synchronization
-
-Agents are automatically synchronized to all platforms via `.agents/` directory:
-
-- **Cursor:** Uses agents from `.agents/subagents/`
-- **Claude Code:** Uses agents from `.agents/subagents/`
-- **Gemini CLI:** Uses agents from `.agents/subagents/`
-- **Antigravity:** May need manual configuration
-
-No sync script needed - agents are read directly from source.
-
-## Testing Agents
-
-### Manual Test
+## Add a new subagent
 
 ```bash
-# Invoke via command
-/improve-docs
+# 1. Write source
+cat > .agents/subagents/my-agent.md <<'EOF'
+---
+name: my-agent
+description: Use when the user asks to "trigger phrase 1", "trigger phrase 2".
+tools:
+  - Read
+  - Grep
+model: inherit
+---
 
-# Or ask directly
-"Can you audit the documentation?"
+You are a specialized agent for ...
+EOF
+
+# 2. Sync (creates symlinks for Claude/Cursor/Gemini; copies to Copilot)
+./.agents/sync.sh --only=agents
+
+# 3. Verify
+ls -la .claude/agents/my-agent.md       # symlink resolves
+ls -la .cursor/agents/my-agent.md       # symlink resolves
+ls -la .gemini/agents/my-agent.md       # symlink resolves
+ls .github/agents/my-agent.agent.md     # copy with .agent.md suffix
 ```
 
-### Verify Agent Reads Rules
+## Common pitfalls
 
-Check agent output mentions standards from project rules.
+| Symptom                              | Cause                                                  | Fix                                                |
+| ------------------------------------ | ------------------------------------------------------ | -------------------------------------------------- |
+| Gemini doesn't see the subagent      | Missing `.gemini/agents/` symlink (pre-Apr-2026 setup) | Run `./.agents/sync.sh --only=agents`              |
+| Copilot agent body truncated         | Body over 30KB cap                                     | Shorten or split into multiple agents              |
+| `@name` doesn't match expected agent | Frontmatter `name:` differs from filename              | Align `name:` to filename (predictable invocation) |
+| Antigravity user asks for subagent   | Antigravity has no subagent concept                    | Use a workflow (`.agents/workflows/`) instead      |
+| Cursor invocation fails              | `name:` missing or has uppercase/spaces                | Use lowercase + hyphens only                       |
 
-### Verify Agent Uses Tools
+## Official references
 
-Check agent uses Read, Glob, Grep, etc. appropriately.
-
-## Related Documentation
-
-- [Command → Agent → Skill Pattern](../../docs/guides/patterns/command-agent-skill-pattern.md)
-- [Agent Development Skill](../skills/agent-development/)
-- [Command Development Skill](../skills/command-development/)
-- [Documentation Standards](../rules/process/documentation.md)
+- [Claude Code subagents](https://code.claude.com/docs/en/sub-agents)
+- [Cursor subagents (2.4+)](https://cursor.com/docs/agent/subagents)
+- [Gemini CLI subagents (Apr 2026)](https://geminicli.com/docs/core/subagents/)
+- [VSCode Copilot custom agents](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
+- [GitHub Copilot custom agents (cloud)](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-custom-agents)

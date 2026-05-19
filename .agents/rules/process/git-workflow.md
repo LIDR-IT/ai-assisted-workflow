@@ -281,8 +281,9 @@ node_modules/
 **Note:** Some agent configs ARE committed:
 
 - `.cursor/mcp.json` ✅ (generated)
-- `.claude/mcp.json` ✅ (generated)
+- `.mcp.json` ✅ (generated, Claude Code at repo root)
 - `.gemini/settings.json` ✅ (generated)
+- `.vscode/mcp.json` ✅ (generated, Copilot)
 
 ### Symlink Handling
 
@@ -402,14 +403,16 @@ vim .agents/mcp/mcp-servers.json
 
 # 3. Review generated files
 git diff .cursor/mcp.json
-git diff .claude/mcp.json
+git diff .mcp.json
 git diff .gemini/settings.json
+git diff .vscode/mcp.json
 
 # 4. Commit source AND generated
 git add .agents/mcp/mcp-servers.json
 git add .cursor/mcp.json
-git add .claude/mcp.json
+git add .mcp.json
 git add .gemini/settings.json
+git add .vscode/mcp.json
 
 git commit -m "feat: Add new MCP server
 

@@ -42,10 +42,10 @@ Ejecuta los siguientes comandos en orden:
 ls -la AGENTS.md CLAUDE.md GEMINI.md
 
 # 3. Verificar symlinks principales
-ls -la .cursor/rules .cursor/skills .cursor/commands .cursor/agents
-ls -la .claude/rules .claude/skills .claude/commands .claude/agents
-ls -la .gemini/rules .gemini/skills .gemini/commands .gemini/agents
-ls -la .github/rules .github/prompts .github/agents
+ls -la .cursor/rules .cursor/skills .cursor/commands .cursor/agents          # Cursor (copies rules, symlinks rest)
+ls -la .claude/rules .claude/skills .claude/commands .claude/agents          # Claude (all symlinks to .agents/)
+ls -la .gemini/GEMINI.md .gemini/commands                                    # Gemini (index file + TOML commands; skills/agents read natively from .agents/)
+ls -la .github/instructions .github/prompts .github/agents                   # Copilot (official path is .github/instructions/, NOT .github/rules/)
 
 # 4. Verificar Antigravity (native .agents/ detection, no soporta subagents)
 ls -la .agents/rules/ | head -5
@@ -53,7 +53,7 @@ ls -la .agents/skills/ | head -5
 readlink .agents/workflows  # Should: commands
 
 # 5. Verificar MCP configs existen
-ls -la .cursor/mcp.json .claude/mcp.json .gemini/settings.json .vscode/mcp.json
+ls -la .mcp.json .cursor/mcp.json .gemini/settings.json .vscode/mcp.json     # Claude uses .mcp.json at repo root (not .claude/mcp.json)
 
 # 6. Verificar hooks (git workflow automation)
 ls -la .cursor/hooks/

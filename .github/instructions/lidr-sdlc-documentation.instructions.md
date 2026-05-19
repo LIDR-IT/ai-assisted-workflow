@@ -1,5 +1,6 @@
 ---
 description: LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Always applies when creating, reading or modifying any .md in the ecosystem.
+applyTo: "**"
 ---
 
 # Rule: Documentation Governance

@@ -1,6 +1,18 @@
+---
+id: sync-system
+version: "2.0.0"
+last_updated: "2026-05-19"
+updated_by: "TL: agents-architecture audit"
+status: active
+type: reference
+review_cycle: 90
+next_review: "2026-08-19"
+owner_role: "Tech Lead"
+---
+
 # Synchronization System
 
-Technical details of how the `.agents/` synchronization system works, including sync scripts, strategies, and troubleshooting.
+Technical details of how the `.agents/` synchronization system works: scripts, strategies, dry-run, verification, and troubleshooting.
 
 ## Table of Contents
 
@@ -16,27 +28,26 @@ Technical details of how the `.agents/` synchronization system works, including 
 
 The synchronization system ensures configurations in `.agents/` propagate to all platform-specific directories.
 
-**Entry point:**
-
-- `.agents/sync.sh` - Unified CLI for all synchronization operations
+**Entry point:** `.agents/sync.sh` — unified CLI for all synchronization operations.
 
 **Architecture:**
 
-- `.agents/lib/` - Shared utility functions
-- `.agents/adapters/` - Platform adapters (one per platform)
-- `.agents/sync/` - Component orchestrators (rules, skills, commands, mcp, hooks, agents)
-- `.agents/platforms.json` - Platform registry and configuration
+- `.agents/lib/` — shared utility functions (logging, symlink, frontmatter, registry)
+- `.agents/adapters/` — platform adapters (one per platform: `claude.sh`, `cursor.sh`, `gemini.sh`, `antigravity.sh`, `copilot.sh`)
+- `.agents/sync/` — component orchestrators (`rules.sh`, `skills.sh`, `commands.sh`, `agents.sh`, `mcp.sh`, `hooks.sh`, `orchestrator.sh`)
+- `.agents/platforms.json` — platform registry with strategy per platform+component
 
 **Execution:** `sync.sh` loads platform adapters from `adapters/` and component orchestrators from `sync/`, dispatching to `{platform}_{component}()` functions dynamically.
 
 **Component order:**
 
-1. Rules
-2. Skills
-3. Commands
-4. Agents
-5. MCP servers
-6. Hooks
+1. Orchestrator (root symlinks: AGENTS.md, CLAUDE.md, GEMINI.md)
+2. Rules
+3. Skills
+4. Commands
+5. Subagents
+6. MCP servers
+7. Hooks
 
 ## sync.sh CLI
 
@@ -61,6 +72,7 @@ The synchronization system ensures configurations in `.agents/` propagate to all
 **Sync specific components:**
 
 ```bash
+./.agents/sync.sh --only=orchestrator
 ./.agents/sync.sh --only=rules
 ./.agents/sync.sh --only=skills
 ./.agents/sync.sh --only=commands
@@ -69,35 +81,36 @@ The synchronization system ensures configurations in `.agents/` propagate to all
 ./.agents/sync.sh --only=hooks
 ```
 
+**Sync specific platforms:**
+
+```bash
+./.agents/sync.sh --platform=claude
+./.agents/sync.sh --platform=cursor,claude
+./.agents/sync.sh --platform=copilot --only=rules
+```
+
+**Other flags:**
+
+```bash
+./.agents/sync.sh --no-symlinks    # Replace symlinks with standalone copies
+./.agents/sync.sh --verbose        # Debug output
+./.agents/sync.sh --skip-yaml-check # Skip YAML frontmatter validation
+```
+
 **Output:**
 
 ```
 ╔═══════════════════════════════════════════════════════════════════╗
-║  🔄 SYNCHRONIZING ALL COMPONENTS                                  ║
+║  🔄 SYNCHRONIZING CONFIGURATIONS                                  ║
 ╚═══════════════════════════════════════════════════════════════════╝
 
-┌───────────────────────────────────────────────────────────────────┐
-│  1. RULES
-└───────────────────────────────────────────────────────────────────┘
-✅ Rules synchronization completed successfully
+Platforms:  cursor claude gemini antigravity copilot
+Components: orchestrator rules skills commands agents mcp hooks
 
-┌───────────────────────────────────────────────────────────────────┐
-│  2. SKILLS
-└───────────────────────────────────────────────────────────────────┘
-✅ Skills synchronization completed successfully
-
-┌───────────────────────────────────────────────────────────────────┐
-│  3. COMMANDS
-└───────────────────────────────────────────────────────────────────┘
-✅ Commands synchronization completed successfully
-
-┌───────────────────────────────────────────────────────────────────┐
-│  4. MCP SERVERS
-└───────────────────────────────────────────────────────────────────┘
-✅ MCP synchronization completed
+[per-component output...]
 
 ╔═══════════════════════════════════════════════════════════════════╗
-║  ✅ ALL SYNCHRONIZATIONS COMPLETED                                ║
+║  ✅ SYNCHRONIZATION COMPLETED                                      ║
 ╚═══════════════════════════════════════════════════════════════════╝
 ```
 
@@ -110,6 +123,10 @@ The synchronization system ensures configurations in `.agents/` propagate to all
 ├── sync.sh              # ← Unified CLI entry point
 ├── platforms.json       # Platform registry and configuration
 ├── lib/                 # Shared utility functions
+│   ├── core.sh
+│   ├── symlink.sh
+│   ├── frontmatter.sh
+│   └── registry.sh
 ├── adapters/            # Platform adapters (one per platform)
 │   ├── cursor.sh
 │   ├── claude.sh
@@ -117,6 +134,7 @@ The synchronization system ensures configurations in `.agents/` propagate to all
 │   ├── antigravity.sh
 │   └── copilot.sh
 └── sync/                # Component orchestrators
+    ├── orchestrator.sh
     ├── rules.sh
     ├── skills.sh
     ├── commands.sh
@@ -129,111 +147,105 @@ The synchronization system ensures configurations in `.agents/` propagate to all
 
 `sync.sh` dynamically loads adapters and dispatches to `{platform}_{component}()` functions:
 
-1. Parse CLI arguments (`--dry-run`, `--only=component`)
-2. Load platform adapters from `adapters/`
-3. Load component orchestrators from `sync/`
-4. For each component (or the `--only` target):
+1. Parse CLI arguments (`--dry-run`, `--only=component`, `--platform=name`, etc.)
+2. Validate platform names against `platforms.json`
+3. Load shared libraries from `lib/`
+4. Load platform adapters from `adapters/`
+5. Load component orchestrators from `sync/`
+6. For each component (or the `--only` target):
    - For each platform adapter:
-     - Call `{platform}_{component}()` function
-5. Run verification checks
-6. Print summary
+     - Call `{platform}_{component}()` function (if defined)
+7. Print summary + verification hints
 
 ### Component Orchestrators
 
 Each file in `sync/` handles one component type across all platforms:
 
-- **`sync/rules.sh`** - Syncs rules from `.agents/rules/` to all platforms
-- **`sync/skills.sh`** - Syncs skills from `.agents/skills/` to all platforms
-- **`sync/commands.sh`** - Syncs commands from `.agents/commands/` to all platforms
-- **`sync/agents.sh`** - Syncs subagents from `.agents/subagents/` to all platforms
-- **`sync/mcp.sh`** - Generates platform-specific MCP configs from `.agents/mcp/mcp-servers.json`
-- **`sync/hooks.sh`** - Generates platform-specific hook configs from `.agents/hooks/`
+- **`sync/orchestrator.sh`** — Creates root symlinks (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md` → `.agents/orchestrator/AGENTS.md`)
+- **`sync/rules.sh`** — Syncs rules from `.agents/rules/` to all platforms
+- **`sync/skills.sh`** — Syncs skills from `.agents/skills/` to platforms that need an explicit handoff (others read natively)
+- **`sync/commands.sh`** — Syncs commands from `.agents/commands/` to all platforms
+- **`sync/agents.sh`** — Syncs subagents from `.agents/subagents/` to all platforms (except Antigravity)
+- **`sync/mcp.sh`** — Generates platform-specific MCP configs from `.agents/mcp/mcp-servers.json`
+- **`sync/hooks.sh`** — Generates platform-specific hook configs from `.agents/hooks/`
 
 ## Synchronization Strategies
 
-### Strategy: Full Directory Symlinks
+The four strategies are applied per component+platform per `platforms.json`. None of them is universal.
 
-**Used by:** sync/rules.sh, sync/skills.sh, sync/commands.sh
-**Platforms:** Cursor, Claude Code, Gemini CLI
+### Strategy 1: Full Directory Symlinks
 
-**Implementation:**
+Symlink a whole directory; the platform reads everything inside.
+
+**Used by:**
+
+| Component | Symlinked for                              |
+| --------- | ------------------------------------------ |
+| rules     | Claude Code only                           |
+| skills    | Claude Code, Cursor                        |
+| commands  | Claude Code, Cursor                        |
+| subagents | Claude Code, Cursor, Gemini CLI (Apr 2026) |
+
+**Implementation (`lib/symlink.sh`):**
 
 ```bash
-create_directory_symlink() {
+create_symlink() {
   local source=$1
   local target=$2
+  local label=$3
 
-  # Remove existing (file or directory)
   if [ -e "$target" ] || [ -L "$target" ]; then
     rm -rf "$target"
   fi
-
-  # Create symlink
   ln -s "$source" "$target"
 
-  # Verify
   if [ -L "$target" ]; then
-    echo "  ✅ Created symlink: $target → $source"
+    log_info "✅ Created symlink: $target → $source ($label)"
   else
-    echo "  ❌ Failed to create symlink: $target"
+    log_error "❌ Failed to create symlink: $target"
     return 1
   fi
 }
 
-# Usage
-create_directory_symlink "../.agents/skills" ".cursor/skills"
+# Usage examples (per platform):
+create_symlink "../.agents/skills"    ".cursor/skills"   "skills"
+create_symlink "../.agents/skills"    ".claude/skills"   "skills"
+create_symlink "../.agents/subagents" ".gemini/agents"   "subagents"   # Apr 2026
 ```
 
-### Strategy: Selective Symlinks
+**Advantages:** instant propagation, zero duplication, filesystem-native.
 
-**Used by:** sync/skills.sh (Cursor, Claude, Gemini only)
-**Platform:** Cursor, Claude Code, Gemini CLI
+### Strategy 2: Native Detection (no sync action)
 
-**Note:** Antigravity reads skills natively from `.agents/skills/` — no selective symlinks or copies needed.
+The platform reads `.agents/` directly per a documented standard. No sync action is taken.
 
-**Implementation (for Cursor/Claude/Gemini):**
+**Used by:**
 
-```bash
-# For each skill, create a selective symlink per agent
-for skill_dir in .agents/skills/*/; do
-  skill_name=$(basename "$skill_dir")
-  source="../../.agents/skills/$skill_name"
+| Component | Native for                                                                      |
+| --------- | ------------------------------------------------------------------------------- |
+| skills    | Gemini CLI ([Agent Skills](https://agentskills.io) alias), Antigravity, Copilot |
+| rules     | Antigravity                                                                     |
+| commands  | Antigravity (via internal `.agents/workflows → commands` symlink)               |
 
-  for agent in cursor claude gemini; do
-    target=".$agent/skills/$skill_name"
-    mkdir -p ".$agent/skills"
+**Warning:** Do NOT create `.gemini/skills/` or `.github/skills/` — would cause duplicate detection in those platforms.
 
-    # Remove existing
-    rm -rf "$target"
+### Strategy 3: Copy + Format Conversion
 
-    # Create selective symlink
-    ln -s "$source" "$target"
+The adapter copies source files and converts to a platform-specific format.
 
-    echo "  ✅ $agent: $skill_name"
-  done
-done
-# Antigravity: reads natively from .agents/skills/ (no action needed)
-```
+**Used by:**
 
-### Strategy: File Copies
+| Component | Output                                                                     | Platform   |
+| --------- | -------------------------------------------------------------------------- | ---------- |
+| rules     | `.cursor/rules/*.mdc` (flat)                                               | Cursor     |
+| rules     | `.github/instructions/*.instructions.md` + `copilot-instructions.md` index | Copilot    |
+| commands  | `.gemini/commands/*.toml`                                                  | Gemini CLI |
+| commands  | `.github/prompts/*.prompt.md` (with `$ARGUMENTS` → `{{{ input }}}`)        | Copilot    |
+| subagents | `.github/agents/*.agent.md`                                                | Copilot    |
 
-**Used by:** sync/rules.sh, sync/commands.sh (legacy platforms only)
-**Platform:** Not required for Antigravity
-
-**Note:** Antigravity now reads rules and commands natively from `.agents/` — no file copies needed. The copy strategy is retained only for platforms that lack symlink or native detection support.
-
-**Legacy implementation (for reference):**
+**Implementation example (Cursor rules):**
 
 ```bash
-# This is no longer needed for Antigravity.
-# Antigravity detects .agents/rules/ and .agents/commands/ natively.
-# No copy step required; changes in .agents/ are immediately visible.
-```
-
-**For Cursor (rules only — flat .mdc required):**
-
-```bash
-# Cursor requires a flat directory with .mdc extension (no subdirectories)
 mkdir -p .cursor/rules
 for rule in .agents/rules/**/*.md; do
   base=$(basename "$rule")
@@ -241,23 +253,31 @@ for rule in .agents/rules/**/*.md; do
 done
 
 file_count=$(ls -1 .cursor/rules/*.mdc 2>/dev/null | wc -l)
-echo "  ✅ Copied $file_count rules to .cursor/rules/"
+log_info "✅ Copied $file_count rules to .cursor/rules/"
 ```
 
-**Note:** Cursor rules require re-sync after each change (not instant like symlinks).
+**Trade-off:** must re-run sync after editing source. Copies are NOT auto-propagated.
 
-### Strategy: Script Generation
+### Strategy 4: Script Generation (JSON)
 
-**Used by:** sync/mcp.sh
-**Platforms:** All (except Antigravity project-level)
+The adapter parses the source and emits a platform-specific JSON.
 
-**Implementation:**
+**Used by:**
+
+| Component | Output                                        | Platform                  |
+| --------- | --------------------------------------------- | ------------------------- |
+| MCP       | `.cursor/mcp.json`                            | Cursor                    |
+| MCP       | `.mcp.json` (repo root)                       | Claude Code               |
+| MCP       | `.gemini/settings.json` (nested `mcpServers`) | Gemini CLI                |
+| MCP       | `.vscode/mcp.json`                            | Copilot                   |
+| MCP       | `~/.gemini/antigravity/mcp_config.json`       | Antigravity (global only) |
+| Hooks     | per-platform hook config                      | All except Antigravity    |
+
+**Implementation (MCP):**
 
 ```bash
-# Read source
 SOURCE=".agents/mcp/mcp-servers.json"
 
-# Transform for each platform
 generate_platform_config() {
   local platform=$1
   local output=$2
@@ -268,22 +288,25 @@ generate_platform_config() {
       map(select(.value.platforms | contains([$platform]))) |
       from_entries}' "$SOURCE" > "$output"
 
-  # Validate
   if jq empty "$output" 2>/dev/null; then
-    echo "  ✅ Generated: $output"
+    log_info "✅ Generated: $output"
   else
-    echo "  ❌ Invalid JSON: $output"
+    log_error "❌ Invalid JSON: $output"
     return 1
   fi
 }
 
-generate_platform_config "cursor" ".cursor/mcp.json"
-generate_platform_config "claude" ".claude/mcp.json"
+generate_platform_config "cursor"  ".cursor/mcp.json"
+generate_platform_config "claude"  ".mcp.json"            # Claude Code (repo root)
+generate_platform_config "gemini"  ".gemini/settings.json"
+generate_platform_config "copilot" ".vscode/mcp.json"
 ```
+
+**Trade-off:** must re-run sync after editing source.
 
 ## Dry-Run Mode
 
-All sync scripts support `--dry-run` mode for preview without changes.
+All sync scripts support `--dry-run` mode for previewing without changes.
 
 **Usage:**
 
@@ -296,11 +319,16 @@ All sync scripts support `--dry-run` mode for preview without changes.
 ```
 [DRY RUN] Would create symlink: .cursor/skills → ../.agents/skills
 [DRY RUN] Would create symlink: .claude/skills → ../.agents/skills
-[DRY RUN] Would create symlink: .gemini/skills → ../.agents/skills
-[DRY RUN] Antigravity reads natively from .agents/ (no action needed)
+[DRY RUN] Would create symlink: .claude/agents → ../.agents/subagents
+[DRY RUN] Would create symlink: .cursor/agents → ../.agents/subagents
+[DRY RUN] Would create symlink: .gemini/agents → ../.agents/subagents
+[DRY RUN] Would generate: .gemini/commands/*.toml from .agents/commands/*.md
+[DRY RUN] Would copy: .github/prompts/*.prompt.md from .agents/commands/*.md
+[DRY RUN] Gemini CLI / Antigravity / Copilot read .agents/skills/ natively (no action)
+[DRY RUN] Antigravity reads .agents/rules/, .agents/commands/ natively (no action)
 ```
 
-**Implementation:**
+**Implementation pattern:**
 
 ```bash
 DRY_RUN=false
@@ -309,103 +337,102 @@ if [[ "$1" == "--dry-run" ]]; then
   DRY_RUN=true
 fi
 
-# In sync functions
-if [ "$DRY_RUN" = true ]; then
-  echo "  [DRY RUN] Would create symlink: $target → $source"
-  return 0
-fi
-
-# Actual operation
-ln -s "$source" "$target"
+run_or_dry() {
+  if [ "$DRY_RUN" = true ]; then
+    log_info "[DRY RUN] $*"
+    return 0
+  fi
+  "$@"
+}
 ```
 
 ## Verification
 
-### Verify Symlinks
+### Verify symlinks
 
-**Check symlink exists:**
+**Check a symlink exists:**
 
 ```bash
 ls -la .cursor/skills
 # Output: lrwxr-xr-x ... .cursor/skills -> ../.agents/skills
 ```
 
-**Check symlink target:**
+**Check the target:**
 
 ```bash
 readlink .cursor/skills
 # Output: ../.agents/skills
 ```
 
-**Verify for all platforms:**
+### Full verification script (post-merge accurate)
 
 ```bash
 #!/bin/bash
+# verify-sync.sh
 
-verify_symlinks() {
-  for agent in cursor claude gemini; do
-    for component in rules skills commands; do
-      link=".$agent/$component"
-      expected="../.agents/$component"
+set -e
 
-      if [ -L "$link" ]; then
-        actual=$(readlink "$link")
-        if [ "$actual" = "$expected" ]; then
-          echo "✅ .$agent/$component → $expected"
-        else
-          echo "⚠️  .$agent/$component → $actual (expected: $expected)"
-        fi
-      else
-        echo "❌ .$agent/$component is not a symlink"
-      fi
-    done
-  done
-}
+# Symlinked components per platform
+declare -A EXPECTED_SYMLINKS=(
+  [".claude/rules"]="../.agents/rules"
+  [".claude/skills"]="../.agents/skills"
+  [".claude/commands"]="../.agents/commands"
+  [".claude/agents"]="../.agents/subagents"
+  [".cursor/skills"]="../.agents/skills"
+  [".cursor/commands"]="../.agents/commands"
+  [".cursor/agents"]="../.agents/subagents"
+  [".gemini/agents"]="../.agents/subagents"
+  [".agents/workflows"]="commands"
+)
 
-verify_symlinks
-```
+for link in "${!EXPECTED_SYMLINKS[@]}"; do
+  expected="${EXPECTED_SYMLINKS[$link]}"
+  if [ ! -L "$link" ]; then
+    echo "❌ Not a symlink: $link"
+  elif [ "$(readlink "$link")" != "$expected" ]; then
+    echo "⚠️  $link → $(readlink "$link") (expected: $expected)"
+  else
+    echo "✅ $link → $expected"
+  fi
+done
 
-### Verify File Access
+# Generated/copied components (existence check)
+echo ""
+echo "Generated files:"
+for f in .cursor/rules/*.mdc .github/instructions/*.instructions.md \
+         .github/prompts/*.prompt.md .github/agents/*.agent.md \
+         .gemini/commands/*.toml .mcp.json .cursor/mcp.json \
+         .gemini/settings.json .vscode/mcp.json; do
+  if compgen -G "$f" > /dev/null; then
+    echo "✅ $f"
+  else
+    echo "⚠️  Missing: $f"
+  fi
+done
 
-**Test reading through symlink:**
-
-```bash
-# Should work
-cat .cursor/skills/agents-architecture/SKILL.md | head -5
-
-# Should show same content as source
-diff .cursor/skills/agents-architecture/SKILL.md .agents/skills/agents-architecture/SKILL.md
-# No output = files identical
+# Native-detection components (only verify source exists)
+echo ""
+echo "Source for native-detection platforms:"
+for d in .agents/rules .agents/skills .agents/commands; do
+  [ -d "$d" ] && echo "✅ $d (Gemini/Antigravity/Copilot read this directly)"
+done
 ```
 
 ### Verify Antigravity
 
-Antigravity reads rules, skills, and workflows natively from `.agents/`. Verify the source directories exist and contain the expected files.
-
-**Check rules are accessible:**
+Antigravity reads `.agents/rules/`, `.agents/skills/`, and workflows (via `.agents/workflows → commands`) natively. Verify the source directories exist:
 
 ```bash
 ls -la .agents/rules/
-# Should show rule subdirectories (code/, process/, quality/, etc.)
-```
-
-**Check skills are accessible:**
-
-```bash
 ls -la .agents/skills/
-# Should show skill subdirectories, each containing SKILL.md
+readlink .agents/workflows   # Should be: commands
 ```
 
-**Check commands are accessible:**
-
-```bash
-ls -la .agents/commands/
-# Should show command .md files
-```
+After sync, reload the project in Antigravity so it picks up changes (cached at load time).
 
 ## Troubleshooting
 
-### Issue: Symlink Not Created
+### Issue: Symlink not created
 
 **Symptoms:**
 
@@ -417,110 +444,105 @@ ls .cursor/skills
 **Diagnosis:**
 
 ```bash
-# Check if it's a symlink
-if [ -L ".cursor/skills" ]; then
-  echo "Is symlink"
-else
-  echo "Not symlink"
-fi
+[ -L ".cursor/skills" ] && echo "Is symlink" || echo "Not symlink"
 ```
 
-**Solution:**
+**Fix:**
 
 ```bash
-# Remove and re-create
 rm -rf .cursor/skills
-./.agents/sync.sh
+./.agents/sync.sh --only=skills
 ```
 
-### Issue: Permission Denied
+### Issue: Permission denied
 
-**Symptoms:**
+**Symptoms:** `Permission denied when running sync scripts`
 
-```
-Permission denied when running sync scripts
-```
-
-**Solution:**
+**Fix:**
 
 ```bash
-# Make script executable
-chmod +x .agents/sync.sh
-
-# Re-run
+chmod +x .agents/sync.sh .agents/adapters/*.sh .agents/sync/*.sh .agents/lib/*.sh
 ./.agents/sync.sh
 ```
 
-### Issue: Source Directory Missing
+### Issue: Source directory missing
 
-**Symptoms:**
-
-```
-❌ Source directory not found: .agents/skills
-```
+**Symptoms:** `❌ Source directory not found: .agents/skills`
 
 **Diagnosis:**
 
 ```bash
 ls -la .agents/
+pwd  # Should be in repo root
 ```
 
-**Solution:**
+**Fix:**
 
 ```bash
-# Create missing directory
 mkdir -p .agents/skills
-
-# Or check current directory
-pwd  # Should be in project root
 ```
 
-### Issue: Invalid JSON in MCP Config
+### Issue: Invalid JSON in MCP config
 
-**Symptoms:**
-
-```
-❌ Invalid JSON: .cursor/mcp.json
-```
+**Symptoms:** `❌ Invalid JSON: .cursor/mcp.json`
 
 **Diagnosis:**
 
 ```bash
-jq . .cursor/mcp.json
-# Shows syntax error
+jq . .cursor/mcp.json    # shows syntax error
+jq . .agents/mcp/mcp-servers.json   # check source
 ```
 
-**Solution:**
+**Fix:**
 
 ```bash
-# Check source
-jq . .agents/mcp/mcp-servers.json
-
-# If source is valid, re-generate
-./.agents/sync.sh --only=mcp
-
-# If source is invalid, fix it first
+# Fix source first if needed
 vim .agents/mcp/mcp-servers.json
+
+# Regenerate
+./.agents/sync.sh --only=mcp
 ```
 
-### Issue: Antigravity Changes Not Propagating
+### Issue: Antigravity changes not propagating
 
-**Symptoms:** Edited rule/command in `.agents/` but not visible in Antigravity
+**Symptoms:** Edited rule/command/skill in `.agents/` but not visible in Antigravity.
 
-**Cause:** Antigravity caches configuration at project load time. Changes to `.agents/` are detected natively but may require reloading the project.
+**Cause:** Antigravity caches configuration at project load time. Native detection sees the change but the cache is stale.
 
-**Solution:**
+**Fix:** close and reopen the project in Antigravity.
+
+### Issue: Copilot or Gemini commands stale
+
+**Symptoms:** Edited `.agents/commands/foo.md` but `.gemini/commands/foo.toml` or `.github/prompts/foo.prompt.md` shows the old content.
+
+**Cause:** Copy + format conversion strategies don't auto-update.
+
+**Fix:** re-run `./.agents/sync.sh --only=commands`.
+
+### Issue: Subagent not visible
+
+**Symptoms:** Created `.agents/subagents/new-agent.md` but doesn't appear in Claude/Cursor/Gemini/Copilot.
+
+**Diagnosis:**
 
 ```bash
-# Close and reopen the project in Antigravity to reload .agents/ detection
+# Verify source
+ls .agents/subagents/new-agent.md
 
-# Verify the source file exists and is correct
-cat .agents/rules/code/principles.md
+# Verify symlinks (3 platforms)
+readlink .claude/agents .cursor/agents .gemini/agents
 
-# Confirm skills and commands are present in .agents/
-ls -la .agents/skills/
-ls -la .agents/commands/
+# Verify Copilot copy
+ls .github/agents/new-agent.agent.md
 ```
+
+**Fix:**
+
+```bash
+./.agents/sync.sh --only=agents
+```
+
+**Note:** Antigravity does not support subagents — use a slash command instead.
 
 ## Summary
 
@@ -528,27 +550,34 @@ The synchronization system:
 
 **✅ Automatic:**
 
-- Triggered after creating skills/commands via agents-architecture
+- Triggered by `./.agents/sync.sh` or `--only=<component>`
 - Runs all syncs in correct order
 - Validates results
 
 **🔄 Strategies:**
 
-- Symlinks for instant propagation (Cursor/Claude/Gemini)
-- Native `.agents/` detection for Antigravity (no copies needed)
-- Generation for platform-specific configs (MCP, Cursor rules)
+- **Symlinks** — Claude (all components), Cursor (skills/commands/agents), Gemini (subagents only)
+- **Native detection** — Gemini (skills/rules), Antigravity (rules/skills/commands), Copilot (skills)
+- **Copy + format conversion** — Cursor (rules `.mdc`), Copilot (rules/commands/subagents), Gemini (commands `.toml`)
+- **Script generation** — MCP configs (all), Hooks (all except Antigravity)
 
 **🔍 Verification:**
 
-- Check symlinks exist: `ls -la`
-- Verify targets: `readlink`
-- Test file access: `cat`
+- Check symlinks: `ls -la`, `readlink`
+- Check generated files: `ls`, `jq empty`
+- Check native: source files exist in `.agents/`
 
 **🛠️ Troubleshooting:**
 
-- Re-run sync if issues
-- Check permissions
-- Validate source exists
-- Verify JSON syntax
+- Re-run sync if symlinks missing
+- Re-sync after editing source for copy/generate strategies
+- Reload Antigravity project after sync (cached at load)
 
-**Result:** Reliable, automated synchronization across all platforms!
+**Result:** Reliable, automated synchronization across all 5 platforms.
+
+## Changelog
+
+| Version | Date       | Author                        | Changes                                                                                                                                                                                                                                                                                                              |
+| ------- | ---------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.0.0   | 2026-05-19 | TL: agents-architecture audit | Corrected sync strategies per component+platform (was "Cursor/Claude/Gemini get full symlinks" — actually varies); added Gemini subagents symlink (Apr 2026); added Copilot copy + format conversion; updated dry-run output, verification script, and troubleshooting to match real architecture verified May 2026. |
+| 1.0.0   | 2025-Q4    | (original)                    | Initial version. Claimed Cursor/Claude/Gemini all received symlinks for rules/skills/commands. Antigravity selective-symlinks strategy described (no longer accurate post-2026 architecture).                                                                                                                        |

@@ -257,31 +257,39 @@ For each vulnerability found:
 
 ```
 
-## Platform Notes
+## Platform Notes (verified May 2026)
 
-### Cursor, Claude Code, Gemini CLI
+### Cursor & Claude Code
 
-Commands work identically across these platforms:
 - ✅ Invoked via `/[command-name]`
 - ✅ Symlinked from `.agents/commands/`
-- ✅ Changes propagate instantly
+- ✅ Changes propagate instantly — no re-sync after edits
+
+### Gemini CLI
+
+- ✅ Invoked via `/[command-name]`
+- ⚠️ Adapter generates `.gemini/commands/[name].toml` from `.md` source
+- ⚠️ Re-sync after edits: `./.agents/sync.sh --only=commands`
 
 ### Antigravity
 
-Special considerations:
-- ✅ Commands available via `.agents/workflows/` (symlink to `.agents/commands/`)
-- ⚠️ Must re-sync after editing
-- ⚠️ Changes don't propagate instantly
+- ✅ Invoked via `/[command-name]` (called "workflow" by Antigravity)
+- ✅ Native detection via internal `.agents/workflows → commands` symlink
+- ✅ Edits propagate immediately; reload project to pick up new commands
+
+### Copilot (VSCode)
+
+- ✅ Invoked from the prompts picker
+- ⚠️ Adapter generates `.github/prompts/[name].prompt.md` from `.md` source (converts `$ARGUMENTS` → `{{{ input }}}`)
+- ⚠️ Re-sync after edits: `./.agents/sync.sh --only=commands`
 
 ## Real Examples
 
-See these commands in `.agents/commands/`:
+This repo has 30 commands in `.agents/commands/` (23 LIDR `lidr-*` + 7 generic). Study them by category:
 
-**sync-setup.md:**
-- ✅ Has frontmatter with description
-- ✅ Clear structure with sections
-- ✅ Specific workflow steps
-- ✅ Verification commands included
+**Generic (7):** `/commit`, `/create-ticket`, `/enrich-ticket`, `/improve-docs`, `/sync-setup`, `/test-hooks`, `/validate-project-docs`
 
-Study existing commands to understand different styles and approaches.
+**LIDR (23):** `lidr-advance-gate`, `lidr-implement-ticket`, `lidr-prepare-testing`, `lidr-validate-prd`, `lidr-validate-requirements`, etc. (full list: `ls .agents/commands/ | grep ^lidr-`)
+
+For deep-dive command authoring patterns, see the `command-development` skill at `.agents/skills/command-development/SKILL.md`.
 ```
