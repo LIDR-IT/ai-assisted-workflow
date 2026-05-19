@@ -28,13 +28,13 @@ REQUIREMENTS:
 RELATED COMMANDS:
   /advance-gate 1   - Must have passed before running this
   /advance-gate 2   - Run after this command to evaluate Gate 2
-  /advance-gate 3   - Next gate after epic-breakdown + sprint planning
+  /advance-gate 3   - Next gate after epic decomposition + sprint planning
 
 RELATED SKILLS:
   generate-rf            - Step 1: Generates RFs with BDD from PRDs
   generate-nfr           - Step 2: Generates NFRs from PRD-T §5
   validate-requirements  - Step 3: Cross-validates RFs + NFRs, generates RTM
-  epic-breakdown         - Step 4: Decomposes master epic into sub-epics
+  bmad-create-epics-and-stories - Step 4: Decomposes master epic (LIDR rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
 
 CHANGELOG:
   v1.0.0 (2026-03-06): Initial version — orchestrates 4 Phase 3 skills
@@ -158,14 +158,15 @@ Use AskUserQuestion:
   - No, lo haré manualmente en Sprint Planning
   - Sí, pero déjame revisar el RTM primero
 
-If yes, using skill `epic-breakdown`:
+If yes, using skill `bmad-create-epics-and-stories` with LIDR rules:
 
-1. Read master epic (from tracking tool or tracking-integration output)
-2. Group RFs into feature epics by cluster + business cohesion
-3. Assign NFRs to epics
-4. Calculate dependencies between epics
-5. Estimate sprint ranges per epic
-6. Generate epic breakdown using @../skills/epic-breakdown/templates/epics.md
+1. Load LIDR decomposition rules: @../../\_shared/lidr/references/epic-decomposition-rules.md
+2. Read master epic (from tracking tool or tracking-integration output)
+3. Group RFs into feature epics by cluster + business cohesion
+4. Assign NFRs to epics
+5. Calculate dependencies between epics
+6. Estimate sprint ranges per epic
+7. Generate epic breakdown using @../../\_shared/lidr/templates/epic.md (Spanish format)
 
 Output: `docs/projects/$1/epics.md`
 

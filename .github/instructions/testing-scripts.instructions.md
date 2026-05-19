@@ -174,8 +174,9 @@ validate_json() {
 
 # Validate all generated configs
 validate_json ".cursor/mcp.json"
-validate_json ".claude/mcp.json"
+validate_json ".mcp.json"                # Claude Code (repo root)
 validate_json ".gemini/settings.json"
+validate_json ".vscode/mcp.json"         # Copilot
 ```
 
 ## Integration Testing
@@ -231,7 +232,7 @@ jq '.servers.test = {
 
 # 4. Verify in generated configs
 if jq -e '.mcpServers.test' .cursor/mcp.json > /dev/null &&
-   jq -e '.mcpServers.test' .claude/mcp.json > /dev/null; then
+   jq -e '.mcpServers.test' .mcp.json > /dev/null; then
   echo "✅ MCP server added to configs"
 else
   echo "❌ MCP server not in configs"
@@ -347,7 +348,7 @@ test_antigravity_workflows() {
 
 # Issue #3: MCP env variables lost
 test_env_variables() {
-  if jq -e '.mcpServers.context7.env.CONTEXT7_API_KEY' .claude/mcp.json > /dev/null; then
+  if jq -e '.mcpServers.context7.env.CONTEXT7_API_KEY' .mcp.json > /dev/null; then
     echo "✅ Environment variables preserved"
   else
     echo "❌ Environment variables lost"

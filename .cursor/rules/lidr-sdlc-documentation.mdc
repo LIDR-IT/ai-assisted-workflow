@@ -488,7 +488,7 @@ Cada documento DEBE tener una sección `## Changelog` al final:
 | Commands   | `commands/{verbo}-{sustantivo}.md`                | `commands/create-branch.md`                           |
 | Checklists | `skills/{skill-name}/checklists/{nombre}.md`      | `skills/refinement-notes/checklists/dor.md`           |
 | Signoffs   | `skills/{skill-name}/signoffs/{role}-signoff.md`  | `skills/test-execution-report/signoffs/qa-signoff.md` |
-| Templates  | `skills/{skill-name}/templates/{nombre}.md`       | `skills/architecture-doc/templates/architecture.md`   |
+| Templates  | `skills/{skill-name}/templates/{nombre}.md`       | `_shared/lidr/templates/architecture/architecture.md` |
 | Specs      | `skills/{skill-name}/templates/specs/{nombre}.md` | `skills/{skill-name}/templates/specs/routes.md`       |
 | Standards  | `docs/standards/{nombre}.md`                      | `docs/standards/org.md`                               |
 | Projects   | `docs/projects/{nombre}.md`                       | `docs/projects/sdlc-{{CLIENT_CODE}}.md`               |

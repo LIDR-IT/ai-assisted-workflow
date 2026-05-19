@@ -277,6 +277,21 @@ export const phases: Phase[] = [
     dorCriteria: ['Ecosistema SDLC activo'],
     dodCriteria: ['Nuevo skill/command/hook funcionando'],
   },
+  {
+    id: 200,
+    name: 'BMad Library',
+    shortName: 'BMad',
+    description:
+      'BMad Method framework: agents, CIS innovation, test architect, PRD, architecture, sprint, review, meta, utilities',
+    color: 'amber',
+    bgColor: 'bg-amber-50',
+    borderColor: 'border-amber-300',
+    duration: 'On-demand',
+    keyRoles: ['PO', 'TL', 'Dev', 'QA', 'PME', 'SM'],
+    keyArtifacts: ['Agents', 'PRDs', 'Stories', 'Test Plans', 'Architecture'],
+    dorCriteria: ['BMad framework installed in _bmad/'],
+    dodCriteria: ['BMad skill invoked successfully'],
+  },
 ];
 
 // Phase colors for React Flow diagrams

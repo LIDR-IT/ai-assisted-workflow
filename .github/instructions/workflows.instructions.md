@@ -125,7 +125,7 @@ FASE 3: ESPECIFICACIÓN
     skills/validate-requirements → Valida RFs + NFRs, genera RTM, detecta gaps
     (verifican coherencia con checklists)
   PO + TL ejecutan:
-    skills/epic-breakdown    → Descompone épica master en sub-épicas desde requisitos validados
+    bmad-create-epics-and-stories    → Descompone épica master en sub-épicas desde requisitos validados
   PO ejecuta:
     /advance-gate 2          → Valida Gate 2 (coherencia, testabilidad, RTM completo)
                               → AUTO: invoca skill user-stories (borrador)
@@ -175,11 +175,11 @@ FASE 5: DESARROLLO (por cada ticket)
 FASE 6: QA (por cada ticket)
   QA ejecuta:
     /prepare-testing [ID]    → Genera suite de testing
-      ├── skill: test-plan         → Test plan
+      ├── skill: bmad-testarch-test-design → Test plan
       ├── skill: create-test-cases → Test cases BDD
       ├── skill: bug-report        → Estructura bug reports
       ├── skill: test-execution-report → Interpreta resultados
-      └── skill: regression-suite  → Suite de regresión
+      └── skill: bmad-testarch-automate    → Suite de regresión
   QA Lead ejecuta:
     /advance-gate 5          → Valida Gate 5 (QA sign-off)
                               → AUTO: invoca skill security-checklist
@@ -213,7 +213,7 @@ POST-DEPLOY
   PME + TL ejecutan:
     skills/epic-review       → Review de épica: plan vs actual, lecciones, next steps
   PME ejecuta:
-    skills/retrospective     → Genera retro data-driven
+    bmad-retrospective     → Genera retro data-driven
     skills/postmortem        → Postmortem si hubo incidente
 ```
 
@@ -280,7 +280,7 @@ POST-DEPLOY
   ├── skill: generate-rf                → RFs con BDD desde PRDs
   ├── skill: generate-nfr               → NFRs medibles desde PRD-T §5
   ├── skill: validate-requirements      → RTM + gap detection
-  └── skill: epic-breakdown             → Sub-épicas desde requisitos
+  └── skill: bmad-create-epics-and-stories → Sub-épicas (rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
   ↓
 /advance-gate 2                         → PO + TL validan Gate 2
   ↓
@@ -327,8 +327,8 @@ skills/bug-report                       → Documenta incidente
 skills/postmortem                       → Five Whys + root cause (blameless)
 skills/tech-debt                        → Registra deuda que causó incidente
 skills/adr                              → Decisión correctiva arquitectónica
-skills/regression-suite                 → Amplía suite con caso del incidente
-skills/retrospective                    → Lecciones + action items
+bmad-testarch-automate                 → Amplía suite con caso del incidente
+bmad-retrospective                    → Lecciones + action items
 /sync-docs                              → Actualiza runbooks afectados
 ```
 
@@ -340,7 +340,7 @@ rules/project.md                        → Contexto proyecto activo
 rules/org.md                            → Estándares organizacionales
 rules/tech-stack.md                     → Convenciones de código
 rules/workflows.md                      → Quién ejecuta qué y cuándo
-skills/architecture-doc                 → Revisar doc de arquitectura
+bmad-create-architecture                 → Revisar doc de arquitectura
 /validate-project-docs my-project       → Estado actual de documentación
 ```
 
@@ -348,7 +348,7 @@ skills/architecture-doc                 → Revisar doc de arquitectura
 
 ```
 /init-project-docs my-project           → Scaffold desde templates (TL)
-skills/architecture-doc                 → Doc arquitectura (Arc42/C4)
+bmad-create-architecture                 → Doc arquitectura (Arc42/C4)
 skills/adr                              → ADR inicial: stack + patrón
 /validate-project-docs my-project       → Audita repo vs cl-repo-structure
 /advance-gate 0                         → Gate 0 con repo-structure checklist
@@ -359,7 +359,7 @@ skills/adr                              → ADR inicial: stack + patrón
 ```
 skills/epic-review                      → Plan vs actual + lecciones
 skills/tech-debt                        → Consolida deuda acumulada
-skills/retrospective                    → Retro data-driven del ciclo
+bmad-retrospective                    → Retro data-driven del ciclo
 /sync-docs                              → Sincroniza docs final
 /validate-project-docs my-project       → Valida completitud
 ```
@@ -369,12 +369,12 @@ skills/retrospective                    → Retro data-driven del ciclo
 
 Los siguientes skills se usan transversalmente y no aparecen en una fase específica del flujo:
 
-| Skill                   | Fases donde aplica                  | Descripción                                               |
-| ----------------------- | ----------------------------------- | --------------------------------------------------------- |
-| `architecture-doc`      | F2 Discovery → F5 Dev → POST-DEPLOY | Genera/actualiza doc de arquitectura (Arc42/C4)           |
-| `ux-design-spec`        | F2 Discovery → F4 Planning          | Spec UX/UI desde PRD + wireframes                         |
-| `implementation-phases` | F4 Planning → F5 Dev                | Descompone proyecto en fases incrementales                |
-| `epic-review`           | POST-DEPLOY                         | Review formal: plan vs actual, lecciones, follow-up epics |
+| Skill                      | Fases donde aplica                  | Descripción                                                                                             |
+| -------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `bmad-create-architecture` | F2 Discovery → F5 Dev → POST-DEPLOY | Genera/actualiza doc de arquitectura (templates LIDR en `.agents/_shared/lidr/templates/architecture/`) |
+| `bmad-create-ux-design`    | F2 Discovery → F4 Planning          | Spec UX/UI desde PRD + wireframes (template LIDR en `.agents/_shared/lidr/templates/ux-design-spec.md`) |
+| `bmad-sprint-planning`     | F4 Planning → F5 Dev                | Descompone proyecto en fases incrementales                                                              |
+| `epic-review`              | POST-DEPLOY                         | Review formal: plan vs actual, lecciones, follow-up epics                                               |
 
 
 ## 6. Hooks — Guardias automáticos activos

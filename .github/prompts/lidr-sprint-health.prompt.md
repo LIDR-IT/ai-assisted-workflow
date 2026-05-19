@@ -22,7 +22,7 @@ USAGE:
 
 INTEGRATION:
   - Uses sprint-capacity skill for capacity analysis
-  - Feeds into retrospective skill for historical patterns
+  - Feeds into bmad-retrospective skill for historical patterns
   - Connects to advance-gate for sprint transition decisions
 
 LIDR SDLC PATTERN:
@@ -36,7 +36,7 @@ CHANGELOG:
 # Sprint Health Monitor — Sprint: $1
 
 Load: @../skills/sprint-capacity/SKILL.md
-Load: @../skills/retrospective/SKILL.md
+Load: bmad-retrospective skill (post-epic retro reference)
 Load: @../rules/org.md
 
 ## Detect Sprint Context
@@ -251,7 +251,7 @@ RECOMMENDED IMMEDIATE ACTIONS:
 
 ### Feed Historical Data
 
-Store current metrics for future `retrospective` skill usage:
+Store current metrics for future `bmad-retrospective` skill usage:
 
 - Sprint velocity achieved
 - Quality indicators final values

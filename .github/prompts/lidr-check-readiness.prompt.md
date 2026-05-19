@@ -39,7 +39,7 @@ RELATED SKILLS:
   project-classifier      - Auto-classifies project type and complexity
   validate-requirements   - Prerequisite: validates RF/NFR traceability
   sprint-capacity        - Team capacity assessment
-  epic-breakdown          - Epic decomposition validation
+  bmad-create-epics-and-stories - Epic decomposition (LIDR rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
   stakeholder-map         - Stakeholder readiness check
 
 ROI TARGET:
@@ -543,7 +543,7 @@ Based on verdict:
 **If NOT READY (<70%):**
 
 - `/validate-requirements {project}` - Re-validate requirements if needed
-- `/epic-breakdown {project}` - Improve epic decomposition
+- Invoke `bmad-create-epics-and-stories` skill - Improve epic decomposition
 - `/stakeholder-map {project}` - Re-engage stakeholders
 
 ### 12.3 ROI Tracking
