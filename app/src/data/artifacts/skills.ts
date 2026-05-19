@@ -111,7 +111,7 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/business-model/SKILL.md',
   },
 
-  // Fase 2 — Discovery (8)
+  // Fase 2 — Discovery (7)
   {
     id: 'prd-tecnico',
     name: 'prd-tecnico',
@@ -189,6 +189,24 @@ export const skills: Skill[] = [
     roles: ['PO'],
     gateContribution: 'Gate 1',
     docPath: '.claude/skills/use-cases/SKILL.md',
+  },
+  {
+    id: 'propuesta-builder',
+    name: 'propuesta-builder',
+    phase: 'Fase 2 — Discovery',
+    phaseNum: 2,
+    source: 'lidr',
+    description:
+      'Generate the three JSON artifacts (diagnostico.json, mejoras.json, flujo.json) that power the Propuesta de Mejora UI for a new client from a structured discovery report markdown. Consultancy onboarding pipeline.',
+    triggers: [
+      'build propuesta',
+      'generate propuesta JSONs',
+      'onboard new client',
+      'discovery to UI',
+    ],
+    roles: ['PME', 'TL', 'PO'],
+    gateContribution: 'Gate 1',
+    docPath: '.claude/skills/lidr-propuesta-builder/SKILL.md',
   },
 
   // Fase 3 — Especificación (3)
@@ -418,7 +436,7 @@ export const skills: Skill[] = [
     automated: true,
   },
 
-  // Fase 8 — Despliegue (4)
+  // Fase 8 — Despliegue (5)
   {
     id: 'change-request',
     name: 'change-request',
@@ -459,6 +477,19 @@ export const skills: Skill[] = [
     gateContribution: 'Gate 7',
     docPath: '.claude/skills/release-notes/SKILL.md',
     automated: true,
+  },
+  {
+    id: 'changelog-generator',
+    name: 'changelog-generator',
+    phase: 'Fase 8 — Despliegue',
+    phaseNum: 8,
+    source: 'lidr',
+    description:
+      'Automatically generate user-facing changelogs from git commits by categorizing and transforming technical messages into customer-friendly release notes. Complements release-notes (formal SDLC) with product-oriented output.',
+    triggers: ['changelog', 'customer changelog', 'release update', 'product changelog'],
+    roles: ['DevOps', 'TL'],
+    gateContribution: 'Post-Gate 7',
+    docPath: '.claude/skills/lidr-changelog-generator/SKILL.md',
   },
   {
     id: 'postmortem',
@@ -516,7 +547,7 @@ export const skills: Skill[] = [
     name: 'command-development',
     phase: 'Development',
     phaseNum: 100,
-    source: 'lidr',
+    source: 'generic',
     description:
       'Design and implement slash commands for Claude Code with YAML frontmatter structure',
     triggers: ['command development', 'slash command', 'create command'],
