@@ -30,7 +30,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 
 - Edit once in `.agents/` → automatically synced to all 5 platforms
 - **22 rules** in 10 categories (5 LIDR SDLC + 17 generic)
-- **74 skills** (62 LIDR SDLC `lidr-*` + 12 generic meta-skills)
+- **66 skills** (62 LIDR SDLC `lidr-*` + 4 generic meta-skills) — follow [Agent Skills](https://agentskills.io) open standard
 - **30 commands** (23 LIDR `lidr-*` + 7 generic)
 - **9 subagents** (6 LIDR `lidr-*` + 3 generic)
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
@@ -127,8 +127,8 @@ jq .hooks .claude/settings.json
 jq . .github/hooks/hooks.json
 ls -la .claude/hooks/
 
-# Copilot-specific verification
-ls .github/rules/*.instructions.md
+# Copilot-specific verification (official path is .github/instructions/, NOT .github/rules/)
+ls .github/instructions/*.instructions.md
 ls .github/prompts/*.prompt.md
 ls .github/agents/*.agent.md
 ```
@@ -150,7 +150,7 @@ ls .github/agents/*.agent.md
 │   ├── process/              # git-workflow.md, documentation.md
 │   ├── product/, quality/, team/, tools/
 │
-├── skills/                   # 74 skills (62 lidr-* + 12 generic)
+├── skills/                   # 66 skills (62 lidr-* + 4 generic) — Agent Skills open standard
 │   ├── lidr-business-case/   # ← LIDR Phase 1: Originación
 │   ├── lidr-prd-tecnico/     # ← LIDR Phase 2: Discovery
 │   ├── lidr-generate-rf/     # ← LIDR Phase 3: Specification
@@ -159,8 +159,8 @@ ls .github/agents/*.agent.md
 │   ├── lidr-test-plan/       # ← LIDR Phase 6: QA
 │   ├── lidr-security-checklist/  # ← LIDR Phase 7: Security
 │   ├── lidr-release-notes/   # ← LIDR Phase 8: Deployment
-│   ├── team-skill-creator/   # Generic meta-skill
-│   ├── command-development/  # Generic
+│   ├── agents-architecture/  # Generic meta-skill (skill+command+agent scaffolding)
+│   ├── command-development/  # Generic meta-skill (command authoring deep-dive)
 │   └── ...                   # (62 LIDR total spanning all 9 SDLC phases)
 │
 ├── commands/                 # 30 commands (23 lidr-* + 7 generic)
@@ -231,15 +231,15 @@ ls .github/agents/*.agent.md
 - **Used for:** Skills, Commands, Subagents, Orchestrator docs
 - **How:** `ln -s ../.agents/skills .cursor/skills`
 - **Why:** Zero duplication, instant updates, filesystem-native
-- **Note:** Gemini CLI and Copilot read `.agents/skills/` and `.agents/subagents/` natively (no symlinks needed)
+- **Note:** Gemini CLI, Copilot, and Antigravity read `.agents/skills/` natively per [Agent Skills open standard](https://agentskills.io). Gemini docs: _"`.agents/skills/` alias takes precedence over `.gemini/skills/`"_. Copilot docs list `.agents/skills/` as one of 3 supported project paths (`.github/skills/`, `.claude/skills/`, `.agents/skills/`). Symlinks not needed for these platforms.
 
 **2. Symlinks + Copy (Rules - Hybrid)**
 
 - **Symlink:** Claude Code (supports nested structure)
 - **Native:** Antigravity (reads `.agents/rules/` directly)
-- **Copy:** Cursor (no subdirectory support, requires `.mdc` extension)
-- **Copy:** Copilot (requires `.instructions.md` extension, flat structure)
-- **Generated Index:** Gemini CLI (no native rules support), Copilot (`copilot-instructions.md`)
+- **Copy:** Cursor (supports `.md` and `.mdc`; subdirectories allowed per [docs](https://cursor.com/docs/context/rules). Adapter flattens for simplicity but isn't required.)
+- **Copy:** Copilot (location is `.github/instructions/` per [VSCode docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions); files must end in `.instructions.md`; recursive subdirectories supported)
+- **Generated Index:** Gemini CLI (single `GEMINI.md` context file per [Gemini CLI docs](https://geminicli.com/docs/cli/gemini-md/); no rules directory pattern), Copilot (`copilot-instructions.md` always-on)
 
 **3. Script Generation (MCP, Hooks)**
 
@@ -256,15 +256,15 @@ ls .github/agents/*.agent.md
 
 ### Platform Support Matrix
 
-| Component | Cursor                | Claude Code  | Gemini CLI     | Antigravity      | **Copilot (VSCode)**                            |
-| --------- | --------------------- | ------------ | -------------- | ---------------- | ----------------------------------------------- |
-| Rules     | ✅ Copy (.mdc)        | ✅ Symlink   | ❌ Index only  | ✅ Native        | ✅ Copy (.instructions.md) + Index              |
-| Skills    | ✅ Symlink            | ✅ Symlink   | ✅ Native      | ✅ Native        | ✅ Native                                       |
-| Commands  | ✅ Symlink            | ✅ Symlink   | ✅ Gen (.toml) | ✅ Native        | ✅ Copy (.prompt.md)                            |
-| Subagents | ✅ Symlink            | ✅ Symlink   | ✅ Native      | ❌ Not supported | ✅ Copy (.agent.md)                             |
-| MCP       | ✅ Generated          | ✅ Generated | ✅ Generated   | ❌ Global only   | ✅ Generated (.vscode/)                         |
-| Hooks     | ✅ Partial (no Notif) | ✅ Full      | ✅ Full        | ❌ Global only   | ✅ Partial (no Notification)                    |
-| Memory    | CLAUDE.md             | CLAUDE.md    | GEMINI.md      | GEMINI.md        | CLAUDE.md + AGENTS.md + copilot-instructions.md |
+| Component | Cursor                | Claude Code  | Gemini CLI                                | Antigravity                                   | **Copilot (VSCode)**                            |
+| --------- | --------------------- | ------------ | ----------------------------------------- | --------------------------------------------- | ----------------------------------------------- |
+| Rules     | ✅ Copy (.mdc)        | ✅ Symlink   | ❌ Index only                             | ✅ Native                                     | ✅ Copy (.instructions.md) + Index              |
+| Skills    | ✅ Symlink            | ✅ Symlink   | ✅ Native                                 | ✅ Native                                     | ✅ Native                                       |
+| Commands  | ✅ Symlink            | ✅ Symlink   | ✅ Gen (.toml)                            | ✅ "Workflows" — `.agents/workflows/` symlink | ✅ Copy (.prompt.md) → `.github/prompts/`       |
+| Subagents | ✅ Symlink            | ✅ Symlink   | ✅ Symlink → `.gemini/agents/` (Apr 2026) | ❌ Not supported                              | ✅ Copy `.github/agents/<name>.agent.md`        |
+| MCP       | ✅ Generated          | ✅ Generated | ✅ Generated                              | ❌ Global only                                | ✅ Generated (.vscode/)                         |
+| Hooks     | ✅ Partial (no Notif) | ✅ Full      | ✅ Full                                   | ❌ Global only                                | ✅ Partial (no Notification)                    |
+| Memory    | CLAUDE.md             | CLAUDE.md    | GEMINI.md                                 | GEMINI.md                                     | CLAUDE.md + AGENTS.md + copilot-instructions.md |
 
 **Orchestrator Strategy (no duplicates):**
 
@@ -274,12 +274,12 @@ All three root files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are **symlinks to t
 - **Gemini CLI / Antigravity** → `GEMINI.md` (both share the same file, no duplicates)
 - **Copilot (VSCode)** → `CLAUDE.md` + `AGENTS.md` + `.github/copilot-instructions.md` (auto-generated index). No separate `COPILOT.md` needed.
 
-**Critical Limitations:**
+**Verified limitations (against official docs, May 2026):**
 
-- **Cursor:** No subdirectories, requires `.mdc` extension, `name` field mandatory
-- **Antigravity:** No project MCP, no subagents, requires reload after sync, commands require `workflows` folder name
-- **Gemini:** No native rules (uses index), commands need TOML format, reads skills/agents natively from `.agents/` (no symlinks)
-- **Copilot:** Requires `.instructions.md`/`.agent.md`/`.prompt.md` extensions, flat rules structure, reads skills natively from `.agents/` (no symlinks)
+- **Cursor:** Per [docs](https://cursor.com/docs/context/rules), schema fields are `description`, `alwaysApply`, `globs` (all optional, none required). Both `.md` and `.mdc` extensions supported. Subdirectories allowed. The `name` field is non-standard (harmlessly ignored). Recommendation: keep rules <500 lines.
+- **Antigravity:** Per [Google Codelabs](https://codelabs.developers.google.com/getting-started-google-antigravity), workspace paths are `.agents/rules/`, `.agents/skills/`, `.agents/workflows/` (plural). Commands are called **"workflows"** — the adapter creates `.agents/workflows` → `commands` symlink so `.agents/commands/<x>.md` is exposed as a workflow. No project-level MCP (global only at `~/.gemini/antigravity/mcp_config.json`). No subagents. Requires reload after sync. The older `.agent/workflows/` (singular) form is deprecated; the adapter cleans it up.
+- **Gemini:** Per [docs](https://geminicli.com/docs/cli/gemini-md/), uses a single context file (default `GEMINI.md`), configurable via `context.fileName` in `settings.json`. No native rules directory pattern. Commands need TOML format. Reads skills/agents natively from `.agents/`.
+- **Copilot/VSCode:** Per [docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions), rules location is `.github/instructions/` (recursive), files must end in `.instructions.md`. Frontmatter field `applyTo` is required for GitHub Cloud Copilot, optional in VSCode (we always emit it). Subdirectories supported. Skills read natively from `.agents/`.
 
 ---
 
@@ -291,12 +291,12 @@ All three root files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are **symlinks to t
 # 1. Create rule file (categorized subdirectory)
 cat > .agents/rules/team/api-standards.md << 'EOF'
 ---
-name: api-standards                    # Cursor (REQUIRED)
-description: API design standards      # All platforms
+name: api-standards                    # Cursor (non-standard, harmlessly ignored; kept for legacy)
+description: API design standards      # All platforms — recommended
 alwaysApply: false                     # Cursor (optional)
-globs: ["src/api/**/*.ts"]            # Cursor (optional)
+globs: ["src/api/**/*.ts"]             # Cursor (optional) — Copilot adapter converts to applyTo
+paths: ["src/api/**/*.ts"]             # Claude (optional) — path-scoped loading
 argument-hint: <api-file>              # Claude/Gemini (optional)
-paths: ["src/api/**/*.ts"]            # Claude (optional)
 trigger: always_on                     # Antigravity (optional)
 ---
 
@@ -323,7 +323,7 @@ wc -c .agents/rules/team/api-standards.md
 ls .cursor/rules/api-standards.mdc              # Cursor (converted)
 cat .claude/rules/team/api-standards.md         # Claude (symlink)
 cat .gemini/GEMINI.md | grep api-standards      # Gemini (index)
-ls .github/rules/api-standards.instructions.md  # Copilot (converted)
+ls .github/instructions/api-standards.instructions.md  # Copilot (converted)
 
 # 5. Commit source only (symlinks auto-restore)
 git add .agents/rules/team/api-standards.md
@@ -370,7 +370,7 @@ git commit -m "feat: Add my-server MCP integration"
 ### Creating a Skill
 
 ```bash
-# Automated (Recommended) - Use team-skill-creator skill
+# Automated (Recommended) - Use agents-architecture skill
 # In AI conversation:
 "Create a skill for React component testing with test templates"
 
@@ -403,7 +403,7 @@ EOF
 # Verify
 ls .cursor/skills/react-testing/
 ls .claude/skills/react-testing/
-ls .agents/skills/react-testing/   # Gemini/Antigravity/Copilot (native detection)
+ls .agents/skills/react-testing/   # Gemini/Antigravity/Copilot — native detection per Agent Skills open standard
 
 # Commit
 git add .agents/skills/react-testing/
@@ -414,26 +414,35 @@ git commit -m "feat: Add React testing skill with patterns and utilities"
 
 ## Rules System Deep Dive
 
-### Universal YAML Frontmatter (All Platforms)
+### Universal YAML Frontmatter (verified May 2026)
 
 ```yaml
 ---
-name: rule-name # Cursor only (REQUIRED for Cursor)
-description: Brief description # All platforms
-alwaysApply: false # Cursor only (optional, default: false)
-globs: ["**/*.ts", "**/*.tsx"] # Cursor + Copilot (optional, auto-converted to applyTo)
+name: rule-name # Non-standard. Harmlessly ignored by all platforms; kept for legacy.
+description: Brief description # Cursor + Copilot use this. Recommended.
+alwaysApply: false # Cursor only (optional)
+globs: ["**/*.ts", "**/*.tsx"] # Cursor field. Copilot adapter converts to applyTo; default "**" when absent.
+paths: ["src/**/*.ts"] # Claude only — path-scoped loading. Rules without paths load at launch.
 argument-hint: <file-pattern> # Claude/Gemini (optional)
-paths: ["src/**/*.ts"] # Claude only (optional)
-trigger: always_on # Antigravity only (optional)
+trigger: always_on # Antigravity (optional)
 ---
 ```
 
-**Critical Warnings:**
+**Per-platform schema sources:**
 
-- Missing `name` field → Cursor silently ignores rule (won't appear in UI)
-- Each platform ignores unsupported fields (safe to include all)
-- Never create platform-specific files (one file with all fields)
-- Test on target platforms after creating new rules
+- Cursor: https://cursor.com/docs/context/rules — only `description`, `alwaysApply`, `globs` are documented (all optional)
+- Claude Code: https://code.claude.com/docs/en/memory — `paths` for path-scoped rules
+- Copilot/VSCode: https://code.visualstudio.com/docs/copilot/customization/custom-instructions — `applyTo` required for Cloud, optional for VSCode
+- Gemini CLI: https://geminicli.com/docs/cli/gemini-md/ — single context file (no frontmatter schema)
+
+**Critical warnings (verified against official docs, May 2026):**
+
+- Cursor schema is `description`, `alwaysApply`, `globs` (all optional). The `name` field is non-standard — harmlessly ignored. Source files keep `name:` for legacy compatibility but Cursor does not require it.
+- Claude Code uses `paths:` for path-scoped rules (NOT `globs:`). Rules without `paths:` load at launch unconditionally.
+- Copilot/VSCode emits `applyTo:` (defaults to `"**"` when source has no `globs:`). Required by GitHub Cloud Copilot.
+- Each platform ignores fields it doesn't recognize (safe to include all in one source file).
+- Never create platform-specific files (one source with all fields → adapters transform).
+- Test on target platforms after creating new rules.
 
 ### Rules Character Limit: 12,000
 
@@ -497,85 +506,113 @@ done
 
 ## Skills System Deep Dive
 
+Skills follow the [Agent Skills](https://agentskills.io) **open standard**, supported by all 5 platforms in this monorepo (verified May 2026):
+
+| Platform        | Discovery path                                                              | Method                      |
+| --------------- | --------------------------------------------------------------------------- | --------------------------- |
+| **Claude Code** | `.claude/skills/`                                                           | Symlink → `.agents/skills/` |
+| **Cursor**      | `.cursor/skills/` (Cursor 2.4+, Jan 2026)                                   | Symlink → `.agents/skills/` |
+| **Gemini CLI**  | `.agents/skills/` (official alias, takes precedence over `.gemini/skills/`) | Native                      |
+| **Copilot**     | `.agents/skills/` (or `.github/skills/`, `.claude/skills/`)                 | Native                      |
+| **Antigravity** | `.agents/skills/`                                                           | Native                      |
+
+**Why no `.gemini/skills/` or `.github/skills/`?** `.agents/skills/` is the canonical cross-platform path per the Agent Skills standard. Creating per-platform directories would cause **duplicate skill detection** in Gemini/Copilot.
+
 ### Progressive Disclosure Pattern
 
 ```
-.agents/skills/skill-name/
-├── SKILL.md              # ← Always loaded (essentials only)
-├── references/           # ← On-demand (deep documentation)
-│   ├── advanced.md
-│   └── patterns.md
-├── examples/             # ← On-demand (usage samples)
-│   ├── basic.md
-│   └── advanced.md
-├── assets/               # ← On-demand (templates, resources)
-│   └── template.ts
-└── scripts/              # ← On-demand (executable utilities)
-    └── validate.sh
+.agents/skills/<skill-name>/
+├── SKILL.md              # ← Required. Always loaded when skill is invoked.
+├── references/           # ← On-demand: deep documentation
+├── examples/             # ← On-demand: usage samples
+├── assets/               # ← On-demand: templates, resources
+└── scripts/              # ← Executable utilities (called via Bash from skill)
 ```
 
-**Why Progressive Disclosure?**
+Per Claude docs: _"Keep `SKILL.md` under 500 lines. Move detailed reference material to separate files."_
 
-- Fast loading: Only SKILL.md initially (context window efficiency)
-- Deep context: Load references/ when agent needs details
-- Resources bundled: Templates accessible in same package
-- Scalable: Add depth without bloating initial load
+### Skill Frontmatter (verified)
 
-### Skill Frontmatter
+**Required fields (Gemini silently skips a skill if missing):**
+
+```yaml
+---
+name: skill-name # Lowercase + hyphens, max 64 chars. Should match directory name.
+description: This skill should be used when the user asks to "trigger phrase 1", "trigger phrase 2". Brief context.
+---
+```
+
+**Claude-only optional fields** (ignored by other platforms — safe to include):
 
 ```yaml
 ---
 name: skill-name
-description: This skill should be used when the user asks to "trigger phrase 1", "trigger phrase 2", "trigger phrase 3". Brief context about what this skill provides.
-version: 1.0.0
+description: ...
+disable-model-invocation: true # Only user can invoke via /skill-name (default false)
+user-invocable: false # Hide from / menu — Claude can still load (default true)
+allowed-tools: Read Grep # Pre-approved tools when active
+model: claude-opus # Override session model
+effort: high # low|medium|high|xhigh|max
+context: fork # Run in forked subagent
+agent: Explore # Subagent type for context:fork
+paths: ["src/api/**/*.ts"] # Glob to scope auto-loading
+arguments: [issue, branch] # Named positional args for $name substitution
 ---
 ```
 
 **Description best practices:**
 
-- Use third-person form
-- List 2-4 specific trigger phrases in quotes
-- Keep under 200 characters
-- Examples:
-  - ✅ "This skill should be used when the user asks to 'create a skill', 'add agent capability'. Provides skill scaffolding and validation."
-  - ❌ "Create skills" (too vague)
-  - ❌ "I help with creating skills" (first person)
+- Third-person, declarative: _"This skill should be used when..."_
+- List 2–4 specific trigger phrases in quotes
+- Lead with the use case (Claude truncates `description + when_to_use` at 1,536 chars in the listing)
+- Keep under 1,000 chars in practice
 
-### Available Skills
+**Anti-patterns:**
 
-**Meta-Skills (Creating Components):**
+- ❌ `"Create skills"` (too vague — no trigger phrases)
+- ❌ `"I help with X"` (first person — Claude/Gemini don't reason about skills that way)
+- ❌ Multi-paragraph descriptions (most chars never reach Claude's listing budget)
 
-- `team-skill-creator` - Meta-skill for creating skills/commands/agents with auto-sync
-- `command-development` - Command creation workflows and patterns
-- `agent-development` - Agent architecture and system prompts
-- `skill-development` - Skill structure and progressive disclosure
-- `skill-creator` - Generic skill scaffold generator
+**Reference:** see `.agents/skills-readme.md` for full inventory, troubleshooting, and per-platform doc links.
 
-**Development Skills:**
+### Available Skills (66 total)
 
-- `mcp-integration` - MCP server setup and configuration workflows
-- `hook-development` - Git hooks patterns (pre-commit, post-merge)
-- `commit-management` - Git commit message workflows and conventions
-- `find-skills` - Skill discovery utility (searches available skills)
-- `bdd-gherkin-patterns` - BDD/Gherkin scenario patterns and test generation
-- `changelog-generator` - Automated changelog generation from git commits
-- `ticket-validation` - Ticket structure validation and quality checks
+**Generic meta-skills (4):**
+
+- `agents-architecture` — Meta-skill: end-to-end scaffolding for skills, commands, and agents with auto-sync (formerly `team-skill-creator`)
+- `command-development` — Deep-dive on command authoring patterns; complements `agents-architecture`
+- `commit-management` — Git commit message workflows and conventions
+- `ticket-validation` — Ticket structure validation
+
+**LIDR SDLC skills (62):** Phase 0–8 of the methodology, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-prd-tecnico`, `lidr-generate-rf`, `lidr-user-stories`, `lidr-adr`, `lidr-test-plan`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-changelog-generator`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping.
 
 ---
 
 ## Commands System
 
-### Available Commands
+Each platform calls commands by a **different name** and expects a **different file format**:
 
-| Command          | Purpose                             | Invokes                 |
-| ---------------- | ----------------------------------- | ----------------------- |
-| `/commit`        | Smart commit message generation     | commit-management skill |
-| `/create-ticket` | Create structured tickets           | ticket-validation skill |
-| `/enrich-ticket` | Validate ticket completeness        | ticket-enricher agent   |
-| `/improve-docs`  | Documentation audit and improvement | doc-improver agent      |
-| `/sync-setup`    | Synchronize all configurations      | sync.sh CLI             |
-| `/test-hooks`    | Test cross-platform hooks           | hook-development skill  |
-| `/validate-pr`   | Validate PR against standards       | pr-validator agent      |
+| Platform        | Feature name                      | Path                                      | Format          | Sync method                                                  |
+| --------------- | --------------------------------- | ----------------------------------------- | --------------- | ------------------------------------------------------------ |
+| **Claude Code** | "Custom commands"                 | `.claude/commands/<name>.md`              | Markdown + YAML | Symlink → `.agents/commands/`                                |
+| **Cursor**      | "Custom slash commands" (1.6+)    | `.cursor/commands/<name>.md`              | Plain Markdown  | Symlink → `.agents/commands/` (YAML harmlessly visible)      |
+| **Gemini CLI**  | "Custom commands"                 | `.gemini/commands/<name>.toml`            | **TOML**        | Generated from `.md` source                                  |
+| **Antigravity** | **"Workflows"** (different name!) | `.agents/workflows/<name>.md` (workspace) | Markdown + YAML | Internal symlink `.agents/workflows` → `commands`            |
+| **Copilot**     | "Prompt files"                    | `.github/prompts/<name>.prompt.md`        | Markdown + YAML | Generated from `.md` source (`$ARGUMENTS` → `{{{ input }}}`) |
+
+Total: 30 commands (23 LIDR `lidr-*` + 7 generic).
+
+### Antigravity terminology note
+
+Antigravity calls them **workflows**, not commands. The workspace path is `.agents/workflows/` (plural) per [Google Codelabs](https://codelabs.developers.google.com/getting-started-google-antigravity). The older `.agent/workflows/` (singular) form from Nov 2025 docs (Mete Atamel) is deprecated; our adapter cleans it up.
+
+### Available commands (30)
+
+**Generic (7):** `/commit`, `/create-ticket`, `/enrich-ticket`, `/improve-docs`, `/sync-setup`, `/test-hooks`, `/validate-project-docs`
+
+**LIDR SDLC (23):** all prefixed `lidr-*` — `lidr-advance-gate`, `lidr-implement-ticket`, `lidr-prepare-testing`, `lidr-validate-prd`, `lidr-validate-requirements`, etc. Run `ls .agents/commands/ | grep ^lidr-` for the full list. See `.agents/rules/lidr-sdlc/workflows.md` for the role × command matrix.
+
+**Full reference, per-platform schemas, common pitfalls, and add-a-new-command flow:** see `.agents/commands-readme.md`.
 
 ### Command → Agent → Skill Pattern
 
@@ -969,7 +1006,7 @@ ln -s ../.agents/skills .cursor/skills
 
 - Cursor: Open Settings → Rules → Verify rule appears
 - Claude Code: `claude mcp list` → Verify servers
-- Copilot: `ls .github/rules/*.instructions.md` → Verify rules
+- Copilot: `ls .github/instructions/*.instructions.md` → Verify rules
 - VSCode: Open `.vscode/mcp.json` → Verify servers
 - Verify symlinks: `ls -la .cursor/skills .claude/skills`
 

@@ -727,7 +727,7 @@ You autonomously decide:
 After creating an agent, validate its structure:
 
 ```bash
-./.agents/skills/team-skill-creator/scripts/validate-agent.sh {agent-name}
+./.agents/skills/agents-architecture/scripts/validate-agent.sh {agent-name}
 ```
 
 **Checks performed:**

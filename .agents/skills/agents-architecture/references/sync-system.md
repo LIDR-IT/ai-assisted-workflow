@@ -371,10 +371,10 @@ verify_symlinks
 
 ```bash
 # Should work
-cat .cursor/skills/team-skill-creator/SKILL.md | head -5
+cat .cursor/skills/agents-architecture/SKILL.md | head -5
 
 # Should show same content as source
-diff .cursor/skills/team-skill-creator/SKILL.md .agents/skills/team-skill-creator/SKILL.md
+diff .cursor/skills/agents-architecture/SKILL.md .agents/skills/agents-architecture/SKILL.md
 # No output = files identical
 ```
 
@@ -528,7 +528,7 @@ The synchronization system:
 
 **✅ Automatic:**
 
-- Triggered after creating skills/commands via team-skill-creator
+- Triggered after creating skills/commands via agents-architecture
 - Runs all syncs in correct order
 - Validates results
 

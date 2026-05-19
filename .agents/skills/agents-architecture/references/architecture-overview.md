@@ -129,7 +129,7 @@ Platform-specific directories receive synced configurations:
 │   ├── scripts/
 │   ├── references/
 │   └── assets/
-├── team-skill-creator/
+├── agents-architecture/
 │   ├── SKILL.md
 │   ├── scripts/
 │   ├── references/
@@ -329,7 +329,7 @@ symlink inside `.agents/`. No file copies or manual syncs are required.
 **Examples:**
 
 - `skill-creator` - Generic skill creation guide
-- `team-skill-creator` - Team-specific component creation
+- `agents-architecture` - Team-specific component creation
 - `react-testing` - React component testing patterns
 
 ### Commands

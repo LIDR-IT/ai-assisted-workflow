@@ -484,7 +484,7 @@ This skill provides access to company database schemas and query patterns.
 
 ```bash
 # Validate structure
-./.agents/skills/team-skill-creator/scripts/validate-skill.sh {skill-name}
+./.agents/skills/agents-architecture/scripts/validate-skill.sh {skill-name}
 
 # Sync to platforms
 ./.agents/sync.sh
@@ -523,7 +523,7 @@ This skill provides access to company database schemas and query patterns.
 After creating skill, synchronization happens automatically:
 
 ```bash
-# Automatic (when using team-skill-creator)
+# Automatic (when using agents-architecture)
 # Claude executes: ./.agents/sync.sh
 
 # Manual (when editing existing skills)
@@ -558,7 +558,7 @@ cat .cursor/skills/{skill-name}/SKILL.md
 
 **Creation workflow:**
 
-1. Use team-skill-creator for guidance
+1. Use agents-architecture for guidance
 2. Create directories in `.agents/skills/`
 3. Implement bundled resources
 4. Write SKILL.md

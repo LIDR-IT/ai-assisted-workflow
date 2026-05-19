@@ -1,16 +1,16 @@
 ---
-name: team-skill-creator
-description: This skill should be used when the user wants to "create a skill for the team", "add a command to .agents/", "create an agent", "understand .agents/ architecture", "explain how to create components", "what's the difference between skills and commands", or needs guidance on creating skills, commands, or agents within the .agents/ system, with automatic synchronization across all platforms.
-version: 0.1.0
+name: agents-architecture
+description: This skill should be used when the user wants to "create a skill", "add a command to .agents/", "create an agent", "understand .agents/ architecture", "explain how to create components", "what's the difference between skills and commands", or needs guidance on creating skills, commands, or agents within the .agents/ source-of-truth system, with automatic synchronization across all platforms (Cursor, Claude Code, Gemini, Antigravity, Copilot).
+version: 0.2.0
 ---
 
-# Team Skill Creator
+# Agents Architecture
 
 Create and manage skills, commands, and agents within the `.agents/` centralized architecture with automatic synchronization across all AI platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode).
 
 ## Overview
 
-**team-skill-creator** helps the team create reusable components for AI agents within the project's `.agents/` architecture. This skill combines:
+**agents-architecture** (formerly `team-skill-creator`) is the entry-point meta-skill for `.agents/` ecosystem authoring. It combines:
 
 - **Understanding** the `.agents/` source-of-truth system
 - **Decision guidance** for choosing the right component type
@@ -509,8 +509,8 @@ readlink .cursor/skills   # Should output: ../.agents/skills
 readlink .cursor/commands # Should output: ../.agents/commands
 
 # Test file access
-ls .cursor/skills/team-skill-creator/
-cat .cursor/skills/team-skill-creator/SKILL.md | head -20
+ls .cursor/skills/agents-architecture/
+cat .cursor/skills/agents-architecture/SKILL.md | head -20
 ```
 
 ### Platform-Specific Notes
@@ -537,7 +537,7 @@ cat .cursor/skills/team-skill-creator/SKILL.md | head -20
 After creating a skill, validate its structure:
 
 ```bash
-./.agents/skills/team-skill-creator/scripts/validate-skill.sh {skill-name}
+./.agents/skills/agents-architecture/scripts/validate-skill.sh {skill-name}
 ```
 
 **Checks performed:**
@@ -552,7 +552,7 @@ After creating a skill, validate its structure:
 **Example:**
 
 ```bash
-$ ./.agents/skills/team-skill-creator/scripts/validate-skill.sh react-testing
+$ ./.agents/skills/agents-architecture/scripts/validate-skill.sh react-testing
 🔍 Validating skill: react-testing
   ✅ Skill directory exists
   ✅ SKILL.md found
@@ -565,7 +565,7 @@ $ ./.agents/skills/team-skill-creator/scripts/validate-skill.sh react-testing
 ### Validate a Command
 
 ```bash
-./.agents/skills/team-skill-creator/scripts/validate-command.sh {command-name}
+./.agents/skills/agents-architecture/scripts/validate-command.sh {command-name}
 ```
 
 **Checks performed:**
@@ -577,7 +577,7 @@ $ ./.agents/skills/team-skill-creator/scripts/validate-skill.sh react-testing
 ### Validate an Agent
 
 ```bash
-./.agents/skills/team-skill-creator/scripts/validate-agent.sh {agent-name}
+./.agents/skills/agents-architecture/scripts/validate-agent.sh {agent-name}
 ```
 
 **Checks performed:**
@@ -660,7 +660,7 @@ ls .cursor/commands/ | grep {command-name}
 ls .claude/agents/{agent-name}.md
 
 # Validate structure
-./.agents/skills/team-skill-creator/scripts/validate-agent.sh {agent-name}
+./.agents/skills/agents-architecture/scripts/validate-agent.sh {agent-name}
 
 # Check frontmatter has: name, description, tools
 cat .claude/agents/{agent-name}.md | head -10
@@ -766,7 +766,7 @@ For specialized creation workflows, see:
 - **agent-development** - Detailed agent creation (415 lines)
 - **skill-creator** - Generic skill creation workflow (357 lines)
 
-**Note:** team-skill-creator is a meta-skill that provides architectural context and routing. For in-depth component-specific guidance, the specialized skills above offer comprehensive workflows.
+**Note:** agents-architecture is a meta-skill that provides architectural context and routing. For in-depth component-specific guidance, the specialized skills above offer comprehensive workflows.
 
 ## Quick Reference
 
@@ -808,7 +808,7 @@ readlink .cursor/skills    # → ../.agents/skills
 readlink .cursor/commands  # → ../.agents/commands
 
 # Test file access
-cat .cursor/skills/team-skill-creator/SKILL.md
+cat .cursor/skills/agents-architecture/SKILL.md
 ls .claude/skills/
 ```
 
@@ -816,13 +816,13 @@ ls .claude/skills/
 
 ```bash
 # Validate skill
-./.agents/skills/team-skill-creator/scripts/validate-skill.sh {skill-name}
+./.agents/skills/agents-architecture/scripts/validate-skill.sh {skill-name}
 
 # Validate command
-./.agents/skills/team-skill-creator/scripts/validate-command.sh {command-name}
+./.agents/skills/agents-architecture/scripts/validate-command.sh {command-name}
 
 # Validate agent
-./.agents/skills/team-skill-creator/scripts/validate-agent.sh {agent-name}
+./.agents/skills/agents-architecture/scripts/validate-agent.sh {agent-name}
 ```
 
 ---

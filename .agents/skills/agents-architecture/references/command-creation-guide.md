@@ -2,6 +2,8 @@
 
 Complete process for creating commands within the `.agents/` system. Commands are reusable prompt templates accessed via `/{command-name}`.
 
+> **Companion skill:** for deep-dive command-authoring patterns (argument design, output contracts, command vs skill vs agent decisions), see the standalone `command-development` skill at `.agents/skills/command-development/SKILL.md`. This guide focuses on `.agents/`-integration workflow; `command-development` covers command design fundamentals.
+
 ## Table of Contents
 
 1. [What Are Commands?](#what-are-commands)
@@ -220,7 +222,7 @@ vim .agents/commands/{command-name}.md
 
 ### Step 5: Sync to Platforms
 
-**Automatic (when using team-skill-creator):**
+**Automatic (when using agents-architecture):**
 Sync happens automatically after command creation.
 
 **Manual (when creating directly):**
@@ -724,7 +726,7 @@ Brief description of what the function does.
 After creating a command, validate it:
 
 ```bash
-./.agents/skills/team-skill-creator/scripts/validate-command.sh {command-name}
+./.agents/skills/agents-architecture/scripts/validate-command.sh {command-name}
 ````
 
 **Checks performed:**

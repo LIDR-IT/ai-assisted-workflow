@@ -329,7 +329,7 @@ Brief explanation of what this skill does.
 
 ## Complete Real Example
 
-See `.agents/skills/team-skill-creator/` for a complete, real implementation of this template with:
+See `.agents/skills/agents-architecture/` for a complete, real implementation of this template with:
 
 - ✅ Comprehensive SKILL.md (~680 lines)
 - ✅ 5 reference files in `references/`
