@@ -80,7 +80,7 @@ cursor_mcp() {
       ) |
       from_entries
     )
-  }' "$AGENTS_DIR/mcp/mcp-servers.json" | write_if_changed "$CURSOR_DIR/mcp.json" ".cursor/mcp.json"
+  }' "$AGENTS_DIR/mcp/mcp-servers.json" | write_json_if_changed "$CURSOR_DIR/mcp.json" ".cursor/mcp.json"
 }
 
 cursor_hooks() {

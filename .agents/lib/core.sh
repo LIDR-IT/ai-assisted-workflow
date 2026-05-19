@@ -84,3 +84,23 @@ write_if_changed() {
   mv "$tmp" "$out"
   log_info "Wrote $label"
 }
+
+# JSON-specific variant: pipes through the repo's prettier (if available) so
+# generated MCP/hooks files match what the pre-commit hook would produce.
+# Stops the "sync rewrites the file → prettier collapses it again" loop that
+# kept .mcp.json / .cursor/mcp.json showing as modified after every sync.
+write_json_if_changed() {
+  local out=$1 label=${2:-"$(basename "$1")"}
+  local input
+  input=$(cat)
+
+  local prettier="$PROJECT_ROOT/node_modules/.bin/prettier"
+  if [ -x "$prettier" ]; then
+    local formatted
+    if formatted=$(echo "$input" | "$prettier" --parser=json 2>/dev/null); then
+      echo "$formatted" | write_if_changed "$out" "$label"
+      return
+    fi
+  fi
+  echo "$input" | write_if_changed "$out" "$label"
+}
