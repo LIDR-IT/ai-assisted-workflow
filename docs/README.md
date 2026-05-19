@@ -1,167 +1,82 @@
-# Documentación LIDR
+---
+id: docs-index
+version: "1.0.0"
+last_updated: "2026-04-06"
+updated_by: "TL: cleanup-consolidation"
+status: active
+type: index
+---
 
-Documentación interna del equipo construida con [VitePress](https://vitepress.dev/).
+# LIDR SDLC Documentation Index
 
-## Desarrollo Local
+> **Framework Documentation Hub** — Complete reference for implementing, extending, and troubleshooting the LIDR SDLC Methodology
 
-### Requisitos
+---
 
-- Node.js 18+
-- npm
+## 🚀 **Getting Started**
 
-### Comandos
+### Setup Guides
 
-```bash
-# Instalar dependencias
-npm install
+- **[User Setup Guide](guides/user-setup-guide.md)** — Complete setup for teams implementing LIDR SDLC
+- **[Client Creation Guide](guides/client-creation-guide.md)** — Creating client-specific implementations
+- **[Developer Guide](guides/developer-guide.md)** — Technical implementation guide for developers
 
-# Iniciar servidor de desarrollo
-npm run docs:dev
+---
 
-# Build para producción
-npm run docs:build
+## 🔧 **Technical Guides**
 
-# Preview del build de producción
-npm run docs:preview
-```
+### Performance & Optimization
 
-## Estructura
+- **Use `npm run perf:*` commands** for performance benchmarking and testing
 
-```
-docs/
-├── .vitepress/
-│   ├── config.js          # Configuración de VitePress
-│   ├── cache/            # Cache (ignorado en git)
-│   └── dist/             # Build output (ignorado en git)
-├── guides/               # Guías paso a paso
-├── references/           # Referencias técnicas
-├── guidelines/           # Estándares del equipo
-├── notes/               # Investigaciones
-└── index.md             # Página principal
-```
+### Testing & Quality
 
-## Agregar Contenido
+- **[Unit Testing Guide](testing/unit-testing-guide.md)** — Testing architecture and coverage requirements
+- **[Visual Regression Testing](testing/visual-regression-testing.md)** — Visual testing setup and target components
 
-### Nueva Página
+### Operations & Support
 
-1. Crea un archivo `.md` en la carpeta apropiada:
+- **Use `/lidr-help [query]`** for troubleshooting and ecosystem discovery
+- **Use `/audit-standards`** for comprehensive ecosystem validation
 
-   ```bash
-   touch docs/guides/nueva-guia.md
-   ```
+---
 
-2. Agrega frontmatter si necesitas layout especial:
+## 📖 **Framework References**
 
-   ```markdown
-   ---
-   title: Mi Guía
-   description: Descripción de la guía
-   ---
+### Architecture & Standards
 
-   # Contenido aquí
-   ```
+- **[Standards](standards/)** — Organizational standards, hooks strategy, tool integrations
+- **[ADRs](adr/)** — Architecture Decision Records documenting framework choices
+- **[Hooks](hooks/)** — Event-driven automation and validation system
+- **[Settings Reference](settings-reference.md)** — Claude Code settings and hook configuration
 
-3. Agrega al sidebar en `.vitepress/config.js`:
-   ```js
-   sidebar: {
-     '/guides/': [
-       {
-         text: 'Guías',
-         items: [
-           { text: 'Nueva Guía', link: '/guides/nueva-guia' }
-         ]
-       }
-     ]
-   }
-   ```
+### Development & Extension
 
-### Nueva Sección
+- **[Claude Code SDK Guides](guides/claude-code/)** — Creating skills, commands, hooks, agents, and MCPs
+- **[Discovery Materials](discovery/)** — Historical interview notes that created the framework
 
-1. Crea directorio:
+---
 
-   ```bash
-   mkdir docs/nueva-seccion
-   ```
+## 🔄 **Process Documentation**
 
-2. Agrega `index.md`:
+### Audits & Validation
 
-   ```bash
-   touch docs/nueva-seccion/index.md
-   ```
+- **Use skills**: `/audit-standards` and `/multi-agent-audit` for automated ecosystem audits
 
-3. Agrega navegación en `.vitepress/config.js`
+### Historical Context
 
-## Features
+- **[Discovery](discovery/)** — Original team interviews and pain points that shaped the framework
 
-### Búsqueda
+---
 
-- Búsqueda local integrada
-- Usa `Cmd/Ctrl + K` para buscar
+## 📊 **Quick Stats**
 
-### Mermaid
+- **Skills**: 61 (9 automated)
+- **Commands**: 23
+- **Documentation Files**: 44
+- **Total Artifacts**: 201
+- **Self-Contained**: 100% ✓
 
-Soporte para diagramas Mermaid:
+---
 
-````markdown
-```mermaid
-graph TD
-  A[Inicio] --> B[Fin]
-```
-````
-
-### Code Blocks
-
-Syntax highlighting automático:
-
-````markdown
-```bash
-npm run docs:dev
-```
-
-```javascript
-const config = { ... }
-```
-````
-
-### Containers
-
-Contenedores especiales:
-
-```markdown
-::: tip Consejo
-Esto es un consejo útil
-:::
-
-::: warning Advertencia
-Esto es una advertencia
-:::
-
-::: danger Peligro
-Esto es peligroso
-:::
-```
-
-## Deployment
-
-El sitio puede ser deployado en:
-
-- GitHub Pages
-- Netlify
-- Vercel
-- Cloudflare Pages
-
-### GitHub Pages
-
-```bash
-# Build
-npm run docs:build
-
-# Deploy
-# (configurar GitHub Actions)
-```
-
-## Referencias
-
-- [VitePress Docs](https://vitepress.dev/)
-- [Markdown Extensions](https://vitepress.dev/guide/markdown)
-- [Theme Config](https://vitepress.dev/reference/default-theme-config)
+**Need help?** Use `/lidr-help [query]` to search the entire ecosystem interactively.
