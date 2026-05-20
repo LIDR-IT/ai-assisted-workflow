@@ -143,3 +143,42 @@ Final LIDR breakdown by criticality:
 - 🟢 OPCIONAL: 6 (niche use cases; only activate when relevant)
 
 Plus 4 anytime skills (agents-architecture, command-development, commit-management, ticket-validation) all OPCIONAL.
+
+## Phase E — Claude Code meta-tooling rename (2026-05-20)
+
+**Context:** 5 skills in `.agents/skills/` are not LIDR methodology — they extend the Claude Code platform itself (rules, hooks, MCP, commands, agents architecture). Renamed with `claude-` prefix to make this explicit and moved from `source: 'lidr'` to `source: 'anytime'`.
+
+### Renames (5)
+
+| Before                  | After                        | Source change         | Notes                                  |
+| ----------------------- | ---------------------------- | --------------------- | -------------------------------------- |
+| `agents-architecture`   | `claude-agents-architecture` | `anytime` (no change) | Meta entry-point for `.agents/` system |
+| `command-development`   | `claude-command-development` | `anytime` (no change) | Slash command authoring                |
+| `lidr-generate-rule`    | `claude-generate-rule`       | `lidr` → `anytime`    | Claude Code rule files                 |
+| `lidr-hook-development` | `claude-hook-development`    | `lidr` → `anytime`    | PreToolUse/PostToolUse/Stop hooks      |
+| `lidr-mcp-integration`  | `claude-mcp-integration`     | `lidr` → `anytime`    | MCP server config                      |
+
+### Why
+
+These 5 skills extend the Claude Code platform — they're not LIDR methodology (Gate G0-G7) and not BMad (base flow). The `lidr-` prefix was misleading: it implied they were part of the LIDR SDLC, but they could be used by any Claude Code project regardless of methodology. The `claude-` prefix correctly identifies them as platform extensions.
+
+### Updates
+
+- 5 directories renamed in `.agents/skills/` via `git mv`
+- `name:` frontmatter updated in each `SKILL.md`
+- `skills.ts`: id/name/docPath updated; 3 entries moved from `source: 'lidr'` to `source: 'anytime'`
+- `.agents/rules/tools/claude-code-extensions.md`: table + Invoke references updated
+- `CRITICALITY.md`: OPCIONAL table reorganized to show the 5 as anytime/claude-\*
+
+### Future work
+
+Pending in `TODO.md`: verify each renamed skill against the latest Anthropic upstream Claude Code skill (via `npx ctx7@latest docs /anthropic/claude-code`) and merge any improvements. Personalized sections should be marked with `<!-- LIDR customization -->` blocks for future upstream syncs.
+
+## Final inventory (after Phase E)
+
+```
+LIDR:    35 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 3 OPCIONAL)
+BMad:    69 skills (base flow, untouched)
+Anytime: 7 skills (all OPCIONAL — incl. 5 claude-* meta-tooling)
+Total:   111 skills
+```

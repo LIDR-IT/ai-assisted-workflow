@@ -56,13 +56,14 @@ tools: ["Read", "Write"]
 
 ### Available Extension Types
 
-| Extension       | Skill                  | Use When                                                |
-| --------------- | ---------------------- | ------------------------------------------------------- |
-| **Skills**      | `/skill-creator`       | Adding specialized knowledge or workflows               |
-| **Commands**    | `/command-development` | Creating user-invocable slash commands                  |
-| **Agents**      | `/agent-development`   | Building autonomous subprocesses                        |
-| **Hooks**       | `/hook-development`    | Event-driven automation (PreToolUse, PostToolUse, etc.) |
-| **MCP Servers** | `/mcp-integration`     | Connecting external tools/services                      |
+| Extension       | Skill                         | Use When                                                |
+| --------------- | ----------------------------- | ------------------------------------------------------- |
+| **Skills**      | `/claude-agents-architecture` | Adding specialized knowledge or workflows               |
+| **Commands**    | `/claude-command-development` | Creating user-invocable slash commands                  |
+| **Agents**      | `/claude-agents-architecture` | Building autonomous subprocesses (skill+agent flow)     |
+| **Hooks**       | `/claude-hook-development`    | Event-driven automation (PreToolUse, PostToolUse, etc.) |
+| **MCP Servers** | `/claude-mcp-integration`     | Connecting external tools/services                      |
+| **Rules**       | `/claude-generate-rule`       | Creating Claude Code behavioral rules                   |
 
 ### Reference Templates
 
@@ -77,7 +78,7 @@ description: When to use this skill
 # Content here
 ```
 
-**Invoke:** `/skill-creator` for full guide
+**Invoke:** `/claude-agents-architecture` for full guide
 
 #### Creating a Command
 
@@ -90,7 +91,7 @@ args: [arg1, arg2]
 # Content here
 ```
 
-**Invoke:** `/command-development` for full guide
+**Invoke:** `/claude-command-development` for full guide
 
 #### Creating an Agent
 
@@ -104,7 +105,7 @@ tools: ["Read", "Write"]
 System prompt here
 ```
 
-**Invoke:** `/agent-development` for full guide
+**Invoke:** `/claude-agents-architecture` for full guide
 
 #### Creating a Hook
 
@@ -113,7 +114,7 @@ System prompt here
 # .claude/hooks/PreToolUse/validate.sh
 ```
 
-**Invoke:** `/hook-development` for full guide
+**Invoke:** `/claude-hook-development` for full guide
 
 #### Adding MCP Server
 
@@ -129,7 +130,7 @@ System prompt here
 }
 ```
 
-**Invoke:** `/mcp-integration` for full guide
+**Invoke:** `/claude-mcp-integration` for full guide
 
 ### File Locations
 
@@ -170,7 +171,7 @@ Use `file:line` or `path` format (VS Code clickable). Terse findings.
 
 ## Recommendations
 
-.agents/skills/old-skill/ - ⚠️  Consider using `/skill-creator` for updates
+.agents/skills/old-skill/ - ⚠️  Consider using `/claude-agents-architecture` for updates
 .agents/commands/complex.md - ⚠️  Complex logic → consider creating agent instead
 
 ## Summary
