@@ -492,14 +492,14 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/gate-evaluation/SKILL.md',
   },
   {
-    id: 'commit-management',
-    name: 'commit-management',
+    id: 'lidr-commit-management',
+    name: 'lidr-commit-management',
     phase: 'Cross-cutting',
     phaseNum: 99,
-    source: 'anytime',
+    source: 'lidr',
     criticality: 'optional',
     description:
-      'Git commit best practices: conventional commits, fix/amend/rebase/squash, atomic commits, commit history management',
+      'Git commit best practices: conventional commits, fix/amend/rebase/squash, atomic commits, commit history management. LIDR conventions (Spanish messages, scope conventions).',
     triggers: [
       'conventional commits',
       'fix commit',
@@ -508,17 +508,17 @@ export const skills: Skill[] = [
       'rebase squash',
     ],
     roles: ['Dev', 'TL', 'DevOps'],
-    docPath: '.claude/skills/commit-management/SKILL.md',
+    docPath: '.claude/skills/lidr-commit-management/SKILL.md',
   },
   {
-    id: 'ticket-validation',
-    name: 'ticket-validation',
+    id: 'lidr-ticket-validation',
+    name: 'lidr-ticket-validation',
     phase: 'Cross-cutting',
     phaseNum: 99,
-    source: 'anytime',
-    criticality: 'optional',
+    source: 'lidr',
+    criticality: 'recommended',
     description:
-      'Validate ticket structure: YAML frontmatter, acceptance criteria specificity, Definition of Done, BDD scenarios. Used pre-refinement and pre-PR.',
+      'Validate LIDR/BMad ticket structure: YAML frontmatter, acceptance criteria specificity, Definition of Done, BDD scenarios. Used pre-refinement and pre-PR. Adds Gate-aware validation over BMad story output.',
     triggers: [
       'validate ticket',
       'check YAML frontmatter',
@@ -527,7 +527,7 @@ export const skills: Skill[] = [
       'validate BDD',
     ],
     roles: ['PO', 'QA', 'Dev'],
-    docPath: '.claude/skills/ticket-validation/SKILL.md',
+    docPath: '.claude/skills/lidr-ticket-validation/SKILL.md',
   },
 
   // Development (4)

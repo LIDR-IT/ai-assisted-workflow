@@ -95,38 +95,38 @@ These fill gaps that BMad has zero coverage for. Cannot be skipped without losin
 | ---------------------- | ------------------------------------------------------ |
 | `lidr-gate-evaluation` | BMad has NO Gate G0-G7 methodology. Core of LIDR SDLC. |
 
-## 🟡 RECOMENDABLE (9 skills)
+## 🟡 RECOMENDABLE (10 skills)
 
 BMad covers partially. LIDR adds automation, Spanish, Gate-binding, or compliance.
 
-| Skill                     | What LIDR adds beyond BMad                                                             |
-| ------------------------- | -------------------------------------------------------------------------------------- |
-| `lidr-project-classifier` | Auto-detect in <30s vs 2-8h manual. Saves time, not quality if skipped.                |
-| `lidr-risk-log`           | Formal registry with industry patterns. BMad could embed risks in PRD.                 |
-| `lidr-sprint-capacity`    | Math with buffer 15-20% + velocity. BMad-sprint-planning doesn't compute capacity.     |
-| `lidr-refinement-notes`   | DoR-readiness backlog grooming. BMad has no grooming format.                           |
-| `lidr-tech-debt`          | SonarQube auto-parse (120h/yr ROI). BMad-investigate is forensic.                      |
-| `lidr-bug-report`         | QA→Dev template <5min repro. BMad-investigate is Dev-internal.                         |
-| `lidr-automated-handoffs` | Phase transition automation Dev→QA→Sec→DevOps.                                         |
-| `lidr-sdlc-tracking`      | Portfolio state centralized. BMad-sprint-status is per-sprint.                         |
-| `lidr-audit-standards`    | Audit del ecosistema `.agents/` (frontmatter, drift). BMad reviews are content review. |
+| Skill                     | What LIDR adds beyond BMad                                                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `lidr-project-classifier` | **WRAPS `bmad-generate-project-context`**: pre-classifies project type/complexity/domain in <30s before BMad context generation.    |
+| `lidr-risk-log`           | Formal registry with industry patterns. BMad could embed risks in PRD.                                                              |
+| `lidr-sprint-capacity`    | Math with buffer 15-20% + velocity. BMad-sprint-planning doesn't compute capacity.                                                  |
+| `lidr-refinement-notes`   | **WRAPS `bmad-create-story`**: adds DoR-readiness grooming layer (domain decisions, compliance clarifications) post-story creation. |
+| `lidr-tech-debt`          | SonarQube auto-parse (120h/yr ROI). BMad-investigate is forensic.                                                                   |
+| `lidr-bug-report`         | **WRAPS `bmad-investigate`**: QA→Dev outbound template (audience), BMad investigate is Dev-internal forensic.                       |
+| `lidr-ticket-validation`  | Validate LIDR/BMad ticket structure pre-refinement and pre-PR. Adds Gate-aware validation over BMad story output.                   |
+| `lidr-automated-handoffs` | Phase transition automation Dev→QA→Sec→DevOps.                                                                                      |
+| `lidr-sdlc-tracking`      | Portfolio state centralized. BMad-sprint-status is per-sprint.                                                                      |
+| `lidr-audit-standards`    | **WRAPS `bmad-review-adversarial-general`**: ecosystem-scope audit (`.agents/` frontmatter, drift, paths) vs BMad content reviews.  |
 
-## 🟢 OPCIONAL (10 skills — 6 LIDR + 4 anytime)
+## 🟢 OPCIONAL (9 skills — 4 LIDR + 5 anytime claude-\*)
 
 Only use if your team has the specific use case.
 
-| Skill (source)                         | When to activate                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------- |
-| `lidr-propuesta-builder` (LIDR)        | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora". |
-| `lidr-external-sync` (LIDR)            | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.           |
-| `lidr-playwright-cli` (LIDR)           | Web QA: execute Playwright (browser automation).                       |
-| `claude-agents-architecture` (anytime) | Meta-skill: entry point for creating skills/commands/subagents.        |
-| `claude-command-development` (anytime) | Create Claude Code slash commands.                                     |
-| `claude-generate-rule` (anytime)       | Extending Claude Code: create behavioral rules.                        |
-| `claude-hook-development` (anytime)    | Extending Claude Code: PreToolUse/PostToolUse hooks.                   |
-| `claude-mcp-integration` (anytime)     | Connecting external services via MCP.                                  |
-| `commit-management` (anytime)          | Conventional commits, rebase/squash workflows.                         |
-| `ticket-validation` (anytime)          | Validate YAML/AC/DoD/BDD pre-refinement.                               |
+| Skill (source)                         | When to activate                                                           |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| `lidr-propuesta-builder` (LIDR)        | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora".     |
+| `lidr-external-sync` (LIDR)            | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.               |
+| `lidr-playwright-cli` (LIDR)           | Web QA: execute Playwright (browser automation).                           |
+| `claude-agents-architecture` (anytime) | Meta-skill: entry point for creating skills/commands/subagents.            |
+| `claude-command-development` (anytime) | Create Claude Code slash commands.                                         |
+| `claude-generate-rule` (anytime)       | Extending Claude Code: create behavioral rules.                            |
+| `claude-hook-development` (anytime)    | Extending Claude Code: PreToolUse/PostToolUse hooks.                       |
+| `claude-mcp-integration` (anytime)     | Connecting external services via MCP.                                      |
+| `lidr-commit-management` (LIDR)        | Conventional commits, rebase/squash workflows with LIDR scope conventions. |
 
 ## How to use this classification
 
@@ -143,17 +143,24 @@ For the full BMad-base + LIDR-complement workflow, see:
 - `.agents/rules/lidr-sdlc/workflows.md` (orchestration map)
 - `.agents/_shared/lidr/MIGRATION.md` (consolidation history)
 
-## Inventory snapshot (as of 2026-05-20, post Phase E)
+## Inventory snapshot (as of 2026-05-20, post Phase F)
 
 ```
-LIDR:    35 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 3 OPCIONAL)
+LIDR:    37 skills (23 OBLIGATORIO + 10 RECOMENDABLE + 4 OPCIONAL)
 BMad:    69 skills (base flow, untouched)
-Anytime: 7 skills (7 OPCIONAL — incl. 5 claude-* meta-tooling)
+Anytime: 5 skills (all OPCIONAL — 5 claude-* meta-tooling)
 Total:   111 skills
 ```
 
-> Note: Phase E (2026-05-20) moved 5 Claude Code meta-tooling skills out of LIDR into the
-> `anytime` category with `claude-` prefix: `claude-agents-architecture`, `claude-command-development`,
-> `claude-generate-rule`, `claude-hook-development`, `claude-mcp-integration`. They're not LIDR
-> methodology — they extend the Claude Code platform itself. The `lidr-` prefix is now reserved
-> for skills tied to the LIDR SDLC Gate model.
+> **Phase F (2026-05-20):** Renamed last 2 unprefixed skills to `lidr-commit-management` and
+> `lidr-ticket-validation` (source: anytime → lidr). Refactored 4 LIDR SKILL.md descriptions
+> to explicitly frame them as thin wrappers over BMad outputs:
+>
+> - `lidr-project-classifier` wraps `bmad-generate-project-context`
+> - `lidr-refinement-notes` wraps `bmad-create-story` + DoR layer
+> - `lidr-bug-report` wraps `bmad-investigate` (QA→Dev audience)
+> - `lidr-audit-standards` wraps `bmad-review-adversarial-general` (ecosystem scope)
+>
+> **Phase E (prior):** Moved 5 Claude Code meta-tooling skills out of LIDR into `anytime` with
+> `claude-` prefix. They extend the Claude Code platform itself. The `lidr-` prefix is now
+> reserved for skills tied to the LIDR SDLC Gate model.

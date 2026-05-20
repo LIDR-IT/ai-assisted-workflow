@@ -174,11 +174,80 @@ These 5 skills extend the Claude Code platform — they're not LIDR methodology 
 
 Pending in `TODO.md`: verify each renamed skill against the latest Anthropic upstream Claude Code skill (via `npx ctx7@latest docs /anthropic/claude-code`) and merge any improvements. Personalized sections should be marked with `<!-- LIDR customization -->` blocks for future upstream syncs.
 
-## Final inventory (after Phase E)
+## Phase F — Prefix unprefixed + 4 LIDR refactors + BMad sitemap restructure (2026-05-20)
+
+**Context:** Final cleanup pass after Phase E. The user requested:
+
+1. The 2 remaining unprefixed skills (`commit-management`, `ticket-validation`) should get `lidr-` prefix and move from `source: 'anytime'` to `source: 'lidr'` for consistency.
+2. Restructure the sitemap UI (`sitemapView.ts`) so BMad skills are grouped by the **official BMad phases** documented in Vol I-V (`docs/guides/bmad/`), not collapsed as "+117 more".
+3. Re-audit the 35 LIDR skills with BMad as source of truth and refactor any redundant ones as thin wrappers over BMad outputs.
+
+### Renames (2)
+
+| Before              | After                    | Source change      | Criticality   |
+| ------------------- | ------------------------ | ------------------ | ------------- |
+| `commit-management` | `lidr-commit-management` | `anytime` → `lidr` | `optional`    |
+| `ticket-validation` | `lidr-ticket-validation` | `anytime` → `lidr` | `recommended` |
+
+`lidr-ticket-validation` was upgraded to `recommended` (was optional) because it validates LIDR/BMad ticket structure pre-PR — has real value in the flow, not just niche.
+
+### 4 LIDR SKILL.md refactors (thin-wrapper framing)
+
+Each `description:` was rewritten to make the wrap explicit:
+
+- `lidr-project-classifier` — PRE-BMAD WRAPPER: auto-classifies project before `bmad-generate-project-context` so BMad receives pre-classified input.
+- `lidr-refinement-notes` — POST-BMAD WRAPPER: consumes user stories from `bmad-create-story` and captures DoR-readiness grooming notes.
+- `lidr-bug-report` — QA→DEV WRAPPER: while `bmad-investigate` is Dev-internal forensic, this is QA-facing outbound bug report.
+- `lidr-audit-standards` — ECOSYSTEM-SCOPE WRAPPER over `bmad-review-adversarial-general` (which reviews content). This audits `.agents/` structure: frontmatter, drift, paths.
+
+No directory or functionality changes — only description refactor to clarify role in the BMad-base + LIDR-complement architecture.
+
+### Sitemap restructure (app/src/data/features/sitemapView.ts)
+
+Removed the "+117 more" placeholder. Added two new top-level nodes:
+
+1. **Claude meta-tooling (anytime)** — 5 `claude-*` skills with explicit nature ("Skills para extender la plataforma Claude Code, no LIDR, no BMad").
+2. **BMad — Base flow (69 skills)** — full tree organized by BMad Vol I-V official phases:
+   - Fase 0 — Aprendizaje (1)
+   - Fase 1 — Análisis (6)
+   - Fase 2 — Planificación (4)
+   - Fase 3 — Solución (6)
+   - Fase 4 — Implementación (10)
+   - Toolkit Anytime (3)
+   - Brownfield (4)
+   - Persona Agents — BMM + TEA (7)
+   - Persona Agents — CIS (6)
+   - CIS Workflows (4)
+   - BMad Builder (BMB) — Meta (4)
+   - Core Utilities (13)
+
+Visible across all clients (`/facephi/sitemap`, `/aramis/sitemap`, `/docline/sitemap`, `/base/sitemap`) since `sitemapView.ts` is shared.
+
+### Re-audit summary
+
+After reading BMad Vol I-V and cross-referencing all 35 LIDR skills with the 69 BMad skills:
+
+- **0 DELETE candidates** — every LIDR skill survives the audit
+- **4 REFACTOR candidates** done in this phase (above)
+- LIDR architecture is sound: BMad covers the base flow (69 skills); LIDR adds 35 skills for Gate enforcement (G0-G7), security/compliance, pre/post wrappers, and consultancy multi-client tooling
+
+### Updates
+
+- 2 dirs renamed in `.agents/skills/` via `git mv`
+- 2 SKILL.md `name:` fields updated
+- 4 SKILL.md `description:` fields refactored as thin-wrapper framing
+- `app/src/data/artifacts/skills.ts` — 2 ids/names/docPaths/sources/criticality updated
+- `app/src/data/features/sitemapView.ts` — ~150 new TreeNodes; placeholder removed
+- `CRITICALITY.md` — table reorganized to reflect renames + wrapper notes
+- `TODO.md` — items completed in this phase marked as done
+
+## Final inventory (after Phase F)
 
 ```
-LIDR:    35 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 3 OPCIONAL)
+LIDR:    37 skills (23 OBLIGATORIO + 10 RECOMENDABLE + 4 OPCIONAL)
 BMad:    69 skills (base flow, untouched)
-Anytime: 7 skills (all OPCIONAL — incl. 5 claude-* meta-tooling)
+Anytime: 5 skills (all OPCIONAL — 5 claude-* meta-tooling)
 Total:   111 skills
 ```
+
+`lidr-` is now the consistent prefix for all 37 LIDR-methodology skills (no naked "anytime" entries remain).

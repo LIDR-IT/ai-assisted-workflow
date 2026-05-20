@@ -34,5 +34,5 @@ Skills affected (5, all `claude-*` `anytime` `optional`):
 ### Notes
 
 - Anthropic upstream `skill-creator` is archived at `.agents/_shared/anthropic/skill-creator/` (PR #2 reference).
-- `commit-management`, `ticket-validation` remain `anytime` without prefix (not Claude-specific).
 - `lidr-playwright-cli` remains LIDR opcional (browser automation tool, not Claude meta).
+- ✅ **Phase F (2026-05-20)** completed: `commit-management` and `ticket-validation` got `lidr-` prefix; 4 LIDR skills refactored as BMad wrappers; sitemap restructured with BMad official phases.
