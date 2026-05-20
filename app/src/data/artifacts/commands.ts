@@ -30,7 +30,7 @@ export const commands: Command[] = [
     model: 'opus',
     gateContribution: 'All Gates 0-7',
     docPath: '.claude/commands/advance-gate.md',
-    relatedSkills: ['business-case', 'prd-tecnico', 'validate-requirements', 'security-checklist'],
+    relatedSkills: ['business-case', 'bmad-prd', 'validate-requirements', 'security-checklist'],
   },
   {
     id: 'check-readiness',
@@ -43,7 +43,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Pre-Gate 3',
     docPath: '.claude/commands/check-readiness.md',
-    relatedSkills: ['epic-breakdown', 'sprint-capacity'],
+    relatedSkills: ['bmad-create-epics-and-stories', 'sprint-capacity'],
   },
   {
     id: 'course-correct',
@@ -56,7 +56,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'All Gates',
     docPath: '.claude/commands/course-correct.md',
-    relatedSkills: ['risk-log', 'retrospective', 'epic-review'],
+    relatedSkills: ['risk-log', 'bmad-retrospective'],
   },
   {
     id: 'validate-prd',
@@ -70,7 +70,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Gate 1',
     docPath: '.claude/commands/validate-prd.md',
-    relatedSkills: ['prd-funcional', 'prd-tecnico', 'review-cruzado'],
+    relatedSkills: ['bmad-prd', 'bmad-validate-prd', 'review-cruzado'],
   },
   {
     id: 'implement-ticket',
@@ -97,11 +97,11 @@ export const commands: Command[] = [
     gateContribution: 'Gate 5',
     docPath: '.claude/commands/prepare-testing.md',
     relatedSkills: [
-      'test-plan',
+      'bmad-testarch-test-design',
       'create-test-cases',
       'bug-report',
       'test-execution-report',
-      'regression-suite',
+      'bmad-testarch-automate',
     ],
   },
   {
@@ -115,7 +115,12 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Gate 2',
     docPath: '.claude/commands/validate-requirements.md',
-    relatedSkills: ['generate-rf', 'generate-nfr', 'validate-requirements', 'epic-breakdown'],
+    relatedSkills: [
+      'generate-rf',
+      'generate-nfr',
+      'validate-requirements',
+      'bmad-create-epics-and-stories',
+    ],
   },
   {
     id: 'init-project-docs',
@@ -127,7 +132,7 @@ export const commands: Command[] = [
     argument: '[name]',
     model: 'sonnet',
     docPath: '.claude/commands/init-project-docs.md',
-    relatedSkills: ['architecture-doc', 'generate-rule'],
+    relatedSkills: ['bmad-create-architecture', 'claude-generate-rule'],
   },
   {
     id: 'validate-project-docs',
@@ -153,13 +158,11 @@ export const commands: Command[] = [
     docPath: '.claude/commands/document-project.md',
     relatedSkills: [
       'project-classifier',
-      'document-discovery',
-      'prd-funcional',
-      'prd-tecnico',
-      'architecture-doc',
+      'bmad-prd',
+      'bmad-create-architecture',
       'generate-rf',
       'generate-nfr',
-      'epic-breakdown',
+      'bmad-create-epics-and-stories',
       'validate-requirements',
     ],
   },
@@ -201,7 +204,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Gates 3-6',
     docPath: '.claude/commands/sprint-health.md',
-    relatedSkills: ['sprint-capacity', 'retrospective', 'risk-log'],
+    relatedSkills: ['sprint-capacity', 'bmad-retrospective', 'risk-log'],
   },
   {
     id: 'create-branch',
