@@ -17,9 +17,11 @@
 export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=4096"
 
 # 1. Sensitive files check (covers entire repo)
+# Use fixed-string match (-F) to avoid regex false positives: previously `.key`
+# matched any "Xkey" substring (e.g. "sankey" in mermaid bundle filenames).
 SENSITIVE_PATTERNS=".env .pem .key secrets/ credentials/"
 for pattern in $SENSITIVE_PATTERNS; do
-  if git diff --cached --name-only | grep -q "$pattern"; then
+  if git diff --cached --name-only | grep -qF "$pattern"; then
     echo "❌ ERROR: Attempting to commit sensitive file matching pattern: $pattern"
     echo "   Remove from staging with: git reset HEAD <file>"
     echo "   Or add it to .gitignore if it shouldn't be tracked"

@@ -115,18 +115,18 @@ BMad covers partially. LIDR adds automation, Spanish, Gate-binding, or complianc
 
 Only use if your team has the specific use case.
 
-| Skill (source)                  | When to activate                                                       |
-| ------------------------------- | ---------------------------------------------------------------------- |
-| `lidr-propuesta-builder` (LIDR) | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora". |
-| `lidr-external-sync` (LIDR)     | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.           |
-| `lidr-playwright-cli` (LIDR)    | Web QA: execute Playwright (browser automation).                       |
-| `lidr-generate-rule` (LIDR)     | Extending Claude Code: create behavioral rules.                        |
-| `lidr-hook-development` (LIDR)  | Extending Claude Code: PreToolUse/PostToolUse hooks.                   |
-| `lidr-mcp-integration` (LIDR)   | Connecting external services via MCP.                                  |
-| `agents-architecture` (anytime) | Meta-skill: entry point for creating skills/commands/subagents.        |
-| `command-development` (anytime) | Create slash commands.                                                 |
-| `commit-management` (anytime)   | Conventional commits, rebase/squash workflows.                         |
-| `ticket-validation` (anytime)   | Validate YAML/AC/DoD/BDD pre-refinement.                               |
+| Skill (source)                         | When to activate                                                       |
+| -------------------------------------- | ---------------------------------------------------------------------- |
+| `lidr-propuesta-builder` (LIDR)        | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora". |
+| `lidr-external-sync` (LIDR)            | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.           |
+| `lidr-playwright-cli` (LIDR)           | Web QA: execute Playwright (browser automation).                       |
+| `claude-agents-architecture` (anytime) | Meta-skill: entry point for creating skills/commands/subagents.        |
+| `claude-command-development` (anytime) | Create Claude Code slash commands.                                     |
+| `claude-generate-rule` (anytime)       | Extending Claude Code: create behavioral rules.                        |
+| `claude-hook-development` (anytime)    | Extending Claude Code: PreToolUse/PostToolUse hooks.                   |
+| `claude-mcp-integration` (anytime)     | Connecting external services via MCP.                                  |
+| `commit-management` (anytime)          | Conventional commits, rebase/squash workflows.                         |
+| `ticket-validation` (anytime)          | Validate YAML/AC/DoD/BDD pre-refinement.                               |
 
 ## How to use this classification
 
@@ -143,11 +143,17 @@ For the full BMad-base + LIDR-complement workflow, see:
 - `.agents/rules/lidr-sdlc/workflows.md` (orchestration map)
 - `.agents/_shared/lidr/MIGRATION.md` (consolidation history)
 
-## Inventory snapshot (as of 2026-05-20)
+## Inventory snapshot (as of 2026-05-20, post Phase E)
 
 ```
-LIDR:    38 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 6 OPCIONAL)
+LIDR:    35 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 3 OPCIONAL)
 BMad:    69 skills (base flow, untouched)
-Anytime: 4 skills (4 OPCIONAL)
+Anytime: 7 skills (7 OPCIONAL — incl. 5 claude-* meta-tooling)
 Total:   111 skills
 ```
+
+> Note: Phase E (2026-05-20) moved 5 Claude Code meta-tooling skills out of LIDR into the
+> `anytime` category with `claude-` prefix: `claude-agents-architecture`, `claude-command-development`,
+> `claude-generate-rule`, `claude-hook-development`, `claude-mcp-integration`. They're not LIDR
+> methodology — they extend the Claude Code platform itself. The `lidr-` prefix is now reserved
+> for skills tied to the LIDR SDLC Gate model.
