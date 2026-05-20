@@ -24,16 +24,15 @@ import type { MarkdownFile, PhaseInfo } from './types';
 export const mdFiles = import.meta.glob<string>(
   [
     '/.claude/skills/**/SKILL.md',
-    '/.claude/rules/*.md',
+    '/.claude/rules/**/*.md',
     '/docs/**/*.md',
     '/.claude/commands/*.md',
     '/guidelines/*.md',
     '/.claude/agents/*.md',
-    '/.claude/CLAUDE.md',
+    '/CLAUDE.md',
     '/.claude/settings.json',
     '/.mcp.json',
-    '/.claude-env',
-    '/.claude/hooks/*.sh',
+    '/.claude/hooks/**/*.sh',
   ],
   { query: '?raw', import: 'default' }
 );
