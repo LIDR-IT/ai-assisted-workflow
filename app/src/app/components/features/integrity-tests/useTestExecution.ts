@@ -6,7 +6,6 @@ import {
   TestStatus,
   TEST_DEFINITIONS,
   TEST_CATEGORIES,
-  EXPECTED_COUNTS,
   HELPCENTER_DOCPATHS,
   SITEMAP_DOCPATHS,
   TEST_EXECUTION_CONFIG,
@@ -15,7 +14,6 @@ import {
   getAsyncTests,
 } from '@/data/features/integrityTests';
 import { availableDocPaths, mdFiles } from '@/app/components/diagrams/MarkdownViewer';
-import { ecosystemStats } from '@/data/simple-stats';
 import { skills } from '@/data/artifacts/skills';
 import { commands } from '@/data/artifacts/commands';
 
@@ -103,10 +101,10 @@ export function useTestExecution() {
           result = await executeNamingConventionTest(testDef);
           break;
         case 't13':
-          result = await executeSkillCountTest(testDef);
+          result = await executeSkillFrontmatterTest(testDef);
           break;
         case 't14':
-          result = await executeCommandCountTest(testDef);
+          result = await executeCommandFrontmatterTest(testDef);
           break;
         case 't15':
           result = await executeRelatedSkillsTest(testDef);
@@ -422,35 +420,114 @@ async function executeNamingConventionTest(testDef: TestDefinition): Promise<Tes
   };
 }
 
-async function executeSkillCountTest(testDef: TestDefinition): Promise<TestResult> {
-  const expected = EXPECTED_COUNTS.skills;
-  const actual = ecosystemStats.skills;
+/**
+ * Validates that a markdown file starts with a YAML frontmatter block (`---`)
+ * containing at least a `description:` field. Returns null if valid, or an
+ * error message describing the violation.
+ *
+ * BMad and Claude meta-tooling skills are treated as imported third-party
+ * code — their frontmatter follows the Anthropic Agent Skills standard, not
+ * the LIDR enhanced standard, so they are validated separately (see callers).
+ */
+function validateFrontmatter(content: string): string | null {
+  const trimmed = content.trimStart();
+  if (!trimmed.startsWith('---')) {
+    return 'missing opening --- delimiter';
+  }
+  const closingIdx = trimmed.indexOf('\n---', 3);
+  if (closingIdx === -1) {
+    return 'missing closing --- delimiter';
+  }
+  const block = trimmed.slice(3, closingIdx);
+  if (!/^\s*description\s*:/m.test(block)) {
+    return 'missing description field';
+  }
+  return null;
+}
+
+// T13: Frontmatter YAML valido en todos los SKILL.md (LIDR-owned skills only)
+async function executeSkillFrontmatterTest(testDef: TestDefinition): Promise<TestResult> {
+  const violations: string[] = [];
+  let checked = 0;
+  let skipped = 0;
+
+  for (const [path, loader] of Object.entries(mdFiles)) {
+    const match = path.match(/\/\.claude\/skills\/([^/]+)\/SKILL\.md$/);
+    if (!match) {
+      continue;
+    }
+    const skillDir = match[1];
+    // Only validate LIDR-owned skills. BMad and Claude meta-tooling follow
+    // upstream conventions and are imported as-is.
+    if (!skillDir?.startsWith('lidr-')) {
+      skipped++;
+      continue;
+    }
+    checked++;
+    try {
+      const content = await loader();
+      const err = validateFrontmatter(content);
+      if (err) {
+        violations.push(`${skillDir}: ${err}`);
+      }
+    } catch {
+      violations.push(`${skillDir}: could not read file`);
+    }
+  }
 
   return {
     id: testDef.id,
     name: testDef.name,
     category: testDef.category,
-    status: expected === actual ? 'pass' : 'fail',
+    status: violations.length === 0 ? 'pass' : 'fail',
     message:
-      expected === actual
-        ? `✅ Skill count correct: ${actual}`
-        : `❌ Skill count mismatch: expected ${expected}, got ${actual}`,
+      violations.length === 0
+        ? `✅ Frontmatter valid in ${checked} LIDR SKILL.md (${skipped} BMad/claude skipped — upstream standard)`
+        : `❌ ${violations.length} LIDR SKILL.md with invalid frontmatter (${checked} checked, ${skipped} skipped)`,
+    details: violations.length > 0 ? violations.slice(0, 10) : undefined,
   };
 }
 
-async function executeCommandCountTest(testDef: TestDefinition): Promise<TestResult> {
-  const expected = EXPECTED_COUNTS.commands;
-  const actual = ecosystemStats.commands;
+// T14: Frontmatter YAML valido en todos los command .md (LIDR-owned commands only)
+async function executeCommandFrontmatterTest(testDef: TestDefinition): Promise<TestResult> {
+  const violations: string[] = [];
+  let checked = 0;
+  let skipped = 0;
+
+  for (const [path, loader] of Object.entries(mdFiles)) {
+    const match = path.match(/\/\.claude\/commands\/([^/]+)\.md$/);
+    if (!match) {
+      continue;
+    }
+    const commandName = match[1];
+    // Only validate LIDR commands; upstream commands (none currently, but
+    // reserved for future bmad-*, claude-* command imports) are skipped.
+    if (!commandName?.startsWith('lidr-')) {
+      skipped++;
+      continue;
+    }
+    checked++;
+    try {
+      const content = await loader();
+      const err = validateFrontmatter(content);
+      if (err) {
+        violations.push(`${commandName}: ${err}`);
+      }
+    } catch {
+      violations.push(`${commandName}: could not read file`);
+    }
+  }
 
   return {
     id: testDef.id,
     name: testDef.name,
     category: testDef.category,
-    status: expected === actual ? 'pass' : 'fail',
+    status: violations.length === 0 ? 'pass' : 'fail',
     message:
-      expected === actual
-        ? `✅ Command count correct: ${actual}`
-        : `❌ Command count mismatch: expected ${expected}, got ${actual}`,
+      violations.length === 0
+        ? `✅ Frontmatter valid in ${checked} LIDR command .md (${skipped} non-lidr skipped)`
+        : `❌ ${violations.length} LIDR command .md with invalid frontmatter (${checked} checked, ${skipped} skipped)`,
+    details: violations.length > 0 ? violations.slice(0, 10) : undefined,
   };
 }
 
