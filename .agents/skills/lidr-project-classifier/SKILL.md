@@ -10,8 +10,9 @@ owner_role: "TL"
 automation: true
 domain_agnostic: true
 description: >
-  Classify projects by type, complexity, and domain to configure appropriate SDLC workflows.
-  ALWAYS use at project intake before starting Discovery phase.
+  PRE-BMAD WRAPPER: auto-classifies a project by type (13 categories: web app, mobile, backend, library, CLI, etc.), complexity, and domain in <30s.
+  Outputs feed into `bmad-generate-project-context` (which builds the AI context doc) and the Gate 0 intake decision.
+  ALWAYS use at project intake BEFORE invoking `bmad-generate-project-context`, so BMad receives a pre-classified input.
 ---
 
 # Skill: Project Classifier (LIDR SDLC Methodology)

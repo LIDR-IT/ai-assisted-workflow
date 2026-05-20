@@ -1,5 +1,5 @@
 ---
-name: commit-management
+name: lidr-commit-management
 description: This skill should be used when the user asks about "commit best practices", "fix commit", "amend commit", "commit message guidelines", "conventional commits", "rewrite commits", "commit history", or needs help managing git commits following project standards.
 version: 1.0.0
 ---

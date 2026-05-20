@@ -10,12 +10,11 @@ owner_role: "QA Lead"
 automation: false
 domain_agnostic: true
 description: >
-  Structure comprehensive bug reports that enable developers to reproduce issues in under 5 minutes without questions.
-  Domain-agnostic — works for any application type, technology stack, or platform.
-  Use for unexpected behavior, performance issues, production incidents, or user complaints.
-  Essential for QA-to-Dev communication during testing phase and production issue reporting.
-  Always use when behavior differs from expected test results, always use when users report production issues or when developers self-report bugs.
-  Do NOT use for feature requests (use business-case), for design changes (use ux-design-spec), or for enhancement requests.
+  QA→DEV WRAPPER complementing `bmad-investigate` (which is Dev-internal forensic case analysis).
+  This skill structures the OUTBOUND QA→Dev bug report: <5min reproduction goal, environment snapshot, severity classification, Jira-ready structure.
+  When `bmad-investigate` finds the root cause, this skill formats it as a QA bug ticket the dev team consumes.
+  Use for unexpected behavior, performance issues, production incidents, or user complaints — QA-facing.
+  Do NOT use for forensic investigation (use `bmad-investigate`), feature requests (use `bmad-prd`), or design changes (use `bmad-create-ux-design`).
   Triggers on "report bug", "create bug report", "found a bug", "defect report", "file issue", "production issue", "unexpected behavior".
   Output in Spanish (functional description), English (technical data, logs), structured for Jira/tracking tools.
   Audience: Developer (reproduces and fixes), QA Lead (triages priority), PO (assesses business impact).

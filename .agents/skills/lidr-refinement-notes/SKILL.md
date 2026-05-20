@@ -9,7 +9,7 @@ phase: 4
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Essential for user story refinement - ALWAYS use during backlog grooming sessions for any sprint-ready assessment. CRITICAL for capturing domain-specific decisions including accuracy requirements, compliance clarifications, performance thresholds, and cross-platform compatibility needs. Use when refining user stories, verifying acceptance criteria, or capturing technical decisions in refinement sessions. Domain-agnostic — works for any project type, technology stack, or industry vertical."
+description: "POST-BMAD WRAPPER: consumes user stories from `bmad-create-story` and captures DoR-readiness backlog grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer that BMad's story creation does not provide. ALWAYS use after `bmad-create-story` during backlog grooming, before sprint commitment."
 ---
 
 # Refinement Notes Structurer

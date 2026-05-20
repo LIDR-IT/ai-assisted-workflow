@@ -9,7 +9,7 @@ phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Comprehensive audit skill for validating that all ecosystem artifacts — skills, rules, docs, ADRs, standards, and guides — comply with established SDLC ecosystem standards. ALWAYS use when conducting quality assessments, compliance reviews, or ecosystem health checks. CRITICAL for ensuring frontmatter consistency, domain-agnostic content, methodology uniformity, staleness detection, and structural integrity across the full ecosystem (skills + rules + docs). Essential for quality gates, periodic reviews, and pre-deployment validations. Triggers on 'audit skills', 'audit ecosystem', 'audit rules', 'audit docs', 'validate standards', 'compliance check', 'skill quality review', 'ecosystem health assessment', 'frontmatter audit', 'staleness check'."
+description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-general` (which reviews content quality). This audits the `.agents/` ecosystem STRUCTURE itself: frontmatter consistency, domain-agnostic content, methodology uniformity, staleness detection, path correctness, drift between sources of truth. Use for periodic ecosystem health checks, not content reviews. Triggers on 'audit skills', 'audit ecosystem', 'audit rules', 'audit docs', 'validate standards', 'compliance check', 'frontmatter audit', 'staleness check'."
 ---
 
 # Audit Standards Validator

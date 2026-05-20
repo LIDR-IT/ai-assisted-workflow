@@ -1,5 +1,5 @@
 ---
-name: ticket-validation
+name: lidr-ticket-validation
 description: This skill should be used when agents need to "validate ticket structure", "check YAML frontmatter", "verify acceptance criteria", "review Definition of Done", or "validate BDD scenarios". Provides validation patterns and checklists for ticket quality.
 version: 0.1.0
 ---
