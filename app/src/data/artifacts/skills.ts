@@ -248,7 +248,39 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/refinement-notes/SKILL.md',
   },
 
-  // Fase 5 — Desarrollo (4)
+  // Fase 5 — Desarrollo (6)
+  {
+    id: 'lidr-using-git-worktrees',
+    name: 'lidr-using-git-worktrees',
+    phase: 'Fase 5 — Desarrollo',
+    phaseNum: 5,
+    source: 'lidr',
+    criticality: 'recommended',
+    description:
+      'Create, use, and clean up isolated git worktrees so an agent can work on multiple features in parallel without contaminating the main checkout. Prerequisite of lidr-run-parallel-tasks.',
+    triggers: ['use a worktree', 'isolate this work', 'run the change in a worktree'],
+    roles: ['Dev', 'TL'],
+    gateContribution: 'Gate 4',
+    docPath: '.agents/skills/lidr-using-git-worktrees/SKILL.md',
+    relatedSkills: ['lidr-run-parallel-tasks'],
+  },
+  {
+    id: 'lidr-run-parallel-tasks',
+    name: 'lidr-run-parallel-tasks',
+    phase: 'Fase 5 — Desarrollo',
+    phaseNum: 5,
+    source: 'lidr',
+    criticality: 'optional',
+    description:
+      'Run N change-driven features in parallel, each in its own git worktree, following the full LIDR spec lifecycle (enrich → new → ff → apply → verify). Requires Opus high reasoning.',
+    triggers: ['run parallel-tasks.md', 'run the parallel changes', 'lanza los tasks en paralelo'],
+    roles: ['TL'],
+    gateContribution: 'Gate 4',
+    docPath: '.agents/skills/lidr-run-parallel-tasks/SKILL.md',
+    automated: true,
+    relatedSkills: ['lidr-using-git-worktrees'],
+    relatedCommands: ['lidr-spec-new', 'lidr-spec-ff', 'lidr-spec-apply', 'lidr-spec-verify'],
+  },
   {
     id: 'pr-description',
     name: 'pr-description',

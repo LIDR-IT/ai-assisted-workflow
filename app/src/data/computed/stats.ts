@@ -70,9 +70,9 @@ const IS_NODE =
 // These reflect the LIDR SDLC ecosystem state captured at merge time
 // (2026-05-18). The Vitest/Node side uses real scans and overrides this.
 const BROWSER_FALLBACK_COUNTS = {
-  rules: 5, // .agents/rules/lidr-sdlc/*.md (org, project, tech-stack, workflows, documentation)
+  rules: 7, // .agents/rules/lidr-sdlc/*.md (org, project, tech-stack, workflows, documentation, spec-execution, model-selection)
   hooks: 4, // .agents/hooks/lidr/*.sh
-  agents: 6, // .agents/subagents/lidr-*.md (qa, release, security, onboarding, docs, metrics)
+  agents: 10, // .agents/subagents/lidr-*.md (qa, release, security, onboarding, docs, metrics, doc-improver, pr-validator, ticket-enricher, spec-orchestrator)
   docsSupport: 33, // Snapshot count of LIDR docs (pre-merge state, 2026-05-18)
   validationScripts: 55, // skill validators + shared validators
   mcps: 4, // .mcp.json servers

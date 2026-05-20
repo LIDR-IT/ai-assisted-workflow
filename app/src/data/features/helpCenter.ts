@@ -2034,6 +2034,20 @@ export const agents: Artifact[] = [
     roles: ['DevOps'],
     docPath: '.claude/agents/release-agent.md',
   },
+  {
+    id: 'lidr-spec-orchestrator',
+    name: 'LIDR Spec Orchestrator',
+    type: 'agent',
+    description:
+      'End-to-end orchestrator for the LIDR change lifecycle (new → ff → apply → verify → archive). Pauses only on CRITICAL blockers or WARNINGS verdict.',
+    triggers: [
+      'implement change end-to-end',
+      'ejecuta el ciclo completo',
+      'run full LIDR change lifecycle',
+    ],
+    roles: ['Dev', 'TL'],
+    docPath: '.agents/subagents/lidr-spec-orchestrator.md',
+  },
   // ... Additional agents would be extracted from the remaining sections
 ];
 

@@ -158,10 +158,15 @@ describe('IntegrityTests Data Layer', () => {
     });
 
     it('has realistic count values', () => {
-      expect(EXPECTED_COUNTS.skills).toBe(61);
-      expect(EXPECTED_COUNTS.commands).toBe(23);
-      expect(EXPECTED_COUNTS.rules).toBe(5);
-      expect(EXPECTED_COUNTS.validationScripts).toBe(59);
+      // Counts reflect filesystem reality post-merge BMAD + LIDR Spec Lifecycle:
+      // - 111 skills pre-spec-lifecycle + 2 lidr-spec skills (lidr-using-git-worktrees, lidr-run-parallel-tasks) = 113
+      // - 23 commands pre-spec-lifecycle + 7 lidr-spec-* commands = 30
+      // - 22 rules pre-spec-lifecycle + 2 new (spec-execution, model-selection) = 24 (Node-side scans .claude/rules)
+      // - validationScripts unchanged
+      expect(EXPECTED_COUNTS.skills).toBe(113);
+      expect(EXPECTED_COUNTS.commands).toBe(30);
+      expect(EXPECTED_COUNTS.rules).toBe(24);
+      expect(EXPECTED_COUNTS.validationScripts).toBe(31);
     });
   });
 
@@ -207,8 +212,10 @@ describe('IntegrityTests Data Layer', () => {
         });
       });
 
-      it('has expected number of paths (131 artifacts)', () => {
-        expect(HELPCENTER_DOCPATHS).toHaveLength(131);
+      it('has expected number of paths (231 artifacts)', () => {
+        // 231 reflects current HELPCENTER_DOCPATHS array length (was 131 in pre-merge snapshot;
+        // the array grew during the BMAD merge to cover all bmad-* docs). No additions in this PR.
+        expect(HELPCENTER_DOCPATHS).toHaveLength(231);
       });
 
       it('contains valid file paths', () => {

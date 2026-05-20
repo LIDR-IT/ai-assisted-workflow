@@ -319,6 +319,103 @@ export const commands: Command[] = [
     relatedSkills: ['sdlc-tracking', 'external-sync'],
   },
 
+  // Tier 2.5 — LIDR Spec Lifecycle (7) — paridad nativa con specboot, Fase 5
+  {
+    id: 'lidr-spec-new',
+    name: 'lidr-spec-new',
+    tier: 'tactical',
+    description:
+      'Crea un change container LIDR con scaffold vacío (proposal, design, tasks, spec, test-report) en docs/projects/{cliente}/changes/<name>/',
+    authorizedRoles: ['Dev', 'TL'],
+    precondition: 'Ticket asignado o decisión técnica clara',
+    argument: '[change-name]',
+    model: 'sonnet',
+    gateContribution: 'Gate 4',
+    docPath: '.agents/commands/lidr-spec-new.md',
+    relatedSkills: ['lidr-using-git-worktrees'],
+  },
+  {
+    id: 'lidr-spec-ff',
+    name: 'lidr-spec-ff',
+    tier: 'tactical',
+    description:
+      'Fast-forward planning: genera proposal.md, design.md, spec.md y tasks.md de un change en un solo pase. Requiere Opus high reasoning.',
+    authorizedRoles: ['Dev', 'TL'],
+    precondition: 'Container creado + Enriched US disponible',
+    argument: '[change-name]',
+    model: 'opus',
+    gateContribution: 'Gate 4',
+    docPath: '.agents/commands/lidr-spec-ff.md',
+    relatedSkills: ['lidr-prd-tecnico', 'lidr-design-doc', 'lidr-generate-rf', 'lidr-user-stories'],
+  },
+  {
+    id: 'lidr-spec-apply',
+    name: 'lidr-spec-apply',
+    tier: 'tactical',
+    description:
+      'Implementa task-by-task el tasks.md del change. AGENT MUST EXECUTE unit + curl + Playwright per spec-execution.md.',
+    authorizedRoles: ['Dev', 'TL'],
+    precondition: 'tasks.md válido (post-ff)',
+    argument: '[change-name]',
+    model: 'sonnet',
+    gateContribution: 'Gate 4',
+    docPath: '.agents/commands/lidr-spec-apply.md',
+    relatedSkills: ['lidr-implement-ticket'],
+  },
+  {
+    id: 'lidr-spec-verify',
+    name: 'lidr-spec-verify',
+    tier: 'tactical',
+    description:
+      'Verificación final: re-ejecuta tests, detecta docs drift, genera test-report.md con verdict PASSED/WARNINGS/CRITICAL.',
+    authorizedRoles: ['Dev', 'TL'],
+    precondition: 'Apply completo',
+    argument: '[change-name]',
+    model: 'sonnet',
+    gateContribution: 'Gate 4',
+    docPath: '.agents/commands/lidr-spec-verify.md',
+    relatedSkills: ['lidr-test-execution-report'],
+  },
+  {
+    id: 'lidr-spec-archive',
+    name: 'lidr-spec-archive',
+    tier: 'tactical',
+    description:
+      'Archiva un change verificado moviéndolo a docs/projects/{cliente}/changes/archive/YYYY-MM-DD-<name>/ y actualiza índices.',
+    authorizedRoles: ['Dev', 'TL'],
+    precondition: 'test-report verdict PASSED (o WARNINGS aceptadas)',
+    argument: '[change-name]',
+    model: 'sonnet',
+    gateContribution: 'Gate 4',
+    docPath: '.agents/commands/lidr-spec-archive.md',
+  },
+  {
+    id: 'lidr-spec-continue',
+    name: 'lidr-spec-continue',
+    tier: 'tactical',
+    description:
+      'Diagnostica el estado actual de un change pausado y dispatcha al siguiente paso del lifecycle.',
+    authorizedRoles: ['Dev', 'TL'],
+    precondition: 'Container existente',
+    argument: '[change-name]',
+    model: 'sonnet',
+    gateContribution: 'Gate 4',
+    docPath: '.agents/commands/lidr-spec-continue.md',
+  },
+  {
+    id: 'lidr-spec-bulk-archive',
+    name: 'lidr-spec-bulk-archive',
+    tier: 'tactical',
+    description:
+      'Archiva todos los changes con verdict PASSED en una operación masiva, con confirmación interactiva.',
+    authorizedRoles: ['TL'],
+    precondition: 'Múltiples changes verificados',
+    argument: '[glob-filter]',
+    model: 'sonnet',
+    gateContribution: 'Gate 4',
+    docPath: '.agents/commands/lidr-spec-bulk-archive.md',
+  },
+
   // Tier 3 — Utility (1)
   {
     id: 'lidr-help',
