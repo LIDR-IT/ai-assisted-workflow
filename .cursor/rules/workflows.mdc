@@ -48,6 +48,26 @@ scope: workflow
 | `/sync-docs [scope]`          | Sincroniza documentación tras cambios de código               | Dev, Tech Lead, QA Lead            | Cambios mergeados              |
 | `/sprint-health [sprint-id]`  | Monitoreo activo de salud del sprint con detección de riesgos | SM, PME, Tech Lead, QA Lead        | Sprint activo en progreso      |
 
+### Tier 2 — LIDR Spec Lifecycle (granular per-change workflow, Fase 5)
+
+Native LIDR change-lifecycle commands — paridad con el patrón specboot, implementado dentro del ecosistema LIDR sin dependencias externas. Cada change es un directorio versionable en `docs/projects/{cliente}/changes/<name>/` con artefactos `proposal.md`, `design.md`, `spec.md`, `tasks.md`, `test-report.md` y `reports/`.
+
+| Command                          | Propósito                                                                                | Roles Autorizados | Precondición                              |
+| -------------------------------- | ---------------------------------------------------------------------------------------- | ----------------- | ----------------------------------------- |
+| `/lidr-spec-new [name]`          | Crea el change container con scaffold vacío                                              | Dev, Tech Lead    | Ticket asignado o decisión técnica clara  |
+| `/lidr-spec-ff [name]`           | Fast-forward planning: genera proposal+design+spec+tasks en un pase (requiere Opus high) | Dev, Tech Lead    | Container creado + Enriched US disponible |
+| `/lidr-spec-apply [name]`        | Implementa task-by-task; AGENT MUST EXECUTE unit + curl + Playwright                     | Dev, Tech Lead    | tasks.md válido (post-ff)                 |
+| `/lidr-spec-verify [name]`       | Verificación final: re-ejecuta tests, detecta docs drift, escribe test-report.md         | Dev, Tech Lead    | Apply completo                            |
+| `/lidr-spec-archive [name]`      | Mueve a `changes/archive/YYYY-MM-DD-<name>/` y actualiza índices                         | Dev, Tech Lead    | test-report verdict PASSED (o WARNINGS aceptadas) |
+| `/lidr-spec-continue [name]`     | Diagnostica estado y retoma change pausado                                               | Dev, Tech Lead    | Container existente                       |
+| `/lidr-spec-bulk-archive [glob]` | Archiva todos los changes con verdict PASSED                                             | Tech Lead         | Múltiples changes verificados             |
+
+> El subagent **`lidr-spec-orchestrator`** orquesta el lifecycle end-to-end (new → ff → apply → verify → archive) cuando el usuario quiere ejecutar todo en un shot.
+>
+> La skill **`lidr-run-parallel-tasks`** lanza N changes en paralelo en worktrees aislados (usa `lidr-using-git-worktrees`).
+>
+> Rules aplicables: `lidr-sdlc/spec-execution.md` (mandatory steps) y `lidr-sdlc/model-selection.md` (Opus high para planning).
+
 ### Tier 3 — Utility (informacional, sin efectos secundarios)
 
 | Command              | Propósito                                                       | Roles Autorizados | Precondición |
@@ -75,6 +95,13 @@ scope: workflow
 /update-changelog          ❌   ❌   ✅   ❌   ❌   ❌   ✅    ❌
 /sync-docs                 ❌   ❌   ✅   ✅   ✅   ❌   ❌    ❌
 /sprint-health             ✅   ❌   ✅   ❌   ✅   ❌   ❌    ✅
+/lidr-spec-new             ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-ff              ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-apply           ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-verify          ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-archive         ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-continue        ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-bulk-archive    ❌   ❌   ✅   ❌   ❌   ❌   ❌    ❌
 /lidr-help                      ✅   ✅   ✅   ✅   ✅   ✅   ✅    ✅
 ```
 
@@ -174,6 +201,25 @@ FASE 5: DESARROLLO (por cada ticket)
       ├── hook: dtc-write-guard   → Valida DTC + DoD en PreToolUse:Write|Edit
       └── /create-pr [ID]          → Crea PR (puede ser standalone)
 
+  Dev ejecuta (LIDR Spec Lifecycle — granular per-change, opcional):
+    /lidr-spec-new <name>    → Crea docs/projects/<cliente>/changes/<name>/ con scaffold
+    /lidr-spec-ff <name>     → Fast-forward planning (Opus high reasoning)
+                              ├── skill: lidr-prd-tecnico   → proposal.md
+                              ├── skill: lidr-design-doc    → design.md
+                              ├── skill: lidr-generate-rf   → spec.md (RFs + NFRs)
+                              └── skill: lidr-user-stories  → tasks.md (con mandatory steps)
+    /lidr-spec-apply <name>  → Implementa task-by-task (Sonnet medium)
+                              ├── rule: spec-execution.md   → AGENT MUST EXECUTE tests
+                              ├── reports/                  → un report por mandatory step
+                              └── tasks.md                  → [x] tras cada task completada
+    /lidr-spec-verify <name> → Re-ejecuta tests, detecta docs drift, escribe test-report.md
+    /lidr-spec-archive <name>→ Mueve a changes/archive/YYYY-MM-DD-<name>/
+    /create-pr [ID]          → PR referencia el ticket + el change archivado
+
+  TL ejecuta (paralelización opcional):
+    skill: lidr-run-parallel-tasks → Lanza N changes en worktrees aislados
+                                   → cada sub-agente corre el pipeline completo
+
   TL ejecuta:
     /advance-gate 4          → Agregador: ¿todos los tickets del sprint PASS?
                               → AUTO: notifica QA team
@@ -262,6 +308,48 @@ POST-DEPLOY
   ↓
 /sync-docs architecture                 → TL actualiza docs
 /validate-project-docs my-project       → TL verifica docs
+```
+
+### Cadena típica: LIDR Spec Lifecycle (per-change granular)
+
+```
+ENRICHED USER STORY (de Jira o inline)
+  ↓
+/lidr-spec-new add-item-soft-delete       → Dev/TL crea container
+  ↓
+/lidr-spec-ff add-item-soft-delete        → Genera proposal+design+spec+tasks (Opus high)
+  ↓
+/lidr-spec-apply add-item-soft-delete     → Implementa task-by-task (Sonnet medium)
+                                            AGENT MUST EXECUTE unit + curl + Playwright
+                                            Reports en changes/<name>/reports/
+  ↓
+/lidr-spec-verify add-item-soft-delete    → Re-ejecuta tests, escribe test-report.md
+                                            Verdict: PASSED | WARNINGS | CRITICAL
+  ↓ (si PASSED)
+/lidr-spec-archive add-item-soft-delete   → Mueve a changes/archive/YYYY-MM-DD-<name>/
+  ↓
+/create-pr PROJ-123                        → PR referencia ticket + change archivado
+```
+
+End-to-end equivalente vía subagent:
+
+```
+"Implement add-item-soft-delete end-to-end"
+  → lidr-spec-orchestrator subagent corre todo el ciclo
+  → pausa en verdict WARNINGS/CRITICAL para decisión humana
+```
+
+Paralelización (sprint denso, varios changes a la vez):
+
+```
+parallel-tasks.md (con N task blocks)
+  ↓
+"run parallel-tasks.md"
+  → skill lidr-run-parallel-tasks lanza N sub-agentes
+  → cada uno en .worktrees/<name>/ aislado
+  → pipeline completo por sub-agente, stop antes de archive
+  ↓
+TL inspecciona cada worktree, decide archive/PR manual
 ```
 
 ### Cadena típica: Hotfix
