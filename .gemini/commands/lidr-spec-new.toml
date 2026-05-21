@@ -37,10 +37,12 @@ Load: @../rules/lidr-sdlc/documentation.md (frontmatter standard) and @../rules/
 ## Validate input
 
 If "$1" is empty:
+
 - Use AskUserQuestion: "What change do you want to create? Provide a short kebab-case name (e.g., `add-item-soft-delete`)."
 - Derive a kebab-case name from the response if needed.
 
 Validate the name:
+
 - Lowercase + hyphens only (regex `^[a-z][a-z0-9-]+$`)
 - Length between 3 and 60 characters
 - Not already present in `docs/projects/{{CLIENT_CODE}}/changes/` or `docs/projects/{{CLIENT_CODE}}/changes/archive/`
@@ -50,6 +52,7 @@ If invalid: ❌ explain why and exit (do NOT auto-rename).
 ## Resolve client code
 
 Determine `{{CLIENT_CODE}}` from one of (in order):
+
 1. `src/data/client.ts` (the React app's active client)
 2. Environment variable `LIDR_CLIENT_CODE`
 3. `.agents/rules/lidr-sdlc/project.md` — read the "Código" field
@@ -98,6 +101,7 @@ editHistory:
 
 
 Use the artifact title appropriate for each file:
+
 - `proposal.md` → "Proposal"
 - `design.md` → "Design"
 - `tasks.md` → "Tasks"

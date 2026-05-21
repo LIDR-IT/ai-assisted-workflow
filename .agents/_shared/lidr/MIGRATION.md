@@ -150,13 +150,13 @@ Plus 4 anytime skills (agents-architecture, command-development, commit-manageme
 
 ### Renames (5)
 
-| Before                  | After                        | Source change         | Notes                                  |
-| ----------------------- | ---------------------------- | --------------------- | -------------------------------------- |
-| `agents-architecture`   | `claude-agents-architecture` | `anytime` (no change) | Meta entry-point for `.agents/` system |
-| `command-development`   | `claude-command-development` | `anytime` (no change) | Slash command authoring                |
-| `lidr-generate-rule`    | `claude-generate-rule`       | `lidr` → `anytime`    | Claude Code rule files                 |
-| `lidr-hook-development` | `claude-hook-development`    | `lidr` → `anytime`    | PreToolUse/PostToolUse/Stop hooks      |
-| `lidr-mcp-integration`  | `claude-mcp-integration`     | `lidr` → `anytime`    | MCP server config                      |
+| Before                  | After                      | Source change         | Notes                                  |
+| ----------------------- | -------------------------- | --------------------- | -------------------------------------- |
+| `agents-architecture`   | `lidr-agents-architecture` | `anytime` (no change) | Meta entry-point for `.agents/` system |
+| `command-development`   | `lidr-command-development` | `anytime` (no change) | Slash command authoring                |
+| `lidr-generate-rule`    | `lidr-generate-rule`       | `lidr` → `anytime`    | Claude Code rule files                 |
+| `lidr-hook-development` | `lidr-hook-development`    | `lidr` → `anytime`    | PreToolUse/PostToolUse/Stop hooks      |
+| `lidr-mcp-integration`  | `lidr-mcp-integration`     | `lidr` → `anytime`    | MCP server config                      |
 
 ### Why
 

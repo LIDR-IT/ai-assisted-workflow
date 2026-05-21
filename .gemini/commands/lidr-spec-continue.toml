@@ -34,6 +34,7 @@ Verify the change folder exists. If not: ❌ "Change not found."
 ## Diagnose current state
 
 Read in order:
+
 1. `proposal.md` frontmatter — extract `stepsCompleted`, `status`
 2. `design.md` frontmatter
 3. `spec.md` frontmatter
@@ -43,16 +44,16 @@ Read in order:
 
 Determine state:
 
-| State | Indicator | Next step |
-|---|---|---|
-| **Just-scaffolded** | All artifacts have `status: draft` with empty/placeholder bodies | `/lidr-spec-ff <name>` |
-| **FF interrupted** | Some artifacts have content, others are placeholder | `/lidr-spec-ff <name>` (re-run, it picks up where it stopped) |
-| **Apply in progress** | `tasks.md` has both `[ ]` and `[x]`, frontmatter `status: in-progress` | `/lidr-spec-apply <name>` (resumes from first `[ ]`) |
-| **Apply complete, not verified** | All tasks `[x]`, `test-report.md` is placeholder | `/lidr-spec-verify <name>` |
-| **Verified WARNINGS, awaiting decision** | `test-report.md` verdict WARNINGS | Ask user: archive anyway or fix issues |
-| **Verified CRITICAL** | `test-report.md` verdict CRITICAL | List CRITICAL findings, suggest `/lidr-spec-apply` re-run |
-| **Verified PASSED** | `test-report.md` verdict PASSED | Suggest `/lidr-spec-archive <name>` |
-| **Archived** | Directory moved to `changes/archive/` | ❌ "Already archived" |
+| State                                    | Indicator                                                              | Next step                                                     |
+| ---------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **Just-scaffolded**                      | All artifacts have `status: draft` with empty/placeholder bodies       | `/lidr-spec-ff <name>`                                        |
+| **FF interrupted**                       | Some artifacts have content, others are placeholder                    | `/lidr-spec-ff <name>` (re-run, it picks up where it stopped) |
+| **Apply in progress**                    | `tasks.md` has both `[ ]` and `[x]`, frontmatter `status: in-progress` | `/lidr-spec-apply <name>` (resumes from first `[ ]`)          |
+| **Apply complete, not verified**         | All tasks `[x]`, `test-report.md` is placeholder                       | `/lidr-spec-verify <name>`                                    |
+| **Verified WARNINGS, awaiting decision** | `test-report.md` verdict WARNINGS                                      | Ask user: archive anyway or fix issues                        |
+| **Verified CRITICAL**                    | `test-report.md` verdict CRITICAL                                      | List CRITICAL findings, suggest `/lidr-spec-apply` re-run     |
+| **Verified PASSED**                      | `test-report.md` verdict PASSED                                        | Suggest `/lidr-spec-archive <name>`                           |
+| **Archived**                             | Directory moved to `changes/archive/`                                  | ❌ "Already archived"                                         |
 
 ## Announce state and dispatch
 

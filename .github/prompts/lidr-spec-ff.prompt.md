@@ -51,6 +51,7 @@ Same logic as `/lidr-spec-new` (read `src/data/client.ts`, env var, or `lidr-sdl
 ## Load context
 
 Read into context:
+
 - The 4 placeholder artifacts (proposal, design, tasks, spec)
 - `lidr-sdlc/org.md`, `tech-stack.md`, `project.md`, `documentation.md`, `spec-execution.md`
 - Any enriched user story attached to the change (look for `docs/projects/<CLIENT_CODE>/changes/<change-name>/enriched-us.md` or argument)
@@ -64,6 +65,7 @@ If no enriched US is available: ask the user to provide one (or a Jira ticket ID
 Invoke logic from skill `lidr-prd-tecnico` (and `lidr-prd-funcional` if functional aspects are present). Output goes into the existing `proposal.md`, **replacing the placeholder body but preserving the frontmatter** (update `last_updated`, append to `editHistory`, set `status: in-progress`, add `step-02-proposal` to `stepsCompleted`).
 
 Content must cover:
+
 - Problem statement (from the enriched US)
 - Proposed solution (technical + functional outline)
 - Scope (in / out)
@@ -75,6 +77,7 @@ Content must cover:
 Invoke logic from skill `lidr-design-doc` (and `lidr-adr` if architectural decisions surface). Update frontmatter (append to `editHistory`, add `step-03-design` to `stepsCompleted`).
 
 Content must cover:
+
 - Architecture (component diagram or table)
 - Data model changes
 - API changes (new/modified endpoints, OpenAPI references)
@@ -88,6 +91,7 @@ Content must cover:
 Invoke logic from skills `lidr-generate-rf` (RFs with BDD) + `lidr-generate-nfr` (NFRs measurable). Update frontmatter (append to `editHistory`, add `step-04-spec` to `stepsCompleted`).
 
 Content must cover:
+
 - Functional Requirements (RF-1, RF-2, ...) with BDD Given/When/Then
 - Non-Functional Requirements (NFR-1, NFR-2, ...) measurable (latency, availability, etc.)
 - Traceability matrix (RF ↔ tasks)
@@ -110,6 +114,7 @@ After Step 4 completes, the planning is done. Optionally revert to Sonnet medium
 ## Validate output
 
 For each of the 4 artifacts:
+
 - Frontmatter is valid YAML
 - `last_updated` is today
 - `editHistory` has the new entry

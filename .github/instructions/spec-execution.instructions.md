@@ -51,6 +51,7 @@ docs/projects/{{CLIENT_CODE}}/changes/<change-name>/reports/YYYY-MM-DD-step-N+M-
 ```
 
 Ejemplos de nombres:
+
 - `2026-05-20-step-N+1-unit-test-and-db-verification.md`
 - `2026-05-20-step-N+2-curl-endpoint-testing.md`
 - `2026-05-20-step-N+3-playwright-e2e.md`
@@ -105,16 +106,19 @@ Ejemplos de nombres:
 - Agent: <agent-name>
 
 ## Commands Executed
+
 - `<command 1>`
 - `<command 2>`
 
 ## Unit Test Results
+
 - Targeted tests: X passed, Y failed, Z skipped
 - Full/required suite: X passed, Y failed, Z skipped
 - Runtime: <duration>
 - Notes: <flaky tests, retries, exceptions>
 
 ## Database State Verification
+
 - Pre-test baseline:
   - <metric/table/check>: <value>
 - Post-test validation:
@@ -123,6 +127,7 @@ Ejemplos de nombres:
 - Restoration actions (if any): <actions>
 
 ## Outcome
+
 - Step N+1 status: PASS/FAIL
 - Blocking issues: <none or list>
 ```
@@ -130,6 +135,7 @@ Ejemplos de nombres:
 **Dependencies**: test runner instalado, acceso a DB, permiso para crear reports.
 
 **Notas**:
+
 - La IA DEBE ejecutar los tests — nunca pedir al usuario que los corra
 - Este paso es obligatorio incluso si los cambios parecen pequeños
 - El nombre del report debe seguir el patrón exacto para trazabilidad
@@ -150,6 +156,7 @@ Ejemplos de nombres:
 7. **Mark Task as Completed**: solo cuando todos los curl pasen y el estado de DB esté restaurado
 
 **Notas**:
+
 - MANDATORY para todos los endpoints nuevos o modificados
 - La IA DEBE ejecutar todos los curl
 - Toda operación CREATE/UPDATE/DELETE debe restaurar estado
@@ -172,6 +179,7 @@ Ejemplos de nombres:
 7. Marcar task completa + crear reporte `YYYY-MM-DD-step-N+3-playwright-e2e.md`
 
 **Notas**:
+
 - La IA DEBE ejecutar los E2E
 - Usar incremental waits (1-3s) con snapshot checks en vez de waits largos
 - Restaurar DB después de tests que modifiquen datos
@@ -181,6 +189,7 @@ Ejemplos de nombres:
 DTC compliance — ver `lidr-sdlc/documentation.md` §1 (matriz de impacto: cambio → docs afectados).
 
 La IA actualiza, en el mismo cambio:
+
 - `docs/projects/{{CLIENT_CODE}}/architecture.md` si hay schema/dependencia nuevos
 - `docs/projects/{{CLIENT_CODE}}/specs/routes.md` y OpenAPI spec si hay endpoint nuevo/modificado
 - `docs/projects/{{CLIENT_CODE}}/specs/components.md` si hay componente UI nuevo
@@ -208,18 +217,22 @@ Antes de finalizar cualquier `tasks.md`, verificar:
 
 ```markdown
 ## 0. Setup: Create Feature Branch (MANDATORY — FIRST STEP)
+
 - [ ] 0.1 Create feature branch `feature/<change-name>` from `main` (or current base)
 - [ ] 0.2 Verify branch creation and current branch status
 
 ## 1. Backend: Validator Tests (TDD)
+
 - [ ] 1.1 ...
 
 ...
 
 ## 8. Backend: Review and Update Existing Unit Tests (MANDATORY)
+
 - [ ] 8.1 ...
 
 ## 9. Backend: Run Unit Tests and Verify Database State (MANDATORY — AGENT MUST EXECUTE)
+
 - [ ] 9.1 Capture pre-test database baseline for impacted entities
 - [ ] 9.2 Run targeted unit tests for changed modules
 - [ ] 9.3 Run required broader unit test suite
@@ -228,6 +241,7 @@ Antes de finalizar cualquier `tasks.md`, verificar:
 - [ ] 9.6 Mark step complete only after tests pass and report exists
 
 ## 10. Backend: Manual Endpoint Testing with curl (MANDATORY — AGENT MUST EXECUTE)
+
 - [ ] 10.1 Ensure backend server is running
 - [ ] 10.2 Test GET endpoints with curl and verify responses
 - [ ] 10.3 Test POST endpoints with curl, verify creation, then restore database state
@@ -238,6 +252,7 @@ Antes de finalizar cualquier `tasks.md`, verificar:
 - [ ] 10.8 Verify database state matches pre-test state
 
 ## 11. Frontend: E2E Testing with Playwright MCP (MANDATORY if applicable — AGENT MUST EXECUTE)
+
 - [ ] 11.1 Ensure frontend and backend servers are running
 - [ ] 11.2 Navigate to application using Playwright MCP browser_navigate
 - [ ] 11.3 Execute complete user workflow using Playwright MCP tools
@@ -247,6 +262,7 @@ Antes de finalizar cualquier `tasks.md`, verificar:
 - [ ] 11.7 Document test scenarios and outcomes in report
 
 ## 16. Update Technical Documentation (MANDATORY)
+
 - [ ] 16.1 Update docs per DTC matrix in `lidr-sdlc/documentation.md`
 - [ ] 16.2 Create ADR if architectural decision involved
 - [ ] 16.3 Create report listing modified docs
@@ -302,6 +318,6 @@ Si la IA crea `tasks.md` sin seguir estos pasos obligatorios, el usuario tendrá
 
 ## 10. Changelog
 
-| Versión | Fecha | Autor | Cambios |
-|---|---|---|---|
-| 1.0.0 | 2026-05-20 | TL: LIDR Spec Native | Creación inicial — paridad LIDR-nativa con el patrón mandatory-steps |
+| Versión | Fecha      | Autor                | Cambios                                                              |
+| ------- | ---------- | -------------------- | -------------------------------------------------------------------- |
+| 1.0.0   | 2026-05-20 | TL: LIDR Spec Native | Creación inicial — paridad LIDR-nativa con el patrón mandatory-steps |

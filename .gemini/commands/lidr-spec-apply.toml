@@ -39,6 +39,7 @@ This is implementation work. Verify the session is on Sonnet medium. If on Opus 
 ## Select the change
 
 If "$1" is provided, use it. Otherwise:
+
 - Infer from conversation context if the user mentioned a change recently
 - Auto-select if only one active change exists in `docs/projects/<CLIENT_CODE>/changes/`
 - If ambiguous: list active changes and use AskUserQuestion
@@ -48,6 +49,7 @@ Always announce: "Applying change: <change-name>".
 ## Load context
 
 Read in this order (all required):
+
 1. `docs/projects/<CLIENT_CODE>/changes/<change-name>/proposal.md`
 2. `docs/projects/<CLIENT_CODE>/changes/<change-name>/design.md`
 3. `docs/projects/<CLIENT_CODE>/changes/<change-name>/spec.md`
@@ -88,6 +90,7 @@ For each pending task in `tasks.md`:
 ### Pause conditions
 
 Pause and ask for guidance only if:
+
 - A task is genuinely ambiguous and you cannot make a reasonable decision
 - Implementation reveals a design issue that requires updating `design.md` or `spec.md`
 - An error or environmental blocker stops progress (e.g., DB unreachable, dependency missing)

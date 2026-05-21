@@ -30,7 +30,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 
 - Edit once in `.agents/` → automatically synced to all 5 platforms
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic) — new in this version: `spec-execution.md` and `model-selection.md` for the LIDR Spec Lifecycle
-- **113 skills** (62 LIDR SDLC `lidr-*` + 2 LIDR spec-lifecycle + 45 BMAD `bmad-*` + 4 generic meta-skills) — new: `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`. Follow [Agent Skills](https://agentskills.io) open standard
+- **113 skills** (44 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
 - **37 commands** (23 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 7 generic) — new: 7 `lidr-spec-*` for the change lifecycle (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`)
 - **23 subagents** (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`) — new: `lidr-spec-orchestrator` for end-to-end change execution
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
@@ -142,8 +142,8 @@ ls .github/agents/*.agent.md
 
 ```
 .agents/                      # ← SINGLE SOURCE OF TRUTH
-├── rules/                    # 22 rules (5 LIDR + 17 generic)
-│   ├── lidr-sdlc/            # ← LIDR: org, project, tech-stack, workflows, documentation
+├── rules/                    # 24 rules (7 LIDR SDLC + 17 generic)
+│   ├── lidr-sdlc/            # ← LIDR: org, project, tech-stack, workflows, documentation, spec-execution, model-selection
 │   ├── code/                 # principles.md, style.md
 │   ├── content/              # copywriting.md
 │   ├── design/               # web-design.md (800+ line accessibility)
@@ -151,38 +151,53 @@ ls .github/agents/*.agent.md
 │   ├── process/              # git-workflow.md, documentation.md
 │   ├── product/, quality/, team/, tools/
 │
-├── skills/                   # 66 skills (62 lidr-* + 4 generic) — Agent Skills open standard
+├── skills/                   # 113 skills (44 lidr-* + 69 bmad-*) — Agent Skills open standard
 │   ├── lidr-business-case/   # ← LIDR Phase 1: Originación
-│   ├── lidr-prd-tecnico/     # ← LIDR Phase 2: Discovery
 │   ├── lidr-generate-rf/     # ← LIDR Phase 3: Specification
 │   ├── lidr-user-stories/    # ← LIDR Phase 4: Sprint Planning
 │   ├── lidr-adr/             # ← LIDR Phase 5: Development
-│   ├── lidr-test-plan/       # ← LIDR Phase 6: QA
-│   ├── lidr-security-checklist/  # ← LIDR Phase 7: Security
+│   ├── lidr-using-git-worktrees/   # ← LIDR Phase 5: parallel work
+│   ├── lidr-run-parallel-tasks/    # ← LIDR Phase 5: orchestrated parallelism
+│   ├── lidr-test-execution-report/ # ← LIDR Phase 6: QA
+│   ├── lidr-security-checklist/    # ← LIDR Phase 7: Security
 │   ├── lidr-release-notes/   # ← LIDR Phase 8: Deployment
-│   ├── agents-architecture/  # Generic meta-skill (skill+command+agent scaffolding)
-│   ├── command-development/  # Generic meta-skill (command authoring deep-dive)
-│   └── ...                   # (62 LIDR total spanning all 9 SDLC phases)
+│   ├── lidr-agents-architecture/   # LIDR meta-skill (skill+command+agent scaffolding)
+│   ├── lidr-command-development/   # LIDR meta-skill (command authoring)
+│   ├── lidr-hook-development/      # LIDR meta-skill (hook authoring)
+│   ├── lidr-mcp-integration/       # LIDR meta-skill (MCP server integration)
+│   ├── lidr-generate-rule/         # LIDR meta-skill (rule generation)
+│   ├── bmad-prd/, bmad-create-architecture/, ... # ← 69 BMAD skills (base flow + agents + utilities)
+│   └── ...                   # See `ls .agents/skills/` for full list
 │
-├── commands/                 # 30 commands (23 lidr-* + 7 generic)
+├── commands/                 # 37 commands (30 LIDR `lidr-*` + 7 generic)
 │   ├── lidr-advance-gate.md  # ← LIDR orchestrator: gate evaluation + handoff
-│   ├── lidr-implement-ticket.md  # ← LIDR: dev workflow
-│   ├── lidr-prepare-testing.md   # ← LIDR: QA workflow
-│   ├── lidr-help.md          # ← LIDR ecosystem help (formerly /lidr-help)
-│   ├── commit.md             # Generic
+│   ├── lidr-implement-ticket.md    # ← LIDR: dev workflow
+│   ├── lidr-prepare-testing.md     # ← LIDR: QA workflow
+│   ├── lidr-spec-new.md            # ← LIDR Spec Lifecycle: create change container
+│   ├── lidr-spec-ff.md             # ← LIDR Spec Lifecycle: fast-forward planning (Opus high)
+│   ├── lidr-spec-apply.md          # ← LIDR Spec Lifecycle: implement tasks
+│   ├── lidr-spec-verify.md         # ← LIDR Spec Lifecycle: final verification
+│   ├── lidr-spec-archive.md        # ← LIDR Spec Lifecycle: archive change
+│   ├── lidr-spec-continue.md       # ← LIDR Spec Lifecycle: resume paused change
+│   ├── lidr-spec-bulk-archive.md   # ← LIDR Spec Lifecycle: bulk archive
+│   ├── lidr-help.md          # ← LIDR ecosystem help
 │   ├── sync-setup.md         # Generic
+│   ├── test-hooks.md         # Generic
 │   └── ...
 │
-├── subagents/                # 9 agents (6 lidr-* + 3 generic)
+├── subagents/                # 23 subagents (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`)
 │   ├── lidr-qa-agent.md      # ← LIDR: QA automation
 │   ├── lidr-security-agent.md
 │   ├── lidr-release-agent.md
 │   ├── lidr-onboarding-agent.md
 │   ├── lidr-docs-agent.md
 │   ├── lidr-metrics-agent.md
-│   ├── doc-improver.md       # Generic
-│   ├── pr-validator.md       # Generic
-│   └── ticket-enricher.md    # Generic
+│   ├── lidr-doc-improver.md
+│   ├── lidr-pr-validator.md
+│   ├── lidr-ticket-enricher.md
+│   ├── lidr-spec-orchestrator.md   # ← LIDR Spec Lifecycle: end-to-end orchestrator
+│   ├── bmad-agent-analyst.agent.md, ... # ← 13 BMAD subagents
+│   └── ...
 │
 ├── mcp/                      # MCP server configs
 │   └── mcp-servers.json      # ← Source (universal format)
@@ -601,7 +616,7 @@ Each platform calls commands by a **different name** and expects a **different f
 | **Antigravity** | **"Workflows"** (different name!) | `.agents/workflows/<name>.md` (workspace) | Markdown + YAML | Internal symlink `.agents/workflows` → `commands`            |
 | **Copilot**     | "Prompt files"                    | `.github/prompts/<name>.prompt.md`        | Markdown + YAML | Generated from `.md` source (`$ARGUMENTS` → `{{{ input }}}`) |
 
-Total: 30 commands (23 LIDR `lidr-*` + 7 generic).
+Total: 37 commands (30 LIDR `lidr-*` — 23 SDLC + 7 spec-lifecycle — + 7 generic).
 
 ### Antigravity terminology note
 

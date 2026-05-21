@@ -132,7 +132,7 @@ export const commands: Command[] = [
     argument: '[name]',
     model: 'sonnet',
     docPath: '.claude/commands/init-project-docs.md',
-    relatedSkills: ['bmad-create-architecture', 'claude-generate-rule'],
+    relatedSkills: ['bmad-create-architecture', 'lidr-generate-rule'],
   },
   {
     id: 'validate-project-docs',
@@ -346,7 +346,7 @@ export const commands: Command[] = [
     model: 'opus',
     gateContribution: 'Gate 4',
     docPath: '.agents/commands/lidr-spec-ff.md',
-    relatedSkills: ['lidr-prd-tecnico', 'lidr-design-doc', 'lidr-generate-rf', 'lidr-user-stories'],
+    relatedSkills: ['bmad-prd', 'bmad-create-architecture', 'generate-rf', 'user-stories'],
   },
   {
     id: 'lidr-spec-apply',
@@ -360,7 +360,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Gate 4',
     docPath: '.agents/commands/lidr-spec-apply.md',
-    relatedSkills: ['lidr-implement-ticket'],
+    relatedSkills: ['pr-description', 'dev-handoff-qa', 'adr'],
   },
   {
     id: 'lidr-spec-verify',
@@ -374,7 +374,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Gate 4',
     docPath: '.agents/commands/lidr-spec-verify.md',
-    relatedSkills: ['lidr-test-execution-report'],
+    relatedSkills: ['test-execution-report', 'bmad-testarch-automate', 'bug-report'],
   },
   {
     id: 'lidr-spec-archive',

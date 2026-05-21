@@ -40,6 +40,7 @@ Verify `docs/projects/<CLIENT_CODE>/changes/<change-name>/` exists. If not: ❌ 
 ## Verify readiness
 
 Read `docs/projects/<CLIENT_CODE>/changes/<change-name>/test-report.md`:
+
 - If file does not exist: ❌ "Run /lidr-spec-verify first."
 - If `verdict: CRITICAL`: ❌ "Cannot archive. Verdict is CRITICAL. Fix issues and re-verify."
 - If `verdict: WARNINGS`: ask the user "Verdict is WARNINGS. Archive anyway? (yes/no)". Only proceed on explicit yes.
@@ -64,6 +65,7 @@ If a directory with the same `YYYY-MM-DD-<change-name>` already exists in archiv
 ## Update frontmatter
 
 For each `.md` file in the archived directory:
+
 - Set `status: archived`
 - Append to `editHistory` an entry:
   ```yaml
@@ -75,6 +77,7 @@ For each `.md` file in the archived directory:
 ## Update indices (if present)
 
 If `docs/projects/<CLIENT_CODE>/changes/INDEX.md` or similar exists, update it:
+
 - Remove the entry from "Active changes"
 - Add an entry to "Archived" with date and link to the archive path
 

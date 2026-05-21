@@ -52,15 +52,15 @@ scope: workflow
 
 Native LIDR change-lifecycle commands — paridad con el patrón specboot, implementado dentro del ecosistema LIDR sin dependencias externas. Cada change es un directorio versionable en `docs/projects/{cliente}/changes/<name>/` con artefactos `proposal.md`, `design.md`, `spec.md`, `tasks.md`, `test-report.md` y `reports/`.
 
-| Command                          | Propósito                                                                                | Roles Autorizados | Precondición                              |
-| -------------------------------- | ---------------------------------------------------------------------------------------- | ----------------- | ----------------------------------------- |
-| `/lidr-spec-new [name]`          | Crea el change container con scaffold vacío                                              | Dev, Tech Lead    | Ticket asignado o decisión técnica clara  |
-| `/lidr-spec-ff [name]`           | Fast-forward planning: genera proposal+design+spec+tasks en un pase (requiere Opus high) | Dev, Tech Lead    | Container creado + Enriched US disponible |
-| `/lidr-spec-apply [name]`        | Implementa task-by-task; AGENT MUST EXECUTE unit + curl + Playwright                     | Dev, Tech Lead    | tasks.md válido (post-ff)                 |
-| `/lidr-spec-verify [name]`       | Verificación final: re-ejecuta tests, detecta docs drift, escribe test-report.md         | Dev, Tech Lead    | Apply completo                            |
+| Command                          | Propósito                                                                                | Roles Autorizados | Precondición                                      |
+| -------------------------------- | ---------------------------------------------------------------------------------------- | ----------------- | ------------------------------------------------- |
+| `/lidr-spec-new [name]`          | Crea el change container con scaffold vacío                                              | Dev, Tech Lead    | Ticket asignado o decisión técnica clara          |
+| `/lidr-spec-ff [name]`           | Fast-forward planning: genera proposal+design+spec+tasks en un pase (requiere Opus high) | Dev, Tech Lead    | Container creado + Enriched US disponible         |
+| `/lidr-spec-apply [name]`        | Implementa task-by-task; AGENT MUST EXECUTE unit + curl + Playwright                     | Dev, Tech Lead    | tasks.md válido (post-ff)                         |
+| `/lidr-spec-verify [name]`       | Verificación final: re-ejecuta tests, detecta docs drift, escribe test-report.md         | Dev, Tech Lead    | Apply completo                                    |
 | `/lidr-spec-archive [name]`      | Mueve a `changes/archive/YYYY-MM-DD-<name>/` y actualiza índices                         | Dev, Tech Lead    | test-report verdict PASSED (o WARNINGS aceptadas) |
-| `/lidr-spec-continue [name]`     | Diagnostica estado y retoma change pausado                                               | Dev, Tech Lead    | Container existente                       |
-| `/lidr-spec-bulk-archive [glob]` | Archiva todos los changes con verdict PASSED                                             | Tech Lead         | Múltiples changes verificados             |
+| `/lidr-spec-continue [name]`     | Diagnostica estado y retoma change pausado                                               | Dev, Tech Lead    | Container existente                               |
+| `/lidr-spec-bulk-archive [glob]` | Archiva todos los changes con verdict PASSED                                             | Tech Lead         | Múltiples changes verificados                     |
 
 > El subagent **`lidr-spec-orchestrator`** orquesta el lifecycle end-to-end (new → ff → apply → verify → archive) cuando el usuario quiere ejecutar todo en un shot.
 >

@@ -352,7 +352,7 @@ export const skills: Artifact[] = [
   // This represents the complete structure but is partial for brevity
 ];
 
-/* ─── COMMANDS DATA (23 commands) ─────────────────────────────── */
+/* ─── COMMANDS DATA (37 commands — 30 LIDR + 7 generic) ─────────────────────────────── */
 
 export const commands: Artifact[] = [
   // Tier 1 - Orchestrators

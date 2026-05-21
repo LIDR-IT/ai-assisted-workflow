@@ -257,9 +257,10 @@ describe('ReactFlowDiagram', () => {
 
       render(<StatusNode data={nodeData} />);
 
-      // Check for some handles (there are many)
-      expect(screen.getByTestId('handle-target-top-default')).toBeInTheDocument();
-      expect(screen.getByTestId('handle-source-bottom-default')).toBeInTheDocument();
+      // Handle testids follow pattern: handle-{type}-{position}-{id}
+      // When no explicit id is passed, the id defaults to `{type}-{position}`.
+      expect(screen.getByTestId('handle-target-top-target-top')).toBeInTheDocument();
+      expect(screen.getByTestId('handle-source-bottom-source-bottom')).toBeInTheDocument();
     });
 
     it('uses fallback color for unknown variant', () => {

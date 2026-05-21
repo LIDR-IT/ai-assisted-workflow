@@ -39,6 +39,7 @@ Verify starts on Sonnet medium. If CRITICAL findings emerge, **self-promote to O
 ## Load context
 
 Read:
+
 - `docs/projects/<CLIENT_CODE>/changes/<change-name>/proposal.md`
 - `docs/projects/<CLIENT_CODE>/changes/<change-name>/design.md`
 - `docs/projects/<CLIENT_CODE>/changes/<change-name>/spec.md`
@@ -56,6 +57,7 @@ Read:
 ### Check 2 — Mandatory reports exist
 
 For each mandatory step in `tasks.md` (per `spec-execution.md`):
+
 - Check that a corresponding `reports/YYYY-MM-DD-step-N+M-*.md` exists
 - If missing: CRITICAL
 
@@ -82,6 +84,7 @@ For each mandatory step in `tasks.md` (per `spec-execution.md`):
 ### Check 6 — Docs drift
 
 Apply the DTC matrix from `lidr-sdlc/documentation.md` §1:
+
 - If schema changed: `architecture.md` should be updated
 - If endpoint changed: `specs/routes.md` and OpenAPI spec should be updated
 - If component changed: `specs/components.md` should be updated
@@ -92,6 +95,7 @@ If drift detected: WARNING with the list of stale docs.
 ### Check 7 — Frontmatter integrity
 
 For each of `proposal.md`, `design.md`, `spec.md`, `tasks.md`:
+
 - `last_updated` ≤ today
 - `editHistory` covers all major changes
 - `status` matches reality (`active` not `draft` if applied)
@@ -126,38 +130,49 @@ verdict: PASSED | WARNINGS | CRITICAL
 ## Per-check results
 
 ### Check 1 — Tasks completion
+
 <result>
 
 ### Check 2 — Mandatory reports
+
 <result>
 
 ### Check 3 — Unit tests
+
 <commands, totals, failures, runtime>
 
 ### Check 4 — curl endpoint tests
+
 <endpoints tested, status codes, DB state>
 
 ### Check 5 — Playwright E2E
+
 <scenarios executed, outcomes>
 
 ### Check 6 — Docs drift
+
 <list of stale docs or "all aligned">
 
 ### Check 7 — Frontmatter integrity
+
 <issues or "all valid">
 
 ## Findings
 
 ### CRITICAL
+
 - <item> (action: ...)
 
 ### WARNINGS
+
 - <item> (action: ...)
 
 ### SUGGESTIONS
+
 - <item>
 
 ## Next step recommendation
+
 <one of: ready for /lidr-spec-archive | requires apply re-run | requires design update>
 
 

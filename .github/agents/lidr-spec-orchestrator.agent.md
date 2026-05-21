@@ -42,6 +42,7 @@ Spanish trigger phrase "ciclo completo" + Jira ticket reference. Agent enriches 
 ### 1. Scaffold
 
 Invoke `/lidr-spec-new <change-name>`:
+
 - Creates the change container with placeholder artifacts and `reports/` directory
 - Verify success before proceeding
 
@@ -52,6 +53,7 @@ Self-correct model per `lidr-sdlc/model-selection.md`: promote to `claude-opus-4
 Invoke `/lidr-spec-ff <change-name>` with the enriched US as the primary source of truth.
 
 Verify all 4 artifacts (proposal, design, spec, tasks) are generated and valid:
+
 - Frontmatter intact and updated
 - No leftover `[PENDIENTE]` placeholders without explicit justification
 - `tasks.md` passes the spec-execution.md §5 checklist
@@ -63,6 +65,7 @@ If validation fails: **pause** and report which artifact is incomplete. Do NOT p
 Self-correct model: revert to `claude-sonnet-4-6` + `effort: medium`.
 
 Invoke `/lidr-spec-apply <change-name>`:
+
 - Implements task-by-task per `tasks.md`
 - Executes all mandatory tests (unit + curl + Playwright + docs) AGENT MUST EXECUTE
 - Generates per-step reports in `reports/`
@@ -71,6 +74,7 @@ Invoke `/lidr-spec-apply <change-name>`:
 ### 4. Verify
 
 Invoke `/lidr-spec-verify <change-name>`:
+
 - Re-runs the test suite
 - Detects docs drift
 - Generates `test-report.md` with verdict PASSED / WARNINGS / CRITICAL
@@ -84,6 +88,7 @@ Invoke `/lidr-spec-verify <change-name>`:
 ### 6. Archive (only if verdict allows)
 
 Invoke `/lidr-spec-archive <change-name>`:
+
 - Moves to `changes/archive/YYYY-MM-DD-<change-name>/`
 - Updates frontmatter `status: archived`
 - Updates indices if present
@@ -123,10 +128,10 @@ Next:
 
 ## Failure modes
 
-| Failure | Behavior |
-|---|---|
-| Enrichment fails (Jira ticket not found) | Pause, ask user for inline US |
-| `/lidr-spec-ff` produces invalid artifact | Pause, report which artifact, suggest manual fix + `/lidr-spec-continue` |
+| Failure                                                          | Behavior                                                                          |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Enrichment fails (Jira ticket not found)                         | Pause, ask user for inline US                                                     |
+| `/lidr-spec-ff` produces invalid artifact                        | Pause, report which artifact, suggest manual fix + `/lidr-spec-continue`          |
 | `/lidr-spec-apply` blocked by environment (DB down, missing dep) | Pause, report blocker, save `tasks.md` state, suggest fix + `/lidr-spec-continue` |
-| `/lidr-spec-verify` returns CRITICAL | Pause, list findings, suggest `/lidr-spec-apply` re-run after fix |
-| `/lidr-spec-archive` denied by user (on WARNINGS) | Stop after verify, leave change in `changes/<name>/` for manual review |
+| `/lidr-spec-verify` returns CRITICAL                             | Pause, list findings, suggest `/lidr-spec-apply` re-run after fix                 |
+| `/lidr-spec-archive` denied by user (on WARNINGS)                | Stop after verify, leave change in `changes/<name>/` for manual review            |

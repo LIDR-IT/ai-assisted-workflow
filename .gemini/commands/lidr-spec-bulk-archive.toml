@@ -31,10 +31,12 @@ CHANGELOG:
 Optional filter argument "$1" (glob pattern, default `*`).
 
 For each directory under `docs/projects/<CLIENT_CODE>/changes/` (excluding `archive/`) matching the filter:
+
 - Check if `test-report.md` exists
 - Read its frontmatter `verdict` field
 
 Classify:
+
 - **Ready** (verdict PASSED) → archive
 - **WARNINGS** → list separately, do NOT auto-archive (require user confirmation per change)
 - **CRITICAL** → list separately, do NOT archive
@@ -67,6 +69,7 @@ Use AskUserQuestion with options: "Archive all PASSED", "Select which to archive
 ## Archive in sequence
 
 For each confirmed change, invoke the same logic as `/lidr-spec-archive <name>`:
+
 - Move to `docs/projects/<CLIENT_CODE>/changes/archive/YYYY-MM-DD-<name>/`
 - Update frontmatter `status: archived`
 - Append to `editHistory`

@@ -93,9 +93,14 @@ describe('PropuestaMejora Component', () => {
     expect(
       screen.getByText('Ecosistema SDLC TestClient — Propuesta Implementada')
     ).toBeInTheDocument();
-    expect(screen.getByText(/195 artefactos/)).toBeInTheDocument();
-    expect(screen.getByText(/61 skills/)).toBeInTheDocument();
-    expect(screen.getByText(/23 commands/)).toBeInTheDocument();
+    // ecosystemStats is computed dynamically from artifact registries (NOT filesystem):
+    // - 113 skills (skills.length from skills.ts: 44 LIDR + 69 BMAD)
+    // - 30 commands (commands.length from commands.ts: 23 LIDR SDLC + 7 lidr-spec-*)
+    //   Note: 7 generic commands exist on filesystem but are not in the app registry yet.
+    // - 266 totalArtifacts (computed sum across registries)
+    expect(screen.getByText(/266 artefactos/)).toBeInTheDocument();
+    expect(screen.getByText(/113 skills/)).toBeInTheDocument();
+    expect(screen.getByText(/30 commands/)).toBeInTheDocument();
   });
 
   it('renders all tab buttons', () => {

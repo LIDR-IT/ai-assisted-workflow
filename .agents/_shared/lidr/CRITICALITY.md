@@ -116,17 +116,17 @@ BMad covers partially. LIDR adds automation, Spanish, Gate-binding, or complianc
 
 Only use if your team has the specific use case.
 
-| Skill (source)                         | When to activate                                                           |
-| -------------------------------------- | -------------------------------------------------------------------------- |
-| `lidr-propuesta-builder` (LIDR)        | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora".     |
-| `lidr-external-sync` (LIDR)            | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.               |
-| `lidr-playwright-cli` (LIDR)           | Web QA: execute Playwright (browser automation).                           |
-| `claude-agents-architecture` (anytime) | Meta-skill: entry point for creating skills/commands/subagents.            |
-| `claude-command-development` (anytime) | Create Claude Code slash commands.                                         |
-| `claude-generate-rule` (anytime)       | Extending Claude Code: create behavioral rules.                            |
-| `claude-hook-development` (anytime)    | Extending Claude Code: PreToolUse/PostToolUse hooks.                       |
-| `claude-mcp-integration` (anytime)     | Connecting external services via MCP.                                      |
-| `lidr-commit-management` (LIDR)        | Conventional commits, rebase/squash workflows with LIDR scope conventions. |
+| Skill (source)                       | When to activate                                                           |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| `lidr-propuesta-builder` (LIDR)      | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora".     |
+| `lidr-external-sync` (LIDR)          | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.               |
+| `lidr-playwright-cli` (LIDR)         | Web QA: execute Playwright (browser automation).                           |
+| `lidr-agents-architecture` (anytime) | Meta-skill: entry point for creating skills/commands/subagents.            |
+| `lidr-command-development` (anytime) | Create Claude Code slash commands.                                         |
+| `lidr-generate-rule` (anytime)       | Extending Claude Code: create behavioral rules.                            |
+| `lidr-hook-development` (anytime)    | Extending Claude Code: PreToolUse/PostToolUse hooks.                       |
+| `lidr-mcp-integration` (anytime)     | Connecting external services via MCP.                                      |
+| `lidr-commit-management` (LIDR)      | Conventional commits, rebase/squash workflows with LIDR scope conventions. |
 
 ## How to use this classification
 

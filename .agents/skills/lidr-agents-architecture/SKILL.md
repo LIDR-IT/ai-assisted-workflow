@@ -1,5 +1,5 @@
 ---
-name: claude-agents-architecture
+name: lidr-agents-architecture
 description: This skill should be used when the user wants to "create a skill", "create a subagent", "add a command to .agents/", "understand .agents/ architecture", "explain how to create components", "what's the difference between skills, commands, and subagents", or needs guidance on creating skills, commands, or subagents within the .agents/ source-of-truth system, with automatic synchronization across all platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode).
 version: 1.0.0
 ---

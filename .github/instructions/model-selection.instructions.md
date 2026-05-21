@@ -25,44 +25,44 @@ Si la sesión está en el modelo equivocado, el agente DEBE auto-corregir editan
 
 ### 2.1 Workflows que requieren Opus high reasoning
 
-| Workflow / Skill / Command | Por qué Opus high |
-|---|---|
-| `lidr-business-case` | Razonamiento de negocio, ROI, alineación estratégica |
-| `lidr-prd-tecnico` | Diseño técnico inicial — alto nivel de exploración |
-| `lidr-prd-funcional` | Análisis funcional + edge cases |
-| `lidr-design-doc` | Arquitectura, decisiones estructurales |
-| `lidr-generate-rf` | RFs con BDD — requiere comprensión completa del PRD |
-| `lidr-generate-nfr` | NFRs medibles — necesita conectar negocio ↔ medición |
-| `lidr-validate-requirements` | Detección de gaps, coherencia cruzada, RTM |
-| `lidr-validate-prd` | Scoring + recomendaciones |
-| `lidr-user-stories` | Slicing + BDD |
-| `lidr-epic-breakdown` | Descomposición de épica master |
-| `lidr-test-plan` | Estrategia de testing risk-based |
-| `lidr-security-checklist` | Compliance + threat modeling |
-| `/lidr-spec-ff` | Fast-forward genera proposal + design + tasks + spec — planning intensivo |
-| `lidr-run-parallel-tasks` | Coordinación + planning interno por sub-agente |
-| `lidr-spec-orchestrator` (subagent, fase planning) | Decisiones de coordinación cross-change |
+| Workflow / Skill / Command                         | Por qué Opus high                                                         |
+| -------------------------------------------------- | ------------------------------------------------------------------------- |
+| `lidr-business-case`                               | Razonamiento de negocio, ROI, alineación estratégica                      |
+| `lidr-prd-tecnico`                                 | Diseño técnico inicial — alto nivel de exploración                        |
+| `lidr-prd-funcional`                               | Análisis funcional + edge cases                                           |
+| `lidr-design-doc`                                  | Arquitectura, decisiones estructurales                                    |
+| `lidr-generate-rf`                                 | RFs con BDD — requiere comprensión completa del PRD                       |
+| `lidr-generate-nfr`                                | NFRs medibles — necesita conectar negocio ↔ medición                      |
+| `lidr-validate-requirements`                       | Detección de gaps, coherencia cruzada, RTM                                |
+| `lidr-validate-prd`                                | Scoring + recomendaciones                                                 |
+| `lidr-user-stories`                                | Slicing + BDD                                                             |
+| `lidr-epic-breakdown`                              | Descomposición de épica master                                            |
+| `lidr-test-plan`                                   | Estrategia de testing risk-based                                          |
+| `lidr-security-checklist`                          | Compliance + threat modeling                                              |
+| `/lidr-spec-ff`                                    | Fast-forward genera proposal + design + tasks + spec — planning intensivo |
+| `lidr-run-parallel-tasks`                          | Coordinación + planning interno por sub-agente                            |
+| `lidr-spec-orchestrator` (subagent, fase planning) | Decisiones de coordinación cross-change                                   |
 
 ### 2.2 Workflows que vuelven a Sonnet medium
 
-| Workflow / Skill / Command | Por qué Sonnet medium |
-|---|---|
-| `/lidr-spec-apply` | Implementación task-by-task según tasks.md ya generado |
-| `/lidr-implement-ticket` | Implementación de un ticket existente |
-| `/lidr-spec-archive` | Operación de filesystem + actualización de índices |
-| `/lidr-create-branch` | Operación git determinista |
-| `/lidr-create-pr` | Generación de PR description desde commits |
-| `/sync-docs` | Sincronización determinista de docs |
-| `/lidr-commit` | Generación de commit messages |
-| Skills de generación de docs simples (release-notes, changelog) | Output estructurado, baja exploración |
+| Workflow / Skill / Command                                      | Por qué Sonnet medium                                  |
+| --------------------------------------------------------------- | ------------------------------------------------------ |
+| `/lidr-spec-apply`                                              | Implementación task-by-task según tasks.md ya generado |
+| `/lidr-implement-ticket`                                        | Implementación de un ticket existente                  |
+| `/lidr-spec-archive`                                            | Operación de filesystem + actualización de índices     |
+| `/lidr-create-branch`                                           | Operación git determinista                             |
+| `/lidr-create-pr`                                               | Generación de PR description desde commits             |
+| `/sync-docs`                                                    | Sincronización determinista de docs                    |
+| `/lidr-commit`                                                  | Generación de commit messages                          |
+| Skills de generación de docs simples (release-notes, changelog) | Output estructurado, baja exploración                  |
 
 ### 2.3 Workflows condicionales (suben a Opus si encuentran problemas)
 
-| Workflow / Command | Promoción a Opus high |
-|---|---|
+| Workflow / Command  | Promoción a Opus high                                                         |
+| ------------------- | ----------------------------------------------------------------------------- |
 | `/lidr-spec-verify` | Si encuentra CRITICAL findings o gaps de cobertura, sube a Opus para análisis |
-| `lidr-bug-report` | Si el bug es complejo o multi-componente, sube a Opus |
-| `lidr-postmortem` | Análisis de root cause profundo → Opus high |
+| `lidr-bug-report`   | Si el bug es complejo o multi-componente, sube a Opus                         |
+| `lidr-postmortem`   | Análisis de root cause profundo → Opus high                                   |
 
 
 ## 3. Procedimiento de self-correct
@@ -94,13 +94,14 @@ Los skills LIDR pueden declarar el modelo requerido directamente en frontmatter:
 
 ```yaml
 name: lidr-prd-tecnico
-model: claude-opus-4-7    # Claude-only field, ignorado por otras plataformas
-effort: high              # Claude-only
+model: claude-opus-4-7 # Claude-only field, ignorado por otras plataformas
+effort: high # Claude-only
 ```
 
 Si un skill declara `model:` o `effort:`, esta rule lo respeta y se asegura de que la sesión cumpla esos requisitos antes de la primera ejecución del skill.
 
 **Skills críticos a anotar con `model: claude-opus-4-7` + `effort: high`** (la lista de 2.1 arriba):
+
 - Todos los listados en §2.1 deben tener estos campos en su SKILL.md
 - El sync de Claude respeta los campos; otras plataformas los ignoran sin error
 
@@ -136,6 +137,6 @@ Espera: `claude-opus-4-7` y `high` para workflows §2.1; `claude-sonnet-4-6` y `
 
 ## 8. Changelog
 
-| Versión | Fecha | Autor | Cambios |
-|---|---|---|---|
-| 1.0.0 | 2026-05-20 | TL: LIDR Spec Native | Creación inicial — self-correct nativo LIDR del modelo por workflow |
+| Versión | Fecha      | Autor                | Cambios                                                             |
+| ------- | ---------- | -------------------- | ------------------------------------------------------------------- |
+| 1.0.0   | 2026-05-20 | TL: LIDR Spec Native | Creación inicial — self-correct nativo LIDR del modelo por workflow |
