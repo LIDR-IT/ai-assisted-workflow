@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, develop]
 
+permissions:
+  contents: read
+  pull-requests: write # needed so the "Comment PR with coverage" step can post
+
 jobs:
   test-coverage:
     name: Unit Tests & Coverage Gates
@@ -44,6 +48,7 @@ jobs:
 
       - name: Comment PR with coverage
         if: github.event_name == 'pull_request'
+        continue-on-error: true # informational comment — never block CI
         uses: actions/github-script@v7
         with:
           script: |
@@ -71,14 +76,14 @@ jobs:
               [View detailed report](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})
               `;
 
-              github.rest.issues.createComment({
+              await github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 body: comment
               });
             } catch (error) {
-              console.error('Error posting coverage comment:', error);
+              console.error('Error posting coverage comment (non-blocking):', error.message);
             }
 
   visual-regression:
