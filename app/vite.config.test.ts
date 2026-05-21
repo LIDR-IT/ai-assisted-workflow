@@ -19,7 +19,12 @@ export default defineConfig({
     css: true,
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html', 'lcov'],
+      // 'json-summary' produces coverage/coverage-summary.json which is
+      // required by scripts/coverage-gates.ts (the CI step "Validate coverage
+      // gates"). Without it, the gates script fails with "Coverage file not
+      // found" — this is a long-standing CI bug masked by the threshold
+      // failures in step 1.
+      reporter: ['text', 'json', 'json-summary', 'html', 'lcov'],
       exclude: [
         'node_modules/',
         'src/test/',
