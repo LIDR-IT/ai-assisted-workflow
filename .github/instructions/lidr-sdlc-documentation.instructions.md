@@ -27,20 +27,22 @@ applyTo: "**"
 
 ### Matriz de impacto: Cambio → Docs afectados
 
-| Si cambias...                                    | DEBES actualizar...                                                            | Owner del doc |
-| ------------------------------------------------ | ------------------------------------------------------------------------------ | ------------- |
-| Schema de BD (tablas, columnas, relaciones)      | `docs/projects/{proyecto}/architecture.md`, ADR si es breaking                 | Dev + TL      |
-| Endpoint API (nuevo, modificado, eliminado)      | `docs/projects/{proyecto}/specs/routes.md`, OpenAPI spec                       | Dev           |
-| Componente UI exportado (nuevo, props cambiados) | `docs/projects/{proyecto}/specs/components.md`                                 | Dev           |
-| Dependencia nueva en package.json                | `docs/projects/{proyecto}/architecture.md`                                     | Dev           |
-| Pipeline CI/CD                                   | `docs/projects/{proyecto}/deployment.md`                                       | DevOps        |
-| Rule, skill o command nuevo/modificado           | `CLAUDE.md`, HelpCenter, SitemapView, audit-catalog                            | TL            |
-| Decisión arquitectónica nueva                    | `docs/projects/{proyecto}/adr/ADR-NNNN-*.md` con skill `adr`                   | TL            |
-| Template skill (INMUTABLE)                       | **❌ PROHIBIDO** — templates en `.claude/skills/*/templates/` son inmutables   | NADIE         |
-| Checklist skill (INMUTABLE)                      | **❌ PROHIBIDO** — checklists en `.claude/skills/*/checklists/` son inmutables | NADIE         |
-| Proceso de equipo / roles                        | `rules/project.md`, `rules/org.md`                                             | PME           |
-| Requisitos nuevos / modificados                  | `docs/projects/{proyecto}/requirements/`                                       | PO            |
-| Sprint completado                                | `docs/projects/{proyecto}/progress.md`                                         | SM / PO       |
+| Si cambias...                                    | DEBES actualizar...                                                                                                                                     | Owner del doc |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| Schema de BD (tablas, columnas, relaciones)      | `docs/projects/{proyecto}/architecture.md`, ADR si es breaking                                                                                          | Dev + TL      |
+| Endpoint API (nuevo, modificado, eliminado)      | `docs/projects/{proyecto}/specs/routes.md`, OpenAPI spec                                                                                                | Dev           |
+| Componente UI exportado (nuevo, props cambiados) | `docs/projects/{proyecto}/specs/components.md`                                                                                                          | Dev           |
+| Dependencia nueva en package.json                | `docs/projects/{proyecto}/architecture.md`                                                                                                              | Dev           |
+| Pipeline CI/CD                                   | `docs/projects/{proyecto}/deployment.md`                                                                                                                | DevOps        |
+| Rule, skill o command nuevo/modificado           | `CLAUDE.md`, HelpCenter, SitemapView, audit-catalog                                                                                                     | TL            |
+| Implementación de feature técnica (LIDR change)  | `docs/projects/{proyecto}/changes/<name>/{proposal,design,spec,tasks,test-report}.md` + `reports/YYYY-MM-DD-step-N+M-*.md` (creados por `/lidr-spec-*`) | Dev + TL      |
+| Cambio archivado (post-verify PASSED)            | Mover a `docs/projects/{proyecto}/changes/archive/YYYY-MM-DD-<name>/` (via `/lidr-spec-archive`)                                                        | Dev           |
+| Decisión arquitectónica nueva                    | `docs/projects/{proyecto}/adr/ADR-NNNN-*.md` con skill `adr`                                                                                            | TL            |
+| Template skill (INMUTABLE)                       | **❌ PROHIBIDO** — templates en `.claude/skills/*/templates/` son inmutables                                                                            | NADIE         |
+| Checklist skill (INMUTABLE)                      | **❌ PROHIBIDO** — checklists en `.claude/skills/*/checklists/` son inmutables                                                                          | NADIE         |
+| Proceso de equipo / roles                        | `rules/project.md`, `rules/org.md`                                                                                                                      | PME           |
+| Requisitos nuevos / modificados                  | `docs/projects/{proyecto}/requirements/`                                                                                                                | PO            |
+| Sprint completado                                | `docs/projects/{proyecto}/progress.md`                                                                                                                  | SM / PO       |
 
 ### ⚠️ CRITICAL: Templates Inmutables
 

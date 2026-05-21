@@ -248,7 +248,39 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/refinement-notes/SKILL.md',
   },
 
-  // Fase 5 — Desarrollo (4)
+  // Fase 5 — Desarrollo (6)
+  {
+    id: 'lidr-using-git-worktrees',
+    name: 'lidr-using-git-worktrees',
+    phase: 'Fase 5 — Desarrollo',
+    phaseNum: 5,
+    source: 'lidr',
+    criticality: 'recommended',
+    description:
+      'Create, use, and clean up isolated git worktrees so an agent can work on multiple features in parallel without contaminating the main checkout. Prerequisite of lidr-run-parallel-tasks.',
+    triggers: ['use a worktree', 'isolate this work', 'run the change in a worktree'],
+    roles: ['Dev', 'TL'],
+    gateContribution: 'Gate 4',
+    docPath: '.agents/skills/lidr-using-git-worktrees/SKILL.md',
+    relatedSkills: ['lidr-run-parallel-tasks'],
+  },
+  {
+    id: 'lidr-run-parallel-tasks',
+    name: 'lidr-run-parallel-tasks',
+    phase: 'Fase 5 — Desarrollo',
+    phaseNum: 5,
+    source: 'lidr',
+    criticality: 'optional',
+    description:
+      'Run N change-driven features in parallel, each in its own git worktree, following the full LIDR spec lifecycle (enrich → new → ff → apply → verify). Requires Opus high reasoning.',
+    triggers: ['run parallel-tasks.md', 'run the parallel changes', 'lanza los tasks en paralelo'],
+    roles: ['TL'],
+    gateContribution: 'Gate 4',
+    docPath: '.agents/skills/lidr-run-parallel-tasks/SKILL.md',
+    automated: true,
+    relatedSkills: ['lidr-using-git-worktrees'],
+    relatedCommands: ['lidr-spec-new', 'lidr-spec-ff', 'lidr-spec-apply', 'lidr-spec-verify'],
+  },
   {
     id: 'pr-description',
     name: 'pr-description',
@@ -466,8 +498,8 @@ export const skills: Skill[] = [
 
   // Cross-cutting (5 in this section; total Cross-cutting incl. additional below = 9)
   {
-    id: 'claude-generate-rule',
-    name: 'claude-generate-rule',
+    id: 'lidr-generate-rule',
+    name: 'lidr-generate-rule',
     phase: 'Cross-cutting',
     phaseNum: 99,
     source: 'anytime',
@@ -475,7 +507,7 @@ export const skills: Skill[] = [
     description: 'Generate Claude Code rule files with correct frontmatter and content structure',
     triggers: ['generate rule', 'create rule', 'project rule'],
     roles: ['TL'],
-    docPath: '.claude/skills/claude-generate-rule/SKILL.md',
+    docPath: '.claude/skills/lidr-generate-rule/SKILL.md',
   },
   {
     id: 'gate-evaluation',
@@ -532,8 +564,8 @@ export const skills: Skill[] = [
 
   // Development (4)
   {
-    id: 'claude-agents-architecture',
-    name: 'claude-agents-architecture',
+    id: 'lidr-agents-architecture',
+    name: 'lidr-agents-architecture',
     phase: 'Development',
     phaseNum: 100,
     source: 'anytime',
@@ -547,11 +579,11 @@ export const skills: Skill[] = [
       'agents architecture',
     ],
     roles: ['TL'],
-    docPath: '.claude/skills/claude-agents-architecture/SKILL.md',
+    docPath: '.claude/skills/lidr-agents-architecture/SKILL.md',
   },
   {
-    id: 'claude-command-development',
-    name: 'claude-command-development',
+    id: 'lidr-command-development',
+    name: 'lidr-command-development',
     phase: 'Development',
     phaseNum: 100,
     source: 'anytime',
@@ -560,11 +592,11 @@ export const skills: Skill[] = [
       'Design and implement slash commands for Claude Code with YAML frontmatter structure',
     triggers: ['command development', 'slash command', 'create command'],
     roles: ['TL'],
-    docPath: '.claude/skills/claude-command-development/SKILL.md',
+    docPath: '.claude/skills/lidr-command-development/SKILL.md',
   },
   {
-    id: 'claude-hook-development',
-    name: 'claude-hook-development',
+    id: 'lidr-hook-development',
+    name: 'lidr-hook-development',
     phase: 'Development',
     phaseNum: 100,
     source: 'anytime',
@@ -572,11 +604,11 @@ export const skills: Skill[] = [
     description: 'Design Claude Code hooks for event-driven workflow automation and quality gates',
     triggers: ['hook development', 'event automation', 'quality guard'],
     roles: ['TL'],
-    docPath: '.claude/skills/claude-hook-development/SKILL.md',
+    docPath: '.claude/skills/lidr-hook-development/SKILL.md',
   },
   {
-    id: 'claude-mcp-integration',
-    name: 'claude-mcp-integration',
+    id: 'lidr-mcp-integration',
+    name: 'lidr-mcp-integration',
     phase: 'Development',
     phaseNum: 100,
     source: 'anytime',
@@ -584,7 +616,7 @@ export const skills: Skill[] = [
     description: 'Configure Model Context Protocol servers for external service integration',
     triggers: ['MCP integration', 'external services', 'protocol setup'],
     roles: ['TL'],
-    docPath: '.claude/skills/claude-mcp-integration/SKILL.md',
+    docPath: '.claude/skills/lidr-mcp-integration/SKILL.md',
   },
 
   // Additional skills found in filesystem but missing in data (SDLC-360 remediation)

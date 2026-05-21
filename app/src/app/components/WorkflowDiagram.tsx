@@ -203,7 +203,7 @@ export function WorkflowDiagram() {
             n(
               'bridge-risk',
               450,
-              640,
+              740,
               'Bridge Risk',
               'red',
               'Sin verificar — roturas silenciosas ❌'

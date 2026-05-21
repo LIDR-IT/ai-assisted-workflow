@@ -1,5 +1,5 @@
 ---
-name: claude-mcp-integration
+name: lidr-mcp-integration
 id: mcp-integration
 version: "2.2.0"
 last_updated: "2026-03-25"

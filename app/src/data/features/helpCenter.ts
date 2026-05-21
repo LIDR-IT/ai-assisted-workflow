@@ -352,7 +352,7 @@ export const skills: Artifact[] = [
   // This represents the complete structure but is partial for brevity
 ];
 
-/* ─── COMMANDS DATA (23 commands) ─────────────────────────────── */
+/* ─── COMMANDS DATA (37 commands — 30 LIDR + 7 generic) ─────────────────────────────── */
 
 export const commands: Artifact[] = [
   // Tier 1 - Orchestrators
@@ -2033,6 +2033,20 @@ export const agents: Artifact[] = [
     triggers: ['release automation', 'deployment agent', 'release management'],
     roles: ['DevOps'],
     docPath: '.claude/agents/release-agent.md',
+  },
+  {
+    id: 'lidr-spec-orchestrator',
+    name: 'LIDR Spec Orchestrator',
+    type: 'agent',
+    description:
+      'End-to-end orchestrator for the LIDR change lifecycle (new → ff → apply → verify → archive). Pauses only on CRITICAL blockers or WARNINGS verdict.',
+    triggers: [
+      'implement change end-to-end',
+      'ejecuta el ciclo completo',
+      'run full LIDR change lifecycle',
+    ],
+    roles: ['Dev', 'TL'],
+    docPath: '.agents/subagents/lidr-spec-orchestrator.md',
   },
   // ... Additional agents would be extracted from the remaining sections
 ];

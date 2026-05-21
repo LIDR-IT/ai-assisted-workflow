@@ -3,27 +3,27 @@
  * Conteos automáticos sin dependencias complejas
  */
 
-// Conteos automáticos basados en la estructura real del directorio POST-CONSOLIDACIÓN
+// Conteos automáticos basados en la estructura real del directorio POST-MERGE BMAD + LIDR Spec Lifecycle
 export const ecosystemStats = {
-  skills: 61, // VERIFIED: 61 skills in filesystem (60 + gate-evaluation skill added)
-  automatedSkills: 9, // project-classifier, validate-requirements, tech-debt, user-stories, regression-suite, security-checklist, test-plan, release-notes, rollback-plan
-  commands: 23, // VERIFIED: 23 commands in filesystem (20 core + 3 enhanced)
+  skills: 113, // 44 LIDR (incl. spec-lifecycle + meta-tooling) + 69 BMAD
+  automatedSkills: 9, // project-classifier, validate-requirements, tech-debt, user-stories, lidr-run-parallel-tasks, security-checklist, test-plan, release-notes, rollback-plan
+  commands: 37, // 23 LIDR SDLC + 7 LIDR spec-lifecycle (lidr-spec-*) + 7 generic
   templates: 0, // ✨ ELIMINATED - integrated into skills (29→0)
-  rules: 5,
-  mcps: 4, // Updated: filesystem, memory, atlassian, playwright (from .mcp.json)
-  hooks: 4,
+  rules: 24, // 7 LIDR SDLC + 17 generic (incl. spec-execution, model-selection)
+  mcps: 3, // context7, playwright, chrome-devtools (from .mcp.json)
+  hooks: 6, // 3 LIDR (frontmatter-guard, load-context, validate-ecosystem-counts) + 3 generic (notify, auto-format, protect-secrets)
   checklists: 0, // ✨ ELIMINATED - integrated into skills (8→0)
   signoffs: 0, // ✨ ELIMINATED - integrated into skills (2→0)
-  agents: 6,
-  docsSupport: 44, // VERIFIED: 44 docs after cleanup (removed 2 obsolete guides)
-  validationScripts: 59, // VERIFIED: 59 validation scripts (corrected count)
+  agents: 23, // 10 LIDR (incl. spec-orchestrator) + 13 BMAD
+  docsSupport: 44, // docs/projects + docs/standards
+  validationScripts: 31, // skill validators + shared validators (Node-side scan)
   gates: 8, // Gates 0-7
   phases: 9, // Fases 0-8
 
   // Conteos por tier de commands
-  orchestratorCommands: 10, // Tier 1 (verified count)
-  tacticalCommands: 9, // Tier 2 (verified count)
-  utilityCommands: 1, // Tier 3 (adjusted to match total of 20)
+  orchestratorCommands: 10, // Tier 1
+  tacticalCommands: 19, // Tier 2 (6 base + 7 lidr-spec-* + 6 enhanced/quick)
+  utilityCommands: 1, // Tier 3
 
   // Totales computados POST-CONSOLIDACIÓN
   get totalArtifacts() {

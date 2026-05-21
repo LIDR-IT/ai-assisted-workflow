@@ -48,11 +48,17 @@ Review React Native code for Vercel React Native Best Practices compliance
 #### **[](../.agents/rules/lidr-sdlc/documentation.md)**
 LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Always applies when creating, reading or modifying any .md in the ecosystem.
 
+#### **[](../.agents/rules/lidr-sdlc/model-selection.md)**
+Self-correct rule: auto-promote to Opus high reasoning for planning workflows, revert to Sonnet medium for implementation. The agent edits .claude/settings.json directly — never stops to ask the user.
+
 #### **[](../.agents/rules/lidr-sdlc/org.md)**
 LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Tier-1 rule, always loaded.
 
 #### **[](../.agents/rules/lidr-sdlc/project.md)**
 LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded.
+
+#### **[](../.agents/rules/lidr-sdlc/spec-execution.md)**
+Mandatory steps and per-step report rule for LIDR change execution (Step 0 branch, unit tests, manual curl, Playwright E2E, docs update). The agent MUST execute all tests itself, never delegate.
 
 #### **[](../.agents/rules/lidr-sdlc/tech-stack.md)**
 LIDR SDLC: Tech stack conventions — TypeScript strict, React 18+, Node 20 LTS, ESM, Tailwind v4. Load when writing, reviewing or generating code.

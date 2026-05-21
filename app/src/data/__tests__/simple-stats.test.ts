@@ -4,15 +4,22 @@ import { ecosystemStats, automationStats, summaryStrings } from '../simple-stats
 describe('simple-stats', () => {
   describe('ecosystemStats', () => {
     it('has correct base counts', () => {
-      expect(ecosystemStats.skills).toBe(61);
+      // Post-merge BMAD + LIDR Spec Lifecycle:
+      // - skills: 44 LIDR + 69 BMAD = 113
+      // - commands: 23 LIDR SDLC + 7 lidr-spec-* + 7 generic = 37
+      // - rules: 7 LIDR SDLC + 17 generic = 24
+      // - mcps: context7, playwright, chrome-devtools = 3
+      // - hooks: 3 LIDR + 3 generic = 6
+      // - agents: 10 LIDR + 13 BMAD = 23
+      expect(ecosystemStats.skills).toBe(113);
       expect(ecosystemStats.automatedSkills).toBe(9);
-      expect(ecosystemStats.commands).toBe(23);
-      expect(ecosystemStats.rules).toBe(5);
-      expect(ecosystemStats.mcps).toBe(4);
-      expect(ecosystemStats.hooks).toBe(4);
-      expect(ecosystemStats.agents).toBe(6);
+      expect(ecosystemStats.commands).toBe(37);
+      expect(ecosystemStats.rules).toBe(24);
+      expect(ecosystemStats.mcps).toBe(3);
+      expect(ecosystemStats.hooks).toBe(6);
+      expect(ecosystemStats.agents).toBe(23);
       expect(ecosystemStats.docsSupport).toBe(44);
-      expect(ecosystemStats.validationScripts).toBe(59);
+      expect(ecosystemStats.validationScripts).toBe(31);
     });
 
     it('has eliminated counts set to zero', () => {
@@ -28,16 +35,16 @@ describe('simple-stats', () => {
 
     it('has correct command tier breakdown', () => {
       expect(ecosystemStats.orchestratorCommands).toBe(10);
-      expect(ecosystemStats.tacticalCommands).toBe(9);
+      expect(ecosystemStats.tacticalCommands).toBe(19);
       expect(ecosystemStats.utilityCommands).toBe(1);
 
-      // Should add up to total commands minus enhanced commands
+      // 10 + 19 + 1 = 30 (LIDR tactical now includes 7 lidr-spec-* + 6 base + 6 enhanced/quick)
       const totalBasicCommands =
         ecosystemStats.orchestratorCommands +
         ecosystemStats.tacticalCommands +
         ecosystemStats.utilityCommands;
 
-      expect(totalBasicCommands).toBe(20);
+      expect(totalBasicCommands).toBe(30);
     });
 
     it('calculates totalArtifacts correctly', () => {
@@ -209,8 +216,9 @@ describe('simple-stats', () => {
     });
 
     it('has realistic skill count', () => {
+      // Post-merge BMAD: 113 skills (44 LIDR + 69 BMAD)
       expect(ecosystemStats.skills).toBeGreaterThan(50);
-      expect(ecosystemStats.skills).toBeLessThan(100);
+      expect(ecosystemStats.skills).toBeLessThan(200);
     });
 
     it('has realistic automation percentage', () => {

@@ -1,0 +1,145 @@
+# LIDR Ecosystem — Context Manifest
+#
+# Declarative inventory of documentation the AI session should load as context.
+# Read by the lidr-load-context hook (SessionStart event) and by commands that
+# need a canonical list of "what the AI should know about this project".
+#
+# Authored by LIDR Consultorias. Native to the LIDR ecosystem — no external CLI
+# dependency. To extend: edit this file, run ./.agents/sync.sh, commit.
+#
+# Schema:
+#   context:
+#     <category>:
+#       - path: <relative path from repo root>
+#         description: <one-line purpose>
+#         always_load: true|false      # if true, load at SessionStart
+#         scope: organization | project | workflow | reference
+#
+# Categories:
+#   rules        — Governance and standards (the "what" the AI must respect)
+#   skills_index — Pointer to the skills catalog (not individual skills)
+#   subagents_index — Pointer to the subagents catalog
+#   commands_index  — Pointer to the commands catalog
+#   project      — Active project context (changes per client)
+#   technical    — Stack and architecture references
+
+version: "1.0.0"
+last_updated: "2026-05-20"
+maintained_by: "TL: LIDR Spec Native"
+
+context:
+  rules:
+    # ── Always-loaded (organization + project + workflow) ─────────────
+    - path: .agents/rules/lidr-sdlc/org.md
+      description: "LIDR organizational standards, RACI, gates, zero-tolerance security policy"
+      always_load: true
+      scope: organization
+
+    - path: .agents/rules/lidr-sdlc/project.md
+      description: "Active project context — client, team, ADRs, tech debt, roadmap"
+      always_load: true
+      scope: project
+
+    - path: .agents/rules/lidr-sdlc/documentation.md
+      description: "Documentation governance — DTC, frontmatter, staleness, review cycles"
+      always_load: true
+      scope: workflow
+
+    - path: .agents/rules/lidr-sdlc/spec-execution.md
+      description: "Mandatory steps for LIDR change execution — AGENT MUST EXECUTE tests"
+      always_load: true
+      scope: workflow
+
+    - path: .agents/rules/lidr-sdlc/model-selection.md
+      description: "Self-correct model per workflow — Opus high for planning, Sonnet medium for impl"
+      always_load: true
+      scope: workflow
+
+    # ── On-demand (tech-stack + workflows) ────────────────────────────
+    - path: .agents/rules/lidr-sdlc/tech-stack.md
+      description: "Coding conventions, TS strict, React patterns, API design, testing, naming"
+      always_load: false
+      scope: workflow
+
+    - path: .agents/rules/lidr-sdlc/workflows.md
+      description: "Workflow orchestration map — role × command matrix, chain typical flows"
+      always_load: false
+      scope: workflow
+
+    # ── Generic rules (on-demand by category) ─────────────────────────
+    - path: .agents/rules/code/principles.md
+      description: "Source-of-truth pattern, symlinks vs copies, design decisions"
+      always_load: false
+      scope: reference
+
+    - path: .agents/rules/code/style.md
+      description: "Bash, Markdown, JSON style conventions"
+      always_load: false
+      scope: reference
+
+    - path: .agents/rules/process/git-workflow.md
+      description: "Branch naming, conventional commits, PR process"
+      always_load: false
+      scope: workflow
+
+    - path: .agents/rules/quality/testing.md
+      description: "Testing philosophy, manual testing checklists"
+      always_load: false
+      scope: reference
+
+    - path: .agents/rules/team/skills-management.md
+      description: "Skills lifecycle, progressive disclosure, multi-platform distribution"
+      always_load: false
+      scope: reference
+
+    - path: .agents/rules/tools/use-context7.md
+      description: "Proactive use of Context7 MCP for library documentation"
+      always_load: true
+      scope: workflow
+
+  skills_index:
+    - path: .agents/skills/
+      description: "Catalog of all LIDR + BMAD + generic skills (Agent Skills open standard)"
+      always_load: false
+      scope: reference
+
+  subagents_index:
+    - path: .agents/subagents/
+      description: "Catalog of autonomous subagents — LIDR (qa, security, release, docs, ...) + BMAD"
+      always_load: false
+      scope: reference
+
+  commands_index:
+    - path: .agents/commands/
+      description: "Catalog of slash commands — LIDR SDLC (advance-gate, implement-ticket, spec-*, ...)"
+      always_load: false
+      scope: reference
+
+  project:
+    # Active project artifacts — loaded as needed by skills/commands
+    - path: docs/projects/
+      description: "Per-client project documentation root (one subdir per client code)"
+      always_load: false
+      scope: project
+
+  technical:
+    - path: .agents/orchestrator/AGENTS.md
+      description: "Multi-agent orchestrator — single source for CLAUDE.md / AGENTS.md / GEMINI.md"
+      always_load: true
+      scope: organization
+
+    - path: .agents/mcp/mcp-servers.json
+      description: "MCP server registry — Context7, Playwright, Chrome DevTools"
+      always_load: false
+      scope: reference
+
+# How the hook consumes this:
+#   The lidr-load-context hook (SessionStart) reads this YAML, filters by
+#   always_load: true, and concatenates the listed paths into the session
+#   context. Skills and commands that need on-demand context query this
+#   manifest by path or by category.
+#
+# Why declarative:
+#   Adding/removing context no longer requires editing bash. Updating the
+#   manifest + running ./.agents/sync.sh propagates the change consistently
+#   across all 5 platforms (Cursor, Claude, Gemini, Copilot, Antigravity).

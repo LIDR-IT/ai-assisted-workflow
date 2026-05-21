@@ -302,16 +302,18 @@ Excepciones de emergencia (hotfix):
 
 La IA DEBE verificar estos checklists en los puntos indicados:
 
-| Checklist           | Cuándo evaluar                                                                      | Referencia                                            |
-| ------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Definition of Ready | Antes de aceptar US en sprint                                                       | skills/refinement-notes/checklists/dor.md             |
-| Definition of Done  | Al escribir/editar archivos (hook dtc-write-guard, PreToolUse: Write\|Edit)         | skills/pr-description/checklists/dod.md               |
-| Coherencia RF       | Al generar o validar RFs                                                            | skills/{skill-name}/checklists/rf-coherence.md        |
-| Review Cruzado PRD  | Al revisar PRD-T vs PRD-F                                                           | skills/{skill-name}/checklists/review-cruzado.md      |
-| Security Compliance | Pre-deploy (skill security-checklist, manual)                                       | skills/{skill-name}/checklists/security-compliance.md |
-| Post-Deploy         | Post-deploy a producción (DevOps manual + /advance-gate 7)                          | skills/{skill-name}/checklists/post-deploy.md         |
-| NFR Compliance      | Pre-deploy: verificación de NFRs (performance, scalability, availability, security) | skills/{skill-name}/checklists/nfr-compliance.md      |
-| Repo Structure      | Al crear repositorio: governance, CI/CD, API contracts, architecture, tooling       | skills/{skill-name}/checklists/repo-structure.md      |
+| Checklist           | Cuándo evaluar                                                                                                                                | Referencia                                            |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Definition of Ready | Antes de aceptar US en sprint                                                                                                                 | skills/refinement-notes/checklists/dor.md             |
+| Definition of Done  | Al escribir/editar archivos (hook dtc-write-guard, PreToolUse: Write\|Edit)                                                                   | skills/pr-description/checklists/dod.md               |
+| Coherencia RF       | Al generar o validar RFs                                                                                                                      | skills/{skill-name}/checklists/rf-coherence.md        |
+| Review Cruzado PRD  | Al revisar PRD-T vs PRD-F                                                                                                                     | skills/{skill-name}/checklists/review-cruzado.md      |
+| Security Compliance | Pre-deploy (skill security-checklist, manual)                                                                                                 | skills/{skill-name}/checklists/security-compliance.md |
+| Post-Deploy         | Post-deploy a producción (DevOps manual + /advance-gate 7)                                                                                    | skills/{skill-name}/checklists/post-deploy.md         |
+| NFR Compliance      | Pre-deploy: verificación de NFRs (performance, scalability, availability, security)                                                           | skills/{skill-name}/checklists/nfr-compliance.md      |
+| Repo Structure      | Al crear repositorio: governance, CI/CD, API contracts, architecture, tooling                                                                 | skills/{skill-name}/checklists/repo-structure.md      |
+| Spec Execution      | Al ejecutar `/lidr-spec-apply` o `/lidr-spec-verify`: Step 0 branch + unit + curl + Playwright + docs + reports por step (AGENT MUST EXECUTE) | `.agents/rules/lidr-sdlc/spec-execution.md` §5        |
+| Model Selection     | Al iniciar workflows planning (Opus high) vs implementación (Sonnet medium); self-correct sin pedir confirmación                              | `.agents/rules/lidr-sdlc/model-selection.md`          |
 
 ### 10.2 Sign-offs (requieren firma humana)
 
