@@ -57,7 +57,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Gate 1',
     docPath: '.claude/commands/validate-prd.md',
-    relatedSkills: ['bmad-prd', 'bmad-validate-prd', 'review-cruzado'],
+    relatedSkills: ['bmad-prd', 'review-cruzado'],
   },
   {
     id: 'implement-ticket',
