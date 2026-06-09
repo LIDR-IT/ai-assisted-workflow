@@ -139,20 +139,22 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Second person; avoid first person
 - `&` over "and" where space-constrained
 
-### Documentation Color System
+### App Color System (React + Tailwind v4)
 
-**VitePress Theme Colors:**
+> The docs site is the React app in `app/` (Tailwind CSS v4, CSS-first config). The previous VitePress site was removed on 2026-05-19 — do not reference `docs/.vitepress/`.
 
-- Use documented color variables from `docs/.vitepress/theme/custom.css`
+**Theme tokens:**
+
+- Define design tokens in `app/src/styles/theme.css` (Tailwind v4 `@theme` / CSS custom properties) — this is the single source of truth for color
 - Primary brand: Gold (`oklch(0.72 0.16 85)` light, complementary dark)
 - Secondary: Slate gray for text and backgrounds
-- Semantic: Tip (green), Warning (orange), Danger (red)
-- Reference: See `docs/guides/vitepress-theme-customization.md`
+- Semantic: success (green), warning (orange), danger (red)
+- Per-client theming resolves via the client registry (`app/src/data/clients/{clientId}/`)
 
 **Color Usage:**
 
-- Use CSS custom properties: `var(--vp-c-brand-1)`, `var(--gold-primary)`
-- Support both light and dark modes (define in `:root` and `.dark`)
+- Use CSS custom properties / Tailwind utility classes backed by `theme.css`; never hardcode hex values in components
+- Support both light and dark modes (`:root` and `.dark`); set `color-scheme: dark` on `<html>` for dark themes
 - Use `oklch()` format for better color management
 - Maintain WCAG AA contrast ratios (4.5:1 text, 3:1 UI)
 - Test in both themes before committing

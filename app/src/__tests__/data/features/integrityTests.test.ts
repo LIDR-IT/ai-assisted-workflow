@@ -158,15 +158,16 @@ describe('IntegrityTests Data Layer', () => {
     });
 
     it('has realistic count values', () => {
-      // Counts reflect filesystem reality post-merge BMAD + LIDR Spec Lifecycle:
-      // - 111 skills pre-spec-lifecycle + 2 lidr-spec skills (lidr-using-git-worktrees, lidr-run-parallel-tasks) = 113
-      // - 23 commands pre-spec-lifecycle + 7 lidr-spec-* commands = 30
+      // Counts are derived from the data registries (skills.ts / commands.ts arrays),
+      // post-removal of the 3 deleted artifacts:
+      // - 113 skills - 1 (lidr-project-classifier) = 112
+      // - 28 commands - 2 (lidr-document-project, lidr-check-readiness) = 26
       // - 22 rules pre-spec-lifecycle + 2 new (spec-execution, model-selection) = 24 (Node-side scans .claude/rules)
-      // - validationScripts unchanged
-      expect(EXPECTED_COUNTS.skills).toBe(113);
-      expect(EXPECTED_COUNTS.commands).toBe(30);
+      // - validationScripts: 31 - 1 = 30 (lidr-project-classifier's validate-examples.ts removed with the skill)
+      expect(EXPECTED_COUNTS.skills).toBe(112);
+      expect(EXPECTED_COUNTS.commands).toBe(26);
       expect(EXPECTED_COUNTS.rules).toBe(24);
-      expect(EXPECTED_COUNTS.validationScripts).toBe(31);
+      expect(EXPECTED_COUNTS.validationScripts).toBe(30);
     });
   });
 
@@ -212,10 +213,12 @@ describe('IntegrityTests Data Layer', () => {
         });
       });
 
-      it('has expected number of paths (231 artifacts)', () => {
-        // 231 reflects current HELPCENTER_DOCPATHS array length (was 131 in pre-merge snapshot;
-        // the array grew during the BMAD merge to cover all bmad-* docs). No additions in this PR.
-        expect(HELPCENTER_DOCPATHS).toHaveLength(231);
+      it('has expected number of paths (226 artifacts)', () => {
+        // 226 = 231 − 3 deleted artifacts (skill lidr-project-classifier + commands
+        // lidr-document-project, lidr-check-readiness) − 2 consolidated command variants
+        // (lidr-create-branch-enhanced, lidr-create-pr-enhanced → merged into the base
+        // create-branch / create-pr). bmad-document-project SKILL.md is kept (real BMAD skill).
+        expect(HELPCENTER_DOCPATHS).toHaveLength(226);
       });
 
       it('contains valid file paths', () => {

@@ -475,57 +475,6 @@ export const commands: Artifact[] = [
     docPath: '.claude/commands/validate-requirements.md',
   },
   {
-    id: 'document-project',
-    name: '/document-project',
-    type: 'command',
-    tier: 'Tier 1 — Orchestrator',
-    description:
-      'LIDR SDLC-style workflow orchestration for complete project documentation with step-by-step guidance and validation integration. Orchestrates project classification, document discovery, PRD generation, architecture documentation, and requirements validation in a comprehensive workflow.',
-    argument: '[project-name]',
-    model: 'sonnet',
-    roles: ['TL', 'PO', 'PME'],
-    precondition: 'Project kickoff approved',
-    relatedSkills: [
-      'project-classifier',
-      'document-discovery',
-      'prd-funcional',
-      'prd-tecnico',
-      'architecture-doc',
-      'generate-rf',
-      'generate-nfr',
-      'epic-breakdown',
-      'validate-requirements',
-    ],
-    triggers: [
-      'document project',
-      'complete documentation',
-      'bmad workflow',
-      'project documentation',
-      'full documentation workflow',
-    ],
-    docPath: '.claude/commands/document-project.md',
-  },
-  {
-    id: 'check-readiness',
-    name: '/check-readiness',
-    type: 'command',
-    tier: 'Tier 1 — Orchestrator',
-    description:
-      'Pre-implementation validation workflow — check PRD completeness, team readiness, dependencies and generate readiness score. LIDR SDLC-inspired readiness assessment with quantitative scoring and blockers identification.',
-    argument: '[project-name]',
-    model: 'sonnet',
-    roles: ['PME', 'PO', 'TL', 'QA'],
-    precondition: 'Project defined with basic documentation',
-    triggers: [
-      'check readiness',
-      'implementation readiness',
-      'readiness score',
-      'pre-implementation',
-      'readiness assessment',
-    ],
-    docPath: '.claude/commands/check-readiness.md',
-  },
-  {
     id: 'validate-prd',
     name: '/validate-prd',
     type: 'command',
@@ -776,33 +725,7 @@ export const commands: Artifact[] = [
     docPath: '.claude/commands/lidr-help.md',
   },
 
-  // Enhanced Commands (3) - Phase 5 Enhancements
-  {
-    id: 'create-branch-enhanced',
-    name: '/create-branch-enhanced',
-    type: 'command',
-    tier: 'Tier 2 — Tactical',
-    description:
-      'Enhanced branch creation with SDLC tracking integration. Creates feature branch from Jira ticket with automatic SDLC state management.',
-    argument: '[ticket-id]',
-    model: 'sonnet',
-    roles: ['Dev', 'TL'],
-    triggers: ['create branch enhanced', 'enhanced branch', 'branch with tracking'],
-    docPath: '.claude/commands/create-branch-enhanced.md',
-  },
-  {
-    id: 'create-pr-enhanced',
-    name: '/create-pr-enhanced',
-    type: 'command',
-    tier: 'Tier 2 — Tactical',
-    description:
-      'Enhanced PR creation with SDLC tracking and automated handoffs. Creates pull request with auto-generated description and automatic phase progression.',
-    argument: '[ticket-id]',
-    model: 'sonnet',
-    roles: ['Dev', 'TL'],
-    triggers: ['create pr enhanced', 'enhanced pr', 'pr with handoffs'],
-    docPath: '.claude/commands/create-pr-enhanced.md',
-  },
+  // SDLC tracking (Phase 5) — branch/PR SDLC-tracking now lives in the base create-branch / create-pr commands
   {
     id: 'track-sdlc',
     name: '/track-sdlc',

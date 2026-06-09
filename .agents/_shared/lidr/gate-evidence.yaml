@@ -1,0 +1,283 @@
+# LIDR Ecosystem — Gate Evidence Manifest
+#
+# Declarative mapping: each SDLC gate (G0–G7) → the EVIDENCE that satisfies it.
+#
+# Architecture: the LIDR gate layer is GOVERNANCE on top of BMad. BMad is the
+# engine that PRODUCES artifacts (PRD, architecture, epics, stories, test plans,
+# brownfield docs). The gate does NOT re-do that work — it VERIFIES that the
+# evidence exists and has real content, then adds the few things BMad has no
+# concept of (gates, compliance, capacity, risk, release governance).
+#
+# Each gate draws evidence from TWO sources:
+#   bmad_evidence  → artifacts the BMad skills emit (primary; the engine)
+#   lidr_evidence  → outputs of LIDR custom skills (gap-fillers BMad lacks)
+#
+# BMad is NEVER modified. Gates only READ its outputs under {bmad_output}.
+#
+# Read by:
+#   /advance-gate [N]      → Step 4: validates existence + content of the
+#                            listed evidence for gate N before allowing transition
+#   lidr-gate-evaluation   → scores the evidence against its 4 weighted dimensions
+#                            (Artifacts 40% / Checklists 35% / Coherence 15% / Sign-offs 10%)
+#
+# To extend: edit this file, run ./.agents/sync.sh, commit. No code change needed.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# Schema
+#   path_vars:               # resolved at evaluation time
+#     <var>: <value>
+#   matching:                # how the gate interprets an evidence entry
+#     ...
+#   gates:
+#     G<N>:
+#       transition: "<from> → <to>"
+#       owner: [<role>, ...]            # who signs this gate (RACI 'A')
+#       bmad_evidence:
+#         - skill: <bmad-skill that produces it>
+#           artifact: <path or glob, may use {vars}>
+#           required: true|false        # true = gate FAILS without it
+#       lidr_evidence:
+#         - skill: <lidr-skill>
+#           artifact: <path or glob>
+#           required: true|false
+#       checklist:                      # scored under the Checklists dimension
+#         - "<binary check the evaluator must confirm>"
+#       signoffs:                       # scored under the Sign-offs dimension
+#         - role: <role>
+#           artifact: <path>            # the file that records the human approval
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "1.0.0"
+last_updated: "2026-06-09"
+maintained_by: "TL: LIDR Gate-over-BMad"
+
+# Path variables. Mirror the values in _bmad/*/config.yaml so the gate reads
+# BMad's real output locations. {client} resolves to the active CLIENT_CODE
+# (see .agents/rules/lidr-sdlc/project.md).
+path_vars:
+  bmad_output: "_bmad-output"
+  bmad_planning: "_bmad-output/planning-artifacts"
+  bmad_impl: "_bmad-output/implementation-artifacts"
+  project_knowledge: "docs" # BMad project_knowledge (brownfield scan output)
+  client_root: "docs/projects/{client}" # LIDR per-client artifacts
+  handoffs: "docs/projects/{client}/handoffs" # gate-N-handoff.md lives here
+  changes: "docs/projects/{client}/changes" # LIDR change-lifecycle artifacts
+
+# How /advance-gate and lidr-gate-evaluation interpret each entry.
+matching:
+  # An artifact "exists" if at least one file matches its glob.
+  glob: true
+  # Content validity (reuses advance-gate Step 4 rules):
+  #   - >50 chars of meaningful content excluding frontmatter
+  #   - no unjustified "TBD" / "TODO" / "N/A" in required sections
+  min_content_chars: 50
+  # If a `required: true` artifact is missing or empty → gate verdict caps at FAIL.
+  # If only `required: false` evidence is missing → verdict caps at CONDITIONAL.
+  # BMad artifacts are matched leniently by producing-skill + glob, because BMad
+  # filenames vary by config; presence of ANY file from the skill satisfies it.
+  on_missing_required: FAIL
+  on_missing_optional: CONDITIONAL
+
+gates:
+  # ───────────────────────────────────────────────────────────────────────────
+  G0:
+    transition: "Originación → Discovery (Intake)"
+    owner: [PME, Sponsor]
+    bmad_evidence:
+      # Brownfield intake: BMad documents the existing project.
+      - skill: bmad-document-project
+        artifact: "{project_knowledge}/index.md"
+        required: false
+      - skill: bmad-product-brief
+        artifact: "{bmad_planning}/product-brief*.md"
+        required: false
+    lidr_evidence:
+      - skill: lidr-business-case
+        artifact: "{client_root}/business-case.md"
+        required: true
+      - skill: lidr-stakeholder-map
+        artifact: "{client_root}/stakeholder-map.md"
+        required: false
+    checklist:
+      - "Sponsor identified and budget/strategic alignment confirmed"
+      - "At least one of: product brief (BMad) OR business case (LIDR) is populated"
+    signoffs:
+      - role: PME
+        artifact: "{handoffs}/gate-0-handoff.md"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  G1:
+    transition: "Discovery → Especificación (PRD approved)"
+    owner: [PO, TL]
+    bmad_evidence:
+      - skill: bmad-prd
+        artifact: "{bmad_planning}/PRD*.md"
+        required: true
+      - skill: bmad-create-architecture
+        artifact: "{bmad_planning}/*architecture*.md"
+        required: true
+    lidr_evidence:
+      - skill: lidr-risk-log
+        artifact: "{client_root}/risk-log.md"
+        required: false
+      - skill: lidr-review-cruzado
+        artifact: "{client_root}/review-cruzado*.md"
+        required: false
+    checklist:
+      - "PRD covers functional AND technical scope (review-cruzado passed)"
+      - "Architecture documents the major components and data model"
+      - "Top risks logged with mitigation owners"
+    signoffs:
+      - role: PO
+        artifact: "{handoffs}/gate-1-handoff.md"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  G2:
+    transition: "Especificación → Sprint Planning (RFs complete)"
+    owner: [PO, QA]
+    bmad_evidence:
+      - skill: bmad-create-epics-and-stories
+        artifact: "{bmad_planning}/epics*.md"
+        required: true
+    lidr_evidence:
+      - skill: lidr-generate-rf
+        artifact: "{client_root}/requirements/RF-*.md"
+        required: true
+      - skill: lidr-generate-nfr
+        artifact: "{client_root}/requirements/NFR-*.md"
+        required: false
+      - skill: lidr-validate-requirements
+        artifact: "{client_root}/rtm.md"
+        required: true
+    checklist:
+      - "Every RF has BDD acceptance criteria (Given/When/Then)"
+      - "RTM maps RF ↔ epic/story ↔ test with no orphan requirements"
+      - "Epics decomposed into stories sized 2–40h"
+    signoffs:
+      - role: QA
+        artifact: "{handoffs}/gate-2-handoff.md"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # G3 absorbs the former /lidr-check-readiness. Spec-completeness comes from
+  # bmad-check-implementation-readiness; capacity from lidr-sprint-capacity;
+  # team/skill-gap/infra readiness from the checklist below; go/no-go is the
+  # gate verdict + the role-auth /advance-gate already performs.
+  G3:
+    transition: "Sprint Planning → Desarrollo (Sprint committed)"
+    owner: [PO, TL]
+    bmad_evidence:
+      - skill: bmad-sprint-planning
+        artifact: "{bmad_planning}/sprint-status*.yaml"
+        required: true
+      - skill: bmad-check-implementation-readiness
+        artifact: "{bmad_planning}/*readiness*.md"
+        required: true
+    lidr_evidence:
+      - skill: lidr-sprint-capacity
+        artifact: "{client_root}/sprint-capacity*.md"
+        required: true
+    checklist:
+      - "Team fully assigned vs. required roles (Dev/QA/TL/DevOps)"
+      - "Net capacity computed with 15–20% buffer; commitment ≤90% of net"
+      - "Skill-gap analysis done (domain/compliance expertise available)"
+      - "Infra + external-team dependencies resolved or mitigated"
+      - "Definition of Ready met for every committed story"
+    signoffs:
+      - role: PO
+        artifact: "{handoffs}/gate-3-handoff.md"
+      - role: TL
+        artifact: "{handoffs}/gate-3-handoff.md"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  G4:
+    transition: "Desarrollo → QA (DoD met)"
+    owner: [Dev, Sec]
+    bmad_evidence:
+      - skill: bmad-dev-story
+        artifact: "{bmad_impl}/**/*.md"
+        required: false
+    lidr_evidence:
+      - skill: lidr-spec-verify
+        artifact: "{changes}/*/test-report.md"
+        required: true
+      - skill: lidr-dev-handoff-qa
+        artifact: "{client_root}/handoffs/dev-qa-*.md"
+        required: true
+    checklist:
+      - "DoD met: code review approved, unit tests pass, SAST/SCA clean (0 crit/high)"
+      - "test-report verdict is PASSED (or WARNINGS explicitly accepted)"
+      - "Docs updated in the same change (DTC) per documentation.md"
+    signoffs:
+      - role: TL
+        artifact: "{handoffs}/gate-4-handoff.md"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  G5:
+    transition: "QA → Seguridad (QA sign-off)"
+    owner: [QA Lead]
+    bmad_evidence:
+      - skill: bmad-testarch-automate
+        artifact: "{bmad_output}/**/*test*"
+        required: false
+    lidr_evidence:
+      - skill: lidr-test-execution-report
+        artifact: "{client_root}/test-execution-report*.md"
+        required: true
+      - skill: lidr-create-test-cases
+        artifact: "{client_root}/test-cases/*.md"
+        required: false
+    checklist:
+      - "All planned test cases executed; 0 blocking defects open"
+      - "Regression suite green"
+    signoffs:
+      - role: QA Lead
+        artifact: "{client_root}/signoffs/qa-signoff.md"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  G6:
+    transition: "Seguridad → Despliegue (Security sign-off)"
+    owner: [CISO]
+    bmad_evidence: []
+    lidr_evidence:
+      - skill: lidr-security-checklist
+        artifact: "{client_root}/security-checklist*.md"
+        required: true
+      - skill: lidr-vuln-assessment
+        artifact: "{client_root}/vuln-assessment*.md"
+        required: true
+      - skill: lidr-dast-interpretation
+        artifact: "{client_root}/dast-*.md"
+        required: false
+      - skill: lidr-pentest-report
+        artifact: "{client_root}/pentest-report*.md"
+        required: false
+    checklist:
+      - "0 Critical/High vulnerabilities open (zero-tolerance per org.md §7)"
+      - "DAST clean on a prod-replica environment"
+      - "OWASP Top 10 + applicable compliance (GDPR/PSD2) reviewed"
+    signoffs:
+      - role: CISO
+        artifact: "{client_root}/signoffs/security-signoff.md"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  G7:
+    transition: "Despliegue → Producción (CR approved — Gate Final)"
+    owner: [Change Committee]
+    bmad_evidence: []
+    lidr_evidence:
+      - skill: lidr-change-request
+        artifact: "{client_root}/change-request*.md"
+        required: true
+      - skill: lidr-rollback-plan
+        artifact: "{client_root}/rollback-plan*.md"
+        required: true
+      - skill: lidr-release-notes
+        artifact: "{client_root}/release-notes*.md"
+        required: true
+    checklist:
+      - "Change Request approved by the Change Committee"
+      - "Rollback plan documented and tested"
+      - "Post-deploy checklist ready; release notes published"
+    signoffs:
+      - role: PME
+        artifact: "{handoffs}/gate-7-handoff.md"

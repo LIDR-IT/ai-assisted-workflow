@@ -73,7 +73,6 @@ Native LIDR change-lifecycle commands — paridad con el patrón specboot, imple
 ```
                           PME  PO  TL  Dev  QA  Sec  DevOps  SM
 /advance-gate              ✅   ✅   ✅   ❌   ✅   ✅   ✅    ❌
-/check-readiness           ✅   ✅   ✅   ❌   ✅   ❌   ❌    ❌
 /implement-ticket          ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
 /prepare-testing           ❌   ❌   ❌   ❌   ✅   ❌   ❌    ❌
 /validate-requirements     ❌   ✅   ✅   ❌   ❌   ❌   ❌    ❌
@@ -155,17 +154,15 @@ FASE 3: ESPECIFICACIÓN
                               → AUTO: invoca skill user-stories (borrador)
                               → AUTO: notifica SM para Sprint Planning
 
-PRE-IMPLEMENTACIÓN (OPCIONAL)
-  PME/PO/TL ejecuta:
-    /check-readiness [project] → Valida preparación pre-implementación:
-      ├── PRD completeness assessment
-      ├── Team readiness verification
-      ├── Dependency resolution check
-      ├── Epic quality review
-      └── Technical prerequisites validation
-                              → Genera readiness score + recomendaciones
-                              → Si READY: proceder a Sprint Planning
-                              → Si CONDITIONAL/NOT_READY: abordar action items
+PRE-IMPLEMENTACIÓN (readiness = evidencia de Gate 3, ya no un command aparte)
+  PO/TL ejecuta:
+    bmad-check-implementation-readiness → completitud de specs (PRD/UX/Arch/Epics)
+    skills/sprint-capacity              → capacidad con buffer 15-20%
+    /advance-gate 3            → evalúa readiness vía _shared/lidr/gate-evidence.yaml (G3):
+      ├── specs completas (bmad-check-implementation-readiness)
+      ├── capacidad confirmada (lidr-sprint-capacity)
+      ├── checklist: equipo asignado, skill-gap, infra/deps externas, DoR por US
+      └── verdicto PASS/CONDITIONAL/FAIL = go/no-go (role-gated)
 
 FASE 4: SPRINT PLANNING
   PO ejecuta:
@@ -195,8 +192,8 @@ FASE 5: DESARROLLO (por cada ticket)
   Dev ejecuta (LIDR Spec Lifecycle — granular per-change, opcional):
     /lidr-spec-new <name>    → Crea docs/projects/<cliente>/changes/<name>/ con scaffold
     /lidr-spec-ff <name>     → Fast-forward planning (Opus high reasoning)
-                              ├── skill: lidr-prd-tecnico   → proposal.md
-                              ├── skill: lidr-design-doc    → design.md
+                              ├── skill: bmad-prd           → proposal.md (+ lidr-review-cruzado Gate-1)
+                              ├── skill: bmad-create-architecture → design.md (+ lidr-adr)
                               ├── skill: lidr-generate-rf   → spec.md (RFs + NFRs)
                               └── skill: lidr-user-stories  → tasks.md (con mandatory steps)
     /lidr-spec-apply <name>  → Implementa task-by-task (Sonnet medium)

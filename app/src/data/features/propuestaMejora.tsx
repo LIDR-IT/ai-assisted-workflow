@@ -40,12 +40,6 @@ export interface RoadmapItem {
 export const mejorasIntroData = {
   automatedWorkflows: [
     {
-      skill: 'project-classifier',
-      before: '2h análisis',
-      after: '5min detection',
-      roiAnual: '50+ horas',
-    },
-    {
       skill: 'validate-requirements',
       before: '6h manual',
       after: '5min script',

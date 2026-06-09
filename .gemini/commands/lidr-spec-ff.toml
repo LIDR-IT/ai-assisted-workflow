@@ -11,8 +11,10 @@ LAST UPDATED: 2026-05-20
 PURPOSE:
 Fast-forward through artifact creation for a LIDR change: generate proposal.md,
 design.md, spec.md, and tasks.md in one pass, using the existing LIDR skills as
-sub-steps (lidr-prd-tecnico for proposal/design, lidr-generate-rf + lidr-generate-nfr
-for spec, lidr-user-stories + spec-execution.md for tasks).
+sub-steps (bmad-prd for proposal, bmad-create-architecture for design,
+lidr-generate-rf + lidr-generate-nfr for spec, lidr-user-stories +
+spec-execution.md for tasks). BMad is the canonical SDD engine; LIDR wraps its
+outputs (gate / format / traceability) — see .agents/_shared/lidr/MIGRATION.md.
 
 PRE-REQUISITE:
   /lidr-spec-new <change-name> must have been run (the container must exist).
@@ -61,7 +63,7 @@ If no enriched US is available: ask the user to provide one (or a Jira ticket ID
 
 ### Step 1 — Generate `proposal.md`
 
-Invoke logic from skill `lidr-prd-tecnico` (and `lidr-prd-funcional` if functional aspects are present). Output goes into the existing `proposal.md`, **replacing the placeholder body but preserving the frontmatter** (update `last_updated`, append to `editHistory`, set `status: in-progress`, add `step-02-proposal` to `stepsCompleted`).
+Invoke logic from skill `bmad-prd` (covers both functional and technical sections). After generation, `lidr-review-cruzado` validates that F+T sections are complete (Gate 1 enforcement). Output goes into the existing `proposal.md`, **replacing the placeholder body but preserving the frontmatter** (update `last_updated`, append to `editHistory`, set `status: in-progress`, add `step-02-proposal` to `stepsCompleted`).
 
 Content must cover:
 
@@ -73,7 +75,7 @@ Content must cover:
 
 ### Step 2 — Generate `design.md`
 
-Invoke logic from skill `lidr-design-doc` (and `lidr-adr` if architectural decisions surface). Update frontmatter (append to `editHistory`, add `step-03-design` to `stepsCompleted`).
+Invoke logic from skill `bmad-create-architecture` (and `lidr-adr` if architectural decisions surface — LIDR emits the MADR record on top of BMad's design). Update frontmatter (append to `editHistory`, add `step-03-design` to `stepsCompleted`).
 
 Content must cover:
 
@@ -128,8 +130,8 @@ If any validation fails: report which artifact and what's missing; do NOT mark t
 ✅ Fast-forward complete: <change-name>
 
 Generated:
-  ✓ proposal.md      (lidr-prd-tecnico + lidr-prd-funcional)
-  ✓ design.md        (lidr-design-doc + ADR references)
+  ✓ proposal.md      (bmad-prd + lidr-review-cruzado Gate-1 check)
+  ✓ design.md        (bmad-create-architecture + lidr-adr references)
   ✓ spec.md          (lidr-generate-rf + lidr-generate-nfr)
   ✓ tasks.md         (lidr-user-stories + spec-execution.md mandatory steps)
 

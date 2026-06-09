@@ -42,8 +42,8 @@ This workflow is MANDATORY for every gate transition — ensures systematic eval
 
 ### Execution Steps
 
-1. **Load Gate Context** — Identify gate number and required evaluation criteria
-2. **Artifact Assessment** — Evaluate existence and content quality of required deliverables
+1. **Load Gate Context** — Identify the gate number, then load its evidence definition from `../../_shared/lidr/gate-evidence.yaml` (`gates.G<N>`). This manifest is the source of truth for which artifacts satisfy the gate: BMad outputs (primary engine) + LIDR custom-skill outputs (gap-fillers). The gate verifies them — it never regenerates them.
+2. **Artifact Assessment** — For each `bmad_evidence` and `lidr_evidence` entry, evaluate existence (glob match) and content quality. BMad artifacts under `_bmad-output/` are read-only.
 3. **Checklist Validation** — Verify completion of phase-specific quality criteria
 4. **Coherence Analysis** — Check cross-references and traceability between artifacts
 5. **Sign-off Verification** — Confirm required approvals are in place
@@ -53,15 +53,15 @@ This workflow is MANDATORY for every gate transition — ensures systematic eval
 
 **Gate Specification:**
 
-- Gate number (0-7)
-- Project identifier
-- Phase context and requirements
+- Gate number (0-7) → resolves to `gates.G<N>` in `../../_shared/lidr/gate-evidence.yaml`
+- Project identifier (active CLIENT_CODE → resolves the `{client}` path_vars)
+- Evidence manifest (`gate-evidence.yaml`) — the per-gate BMad + LIDR evidence list
 
 ## Output
 
 **Gate Evaluation Report** using template `templates/gate-evaluation.md`:
 
-- Weighted scoring across 4 dimensions (Artifacts 40%, Checklists 35%, Coherence 15%, Sign-offs 10%)
+- Weighted scoring across 4 dimensions (Artifacts 40%, Checklists 35%, Coherence 15%, Sign-offs 10%) — sourced from the manifest: Artifacts = `bmad_evidence` + `lidr_evidence`, Checklists = `checklist`, Sign-offs = `signoffs`
 - PASS/CONDITIONAL/FAIL verdict with thresholds
 - Action items for CONDITIONAL/FAIL results
 - Handoff context for next phase
@@ -77,13 +77,15 @@ This workflow is MANDATORY for every gate transition — ensures systematic eval
 ## Integration Points
 
 - **Commands**: Used by `/advance-gate [N]` for automated evaluation
-- **Skills**: References artifacts from all phase-specific skills
+- **Manifest**: Reads `../../_shared/lidr/gate-evidence.yaml` for the per-gate evidence list (BMad artifacts + LIDR gap-fillers)
+- **Skills**: References artifacts from BMad (engine) + LIDR custom skills (governance/compliance/capacity)
 - **Governance**: Feeds into project health dashboards and metrics
 
 ---
 
 ## Changelog
 
-| Version | Date       | Author                | Changes                                                      |
-| ------- | ---------- | --------------------- | ------------------------------------------------------------ |
-| 1.0.0   | 2026-04-06 | TL: epic-jira-cleanup | Initial skill creation — extracted from deprecated epic-jira |
+| Version | Date       | Author                  | Changes                                                                                                                                                           |
+| ------- | ---------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-09 | TL: LIDR Gate-over-BMad | Evidence sourcing now reads `_shared/lidr/gate-evidence.yaml` — gate verifies BMad artifacts (primary) + LIDR gap-fillers instead of phase-specific re-generation |
+| 1.0.0   | 2026-04-06 | TL: epic-jira-cleanup   | Initial skill creation — extracted from deprecated epic-jira                                                                                                      |

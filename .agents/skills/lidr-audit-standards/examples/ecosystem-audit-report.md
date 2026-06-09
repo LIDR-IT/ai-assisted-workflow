@@ -27,16 +27,16 @@
 
 ## Critical Non-Compliance Issues
 
-### CS-001: Missing Frontmatter in 3 Skills
+### CS-001: Missing Frontmatter in 2 Skills
 
-**Skills**: `skill-creator`, `document-discovery`, `implementation-phases`
+**Skills**: `skill-creator`, `implementation-phases`
 **Issue**: Required YAML frontmatter completely missing
 **Impact**: Cannot be tracked or versioned properly
 **Resolution**: Add compliant frontmatter with id, version, status, phase, owner_role
 
-### CS-002: Invalid Skill Structure (4 skills)
+### CS-002: Invalid Skill Structure (3 skills)
 
-**Skills**: `multi-agent-audit`, `playwright-cli`, `project-classifier`, `skill-development`
+**Skills**: `multi-agent-audit`, `playwright-cli`, `skill-development`
 **Issue**: Missing required directories (examples/ or templates/)
 **Impact**: Skills appear incomplete, cannot validate functionality
 **Resolution**: Create examples/ directory with at least 1 example file
@@ -124,16 +124,14 @@
 - `validate-requirements` - Templates exist, examples minimal
 - [... and 8 more with similar issues]
 
-### ❌ NON-COMPLIANT (12 skills)
+### ❌ NON-COMPLIANT (10 skills)
 
 - `audit-standards` - Missing examples directory
 - `dev-handoff-qa` - No validation scripts
-- `document-discovery` - Missing frontmatter + examples
 - `implementation-phases` - Completely empty structure
 - `kickoff` - No examples or templates
 - `multi-agent-audit` - Missing examples directory
 - `playwright-cli` - No usage examples
-- `project-classifier` - Missing examples + validation
 - `regression-suite` - No examples or scripts
 - `review-cruzado` - Missing validation scripts
 - `skill-creator` - Missing frontmatter + examples

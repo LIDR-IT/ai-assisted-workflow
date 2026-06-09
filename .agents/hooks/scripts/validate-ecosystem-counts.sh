@@ -69,7 +69,11 @@ compare "Subagents" "$ACTUAL_AGENTS"   "$EXPECTED_AGENTS"
 compare "Hooks"     "$ACTUAL_HOOKS"    "$EXPECTED_HOOKS"
 
 # --- Check for BMAD residuals in source-of-truth ---
-BMAD_IN_SKILLS=$(grep -rl "BMAD" "$BASE_DIR/.agents/skills/"*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+# Post-merge the ecosystem intentionally ships 69 bmad-* skills, which
+# legitimately reference the "BMAD" framework by name. Exclude them — this
+# check only polices LIDR/generic core files for stray all-caps "BMAD"
+# (repo convention is "BMad").
+BMAD_IN_SKILLS=$(grep -rl "BMAD" "$BASE_DIR/.agents/skills/"*/SKILL.md 2>/dev/null | grep -vc "/bmad-")
 BMAD_IN_COMMANDS=$(grep -rl "BMAD" "$BASE_DIR/.agents/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
 BMAD_IN_RULES=$(grep -rl "BMAD" "$BASE_DIR/.agents/rules/"*/*.md 2>/dev/null | wc -l | tr -d ' ')
 BMAD_TOTAL=$((BMAD_IN_SKILLS + BMAD_IN_COMMANDS + BMAD_IN_RULES))

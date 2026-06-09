@@ -104,7 +104,7 @@ All present JSONs are valid.
 1. **Skim** the Aramis discovery report from start to finish to internalize the structure.
 2. **Skim** the 3 Aramis JSONs side-by-side with the report sections that produced them.
 3. **Draft** the new client's report following the same structure (use `kickoff` and
-   `document-discovery` skills if you haven't already).
+   `bmad-document-project` skills if you haven't already).
 4. **Apply** the `propuesta-builder` skill following its SKILL.md workflow.
 5. **Compare** the new JSONs against this reference for completeness (every PP has
    quote + attribution + evidence, etc.).

@@ -70,8 +70,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 **Tier 1 — Orchestrators** (chain multiple skills + MCPs):
 | Command | Args | Purpose | Roles | Precondition | Model |
 |---------|------|---------|-------|--------------|-------|
-| `/advance-gate` | `[0-7]` | Evaluate gate, generate handoff, transition phase | PME, PO, TL, QA, Sec, DevOps | Gate N-1 PASS | opus |
-| `/check-readiness` | `[project-name]` | Pre-implementation validation: PRD completeness, team readiness, dependencies, readiness score | PME, PO, TL, QA | PRDs in draft | sonnet |
+| `/advance-gate` | `[0-7]` | Evaluate gate, generate handoff, transition phase; G3 absorbs pre-implementation readiness (spec completeness via `bmad-check-implementation-readiness` + capacity via `lidr-sprint-capacity`) | PME, PO, TL, QA, Sec, DevOps | Gate N-1 PASS | opus |
 | `/course-correct` | `[project] [type]` | Mid-project course correction for managing deviations and realigning projects | PME, PO, TL | Sprint activo | sonnet |
 | `/implement-ticket` | `[ticket-id]` | Full dev workflow: ticket → branch → code → PR → handoff QA | Dev, TL | Ticket "Ready for Dev" | sonnet |
 | `/prepare-testing` | `[ticket-id]` | Generate complete test suite: plan, cases, bug structure, report | QA | Ticket "Ready for QA" | sonnet |
@@ -79,7 +78,6 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 | `/validate-prd` | `[project-name]` | LIDR SDLC Methodology PRD quality validation with automated scoring and actionable recommendations | PO, TL, QA, PME | PRDs in draft | sonnet |
 | `/init-project-docs` | `[project-name]` | Create project documentation scaffold from templates | TL, PO, PME | New project approved | sonnet |
 | `/validate-project-docs` | `[project-name]` | Validate project docs against template criteria | TL, PO, QA, PME | Docs exist in docs/projects/ | sonnet |
-| `/document-project` | `[project-name]` | LIDR SDLC standard workflow orchestration: complete project documentation with 18-step guidance and validation integration | TL, PO, PME | Project approved | sonnet |
 
 **Tier 2 — Tactical** (focused workflows, standalone or chained):
 | Command | Args | Purpose | Roles | Precondition | Model |
@@ -104,9 +102,9 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 
 #### LIDR Skills (45)
 
-**F0 — Preparacion (1):**
+**F0 — Preparacion (0):**
 
-- `project-classifier` → 🤖 AUTOMATED (2-8h→30s): Auto-detecta tipo de proyecto (13 tipos: web, mobile, backend, library, cli, etc.) con inteligencia domain-specifica. Triggers: "classify project", "detect project type", "auto-detect"
+- _(removed: `project-classifier` → use `bmad-document-project`, which classifies project type + derives doc requirements via project-types.csv / documentation-requirements.csv)_
 - _(removed in v3.0.0: `document-discovery` → use `bmad-document-project` + `bmad-shard-doc`)_
 
 **Fase 1 — Originacion (4):**

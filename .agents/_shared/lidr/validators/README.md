@@ -89,7 +89,7 @@ npm run validate:examples                # All skill examples
 
 ```bash
 # Validate a single skill
-tsx .agents/_shared/lidr/validators/index.ts .agents/skills/lidr-epic-breakdown skill
+tsx .agents/_shared/lidr/validators/index.ts .agents/skills/lidr-user-stories skill
 
 # Validate BDD patterns in a document
 tsx .agents/_shared/lidr/validators/index.ts path/to/document.md bdd
@@ -106,7 +106,7 @@ tsx .agents/_shared/lidr/validators/index.ts .agents/ all
 ```typescript
 import { runValidationSuite } from "./.agents/_shared/lidr/validators/index.js";
 
-const result = await runValidationSuite(".agents/skills/lidr-epic-breakdown", {
+const result = await runValidationSuite(".agents/skills/lidr-user-stories", {
   skillValidation: true,
   domainAgnosticValidation: true,
   bddCompliance: true,

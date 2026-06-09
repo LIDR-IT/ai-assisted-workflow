@@ -30,8 +30,8 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 
 - Edit once in `.agents/` → automatically synced to all 5 platforms
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic) — new in this version: `spec-execution.md` and `model-selection.md` for the LIDR Spec Lifecycle
-- **113 skills** (44 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
-- **37 commands** (23 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 7 generic) — new: 7 `lidr-spec-*` for the change lifecycle (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`)
+- **112 skills** (43 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
+- **32 commands** (19 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic) — the 7 `lidr-spec-*` change-lifecycle commands (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`); `document-project` and `check-readiness` removed (BMAD `bmad-document-project` + `bmad-check-implementation-readiness` cover them; readiness now lives in Gate 3)
 - **23 subagents** (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`) — new: `lidr-spec-orchestrator` for end-to-end change execution
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
 - **Declarative context manifest**: `.agents/context-manifest.yaml` enumerates docs loaded at SessionStart (replaces hard-coded paths in `lidr-load-context` hook)
@@ -151,7 +151,7 @@ ls .github/agents/*.agent.md
 │   ├── process/              # git-workflow.md, documentation.md
 │   ├── product/, quality/, team/, tools/
 │
-├── skills/                   # 113 skills (44 lidr-* + 69 bmad-*) — Agent Skills open standard
+├── skills/                   # 112 skills (43 lidr-* + 69 bmad-*) — Agent Skills open standard
 │   ├── lidr-business-case/   # ← LIDR Phase 1: Originación
 │   ├── lidr-generate-rf/     # ← LIDR Phase 3: Specification
 │   ├── lidr-user-stories/    # ← LIDR Phase 4: Sprint Planning
@@ -169,7 +169,7 @@ ls .github/agents/*.agent.md
 │   ├── bmad-prd/, bmad-create-architecture/, ... # ← 69 BMAD skills (base flow + agents + utilities)
 │   └── ...                   # See `ls .agents/skills/` for full list
 │
-├── commands/                 # 37 commands (30 LIDR `lidr-*` + 7 generic)
+├── commands/                 # 32 commands (26 LIDR `lidr-*` + 6 generic)
 │   ├── lidr-advance-gate.md  # ← LIDR orchestrator: gate evaluation + handoff
 │   ├── lidr-implement-ticket.md    # ← LIDR: dev workflow
 │   ├── lidr-prepare-testing.md     # ← LIDR: QA workflow
@@ -600,7 +600,7 @@ arguments: [issue, branch] # Named positional args for $name substitution
 - `commit-management` — Git commit message workflows and conventions
 - `ticket-validation` — Ticket structure validation
 
-**LIDR SDLC skills (62):** Phase 0–8 of the methodology, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-prd-tecnico`, `lidr-generate-rf`, `lidr-user-stories`, `lidr-adr`, `lidr-test-plan`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-changelog-generator`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping.
+**LIDR skills (44):** Phase 0–8 of the methodology plus spec-lifecycle and meta-tooling, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-user-stories`, `lidr-adr`, `lidr-create-test-cases`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-gate-evaluation`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping. PRD/design/epics/test-plan are owned by BMad (`bmad-prd`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-testarch-test-design`) — LIDR wraps those outputs, see `.agents/_shared/lidr/MIGRATION.md`.
 
 ---
 
@@ -616,7 +616,7 @@ Each platform calls commands by a **different name** and expects a **different f
 | **Antigravity** | **"Workflows"** (different name!) | `.agents/workflows/<name>.md` (workspace) | Markdown + YAML | Internal symlink `.agents/workflows` → `commands`            |
 | **Copilot**     | "Prompt files"                    | `.github/prompts/<name>.prompt.md`        | Markdown + YAML | Generated from `.md` source (`$ARGUMENTS` → `{{{ input }}}`) |
 
-Total: 37 commands (30 LIDR `lidr-*` — 23 SDLC + 7 spec-lifecycle — + 7 generic).
+Total: 32 commands (26 LIDR `lidr-*` — 19 SDLC + 7 spec-lifecycle — + 6 generic).
 
 ### Antigravity terminology note
 
@@ -1131,17 +1131,17 @@ and subagents collectively implement. When the user references "fase X",
 
 ### The 9 phases (0-8)
 
-| Phase | Name            | Primary skills                                                                                                                           |
-| ----- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| 0     | Preparación     | `lidr-project-classifier`, `lidr-document-discovery`                                                                                     |
-| 1     | Originación     | `lidr-business-case`, `lidr-business-model`, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`                         |
-| 2     | Discovery & PRD | `lidr-prd-tecnico`, `lidr-prd-funcional`, `lidr-review-cruzado`, `lidr-risk-log`, `lidr-poc-report`, `lidr-use-cases`, `lidr-design-doc` |
-| 3     | Especificación  | `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements`, `lidr-epic-breakdown`, `lidr-bdd-patterns`                        |
-| 4     | Sprint Planning | `lidr-user-stories`, `lidr-sprint-capacity`, `lidr-refinement-notes`                                                                     |
-| 5     | Desarrollo      | `lidr-pr-description`, `lidr-adr`, `lidr-tech-debt`, `lidr-dev-handoff-qa`                                                               |
-| 6     | QA & Testing    | `lidr-test-plan`, `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report`, `lidr-regression-suite`                     |
-| 7     | Seguridad       | `lidr-vuln-assessment`, `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-security-checklist`                                     |
-| 8     | Despliegue      | `lidr-change-request`, `lidr-rollback-plan`, `lidr-release-notes`, `lidr-retrospective`, `lidr-postmortem`                               |
+| Phase | Name            | Primary skills                                                                                                                                            |
+| ----- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0     | Preparación     | `bmad-document-project` (brownfield scan + project-type classification + doc requirements)                                                                |
+| 1     | Originación     | `lidr-business-case`, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`, `lidr-risk-log` (business model → `bmad-prfaq`)                |
+| 2     | Discovery & PRD | `bmad-prd` + `lidr-review-cruzado` (Gate-1 F+T), `bmad-create-architecture`, `bmad-technical-research` (PoC); use-cases live inside `bmad-prd`            |
+| 3     | Especificación  | `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements`, `bmad-create-epics-and-stories` (epics; BDD via `bmad-testarch-atdd`)              |
+| 4     | Sprint Planning | `lidr-user-stories`, `lidr-sprint-capacity`, `lidr-refinement-notes`                                                                                      |
+| 5     | Desarrollo      | `lidr-pr-description`, `lidr-adr`, `lidr-tech-debt`, `lidr-dev-handoff-qa`                                                                                |
+| 6     | QA & Testing    | `bmad-testarch-test-design` (test plan), `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report`, `bmad-testarch-automate` (regression) |
+| 7     | Seguridad       | `lidr-vuln-assessment`, `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-security-checklist`                                                      |
+| 8     | Despliegue      | `lidr-change-request`, `lidr-rollback-plan`, `lidr-release-notes`, `bmad-retrospective`, `lidr-postmortem`                                                |
 
 ### The 8 gates (G0 → G7)
 

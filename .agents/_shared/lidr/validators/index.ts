@@ -223,7 +223,6 @@ async function validateSingleSkillOrEcosystem(
 function extractPhaseFromPath(skillPath: string): number {
   // Try to extract phase from skill path or content
   const phaseMap: Record<string, number> = {
-    "project-classifier": 0,
     "business-case": 1,
     kickoff: 1,
     "prd-funcional": 2,
