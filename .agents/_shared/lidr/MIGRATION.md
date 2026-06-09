@@ -253,3 +253,51 @@ Total:   109 skills
 `lidr-` is now the consistent prefix for all 35 LIDR-methodology skills (no naked "anytime" entries remain).
 
 _Post-Phase F (gate-over-BMAD cleanup): removed `lidr-project-classifier` (→ `bmad-document-project`) and `lidr-automated-handoffs` (redundant with the gate handoff system; its QA→Sec / Sec→DevOps content folded into `gate-evidence.yaml` G5/G6). Inventory dropped 37→35 LIDR / 111→109 total._
+
+## Phase G — Language + Tool Agnosticism (2026-06-09)
+
+**Context:** LIDR is a consultancy framework that must drop into any client repo regardless of the client's working language or toolchain. Previous phases hardcoded Spanish as the output language and named concrete tools (Jira, Xray, Confluence, SonarQube) directly inside skills and rules. This coupled the methodology to one client's stack and blocked reuse.
+
+### Decision
+
+- **LIDR skills are agnostic by nature.** Output **LANGUAGE** and concrete **TOOLS** are _client configuration_, not hardcoded skill content.
+- Skill **CONTENT** is authored in **English** (the lingua franca for the methodology source). The _artifact_ a skill produces follows the client `language` setting — default English, overridable per client (e.g. Spanish for a Spanish-speaking team).
+- Concrete tools are referenced through **abstract capability variables** (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`, `{{DOCS_TOOL}}`, etc.) resolved from client config — never named inline.
+
+### Foundation added
+
+| File                                              | Purpose                                                                                                                           |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `_shared/lidr/integrations/tool-registry.yaml`    | Central abstract→concrete map. 7 capabilities (tracking, test management, docs, source control, CI/CD, code quality, comms).      |
+| `_shared/lidr/integrations/clients/_example.yaml` | Per-client binding template: maps each abstract capability to the client's real tool + sets the artifact `language`.              |
+| `_shared/lidr/integrations/README.md`             | Documents the hybrid model: a central registry for the abstract↔concrete map + per-skill adapters for tool-specific export logic. |
+
+### Reference skill wired to the registry
+
+`lidr-tracking-integration` is the proof skill: it resolves `{{TRACKING_TOOL}}` from client config instead of assuming Jira. Added `_shared/lidr/integrations/adapters/redmine-adapter.py` to **prove a client can drop Jira entirely** and bind Redmine — the abstract capability stays the same, only the adapter changes.
+
+### Fan-out (skills refactored)
+
+| Metric                                                                                          | Count |
+| ----------------------------------------------------------------------------------------------- | ----- |
+| LIDR skills refactored (English-default-configurable + tools abstracted to `{{...}}` variables) | 1     |
+| Passed adversarial verification                                                                 | 0     |
+| Need manual follow-up                                                                           | 1     |
+
+Skill needing manual follow-up: `lidr-dev-handoff-qa`.
+
+### Rules lockstep
+
+The language mandate moved out of the skills/rules and into client config (default English):
+
+- `lidr-sdlc/org.md` §6.2 (Estándares de Documentación) — hardcoded Spanish/Inglés language column reframed as client-config-driven.
+- `lidr-sdlc/project.md` §7.3 (Reglas de Documentación) — "Documentación funcional en español" rules superseded by the per-client `language` setting.
+
+### Residual (NOT auto-edited — tracked follow-up)
+
+Tool coupling lives **inside `.py`/`.ts` scripts**, not just SKILL.md prose, and was deliberately left untouched to avoid breaking working automation:
+
+- `lidr-user-stories` → `scripts/rf-slicer.py` (Jira CSV export format).
+- Tracking adapters that still assume a specific tool's payload shape.
+
+These require careful, test-backed refactoring (each export format change must be re-verified against the target tool's import schema) and are tracked for a follow-up pass.

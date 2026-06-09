@@ -43,49 +43,49 @@ domain: domain-specific-identity
 ## Example 1: Facial Enrollment with Liveness
 
 ````markdown
-# RF-BIO-001: Enrolamiento facial con validación de liveness
+# RF-BIO-001: Facial enrollment with liveness validation
 
-| Campo           | Valor      |
-| --------------- | ---------- |
-| **ID**          | RF-BIO-001 |
-| **Versión**     | 1.0        |
-| **Estado**      | Borrador   |
-| **Prioridad**   | Must       |
-| **Complejidad** | Alta       |
+| Field          | Value      |
+| -------------- | ---------- |
+| **ID**         | RF-BIO-001 |
+| **Version**    | 1.0        |
+| **Status**     | Draft      |
+| **Priority**   | Must       |
+| **Complexity** | High       |
 
-## Descripción
+## Description
 
-**Actor(es)**: Usuario nuevo (primary), {{CLIENT_NAME}} SDK (secondary), Backend API (secondary)
-**Precondiciones**: Usuario autenticado en la app, cámara disponible, consentimiento GDPR otorgado
-**Descripción Funcional**: El sistema DEBE permitir a un usuario capturar su imagen facial, validar que
-es una persona real (liveness ≥0.95), generar template biométrico cifrado y almacenarlo de forma segura
-para futuras verificaciones.
+**Actor(s)**: New user (primary), {{CLIENT_NAME}} SDK (secondary), Backend API (secondary)
+**Preconditions**: User authenticated in the app, camera available, GDPR consent granted
+**Functional Description**: The system MUST allow a user to capture their facial image, validate that
+they are a real person (liveness ≥0.95), generate an encrypted biometric template and store it securely
+for future verifications.
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 
-### CA-BIO-001-01: Enrolamiento exitoso
+### CA-BIO-001-01: Successful enrollment
 
 ```gherkin
-Scenario: Happy path — captura exitosa con buena iluminación
-  Given el usuario "juan.perez@example.com" no tiene template biométrico registrado
-    And la cámara del dispositivo está activa y funcional
-    And la iluminación ambiental es ≥300 lux
-  When el usuario posiciona su rostro dentro del óvalo guía durante 3 segundos
-    And el sistema ejecuta authenticity detection
-  Then el sistema detecta liveness score 0.96 (≥0.95 threshold)
-    And genera template biométrico único de 512 bytes
-    And almacena template cifrado AES-256-GCM en base de datos
-    And muestra mensaje: "Registro facial completado exitosamente"
-    And loggea evento: "ENROLLMENT_SUCCESS" sin datos biométricos
+Scenario: Happy path — successful capture with good lighting
+  Given the user "juan.perez@example.com" has no registered biometric template
+    And the device camera is active and functional
+    And ambient lighting is ≥300 lux
+  When the user positions their face inside the guide oval for 3 seconds
+    And the system runs authenticity detection
+  Then the system detects a liveness score of 0.96 (≥0.95 threshold)
+    And generates a unique 512-byte biometric template
+    And stores the AES-256-GCM encrypted template in the database
+    And shows message: "Facial registration completed successfully"
+    And logs event: "ENROLLMENT_SUCCESS" without biometric data
 
-Scenario: Error — authenticity detection falla por imagen estática
-  Given el usuario presenta una fotografía impresa en papel
-  When el sistema ejecuta authenticity detection
-  Then el sistema detecta liveness score 0.23 (<0.95 threshold)
-    And incrementa contador de intentos fallidos (3 máximo)
-    And muestra mensaje: "No pudimos verificar que es una persona real. Intente con su rostro en vivo."
-    And loggea evento: "ENROLLMENT_LIVENESS_FAIL" con score pero sin imagen
-    And el usuario puede: reintentar o cancelar proceso
+Scenario: Error — authenticity detection fails due to a static image
+  Given the user presents a photograph printed on paper
+  When the system runs authenticity detection
+  Then the system detects a liveness score of 0.23 (<0.95 threshold)
+    And increments the failed-attempt counter (3 maximum)
+    And shows message: "We could not verify that you are a real person. Try again with your live face."
+    And logs event: "ENROLLMENT_LIVENESS_FAIL" with score but without image
+    And the user can: retry or cancel the process
 ```
 ````
 
@@ -94,32 +94,32 @@ Scenario: Error — authenticity detection falla por imagen estática
 ## Example 2: Document OCR with Field Validation
 
 ````markdown
-# RF-DOC-005: Extracción OCR de DNI español con validación de campos
+# RF-DOC-005: OCR extraction of Spanish DNI with field validation
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 
-### CA-DOC-005-01: Extracción exitosa de DNI
+### CA-DOC-005-01: Successful DNI extraction
 
 ```gherkin
-Scenario: Happy path — DNI válido con todos los campos
-  Given el usuario ha capturado imagen de DNI español frente
-    And la imagen tiene resolución ≥1080p y nitidez >80%
-  When el sistema ejecuta OCR sobre la imagen
-  Then extrae campo "nombres": "JUAN CARLOS"
-    And extrae campo "apellidos": "GARCÍA LÓPEZ"
-    And extrae campo "dni": "12345678Z"
-    And extrae campo "fecha_nacimiento": "15/03/1985"
-    And valida checksum DNI: 12345678Z → dígito Z correcto
-    And muestra mensaje: "Documento procesado correctamente"
-    And almacena datos extraídos en session temporalmente (no persistir)
+Scenario: Happy path — valid DNI with all fields
+  Given the user has captured an image of the front of a Spanish DNI
+    And the image has resolution ≥1080p and sharpness >80%
+  When the system runs OCR on the image
+  Then it extracts field "first_names": "JUAN CARLOS"
+    And it extracts field "last_names": "GARCÍA LÓPEZ"
+    And it extracts field "dni": "12345678Z"
+    And it extracts field "date_of_birth": "15/03/1985"
+    And it validates DNI checksum: 12345678Z → letter Z correct
+    And shows message: "Document processed successfully"
+    And stores the extracted data in the session temporarily (do not persist)
 
-Scenario: Error — imagen borrosa o ilegible
-  Given el usuario captura imagen de DNI con nitidez <60%
-  When el sistema ejecuta OCR
-  Then detecta confianza OCR <80% en campos críticos
-    And muestra mensaje: "Imagen no clara. Capture nuevamente con mejor iluminación"
-    And sugiere: "Sostenga el documento firme y evite reflejos"
-    And el usuario puede: reintentar captura o cancelar
+Scenario: Error — blurry or illegible image
+  Given the user captures a DNI image with sharpness <60%
+  When the system runs OCR
+  Then it detects OCR confidence <80% on critical fields
+    And shows message: "Image not clear. Capture again with better lighting"
+    And suggests: "Hold the document steady and avoid glare"
+    And the user can: retry the capture or cancel
 ```
 ````
 
@@ -128,33 +128,33 @@ Scenario: Error — imagen borrosa o ilegible
 ## Example 3: 1:1 Facial Verification
 
 ````markdown
-# RF-BIO-010: Verificación facial 1:1 con template existente
+# RF-BIO-010: 1:1 facial verification against an existing template
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 
-### CA-BIO-010-01: Verificación exitosa
+### CA-BIO-010-01: Successful verification
 
 ```gherkin
-Scenario: Happy path — match exitoso con template existente
-  Given el usuario "maria.gonzalez@corp.com" tiene template biométrico almacenado
-    And el template fue creado <90 días (no expirado)
-  When el usuario captura nueva imagen facial para verificación
-    And el sistema ejecuta matching 1:1 contra template almacenado
-  Then el sistema calcula similarity score 0.87 (≥0.82 threshold)
-    And retorna resultado: "MATCH_SUCCESS"
-    And loggea evento: "VERIFICATION_SUCCESS" con user_id pero sin datos biométricos
-    And permite acceso al usuario autenticado
-    And incrementa contador de verificaciones exitosas en métricas
+Scenario: Happy path — successful match against an existing template
+  Given the user "maria.gonzalez@corp.com" has a stored biometric template
+    And the template was created <90 days ago (not expired)
+  When the user captures a new facial image for verification
+    And the system runs 1:1 matching against the stored template
+  Then the system calculates a similarity score of 0.87 (≥0.82 threshold)
+    And returns result: "MATCH_SUCCESS"
+    And logs event: "VERIFICATION_SUCCESS" with user_id but without biometric data
+    And grants access to the authenticated user
+    And increments the successful-verification counter in metrics
 
-Scenario: Error — no match con template existente
-  Given el usuario presenta rostro diferente al template almacenado
-  When el sistema ejecuta matching 1:1
-  Then calcula similarity score 0.45 (<0.82 threshold)
-    And retorna resultado: "MATCH_FAIL"
-    And incrementa contador de intentos fallidos (5 máximo)
-    And loggea evento: "VERIFICATION_FAIL" con user_id y score
-    And muestra mensaje: "Verificación fallida. Intente nuevamente"
-    And bloquea acceso temporalmente tras 5 intentos fallidos
+Scenario: Error — no match against the existing template
+  Given the user presents a face different from the stored template
+  When the system runs 1:1 matching
+  Then it calculates a similarity score of 0.45 (<0.82 threshold)
+    And returns result: "MATCH_FAIL"
+    And increments the failed-attempt counter (5 maximum)
+    And logs event: "VERIFICATION_FAIL" with user_id and score
+    And shows message: "Verification failed. Try again"
+    And temporarily blocks access after 5 failed attempts
 ```
 ````
 
@@ -166,13 +166,13 @@ Scenario: Error — no match con template existente
 | -------------------------------------- | ------------------------------------------------------------ | ---------------------------------------- |
 | "RF-001: Complete facial verification" | Split into: enrollment, liveness, matching, storage          | Too broad — needs decomposition          |
 | "authenticity detection works well"    | "liveness score ≥0.95 (threshold)"                           | Vague — needs concrete threshold         |
-| "stores facial image securely"         | "stores template cifrado AES-256-GCM"                        | Images ≠ templates; need encryption spec |
+| "stores facial image securely"         | "stores AES-256-GCM encrypted template"                      | Images ≠ templates; need encryption spec |
 | "logs user verification"               | "logs VERIFICATION_SUCCESS with user_id (no sensitive data)" | GDPR violation — no PII in logs          |
-| "face quality is good"                 | "image resolution ≥1080p, nitidez >80%"                      | Subjective — needs measurable criteria   |
+| "face quality is good"                 | "image resolution ≥1080p, sharpness >80%"                    | Subjective — needs measurable criteria   |
 | "handles verification errors"          | Separate RF for each error type                              | One RF per behavior rule                 |
 
 ## Changelog
 
-| Versión | Fecha      | Autor                 | Cambios                                                  |
+| Version | Date       | Author                | Changes                                                  |
 | ------- | ---------- | --------------------- | -------------------------------------------------------- |
 | 1.0.0   | 2026-03-25 | TL: tier3-remediation | Extracted from SKILL.md during domain-agnostic migration |

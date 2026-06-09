@@ -1,14 +1,15 @@
 ---
 name: lidr-run-parallel-tasks
 id: run-parallel-tasks
-version: "1.0.0"
-last_updated: "2026-05-20"
+version: "1.1.0"
+last_updated: "2026-06-09"
 updated_by: "TL: LIDR Spec Native"
 status: active
 phase: 5
 owner_role: "TL"
 automation: true
 domain_agnostic: true
+integrations: [tracking]
 model: claude-opus-4-7
 effort: high
 description: >
@@ -17,7 +18,7 @@ description: >
   spec-apply → spec-verify). Stops after verify — no archive, no commit, no
   worktree cleanup. Use when the user says "run parallel-tasks.md", "run the
   parallel changes", "lanza los tasks en paralelo", "start the parallel tasks",
-  or when a TL wants to execute multiple Jira tickets concurrently without
+  or when a TL wants to execute multiple {{TRACKING_TOOL}} tickets concurrently without
   blocking the main checkout. Each task runs cold-start in a sub-agent with a
   self-contained prompt. Output is a summary table with per-task verify status
   and blockers. Requires Opus high reasoning for the planning sub-steps.
@@ -26,6 +27,8 @@ description: >
 # Run Parallel Tasks Skill
 
 Phase: 5 — Development | Author: LIDR Consultorias | Pipeline: enrich → new → ff → apply → verify → stop
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 Reads `parallel-tasks.md` from the project root (or from the path provided), spins up one isolated sub-agent per task, and runs each through the full LIDR change lifecycle without supervision.
 
@@ -52,7 +55,7 @@ Read `parallel-tasks.md` from the project root (or the provided path).
 Extract every uncommented task block. A task block starts with `### Task` and contains:
 
 - `name:` — kebab-case change name (**required**)
-- `us:` — source of the user story: `inline`, a file path, or a Jira ticket ID (**required**)
+- `us:` — source of the user story: `inline`, a file path, or a {{TRACKING_TOOL}} ticket ID (**required**)
 - `description:` — inline US text (**required when `us: inline`**)
 
 Skip any task block wrapped in `<!-- -->` HTML comments.
@@ -75,11 +78,11 @@ Resolve raw US text by source type:
 
 - `us: inline` → use the `description:` field as raw US input
 - `us: <file-path>` → read the file at that path as raw US input
-- `us: <JIRA-ID>` → pass the ticket ID to the enrichment step; the enricher fetches and enriches in one pass
+- `us: <TICKET-ID>` → pass the {{TRACKING_TOOL}} ticket ID to the enrichment step; the enricher fetches and enriches in one pass
 
 Invoke the enrichment using one of these (whichever is available):
 
-- The `lidr-ticket-enricher` subagent (preferred when Jira MCP is configured)
+- The `lidr-ticket-enricher` subagent (preferred when the {{TRACKING_TOOL}} MCP is configured)
 - The `/lidr-enrich-ticket` slash command
 - A direct delegation to the `lidr-enrich-us` skill if it exists
 
@@ -134,12 +137,12 @@ Final report includes:
 
 ## Common Failure Modes
 
-| Failure                                            | Resolution                                                                                                                   |
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `parallel-tasks.md` missing                        | Ask user to create it; provide template path: `.agents/skills/lidr-run-parallel-tasks/references/parallel-tasks-template.md` |
-| One sub-agent fails to create worktree             | The task is marked BLOCKED; other sub-agents continue. Report the failure                                                    |
-| Enrichment fails (Jira MCP down, ticket not found) | The task is marked BLOCKED; the user must enrich manually or provide inline US                                               |
-| Sub-agent runs out of context                      | Sub-agent reports CRITICAL with "context exhausted"; user must run that task standalone                                      |
+| Failure                                                         | Resolution                                                                                                                   |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `parallel-tasks.md` missing                                     | Ask user to create it; provide template path: `.agents/skills/lidr-run-parallel-tasks/references/parallel-tasks-template.md` |
+| One sub-agent fails to create worktree                          | The task is marked BLOCKED; other sub-agents continue. Report the failure                                                    |
+| Enrichment fails ({{TRACKING_TOOL}} MCP down, ticket not found) | The task is marked BLOCKED; the user must enrich manually or provide inline US                                               |
+| Sub-agent runs out of context                                   | Sub-agent reports CRITICAL with "context exhausted"; user must run that task standalone                                      |
 
 ## References
 
@@ -148,3 +151,9 @@ Final report includes:
 - Related skill: `lidr-using-git-worktrees`
 - Related rule: `lidr-sdlc/model-selection.md` (Opus high reasoning enforcement)
 - Related rule: `lidr-sdlc/spec-execution.md` (mandatory steps inside `/lidr-spec-apply` and `/lidr-spec-verify`)
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                     |
+| ------- | ---------- | ---------------------- | --------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Jira via tool-registry |

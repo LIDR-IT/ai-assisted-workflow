@@ -1,82 +1,82 @@
 ---
 id: tpl-adr
-version: "1.0.0"
-last_updated: "2026-03-07"
-updated_by: "TL: Lead Engineer"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 ---
 
 # ADR Template (MADR v3)
 
-> **Uso**: Architecture Decision Record en formato MADR. Usado por el skill `adr`.
-> **Gate**: Transversal (principalmente Fase 5 — Desarrollo)
+> **Usage**: Architecture Decision Record in MADR format. Used by the `adr` skill.
+> **Gate**: Cross-cutting (mainly Phase 5 — Development)
 
 ---
 
-## ADR-{NNNN}: {Titulo de la Decision}
+## ADR-{NNNN}: {Decision Title}
 
-### Estado
+### Status
 
 {proposed | accepted | deprecated | superseded by ADR-NNNN}
 
-### Fecha
+### Date
 
 {YYYY-MM-DD}
 
-### Contexto
+### Context
 
-{Describe el contexto tecnico y de negocio que motiva esta decision. Incluye restricciones, requisitos relevantes (RF/NFR) y estado actual del sistema.}
+{Describe the technical and business context that motivates this decision. Include constraints, relevant requirements (RF/NFR) and current system state.}
 
-### Problema
+### Problem
 
-{Formula la pregunta o problema arquitectonico que necesita resolucion. Ejemplo: "Necesitamos decidir como gestionar el estado de sesiones en un sistema distribuido."}
+{State the architectural question or problem that needs resolution. Example: "We need to decide how to manage session state in a distributed system."}
 
 ### Decision Drivers
 
-- {Driver 1: ej. rendimiento bajo carga (NFR-003)}
-- {Driver 2: ej. experiencia de desarrollo del equipo}
-- {Driver 3: ej. coste de licencia}
-- {Driver 4: ej. compatibilidad con stack existente}
+- {Driver 1: e.g. performance under load (NFR-003)}
+- {Driver 2: e.g. team developer experience}
+- {Driver 3: e.g. license cost}
+- {Driver 4: e.g. compatibility with existing stack}
 
-### Opciones Consideradas
+### Considered Options
 
-#### Opcion 1: {nombre}
+#### Option 1: {name}
 
-- **Pros**: {ventajas}
-- **Cons**: {desventajas}
+- **Pros**: {advantages}
+- **Cons**: {disadvantages}
 
-#### Opcion 2: {nombre}
+#### Option 2: {name}
 
-- **Pros**: {ventajas}
-- **Cons**: {desventajas}
+- **Pros**: {advantages}
+- **Cons**: {disadvantages}
 
-#### Opcion 3: {nombre}
+#### Option 3: {name}
 
-- **Pros**: {ventajas}
-- **Cons**: {desventajas}
+- **Pros**: {advantages}
+- **Cons**: {disadvantages}
 
 ### Decision
 
-Se elige **Opcion {N}: {nombre}** porque {justificacion vinculada a los decision drivers}.
+We choose **Option {N}: {name}** because {justification tied to the decision drivers}.
 
-### Consecuencias
+### Consequences
 
-#### Positivas
+#### Positive
 
-- {consecuencia positiva 1}
-- {consecuencia positiva 2}
+- {positive consequence 1}
+- {positive consequence 2}
 
-#### Negativas
+#### Negative
 
-- {consecuencia negativa 1 + mitigacion planificada}
+- {negative consequence 1 + planned mitigation}
 
-#### Neutras
+#### Neutral
 
-- {consecuencia neutra / trade-off aceptado}
+- {neutral consequence / accepted trade-off}
 
 ### Links
 
-- RF/NFR relacionados: {RF-NNN, NFR-NNN}
-- PRD origen: {PRD-T seccion N / PRD-F seccion N}
-- ADRs relacionados: {ADR-NNNN (si aplica)}
-- Ticket Jira: {PROJ-NNN}
+- Related RF/NFR: {RF-NNN, NFR-NNN}
+- Source PRD: {PRD-T section N / PRD-F section N}
+- Related ADRs: {ADR-NNNN (if applicable)}
+- {{TRACKING_TOOL}} ticket: {PROJ-NNN}

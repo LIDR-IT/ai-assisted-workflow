@@ -1,8 +1,8 @@
 ---
 id: tpl-kickoff
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Template Migration"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 type: template
 review_cycle: 60
@@ -10,97 +10,98 @@ next_review: "2026-05-15"
 owner_role: "Scrum Master"
 ---
 
-# Kickoff / Acta de Inicio Template
+# Kickoff / Initiation Minutes Template
 
-> **Uso**: Acta formal de kick-off de proyecto. Usado por el skill `kickoff`.
+> **Usage**: Formal project kick-off minutes. Used by the skill `kickoff`.
 > **Gate**: Gate 0 (Intake)
+> **Output**: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 ---
 
-## Datos del Proyecto
+## Project Data
 
-| Campo               | Valor             |
-| ------------------- | ----------------- |
-| Nombre del proyecto | {nombre_proyecto} |
-| Sponsor             | {nombre_sponsor}  |
-| Product Owner       | {nombre_po}       |
-| Tech Lead           | {nombre_tl}       |
-| Fecha kick-off      | {YYYY-MM-DD}      |
-| Duracion estimada   | {N semanas/meses} |
-
----
-
-## Asistentes
-
-| Nombre   | Rol   | Area          | Presente |
-| -------- | ----- | ------------- | -------- |
-| {nombre} | {rol} | {area/equipo} | Si / No  |
+| Field              | Value            |
+| ------------------ | ---------------- |
+| Project name       | {project_name}   |
+| Sponsor            | {sponsor_name}   |
+| Product Owner      | {po_name}        |
+| Tech Lead          | {tl_name}        |
+| Kick-off date      | {YYYY-MM-DD}     |
+| Estimated duration | {N weeks/months} |
 
 ---
 
-## Objetivo del Proyecto
+## Attendees
 
-{Descripcion clara del objetivo principal del proyecto en 2-3 oraciones. Debe responder: Que se construye y para quien.}
+| Name   | Role   | Area        | Present  |
+| ------ | ------ | ----------- | -------- |
+| {name} | {role} | {area/team} | Yes / No |
 
 ---
 
-## Alcance
+## Project Objective
+
+{Clear description of the project's main objective in 2-3 sentences. Must answer: What is being built and for whom.}
+
+---
+
+## Scope
 
 ### In Scope
 
-- {funcionalidad/entregable 1}
-- {funcionalidad/entregable 2}
-- {funcionalidad/entregable 3}
+- {feature/deliverable 1}
+- {feature/deliverable 2}
+- {feature/deliverable 3}
 
 ### Out of Scope
 
-- {exclusion explicita 1}
-- {exclusion explicita 2}
+- {explicit exclusion 1}
+- {explicit exclusion 2}
 
 ---
 
-## Contexto de Negocio
+## Business Context
 
-{Resumen del Business Case: problema de negocio, oportunidad, metricas de exito esperadas. Referencia al BC aprobado.}
-
----
-
-## Decisiones Tomadas
-
-| #   | Decision   | Responsable | Justificacion   |
-| --- | ---------- | ----------- | --------------- |
-| 1   | {decision} | {nombre}    | {justificacion} |
+{Business Case summary: business problem, opportunity, expected success metrics. Reference to the approved BC.}
 
 ---
 
-## Riesgos Iniciales Identificados
+## Decisions Made
 
-| ID    | Riesgo   | Probabilidad    | Impacto         | Mitigacion propuesta |
-| ----- | -------- | --------------- | --------------- | -------------------- |
-| R-001 | {riesgo} | alta/media/baja | alto/medio/bajo | {mitigacion}         |
-
----
-
-## Proximos Pasos
-
-| #   | Accion   | Owner    | Fecha limite |
-| --- | -------- | -------- | ------------ |
-| 1   | {accion} | {nombre} | {YYYY-MM-DD} |
+| #   | Decision   | Owner  | Rationale   |
+| --- | ---------- | ------ | ----------- |
+| 1   | {decision} | {name} | {rationale} |
 
 ---
 
-## Criterios de Exito
+## Initial Identified Risks
 
-- [ ] {criterio medible 1}
-- [ ] {criterio medible 2}
-- [ ] {criterio medible 3}
+| ID    | Risk   | Probability     | Impact          | Proposed Mitigation |
+| ----- | ------ | --------------- | --------------- | ------------------- |
+| R-001 | {risk} | high/medium/low | high/medium/low | {mitigation}        |
 
 ---
 
-## Firmas
+## Next Steps
 
-| Rol           | Nombre   | Firma          | Fecha        |
-| ------------- | -------- | -------------- | ------------ |
-| Sponsor       | {nombre} | \***\*\_\*\*** | {YYYY-MM-DD} |
-| Product Owner | {nombre} | \***\*\_\*\*** | {YYYY-MM-DD} |
-| Tech Lead     | {nombre} | \***\*\_\*\*** | {YYYY-MM-DD} |
+| #   | Action   | Owner  | Deadline     |
+| --- | -------- | ------ | ------------ |
+| 1   | {action} | {name} | {YYYY-MM-DD} |
+
+---
+
+## Success Criteria
+
+- [ ] {measurable criterion 1}
+- [ ] {measurable criterion 2}
+- [ ] {measurable criterion 3}
+
+---
+
+## Signatures
+
+| Role          | Name   | Signature      | Date         |
+| ------------- | ------ | -------------- | ------------ |
+| Sponsor       | {name} | \***\*\_\*\*** | {YYYY-MM-DD} |
+| Product Owner | {name} | \***\*\_\*\*** | {YYYY-MM-DD} |
+| Tech Lead     | {name} | \***\*\_\*\*** | {YYYY-MM-DD} |

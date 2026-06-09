@@ -1,18 +1,26 @@
 ---
 name: lidr-audit-standards
 id: audit-standards
-version: "2.0.0"
-last_updated: "2026-03-25"
-updated_by: "TL: ecosystem-audit-expansion"
+version: "2.1.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: []
 description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-general` (which reviews content quality). This audits the `.agents/` ecosystem STRUCTURE itself: frontmatter consistency, domain-agnostic content, methodology uniformity, staleness detection, path correctness, drift between sources of truth. Use for periodic ecosystem health checks, not content reviews. Triggers on 'audit skills', 'audit ecosystem', 'audit rules', 'audit docs', 'validate standards', 'compliance check', 'frontmatter audit', 'staleness check'."
 ---
 
 # Audit Standards Validator
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMAD
+
+This skill audits the **structure** of the `.agents/` ecosystem itself — frontmatter consistency, domain-agnostic phrasing, methodology uniformity, staleness, path correctness, drift between sources of truth. It is orthogonal to `bmad-review-adversarial-general`, which reviews the **content** quality of a single artifact. Use this for periodic ecosystem health checks; use `bmad-review-adversarial-general` to critique what a document actually says.
 
 **Purpose:** Comprehensive validation of all ecosystem artifacts — skills, rules, docs, ADRs, standards, and guides — against established SDLC ecosystem standards for quality, consistency, and compliance.
 
@@ -101,11 +109,11 @@ description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-gen
 
 - F0: Preparación (bmad-document-project)
 - F1: Originación (business-case, kickoff, stakeholder-map, tracking-integration)
-- F2: Discovery (prd-tecnico, prd-funcional, review-cruzado, risk-log, poc-report)
-- F3: Especificación (generate-rf, generate-nfr, validate-requirements, epic-breakdown)
+- F2: Discovery (bmad-prd, bmad-prd, review-cruzado, risk-log, bmad-technical-research)
+- F3: Especificación (generate-rf, generate-nfr, validate-requirements, bmad-create-epics-and-stories)
 - F4: Planning (user-stories, sprint-capacity, refinement-notes)
 - F5: Desarrollo (pr-description, adr, tech-debt, dev-handoff-qa)
-- F6: QA (test-plan, create-test-cases, bug-report, test-execution-report, regression-suite)
+- F6: QA (test-plan, create-test-cases, bug-report, test-execution-report, bmad-testarch-automate)
 - F7: Seguridad (vuln-assessment, dast-interpretation, pentest-report, security-checklist)
 - F8: Despliegue (change-request, rollback-plan, release-notes, retrospective, postmortem)
 
@@ -121,7 +129,7 @@ description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-gen
 
 - `automation: true` for 7 automated skills:
   - validate-requirements, tech-debt
-  - user-stories, regression-suite, test-plan
+  - user-stories, bmad-testarch-automate, test-plan
   - release-notes, security-checklist
 - `automation: false` for all manual skills
 
@@ -152,17 +160,18 @@ description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-gen
 
 **Language Rules:**
 
-- Functional content: Spanish
-- Technical inline: English
-- Code/commits: English
-- Mixed context: Spanish primary with English technical terms
+- Skills, rules, and docs are **authored in English** as the uniform default (`language_default: en` in frontmatter).
+- The **artifact** a skill produces follows the client `language` setting (resolved via `_shared/lidr/integrations/`), not the skill's own prose.
+- Technical inline, code, and commits: always English.
+- Spanish text is permitted **only** inside clearly-labelled output templates/examples, never in generic prose, headers, or descriptions.
 
 **Validation Criteria:**
 
-- Appropriate language for content type
-- Consistent terminology usage
-- No unnecessary mixing of languages
-- Clear communication in chosen language
+- `language_default: en` present in frontmatter (flag any skill missing it).
+- **Flag hardcoded Spanish prose without a `language_default` declaration** — e.g. a header like "Language: Spanish" or an instruction "Output in Spanish" outside a labelled example block.
+- No "Output in {language}" / "Language: {language}" hardcoded in prose — should read "artifact language follows the client `language` setting".
+- Spanish appears only in labelled example/template blocks, not in instructional prose.
+- Consistent terminology; technical terms remain English.
 
 ---
 
@@ -337,7 +346,7 @@ For large-scale audits (10+ skills), use:
 
 #### Agent Batch Execution
 
-When invoked by the multi-agent-audit coordinator:
+When invoked by the bmad-eval-runner coordinator:
 
 ```bash
 # Accept batch input file
@@ -508,7 +517,7 @@ log_audit_error() {
 
 ## Multi-Agent Integration Instructions
 
-### When Invoked by multi-agent-audit Coordinator
+### When Invoked by bmad-eval-runner Coordinator
 
 #### 1. Accept Coordination Parameters
 
@@ -607,7 +616,7 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
@@ -885,3 +894,12 @@ The Extended Ecosystem Audit complements the existing 8-category skill audit:
 ---
 
 _This enhanced audit skill ensures reliable, efficient, and scalable ecosystem-wide compliance validation through coordinated multi-agent execution while maintaining the highest standards of quality assessment and reporting._
+
+---
+
+## Changelog
+
+| Version | Date       | Author                       | Changes                                                                                                                                                                                                         |
+| ------- | ---------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.1.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added `language_default: en`; tightened Language Compliance to flag hardcoded Spanish-without-language_default; added Relationship-to-BMAD note (audits STRUCTURE vs `bmad-review-adversarial-general` CONTENT) |
+| 2.1.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted tools via tool-registry (no concrete tools in scope — `integrations: []`)                                                                                  |

@@ -21,6 +21,8 @@ actual_start: null
 actual_completion: null
 
 # External references (ID mapping consistency)
+# Illustrative multi-tool catalog — tools resolve via `_shared/lidr/integrations/tool-registry.yaml`;
+# the active client binds concrete tracker/docs in `clients/<CODE>.yaml`. Keep only the bound tools' keys.
 external_refs:
   jira: "PROJ-{nnn}"
   linear: "LIN-{nnn}"
@@ -247,6 +249,8 @@ High-level description of architectural changes or additions.
 
 ### External References
 
-- [Jira Epic](jira-link)
-- [Linear Project](linear-link)
-- [Notion Page](notion-link)
+Link to the bound {{TRACKING_TOOL}}/{{DOCS_TOOL}} record(s). Example:
+
+- Example (Jira): [Jira Epic](jira-link)
+- Example (Linear): [Linear Project](linear-link)
+- Example (Notion): [Notion Page](notion-link)

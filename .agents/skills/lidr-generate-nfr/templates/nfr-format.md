@@ -1,145 +1,145 @@
-# Formato Estándar: Requisito No Funcional (NFR)
+# Standard Format: Non-Functional Requirement (NFR)
 
-> **Propósito**: Formato obligatorio para NFRs standalone, medibles y testables.
-> **Referenciado por**: `skills/generate-nfr/SKILL.md` como formato de output
-> **Gate asociado**: Gate 2 — Requisitos Completos
-> **Complementa a**: `docs/templates/rf-format.md` (requisitos funcionales)
-> **Instancias**: `docs/projects/{proyecto}/nfrs/NFR-{PROJ}-{CAT}-{NNN}.md`
+> **Purpose**: Mandatory format for standalone, measurable, and testable NFRs.
+> **Referenced by**: `skills/generate-nfr/SKILL.md` as the output format
+> **Associated gate**: Gate 2 — Requirements Complete
+> **Complements**: `docs/templates/rf-format.md` (functional requirements)
+> **Instances**: `docs/projects/{project}/nfrs/NFR-{PROJ}-{CAT}-{NNN}.md`
 
 ---
 
-## Estructura del NFR
+## NFR Structure
 
-### 1. Encabezado (Obligatorio)
+### 1. Header (Mandatory)
 
 ```markdown
 ---
 id: NFR-{PROJ}-{CAT}-{NNN}
-título: { Título descriptivo — máximo 15 palabras }
-categoría: Performance | Security | Scalability | Availability | Compliance | Accessibility | Observability
-versión: { 1.0 }
-estado: Borrador | En Revisión | Aprobado | Obsoleto
-prd_origen: { PRD-T §5.X }
-autor: { Nombre completo }
-fecha_creación: { YYYY-MM-DD }
-prioridad: Must Have | Should Have | Could Have
-criticidad: Bloqueante | Alta | Media | Baja
+title: { Descriptive title — maximum 15 words }
+category: Performance | Security | Scalability | Availability | Compliance | Accessibility | Observability
+version: { 1.0 }
+status: Draft | In Review | Approved | Obsolete
+prd_source: { PRD-T §5.X }
+author: { Full name }
+created_date: { YYYY-MM-DD }
+priority: Must Have | Should Have | Could Have
+criticality: Blocking | High | Medium | Low
 ---
 ```
 
-**Convención de IDs:**
+**ID convention:**
 
-- `{CAT}` = Código de categoría: `PERF`, `SEC`, `SCAL`, `AVAIL`, `COMP`, `ACC`, `OBS`
-- `{NNN}` = Secuencial por categoría
-- Ejemplo: `NFR-SDLC-PERF-001`, `NFR-SDLC-SEC-003`
+- `{CAT}` = Category code: `PERF`, `SEC`, `SCAL`, `AVAIL`, `COMP`, `ACC`, `OBS`
+- `{NNN}` = Sequential per category
+- Example: `NFR-SDLC-PERF-001`, `NFR-SDLC-SEC-003`
 
-### 2. Definición (Obligatorio)
+### 2. Definition (Mandatory)
 
 ```markdown
-## Definición
+## Definition
 
-{Qué calidad se requiere — 1-2 oraciones. Sin ambigüedad.}
+{What quality is required — 1-2 sentences. Unambiguous.}
 ```
 
-**Regla**: Si no puedes definirlo en 2 oraciones, el NFR es demasiado amplio → dividir.
+**Rule**: If you cannot define it in 2 sentences, the NFR is too broad → split it.
 
-### 3. Métrica y Umbral (Obligatorio)
+### 3. Metric and Threshold (Mandatory)
 
 ```markdown
-## Métrica y Umbral
+## Metric and Threshold
 
-| Métrica  | Baseline | Target     | Máx. Aceptable | Método de Medición   | Frecuencia    |
-| -------- | -------- | ---------- | -------------- | -------------------- | ------------- |
-| {nombre} | {actual} | {objetivo} | {límite}       | {herramienta/método} | {cada cuánto} |
+| Metric | Baseline  | Target   | Max. Acceptable | Measurement Method | Frequency   |
+| ------ | --------- | -------- | --------------- | ------------------ | ----------- |
+| {name} | {current} | {target} | {limit}         | {tool/method}      | {how often} |
 ```
 
-**Reglas:**
+**Rules:**
 
-- **Baseline** = valor actual medido (o "N/A — sistema nuevo")
-- **Target** = objetivo de diseño
-- **Máx. Aceptable** = umbral que si se excede, se considera fallo
-- **Método** = cómo se mide (herramienta específica, no "testing")
+- **Baseline** = current measured value (or "N/A — new system")
+- **Target** = design objective
+- **Max. Acceptable** = threshold that, if exceeded, counts as a failure
+- **Method** = how it is measured (a specific tool, not "testing")
 
-### 4. Escenarios de Validación (Obligatorio)
+### 4. Validation Scenarios (Mandatory)
 
 ```markdown
-## Escenarios de Validación
+## Validation Scenarios
 
-### Normal (carga esperada)
+### Normal (expected load)
 
-- Condiciones: {perfil de carga}
-- Resultado esperado: {cumple target}
+- Conditions: {load profile}
+- Expected result: {meets target}
 
-### Estrés (carga pico)
+### Stress (peak load)
 
-- Condiciones: {perfil pico}
-- Resultado esperado: {degradación aceptable dentro de máx.}
+- Conditions: {peak profile}
+- Expected result: {degradation acceptable within max.}
 
-### Fallo (modo de error)
+### Failure (error mode)
 
-- Condiciones: {escenario de fallo}
-- Resultado esperado: {degradación grácil / failover}
+- Conditions: {failure scenario}
+- Expected result: {graceful degradation / failover}
 ```
 
-### 5. Trazabilidad (Obligatorio)
+### 5. Traceability (Mandatory)
 
 ```markdown
-## Trazabilidad
+## Traceability
 
-| Referencia        | Valor                               |
-| ----------------- | ----------------------------------- |
-| PRD-T origen      | PRD-T §5.X                          |
-| PRD-F métricas    | PRD-F §2.5 (si aplica)              |
-| RFs afectados     | RF-{PROJ}-{NNN}, RF-{PROJ}-{NNN}    |
-| Riesgos asociados | RISK-{NNN} (del risk-log)           |
-| Regulación        | {GDPR Art. X, OWASP A-XX, eIDAS §X} |
+| Reference     | Value                               |
+| ------------- | ----------------------------------- |
+| PRD-T source  | PRD-T §5.X                          |
+| PRD-F metrics | PRD-F §2.5 (if applicable)          |
+| Affected RFs  | RF-{PROJ}-{NNN}, RF-{PROJ}-{NNN}    |
+| Related risks | RISK-{NNN} (from risk-log)          |
+| Regulation    | {GDPR Art. X, OWASP A-XX, eIDAS §X} |
 ```
 
-### 6. Implicaciones de Arquitectura (Obligatorio)
+### 6. Architecture Implications (Mandatory)
 
 ```markdown
-## Implicaciones de Arquitectura
+## Architecture Implications
 
-{Qué decisiones arquitectónicas requiere — caching, CDN, replicación, cifrado, etc.}
-{Referencia a ADRs existentes si aplica}
+{Which architectural decisions it requires — caching, CDN, replication, encryption, etc.}
+{Reference to existing ADRs if applicable}
 ```
 
-### 7. Dependencias (Si aplica)
+### 7. Dependencies (If applicable)
 
 ```markdown
-## Dependencias
+## Dependencies
 
-| Tipo            | Recurso               | Estado               | Responsable |
-| --------------- | --------------------- | -------------------- | ----------- |
-| Infraestructura | {e.g., Redis cluster} | Disponible/Pendiente | DevOps      |
-| Terceros        | {e.g., CDN provider}  | Contratado/Pendiente | PME         |
+| Type           | Resource              | Status             | Owner  |
+| -------------- | --------------------- | ------------------ | ------ |
+| Infrastructure | {e.g., Redis cluster} | Available/Pending  | DevOps |
+| Third parties  | {e.g., CDN provider}  | Contracted/Pending | PME    |
 ```
 
 ---
 
-## Categorías por Dominio {{CLIENT_NAME}}
+## Categories by Domain {{CLIENT_NAME}}
 
-### Performance (Biometría)
+### Performance (Biometrics)
 
-- Latencia matching facial 1:1: P95 <500ms
-- Latencia matching 1:N: P95 <2s para N=10K
-- Throughput enrollment: >100 transacciones/segundo
+- 1:1 face matching latency: P95 <500ms
+- 1:N matching latency: P95 <2s for N=10K
+- Enrollment throughput: >100 transactions/second
 - Liveness detection: <200ms
 
-### Security (Datos Biométricos)
+### Security (Biometric Data)
 
-- Cifrado templates biométricos: AES-256 en reposo
-- Transmisión: TLS 1.2+ obligatorio
-- No PII en logs: NUNCA (GDPR Art. 9)
-- Revocación de datos: mecanismo implementado
+- Biometric template encryption: AES-256 at rest
+- Transmission: TLS 1.2+ mandatory
+- No PII in logs: NEVER (GDPR Art. 9)
+- Data revocation: mechanism implemented
 
-### Compliance (Regulatorio)
+### Compliance (Regulatory)
 
-- GDPR Art. 9: DPIA completado
-- eIDAS: Nivel de confianza documentado
-- Derecho al olvido: Tiempo de respuesta <72h
-- Retención de datos: Política documentada y automatizada
+- GDPR Art. 9: DPIA completed
+- eIDAS: assurance level documented
+- Right to be forgotten: response time <72h
+- Data retention: documented and automated policy
 
 ---
 
-_Template — cada proyecto crea instancias en `docs/projects/{proyecto}/nfrs/`_
+_Template — each project creates instances in `docs/projects/{project}/nfrs/`_

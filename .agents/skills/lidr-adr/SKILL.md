@@ -1,27 +1,35 @@
 ---
 name: lidr-adr
 id: adr
-version: "1.3.0"
-last_updated: "2026-03-16"
-updated_by: "System: QA Enhancement"
+version: "1.4.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 5
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking, chat]
 description: >
   Generate Architecture Decision Records (ADRs) in MADR format to document significant technical decisions with context, alternatives, trade-offs, and rationale. Domain-agnostic — works for any technology stack, architecture style, or industry vertical. Use for hard-to-reverse decisions, decisions affecting multiple teams, significant trade-off choices, extensively debated options. ALWAYS use when documenting significant architectural decisions that are costly to reverse.
   Essential when a technical decision needs to be preserved so future team members understand the why.
   Always use when choosing a database/framework/cloud provider, always use when a decision was debated and needs documentation to avoid re-debating.
   Do NOT use for trivial reversible decisions, decisions already in tech-stack rules, or temporary PoC decisions.
   Triggers on "architecture decision", "ADR", "technical decision record", "document decision", "why did we choose", "decision record", "technical trade-off".
-  Output in English (MADR format).
+  Content authored in English (MADR format); artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: Tech Lead (creates ADRs), Developer (references decisions), new team members (understands context).
 ---
 
 # Architecture Decision Record Generator
 
-Phase: any (typically 5 — Development) | Language: English (MADR format) | Domain: Any
+Phase: any (typically 5 — Development) | Content authored in English (MADR format); artifact language follows the client `language` setting (see `_shared/lidr/integrations/`) | Domain: Any
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{CHAT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMAD
+
+`bmad-create-architecture` owns the broader architecture/solution-design document. This LIDR skill produces immutable, single-decision MADR records that annotate and feed that document — each ADR captures the why behind one hard-to-reverse choice so the architecture doc and future contributors can reference it without re-debating.
 
 ## Workflow
 
@@ -51,13 +59,13 @@ Phase: any (typically 5 — Development) | Language: English (MADR format) | Dom
 
 ## Input
 
-| Input                          | Required  | Source                               |
-| ------------------------------ | --------- | ------------------------------------ |
-| Technical context / problem    | ✅        | Discussion, RFC, Slack thread        |
-| Alternatives evaluated (min 2) | ✅        | Research, PoC, team experience       |
-| Decision (or proposal)         | ✅        | Team consensus / Tech Lead           |
-| Supporting data                | Desirable | Benchmarks, PoC results, vendor docs |
-| Known constraints              | Desirable | PRD-T, rules/tech-stack.md, budget   |
+| Input                          | Required  | Source                                |
+| ------------------------------ | --------- | ------------------------------------- |
+| Technical context / problem    | ✅        | Discussion, RFC, {{CHAT_TOOL}} thread |
+| Alternatives evaluated (min 2) | ✅        | Research, PoC, team experience        |
+| Decision (or proposal)         | ✅        | Team consensus / Tech Lead            |
+| Supporting data                | Desirable | Benchmarks, PoC results, vendor docs  |
+| Known constraints              | Desirable | PRD-T, rules/tech-stack.md, budget    |
 
 ## Output Location
 
@@ -273,7 +281,7 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
@@ -282,18 +290,19 @@ npx tsx scripts/validate-examples.ts
 - **Arguments, not opinions**: "We chose X because benchmark showed 3x throughput" > "We chose X because it's better"
 - **Honest trade-offs**: Every option has cons. Document them.
 - **Status lifecycle**: Proposed → Accepted → (may become) Deprecated / Superseded
-- **Numbering**: Sequential. Check existing ADRs in `docs/adrs/` for next number.
+- **Numbering**: Sequential. Check existing ADRs in `docs/adr/` for next number.
 - **Superseding**: When replacing an ADR, set old one to "Superseded by ADR-{NNN}" and reference in new one.
 
 ## Resources
 
-- **Related Skills**: `architecture-doc` (for broader architectural context), `tech-debt` (when decisions create technical debt)
+- **Related Skills**: `bmad-create-architecture` (for broader architectural context), `tech-debt` (when decisions create technical debt)
 - **Related Templates**: `docs/templates/adr.md` (empty ADR template for manual creation)
 - **ADR Storage**: Store completed ADRs in `docs/adr/` directory with sequential numbering
 
 ## Changelog
 
-| Version | Date       | Author             | Changes                                                                                           |
-| ------- | ---------- | ------------------ | ------------------------------------------------------------------------------------------------- |
-| 1.1.0   | 2026-03-15 | Tech Lead: System  | Added complete frontmatter, ## Workflow section, ## Changelog; standardized to canonical template |
-| 1.0.0   | 2025-02-01 | Tech Lead: Initial | Initial version with MADR format template                                                         |
+| Version | Date       | Author                 | Changes                                                                                           |
+| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Slack/Jira via tool-registry                 |
+| 1.1.0   | 2026-03-15 | Tech Lead: System      | Added complete frontmatter, ## Workflow section, ## Changelog; standardized to canonical template |
+| 1.0.0   | 2025-02-01 | Tech Lead: Initial     | Initial version with MADR format template                                                         |

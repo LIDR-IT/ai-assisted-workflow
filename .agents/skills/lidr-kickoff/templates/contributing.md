@@ -1,8 +1,8 @@
 ---
 id: contributing-template
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Template Migration"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 type: template
 review_cycle: 90
@@ -12,136 +12,137 @@ owner_role: "Tech Lead"
 
 # CONTRIBUTING.md Template
 
-> **Proposito**: Template para generar el CONTRIBUTING.md de cualquier proyecto.
-> **Compilado desde**: `rules/tech-stack.md` seccion 9 (Git), `rules/org.md`, `Guidelines.md` seccion 2 (Convenciones de Codigo).
-> **Usado por**: `/init-project-docs` al crear scaffold de proyecto.
+> **Purpose**: Template to generate the CONTRIBUTING.md of any project.
+> **Compiled from**: `rules/tech-stack.md` section 9 (Git), `rules/org.md`, `Guidelines.md` section 2 (Code Conventions).
+> **Used by**: `/init-project-docs` when creating a project scaffold.
+> **Output**: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 ---
 
-## Estructura recomendada
+## Recommended Structure
 
 ````markdown
-# Contribuir a {Nombre del Proyecto}
+# Contributing to {Project Name}
 
-Gracias por tu interes en contribuir. Este documento describe las reglas y procesos
-que seguimos para mantener la calidad del codigo.
+Thank you for your interest in contributing. This document describes the rules and processes
+we follow to maintain code quality.
 
-## Requisitos previos
+## Prerequisites
 
-- Leer [README.md](./README.md) y poder ejecutar el proyecto localmente
-- Acceso a Jira para el tracking de tickets
-- Acceso a GitHub para PRs
+- Read [README.md](./README.md) and be able to run the project locally
+- Access to {{TRACKING_TOOL}} for ticket tracking
+- Access to {{VCS_TOOL}} for PRs
 
 ## Branching Strategy (Git Flow)
 
 \```
-main ───────────────────────────► (produccion)
+main ───────────────────────────► (production)
 |
-├─ develop ───────────────────► (integracion)
+├─ develop ───────────────────► (integration)
 | |
-| ├─ feat/PROJ-123-desc ──► merge a develop
-| ├─ fix/PROJ-456-desc ───► merge a develop
-| └─ refactor/PROJ-789 ───► merge a develop
+| ├─ feat/PROJ-123-desc ──► merge to develop
+| ├─ fix/PROJ-456-desc ───► merge to develop
+| └─ refactor/PROJ-789 ───► merge to develop
 |
-├─ release/1.2.0 ────────────► merge a main + tag
+├─ release/1.2.0 ────────────► merge to main + tag
 |
-└─ hotfix/PROJ-999-desc ─────► merge a main + develop
+└─ hotfix/PROJ-999-desc ─────► merge to main + develop
 \```
 
-### Naming de branches
+### Branch Naming
 
-- `feat/PROJ-{ID}-{descripcion-breve}`
-- `fix/PROJ-{ID}-{descripcion-breve}`
-- `refactor/PROJ-{ID}-{descripcion-breve}`
-- `hotfix/PROJ-{ID}-{descripcion-breve}`
+- `feat/PROJ-{ID}-{short-description}`
+- `fix/PROJ-{ID}-{short-description}`
+- `refactor/PROJ-{ID}-{short-description}`
+- `hotfix/PROJ-{ID}-{short-description}`
 
 ## Conventional Commits
 
-Todos los commits deben seguir el formato:
+All commits must follow the format:
 
 \```
-<type>(<scope>): <descripcion>
+<type>(<scope>): <description>
 
-[body opcional]
-[footer opcional]
+[optional body]
+[optional footer]
 \```
 
-| Type       | Cuando                    |
-| ---------- | ------------------------- |
-| `feat`     | Nueva funcionalidad       |
-| `fix`      | Correccion de bug         |
-| `docs`     | Solo documentacion        |
-| `refactor` | Sin cambio funcional      |
-| `test`     | Tests nuevos o corregidos |
-| `chore`    | Mantenimiento             |
-| `perf`     | Mejora de performance     |
-| `ci`       | Cambios en CI/CD          |
+| Type       | When                    |
+| ---------- | ----------------------- |
+| `feat`     | New functionality       |
+| `fix`      | Bug fix                 |
+| `docs`     | Documentation only      |
+| `refactor` | No functional change    |
+| `test`     | New or fixed tests      |
+| `chore`    | Maintenance             |
+| `perf`     | Performance improvement |
+| `ci`       | CI/CD changes           |
 
 ## Pull Requests
 
-### Proceso
+### Process
 
-1. Crear branch desde `develop` (o `main` para hotfix)
-2. Implementar cambios con commits convencionales
-3. Ejecutar tests localmente: `npm test`
-4. Crear PR hacia `develop`
-5. La descripcion se auto-genera con el skill `pr-description`
-6. Minimo 1 reviewer (Tech Lead para cambios en core)
-7. CI debe pasar: build + tests + lint + SAST
-8. Squash merge a develop
+1. Create a branch from `develop` (or `main` for hotfix)
+2. Implement changes with conventional commits
+3. Run tests locally: `npm test`
+4. Create a PR to `develop`
+5. The description is auto-generated with the skill `pr-description`
+6. Minimum 1 reviewer (Tech Lead for core changes)
+7. CI must pass: build + tests + lint + SAST
+8. Squash merge to develop
 
-### Checklist del PR (DoD)
+### PR Checklist (DoD)
 
-- [ ] Tests pasan (unit + integration)
-- [ ] Cobertura >= 80%
-- [ ] Sin warnings de linter
-- [ ] SAST/SCA limpio
-- [ ] Documentacion actualizada si hay cambio de API
-- [ ] No hay secrets en el codigo
+- [ ] Tests pass (unit + integration)
+- [ ] Coverage >= 80%
+- [ ] No linter warnings
+- [ ] {{CODE_QUALITY_TOOL}} (SAST/SCA) clean
+- [ ] Documentation updated if there is an API change
+- [ ] No secrets in the code
 
-## Convenciones de Codigo
+## Code Conventions
 
 ### TypeScript
 
-- `strict: true` siempre activado
-- `any` PROHIBIDO — usar `unknown` + type guards
-- Interfaces para contratos publicos, Types para uniones
-- Enums: NO — usar `const` objects con `as const`
+- `strict: true` always enabled
+- `any` FORBIDDEN — use `unknown` + type guards
+- Interfaces for public contracts, Types for unions
+- Enums: NO — use `const` objects with `as const`
 
-### React (si aplica)
+### React (if applicable)
 
-- Solo componentes funcionales con hooks
-- Props: interface explicita, desestructurada
-- Keys: siempre ID estable, NUNCA index de array
+- Functional components with hooks only
+- Props: explicit interface, destructured
+- Keys: always a stable ID, NEVER an array index
 
 ### Naming
 
-| Elemento    | Convencion          | Ejemplo             |
-| ----------- | ------------------- | ------------------- |
-| Componentes | PascalCase          | `UserProfile.tsx`   |
-| Hooks       | camelCase con "use" | `useAuthStatus`     |
-| Utilidades  | camelCase           | `formatCurrency.ts` |
-| Constantes  | UPPER_SNAKE_CASE    | `MAX_RETRY_COUNT`   |
+| Element    | Convention           | Example             |
+| ---------- | -------------------- | ------------------- |
+| Components | PascalCase           | `UserProfile.tsx`   |
+| Hooks      | camelCase with "use" | `useAuthStatus`     |
+| Utilities  | camelCase            | `formatCurrency.ts` |
+| Constants  | UPPER_SNAKE_CASE     | `MAX_RETRY_COUNT`   |
 
 ## Testing
 
-- Tests se escriben ANTES o JUNTO al codigo
-- Unit tests: 80% cobertura minima
-- Integration tests: flujos criticos
-- BDD: criterios de aceptacion definen test cases
+- Tests are written BEFORE or ALONGSIDE the code
+- Unit tests: 80% minimum coverage
+- Integration tests: critical flows
+- BDD: acceptance criteria define test cases
 
-## Seguridad
+## Security
 
-- NUNCA loguear PII/datos sensibles
-- NUNCA hardcodear secrets
-- Ver [SECURITY.md](./SECURITY.md) para reporte de vulnerabilidades
+- NEVER log PII/sensitive data
+- NEVER hardcode secrets
+- See [SECURITY.md](./SECURITY.md) for vulnerability reporting
 ````
 
 ---
 
-## Notas para el generador
+## Notes for the Generator
 
-- Las convenciones de Git, TypeScript, React y Naming se extraen directamente de `rules/tech-stack.md` y `Guidelines.md`
-- Si el proyecto no usa React, omitir la seccion de React
-- Si el proyecto usa un stack diferente (Go, Python, etc.), adaptar las secciones de convenciones
-- La checklist del PR debe alinearse con el contenido de `docs/checklists/dod.md`
+- The Git, TypeScript, React, and Naming conventions are extracted directly from `rules/tech-stack.md` and `Guidelines.md`
+- If the project does not use React, omit the React section
+- If the project uses a different stack (Go, Python, etc.), adapt the convention sections
+- The PR checklist must align with the content of `docs/checklists/dod.md`

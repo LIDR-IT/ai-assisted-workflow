@@ -170,6 +170,8 @@ Fixes: #890
 
 ### CI/CD
 
+Example (GitHub Actions + Slack — illustrative tool names only; resolve via tool-registry):
+
 ```
 chore(ci): add automated deployment workflow
 

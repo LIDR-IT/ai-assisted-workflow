@@ -1,20 +1,28 @@
 ---
 name: lidr-risk-log
 id: risk-log
-version: "1.1.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "1.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 2
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: []
 description: "Essential for software project risk management - ALWAYS use during Discovery and maintain throughout project lifecycle. CRITICAL for identifying project risks including compliance failures, third-party dependency issues, integration risks, data migration challenges, and regulatory changes. Use when building web applications, SaaS platforms, mobile apps, APIs, or data processing systems. Essential for e-commerce, healthcare, fintech, IoT, and enterprise software projects. Suggests industry-specific risk patterns and mitigation strategies. Domain-specific examples available in the examples/ directory."
 ---
 
 # Risk Log Manager
 
-Phase: 2 — Discovery (creation) → all phases (maintenance) | Language: Spanish
+Phase: 2 — Discovery (creation) → all phases (maintenance) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMAD
+
+LIDR-unique: BMad has no formal risk-registry artifact. This skill consumes the risk sections of `bmad-prd` (PRD-T §8 / PRD-F §8) plus `lidr-business-case` §6, and produces a living risk log that feeds Gate 1 evidence and is maintained across all phases.
 
 ## Workflow
 
@@ -36,8 +44,8 @@ Phase: 2 — Discovery (creation) → all phases (maintenance) | Language: Spani
 | Input                               | Required     | Source                                  |
 | ----------------------------------- | ------------ | --------------------------------------- |
 | Business Case §6 (risks)            | ✅           | skill `business-case/`                  |
-| PRD-T §8 (technical risks)          | ✅           | skill `prd-tecnico/`                    |
-| PRD-F §8 (functional risks)         | ✅           | skill `prd-funcional/`                  |
+| PRD-T §8 (technical risks)          | ✅           | skill `bmad-prd/`                       |
+| PRD-F §8 (functional risks)         | ✅           | skill `bmad-prd/`                       |
 | Tech stack                          | Desirable    | `rules/tech-stack.md`                   |
 | Project type                        | Desirable    | BC (new product, migration, regulatory) |
 | Historical risks from past projects | If available | PME / retros                            |
@@ -82,12 +90,12 @@ owner_role: "PME"                     # PME maintains risk logs
 
 # Risk Log: [PROJECT NAME]
 
-| Campo                    | Valor                      |
-| ------------------------ | -------------------------- |
-| **Proyecto**             | [Name]                     |
-| **Creado**               | [YYYY-MM-DD]               |
-| **Última actualización** | [YYYY-MM-DD]               |
-| **Próxima revisión**     | [Gate N / Sprint N Review] |
+| Field            | Value                      |
+| ---------------- | -------------------------- |
+| **Project**      | [Name]                     |
+| **Created**      | [YYYY-MM-DD]               |
+| **Last updated** | [YYYY-MM-DD]               |
+| **Next review**  | [Gate N / Sprint N Review] |
 
 ## Summary
 
@@ -148,31 +156,31 @@ HIGH PROB ←──→ LOW PROB
 
 **R-001: Third-Party Payment API Breaking Change** (🔴 Critical)
 
-- **Probabilidad**: Media — Payment provider has quarterly breaking change cadence
-- **Impacto**: Crítico — Complete checkout failure, revenue loss
+- **Probability**: Medium — Payment provider has quarterly breaking change cadence
+- **Impact**: Critical — Complete checkout failure, revenue loss
 - **Owner**: Backend TL + DevOps
-- **Mitigación**: API versioning strategy + canary release + automated contract tests
+- **Mitigation**: API versioning strategy + canary release + automated contract tests
 
 **R-002: Data Migration Integrity Failure** (🟡 Medium)
 
-- **Probabilidad**: Baja — Migration script has been tested in staging
-- **Impacto**: Alto — Historical order data inconsistency, customer complaints
+- **Probability**: Low — Migration script has been tested in staging
+- **Impact**: High — Historical order data inconsistency, customer complaints
 - **Owner**: TL + QA Lead
-- **Mitigación**: Dry-run validation + checksums + rollback plan + parallel run period
+- **Mitigation**: Dry-run validation + checksums + rollback plan + parallel run period
 
 **R-003: GDPR Compliance Gap in User Data Export** (🔴 Critical)
 
-- **Probabilidad**: Alta — Feature not yet implemented
-- **Impacto**: Crítico — Regulatory fine + reputational damage
+- **Probability**: High — Feature not yet implemented
+- **Impact**: Critical — Regulatory fine + reputational damage
 - **Owner**: PO + Legal + Dev
-- **Mitigación**: DPIA + legal review + data portability implementation before launch
+- **Mitigation**: DPIA + legal review + data portability implementation before launch
 
 **R-004: Mobile Performance on Low-End Devices** (🟢 Low)
 
-- **Probabilidad**: Alta — Target market includes emerging markets
-- **Impacto**: Bajo — Degraded experience on <2GB RAM devices
+- **Probability**: High — Target market includes emerging markets
+- **Impact**: Low — Degraded experience on <2GB RAM devices
 - **Owner**: Frontend Dev + QA
-- **Mitigación**: Device testing matrix + progressive enhancement + performance budgets
+- **Mitigation**: Device testing matrix + progressive enhancement + performance budgets
 
 > For domain-specific examples, see: `examples/` directory.
 
@@ -203,6 +211,13 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                       | Changes                                                                                                  |
+| ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1.2.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-unique; consumes bmad-prd risk sections + business-case)         |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; added registry-resolution note (no concrete tools to abstract) |

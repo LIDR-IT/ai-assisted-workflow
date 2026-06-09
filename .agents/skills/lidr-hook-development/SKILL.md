@@ -1,23 +1,24 @@
 ---
 name: lidr-hook-development
 id: hook-development
-version: "2.3.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "2.3.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
 description: >
   Design and implement Claude Code hooks for event-driven workflow automation: quality gates, security guards, session context loading, and DTC validation.
   Domain-agnostic — works for any SDLC workflow automation regardless of industry or tech stack.
   Use for creating PreToolUse/PostToolUse/Stop/SessionStart hooks, security guards, automated quality enforcement.
   Essential when a quality or security check must be enforced automatically on every relevant AI action.
   Always use when creating event-driven workflows, always use when setting up automated guards for sensitive data or compliance requirements.
-  Do NOT use for slash command creation (use command-development), for skill creation (use skill-development), or for one-time checks that don't need automation.
+  Do NOT use for slash command creation (use command-development), for skill creation (use bmad-workflow-builder), or for one-time checks that don't need automation.
   Triggers on "hooks", "PreToolUse", "PostToolUse", "Stop", "SessionStart", "DTC validation", "security scanning", "workflow automation", "write guard", "session hook".
-  Output in English (hook scripts), team language (documentation).
+  Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Hook scripts and config stay in English.
   Audience: Tech Lead (creates hooks), Developer (relies on hook enforcement), Security (validates hook coverage).
 ---
 
@@ -932,15 +933,16 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 ## Changelog
 
-| Version | Date       | Author                | Changes                                                                                                                            |
-| ------- | ---------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| 2.3.0   | 2026-03-25 | TL: tier3-remediation | Domain-agnostic normalization: moved domain-specific patterns to examples/client-domain-example.md. Genericized all hook examples. |
-| 2.2.0   | 2026-03-16 | Tech Lead: System     | Added Quality Assurance section with validation framework                                                                          |
-| 2.0.0   | 2026-03-09 | Claude Agent          | Complete rewrite with security-focused hook examples, DTC validation, security gate automation                                     |
-| 1.0.0   | 2024-12-01 | Tech Lead             | Initial generic hook development guide                                                                                             |
+| Version | Date       | Author                       | Changes                                                                                                                            |
+| ------- | ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 2.3.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added `language_default: en`; reframed description language statement to client-configurable                                       |
+| 2.3.0   | 2026-03-25 | TL: tier3-remediation        | Domain-agnostic normalization: moved domain-specific patterns to examples/client-domain-example.md. Genericized all hook examples. |
+| 2.2.0   | 2026-03-16 | Tech Lead: System            | Added Quality Assurance section with validation framework                                                                          |
+| 2.0.0   | 2026-03-09 | Claude Agent                 | Complete rewrite with security-focused hook examples, DTC validation, security gate automation                                     |
+| 1.0.0   | 2024-12-01 | Tech Lead                    | Initial generic hook development guide                                                                                             |

@@ -1,48 +1,54 @@
 ---
 name: lidr-create-test-cases
 id: create-test-cases
-version: "2.2.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "2.5.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 6
 owner_role: "QA Lead"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking, test_management]
 description: >
   Generate executable BDD test cases with concrete data from tickets in "Ready for QA".
   Domain-agnostic — works for any software system, platform, or application type.
   Use for QA preparation, test coverage analysis, and BDD scenario expansion into detailed test cases.
   Essential for test execution planning when transitioning tickets to QA.
   Always use before test execution, always use when tickets move to "Ready for QA" status.
-  Do NOT use for requirements generation (use generate-rf), for test planning strategy (use test-plan), or for bug reporting (use bug-report).
+  Do NOT use for requirements generation (use lidr-generate-rf), for test planning strategy (use bmad-testarch-test-design), or for bug reporting (use lidr-bug-report).
   Triggers on "create test cases", "generate TCs", "write test cases", "BDD test cases", "prepare test execution", "Ready for QA test cases".
-  Output in English (Gherkin BDD), Spanish (functional descriptions), CSV-ready for Xray import.
+  Content authored in English (Gherkin); artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). CSV-ready for the bound {{TEST_MGMT_TOOL}} import.
   Audience: QA (executes tests), Dev (understands test scope), QA Lead (validates coverage).
 ---
 
 # BDD Test Case Generator
 
-Phase: 6 — QA | Gate: contributes to Gate 5 | Language: English (Gherkin) + Spanish (notes)
+Phase: 6 — QA | Gate: **G5 evidence (QA→Sec), `required: false`** | Output: English-authored (Gherkin); artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+> **BMad relationship (extension):** BMad owns test _design_ — `bmad-testarch-test-design` (plan/strategy) and `bmad-testarch-atdd` (red-phase BDD scaffolds). This skill is the LIDR gap-filler that expands those BDD acceptance criteria into **executable, human-readable test cases** (importable to the bound `{{TEST_MGMT_TOOL}}`) for manual QA execution. Wired into `_shared/lidr/gate-evidence.yaml` → **G5** (optional).
 
 ## Workflow
 
-1. Read Jira ticket: US + BDD acceptance criteria
-2. Read Dev→QA handoff: technical changes, test data, error scenarios
-3. Read linked RF: detailed BDD scenarios, business rules, data specs
+1. Read {{TRACKING_TOOL}} ticket: US + BDD acceptance criteria
+2. Read Dev→QA handoff (`lidr-dev-handoff-qa`): technical changes, test data, error scenarios
+3. Read linked RF (`lidr-generate-rf`): detailed BDD scenarios, business rules, data specs
 4. Expand each BDD scenario into executable test case with concrete data
 5. Add edge cases and regression candidates from impact analysis
-6. Output in CSV format ready for import-to-xray.sh script or markdown
+6. Output CSV ready for the bound {{TEST_MGMT_TOOL}} import (or markdown)
 
 ## Input
 
-| Input                                     | Required  | Source                  |
-| ----------------------------------------- | --------- | ----------------------- |
-| Jira ticket (US + BDD)                    | ✅        | Manual or script        |
-| Dev→QA handoff                            | ✅        | skill `dev-handoff-qa/` |
-| Linked RF (BDD scenarios, business rules) | ✅        | skill `generate-rf/`    |
-| Available test data                       | ✅        | Test data repo          |
-| Test Plan (risk priority)                 | Desirable | skill `test-plan/`      |
+| Input                                     | Required  | Source                      |
+| ----------------------------------------- | --------- | --------------------------- |
+| {{TRACKING_TOOL}} ticket (US + BDD)       | ✅        | Manual or script            |
+| Dev→QA handoff                            | ✅        | `lidr-dev-handoff-qa`       |
+| Linked RF (BDD scenarios, business rules) | ✅        | `lidr-generate-rf`          |
+| Available test data                       | ✅        | Test data repo              |
+| Test Plan (risk priority)                 | Desirable | `bmad-testarch-test-design` |
 
 ## Output Template — Per Test Case
 
@@ -112,7 +118,7 @@ After all TCs, generate summary:
 
 ## CSV Export Format
 
-Output ready for import-to-xray.sh script:
+Output ready for import to the bound `{{TEST_MGMT_TOOL}}` (CSV is the default export):
 
 ```csv
 Test ID,Test Summary,Test Type,Priority,Component,Given,When,Then,Expected Result
@@ -528,14 +534,15 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 ## Changelog
 
-| Versión | Fecha      | Autor             | Cambios                                                                                                    |
-| ------- | ---------- | ----------------- | ---------------------------------------------------------------------------------------------------------- |
-| 2.2.0   | 2026-03-16 | Tech Lead: System | Added Quality Assurance section with validation framework                                                  |
-| 2.0.0   | 2026-03-09 | QA: Enhanced      | Added comprehensive examples, troubleshooting guide, regression guidance, and test data management section |
-| 1.0.0   | 2025-02-01 | QA: Initial       | Versión inicial del skill                                                                                  |
+| Version | Date       | Author                 | Changes                                                                                                    |
+| ------- | ---------- | ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| 2.5.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tracking/test_management via tool-registry            |
+| 2.2.0   | 2026-03-16 | Tech Lead: System      | Added Quality Assurance section with validation framework                                                  |
+| 2.0.0   | 2026-03-09 | QA: Enhanced           | Added comprehensive examples, troubleshooting guide, regression guidance, and test data management section |
+| 1.0.0   | 2025-02-01 | QA: Initial            | Initial version of the skill                                                                               |

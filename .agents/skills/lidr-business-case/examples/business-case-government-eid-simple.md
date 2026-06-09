@@ -1,190 +1,190 @@
-# Business Case: eID Digital para Gobierno Municipal
+# Business Case: Digital eID for Municipal Government
 
-**Cliente**: Ayuntamiento de Valencia (ejemplo)
-**Producto**: {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}} (módulo básico)
-**Presupuesto Estimado**: €45K
-**Timeline**: 3 meses
-**Tipo**: Gobierno local, primera implementación
+**Client**: Ayuntamiento de Valencia (example)
+**Product**: {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}} (basic module)
+**Estimated Budget**: €45K
+**Timeline**: 3 months
+**Type**: Local government, first implementation
 
-## 1. Problema de Negocio
+## 1. Business Problem
 
-### Situación Actual
+### Current Situation
 
-- **Trámites presenciales**: 100% requieren visita física
-- **Horario limitado**: Oficinas 8:00-14:00, colas de 2 horas
-- **Personal saturado**: 12 funcionarios para 45,000 ciudadanos
-- **Papeleos**: 85% trámites requieren documentación física
-- **Satisfacción ciudadana**: 34% (encuesta municipal 2025)
+- **In-person procedures**: 100% require a physical visit
+- **Limited hours**: Offices 8:00-14:00, 2-hour queues
+- **Saturated personnel**: 12 civil servants for 45,000 citizens
+- **Paperwork**: 85% of procedures require physical documentation
+- **Citizen satisfaction**: 34% (2025 municipal survey)
 
-### Trámites Objetivo (Fase 1)
+### Target Procedures (Phase 1)
 
-1. **Certificados de empadronamiento** (3,200/mes)
-2. **Certificados de vida laboral** (1,800/mes)
-3. **Solicitud cita previa médica** (4,500/mes)
-4. **Pago de multas e impuestos** (2,100/mes)
-5. **Inscripción actividades deportivas** (800/mes)
+1. **Residence certificates** (3,200/month)
+2. **Employment history certificates** (1,800/month)
+3. **Medical appointment requests** (4,500/month)
+4. **Fines and tax payments** (2,100/month)
+5. **Sports activity registration** (800/month)
 
-### Marco Regulatorio
+### Regulatory Framework
 
-- **eIDAS Level Substantial**: Requerido para trámites oficiales
-- **GDPR Art. 6**: Base legal servicio público
-- **GDPR Art. 9**: Datos biométricos requieren DPIA
-- **Ley 39/2015**: Administración digital obligatoria
+- **eIDAS Level Substantial**: Required for official procedures
+- **GDPR Art. 6**: Legal basis for public service
+- **GDPR Art. 9**: Biometric data requires DPIA
+- **Law 39/2015**: Mandatory digital administration
 
-## 2. Solución Propuesta
+## 2. Proposed Solution
 
-### Componentes Técnicos
+### Technical Components
 
-| Producto                | Función                 | Compliance              |
-| ----------------------- | ----------------------- | ----------------------- |
-| **{{PRODUCT_NAME_1}}D** | Verificación DNI/NIE    | eIDAS Substantial level |
-| **{{PRODUCT_NAME_1}}**  | Reconocimiento facial   | ISO 30107-1 PAD         |
-| **Portal ciudadano**    | Interfaz web responsive | WCAG 2.1 AA             |
+| Product                 | Function                 | Compliance              |
+| ----------------------- | ------------------------ | ----------------------- |
+| **{{PRODUCT_NAME_1}}D** | ID/NIE verification      | eIDAS Substantial level |
+| **{{PRODUCT_NAME_1}}**  | Facial recognition       | ISO 30107-1 PAD         |
+| **Citizen portal**      | Responsive web interface | WCAG 2.1 AA             |
 
-### Flujo de Identificación Digital
+### Digital Identification Flow
 
-1. **Acceso al portal** → www.valencia.es/tramites
-2. **Selección de trámite** → Certificado empadronamiento
-3. **Identificación digital**:
-   - Foto del DNI/NIE (OCR)
-   - Selfie con liveness detection
-   - Matching 1:1 (umbral: 0.88)
-4. **Proceso automático** → Generación certificado PDF firmado
-5. **Entrega digital** → Email + descarga inmediata
+1. **Portal access** → www.valencia.es/tramites
+2. **Procedure selection** → Residence certificate
+3. **Digital identification**:
+   - ID/NIE photo (OCR)
+   - Selfie with liveness detection
+   - Matching 1:1 (threshold: 0.88)
+4. **Automatic process** → Generation of signed PDF certificate
+5. **Digital delivery** → Email + immediate download
 
-### GDPR Compliance (Simplificado)
+### GDPR Compliance (Simplified)
 
-- **Base legal**: Art. 6.1.e - Interés público (servicios municipales)
-- **Datos biométricos**: Art. 9.2.g - Interés público esencial
-- **Retention**: Templates eliminados tras completar trámite (max 48h)
-- **DPIA**: Evaluación básica para gobierno local
-- **DPO municipal**: Supervisión del proceso
+- **Legal basis**: Art. 6.1.e - Public interest (municipal services)
+- **Biometric data**: Art. 9.2.g - Essential public interest
+- **Retention**: Templates deleted after completing the procedure (max 48h)
+- **DPIA**: Basic assessment for local government
+- **Municipal DPO**: Process supervision
 
-## 3. Beneficios Esperados
+## 3. Expected Benefits
 
-### Reducción de Carga Administrativa
+### Administrative Load Reduction
 
-| Trámite                     | Tiempo Actual | Tiempo Digital | Ahorro |
-| --------------------------- | ------------- | -------------- | ------ |
-| Certificado empadronamiento | 45 min        | 3 min          | 42 min |
-| Vida laboral                | 30 min        | 2 min          | 28 min |
-| Cita médica                 | 25 min        | 1 min          | 24 min |
-| Pago multas                 | 20 min        | 2 min          | 18 min |
+| Procedure             | Current Time | Digital Time | Savings |
+| --------------------- | ------------ | ------------ | ------- |
+| Residence certificate | 45 min       | 3 min        | 42 min  |
+| Employment history    | 30 min       | 2 min        | 28 min  |
+| Medical appointment   | 25 min       | 1 min        | 24 min  |
+| Fines payment         | 20 min       | 2 min        | 18 min  |
 
-### Ahorro Operacional (Anual)
+### Operational Savings (Annual)
 
-- **Horas funcionarios liberadas**: 2,400 horas/año
-- **Costos administrativos**: €72K → €45K (ahorro €27K)
-- **Costos papel e impresión**: €8K → €2K (ahorro €6K)
-- **Total ahorro directo**: €33K anuales
+- **Civil servant hours freed**: 2,400 hours/year
+- **Administrative costs**: €72K → €45K (savings €27K)
+- **Paper and printing costs**: €8K → €2K (savings €6K)
+- **Total direct savings**: €33K annually
 
-### Mejora de Servicio
+### Service Improvement
 
-- **Disponibilidad**: 24/7 vs 8:00-14:00
-- **Tiempo de espera**: 0 vs 120 minutos promedio
-- **Desplazamientos evitados**: 12,400 viajes/año al Ayuntamiento
-- **Satisfacción esperada**: 75% (vs 34% actual)
+- **Availability**: 24/7 vs 8:00-14:00
+- **Waiting time**: 0 vs 120 minutes average
+- **Trips avoided**: 12,400 trips/year to the Town Hall
+- **Expected satisfaction**: 75% (vs 34% current)
 
-## 4. Inversión
+## 4. Investment
 
-### Costos de Implementación
+### Implementation Costs
 
-| Concepto                          | Costo    | Justificación                  |
+| Concept                           | Cost     | Justification                  |
 | --------------------------------- | -------- | ------------------------------ |
-| Licencias {{CLIENT_NAME}} (año 1) | €25K     | 15K verificaciones/mes         |
-| Desarrollo portal                 | €12K     | Frontend + integración backend |
-| Integración sistemas municipales  | €5K      | API connection con base datos  |
-| DPIA + compliance                 | €3K      | Consultoría legal mínima       |
+| {{CLIENT_NAME}} licenses (year 1) | €25K     | 15K verifications/month        |
+| Portal development                | €12K     | Frontend + backend integration |
+| Municipal systems integration     | €5K      | API connection with database   |
+| DPIA + compliance                 | €3K      | Minimal legal consulting       |
 | **Total**                         | **€45K** |                                |
 
-### ROI Simplificado
+### Simplified ROI
 
-- **Ahorro anual**: €33K
-- **Inversión**: €45K
-- **Payback period**: 16.4 meses
-- **ROI 3 años**: 120% (sin contar mejoras de satisfacción)
+- **Annual savings**: €33K
+- **Investment**: €45K
+- **Payback period**: 16.4 months
+- **ROI 3 years**: 120% (not counting satisfaction improvements)
 
-## 5. Implementación (Simple)
+## 5. Implementation (Simple)
 
-### Fase 1: Setup Básico (4 semanas)
+### Phase 1: Basic Setup (4 weeks)
 
-- Instalación {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}}
-- Portal web basic responsive
-- Integración con 1 trámite piloto (empadronamiento)
-- DPIA básica + approval
+- Installation of {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}}
+- Basic responsive web portal
+- Integration with 1 pilot procedure (residence)
+- Basic DPIA + approval
 
-### Fase 2: Expansión (4 semanas)
+### Phase 2: Expansion (4 weeks)
 
-- Integración 4 trámites restantes
-- Testing con ciudadanos voluntarios (100 personas)
-- Training personal municipal
-- Go-live soft (20% ciudadanos)
+- Integration of 4 remaining procedures
+- Testing with volunteer citizens (100 people)
+- Municipal personnel training
+- Soft go-live (20% of citizens)
 
-### Fase 3: Full Launch (2 semanas)
+### Phase 3: Full Launch (2 weeks)
 
-- Comunicación ciudadana (web, redes, prensa local)
-- Soporte on-site primera semana
-- Monitoreo y ajustes
+- Citizen communication (web, social media, local press)
+- On-site support during the first week
+- Monitoring and adjustments
 
-## 6. Riesgos (Low Complexity)
+## 6. Risks (Low Complexity)
 
-### Riesgos Técnicos
+### Technical Risks
 
-| Riesgo                        | Probabilidad | Mitigación                               |
-| ----------------------------- | ------------ | ---------------------------------------- |
-| Adopción lenta ciudadanos 65+ | Alta         | Soporte telefónico + presencial paralelo |
-| Problemas con DNI antiguos    | Media        | Fallback manual documentado              |
-| Overload del servidor         | Baja         | Hosting cloud auto-scaling               |
+| Risk                          | Probability | Mitigation                                 |
+| ----------------------------- | ----------- | ------------------------------------------ |
+| Slow adoption by citizens 65+ | High        | Phone support + parallel in-person support |
+| Problems with old IDs         | Medium      | Documented manual fallback                 |
+| Server overload               | Low         | Cloud hosting auto-scaling                 |
 
-### Riesgos Regulatorios
+### Regulatory Risks
 
-- **GDPR compliance**: DPO municipal review obligatorio
-- **eIDAS certification**: {{PRODUCT_NAME_1}}D ya certificado (no risk)
-- **Accesibilidad WCAG**: Testing obligatorio antes launch
+- **GDPR compliance**: Mandatory municipal DPO review
+- **eIDAS certification**: {{PRODUCT_NAME_1}}D already certified (no risk)
+- **WCAG accessibility**: Mandatory testing before launch
 
-### Riesgos Organizacionales
+### Organizational Risks
 
-- **Resistance funcionarios**: Training + involvement en diseño
-- **Budget approval**: Sponsor político definido
-- **Timeline electoral**: Evitar lanzamiento 2 meses pre-elecciones
+- **Civil servant resistance**: Training + involvement in design
+- **Budget approval**: Defined political sponsor
+- **Electoral timeline**: Avoid launching 2 months pre-elections
 
-## 7. Métricas de Éxito
+## 7. Success Metrics
 
-### KPIs Operacionales (3 meses)
+### Operational KPIs (3 months)
 
-| Métrica                 | Target      |
-| ----------------------- | ----------- |
-| % trámites digitales    | > 40%       |
-| Tiempo promedio trámite | < 5 minutos |
-| Satisfacción ciudadana  | > 70%       |
-| Llamadas soporte/día    | < 15        |
+| Metric                 | Target      |
+| ---------------------- | ----------- |
+| % digital procedures   | > 40%       |
+| Average procedure time | < 5 minutes |
+| Citizen satisfaction   | > 70%       |
+| Support calls/day      | < 15        |
 
-### KPIs Técnicos
+### Technical KPIs
 
-- **Disponibilidad portal**: > 99%
+- **Portal availability**: > 99%
 - **False accept rate**: < 0.1%
 - **False reject rate**: < 5%
-- **Mobile compatibility**: 95% dispositivos
+- **Mobile compatibility**: 95% of devices
 
-## 8. Beneficios a Largo Plazo
+## 8. Long-Term Benefits
 
-### Escalabilidad (Año 2)
+### Scalability (Year 2)
 
-- Expansión a todos los 47 trámites municipales
-- Integración con Generalitat Valenciana
-- API para terceros (gestorías)
-- Mobile app nativa
+- Expansion to all 47 municipal procedures
+- Integration with Generalitat Valenciana
+- API for third parties (agencies)
+- Native mobile app
 
 ### Smart City Integration
 
-- Single sign-on municipal
-- Integración con transporte público
-- Servicios deportivos y culturales
-- Participación ciudadana digital
+- Municipal single sign-on
+- Integration with public transport
+- Sports and cultural services
+- Digital citizen participation
 
 ---
 
-**Sponsor**: Concejal de Modernización + Alcalde
-**Aprobación**: Pleno municipal
-**Contact DPO**: Secretario municipal (legal compliance)
-**Timeline decisión**: 6 semanas (proceso municipal estándar)
+**Sponsor**: Councillor for Modernization + Mayor
+**Approval**: Municipal plenary
+**Contact DPO**: Municipal secretary (legal compliance)
+**Decision Timeline**: 6 weeks (standard municipal process)

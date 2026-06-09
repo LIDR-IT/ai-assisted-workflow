@@ -1,21 +1,29 @@
 ---
 name: lidr-release-notes
 id: release-notes
-version: "1.2.0"
-last_updated: "2026-03-16"
-updated_by: "System: Quality Assurance Enhancement"
+version: "1.3.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 8
 owner_role: "DevOps"
 automation: true
 domain_agnostic: true
+language_default: en
+integrations: [vcs, tracking, docs, chat]
 description: "AUTOMATED release notes generation with business impact analysis using Python automation. Auto-analyzes git history, PRs, and business impact to generate 2-level release notes (executive summary + technical changelog). Essential when preparing releases for production deployment. Use to transform 2+ hours of manual PR analysis into 5-minute automated workflow + 30-minute review. Orchestrated by /create-release-notes command. ALWAYS use when preparing a release to communicate changes to stakeholders."
 ---
 
 # Release Notes Generator 🤖 AUTOMATED
 
-Phase: 8 — Deployment | Gate: contributes to Gate 7 | Language: Spanish (executive) + English (technical)
+Phase: 8 — Deployment | Gate: contributes to Gate 7
+Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 **ROI**: 50 hours/year (2+ hours manual → 5 minutes automated + 30 minutes review)
+
+## Relationship to BMAD
+
+LIDR-unique deployment artifact — no BMad equivalent. Canonical replacement for the deprecated `lidr-changelog-generator`; orchestrated by the `/lidr-create-release-notes` command.
 
 ## 🚀 Automation Workflow (RECOMMENDED)
 
@@ -28,7 +36,7 @@ python git-analyzer.py --since-tag v1.2.0 --branch main --output-dir release-ana
 
 **Auto-discovers and analyzes**:
 
-- Merged PRs since last release with GitHub CLI integration
+- Merged PRs since last release with {{VCS_TOOL}} CLI integration
 - Conventional commit parsing and categorization
 - Business impact extraction from PR descriptions
 - Breaking changes and security update detection
@@ -45,7 +53,7 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 **Auto-generates comprehensive release notes**:
 
 - Business impact classification with domain-specific patterns
-- Executive summary for stakeholders (Spanish)
+- Executive summary for stakeholders (artifact language follows the client `language` setting)
 - Technical changelog for engineering teams (English)
 - Deployment guidance with migration steps
 - Multi-format output (executive, technical, deployment guide)
@@ -58,7 +66,7 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 2. **Validate technical changelog** for completeness
 3. **Customize deployment guidance** for specific infrastructure
 4. **Add manual highlights** not captured by automation
-5. **Publish to distribution channels** (Confluence, Slack, email)
+5. **Publish to distribution channels** ({{DOCS_TOOL}}, {{CHAT_TOOL}}, email)
 6. **Archive for future reference** and ROI tracking
 
 ### Expected Results
@@ -74,7 +82,7 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 
 1. Identify changes: PRs merged since last release tag
 2. Classify by conventional commit prefix (feat, fix, refactor, security, BREAKING)
-3. Enrich with Jira context: ticket title, US, RF, component
+3. Enrich with {{TRACKING_TOOL}} context: ticket title, US, RF, component
 4. Build traceability chain: PR → Ticket → US → RF → Business Case
 5. Generate executive summary (business language)
 6. Generate technical changelog (engineering language)
@@ -86,7 +94,7 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 | Input                | Required | Auto-Discovered From                      | Processing                                     |
 | -------------------- | -------- | ----------------------------------------- | ---------------------------------------------- |
 | Git history          | ✅       | Git log, tags, PR merge commits           | **git-analyzer.py** parses and extracts        |
-| PR metadata          | ✅       | GitHub CLI (gh) integration               | **git-analyzer.py** enriches with descriptions |
+| PR metadata          | ✅       | {{VCS_TOOL}} CLI integration              | **git-analyzer.py** enriches with descriptions |
 | Conventional commits | ✅       | Git commit message analysis               | **git-analyzer.py** categorizes changes        |
 | Business impact      | ✅       | PR descriptions, domain-specific patterns | **changelog-generator.py** classifies impact   |
 | Breaking changes     | ✅       | Commit analysis, BREAKING CHANGE markers  | **git-analyzer.py** detects patterns           |
@@ -96,7 +104,7 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 | Input                     | Required  | Source                                |
 | ------------------------- | --------- | ------------------------------------- |
 | Merged PRs since last tag | ✅        | Git: `git log v{prev}..HEAD --merges` |
-| Jira tickets linked       | ✅        | Jira MCP or PR references             |
+| Tracking tickets linked   | ✅        | {{TRACKING_TOOL}} or PR references    |
 | Conventional commits      | ✅        | Git log                               |
 | Previous version tag      | ✅        | Git tags                              |
 | Package.json diff         | Desirable | For dependency changes                |
@@ -104,30 +112,30 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 ## Output — Executive Summary (for PO, PM, Sponsors)
 
 ```markdown
-# Release Notes v{version} — Resumen Ejecutivo
+# Release Notes v{version} — Executive Summary
 
-**Fecha:** {today}
+**Date:** {today}
 **Sprint:** {sprint name}
 
-## Novedades
+## What's New
 
 {Bullet list in business language — value delivered to users}
 
-## Problemas Resueltos
+## Problems Resolved
 
 {Customer-facing bugs fixed — business language}
 
-## Impacto
+## Impact
 
-- Usuarios afectados: {scope}
-- Nuevas capacidades: {list}
-- Mejoras de rendimiento: {if any}
+- Users affected: {scope}
+- New capabilities: {list}
+- Performance improvements: {if any}
 
-## Métricas del Release
+## Release Metrics
 
-- PRs mergeados: {N}
-- Tickets resueltos: {N}
-- Contribuidores: {N}
+- Merged PRs: {N}
+- Tickets resolved: {N}
+- Contributors: {N}
 ```
 
 ## Output — Technical Changelog (for Dev, QA, DevOps)
@@ -173,7 +181,7 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 **Key Features**:
 
 - **Git History Parsing**: Auto-discovery of commits, PRs, and tags since last release
-- **GitHub CLI Integration**: Rich PR metadata including descriptions, labels, authors
+- **{{VCS_TOOL}} CLI Integration**: Rich PR metadata including descriptions, labels, authors
 - **Conventional Commit Analysis**: Automatic categorization by commit type and breaking changes
 - **Business Impact Extraction**: Parse PR descriptions for user-facing impact
 - **Security Change Detection**: Auto-identify security updates and vulnerability fixes
@@ -191,7 +199,7 @@ python changelog-generator.py --input-dir release-analysis --output-dir release-
 **Key Features**:
 
 - **Business Impact Classification**: Domain-specific patterns for software projects
-- **Dual-Format Generation**: Executive summary (Spanish) + technical changelog (English)
+- **Dual-Format Generation**: Executive summary (client `language` setting) + technical changelog (English)
 - **Deployment Guidance**: Migration steps, rollback considerations, testing requirements
 - **Domain-Specific Patterns**: Algorithm improvements, compliance updates, integration enhancements
 - **Multi-Audience Targeting**: Stakeholder, engineering, and DevOps-specific outputs
@@ -284,6 +292,13 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                       | Changes                                                                                                                                                                       |
+| ------- | ---------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.3.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added Relationship to BMAD note (LIDR-unique; canonical replacement for deprecated lidr-changelog-generator)                                                                  |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted GitHub CLI / Jira / Confluence / Slack via tool-registry ({{VCS_TOOL}}, {{TRACKING_TOOL}}, {{DOCS_TOOL}}, {{CHAT_TOOL}}) |

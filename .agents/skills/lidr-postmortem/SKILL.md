@@ -1,22 +1,30 @@
 ---
 name: lidr-postmortem
 id: postmortem
-version: "1.0.1"
-last_updated: "2026-03-16"
-updated_by: "System: Normalization"
+version: "1.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 8
 owner_role: "PME"
 automation: false
 domain_agnostic: true
-description: "Structure a blameless incident postmortem using Five Whys root cause analysis, detailed timeline, and systemic corrective actions. Domain-agnostic - works for any system or service type. Mandatory for S1/S2 production incidents; recommended for S3 with customer impact, near-misses, and executed rollbacks. Deadline: draft in 24h, review in 48h, publish in 72h. Triggers on create postmortem, incident analysis, what happened in production, root cause analysis, five whys, incident report. Culture: blameless — analyze SYSTEMS, don't blame PEOPLE. ALWAYS use after production incidents to identify root causes and prevent recurrence."
+language_default: en
+integrations: [chat]
+description: "Structure a blameless incident postmortem using Five Whys root cause analysis, detailed timeline, and systemic corrective actions. Domain-agnostic - works for any system or service type. Mandatory for S1/S2 production incidents; recommended for S3 with customer impact, near-misses, and executed rollbacks. Deadline: draft in 24h, review in 48h, publish in 72h. Triggers on create postmortem, incident analysis, what happened in production, root cause analysis, five whys, incident report. Culture: blameless — analyze SYSTEMS, don't blame PEOPLE. Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). ALWAYS use after production incidents to identify root causes and prevent recurrence."
 ---
 
 # Blameless Postmortem Structurer
 
-Phase: 8 — Post-incident | Language: Spanish + English (logs, commands)
+Phase: 8 — Post-incident | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Logs and commands stay in English.
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 **Culture:** Blameless — the postmortem analyzes SYSTEMS, not blame PEOPLE.
+
+## Relationship to BMAD
+
+LIDR-unique post-incident artifact — distinct from `bmad-retrospective`, which is a post-epic review of planned work. A postmortem is triggered by an unplanned production incident (S1/S2) and applies Five Whys root-cause analysis; the retrospective looks back at a completed epic for process improvement. The two are complementary, not interchangeable.
 
 ## When to Use
 
@@ -71,15 +79,15 @@ Phase: 8 — Post-incident | Language: Spanish + English (logs, commands)
 
 ## Input
 
-| Input                              | Required  | Source                             |
-| ---------------------------------- | --------- | ---------------------------------- |
-| Incident timeline                  | ✅        | Slack #incidents, logs, monitoring |
-| Alerts triggered                   | ✅        | PagerDuty / Opsgenie               |
-| Relevant logs                      | ✅        | ELK / CloudWatch / app logs        |
-| Monitoring dashboards              | ✅        | Datadog / Grafana (screenshots)    |
-| Communication records              | ✅        | Slack threads, war room notes      |
-| Change Request (if deploy-related) | Desirable | skill `change-request/`            |
-| Previous postmortems               | Desirable | Postmortem repo (detect patterns)  |
+| Input                              | Required  | Source                                                           |
+| ---------------------------------- | --------- | ---------------------------------------------------------------- |
+| Incident timeline                  | ✅        | {{CHAT_TOOL}} incident channel, logs, monitoring                 |
+| Alerts triggered                   | ✅        | Alerting platform — Example (PagerDuty / Opsgenie)               |
+| Relevant logs                      | ✅        | Log aggregation — Example (ELK / CloudWatch / app logs)          |
+| Monitoring dashboards              | ✅        | Observability platform — Example (Datadog / Grafana) screenshots |
+| Communication records              | ✅        | {{CHAT_TOOL}} threads, war room notes                            |
+| Change Request (if deploy-related) | Desirable | skill `change-request/`                                          |
+| Previous postmortems               | Desirable | Postmortem repo (detect patterns)                                |
 
 ## Output Template
 
@@ -175,7 +183,7 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
@@ -241,8 +249,10 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Versión | Fecha      | Autor                       | Cambios                                                                                                                                    |
-| ------- | ---------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1.1.0   | 2026-04-06 | System: Phase 2 Remediation | Added comprehensive "When to Use" section, expanded Key Rules with structured guidelines, added changelog section for LIDR SDLC compliance |
-| 1.0.1   | 2026-03-16 | System: Normalization       | Domain-agnostic normalization updates                                                                                                      |
-| 1.0.0   | 2026-02-01 | PME: Initial Release        | Initial blameless postmortem structurer with Five Whys framework                                                                           |
+| Version | Date       | Author                       | Changes                                                                                                                                    |
+| ------- | ---------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.2.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-unique post-incident artifact, distinct from bmad-retrospective)                                   |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted chat tools via tool-registry                                                          |
+| 1.1.0   | 2026-04-06 | System: Phase 2 Remediation  | Added comprehensive "When to Use" section, expanded Key Rules with structured guidelines, added changelog section for LIDR SDLC compliance |
+| 1.0.1   | 2026-03-16 | System: Normalization        | Domain-agnostic normalization updates                                                                                                      |
+| 1.0.0   | 2026-02-01 | PME: Initial Release         | Initial blameless postmortem structurer with Five Whys framework                                                                           |

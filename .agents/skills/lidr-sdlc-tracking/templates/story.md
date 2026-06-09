@@ -23,6 +23,8 @@ commits: 0
 test_coverage: 0.0
 
 # External references (ID mapping consistency)
+# Illustrative multi-tool catalog — tools resolve via `_shared/lidr/integrations/tool-registry.yaml`;
+# the active client binds concrete tracker/docs/VCS in `clients/<CODE>.yaml`. Keep only the bound tools' keys.
 external_refs:
   jira: "{PROJECT}-{NNN}"
   linear: "LIN-{NNN}"
@@ -287,8 +289,8 @@ DELETE /api/v1/endpoint/{id}
 - [Design Mockups](design-link)
 - [API Documentation](api-docs-link)
 - [Related Epic](epic-link)
-- [Jira Ticket](jira-link)
-- [GitHub PR](github-pr-link)
+- Example ({{TRACKING_TOOL}}, e.g. Jira): [Tracking Ticket](tracking-link)
+- Example ({{VCS_TOOL}}, e.g. GitHub): [Pull Request](pr-link)
 
 ### File Attachments
 

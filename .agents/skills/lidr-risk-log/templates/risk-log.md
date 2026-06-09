@@ -1,68 +1,68 @@
 ---
 id: tpl-risk-log
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Template Migration"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 type: template
 review_cycle: 30
-next_review: "2026-04-15"
+next_review: "2026-07-09"
 owner_role: "Tech Lead"
 ---
 
 # Risk Log Template
 
-> **Uso**: Registro centralizado de riesgos del proyecto. Usado por el skill `risk-log`.
+> **Usage**: Centralized project risk register. Used by the `risk-log` skill.
 > **Gate**: Gate 1 (Discovery)
 
 ---
 
-## Metadatos del Registro
+## Register Metadata
 
-| Campo                | Valor             |
-| -------------------- | ----------------- |
-| Proyecto             | {nombre_proyecto} |
-| Responsable          | {nombre_pme_o_tl} |
-| Fecha de creacion    | {YYYY-MM-DD}      |
-| Ultima actualizacion | {YYYY-MM-DD}      |
+| Field        | Value            |
+| ------------ | ---------------- |
+| Project      | {project_name}   |
+| Owner        | {pme_or_tl_name} |
+| Created      | {YYYY-MM-DD}     |
+| Last updated | {YYYY-MM-DD}     |
 
 ---
 
-## Tabla de Riesgos
+## Risk Table
 
-| ID    | Categoria                                    | Descripcion         | Probabilidad (1-5) | Impacto (1-5) | Score   | Estrategia                              | Owner    | Estado                                       | Fecha revision |
-| ----- | -------------------------------------------- | ------------------- | ------------------ | ------------- | ------- | --------------------------------------- | -------- | -------------------------------------------- | -------------- |
-| R-001 | tecnico / negocio / organizacional / externo | {descripcion_clara} | {1-5}              | {1-5}         | {P x I} | mitigar / aceptar / transferir / evitar | {nombre} | abierto / mitigado / cerrado / materializado | {YYYY-MM-DD}   |
+| ID    | Category                                         | Description         | Probability (1-5) | Impact (1-5) | Score   | Strategy                             | Owner  | Status                                   | Review date  |
+| ----- | ------------------------------------------------ | ------------------- | ----------------- | ------------ | ------- | ------------------------------------ | ------ | ---------------------------------------- | ------------ |
+| R-001 | technical / business / organizational / external | {clear_description} | {1-5}             | {1-5}        | {P x I} | mitigate / accept / transfer / avoid | {name} | open / mitigated / closed / materialized | {YYYY-MM-DD} |
 
 ---
 
 ## Heat Map
 
 ```
-Impacto →   1       2       3       4       5
+Impact →    1        2        3        4        5
 Prob ↓
-  5       medio   alto    alto    critico critico
-  4       bajo    medio   alto    alto    critico
-  3       bajo    medio   medio   alto    alto
-  2       bajo    bajo    medio   medio   alto
-  1       bajo    bajo    bajo    medio   medio
+  5       medium   high     high     critical critical
+  4       low      medium   high     high     critical
+  3       low      medium   medium   high     high
+  2       low      low      medium   medium   high
+  1       low      low      low      medium   medium
 ```
 
 ---
 
-## Umbrales de Escalamiento
+## Escalation Thresholds
 
-| Score | Nivel   | Accion requerida                                   |
-| ----- | ------- | -------------------------------------------------- |
-| 20-25 | Critico | Escalar a sponsor + plan de contingencia inmediato |
-| 12-19 | Alto    | Escalar a PME + mitigacion activa obligatoria      |
-| 6-11  | Medio   | Monitoreo semanal + owner asignado                 |
-| 1-5   | Bajo    | Monitoreo quincenal                                |
+| Score | Level    | Action required                                  |
+| ----- | -------- | ------------------------------------------------ |
+| 20-25 | Critical | Escalate to sponsor + immediate contingency plan |
+| 12-19 | High     | Escalate to PME + mandatory active mitigation    |
+| 6-11  | Medium   | Weekly monitoring + assigned owner               |
+| 1-5   | Low      | Biweekly monitoring                              |
 
 ---
 
-## Historial de Cambios
+## Change History
 
-| Fecha        | Riesgo  | Cambio                   | Responsable |
-| ------------ | ------- | ------------------------ | ----------- |
-| {YYYY-MM-DD} | R-{NNN} | {descripcion del cambio} | {nombre}    |
+| Date         | Risk    | Change                  | Owner  |
+| ------------ | ------- | ----------------------- | ------ |
+| {YYYY-MM-DD} | R-{NNN} | {description of change} | {name} |

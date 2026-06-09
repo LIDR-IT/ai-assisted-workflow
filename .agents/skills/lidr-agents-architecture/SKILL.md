@@ -510,10 +510,10 @@ For a deep dive into the `.agents/` system, see `references/architecture-overvie
 
 For specialized creation workflows, see:
 
-- **`lidr-skill-development`** — Deep dive into skill authoring
+- **`bmad-workflow-builder`** — Deep dive into skill authoring
 - **`command-development`** — Generic command authoring patterns
-- **`lidr-agent-development`** — Subagent design and orchestration
-- **`lidr-skill-creator`** — Generic skill creation workflow
+- **`bmad-agent-builder`** — Subagent design and orchestration
+- **`bmad-agent-builder`** — Generic skill creation workflow
 
 **Note:** `agents-architecture` is the meta-skill that provides architectural context and routing. For in-depth component-specific guidance, use the specialized skills above.
 
@@ -581,4 +581,4 @@ readlink .agents/workflows                      # → commands
 | Version | Date       | Author                        | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ------- | ---------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 1.0.0   | 2026-05-19 | TL: agents-architecture audit | Major rewrite: corrected subagent source-of-truth to `.agents/subagents/` (was `.claude/agents/`); subagents now correctly described as supported in 4 of 5 platforms (Claude, Cursor, Gemini Apr 2026, Copilot — not Antigravity); Gemini skills/rules marked as native (not symlinked); Copilot copy + rename distribution documented; full directory tree includes `subagents/, hooks/, _shared/, memory/, orchestrator/, adapters/, lib/, sync/, workflows/`; updated cross-references to `lidr-*` sub-skills. |
-| 0.2.0   | 2025-Q4    | (original)                    | Initial version after `team-skill-creator` rename. Claimed agents were Claude Code only; described Gemini as full symlinks (incorrect post-2026 architecture).                                                                                                                                                                                                                                                                                                                                                     |
+| 0.2.0   | 2025-Q4    | (original)                    | Initial version after `team-bmad-agent-builder` rename. Claimed agents were Claude Code only; described Gemini as full symlinks (incorrect post-2026 architecture).                                                                                                                                                                                                                                                                                                                                                |

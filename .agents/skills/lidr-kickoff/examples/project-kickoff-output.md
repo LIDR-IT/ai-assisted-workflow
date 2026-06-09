@@ -247,14 +247,14 @@
 
 ## Action Items
 
-| Action                           | Owner         | Due Date   | Status |
-| -------------------------------- | ------------- | ---------- | ------ |
-| Set up project Slack channel     | PME           | 2026-03-17 | 🔄     |
-| Voice algorithm vendor research  | R&D Lead      | 2026-03-22 | 📋     |
-| Technical architecture document  | Tech Lead     | 2026-03-22 | 📋     |
-| User story creation              | PO            | 2026-03-20 | 📋     |
-| Security requirements document   | Security Lead | 2026-03-20 | 📋     |
-| Resource allocation confirmation | SM            | 2026-03-18 | 📋     |
+| Action                                                       | Owner         | Due Date   | Status |
+| ------------------------------------------------------------ | ------------- | ---------- | ------ |
+| Set up project chat channel — Example ({{CHAT_TOOL}}: Slack) | PME           | 2026-03-17 | 🔄     |
+| Voice algorithm vendor research                              | R&D Lead      | 2026-03-22 | 📋     |
+| Technical architecture document                              | Tech Lead     | 2026-03-22 | 📋     |
+| User story creation                                          | PO            | 2026-03-20 | 📋     |
+| Security requirements document                               | Security Lead | 2026-03-20 | 📋     |
+| Resource allocation confirmation                             | SM            | 2026-03-18 | 📋     |
 
 **Next Meeting**: Architecture Review - 2026-03-22, 2:00 PM
 

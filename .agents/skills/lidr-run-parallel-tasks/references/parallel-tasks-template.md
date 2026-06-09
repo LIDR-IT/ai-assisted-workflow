@@ -11,7 +11,7 @@
 ### Task: <human-readable-title>
 
 - name: <kebab-case-change-name>   (required, used for worktree and change folder)
-- us: inline | <file-path> | <JIRA-ID>   (required, source of the user story)
+- us: inline | <file-path> | <TICKET-ID>   (required, source of the user story; <TICKET-ID> is a {{TRACKING_TOOL}} ticket reference)
 - description: <multi-line US text>   (required only when us: inline)
 ```
 

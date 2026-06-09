@@ -1,35 +1,43 @@
 ---
 name: lidr-generate-rf
 id: generate-rf
-version: "1.5.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "1.7.0"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 3
 owner_role: "PO"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking, docs]
 description: >
-  Generate structured Functional Requirements (RFs) with BDD acceptance criteria (Given/When/Then) from PRD Funcional.
+  Generate structured Functional Requirements (RFs) with BDD acceptance criteria (Given/When/Then) from the Functional PRD.
   Domain-agnostic — works for any software system, platform, or product type.
   Use for transforming business requirements into testable, traceable functional specifications.
   Essential at Gate 2: all RFs must exist before Sprint Planning begins.
-  Always use when PRD Funcional is approved, always use when specifying acceptance criteria for features.
-  Do NOT use for non-functional requirements (use generate-nfr), for user stories (use user-stories), or for epic decomposition (use epic-breakdown).
+  Always use when the Functional PRD is approved, always use when specifying acceptance criteria for features.
+  Do NOT use for non-functional requirements (use generate-nfr), for user stories (use user-stories), or for epic decomposition (use bmad-create-epics-and-stories).
   Triggers on "generate requirements", "functional requirements", "RF", "BDD requirements", "acceptance criteria", "feature specification", "requirements from PRD".
-  Output in Spanish (requirements document), English (BDD scenarios).
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: PO (validates business alignment), QA (uses for test cases), Dev (implements against).
 ---
 
 # Functional Requirements Generator
 
-> **Essential for** Phase 3 (Especificación) — CRITICAL for Gate 2 success. Always use when decomposing PRDs into atomic, testable requirements. This skill is your PRIMARY tool for generating comprehensive RFs with BDD criteria for any software system or product.
+> **Essential for** Phase 3 (Specification) — CRITICAL for Gate 2 success. Always use when decomposing PRDs into atomic, testable requirements. This skill is your PRIMARY tool for generating comprehensive RFs with BDD criteria for any software system or product.
 >
 > **Always use when**: PRDs approved (Gate 1 ✅), need atomic testable requirements, preparing Gate 2, decomposing user-facing or system functionalities into observable behaviors.
 >
 > **Critical for**: Requirements generation, BDD criteria creation, feature workflows, compliance with data regulation (sensitive data), user journey specification.
 
-**Phase:** 3 — Specification | **Gate:** 2 | **Language:** Spanish + English (BDD) | **Domain:** any software system
+**Phase:** 3 — Specification | **Gate:** 2 | **Language:** English by default (configurable via client `language` setting) | **Domain:** any software system
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMAD
+
+LIDR-unique: authors atomic, BDD-bearing Functional Requirements (Given/When/Then) at Gate 2 — the testable contract that BMad's epic flow assumes. Consumes the Functional PRD from `bmad-prd`; feeds `bmad-create-epics-and-stories` (decomposition) and `lidr-validate-requirements` (RTM + coherence).
 
 ## Workflow
 
@@ -42,12 +50,12 @@ description: >
 
 ## Input
 
-| Input                    | Required      | Source                 |
-| ------------------------ | ------------- | ---------------------- |
-| PRD Funcional (approved) | ✅            | skill `prd-funcional/` |
-| PRD Técnico (approved)   | ✅            | skill `prd-tecnico/`   |
-| Existing RFs (if any)    | If applicable | Jira / Confluence      |
-| Project glossary         | Desirable     | rules/project.md       |
+| Input                     | Required      | Source                            |
+| ------------------------- | ------------- | --------------------------------- |
+| Functional PRD (approved) | ✅            | skill `bmad-prd/`                 |
+| Technical PRD (approved)  | ✅            | skill `bmad-prd/`                 |
+| Existing RFs (if any)     | If applicable | {{TRACKING_TOOL}} / {{DOCS_TOOL}} |
+| Project glossary          | Desirable     | rules/project.md                  |
 
 ## Output Location
 
@@ -105,7 +113,7 @@ next_review: "YYYY-MM-DD"             # calculated: last_updated + review_cycle
 owner_role: "PO"                      # Product Owner maintains requirements
 ---
 
-# Requisitos Funcionales: {PROJECT_NAME}
+# Functional Requirements: {PROJECT_NAME}
 
 [Document introduction and overview]
 ```
@@ -117,41 +125,41 @@ ALWAYS use this structure for each RF:
 ```markdown
 # RF-{PROJ}-{NNN}: {Title — Infinitive verb + Object}
 
-| Campo           | Valor                 |
-| --------------- | --------------------- |
-| **ID**          | RF-{PROJ}-{NNN}       |
-| **Versión**     | 1.0                   |
-| **Estado**      | Borrador              |
-| **Prioridad**   | Must / Should / Could |
-| **Complejidad** | Baja / Media / Alta   |
+| Field          | Value                 |
+| -------------- | --------------------- |
+| **ID**         | RF-{PROJ}-{NNN}       |
+| **Version**    | 1.0                   |
+| **Status**     | Draft                 |
+| **Priority**   | Must / Should / Could |
+| **Complexity** | Low / Medium / High   |
 
-## Trazabilidad
+## Traceability
 
-| Referencia            | Valor         |
-| --------------------- | ------------- |
-| **PRD-F origen**      | PRD-F §4.X FX |
-| **PRD-T soporte**     | PRD-T §3.X    |
-| **Reglas de negocio** | RN-FX-NN      |
+| Reference          | Value         |
+| ------------------ | ------------- |
+| **PRD-F source**   | PRD-F §4.X FX |
+| **PRD-T support**  | PRD-T §3.X    |
+| **Business rules** | RN-FX-NN      |
 
-## Descripción
+## Description
 
-### Actor(es): Primary + Secondary
+### Actor(s): Primary + Secondary
 
-### Precondiciones (what must be true BEFORE)
+### Preconditions (what must be true BEFORE)
 
-### Descripción Funcional ("El sistema DEBE [behavior]")
+### Functional Description ("The system MUST [behavior]")
 
-### Reglas de Negocio (ID, Rule, Condition, Action, Exception)
+### Business Rules (ID, Rule, Condition, Action, Exception)
 
-### Postcondiciones (what is true AFTER)
+### Postconditions (what is true AFTER)
 
-## Datos de Entrada (Field, Type, Required, Validation, Example)
+## Input Data (Field, Type, Required, Validation, Example)
 
-## Datos de Salida (Field, Type, Description, Example)
+## Output Data (Field, Type, Description, Example)
 
-## Manejo de Errores (Code, Condition, User Message, System Action)
+## Error Handling (Code, Condition, User Message, System Action)
 
-## Criterios de Aceptación (BDD — Gherkin)
+## Acceptance Criteria (BDD — Gherkin)
 
 ### Scenario 1: Happy Path
 
@@ -163,13 +171,13 @@ ALWAYS use this structure for each RF:
 
 ### Scenario Outline (for parameterized data)
 
-## NFRs Aplicables (Performance, Security, Accessibility targets)
+## Applicable NFRs (Performance, Security, Accessibility targets)
 
-## Dependencias (depends_on, blocks, related_to, external)
+## Dependencies (depends_on, blocks, related_to, external)
 
-## Supuestos
+## Assumptions
 
-## Notas de Implementación (hints for R&D, not mandatory)
+## Implementation Notes (hints for R&D, not mandatory)
 ```
 
 ## BDD Rules
@@ -240,7 +248,7 @@ Global:
 
 ### Step-by-Step (Generic):
 
-1. **Load PRDs**: PRD-Funcional (user journeys) + PRD-Técnico (architecture, APIs, constraints)
+1. **Load PRDs**: Functional PRD (user journeys) + Technical PRD (architecture, APIs, constraints)
 2. **Identify feature flows**: main user journeys, system integrations, data handling
 3. **Apply decomposition**: 1 RF per observable action (input ≠ validation ≠ processing ≠ storage)
 4. **Add compliance RFs**: consent, data retention, deletion, audit logging (if applicable)
@@ -271,99 +279,99 @@ Global:
 ### Example 1: E-Commerce — Add to Cart with Inventory Check
 
 ````markdown
-# RF-SHOP-003: Agregar producto al carrito con validación de stock
+# RF-SHOP-003: Add product to cart with stock validation
 
-| Campo           | Valor       |
-| --------------- | ----------- |
-| **ID**          | RF-SHOP-003 |
-| **Versión**     | 1.0         |
-| **Estado**      | Borrador    |
-| **Prioridad**   | Must        |
-| **Complejidad** | Media       |
+| Field          | Value       |
+| -------------- | ----------- |
+| **ID**         | RF-SHOP-003 |
+| **Version**    | 1.0         |
+| **Status**     | Draft       |
+| **Priority**   | Must        |
+| **Complexity** | Medium      |
 
-## Descripción
+## Description
 
-**Actor(es)**: Shopper (primary), Inventory Service (secondary), Cart Service (secondary)
-**Precondiciones**: Usuario autenticado, producto activo en catálogo
-**Descripción Funcional**: El sistema DEBE permitir al usuario agregar un producto al carrito,
-verificar disponibilidad en tiempo real y reservar el stock durante la sesión de compra.
+**Actor(s)**: Shopper (primary), Inventory Service (secondary), Cart Service (secondary)
+**Preconditions**: Authenticated user, product active in catalog
+**Functional Description**: The system MUST allow the user to add a product to the cart,
+verify availability in real time, and reserve stock during the shopping session.
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 
-### CA-SHOP-003-01: Producto disponible
+### CA-SHOP-003-01: Product available
 
 ```gherkin
-Scenario: Happy path — producto en stock
-  Given el usuario "alice@example.com" tiene sesión activa
-    And el producto "SKU-12345" tiene 8 unidades disponibles
-  When el usuario hace clic en "Agregar al carrito" con cantidad 2
-  Then el sistema reserva 2 unidades de "SKU-12345"
-    And actualiza el carrito mostrando 2 ítems
-    And muestra mensaje: "Producto agregado correctamente"
-    And registra evento: "CART_ITEM_ADDED" con product_id y quantity
+Scenario: Happy path — product in stock
+  Given the user "alice@example.com" has an active session
+    And the product "SKU-12345" has 8 units available
+  When the user clicks "Add to cart" with quantity 2
+  Then the system reserves 2 units of "SKU-12345"
+    And updates the cart showing 2 items
+    And displays message: "Product added successfully"
+    And logs event: "CART_ITEM_ADDED" with product_id and quantity
 
-Scenario: Error — stock insuficiente
-  Given el producto "SKU-12345" tiene 1 unidad disponible
-  When el usuario intenta agregar cantidad 3
-  Then el sistema rechaza la solicitud
-    And muestra mensaje: "Solo 1 unidad disponible"
-    And sugiere: "Puede agregar 1 unidad al carrito"
-    And no modifica el inventario
+Scenario: Error — insufficient stock
+  Given the product "SKU-12345" has 1 unit available
+  When the user attempts to add quantity 3
+  Then the system rejects the request
+    And displays message: "Only 1 unit available"
+    And suggests: "You can add 1 unit to the cart"
+    And does not modify the inventory
 ```
 ````
 
 ### Example 2: SaaS — Plan Upgrade with Immediate Feature Access
 
 ````markdown
-# RF-SAAS-007: Upgrade de plan con acceso inmediato a funcionalidades
+# RF-SAAS-007: Plan upgrade with immediate feature access
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 
 ```gherkin
-Scenario: Happy path — upgrade exitoso
-  Given el usuario "bob@company.com" está en plan "Starter"
-    And su tarjeta de crédito está vigente
-  When el usuario selecciona plan "Professional" y confirma el pago
-  Then el sistema cobra la diferencia prorrateada del ciclo actual
-    And actualiza el plan en <5 segundos
-    And activa las funcionalidades "Advanced Analytics" y "API Access"
-    And envía email de confirmación con factura
-    And registra evento: "PLAN_UPGRADED" con user_id y new_plan
+Scenario: Happy path — successful upgrade
+  Given the user "bob@company.com" is on the "Starter" plan
+    And their credit card is valid
+  When the user selects the "Professional" plan and confirms payment
+  Then the system charges the prorated difference for the current cycle
+    And updates the plan in <5 seconds
+    And activates the "Advanced Analytics" and "API Access" features
+    And sends a confirmation email with the invoice
+    And logs event: "PLAN_UPGRADED" with user_id and new_plan
 
-Scenario: Error — pago rechazado durante upgrade
-  Given el usuario selecciona plan "Professional"
-  When el procesador de pagos retorna "CARD_DECLINED"
-  Then el sistema mantiene el plan "Starter" activo sin cambios
-    And muestra mensaje: "Pago no procesado. Verifique su tarjeta"
-    And ofrece opción: "Actualizar método de pago"
-    And no activa funcionalidades del plan superior
+Scenario: Error — payment declined during upgrade
+  Given the user selects the "Professional" plan
+  When the payment processor returns "CARD_DECLINED"
+  Then the system keeps the "Starter" plan active without changes
+    And displays message: "Payment not processed. Check your card"
+    And offers option: "Update payment method"
+    And does not activate the higher plan's features
 ```
 ````
 
 ### Example 3: Healthcare — Patient Appointment Booking
 
 ````markdown
-# RF-HEALTH-012: Reserva de turno médico con verificación de cobertura
+# RF-HEALTH-012: Medical appointment booking with coverage verification
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 
 ```gherkin
-Scenario: Happy path — turno disponible con cobertura vigente
-  Given el paciente "ID-P-98765" tiene cobertura médica vigente
-    And el médico "Dr. Smith" tiene disponibilidad el "2026-04-10 10:00"
-  When el paciente selecciona el turno y confirma la reserva
-  Then el sistema registra el turno con estado "Confirmado"
-    And envía recordatorio al paciente y al médico
-    And actualiza la agenda del médico bloqueando el slot
-    And registra evento: "APPOINTMENT_BOOKED" con patient_id y slot_id
+Scenario: Happy path — appointment available with active coverage
+  Given the patient "ID-P-98765" has active medical coverage
+    And the doctor "Dr. Smith" has availability on "2026-04-10 10:00"
+  When the patient selects the appointment and confirms the booking
+  Then the system records the appointment with status "Confirmed"
+    And sends a reminder to the patient and the doctor
+    And updates the doctor's schedule blocking the slot
+    And logs event: "APPOINTMENT_BOOKED" with patient_id and slot_id
 
-Scenario: Error — cobertura vencida
-  Given el paciente tiene cobertura vencida desde "2026-01-01"
-  When el paciente intenta reservar un turno
-  Then el sistema bloquea la reserva
-    And muestra mensaje: "Su cobertura médica no está vigente"
-    And ofrece opción: "Pagar como particular" o "Actualizar cobertura"
-    And no crea el turno hasta resolver la cobertura
+Scenario: Error — expired coverage
+  Given the patient has had expired coverage since "2026-01-01"
+  When the patient attempts to book an appointment
+  Then the system blocks the booking
+    And displays message: "Your medical coverage is not active"
+    And offers option: "Pay out of pocket" or "Update coverage"
+    And does not create the appointment until the coverage is resolved
 ```
 ````
 
@@ -408,16 +416,18 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 ## Changelog
 
-| Versión | Fecha      | Autor                                 | Cambios                                                                                                                                                                   |
+| Version | Date       | Author                                | Changes                                                                                                                                                                   |
 | ------- | ---------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.7.0   | 2026-06-09 | TL: BMAD-coherence batch-fix          | Added "Relationship to BMAD" note (LIDR-unique BDD-bearing RF authoring; consumes bmad-prd, feeds bmad-create-epics-and-stories + lidr-validate-requirements)             |
+| 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tracking/docs tools via tool-registry                                                                                |
 | 1.5.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific patterns with e-commerce/SaaS/healthcare examples; moved domain-specific content to examples/client-domain-example.md |
 | 1.4.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                                                                             |
 | 1.2.0   | 2026-03-09 | System: Improvement                   | Added concrete BDD scenarios and domain-specific RF patterns                                                                                                              |
 | 1.1.0   | 2026-02-15 | TL: García                            | Added decomposition rules and validation checklist                                                                                                                        |
-| 1.0.0   | 2026-01-20 | TL: García                            | Versión inicial del skill                                                                                                                                                 |
+| 1.0.0   | 2026-01-20 | TL: García                            | Initial version of the skill                                                                                                                                              |

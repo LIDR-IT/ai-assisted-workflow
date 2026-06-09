@@ -48,6 +48,8 @@ CHANGELOG:
 
 # Track SDLC $1 $2
 
+> **Relationship (de-duplication):** The heavy logic lives in skills — **`lidr-sdlc-tracking`** owns the `sdlc-tracking.yaml` (init, status, health) and **`lidr-external-sync`** owns bidirectional Jira/Linear/Notion sync. This command is the thin interactive/portfolio entry point the user runs; it invokes those skills rather than re-implementing tracking or sync. When scripting, prefer the skills directly.
+
 Load context from rules FIRST:
 
 - @../rules/org.md -> organizational standards, roles, portfolio structure

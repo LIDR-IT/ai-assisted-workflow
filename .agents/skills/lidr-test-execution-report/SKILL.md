@@ -1,14 +1,16 @@
 ---
 name: lidr-test-execution-report
 id: test-execution-report
-version: "1.4.0"
-last_updated: "2026-04-06"
-updated_by: "System: Phase 4 Python Script Remediation"
+version: "1.6.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 6
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking, test_management]
 description: >
   Essential for QA sign-off documentation — ALWAYS use before Gate 5 approval for any
   software release, feature deployment, or service update. CRITICAL for consolidating
@@ -19,11 +21,15 @@ description: >
 
 # Test Execution Report Generator
 
-Phase: 6 — QA | Gate: 5 (QA Sign-off) — primary input for GO/NO-GO | Language: Spanish
+Phase: 6 — QA | Gate: **G5 (QA Sign-off), `required: true`** — primary input for GO/NO-GO | Output: English-authored; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+> **BMad relationship (extension):** BMad's `bmad-testarch-trace` emits a traceability matrix + quality-gate decision, `bmad-testarch-automate` runs the automated suite, and `bmad-tea` is the Test Architect advisor. This skill is the LIDR gap-filler that consolidates all of that (plus compliance / security / performance evidence) into a **formal executive GO/NO-GO QA sign-off** — an artifact BMad has no single concept for. Wired into `_shared/lidr/gate-evidence.yaml` → **G5** (`required: true`).
 
 ## Workflow
 
-1. **Read test execution data**: Xray CSV export with functional, integration, and system test results
+1. **Read test execution data**: {{TEST_MGMT_TOOL}} export (e.g. CSV) with functional, integration, and system test results
 2. **Analyze system {{PRIMARY_ACCURACY_METRIC}} results**: {{METRIC_TYPE_1}}/{{METRIC_TYPE_2}} rate measurements, validation success rates, quality analysis
 3. **Review compliance testing outcomes**: {{COMPLIANCE_FLOW_1}} consent flows, {{COMPLIANCE_FLOW_2}} validation, audit trail verification
 4. **Evaluate security test results**: Data encryption validation, API authentication tests, attack detection tests
@@ -35,14 +41,14 @@ Phase: 6 — QA | Gate: 5 (QA Sign-off) — primary input for GO/NO-GO | Languag
 
 ## Input
 
-| Input                        | Required      | Source                     |
-| ---------------------------- | ------------- | -------------------------- |
-| Xray CSV export              | ✅            | export-from-xray.sh script |
-| Bug list (severity + status) | ✅            | Jira                       |
-| Test Plan exit criteria      | ✅            | skill `test-plan/`         |
-| Performance test results     | If applicable | k6 / Datadog               |
-| Security scan results        | If applicable | ZAP / Burp                 |
-| Previous sprint reports      | Desirable     | For trend analysis         |
+| Input                        | Required      | Source                      |
+| ---------------------------- | ------------- | --------------------------- |
+| {{TEST_MGMT_TOOL}} export    | ✅            | bound test-mgmt adapter     |
+| Bug list (severity + status) | ✅            | {{TRACKING_TOOL}}           |
+| Test Plan exit criteria      | ✅            | `bmad-testarch-test-design` |
+| Performance test results     | If applicable | k6 / Datadog                |
+| Security scan results        | If applicable | ZAP / Burp                  |
+| Previous sprint reports      | Desirable     | For trend analysis          |
 
 ## Output Template
 
@@ -263,7 +269,7 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 

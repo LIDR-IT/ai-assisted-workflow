@@ -38,3 +38,6 @@ Thumbs.db
 # - SETUP_*.md files
 .vitepress/cache/
 .playwright-mcp/
+
+# Installer/editor backups
+*.bak

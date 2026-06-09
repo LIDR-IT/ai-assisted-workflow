@@ -26,11 +26,14 @@ scope:
   total_story_points: 34
 
 # External references
+# Illustrative multi-tool catalog — tracker/docs/VCS/chat resolve via
+# `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in
+# `clients/<CODE>.yaml`. Keep only the bound tools' keys.
 external_refs:
-  jira_filter: "project = {PROJECT} AND fixVersion = {VERSION}"
-  confluence_page: "handoff-page-id"
-  github_milestone: "v1.2.0"
-  slack_channel: "#project-{project-id}"
+  jira_filter: "project = {PROJECT} AND fixVersion = {VERSION}" # {{TRACKING_TOOL}} query
+  confluence_page: "handoff-page-id" # {{DOCS_TOOL}} page
+  github_milestone: "v1.2.0" # {{VCS_TOOL}} milestone
+  slack_channel: "#project-{project-id}" # {{CHAT_TOOL}} channel
 
 # Quality metrics
 quality_metrics:

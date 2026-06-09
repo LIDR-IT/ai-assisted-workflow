@@ -1,20 +1,28 @@
 ---
 name: lidr-sprint-capacity
 id: sprint-capacity
-version: "1.2.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "1.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 4
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking]
 description: "Essential for software project sprint planning - ALWAYS use before committing to new feature development, platform enhancements, API integrations, or infrastructure work. CRITICAL for accurately planning team capacity including backend development, frontend work, QA testing, DevOps tasks, and compliance effort. Use when estimating feature complexity, integration testing, security validation, or cross-team dependency work. Mandatory for Sprint Planning Gate 3 approval. Domain-specific examples available in examples/client-domain-example.md for regulated identity verification contexts."
 ---
 
 # Sprint Capacity Calculator
 
-Phase: 4 — Sprint Planning | Language: Spanish
+Phase: 4 — Sprint Planning | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The Spanish column headers in the templates/examples below are illustrative — the bound client `language` drives the emitted artifact.
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMad
+
+This skill is a **LIDR-native artifact** (no BMad equivalent). It produces the team capacity calculation (productive-hours, buffer, tech-debt reserve) that is a **required input to Gate 3 (Sprint committed)** and feeds `bmad-sprint-planning`, which consumes the committable-capacity figure when generating the sprint plan.
 
 ## Workflow
 
@@ -45,7 +53,7 @@ Phase: 4 — Sprint Planning | Language: Spanish
 | Dedication % per member           | ✅            | PM / contracts                                               |
 | Vacations / absences              | ✅            | Shared calendar                                              |
 | Holidays for period               | ✅            | Labor calendar                                               |
-| Historical velocity (3-5 sprints) | Desirable     | Jira metrics                                                 |
+| Historical velocity (3-5 sprints) | Desirable     | {{TRACKING_TOOL}} metrics                                    |
 | Buffer policy                     | Desirable     | Team agreement (default: 15-20% based on project complexity) |
 | Compliance allocation             | If applicable | Regulatory/audit work allocation (10-15% when required)      |
 | Research/spike time               | If applicable | Team estimates for technical uncertainty spikes              |
@@ -171,6 +179,6 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills

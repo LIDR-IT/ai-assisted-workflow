@@ -78,7 +78,7 @@ Based on [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
 - Release tasks
 - Examples:
   - `chore: update dependencies`
-  - `chore(ci): add GitHub Actions workflow`
+  - `chore(ci): add CI workflow` — Example (GitHub Actions): `chore(ci): add GitHub Actions workflow`
 
 **`perf`** - Performance
 

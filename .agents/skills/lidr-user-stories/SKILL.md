@@ -1,29 +1,33 @@
 ---
 name: lidr-user-stories
 id: user-stories
-version: "2.3.0"
-last_updated: "2026-04-06"
-updated_by: "System: Phase 4 Python Script Remediation"
+version: "2.3.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 4
 owner_role: "PO"
 automation: true
 domain_agnostic: true
+language_default: en
+integrations: [tracking]
 description: >
   🤖 AUTOMATED User Story generation with intelligent RF slicing using 8 proven slicing patterns and INVEST validation.
   Domain-agnostic — works for any software system, platform, or project methodology.
   Use for transforming RFs into sprint-ready backlog with capacity management and dependency detection.
   Essential after Gate 2: converts validated requirements into implementable user stories for Sprint Planning.
   Always use when RFs are approved and Sprint Planning begins, always use when transforming requirements into actionable development tasks.
-  Do NOT use for requirements generation (use generate-rf), for epic decomposition (use epic-breakdown), or for test case creation (use create-test-cases).
+  Do NOT use for requirements generation (use generate-rf), for epic decomposition (use bmad-create-epics-and-stories), or for test case creation (use create-test-cases).
   Triggers on "automated user stories", "RF slicing", "sprint backlog generation", "INVEST validation", "story capacity planning", "requirements to stories".
-  Output in Spanish (story descriptions), English (BDD scenarios), Jira-ready format.
+  Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). BDD scenarios (Given/When/Then) stay in English; exported for the bound {{TRACKING_TOOL}}.
   Audience: PO (validates stories), SM (plans capacity), Dev (implements stories).
 ---
 
 # User Story Generator
 
-Phase: 4 — Sprint Planning | Gate: 3 | Language: Spanish + English (BDD)
+Phase: 4 — Sprint Planning (feeds G3 evidence) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). BDD scenarios stay in English.
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ## Automated Workflow (NEW)
 
@@ -41,7 +45,7 @@ Phase: 4 — Sprint Planning | Gate: 3 | Language: Spanish + English (BDD)
 2. **Dependency Detection**: Auto-maps RF dependencies to User Story dependencies
 3. **Story Point Estimation**: Converts hour estimates to Fibonacci story points automatically
 4. **DoD Integration**: Auto-applies standard DoD plus RF-specific criteria
-5. **Jira Export**: Generates CSV format for seamless Jira import
+5. **{{TRACKING_TOOL}} Export**: Generates CSV format for seamless {{TRACKING_TOOL}} import
 
 ### Phase 3: Sprint Planning (Human Review)
 
@@ -75,7 +79,7 @@ If automation fails, use original manual process:
 
 Generated documents should be saved to: **`docs/projects/{projectName}/user-stories.md`**
 
-Contains sprint-ready user stories with BDD scenarios and Jira-ready format.
+Contains sprint-ready user stories with BDD scenarios and {{TRACKING_TOOL}}-ready format.
 
 Example: `docs/projects/identity-sdk-v3/user-stories.md`
 
@@ -405,7 +409,7 @@ Then se realiza la verificación correctamente",3,Must,"Feature Development","us
 
 ### Process Integration
 
-- **Jira readiness guaranteed** — all generated stories include complete CSV import format
+- **{{TRACKING_TOOL}} readiness guaranteed** — all generated stories include complete CSV import format
 - **DoD completeness** — standard DoD automatically applied plus RF-specific criteria
 - **Story point calculation** — hour estimates converted to Fibonacci scale automatically
 - **Priority assignment** — Must/Should/Could assigned based on RF content analysis
@@ -426,7 +430,7 @@ Then se realiza la verificación correctamente",3,Must,"Feature Development","us
 - **Consistency**: 100% systematic application of slicing patterns and INVEST criteria
 - **Completeness**: No missed acceptance criteria or BDD scenarios due to automation
 - **Traceability**: Perfect RF → User Story mapping with dependency preservation
-- **Sprint Planning**: Ready-to-import Jira format eliminates manual story creation
+- **Sprint Planning**: Ready-to-import {{TRACKING_TOOL}} format eliminates manual story creation
 - **Capacity Accuracy**: Data-driven capacity management prevents overcommitment
 
 ### Team Productivity
@@ -463,7 +467,7 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
@@ -521,7 +525,7 @@ npx tsx scripts/validate-examples.ts
 
 - **Generate-RF Skill**: Auto-loads approved RFs from skill outputs
 - **Tech-Debt Skill**: Integrates debt allocation for capacity planning
-- **Jira Integration**: CSV export format for seamless import
+- **{{TRACKING_TOOL}} Integration**: CSV export format for seamless import
 - **Sprint Planning**: Generated backlog ready for team review and assignment
 
 ### Success Metrics
@@ -537,6 +541,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                                                                                                                          |
 | ------- | ---------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2.3.1   | 2026-06-09 | TL: BMAD-coherence batch-fix              | Language to English-default-configurable (BDD stays English); abstracted tracking tool via {{TRACKING_TOOL}} in generic prose; added language_default + integrations frontmatter                                                                                                                                                                 |
 | 2.3.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Complete domain-agnostic remediation: replaced examples/user-stories-selphi-document-capture.md with user-stories-document-capture-feature.md using comprehensive template variables ({{PRIMARY_WORKFLOW}}, {{DOCUMENT_TYPE}}, {{VERIFICATION_DEVICE}}, etc.). Removed all banking/biometric-specific content. Achieving 75→92/100 target score. |
 | 2.2.0   | 2026-03-16 | System: QA Enhancement                    | Previous QA improvements                                                                                                                                                                                                                                                                                                                         |
 

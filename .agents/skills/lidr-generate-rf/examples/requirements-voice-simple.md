@@ -1,237 +1,237 @@
-# Requisitos Funcionales: Voice Verification Call Center
+# Functional Requirements: Voice Verification Call Center
 
-**Proyecto**: Telefónica Voice Authentication
-**Generado desde**: PRD Funcional v1.0
-**Fecha**: 2026-03-15
-**Complejidad**: Simple (5 RFs core)
+**Project**: Telefónica Voice Authentication
+**Generated from**: Functional PRD v1.0
+**Date**: 2026-03-15
+**Complexity**: Simple (5 core RFs)
 
-## RF-001: Enrollment de Voz por Teléfono
+## RF-001: Voice Enrollment by Phone
 
-**Como** cliente que llama por primera vez al call center
-**Quiero** registrar mi voz de forma sencilla y segura
-**Para** evitar responder preguntas personales en futuras llamadas
+**As** a customer calling the call center for the first time
+**I want** to register my voice simply and securely
+**So that** I avoid answering personal questions on future calls
 
-### Criterios de Aceptación
+### Acceptance Criteria
 
-**Escenario 1: Enrollment exitoso**
+**Scenario 1: Successful enrollment**
 
 ```gherkin
-Given soy un cliente nuevo en verificación por voz
-  And llamo al 1004 de atención al cliente
-When el IVR detecta que no tengo voice profile
-  And me ofrece "configurar verificación por voz"
-  And acepto diciendo "SÍ"
-Then debe explicarme el proceso en lenguaje simple
-  And debe pedirme que diga "Mi voz es mi contraseña para Telefónica"
-  And debe repetir 3 veces para crear un perfil robusto
-  And debe confirmar "Ya tienes verificación por voz configurada"
+Given I am a new customer for voice verification
+  And I call 1004 customer service
+When the IVR detects that I have no voice profile
+  And it offers to "set up voice verification"
+  And I accept by saying "YES"
+Then it must explain the process in simple language
+  And it must ask me to say "My voice is my password for Telefónica"
+  And it must repeat 3 times to create a robust profile
+  And it must confirm "You now have voice verification set up"
 ```
 
-**Escenario 2: Cliente rechaza enrollment**
+**Scenario 2: Customer declines enrollment**
 
 ```gherkin
-Given el IVR me ofrece configurar verificación por voz
-When respondo "NO" o no respondo nada
-Then debe continuar con verificación tradicional
-  And debe permitir configurar voice verification en el futuro
-  And no debe insistir más durante esta llamada
+Given the IVR offers to set up voice verification
+When I respond "NO" or do not respond at all
+Then it must continue with traditional verification
+  And it must allow setting up voice verification in the future
+  And it must not insist again during this call
 ```
 
-**Escenario 3: Problema durante enrollment**
+**Scenario 3: Problem during enrollment**
 
 ```gherkin
-Given estoy en proceso de enrollment
-When hay ruido de fondo o línea de mala calidad
-Then debe detectar automáticamente la mala calidad
-  And debe sugerir "¿Puedes llamar desde un lugar más silencioso?"
-  And debe permitir reintentar o continuar sin voice verification
-```
-
----
-
-## RF-002: Verificación de Voz para Clientes Registrados
-
-**Como** cliente que ya tiene voice verification configurada
-**Quiero** autenticarme diciendo mi frase
-**Para** acceder rápidamente al servicio sin preguntas
-
-### Criterios de Aceptación
-
-**Escenario 1: Verificación exitosa**
-
-```gherkin
-Given soy un cliente con voice verification configurada
-  And llamo desde mi número registrado
-When el IVR me pide "Di tu frase de voz"
-  And digo "Mi voz es mi contraseña para Telefónica"
-Then debe verificar mi identidad en menos de 10 segundos
-  And debe responder "Verificado. Te conecto con un agente"
-  And debe conectarme directamente sin más preguntas
-```
-
-**Escenario 2: Verificación fallida**
-
-```gherkin
-Given intento verificarme con mi voz
-When el sistema no puede confirmar mi identidad (voz diferente por resfriado)
-Then debe decir "No hemos podido verificarte por voz"
-  And debe continuar automáticamente con verificación tradicional
-  And debe hacer las preguntas de seguridad habituales
-```
-
-**Escenario 3: Múltiples intentos fallidos**
-
-```gherkin
-Given fallo la verificación por voz 2 veces seguidas
-When intento una tercera vez
-Then debe bloquear verificación por voz temporalmente
-  And debe pasar a verificación tradicional
-  And debe sugerir re-enrollment después de la llamada
+Given I am in the enrollment process
+When there is background noise or a poor-quality line
+Then it must automatically detect the poor quality
+  And it must suggest "Can you call from a quieter place?"
+  And it must allow retrying or continuing without voice verification
 ```
 
 ---
 
-## RF-003: Consentimiento y Privacidad
+## RF-002: Voice Verification for Registered Customers
 
-**Como** cliente preocupado por la privacidad
-**Quiero** entender y controlar cómo se usa mi voz
-**Para** dar un consentimiento informado
+**As** a customer who already has voice verification set up
+**I want** to authenticate by saying my phrase
+**So that** I can access the service quickly without questions
 
-### Criterios de Aceptación
+### Acceptance Criteria
 
-**Escenario 1: Explicación clara antes del enrollment**
+**Scenario 1: Successful verification**
 
 ```gherkin
-Given el IVR me ofrece configurar verificación por voz
-When acepto conocer más información
-Then debe explicar claramente:
-  - "Tu voz se convierte en una huella digital única"
-  - "Se almacena de forma segura en España"
-  - "Se elimina automáticamente si no llamas en 2 años"
-  - "Puedes desactivarla cuando quieras"
-  And debe preguntar "¿Autorizas este uso de tu voz?"
+Given I am a customer with voice verification set up
+  And I call from my registered number
+When the IVR asks me to "Say your voice phrase"
+  And I say "My voice is my password for Telefónica"
+Then it must verify my identity in less than 10 seconds
+  And it must respond "Verified. Connecting you with an agent"
+  And it must connect me directly without further questions
 ```
 
-**Escenario 2: Revocación de consentimiento**
+**Scenario 2: Failed verification**
 
 ```gherkin
-Given tengo voice verification activa
-When llamo y pido hablar con un agente
-  And solicito "quiero desactivar la verificación por voz"
-Then el agente debe:
-  - Verificar mi identidad por métodos tradicionales
-  - Eliminar inmediatamente mi perfil de voz
-  - Confirmar "Tu perfil de voz ha sido eliminado"
-  And en futuras llamadas debe usar verificación tradicional
+Given I try to verify with my voice
+When the system cannot confirm my identity (different voice due to a cold)
+Then it must say "We could not verify you by voice"
+  And it must automatically continue with traditional verification
+  And it must ask the usual security questions
 ```
 
----
-
-## RF-004: Fallback a Verificación Tradicional
-
-**Como** sistema de call center
-**Quiero** tener siempre una alternativa de verificación
-**Para** no dejar a ningún cliente sin servicio
-
-### Criterios de Aceptación
-
-**Escenario 1: Fallback automático**
+**Scenario 3: Multiple failed attempts**
 
 ```gherkin
-Given la verificación por voz no está disponible por:
-  - Fallo técnico del sistema
-  - Calidad de línea insuficiente
-  - Cliente sin voice profile
-When el IVR detecta esta situación
-Then debe automáticamente pasar a preguntas de verificación:
-  - "Dime tu fecha de nacimiento"
-  - "¿Cuál fue el importe de tu última factura?"
-  - "¿Cuál es tu dirección de correspondencia?"
-```
-
-**Escenario 2: Escalamiento manual**
-
-```gherkin
-Given un cliente no puede verificarse ni por voz ni por preguntas
-When el agente lo detecta
-Then debe poder realizar verificación manual adicional:
-  - Preguntas sobre historial de servicios
-  - Verificación por SMS al móvil registrado
-  - Verificación documental si es necesario
+Given I fail voice verification 2 times in a row
+When I try a third time
+Then it must temporarily block voice verification
+  And it must switch to traditional verification
+  And it must suggest re-enrollment after the call
 ```
 
 ---
 
-## RF-005: Integración con Sistema Existente
+## RF-003: Consent and Privacy
 
-**Como** agente de atención al cliente
-**Quiero** ver el resultado de la verificación en mi pantalla
-**Para** saber inmediatamente si el cliente está verificado
+**As** a privacy-conscious customer
+**I want** to understand and control how my voice is used
+**So that** I can give informed consent
 
-### Criterios de Aceptación
+### Acceptance Criteria
 
-**Escenario 1: Información clara para el agente**
+**Scenario 1: Clear explanation before enrollment**
 
 ```gherkin
-Given un cliente se está verificando por voz
-When me llega la llamada a mi puesto
-Then mi pantalla debe mostrar:
-  - Estado: "VERIFICADO POR VOZ" en verde
-  - Confianza: Score de matching (ej: 92%)
-  - Método: "Voice Verification"
-  - Timestamp: Hora exacta de la verificación
-  And debo poder proceder directamente a ayudar al cliente
+Given the IVR offers to set up voice verification
+When I accept to learn more information
+Then it must clearly explain:
+  - "Your voice becomes a unique digital fingerprint"
+  - "It is stored securely in Spain"
+  - "It is automatically deleted if you do not call within 2 years"
+  - "You can disable it whenever you want"
+  And it must ask "Do you authorize this use of your voice?"
 ```
 
-**Escenario 2: Verificación manual pendiente**
+**Scenario 2: Consent revocation**
 
 ```gherkin
-Given un cliente requiere verificación adicional
-When me llega la llamada
-Then mi pantalla debe mostrar:
-  - Estado: "VERIFICACIÓN MANUAL REQUERIDA" en amarillo
-  - Motivo: "Voice verification inconclusive"
-  - Acciones: Lista de preguntas de verificación sugeridas
-  And debo completar la verificación antes de dar servicio
-```
-
-**Escenario 3: Cliente no verificado**
-
-```gherkin
-Given un cliente no ha pasado ninguna verificación
-When recibo la llamada
-Then mi pantalla debe mostrar:
-  - Estado: "NO VERIFICADO" en rojo
-  - Instrucción: "Completar verificación de identidad"
-  - Bloqueador: No puedo acceder a datos sensibles del cliente
+Given I have voice verification active
+When I call and ask to speak with an agent
+  And I request "I want to disable voice verification"
+Then the agent must:
+  - Verify my identity by traditional methods
+  - Immediately delete my voice profile
+  - Confirm "Your voice profile has been deleted"
+  And on future calls it must use traditional verification
 ```
 
 ---
 
-## Criterios de Calidad Global
+## RF-004: Fallback to Traditional Verification
+
+**As** the call center system
+**I want** to always have a verification alternative
+**So that** no customer is left without service
+
+### Acceptance Criteria
+
+**Scenario 1: Automatic fallback**
+
+```gherkin
+Given voice verification is unavailable due to:
+  - System technical failure
+  - Insufficient line quality
+  - Customer with no voice profile
+When the IVR detects this situation
+Then it must automatically switch to verification questions:
+  - "Tell me your date of birth"
+  - "What was the amount of your last bill?"
+  - "What is your mailing address?"
+```
+
+**Scenario 2: Manual escalation**
+
+```gherkin
+Given a customer cannot verify by voice or by questions
+When the agent detects it
+Then they must be able to perform additional manual verification:
+  - Questions about service history
+  - SMS verification to the registered mobile
+  - Document verification if necessary
+```
+
+---
+
+## RF-005: Integration with Existing System
+
+**As** a customer service agent
+**I want** to see the verification result on my screen
+**So that** I immediately know whether the customer is verified
+
+### Acceptance Criteria
+
+**Scenario 1: Clear information for the agent**
+
+```gherkin
+Given a customer is verifying by voice
+When the call reaches my workstation
+Then my screen must show:
+  - Status: "VERIFIED BY VOICE" in green
+  - Confidence: Matching score (e.g.: 92%)
+  - Method: "Voice Verification"
+  - Timestamp: Exact time of the verification
+  And I must be able to proceed directly to assist the customer
+```
+
+**Scenario 2: Manual verification pending**
+
+```gherkin
+Given a customer requires additional verification
+When the call reaches me
+Then my screen must show:
+  - Status: "MANUAL VERIFICATION REQUIRED" in yellow
+  - Reason: "Voice verification inconclusive"
+  - Actions: List of suggested verification questions
+  And I must complete the verification before providing service
+```
+
+**Scenario 3: Unverified customer**
+
+```gherkin
+Given a customer has not passed any verification
+When I receive the call
+Then my screen must show:
+  - Status: "NOT VERIFIED" in red
+  - Instruction: "Complete identity verification"
+  - Blocker: I cannot access the customer's sensitive data
+```
+
+---
+
+## Global Quality Criteria
 
 ### Performance
 
-- **Enrollment**: <60 segundos proceso completo
-- **Verification**: <10 segundos desde frase hasta resultado
-- **Fallback**: <5 segundos para cambiar a método tradicional
+- **Enrollment**: <60 seconds for the complete process
+- **Verification**: <10 seconds from phrase to result
+- **Fallback**: <5 seconds to switch to the traditional method
 
 ### Accuracy
 
-- **False Accept Rate**: <0.01% (muy difícil que un impostor pase)
-- **False Reject Rate**: <5% (95% de usuarios legítimos pasan)
-- **System Availability**: >99.9% (menos de 9 horas down/año)
+- **False Accept Rate**: <0.01% (very hard for an impostor to pass)
+- **False Reject Rate**: <5% (95% of legitimate users pass)
+- **System Availability**: >99.9% (less than 9 hours down/year)
 
 ### User Experience
 
-- **Adoption Rate**: >70% de clientes elegibles completan enrollment
-- **Satisfaction**: >80% prefieren voice vs preguntas tradicionales
-- **Support Impact**: <10 llamadas/mes sobre problemas de voice verification
+- **Adoption Rate**: >70% of eligible customers complete enrollment
+- **Satisfaction**: >80% prefer voice over traditional questions
+- **Support Impact**: <10 calls/month about voice verification problems
 
 ---
 
-**Trazabilidad**:
+**Traceability**:
 
 - Epic: VOICE-100
 - Features: VOICE-101 (Enrollment), VOICE-102 (Verification), VOICE-103 (Privacy)
-- NFRs: Pendientes de generar con skill generate-nfr
+- NFRs: Pending generation with the generate-nfr skill

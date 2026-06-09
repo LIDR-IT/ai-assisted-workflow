@@ -1,0 +1,73 @@
+# =============================================================================
+# Client integration config — EXAMPLE / SCHEMA
+# =============================================================================
+# Copy this file to clients/<CLIENT_CODE>.yaml and pick ONE concrete tool per
+# capability you use, plus an output language. Every value must exist in
+# ../tool-registry.yaml. Capabilities you omit fall back to the registry
+# `default`. This is the ONLY place a concrete tool name should appear — skills
+# stay tool-agnostic and reference {{TRACKING_TOOL}} etc.
+#
+# Resolution at run time:
+#   skill writes {{TRACKING_TOOL}}  ->  client `tools.tracking`  ->  registry binding
+#   artifact language               ->  client `language`        ->  registry default (en)
+# =============================================================================
+
+# --- Example A: Spanish-speaking client on the Atlassian stack -----------------
+client:
+  code: ACME # {{CLIENT_CODE}}
+  name: "Acme Corp" # {{CLIENT_NAME}}
+
+language: es # overrides registry default (en); artifacts emitted in Spanish
+bilingual: false # true => English structure + Spanish prose in {{LOCALE_PROSE}} regions
+
+tools:
+  tracking: jira
+  test_management: xray
+  docs: confluence
+  chat: slack
+  code_quality: sonarqube
+  vcs: github
+  ci: github-actions
+
+# Per-tool connection details (consumed by adapters; secrets via env, never inline)
+connections:
+  jira:
+    server: "${JIRA_SERVER}"
+    project_key: "ACME"
+  xray:
+    project_key: "ACME"
+  confluence:
+    space_key: "ACME"
+
+# =============================================================================
+# --- Example B: English client, NO Jira — Linear + Redmine + Notion ----------
+# Demonstrates full tool-agnosticism. Uncomment / split into its own file.
+# =============================================================================
+# client:
+#   code: GLOBEX
+#   name: "Globex International"
+# language: en
+# bilingual: false
+# tools:
+#   tracking: redmine          # <- not Jira; same skills, different adapter
+#   test_management: qase
+#   docs: notion               # <- via Notion MCP, no python adapter
+#   chat: teams
+#   code_quality: snyk
+#   vcs: gitlab
+#   ci: gitlab-ci
+# connections:
+#   redmine:
+#     url: "${REDMINE_URL}"
+#     project_id: "globex-platform"
+#   notion:
+#     mcp_server: "claude_ai_Notion"
+#
+# =============================================================================
+# --- Example C: client with a bespoke tracker via custom MCP -----------------
+# tools:
+#   tracking: custom
+# connections:
+#   custom:
+#     mcp_server: "globex-tracker-mcp"   # client-provided MCP server name
+#     notes: "Maps create_project -> POST /work-items; see client runbook."
