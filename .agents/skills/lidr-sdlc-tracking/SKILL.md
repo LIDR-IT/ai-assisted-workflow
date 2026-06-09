@@ -306,7 +306,7 @@ velocity_trends:
 
 ## Related Skills
 
-- `project-classifier` - Auto-classify project types
+- `bmad-document-project` - Document & classify project
 - `epic-breakdown` - Decompose projects into epics
 - `user-stories` - Generate stories with external refs
 - `sprint-capacity` - Calculate team capacity

@@ -20,7 +20,7 @@ description: >
   "onboard new client to LIDR UI", "create client propuesta".
   Do NOT use for editing diagrams (use diagram-store JSONs directly), for generating the
   discovery report itself (the report is the input — produced by the discovery session and
-  the kickoff/document-discovery skills), or for the metrics tab (separate component).
+  the kickoff/bmad-document-project skills), or for the metrics tab (separate component).
   Output: 3 validated JSONs in `src/data/clients/<clientId>/propuesta/` + a brief summary
   of which sections came from where in the report.
   Audience: PME (drives), TL (validates technical content), PO (validates business framing).
@@ -59,7 +59,7 @@ USE this skill when:
 
 DO NOT use when:
 
-- No discovery has happened yet (use `kickoff` + `document-discovery` skills first)
+- No discovery has happened yet (use `kickoff` + `bmad-document-project` skills first)
 - You want to edit the architecture diagrams (those live in `src/data/clients/<clientId>/diagrams/*.json`)
 - The report has no AS-IS audit — the diagnostico JSON would be empty
 
@@ -203,6 +203,6 @@ See `examples/` for the canonical case:
 ## Related skills
 
 - `kickoff` — produces the initial session summary the discovery report builds on
-- `document-discovery` — produces the inventory of artifacts to read during discovery
+- `bmad-document-project` — produces the inventory of artifacts to read during discovery
 - `prd-funcional` / `prd-tecnico` — what comes AFTER the propuesta is approved
 - `risk-log` — Pain points often duplicate risks; cross-reference to avoid duplicates

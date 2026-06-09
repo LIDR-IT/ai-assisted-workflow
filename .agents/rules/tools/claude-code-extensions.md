@@ -134,7 +134,7 @@ System prompt here
 
 ### File Locations
 
-- **Skills:** `.agents/skills/{skill-name}/skill.md`
+- **Skills:** `.agents/skills/{skill-name}/SKILL.md`
 - **Commands:** `.agents/commands/{command-name}.md`
 - **Agents:** `.agents/subagents/{agent-name}.md`
 - **Hooks:** `.claude/hooks/{Event}/{hook-name}.sh`

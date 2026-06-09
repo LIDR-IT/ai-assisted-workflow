@@ -100,7 +100,7 @@ Use AskUserQuestion:
 
 #### Step 1: Project Discovery
 
-Using enhanced project-classifier pattern:
+Using project context from `bmad-document-project`:
 
 1. **Domain Context Analysis**:
    - Load business case for domain understanding

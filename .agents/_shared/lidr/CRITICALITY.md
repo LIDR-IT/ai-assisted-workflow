@@ -95,13 +95,12 @@ These fill gaps that BMad has zero coverage for. Cannot be skipped without losin
 | ---------------------- | ------------------------------------------------------ |
 | `lidr-gate-evaluation` | BMad has NO Gate G0-G7 methodology. Core of LIDR SDLC. |
 
-## 🟡 RECOMENDABLE (10 skills)
+## 🟡 RECOMENDABLE (9 skills)
 
 BMad covers partially. LIDR adds automation, Spanish, Gate-binding, or compliance.
 
 | Skill                     | What LIDR adds beyond BMad                                                                                                          |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `lidr-project-classifier` | **WRAPS `bmad-generate-project-context`**: pre-classifies project type/complexity/domain in <30s before BMad context generation.    |
 | `lidr-risk-log`           | Formal registry with industry patterns. BMad could embed risks in PRD.                                                              |
 | `lidr-sprint-capacity`    | Math with buffer 15-20% + velocity. BMad-sprint-planning doesn't compute capacity.                                                  |
 | `lidr-refinement-notes`   | **WRAPS `bmad-create-story`**: adds DoR-readiness grooming layer (domain decisions, compliance clarifications) post-story creation. |
@@ -146,17 +145,16 @@ For the full BMad-base + LIDR-complement workflow, see:
 ## Inventory snapshot (as of 2026-05-20, post Phase F)
 
 ```
-LIDR:    37 skills (23 OBLIGATORIO + 10 RECOMENDABLE + 4 OPCIONAL)
+LIDR:    36 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 4 OPCIONAL)
 BMad:    69 skills (base flow, untouched)
 Anytime: 5 skills (all OPCIONAL — 5 claude-* meta-tooling)
-Total:   111 skills
+Total:   110 skills
 ```
 
 > **Phase F (2026-05-20):** Renamed last 2 unprefixed skills to `lidr-commit-management` and
 > `lidr-ticket-validation` (source: anytime → lidr). Refactored 4 LIDR SKILL.md descriptions
 > to explicitly frame them as thin wrappers over BMad outputs:
 >
-> - `lidr-project-classifier` wraps `bmad-generate-project-context`
 > - `lidr-refinement-notes` wraps `bmad-create-story` + DoR layer
 > - `lidr-bug-report` wraps `bmad-investigate` (QA→Dev audience)
 > - `lidr-audit-standards` wraps `bmad-review-adversarial-general` (ecosystem scope)

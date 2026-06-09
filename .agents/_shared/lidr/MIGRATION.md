@@ -195,7 +195,7 @@ Pending in `TODO.md`: verify each renamed skill against the latest Anthropic ups
 
 Each `description:` was rewritten to make the wrap explicit:
 
-- `lidr-project-classifier` — PRE-BMAD WRAPPER: auto-classifies project before `bmad-generate-project-context` so BMad receives pre-classified input.
+- `lidr-project-classifier` — removed; replaced by `bmad-document-project` (classifies project type + derives doc requirements via its project-types.csv / documentation-requirements.csv).
 - `lidr-refinement-notes` — POST-BMAD WRAPPER: consumes user stories from `bmad-create-story` and captures DoR-readiness grooming notes.
 - `lidr-bug-report` — QA→DEV WRAPPER: while `bmad-investigate` is Dev-internal forensic, this is QA-facing outbound bug report.
 - `lidr-audit-standards` — ECOSYSTEM-SCOPE WRAPPER over `bmad-review-adversarial-general` (which reviews content). This audits `.agents/` structure: frontmatter, drift, paths.
@@ -244,10 +244,12 @@ After reading BMad Vol I-V and cross-referencing all 35 LIDR skills with the 69 
 ## Final inventory (after Phase F)
 
 ```
-LIDR:    37 skills (23 OBLIGATORIO + 10 RECOMENDABLE + 4 OPCIONAL)
+LIDR:    36 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 4 OPCIONAL)
 BMad:    69 skills (base flow, untouched)
 Anytime: 5 skills (all OPCIONAL — 5 claude-* meta-tooling)
-Total:   111 skills
+Total:   110 skills
 ```
 
-`lidr-` is now the consistent prefix for all 37 LIDR-methodology skills (no naked "anytime" entries remain).
+`lidr-` is now the consistent prefix for all 36 LIDR-methodology skills (no naked "anytime" entries remain).
+
+_Post-Phase F (gate-over-BMAD cleanup): `lidr-project-classifier` was removed — `bmad-document-project` covers project classification + documentation requirements. Inventory dropped 37→36 LIDR / 111→110 total._

@@ -9,7 +9,7 @@ phase: 4
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "POST-BMAD WRAPPER: consumes user stories from `bmad-create-story` and captures DoR-readiness backlog grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer that BMad's story creation does not provide. ALWAYS use after `bmad-create-story` during backlog grooming, before sprint commitment."
+description: "POST-BMad WRAPPER: consumes user stories from `bmad-create-story` and captures DoR-readiness backlog grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer that BMad's story creation does not provide. ALWAYS use after `bmad-create-story` during backlog grooming, before sprint commitment."
 ---
 
 # Refinement Notes Structurer

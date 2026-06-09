@@ -99,7 +99,7 @@ description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-gen
 
 **SDLC Phase Mapping (0-8):**
 
-- F0: Preparación (project-classifier, document-discovery)
+- F0: Preparación (bmad-document-project)
 - F1: Originación (business-case, kickoff, stakeholder-map, tracking-integration)
 - F2: Discovery (prd-tecnico, prd-funcional, review-cruzado, risk-log, poc-report)
 - F3: Especificación (generate-rf, generate-nfr, validate-requirements, epic-breakdown)
@@ -119,8 +119,8 @@ description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-gen
 
 **Automation Flags:**
 
-- `automation: true` for 8 automated skills:
-  - project-classifier, validate-requirements, tech-debt
+- `automation: true` for 7 automated skills:
+  - validate-requirements, tech-debt
   - user-stories, regression-suite, test-plan
   - release-notes, security-checklist
 - `automation: false` for all manual skills

@@ -99,16 +99,6 @@ export const iaUsageData: IASkillUsage[] = [
     successRate: 92,
     phase: 6,
   },
-  {
-    skill: 'project-classifier',
-    category: 'governance',
-    executions: 16,
-    timesSaved: 30,
-    automationLevel: 'automated',
-    avgExecutionTime: 5,
-    successRate: 98,
-    phase: 0,
-  },
   // Assisted skills
   {
     skill: 'prd-tecnico',

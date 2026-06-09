@@ -87,7 +87,6 @@ Para tareas repetitivas con alto volumen (> 2h/sprint), priorizamos **automatiza
 
 | Skill Automatizado         | Antes            | Ahora              | Ahorro/Ciclo | ROI Anual  |
 | -------------------------- | ---------------- | ------------------ | ------------ | ---------- |
-| 🤖 `project-classifier`    | 2h análisis      | 5min detection     | 1.9h         | 50+ horas  |
 | 🤖 `validate-requirements` | 6h manual        | 5min script        | 5.9h         | 150+ horas |
 | 🤖 `tech-debt`             | 6h análisis      | 5min SonarQube     | 5.9h         | 120+ horas |
 | 🤖 `user-stories`          | 3h escritura     | 15min slicing      | 2.75h        | 80+ horas  |
@@ -213,7 +212,7 @@ Excepciones de emergencia (hotfix):
 
 ### 6.1 Estándares de Código
 
-- Ver detalle completo en: `.claude/rules/tech-stack.md`
+- Ver detalle completo en: `.claude/rules/lidr-sdlc/tech-stack.md`
 - **Cobertura mínima**: 80% en lógica de negocio, 60% global
 - **Complejidad ciclomática**: máximo 15 por función
 - **Duplicación**: máximo 3% de código duplicado

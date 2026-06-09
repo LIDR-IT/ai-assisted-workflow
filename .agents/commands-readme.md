@@ -2,7 +2,7 @@
 
 Source-of-truth for user-invocable slash commands across 5 platforms.
 
-**Source:** `.agents/commands/<name>.md` — 30 commands (23 LIDR `lidr-*` + 7 generic).
+**Source:** `.agents/commands/<name>.md` — 32 commands (19 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic).
 
 Each platform calls the feature by a different name and expects a different file format. The adapter generates / symlinks per platform.
 
@@ -52,9 +52,9 @@ Markdown content here. Use $ARGUMENTS for user input.
 - **Antigravity:** reads markdown body; `description` shown in `/` dropdown
 - **Copilot:** adapter injects `agent: 'agent'` + maps `$ARGUMENTS` → `{{{ input }}}`
 
-## Available commands (30)
+## Available commands (32)
 
-### Generic (7)
+### Generic (6)
 
 - `/commit` — Conventional commit from staged changes
 - `/create-ticket` — Structured ticket creation
@@ -62,11 +62,10 @@ Markdown content here. Use $ARGUMENTS for user input.
 - `/improve-docs` — Documentation audit + improvement
 - `/sync-setup` — Run `./.agents/sync.sh`
 - `/test-hooks` — Test cross-platform hooks
-- `/validate-project-docs` — Audit project docs against templates
 
-### LIDR SDLC (23)
+### LIDR SDLC (19 — partial listing)
 
-`lidr-advance-gate`, `lidr-check-readiness`, `lidr-course-correct`, `lidr-create-branch`, `lidr-create-branch-enhanced`, `lidr-create-pr`, `lidr-create-pr-enhanced`, `lidr-create-release-notes`, `lidr-document-project`, `lidr-help`, `lidr-implement-ticket`, `lidr-init-project-docs`, `lidr-prepare-testing`, `lidr-product-brief`, `lidr-quick-dev`, `lidr-quick-spec`, `lidr-sprint-health`, `lidr-sync-docs`, `lidr-track-sdlc`, `lidr-update-changelog`, `lidr-validate-prd`, `lidr-validate-project-docs`, `lidr-validate-requirements`
+`lidr-advance-gate`, `lidr-course-correct`, `lidr-create-branch`, `lidr-create-pr`, `lidr-create-release-notes`, `lidr-help`, `lidr-implement-ticket`, `lidr-init-project-docs`, `lidr-prepare-testing`, `lidr-product-brief`, `lidr-quick-dev`, `lidr-quick-spec`, `lidr-sprint-health`, `lidr-sync-docs`, `lidr-track-sdlc`, `lidr-update-changelog`, `lidr-validate-prd`, `lidr-validate-project-docs`, `lidr-validate-requirements`
 
 See `.agents/rules/lidr-sdlc/workflows.md` for the role × command matrix.
 

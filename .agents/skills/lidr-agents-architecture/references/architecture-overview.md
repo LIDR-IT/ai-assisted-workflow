@@ -400,10 +400,10 @@ ln -s ../.agents/subagents .gemini/agents
 
 **Examples:**
 
-- `agents-architecture` — Meta-skill for creating skills/commands/subagents
+- `lidr-agents-architecture` — Meta-skill for creating skills/commands/subagents
 - `lidr-business-case` — LIDR Phase 1 originación
-- `lidr-prd-tecnico` — LIDR Phase 2 discovery
-- `command-development` — Generic command authoring deep-dive
+- `lidr-generate-rf` — LIDR Phase 3 especificación
+- `lidr-command-development` — Command authoring deep-dive
 
 ### Commands
 

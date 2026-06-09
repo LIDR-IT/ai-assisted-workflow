@@ -204,7 +204,7 @@ stepsCompleted: ['step-01-init', 'step-02-discovery', 'step-03-requirements']
 workflowType: 'prd' | 'requirements' | 'architecture' | 'complete-documentation'
 inputDocuments: ['business-case.md', 'stakeholder-map.md']
 
-# Project classification (auto-populated by project-classifier)
+# Project classification (auto-populated by bmad-document-project)
 classification:
   projectType: 'Web Application' | 'Mobile Application' | 'Backend Service' | etc.
   subType: 'React SPA + Node.js API'

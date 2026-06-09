@@ -36,16 +36,15 @@ Si la sesión está en el modelo equivocado, el agente DEBE auto-corregir editan
 | Workflow / Skill / Command                         | Por qué Opus high                                                         |
 | -------------------------------------------------- | ------------------------------------------------------------------------- |
 | `lidr-business-case`                               | Razonamiento de negocio, ROI, alineación estratégica                      |
-| `lidr-prd-tecnico`                                 | Diseño técnico inicial — alto nivel de exploración                        |
-| `lidr-prd-funcional`                               | Análisis funcional + edge cases                                           |
-| `lidr-design-doc`                                  | Arquitectura, decisiones estructurales                                    |
+| `bmad-prd`                                         | PRD unificado (F+T) — alto nivel de exploración (planning intensivo)      |
+| `bmad-create-architecture`                         | Arquitectura, decisiones estructurales                                    |
 | `lidr-generate-rf`                                 | RFs con BDD — requiere comprensión completa del PRD                       |
 | `lidr-generate-nfr`                                | NFRs medibles — necesita conectar negocio ↔ medición                      |
 | `lidr-validate-requirements`                       | Detección de gaps, coherencia cruzada, RTM                                |
 | `lidr-validate-prd`                                | Scoring + recomendaciones                                                 |
 | `lidr-user-stories`                                | Slicing + BDD                                                             |
-| `lidr-epic-breakdown`                              | Descomposición de épica master                                            |
-| `lidr-test-plan`                                   | Estrategia de testing risk-based                                          |
+| `bmad-create-epics-and-stories`                    | Descomposición de épica master en sub-épicas + stories                    |
+| `bmad-testarch-test-design`                        | Estrategia de testing risk-based                                          |
 | `lidr-security-checklist`                          | Compliance + threat modeling                                              |
 | `/lidr-spec-ff`                                    | Fast-forward genera proposal + design + tasks + spec — planning intensivo |
 | `lidr-run-parallel-tasks`                          | Coordinación + planning interno por sub-agente                            |
@@ -104,7 +103,7 @@ Los skills LIDR pueden declarar el modelo requerido directamente en frontmatter:
 
 ```yaml
 ---
-name: lidr-prd-tecnico
+name: lidr-generate-rf
 model: claude-opus-4-7 # Claude-only field, ignorado por otras plataformas
 effort: high # Claude-only
 ---

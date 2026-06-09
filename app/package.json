@@ -25,7 +25,6 @@
     "skills:health": "tsx scripts/skill-health-report.ts",
     "skills:examples": "tsx scripts/validate-skill-examples.ts",
     "validate:examples": "tsx scripts/validate-skill-examples.ts",
-    "validate:epic-breakdown": "tsx ../.agents/skills/lidr-epic-breakdown/scripts/validate-epics.ts",
     "validate:user-stories": "tsx ../.agents/skills/lidr-user-stories/scripts/validate-user-stories.ts",
     "validate:sprint-capacity": "tsx ../.agents/skills/lidr-sprint-capacity/scripts/validate-sprint-commitment.ts",
     "validate:bdd-patterns": "tsx ../.agents/_shared/lidr/validators/validate-bdd-patterns.ts",

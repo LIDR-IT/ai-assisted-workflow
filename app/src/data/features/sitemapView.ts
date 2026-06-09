@@ -153,53 +153,6 @@ export const projectTree: TreeNode[] = [
         desc: 'Self-contained skills — cada uno con templates/, checklists/, signoffs/ y scripts/ internos',
         children: [
           {
-            name: 'Fase 0 — Preparación',
-            type: 'folder',
-            iconName: 'FolderOpen',
-            badge: { label: '1 skill', color: 'bg-slate-100 text-slate-700' },
-            children: [
-              {
-                name: 'lidr-project-classifier/',
-                type: 'folder',
-                iconName: 'FolderOpen',
-                desc: '🤖 Auto-detecta tipo de proyecto y tech stack en <30s (LIDR SDLC-inspired)',
-                children: [
-                  {
-                    name: 'SKILL.md',
-                    type: 'file',
-                    desc: 'Definición y lógica del skill',
-                    docPath: '.claude/skills/lidr-project-classifier/SKILL.md',
-                  },
-                  {
-                    name: 'examples/',
-                    type: 'folder',
-                    desc: 'Casos de uso y ejemplos de salida',
-                  },
-                  {
-                    name: 'templates/',
-                    type: 'folder',
-                    desc: 'Templates específicos del skill',
-                  },
-                  {
-                    name: 'checklists/',
-                    type: 'folder',
-                    desc: 'Checklists para validación',
-                  },
-                  {
-                    name: 'scripts/',
-                    type: 'folder',
-                    desc: 'Scripts de validación automática',
-                  },
-                ],
-              },
-              {
-                name: '... (ver árbol completo por fases abajo)',
-                type: 'file',
-                desc: `Los ${ecosystemStats.skills} skills siguen la estructura self-contained. Ver árbol completo: LIDR (Fase 0-8 + Cross-cutting), BMad — Base flow (Fase 0-4 + Toolkit + Brownfield + Agents + CIS + Builder + Utilities), Claude meta-tooling.`,
-              },
-            ],
-          },
-          {
             name: 'Fase 1 — Originación',
             type: 'folder',
             iconName: 'FolderOpen',
@@ -1081,12 +1034,6 @@ export const projectTree: TreeNode[] = [
         desc: 'Workflows orquestadores — 7 Tier 1 + 6 Tier 2 base + 7 Tier 2 LIDR Spec Lifecycle (lidr-spec-*) + 1 Utility',
         children: [
           {
-            name: 'check-readiness.md',
-            type: 'file',
-            desc: 'Pre-implementation validation: PRD, team, dependencies, readiness score',
-            docPath: '.claude/commands/lidr-check-readiness.md',
-          },
-          {
             name: 'validate-prd.md',
             type: 'file',
             desc: 'LIDR SDLC Methodology PRD quality validation with automated scoring and actionable recommendations',
@@ -1097,12 +1044,6 @@ export const projectTree: TreeNode[] = [
             type: 'file',
             desc: 'Mid-project course correction for managing deviations and realigning projects',
             docPath: '.claude/commands/lidr-course-correct.md',
-          },
-          {
-            name: 'document-project.md',
-            type: 'file',
-            desc: 'Workflow LIDR SDLC completo de documentación',
-            docPath: '.claude/commands/lidr-document-project.md',
           },
           {
             name: 'product-brief.md',
@@ -1133,12 +1074,6 @@ export const projectTree: TreeNode[] = [
             type: 'file',
             desc: 'Sincroniza docs vs código',
             docPath: '.claude/commands/lidr-sync-docs.md',
-          },
-          {
-            name: 'validate-prd.md',
-            type: 'file',
-            desc: 'LIDR SDLC Methodology PRD quality validation with automated scoring and actionable recommendations',
-            docPath: '.claude/commands/lidr-validate-prd.md',
           },
           {
             name: 'lidr-help.md',
@@ -1195,13 +1130,25 @@ export const projectTree: TreeNode[] = [
         type: 'folder',
         iconName: 'Zap',
         badge: { label: 'Nivel 2', color: 'bg-orange-100 text-orange-700' },
-        desc: '4 hooks Claude Code — 2 prompt-based (DTC) + 2 command (bash scripts)',
+        desc: '6 hooks (registrados en .agents/hooks/hooks.json) — 3 LIDR (load-context, frontmatter-guard, validate-ecosystem-counts) + 3 genéricos (notify, auto-format, protect-secrets)',
         children: [
           {
             name: 'load-context.sh',
             type: 'file',
             desc: 'SessionStart: carga PROJECT_TYPE, DTC_ACTIVE, stale docs',
             docPath: '.claude/hooks/scripts/load-context.sh',
+          },
+          {
+            name: 'auto-format.sh',
+            type: 'file',
+            desc: 'PostToolUse: ejecuta prettier sobre archivos editados',
+            docPath: '.claude/hooks/scripts/auto-format.sh',
+          },
+          {
+            name: 'protect-secrets.sh',
+            type: 'file',
+            desc: 'PreToolUse: bloquea edición de .env/.key/.pem/secrets',
+            docPath: '.claude/hooks/scripts/protect-secrets.sh',
           },
           {
             name: 'frontmatter-guard.sh',
@@ -1227,8 +1174,8 @@ export const projectTree: TreeNode[] = [
         name: 'agents/',
         type: 'folder',
         iconName: 'Bot',
-        badge: { label: '7 agents', color: 'bg-cyan-100 text-cyan-700' },
-        desc: '7 subagentes autónomos con memoria persistente (scope: project) — evolucionan de commands maduros. Incluye lidr-spec-orchestrator para el LIDR Spec Lifecycle end-to-end.',
+        badge: { label: '23 subagents', color: 'bg-cyan-100 text-cyan-700' },
+        desc: '23 subagentes (.agents/subagents/) — 10 LIDR autónomos (qa, security, release, docs, metrics, onboarding, pr-validator, ticket-enricher, doc-improver, spec-orchestrator) + 13 personas BMAD (bmad-*-agent). Incluye lidr-spec-orchestrator para el LIDR Spec Lifecycle end-to-end.',
         children: [
           {
             name: 'lidr-spec-orchestrator.md',

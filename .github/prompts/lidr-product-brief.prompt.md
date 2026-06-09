@@ -31,8 +31,8 @@ REQUIREMENTS:
 
 RELATED COMMANDS:
   /validate-prd     - Validates generated brief for quality
-  /document-project - Full LIDR SDLC documentation workflow
-  /check-readiness  - Pre-implementation validation
+  bmad-document-project - Full project documentation workflow (classifies project + derives doc requirements)
+  /advance-gate 3   - Pre-implementation readiness validation (Gate 3)
 
 RELATED SKILLS:
   business-case     - For full business case when needed

@@ -4,16 +4,17 @@ import { ecosystemStats, automationStats, summaryStrings } from '../simple-stats
 describe('simple-stats', () => {
   describe('ecosystemStats', () => {
     it('has correct base counts', () => {
-      // Post-merge BMAD + LIDR Spec Lifecycle:
-      // - skills: 44 LIDR + 69 BMAD = 113
-      // - commands: 23 LIDR SDLC + 7 lidr-spec-* + 7 generic = 37
+      // Post-merge BMAD + LIDR Spec Lifecycle, after removal of 3 deleted artifacts
+      // (skill lidr-project-classifier + commands lidr-document-project, lidr-check-readiness):
+      // - skills: 43 LIDR + 69 BMAD = 112
+      // - commands: 21 LIDR SDLC + 7 lidr-spec-* + 4 generic = 32
       // - rules: 7 LIDR SDLC + 17 generic = 24
       // - mcps: context7, playwright, chrome-devtools = 3
       // - hooks: 3 LIDR + 3 generic = 6
       // - agents: 10 LIDR + 13 BMAD = 23
-      expect(ecosystemStats.skills).toBe(113);
-      expect(ecosystemStats.automatedSkills).toBe(9);
-      expect(ecosystemStats.commands).toBe(37);
+      expect(ecosystemStats.skills).toBe(112);
+      expect(ecosystemStats.automatedSkills).toBe(8);
+      expect(ecosystemStats.commands).toBe(32);
       expect(ecosystemStats.rules).toBe(24);
       expect(ecosystemStats.mcps).toBe(3);
       expect(ecosystemStats.hooks).toBe(6);
@@ -216,7 +217,7 @@ describe('simple-stats', () => {
     });
 
     it('has realistic skill count', () => {
-      // Post-merge BMAD: 113 skills (44 LIDR + 69 BMAD)
+      // Post-merge BMAD, post-removal: 112 skills (43 LIDR + 69 BMAD)
       expect(ecosystemStats.skills).toBeGreaterThan(50);
       expect(ecosystemStats.skills).toBeLessThan(200);
     });

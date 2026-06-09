@@ -33,23 +33,6 @@ export interface Skill {
 }
 
 export const skills: Skill[] = [
-  // Fase 0 — Preparación (1)
-  {
-    id: 'project-classifier',
-    name: 'project-classifier',
-    phase: 'Fase 0 — Preparación',
-    phaseNum: 0,
-    source: 'lidr',
-    criticality: 'recommended',
-    description:
-      'Auto-classify project type (Web App, Mobile, Backend, etc.) with confidence scoring and tech stack detection',
-    triggers: ['classify project', 'determine project type', 'auto-categorize'],
-    roles: ['TL', 'PME'],
-    gateContribution: 'Pre-Gate 0',
-    docPath: '.claude/skills/project-classifier/SKILL.md',
-    automated: true,
-  },
-
   // Fase 1 — Originación (6)
   {
     id: 'business-case',
@@ -666,7 +649,7 @@ export const skills: Skill[] = [
     gateContribution: 'Gates 4-7',
     docPath: '.claude/skills/automated-handoffs/SKILL.md',
     tier: 'Cross-cutting',
-    relatedCommands: ['create-pr-enhanced', 'advance-gate'],
+    relatedCommands: ['create-pr', 'advance-gate'],
   },
   {
     id: 'external-sync',

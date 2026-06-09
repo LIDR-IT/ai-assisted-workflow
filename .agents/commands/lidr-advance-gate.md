@@ -49,7 +49,16 @@ CHANGELOG:
   v1.0.0 (2025-03-05): Initial release - all 8 gates
   v2.0.0 (2026-03-09): Content validation, cross-coherence, weighted scoring,
                         Jira Gate Status registration, tpl-gate-evaluation output
+  v2.1.0 (2026-06-09): Step 4 is now manifest-driven — reads
+                        _shared/lidr/gate-evidence.yaml (BMad artifacts as primary
+                        evidence + LIDR gap-fillers). Gate verifies BMad outputs
+                        instead of re-implementing them. LIDR quantitative guards
+                        (RF-BDD, NFR, RTM, zero-tolerance) preserved on top.
 -->
+
+> **Model note** (per @../rules/lidr-sdlc/model-selection.md): gate evaluation is
+> cross-cutting analysis — stays on the session model; promote to Opus high only
+> if CRITICAL coherence gaps surface.
 
 # Advance Gate $1
 
@@ -122,77 +131,48 @@ Based on gate number $1, evaluate the specific criteria.
 - References to other artifacts must be resolvable (read the referenced file to confirm it exists)
 - An empty or placeholder artifact is WORSE than a missing one — it gives false confidence
 
-**Gate 0 (Originacion -> Discovery):**
+### 4a. Load the Gate Evidence Manifest (source of per-gate criteria)
 
-- Check: Business Case exists AND contains: problem statement, proposed solution, expected ROI, sponsor approval
-- Check: Acta de Kick-off exists AND contains: attendees, decisions, action items (non-empty lists)
-- Check: Stakeholder Map exists AND has at least 1 stakeholder with role and interest level (desirable)
-- Check: Epica in Jira with complete fields (summary, description >100 chars, acceptance criteria)
-- Gate criteria from @../rules/org.md: BC approved by sponsor, budget identified, roadmap alignment, kick-off done
-- Content guard: BC must have success metrics defined (not empty/TBD), sponsor field must reference a real person
+Read `@../_shared/lidr/gate-evidence.yaml`. This manifest is the SINGLE source
+of truth for "what evidence satisfies each gate". The evidence comes PRIMARILY
+from BMad artifacts (the engine that produces PRDs, architecture, epics,
+stories, test plans, brownfield docs) plus a few LIDR custom-skill outputs
+(gap-fillers BMad has no concept of: business case, RTM, capacity, security
+compliance, change/rollback/release).
 
-**Gate 1 (Discovery -> Especificacion):**
+> **The gate VERIFIES evidence — it never regenerates it. BMad is read-only.**
 
-- Check: PRD Tecnico published AND contains: scope, architecture overview, technical constraints, dependencies
-- Check: PRD Funcional published AND contains: user flows, functional requirements summary, acceptance criteria
-- Check: Review Cruzado completed (checklist @../skills/review-cruzado/checklists/review-cruzado.md passed)
-- Check: Risk Log with identified risks (at least 1 risk with probability + impact + mitigation)
-- Check: PoC Report (if applicable) with conclusions and recommendations
-- Content guard: PRD sections (PoC, limitations, roadmap, scope) must not be empty placeholders
+Resolve `path_vars`: substitute `{client}` with the active CLIENT_CODE (from
+@../rules/lidr-sdlc/project.md); BMad artifacts resolve under `_bmad-output/`
+(see `_bmad/*/config.yaml`).
 
-**Gate 2 (Especificacion -> Sprint Planning):**
+### 4b. Evaluate the evidence for Gate $1
 
-- Check: All RFs documented with BDD criteria
-- **RF-BDD Counter**: Count RF_total and RF_with_BDD (RFs that have at least 1 Given/When/Then scenario). RF_with_BDD / RF_total must be 100%. If <100% -> FAIL with list of RFs missing BDD
-- **RNF Measurability Counter**: Count RNF_total and RNF_with_metric (RNFs that have: quantifiable metric + threshold + measurement method). RNF_with_metric / RNF_total must be 100%. If <100% -> FAIL (without measurable NFRs, cl-nfr in Gates 5/6 cannot evaluate)
-- Check: Coherence checklist (@../skills/generate-rf/checklists/rf-coherence.md) PASS
-- Check: Dependency matrix without cycles
-- Check: QA confirms testability of BDD criteria
+From the manifest entry `gates.G$1`, evaluate EACH item with the two dimensions
+above (existence + content):
 
-**Gate 3 (Sprint Planning -> Desarrollo):**
+1. **`bmad_evidence`** — glob each `artifact`; existence = ≥1 file matches.
+   BMad filenames vary by config, so match leniently by producing `skill` +
+   glob. Read a match and apply the content-validity rules.
+2. **`lidr_evidence`** — same, for LIDR custom-skill outputs.
+3. **`checklist`** — confirm each binary statement against the evidence found.
+4. **`signoffs`** — verify the sign-off artifact exists and is dated.
 
-- Check: All User Stories meet DoR (@../skills/refinement-notes/checklists/dor.md) — evaluate EACH US individually, not globally
-- Check: Sprint capacity calculated with >=15% buffer
-- Check: Sprint commitment signed (PO + Tech Lead)
-- Check: No unresolved dependencies
-- Content guard: EACH US has: title, description, acceptance criteria (Given/When/Then), estimation
+**Verdict rules** (from manifest `matching`):
 
-**Gate 4 (Desarrollo -> QA — Sprint Aggregator):**
+- Any `required: true` artifact missing or empty → **FAIL**.
+- Only `required: false` evidence missing → cap at **CONDITIONAL**.
+- All required evidence present + checklist satisfied + sign-offs dated → **PASS**.
 
-- Check: ALL tickets in sprint have status "Ready for QA" or "Done"
-- Check: ALL PRs merged with approved code reviews
-- Check: ALL DoD checklists passed (@../skills/pr-description/checklists/dod.md) — check EACH ticket individually
-- Check: ALL handoffs dev->QA generated with meaningful content
-- If any ticket still "In Progress" -> list them and FAIL
-- Content guard: Handoff documents must contain: changes summary, test suggestions, risks identified
+### 4c. Quantitative guards (LIDR-specific, applied ON TOP of the manifest)
 
-**Gate 5 (QA -> Seguridad):**
+These hard counters BLOCK regardless of the manifest verdict — they encode the
+zero-tolerance and traceability rules from @../rules/lidr-sdlc/org.md:
 
-- Check: Test execution report generated with actual test results (not empty template)
-- Check: 0 blocker/critical bugs open
-- Check: Regression suite executed without regressions
-- Check: QA Sign-off signed (@../skills/test-execution-report/signoffs/qa-signoff.md)
-- **RTM-Xray Cross-check**: Count RF_total from spec phase and test_cases_linked from Xray/test execution. RTM_coverage = test_cases_linked / RF_total. If <100% -> FAIL with list of untested RFs. This BLOCKS so-qa signoff
-- Content guard: Sign-off must be dated AFTER last test execution
-
-**Gate 6 (Seguridad -> Despliegue):**
-
-- Check: SAST/SCA results: 0 Critical, 0 High
-- Check: DAST results: 0 Critical, 0 High
-- Check: OWASP Top 10 checklist PASS (@../skills/security-checklist/checklists/security-compliance.md)
-- Check: Security Sign-off signed (@../../skills/security-checklist/signoffs/security-signoff.md)
-- Content guard: Scanner exclusions must not cover production code paths. Calculate scan_coverage = files_scanned / files_production. Report coverage percentage
-- Content guard: Sign-off must reference specific scan report (not generic)
-
-**Gate 7 (Despliegue -> Produccion — Gate Final):**
-
-- Check: Change Request approved by Change Committee (CR must have approval date and approver)
-- Check: Rollback plan documented with specific steps, estimated time, and responsible person
-- Check: Release notes generated (/create-release-notes) with actual content
-- Check: CHANGELOG.md updated (/update-changelog)
-- Check: On-call confirmed (name + contact method)
-- Check: Deploy window agreed (specific date/time range)
-- Content guard: Rollback plan must have been tested/validated. CR must reference Gate 6 PASS
+- **G2 — RF-BDD 100%**: RF_with_BDD / RF_total must equal 100%. On shortfall → FAIL with the list of RFs missing Given/When/Then.
+- **G2 — NFR measurability 100%**: every NFR needs metric + threshold + measurement method. <100% → FAIL (Gates 5/6 cannot evaluate non-measurable NFRs).
+- **G5 — RTM coverage 100%**: test_cases_linked / RF_total must equal 100%. <100% → FAIL with the list of untested RFs (blocks QA sign-off).
+- **G6 — Zero-tolerance**: 0 Critical/High vulnerabilities across SAST/SCA/DAST. Any open → FAIL.
 
 For each criterion, report: PASS / WARN / FAIL with specific detail.
 

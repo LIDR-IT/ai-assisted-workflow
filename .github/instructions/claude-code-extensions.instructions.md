@@ -45,8 +45,8 @@ tools: ["Read", "Write"]
 
 ### Available Extension Types
 
-| Extension       | Skill                         | Use When                                                |
-| --------------- | ----------------------------- | ------------------------------------------------------- |
+| Extension       | Skill                       | Use When                                                |
+| --------------- | --------------------------- | ------------------------------------------------------- |
 | **Skills**      | `/lidr-agents-architecture` | Adding specialized knowledge or workflows               |
 | **Commands**    | `/lidr-command-development` | Creating user-invocable slash commands                  |
 | **Agents**      | `/lidr-agents-architecture` | Building autonomous subprocesses (skill+agent flow)     |
@@ -117,7 +117,7 @@ System prompt here
 
 ### File Locations
 
-- **Skills:** `.agents/skills/{skill-name}/skill.md`
+- **Skills:** `.agents/skills/{skill-name}/SKILL.md`
 - **Commands:** `.agents/commands/{command-name}.md`
 - **Agents:** `.agents/subagents/{agent-name}.md`
 - **Hooks:** `.claude/hooks/{Event}/{hook-name}.sh`
