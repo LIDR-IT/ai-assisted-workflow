@@ -49,7 +49,7 @@ Templates moved to `.agents/_shared/lidr/templates/architecture/`:
 
 **How to use:** Reference both files when invoking `bmad-create-epics-and-stories` for projects following the LIDR Gate model.
 
-### `lidr-ux-design-spec` → `bmad-create-ux-design`
+### `lidr-ux-design-spec` → `bmad-ux`
 
 - Template: `.agents/_shared/lidr/templates/ux-design-spec.md`
 - Custom rule: "Every screen has 4+ states (default/loading/empty/error)"

@@ -171,7 +171,7 @@ YOU KNOW the following artifacts. Use this registry to answer any query:
 - `epic-review` → Review de epica post-delivery: plan vs actual, NFR achievement, tech debt, lecciones, follow-up epics. Triggers: "review epic", "close epic", "epic wrap-up", "epic review"
 - `audit-standards` → Validacion comprensiva de skills contra estandares SDLC del ecosistema. Triggers: "audit standards", "check compliance", "ecosystem quality", "validate ecosystem"
 - `playwright-cli` → Automatizacion de navegador para testing web, screenshots y extraccion de datos. Triggers: "browser automation", "screenshot", "web testing", "playwright"
-- _(removed in v3.0.0: `architecture-doc` → use `bmad-create-architecture` (LIDR templates at `.agents/_shared/lidr/templates/architecture/`); `ux-design-spec` → use `bmad-create-ux-design`; `implementation-phases` → use `bmad-sprint-planning`; `multi-agent-audit` → use `bmad-eval-runner` + `bmad-party-mode`; `brainstorming` → use `bmad-brainstorming`)_
+- _(removed in v3.0.0: `architecture-doc` → use `bmad-create-architecture` (LIDR templates at `.agents/_shared/lidr/templates/architecture/`); `ux-design-spec` → use `bmad-ux`; `implementation-phases` → use `bmad-sprint-planning`; `multi-agent-audit` → use `bmad-eval-runner` + `bmad-party-mode`; `brainstorming` → use `bmad-brainstorming`)_
 
 **Development Tools (3):**
 
@@ -197,7 +197,7 @@ The BMad Method framework provides a complementary library of 69 skills, grouped
 `bmad-prd`, `bmad-create-prd`, `bmad-edit-prd`, `bmad-validate-prd`, `bmad-product-brief`, `bmad-prfaq`
 
 **BMad — Architecture & Stories (8):**
-`bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-create-story`, `bmad-create-ux-design`, `bmad-shard-doc`, `bmad-document-project`, `bmad-index-docs`, `bmad-generate-project-context`
+`bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-create-story`, `bmad-ux`, `bmad-shard-doc`, `bmad-document-project`, `bmad-index-docs`, `bmad-generate-project-context`
 
 **BMad — Sprint & Process (5):**
 `bmad-sprint-planning`, `bmad-sprint-status`, `bmad-retrospective`, `bmad-check-implementation-readiness`, `bmad-correct-course`
@@ -209,7 +209,7 @@ The BMad Method framework provides a complementary library of 69 skills, grouped
 `bmad-bmb-setup`, `bmad-customize`, `bmad-help`, `bmad-agent-builder`, `bmad-module-builder`, `bmad-workflow-builder`
 
 **BMad — Utilities (12):**
-`bmad-advanced-elicitation`, `bmad-brainstorming`, `bmad-checkpoint-preview`, `bmad-dev-story`, `bmad-distillator`, `bmad-domain-research`, `bmad-eval-runner`, `bmad-investigate`, `bmad-market-research`, `bmad-party-mode`, `bmad-quick-dev`, `bmad-technical-research`
+`bmad-advanced-elicitation`, `bmad-brainstorming`, `bmad-checkpoint-preview`, `bmad-dev-story`, `bmad-spec`, `bmad-domain-research`, `bmad-eval-runner`, `bmad-investigate`, `bmad-market-research`, `bmad-party-mode`, `bmad-quick-dev`, `bmad-technical-research`
 
 ### Rules (5) — Persistent context, ALWAYS loaded
 

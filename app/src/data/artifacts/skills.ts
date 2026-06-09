@@ -976,8 +976,8 @@ export const skills: Skill[] = [
     phaseNum: 200,
     source: 'bmad',
     description:
-      'Assess NFRs like performance security and reliability. Use when the user says "lets assess NFRs" or "I want to evaluate non-functional requirements".',
-    triggers: ['assess NFRs', 'non-functional requirements', 'evaluate NFRs'],
+      'Audit NFR evidence for performance, security, reliability, and scalability (post-implementation). Use when implementation evidence exists and the user says "audit NFR evidence" or "audit NFRs".',
+    triggers: ['audit NFR evidence', 'audit NFRs', 'evaluate non-functional requirements'],
     roles: ['QA'],
     docPath: '.agents/skills/bmad-testarch-nfr/SKILL.md',
   },
@@ -1130,8 +1130,8 @@ export const skills: Skill[] = [
     docPath: '.agents/skills/bmad-create-story/SKILL.md',
   },
   {
-    id: 'bmad-create-ux-design',
-    name: 'bmad-create-ux-design',
+    id: 'bmad-ux',
+    name: 'bmad-ux',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
     source: 'bmad',
@@ -1139,7 +1139,7 @@ export const skills: Skill[] = [
       'Plan UX patterns and design specifications. Use when the user says "lets create UX design" or "create UX specifications".',
     triggers: ['create UX design', 'UX specifications', 'plan the UX'],
     roles: ['TL'],
-    docPath: '.agents/skills/bmad-create-ux-design/SKILL.md',
+    docPath: '.agents/skills/bmad-ux/SKILL.md',
   },
   {
     id: 'bmad-dev-story',
@@ -1426,16 +1426,16 @@ export const skills: Skill[] = [
     docPath: '.agents/skills/bmad-checkpoint-preview/SKILL.md',
   },
   {
-    id: 'bmad-distillator',
-    name: 'bmad-distillator',
+    id: 'bmad-spec',
+    name: 'bmad-spec',
     phase: 'BMad — Utilities',
     phaseNum: 200,
     source: 'bmad',
     description:
-      'Lossless LLM-optimized compression of source documents. Use when the user requests to distill documents or create a distillate.',
-    triggers: ['distill documents', 'create a distillate', 'document compression'],
+      'Distill any intent input into a SPEC.md kernel + companions — the canonical, preservation-validated contract downstream work derives from. Locks the WHAT before the HOW.',
+    triggers: ['create a spec', 'distill this into a spec', 'validate this spec'],
     roles: ['TL'],
-    docPath: '.agents/skills/bmad-distillator/SKILL.md',
+    docPath: '.agents/skills/bmad-spec/SKILL.md',
   },
   {
     id: 'bmad-domain-research',

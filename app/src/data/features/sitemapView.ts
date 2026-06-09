@@ -583,10 +583,10 @@ export const projectTree: TreeNode[] = [
                     docPath: '.claude/skills/bmad-validate-prd/SKILL.md',
                   },
                   {
-                    name: 'bmad-create-ux-design/SKILL.md',
+                    name: 'bmad-ux/SKILL.md',
                     type: 'file',
                     desc: 'Plan de UX patterns y design specifications',
-                    docPath: '.claude/skills/bmad-create-ux-design/SKILL.md',
+                    docPath: '.claude/skills/bmad-ux/SKILL.md',
                   },
                 ],
               },
@@ -961,10 +961,10 @@ export const projectTree: TreeNode[] = [
                     docPath: '.claude/skills/bmad-index-docs/SKILL.md',
                   },
                   {
-                    name: 'bmad-distillator/SKILL.md',
+                    name: 'bmad-spec/SKILL.md',
                     type: 'file',
                     desc: 'Lossless LLM-optimized compression de source documents',
-                    docPath: '.claude/skills/bmad-distillator/SKILL.md',
+                    docPath: '.claude/skills/bmad-spec/SKILL.md',
                   },
                   {
                     name: 'bmad-party-mode/SKILL.md',
