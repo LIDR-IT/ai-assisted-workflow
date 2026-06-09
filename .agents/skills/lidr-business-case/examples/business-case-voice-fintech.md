@@ -1,227 +1,227 @@
-# Business Case: Voice Verification para Fintech Argentina
+# Business Case: Voice Verification for Argentine Fintech
 
-**Cliente**: Mercado Pago / Ualá (fintech example)
-**Producto**: {{CLIENT_NAME}} Voice + Platform
-**Presupuesto Estimado**: €95K
-**Timeline**: 4 meses
-**Tipo**: Expansión de cliente existente
+**Client**: Mercado Pago / Ualá (fintech example)
+**Product**: {{CLIENT_NAME}} Voice + Platform
+**Estimated Budget**: €95K
+**Timeline**: 4 months
+**Type**: Expansion of an existing client
 
-## 1. Problema de Negocio
+## 1. Business Problem
 
-### Situación Actual
+### Current Situation
 
-- **Autenticación telefónica**: 8 minutos promedio por llamada
-- **Call center saturado**: 45% de llamadas abandonan tras 4 min en cola
-- **Costos operativos**: €4.50 por transacción telefónica autenticada
-- **Fraude telefónico**: 1.8% de transacciones telefónicas son fraudulentas
-- **Compliance**: Necesita cumplir PCI DSS + BCRA normativa argentina
+- **Phone authentication**: 8 minutes average per call
+- **Saturated call center**: 45% of calls abandon after 4 min in queue
+- **Operational costs**: €4.50 per authenticated phone transaction
+- **Phone fraud**: 1.8% of phone transactions are fraudulent
+- **Compliance**: Must comply with PCI DSS + BCRA Argentine regulation
 
-### Contexto Regional
+### Regional Context
 
-- **Argentina**: 89% de transacciones financieras por mobile/web
-- **Cultura telefónica fuerte**: 67% usuarios prefieren teléfono para soporte
-- **Español Argentino**: Variantes regionales (Rioplatense, Cordobés, Norteño)
-- **Regulación BCRA**: Requiere strong authentication para transfers > $50K ARS
+- **Argentina**: 89% of financial transactions via mobile/web
+- **Strong phone culture**: 67% of users prefer phone for support
+- **Argentine Spanish**: Regional variants (Rioplatense, Cordobés, Norteño)
+- **BCRA regulation**: Requires strong authentication for transfers > $50K ARS
 
-### Impacto en el Negocio
+### Business Impact
 
-- **Volume**: 180K llamadas/mes de autenticación
-- **Costo call center**: €810K anuales
-- **Revenue perdido**: €1.2M por transacciones abandonadas
-- **Fraude losses**: €45K anuales en transacciones telefónicas fraudulentas
+- **Volume**: 180K authentication calls/month
+- **Call center cost**: €810K annually
+- **Lost revenue**: €1.2M from abandoned transactions
+- **Fraud losses**: €45K annually in fraudulent phone transactions
 
-## 2. Solución Propuesta
+## 2. Proposed Solution
 
-### Componentes Tecnológicos
+### Technological Components
 
-| Producto {{CLIENT_NAME}}  | Función                                | Cumplimiento                 |
-| ------------------------- | -------------------------------------- | ---------------------------- |
-| **Voice Verification**    | Autenticación por voz (1:1 matching)   | ISO 19794-13 voice templates |
-| **Anti-spoofing**         | Detección de ataques sintéticos/replay | ISO 30107-1 PAD              |
-| **Platform**              | Orquestación + analytics               | PCI DSS Level 1 compliance   |
-| **Spanish Language Pack** | Optimizado para español argentino      | Dialectos regionales trained |
+| {{CLIENT_NAME}} Product   | Function                              | Compliance                   |
+| ------------------------- | ------------------------------------- | ---------------------------- |
+| **Voice Verification**    | Voice authentication (1:1 matching)   | ISO 19794-13 voice templates |
+| **Anti-spoofing**         | Detection of synthetic/replay attacks | ISO 30107-1 PAD              |
+| **Platform**              | Orchestration + analytics             | PCI DSS Level 1 compliance   |
+| **Spanish Language Pack** | Optimized for Argentine Spanish       | Regional dialects trained    |
 
-### Flujo de Autenticación Mejorado
+### Improved Authentication Flow
 
-1. **Llamada entrante** → IVR detecta número + intent
-2. **Voice enrollment** (primera vez) → Graba passphrase "Mi voz es mi contraseña"
-3. **Authentication** → Dice passphrase + verificación anti-spoofing
-4. **Voice matching 1:1** → Template stored vs voice sample (score > 0.8)
-5. **Risk scoring** → Combina voice + behavioral patterns
-6. **Decision** → Autoaproval o escalado a agente humano
+1. **Incoming call** → IVR detects number + intent
+2. **Voice enrollment** (first time) → Records passphrase "My voice is my password"
+3. **Authentication** → Says passphrase + anti-spoofing verification
+4. **Voice matching 1:1** → Stored template vs voice sample (score > 0.8)
+5. **Risk scoring** → Combines voice + behavioral patterns
+6. **Decision** → Auto-approval or escalation to a human agent
 
 ### GDPR + BCRA Compliance
 
-- **Datos biométricos**: Template irreversible almacenado 60 días max
-- **Cross-border**: Datos no salen de Argentina (AWS São Paulo)
-- **Audit trail**: Log inmutable de todas las autenticaciones
-- **User rights**: Enrollment/un-enrollment por web self-service
+- **Biometric data**: Irreversible template stored 60 days max
+- **Cross-border**: Data does not leave Argentina (Example (AWS): São Paulo region)
+- **Audit trail**: Immutable log of all authentications
+- **User rights**: Enrollment/un-enrollment via web self-service
 - **BCRA Article 5**: Strong customer authentication compliance
 
-## 3. Beneficios Cuantificables
+## 3. Quantifiable Benefits
 
-### Reducción de Costos Call Center
+### Call Center Cost Reduction
 
-| Concepto                   | Actual | Con Voice   | Ahorro Anual |
-| -------------------------- | ------ | ----------- | ------------ |
-| Tiempo por autenticación   | 8 min  | 45 seg      | €650K        |
-| Agentes necesarios         | 85 FTE | 35 FTE      | €420K        |
-| Abandono de llamadas       | 45%    | 8% (target) | €380K        |
-| **Total ahorro operativo** |        |             | **€1.45M**   |
+| Concept                       | Current | With Voice  | Annual Savings |
+| ----------------------------- | ------- | ----------- | -------------- |
+| Time per authentication       | 8 min   | 45 sec      | €650K          |
+| Agents needed                 | 85 FTE  | 35 FTE      | €420K          |
+| Call abandonment              | 45%     | 8% (target) | €380K          |
+| **Total operational savings** |         |             | **€1.45M**     |
 
-### Reducción de Fraude
+### Fraud Reduction
 
-- **Fraud rate telefónico**: 1.8% → 0.3% (target)
-- **Ahorro fraude**: €32K anuales
-- **False accept rate**: < 0.01% (vs 2.1% actual)
+- **Phone fraud rate**: 1.8% → 0.3% (target)
+- **Fraud savings**: €32K annually
+- **False accept rate**: < 0.01% (vs 2.1% current)
 
-### Mejora de UX
+### UX Improvement
 
-- **NPS telefónico**: 12 → 65 (target)
+- **Phone NPS**: 12 → 65 (target)
 - **Customer effort score**: 7.2 → 3.1 (target)
-- **Retention impact**: +2.3% por mejor experiencia
+- **Retention impact**: +2.3% from a better experience
 
-## 4. Inversión y ROI
+## 4. Investment and ROI
 
-### Inversión Total
+### Total Investment
 
-| Concepto                  | Costo    | Notas                            |
+| Concept                   | Cost     | Notes                            |
 | ------------------------- | -------- | -------------------------------- |
 | Voice platform licenses   | €60K     | 200K authentications/month       |
 | Spanish language training | €15K     | Argentinian dialect optimization |
 | API integration           | €12K     | 6 weeks development              |
 | PCI DSS compliance audit  | €8K      | Required for financial services  |
-| **Total inversión**       | **€95K** |                                  |
+| **Total investment**      | **€95K** |                                  |
 
-### Retorno Financiero
+### Financial Return
 
-- **Ahorro directo**: €1.45M (reducción call center)
+- **Direct savings**: €1.45M (call center reduction)
 - **Revenue protection**: €380K (reduced abandonment)
 - **Total benefits**: €1.83M
-- **ROI año 1**: 1,826% ((1.83M - 0.095M) / 0.095M \* 100)
-- **Payback period**: 0.6 meses
+- **ROI year 1**: 1,826% ((1.83M - 0.095M) / 0.095M \* 100)
+- **Payback period**: 0.6 months
 
-## 5. Riesgos Técnicos y Mitigaciones
+## 5. Technical Risks and Mitigations
 
-### Riesgos de Accuracy
+### Accuracy Risks
 
-| Riesgo                       | Probabilidad | Impacto | Mitigación                             |
-| ---------------------------- | ------------ | ------- | -------------------------------------- |
-| Dialectos no reconocidos     | Media        | Alto    | Training adicional con corpus regional |
-| Calidad línea telefónica     | Alta         | Medio   | Fallback a SMS OTP automático          |
-| Enfermedades que cambian voz | Baja         | Alto    | Re-enrollment automático tras 3 fallos |
+| Risk                        | Probability | Impact | Mitigation                               |
+| --------------------------- | ----------- | ------ | ---------------------------------------- |
+| Unrecognized dialects       | Medium      | High   | Additional training with regional corpus |
+| Phone line quality          | High        | Medium | Fallback to automatic SMS OTP            |
+| Illnesses that change voice | Low         | High   | Automatic re-enrollment after 3 failures |
 
-### Riesgos Regulatorios
+### Regulatory Risks
 
-- **BCRA changes**: Cláusulas de adaptación regulatoria
-- **Data residency**: Hosting exclusivo en AWS São Paulo
-- **Cross-border**: Restricción técnica de no transferencia
+- **BCRA changes**: Regulatory adaptation clauses
+- **Data residency**: Exclusive hosting in the Example (AWS): São Paulo region
+- **Cross-border**: Technical restriction of no transfer
 
-### Riesgos de Adopción
+### Adoption Risks
 
-- **Resistance telefónica**: Comunicación + incentivos enrollment
-- **Age demographics**: Fallback a agente humano para 65+
-- **Technical literacy**: Onboarding gradual 20% → 80%
+- **Phone resistance**: Communication + enrollment incentives
+- **Age demographics**: Fallback to a human agent for 65+
+- **Technical literacy**: Gradual onboarding 20% → 80%
 
-## 6. Implementación
+## 6. Implementation
 
-### Fase 1: PoC (3 semanas)
+### Phase 1: PoC (3 weeks)
 
-- Integración técnica básica
-- Testing con 1,000 voces de empleados
-- Validación de accuracy con dialectos
+- Basic technical integration
+- Testing with 1,000 employee voices
+- Accuracy validation with dialects
 - **Go/No-go decision point**
 
-### Fase 2: Desarrollo (8 semanas)
+### Phase 2: Development (8 weeks)
 
-- API completa + anti-spoofing
-- IVR integration (Twilio/Asterisk)
+- Complete API + anti-spoofing
+- Example (Twilio/Asterisk): IVR integration
 - PCI DSS compliance implementation
 - Security testing + penetration testing
 
-### Fase 3: Piloto Soft-Launch (3 semanas)
+### Phase 3: Soft-Launch Pilot (3 weeks)
 
-- 5% de llamadas entrantes
-- 15,000 authentications reales
-- Tuning de umbrales por región
-- Training del call center
+- 5% of incoming calls
+- 15,000 real authentications
+- Threshold tuning by region
+- Call center training
 
-### Fase 4: Full Rollout (2 semanas)
+### Phase 4: Full Rollout (2 weeks)
 
-- Graduación 25% → 75% → 100%
+- Graduation 25% → 75% → 100%
 - Monitoring 24/7 + alerting
 - Performance optimization
 
-## 7. Métricas de Éxito
+## 7. Success Metrics
 
-### KPIs Operacionales
+### Operational KPIs
 
-| Métrica              | Baseline | Target Mes 2 | Target Mes 4 |
-| -------------------- | -------- | ------------ | ------------ |
-| Tiempo autenticación | 8:00 min | 2:00 min     | 0:45 min     |
-| Abandono llamadas    | 45%      | 15%          | 8%           |
-| Agents needed        | 85 FTE   | 55 FTE       | 35 FTE       |
-| Cost per auth        | €4.50    | €1.50        | €0.85        |
+| Metric              | Baseline | Target Month 2 | Target Month 4 |
+| ------------------- | -------- | -------------- | -------------- |
+| Authentication time | 8:00 min | 2:00 min       | 0:45 min       |
+| Call abandonment    | 45%      | 15%            | 8%             |
+| Agents needed       | 85 FTE   | 55 FTE         | 35 FTE         |
+| Cost per auth       | €4.50    | €1.50          | €0.85          |
 
-### KPIs de Seguridad
+### Security KPIs
 
 - **False Accept Rate**: < 0.01%
 - **False Reject Rate**: < 3%
-- **Fraud detection**: > 99.7% de intentos sintéticos detectados
+- **Fraud detection**: > 99.7% of synthetic attempts detected
 - **Attack resistance**: 0 bypasses confirmed
 
-### KPIs de UX
+### UX KPIs
 
-- **Enrollment rate**: > 85% primera llamada
+- **Enrollment rate**: > 85% on first call
 - **User satisfaction**: NPS > 60
 - **Effort score**: < 4.0 (1-10 scale)
 
-## 8. Consideraciones Culturales Argentina
+## 8. Argentine Cultural Considerations
 
-### Dialectos y Variedades
+### Dialects and Varieties
 
-- **Rioplatense** (Buenos Aires, Uruguay): 65% de usuarios
-- **Cordobés**: 15% de usuarios
-- **Norteño** (Salta, Tucumán): 12% de usuarios
-- **Cuyo** (Mendoza): 8% de usuarios
+- **Rioplatense** (Buenos Aires, Uruguay): 65% of users
+- **Cordobés**: 15% of users
+- **Norteño** (Salta, Tucumán): 12% of users
+- **Cuyo** (Mendoza): 8% of users
 
-### Patrones de Uso
+### Usage Patterns
 
-- **Horarios peak**: 09:00-11:00 y 15:00-18:00 ART
-- **Días laborales**: Lunes más pesado, Viernes más liviano
-- **Estacionalidad**: Enero 40% menos volume (vacaciones)
+- **Peak hours**: 09:00-11:00 and 15:00-18:00 ART
+- **Working days**: Monday heavier, Friday lighter
+- **Seasonality**: January 40% less volume (vacations)
 
-### Compliance Local
+### Local Compliance
 
 - **BCRA A5374**: Strong authentication for high-value transfers
-- **Ley 25.326**: Protección datos personales (pre-GDPR argentino)
-- **UIF**: Unidad de Información Financiera reporting obligatorio
+- **Law 25.326**: Personal data protection (pre-GDPR Argentine)
+- **UIF**: Mandatory Financial Information Unit reporting
 
 ## 9. Integration Architecture
 
 ### Technical Stack
 
 ```
-[Twilio SIP] → [Voice API Gateway] → [{{CLIENT_NAME}} Voice Engine] → [Platform] → [Fintech Backend]
+Example (Twilio SIP): [Telephony SIP] → [Voice API Gateway] → [{{CLIENT_NAME}} Voice Engine] → [Platform] → [Fintech Backend]
 ```
 
 ### Performance Requirements
 
-- **Voice processing**: < 2 segundos
+- **Voice processing**: < 2 seconds
 - **API response time**: < 500ms P95
 - **Concurrent users**: 500 simultaneous authentications
 - **Availability**: 99.95% (4.5h downtime/year max)
 
 ### Security Architecture
 
-- **Voice templates**: Encrypted AES-256, stored 60 días max
-- **Network**: VPN dedicado + TLS 1.3
+- **Voice templates**: Encrypted AES-256, stored 60 days max
+- **Network**: Dedicated VPN + TLS 1.3
 - **Monitoring**: SOC 24/7 + SIEM integration
-- **Incident response**: < 15 min para security events
+- **Incident response**: < 15 min for security events
 
 ---
 
 **Business Sponsor**: VP Operations + CTO
 **Regulatory Approval**: Compliance team + Legal
 **Next Steps**: Technical PoC + regulatory review (parallel)
-**Decision Timeline**: 3 semanas para approval final
+**Decision Timeline**: 3 weeks for final approval

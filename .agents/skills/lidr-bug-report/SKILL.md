@@ -1,28 +1,32 @@
 ---
 name: lidr-bug-report
 id: bug-report
-version: "1.3.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "1.4.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 6
 owner_role: "QA Lead"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking]
 description: >
   QA→DEV WRAPPER complementing `bmad-investigate` (which is Dev-internal forensic case analysis).
-  This skill structures the OUTBOUND QA→Dev bug report: <5min reproduction goal, environment snapshot, severity classification, Jira-ready structure.
+  This skill structures the OUTBOUND QA→Dev bug report: <5min reproduction goal, environment snapshot, severity classification, tracking-ready structure.
   When `bmad-investigate` finds the root cause, this skill formats it as a QA bug ticket the dev team consumes.
   Use for unexpected behavior, performance issues, production incidents, or user complaints — QA-facing.
   Do NOT use for forensic investigation (use `bmad-investigate`), feature requests (use `bmad-prd`), or design changes (use `bmad-ux`).
   Triggers on "report bug", "create bug report", "found a bug", "defect report", "file issue", "production issue", "unexpected behavior".
-  Output in Spanish (functional description), English (technical data, logs), structured for Jira/tracking tools.
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Technical data and logs stay in English; structured for the bound {{TRACKING_TOOL}}.
   Audience: Developer (reproduces and fixes), QA Lead (triages priority), PO (assesses business impact).
 ---
 
 # Bug Report Structurer
 
-Phase: 6 — QA | Gate: contributes to Gate 5 (0 P1/P2 open) | Language: Spanish + English
+Phase: 6 — QA | Feeds the QA→Dev loop (not a G5 evidence artifact) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 **Principle:** A good bug report lets the developer reproduce the bug in <5 minutes without asking anything.
 
@@ -33,7 +37,7 @@ Phase: 6 — QA | Gate: contributes to Gate 5 (0 P1/P2 open) | Language: Spanish
 3. Classify: severity and priority
 4. Enrich: screenshots, logs, network traces, environment info
 5. Link: to test case, US, RF that failed
-6. Output: structured report ready for Jira
+6. Output: structured report ready for {{TRACKING_TOOL}}
 
 ## Input
 
@@ -357,15 +361,16 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 ## Changelog
 
-| Versión | Fecha      | Autor                 | Cambios                                                                                                                       |
-| ------- | ---------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 1.3.1   | 2026-03-25 | TL: tier3-remediation | Tier 3 domain-agnostic remediation: replaced domain-specific example with generic web application authentication flow example |
-| 1.3.0   | 2026-03-16 | Tech Lead: System     | Added Quality Assurance section with validation framework                                                                     |
-| 1.1.0   | 2026-03-09 | QA: Enhancement       | Añadidas secciones de ejemplo, proceso de triage, y casos edge                                                                |
-| 1.0.0   | 2026-02-15 | QA: Initial           | Versión inicial con template y reglas básicas                                                                                 |
+| Version | Date       | Author                 | Changes                                                                                                                       |
+| ------- | ---------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Jira/tracking tools via tool-registry                                    |
+| 1.3.1   | 2026-03-25 | TL: tier3-remediation  | Tier 3 domain-agnostic remediation: replaced domain-specific example with generic web application authentication flow example |
+| 1.3.0   | 2026-03-16 | Tech Lead: System      | Added Quality Assurance section with validation framework                                                                     |
+| 1.1.0   | 2026-03-09 | QA: Enhancement        | Added example sections, triage process, and edge cases                                                                        |
+| 1.0.0   | 2026-02-15 | QA: Initial            | Initial version with template and basic rules                                                                                 |

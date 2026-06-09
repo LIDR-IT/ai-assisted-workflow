@@ -1,0 +1,198 @@
+# =============================================================================
+# LIDR Tool Registry — central abstract→concrete tool binding
+# =============================================================================
+# Single source of truth for tool-agnosticism across LIDR skills.
+#
+# PRINCIPLE (hybrid model):
+#   - Skills reference ABSTRACT capabilities only (e.g. {{TRACKING_TOOL}}),
+#     never a concrete tool name (never "Jira" hardcoded).
+#   - This registry maps each abstract capability to the concrete tools it
+#     supports + how each binds (adapter, MCP server, CLI, export format, env).
+#   - A client picks ONE concrete tool per capability in its own config
+#     (see clients/_example.yaml). Skills stay portable; clients stay flexible.
+#   - Per-skill `adapters/` subfolders hold tool code ONLY when a skill needs
+#     behaviour beyond what this registry declares (the DRY exception).
+#
+# LANGUAGE:
+#   - Skill CONTENT (SKILL.md, templates, examples) is authored in English.
+#   - The GENERATED ARTIFACT language is a per-client setting (default: en).
+#   - See `language` block below; clients override in their config.
+# =============================================================================
+
+meta:
+  name: lidr-tool-registry
+  version: "1.0.0"
+  last_updated: "2026-06-09"
+  status: active
+  type: reference
+
+# -----------------------------------------------------------------------------
+# Output language — resolved per client, default English.
+# A skill emits its artifact in `language.default` unless the active client
+# config sets `language: <code>`. `bilingual` clients get English structure +
+# localized prose where the skill template marks {{LOCALE_PROSE}} regions.
+# -----------------------------------------------------------------------------
+language:
+  default: en # all skills emit English unless a client overrides
+  supported: [en, es, pt, fr, de]
+  client_override_key: language # key a client sets in clients/<code>.yaml
+  bilingual_allowed: true # client may request EN structure + localized prose
+
+# -----------------------------------------------------------------------------
+# Capabilities — the abstract slots a skill may reference.
+# `variable` is the template token the skill writes instead of a tool name.
+# `default` is used when a client does not bind this capability.
+# `adapter_interface` names the Python ABC an adapter must implement (when the
+# capability needs executable integration; docs-only capabilities have none).
+# -----------------------------------------------------------------------------
+capabilities:
+  tracking:
+    variable: "{{TRACKING_TOOL}}"
+    description: Issue / ticket / epic tracking system.
+    default: jira
+    adapter_interface: TrackingToolAdapter # create_project, create_sub_projects, link_business_case
+    used_by_examples:
+      [
+        lidr-tracking-integration,
+        lidr-user-stories,
+        lidr-bug-report,
+        lidr-create-ticket,
+        lidr-enrich-ticket,
+        lidr-sdlc-tracking,
+        lidr-external-sync,
+      ]
+    tools:
+      jira:
+        binding: { mcp: null, cli: "acli|jira-cli", export: csv }
+        adapter: "lidr-tracking-integration/adapters/jira-adapter.py"
+        env: [JIRA_SERVER, JIRA_USERNAME, JIRA_API_TOKEN, JIRA_PROJECT_KEY]
+      linear:
+        binding: { mcp: null, cli: "linear", export: graphql }
+        adapter: "lidr-tracking-integration/adapters/linear-adapter.py"
+        env: [LINEAR_API_KEY, LINEAR_TEAM_ID]
+      redmine:
+        binding: { mcp: null, cli: null, export: rest }
+        adapter: "lidr-tracking-integration/adapters/redmine-adapter.py"
+        env: [REDMINE_URL, REDMINE_API_KEY, REDMINE_PROJECT_ID]
+      notion:
+        binding: { mcp: "claude_ai_Notion", cli: null, export: api }
+        adapter: null # use the Notion MCP directly; no python adapter needed
+        env: []
+      github-issues:
+        binding: { mcp: null, cli: "gh", export: rest }
+        adapter: null # use `gh issue` CLI
+        env: [GH_TOKEN]
+      custom:
+        binding: { mcp: "<client-mcp-server>", cli: null, export: api }
+        adapter: "<per-skill adapters/ override>"
+        env: [] # client documents its own MCP / credentials
+
+  test_management:
+    variable: "{{TEST_MGMT_TOOL}}"
+    description: Test case repository / execution tracking.
+    default: xray
+    adapter_interface: TestManagementAdapter # import_cases, record_execution, link_requirement
+    used_by_examples: [lidr-create-test-cases, lidr-test-execution-report, lidr-prepare-testing]
+    tools:
+      xray:
+        {
+          binding: { cli: null, export: csv },
+          adapter: null,
+          env: [XRAY_CLIENT_ID, XRAY_CLIENT_SECRET],
+        }
+      testrail:
+        {
+          binding: { cli: null, export: csv },
+          adapter: null,
+          env: [TESTRAIL_URL, TESTRAIL_API_KEY],
+        }
+      zephyr: { binding: { cli: null, export: csv }, adapter: null, env: [ZEPHYR_API_TOKEN] }
+      qase:
+        {
+          binding: { cli: null, export: api },
+          adapter: null,
+          env: [QASE_API_TOKEN, QASE_PROJECT_CODE],
+        }
+      github: { binding: { cli: "gh", export: rest }, adapter: null, env: [GH_TOKEN] }
+
+  docs:
+    variable: "{{DOCS_TOOL}}"
+    description: Durable documentation host.
+    default: markdown-repo
+    adapter_interface: null # publish step is manual/MCP; no executable ABC required
+    used_by_examples: [lidr-init-project-docs, lidr-sync-docs, lidr-release-notes]
+    tools:
+      confluence:
+        {
+          binding: { mcp: null, export: storage-format },
+          env: [CONFLUENCE_URL, CONFLUENCE_API_TOKEN],
+        }
+      notion: { binding: { mcp: "claude_ai_Notion", export: api }, env: [] }
+      gitbook: { binding: { mcp: null, export: markdown }, env: [GITBOOK_API_TOKEN] }
+      markdown-repo: { binding: { mcp: null, export: markdown }, env: [] } # docs live in-repo (DTC default)
+
+  chat:
+    variable: "{{CHAT_TOOL}}"
+    description: Team notification channel.
+    default: slack
+    adapter_interface: null
+    used_by_examples: [lidr-gate-evaluation, lidr-change-request, notify-desktop hook]
+    tools:
+      slack: { binding: { mcp: "claude_ai_Slack", export: webhook }, env: [SLACK_WEBHOOK_URL] }
+      teams: { binding: { mcp: null, export: webhook }, env: [TEAMS_WEBHOOK_URL] }
+      discord: { binding: { mcp: null, export: webhook }, env: [DISCORD_WEBHOOK_URL] }
+      mattermost: { binding: { mcp: null, export: webhook }, env: [MATTERMOST_WEBHOOK_URL] }
+
+  code_quality:
+    variable: "{{CODE_QUALITY_TOOL}}"
+    description: SAST / SCA / quality gate provider.
+    default: sonarqube
+    adapter_interface: null # report parsing, not creation
+    used_by_examples: [lidr-tech-debt, lidr-vuln-assessment, lidr-dast-interpretation]
+    tools:
+      sonarqube: { binding: { export: json }, env: [SONAR_HOST_URL, SONAR_TOKEN] }
+      codeclimate: { binding: { export: json }, env: [CC_TEST_REPORTER_ID] }
+      codacy: { binding: { export: json }, env: [CODACY_API_TOKEN] }
+      snyk: { binding: { cli: "snyk", export: json }, env: [SNYK_TOKEN] }
+
+  vcs:
+    variable: "{{VCS_TOOL}}"
+    description: Source host for PRs / branches.
+    default: github
+    adapter_interface: null
+    used_by_examples:
+      [lidr-pr-description, lidr-create-pr, lidr-create-branch, lidr-create-release-notes]
+    tools:
+      github: { binding: { cli: "gh", export: rest }, env: [GH_TOKEN] }
+      gitlab: { binding: { cli: "glab", export: rest }, env: [GITLAB_TOKEN] }
+      bitbucket: { binding: { cli: null, export: rest }, env: [BITBUCKET_TOKEN] }
+
+  ci:
+    variable: "{{CI_TOOL}}"
+    description: Pipeline / deploy automation.
+    default: github-actions
+    adapter_interface: null
+    used_by_examples: [lidr-rollback-plan, lidr-change-request, lidr-update-changelog]
+    tools:
+      github-actions: { binding: { export: yaml }, env: [GH_TOKEN] }
+      gitlab-ci: { binding: { export: yaml }, env: [GITLAB_TOKEN] }
+      jenkins: { binding: { export: groovy }, env: [JENKINS_URL, JENKINS_TOKEN] }
+      circleci: { binding: { export: yaml }, env: [CIRCLECI_TOKEN] }
+
+# -----------------------------------------------------------------------------
+# How a skill consumes this registry
+# -----------------------------------------------------------------------------
+# 1. The skill writes the abstract variable, e.g.:
+#       "Export the requirements to {{TRACKING_TOOL}} using the bound adapter."
+# 2. At run time the active client config (clients/<code>.yaml) resolves the
+#    variable to a concrete tool + binding from this file.
+# 3. If `adapter` is set, the skill invokes that python adapter; if `mcp` is
+#    set, it uses that MCP server; if `cli` is set, it shells out; otherwise it
+#    emits the `export` format (e.g. CSV) for manual import.
+# 4. Output language follows the client's `language` (default `en`).
+#
+# Adding a new tool:  add an entry under the capability's `tools:` map here,
+#                     provide an adapter (if the capability has an interface)
+#                     or point at an MCP/CLI, then reference it from a client.
+# Adding a new client: copy clients/_example.yaml to clients/<code>.yaml and
+#                     pick one tool per capability + a language.

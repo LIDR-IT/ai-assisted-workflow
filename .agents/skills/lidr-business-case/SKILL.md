@@ -1,26 +1,34 @@
 ---
 name: lidr-business-case
 id: business-case
-version: "1.1.0"
-last_updated: "2026-03-16"
-updated_by: "Tech Lead: System"
+version: "1.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 1
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: []
 description: >
-  Generate a Business Case document from a business problem or initiative request. Use for any budget justification, project approval, or ROI analysis needs. Essential when requesting resources, teams, or timeline extensions. Trigger for strategic initiatives, cost-benefit analysis, or investment decisions. Use when receiving a new project request from Business, CTO, or R&D; when justifying budget, team, or timeline to a sponsor; when Gate 0 (Intake) requires a BC before proceeding. Triggers on phrases like "create business case", "justify this project", "new initiative", "we need approval for", "Gate 0 preparation", "budget request", "resource allocation", "investment proposal". Output is a structured BC in Spanish for executive audience (Sponsor, CTO, PME). ALWAYS use at project initiation to justify investment and secure stakeholder approval.
+  Generate a Business Case document from a business problem or initiative request. Use for any budget justification, project approval, or ROI analysis needs. Essential when requesting resources, teams, or timeline extensions. Trigger for strategic initiatives, cost-benefit analysis, or investment decisions. Use when receiving a new project request from Business, CTO, or R&D; when justifying budget, team, or timeline to a sponsor; when Gate 0 (Intake) requires a BC before proceeding. Triggers on phrases like "create business case", "justify this project", "new initiative", "we need approval for", "Gate 0 preparation", "budget request", "resource allocation", "investment proposal". Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Audience: executive (Sponsor, CTO, PME). ALWAYS use at project initiation to justify investment and secure stakeholder approval.
 ---
 
 # Business Case Generator
 
-Phase: 1 — Origination | Gate: 0 (Intake) | Language: Spanish (business document)
+Phase: 1 — Origination | Gate: 0 (Intake) | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMAD
+
+BMad's `bmad-prfaq` and `bmad-product-brief` shape the product concept and value proposition. This skill is LIDR-unique: a formal Gate-0 financial/ROI Business Case (costs, NPV, payback, alternatives analysis, sponsor sign-off) — the governance artifact that secures investment approval before discovery begins.
 
 ## Workflow
 
 1. Gather input (business problem description, quantitative data if available)
-2. If input is poor (vague idea only) → generate discovery questions, mark all sections `[PENDIENTE]`
+2. If input is poor (vague idea only) → generate discovery questions, mark all sections `[PENDING]`
 3. Generate BC following the template below
 4. Validate against the pre-delivery checklist
 5. Present for Gate 0 approval
@@ -34,7 +42,7 @@ Phase: 1 — Origination | Gate: 0 (Intake) | Language: Spanish (business docume
 | Strategic alignment          | Desirable     | Which OKR or strategic pillar             |
 | Regulatory context           | If applicable | Deadlines, fines, certifications          |
 
-If input is insufficient: generate discovery questions FIRST. NEVER invent financial data, business metrics, or names. Use `[PENDIENTE: dato real — fuente sugerida: X]`.
+If input is insufficient: generate discovery questions FIRST. NEVER invent financial data, business metrics, or names. Use `[PENDING: real data — suggested source: X]`.
 
 ## Output Location
 
@@ -49,63 +57,63 @@ ALWAYS use this exact structure:
 ```markdown
 # Business Case: [PROJECT NAME]
 
-| Campo              | Valor            |
-| ------------------ | ---------------- |
-| **ID**             | BC-[YYYY]-[NNN]  |
-| **Fecha**          | [YYYY-MM-DD]     |
-| **Versión**        | 1.0 — Borrador   |
-| **Solicitante**    | [Nombre] — [Rol] |
-| **Sponsor**        | [Nombre] — [Rol] |
-| **Alineación OKR** | [OKR-XX]         |
+| Field             | Value           |
+| ----------------- | --------------- |
+| **ID**            | BC-[YYYY]-[NNN] |
+| **Date**          | [YYYY-MM-DD]    |
+| **Version**       | 1.0 — Draft     |
+| **Requester**     | [Name] — [Role] |
+| **Sponsor**       | [Name] — [Role] |
+| **OKR Alignment** | [OKR-XX]        |
 
-## 1. Resumen Ejecutivo
+## 1. Executive Summary
 
 > [2-3 paragraphs: problem, proposal, expected benefit. Executive must decide from this alone.]
 
-## 2. Problema de Negocio
+## 2. Business Problem
 
-### 2.1 Descripción (business terms, not technical)
+### 2.1 Description (business terms, not technical)
 
-### 2.2 Impacto Cuantificado (Revenue, Clients, Operations, Regulatory, Reputation)
+### 2.2 Quantified Impact (Revenue, Clients, Operations, Regulatory, Reputation)
 
-### 2.3 Coste de No Hacer Nada (project at 6 and 12 months)
+### 2.3 Cost of Doing Nothing (project at 6 and 12 months)
 
-## 3. Solución Propuesta
+## 3. Proposed Solution
 
-### 3.1 Descripción (the "what", not the technical "how")
+### 3.1 Description (the "what", not the technical "how")
 
-### 3.2 Alcance (includes / excludes)
+### 3.2 Scope (includes / excludes)
 
-### 3.3 Beneficios Esperados (quantitative + qualitative table)
+### 3.3 Expected Benefits (quantitative + qualitative table)
 
-## 4. Análisis de Alternativas
+## 4. Alternatives Analysis
 
 > Minimum 3: (A) Do nothing, (B) Proposed solution, (C) Alternative
 > Evaluation table: Cost, Timeline, Risk, Strategic alignment, Complexity → Recommendation
 
-## 5. Análisis Financiero
+## 5. Financial Analysis
 
-### 5.1 Costes (one-time + recurring, include 15-20% contingency)
+### 5.1 Costs (one-time + recurring, include 15-20% contingency)
 
-### 5.2 Beneficios Financieros (Year 1-3)
+### 5.2 Financial Benefits (Year 1-3)
 
 ### 5.3 ROI, Payback, NPV
 
-## 6. Riesgos (min 5, categories: Technical, Resources, Timeline, Business, Regulatory, Security)
+## 6. Risks (min 5, categories: Technical, Resources, Timeline, Business, Regulatory, Security)
 
 > Each with: probability, impact, severity, mitigation, owner
 
-## 7. Timeline de Alto Nivel (phases with durations and dependencies)
+## 7. High-Level Timeline (phases with durations and dependencies)
 
-## 8. Supuestos y Dependencias
+## 8. Assumptions and Dependencies
 
-## 9. Recursos Necesarios (roles, dedication, cost)
+## 9. Required Resources (roles, dedication, cost)
 
-## 10. Criterios de Éxito (SMART)
+## 10. Success Criteria (SMART)
 
-## 11. Aprobación — Gate 0 (Sponsor, CTO, PME signatures)
+## 11. Approval — Gate 0 (Sponsor, CTO, PME signatures)
 
-## Historial de Versiones
+## Version History
 ```
 
 ## Validation Checklist
@@ -118,7 +126,7 @@ Before delivering, verify:
 - [ ] Costs include 15-20% contingency
 - [ ] Each risk has owner and concrete mitigation
 - [ ] Success criteria are SMART
-- [ ] All invented data marked as `[PENDIENTE]`
+- [ ] All invented data marked as `[PENDING]`
 - [ ] Approval section has correct roles for Gate 0
 
 ## Key Rules
@@ -134,67 +142,67 @@ Before delivering, verify:
 ### Example Executive Summary
 
 ```markdown
-## 1. Resumen Ejecutivo
+## 1. Executive Summary
 
-La empresa necesita modernizar su plataforma API para soportar el crecimiento proyectado del 150% en el número de integraciones que los clientes enterprise demandan. El sistema actual no puede escalar más allá de 50 integraciones concurrentes, limitando nuestro crecimiento en el segmento enterprise y poniendo en riesgo €1.8M en pipeline comercial.
+The company needs to modernize its API platform to support the projected 150% growth in the number of integrations that enterprise clients demand. The current system cannot scale beyond 50 concurrent integrations, limiting our growth in the enterprise segment and putting €1.8M of commercial pipeline at risk.
 
-La solución propuesta implementará una nueva arquitectura API basada en microservicios con capacidad para 500+ integraciones concurrentes, con una inversión de €185K y ROI del 240% en 12 meses. El proyecto durará 5 meses y requiere 2 desarrolladores senior + 1 arquitecto de sistemas.
+The proposed solution will implement a new microservices-based API architecture with capacity for 500+ concurrent integrations, with an investment of €185K and a 240% ROI in 12 months. The project will last 5 months and requires 2 senior developers + 1 systems architect.
 
-Este proyecto es crítico para capturar el 60% del mercado enterprise disponible y mantener nuestro liderazgo tecnológico frente a la competencia.
+This project is critical to capture the 60% of the available enterprise market and maintain our technological leadership against the competition.
 ```
 
 ### Example Problem Description
 
 ```markdown
-## 2. Problema de Negocio
+## 2. Business Problem
 
-### 2.1 Descripción
+### 2.1 Description
 
-Nuestros clientes enterprise requieren integraciones complejas que nuestro sistema API actual no puede soportar eficientemente. Los límites arquitectónicos actuales (50 conexiones concurrentes, latencia >2s) están causando pérdidas de contratos y degradación de la experiencia del cliente en el segmento más rentable.
+Our enterprise clients require complex integrations that our current API system cannot support efficiently. The current architectural limits (50 concurrent connections, latency >2s) are causing contract losses and degradation of the customer experience in the most profitable segment.
 
-### 2.2 Impacto Cuantificado
+### 2.2 Quantified Impact
 
-- **Revenue**: Pérdida proyectada de €1.8M anuales (pipeline enterprise bloqueado)
-- **Clientes**: 12 clientes enterprise en evaluación que requieren >50 integraciones
-- **Operaciones**: 35% de llamadas API fallan durante picos de carga
-- **Competitividad**: Competidores ofrecen capacidades 10x superiores
-- **Reputación**: NPS enterprise cayó 15 puntos por problemas de integración
+- **Revenue**: Projected loss of €1.8M annually (enterprise pipeline blocked)
+- **Clients**: 12 enterprise clients under evaluation requiring >50 integrations
+- **Operations**: 35% of API calls fail during load peaks
+- **Competitiveness**: Competitors offer 10x superior capabilities
+- **Reputation**: Enterprise NPS dropped 15 points due to integration problems
 
-### 2.3 Coste de No Hacer Nada
+### 2.3 Cost of Doing Nothing
 
-- **6 meses**: €900K perdidos + 6 clientes enterprise no firmados + degradación técnica
-- **12 meses**: €1.8M perdidos + pérdida posición mercado + debt técnica acumulada
+- **6 months**: €900K lost + 6 enterprise clients not signed + technical degradation
+- **12 months**: €1.8M lost + market position loss + accumulated technical debt
 ```
 
 ### Example Financial Analysis
 
 ```markdown
-## 5. Análisis Financiero
+## 5. Financial Analysis
 
-### 5.1 Costes
+### 5.1 Costs
 
-| Concepto                      | One-time (€) | Anual (€)  | Notas                    |
-| ----------------------------- | ------------ | ---------- | ------------------------ |
-| Desarrollo (2 devs × 5 meses) | 100,000      | -          | €50K/dev/mes             |
-| Arquitecto sistemas           | 30,000       | -          | 5 meses consultoría      |
-| Infrastructure upgrade        | 25,000       | 12,000     | Cloud + CDN + monitoring |
-| Migración y testing           | 15,000       | -          | Data migration + QA      |
-| Contingency (15%)             | 25,500       | 1,800      |                          |
-| **TOTAL**                     | **195,500**  | **13,800** |                          |
+| Concept                         | One-time (€) | Annual (€) | Notes                    |
+| ------------------------------- | ------------ | ---------- | ------------------------ |
+| Development (2 devs × 5 months) | 100,000      | -          | €50K/dev/month           |
+| Systems architect               | 30,000       | -          | 5 months consulting      |
+| Infrastructure upgrade          | 25,000       | 12,000     | Cloud + CDN + monitoring |
+| Migration and testing           | 15,000       | -          | Data migration + QA      |
+| Contingency (15%)               | 25,500       | 1,800      |                          |
+| **TOTAL**                       | **195,500**  | **13,800** |                          |
 
-### 5.2 Beneficios Financieros
+### 5.2 Financial Benefits
 
-| Año  | Nuevos contratos (€) | Revenue retenido (€) | Costes evitados (€) | Total (€) |
-| ---- | -------------------- | -------------------- | ------------------- | --------- |
-| 2025 | 800,000              | 600,000              | 100,000             | 1,500,000 |
-| 2026 | 1,200,000            | 900,000              | 150,000             | 2,250,000 |
-| 2027 | 1,500,000            | 900,000              | 200,000             | 2,600,000 |
+| Year | New contracts (€) | Retained revenue (€) | Avoided costs (€) | Total (€) |
+| ---- | ----------------- | -------------------- | ----------------- | --------- |
+| 2025 | 800,000           | 600,000              | 100,000           | 1,500,000 |
+| 2026 | 1,200,000         | 900,000              | 150,000           | 2,250,000 |
+| 2027 | 1,500,000         | 900,000              | 200,000           | 2,600,000 |
 
 ### 5.3 ROI
 
-- **Payback period**: 4.1 meses
-- **ROI 12 meses**: 240%
-- **NPV (3 años, 10% discount)**: €1.6M
+- **Payback period**: 4.1 months
+- **ROI 12 months**: 240%
+- **NPV (3 years, 10% discount)**: €1.6M
 ```
 
 ## Iteration Process
@@ -221,15 +229,15 @@ Nuestros clientes enterprise requieren integraciones complejas que nuestro siste
 ### Template for Addressing Feedback:
 
 ```markdown
-## Respuesta a Feedback de Gate 0
+## Response to Gate 0 Feedback
 
-| Comentario del Sponsor            | Acción Tomada                            | Evidencia/Mejora                                |
-| --------------------------------- | ---------------------------------------- | ----------------------------------------------- |
-| "Los números parecen optimistas"  | Revisión con CFO + benchmark competencia | Sección 5.2 actualizada con datos conservadores |
-| "¿Qué pasa si el proyecto falla?" | Análisis detallado de riesgos            | Sección 6: 8 riesgos específicos + mitigaciones |
-| "Timeline muy agresivo"           | Re-estimación con equipo técnico         | Sección 7: Timeline extendido 6→8 meses         |
+| Sponsor Comment                      | Action Taken                           | Evidence/Improvement                       |
+| ------------------------------------ | -------------------------------------- | ------------------------------------------ |
+| "The numbers seem optimistic"        | Review with CFO + competitor benchmark | Section 5.2 updated with conservative data |
+| "What happens if the project fails?" | Detailed risk analysis                 | Section 6: 8 specific risks + mitigations  |
+| "Timeline too aggressive"            | Re-estimation with technical team      | Section 7: Timeline extended 6→8 months    |
 
-**Cambios en esta versión**: [Lista específica de qué se modificó]
+**Changes in this version**: [Specific list of what was modified]
 ```
 
 ## Tips for Success
@@ -302,8 +310,14 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 Gate 0 approved → skill `kickoff/` (kick-off meeting) + skill `tracking-integration/` (create project tracking)
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                |
+| ------- | ---------- | ---------------------- | -------------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tool references via tool-registry |

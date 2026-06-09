@@ -1,20 +1,31 @@
 ---
 name: lidr-change-request
 id: change-request
-version: "1.1.0"
-last_updated: "2026-03-16"
-updated_by: "Tech Lead: System"
+version: "1.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 8
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Generate a Change Request for production deployment following ITIL Change Management (Standard/Normal/Emergency). Domain-agnostic - works for any application type and infrastructure. Essential for any production deployment - no exceptions. Always use before going live, regardless of change size. Required for all releases, infrastructure changes, and configuration updates. Requires QA Sign-off (Gate 5), Security Sign-off (Gate 6), and Rollback Plan as prerequisites. Triggers on "create change request", "prepare deployment", "request production deploy", "CAB approval", "change management". Output in Spanish for CAB approval."
+language_default: en
+integrations: [test_management, chat, code_quality, vcs]
+description: >
+  Generate a Change Request for production deployment following ITIL Change Management (Standard/Normal/Emergency).
+  Domain-agnostic - works for any application type and infrastructure.
+  Essential for any production deployment - no exceptions. Always use before going live, regardless of change size.
+  Required for all releases, infrastructure changes, and configuration updates.
+  Requires QA Sign-off (Gate 5), Security Sign-off (Gate 6), and Rollback Plan as prerequisites.
+  Triggers on "create change request", "prepare deployment", "request production deploy", "CAB approval", "change management".
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 ---
 
 # Change Request Generator
 
-Phase: 8 — Deployment | Gate: 7 (Change Approved) | Language: Spanish
+Phase: 8 — Deployment | Gate: 7 (Change Approved) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ## Workflow
 
@@ -30,7 +41,7 @@ Phase: 8 — Deployment | Gate: 7 (Change Approved) | Language: Spanish
 
 | Input                  | Required | Source                                                |
 | ---------------------- | -------- | ----------------------------------------------------- |
-| PRs merged for release | ✅       | Git / GitHub                                          |
+| PRs merged for release | ✅       | {{VCS_TOOL}}                                          |
 | Release Notes          | ✅       | skill `release-notes/`                                |
 | QA Sign-off            | ✅       | skill `test-execution-report/` (Gate 5)               |
 | Security Sign-off      | ✅       | skills `vuln-assessment/`, `pentest-report/` (Gate 6) |
@@ -138,25 +149,25 @@ owner_role: "DevOps"                  # DevOps maintains change requests
 | **Release**           | v2.1.0                                                 |
 | **Requested By**      | DevOps Team - García López                             |
 | **Target Date**       | 2026-03-15 02:00 CET                                   |
-| **Deployment Window** | 02:00 — 04:00 CET (2 horas)                            |
+| **Deployment Window** | 02:00 — 04:00 CET (2 hours)                            |
 | **Impacted Systems**  | Core API, Mobile SDKs, Dashboard, Document OCR Service |
 | **Risk Level**        | Medium                                                 |
 
 ## 1. Description of Change
 
-Despliegue de nueva versión del Customer Portal v2.1.0 que incluye:
+Deployment of new Customer Portal version v2.1.0 that includes:
 
-- Nuevo módulo de dashboard personalizable para usuarios finales
-- API mejorada para integración con sistemas de terceros
-- Actualización del sistema de notificaciones en tiempo real
-- Migración de base de datos para soporte de múltiples organizaciones
+- New customizable dashboard module for end users
+- Improved API for third-party system integration
+- Update to the real-time notification system
+- Database migration for multi-organization support
 
 ## 2. Justification
 
-- Funcionalidad solicitada por 5 clientes enterprise (dashboard personalizable)
-- Mejora de performance crítica: reducción 40% tiempo carga páginas
-- Resolución de vulnerabilidad media en autenticación de sesiones
-- Habilitación de multi-tenancy para expansión comercial
+- Functionality requested by 5 enterprise customers (customizable dashboard)
+- Critical performance improvement: 40% reduction in page load time
+- Resolution of medium-severity vulnerability in session authentication
+- Enablement of multi-tenancy for commercial expansion
 
 ## 3. Scope of Impact
 
@@ -172,20 +183,20 @@ Despliegue de nueva versión del Customer Portal v2.1.0 que incluye:
 
 ### Users Affected
 
-- **Active Users**: 1,200 usuarios registrados
-- **Organizations**: 45 empresas, ~500 usuarios/día promedio
-- **End Users**: Nuevas funcionalidades de dashboard y notificaciones
-- **Downtime**: 20 minutos durante migración DB + deploy frontend
+- **Active Users**: 1,200 registered users
+- **Organizations**: 45 companies, ~500 users/day on average
+- **End Users**: New dashboard and notification features
+- **Downtime**: 20 minutes during DB migration + frontend deploy
 
 ### Downtime Required
 
-- **Sí**: 20 minutos para migración de BD + despliegue
-- **Mitigación**: Maintenance mode con mensaje personalizado y progreso
-- **Horario**: 01:00-01:20 CET (mínima actividad de usuarios)
+- **Yes**: 20 minutes for DB migration + deployment
+- **Mitigation**: Maintenance mode with custom message and progress
+- **Schedule**: 01:00-01:20 CET (minimal user activity)
 
 ## 4. Prerequisites
 
-- [x] QA Sign-off: [TestRail Report TR-2026-051](link)
+- [x] QA Sign-off: Example (TestRail): [TestRail Report TR-2026-051](link)
 - [x] Security Sign-off: [Security Review SR-2026-018](link)
 - [x] Rollback Plan: [RP-2026-051](link)
 - [x] Release Notes: [RN-v2.1.0](link)
@@ -217,7 +228,7 @@ Despliegue de nueva versión del Customer Portal v2.1.0 que incluye:
 
 - **T-48h**: Email to organization admins (scheduled maintenance)
 - **T-24h**: In-app notification to all users
-- **T-2h**: Slack #general + status page warning
+- **T-2h**: Example (Slack): {{CHAT_TOOL}} #general + status page warning
 - **T-15min**: Maintenance mode activation
 - **T+30min**: Completion confirmation + new features summary
 - **T+24h**: Success report + usage metrics to stakeholders
@@ -282,7 +293,7 @@ Before submitting CR, verify:
 For P1 production incidents requiring immediate deployment:
 
 1. **Verbal approval** from 2 of: CTO, Tech Lead, PO
-2. **Document intent** in Slack #incidents with CR number
+2. **Document intent** in {{CHAT_TOOL}} #incidents with CR number
 3. **Deploy immediately** with rollback monitoring
 4. **Complete CR documentation** within 24h post-deployment
 5. **Schedule post-mortem** within 48h to prevent recurrence
@@ -323,6 +334,12 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                                            |
+| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted VCS/test-management/chat/code-quality tools via tool-registry |

@@ -1,22 +1,31 @@
 ---
 name: lidr-rollback-plan
 id: rollback-plan
-version: "1.2.0"
-last_updated: "2026-03-16"
-updated_by: "System: Quality Assurance Enhancement"
+version: "1.3.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 8
 owner_role: "DevOps"
 automation: true
 automation_status: "LIVE - 45h/year ROI"
 domain_agnostic: true
+language_default: en
+integrations: [vcs, tracking, chat, ci]
 description: "AUTOMATED rollback plan generation with deployment risk analysis using Python automation. Auto-analyzes PRs, database migrations, infrastructure changes, and feature flags to generate executable rollback procedures. Essential when preparing production deployments. Use to transform 4+ hours of manual deployment analysis into 5-minute automated workflow + 30-minute review. Orchestrated by /create-rollback-plan command. ALWAYS use before production deployments to ensure safe rollback capability."
 ---
 
 # Rollback Plan Generator 🤖 AUTOMATED
 
-Phase: 8 — Deployment | Gate: contributes to Gate 7 | Language: English (commands) + Spanish (decisions)
+Phase: 8 — Deployment | Gate: contributes to Gate 7
+Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 **ROI**: 45 hours/year (4+ hours manual → 5 minutes automated + 30 minutes review)
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMAD
+
+No BMad equivalent: this is a LIDR-native deployment-safety artifact. It analyzes release diffs, migrations, and infra changes to produce an executable rollback runbook that feeds the Change Request at Gate 7 (`lidr-change-request`).
 
 **Principle:** A rollback plan that can't be executed in <15 minutes under stress is not a rollback plan.
 
@@ -37,7 +46,7 @@ python deployment-analyzer.py --project-dir . --output-dir rollback-analysis
 - Feature flags for instant rollback capabilities
 - Domain-specific risks (algorithm changes, data storage, regulatory compliance)
 
-**Generates**: `deployment-analysis.json` + human-readable report + CSV for project management
+**Generates**: `deployment-analysis.json` + human-readable report + CSV for {{TRACKING_TOOL}}
 
 ### Phase 2: Rollback Plan Generation (2-3 minutes)
 
@@ -89,7 +98,7 @@ python rollback-generator.py --analysis-dir rollback-analysis --output-dir rollb
 
 | Input                  | Required | Auto-Discovered From                              | Processing                                             |
 | ---------------------- | -------- | ------------------------------------------------- | ------------------------------------------------------ |
-| Release PRs            | ✅       | Git log, merge commits, GitHub CLI                | **deployment-analyzer.py** parses and extracts         |
+| Release PRs            | ✅       | Git log, merge commits, {{VCS_TOOL}} CLI          | **deployment-analyzer.py** parses and extracts         |
 | Database migrations    | ✅       | Migration directories (migrations/, db/, prisma/) | **deployment-analyzer.py** analyzes reversibility      |
 | Infrastructure changes | ✅       | K8s manifests, Terraform files, Docker configs    | **deployment-analyzer.py** assesses complexity         |
 | Feature flags          | ✅       | Config files (_.json, _.env, \*.yaml)             | **deployment-analyzer.py** identifies instant rollback |
@@ -124,7 +133,7 @@ python rollback-generator.py --analysis-dir rollback-analysis --output-dir rollb
 
 - `deployment-analysis.json` (machine processing)
 - `deployment-analysis-report.md` (human review)
-- `deployment-analysis-summary.csv` (project management integration)
+- `deployment-analysis-summary.csv` ({{TRACKING_TOOL}} integration)
 
 ### `scripts/rollback-generator.py` (600+ lines)
 
@@ -135,13 +144,13 @@ python rollback-generator.py --analysis-dir rollback-analysis --output-dir rollb
 - **Risk-Based Classification**: Simple/Medium/Complex/Dangerous with time estimates
 - **Step-by-Step Procedures**: Exact commands with verification steps and timing
 - **Component-Specific Strategies**: Application, Database, Infrastructure, Feature Flag rollback
-- **Communication Plan**: Stakeholder notification and incident management workflow
+- **Communication Plan**: Stakeholder notification via {{CHAT_TOOL}} and {{TRACKING_TOOL}} incident workflow
 - **Domain Considerations**: Data compatibility, algorithm rollback, compliance requirements
 
 **Output**:
 
 - `rollback-plan-{version}.md` (executive plan)
-- `rollback-plan-{version}-summary.csv` (incident management)
+- `rollback-plan-{version}-summary.csv` ({{TRACKING_TOOL}} incident management)
 - `rollback-plan-{version}-structure.json` (programmatic access)
 
 ### Integration Pattern
@@ -240,7 +249,7 @@ Trigger rollback if ANY of these occur within [X] minutes post-deploy:
 - **Irreversible migrations**: If DB migration is not reversible, flag as 🔴 HIGH RISK and require additional approval.
 - **Dry run in staging**: Plan must be tested in staging before production deploy.
 - **Time-boxed**: Total rollback must complete in <15 minutes. If longer, reconsider the deployment strategy.
-- **Communication plan**: Who to notify during rollback, through which channel.
+- **Communication plan**: Who to notify during rollback, through which {{CHAT_TOOL}} channel.
 
 ## Quality Assurance
 
@@ -269,6 +278,13 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                       | Changes                                                                                                               |
+| ------- | ---------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 1.3.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-native); added `vcs` to integrations frontmatter                              |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted {{VCS_TOOL}}, {{TRACKING_TOOL}}, {{CHAT_TOOL}} via tool-registry |

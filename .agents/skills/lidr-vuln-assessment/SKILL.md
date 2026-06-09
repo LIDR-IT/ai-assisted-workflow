@@ -1,55 +1,63 @@
 ---
 name: lidr-vuln-assessment
 id: vuln-assessment
-version: "1.1.0"
-last_updated: "2026-03-16"
-updated_by: "System: QA Enhancement"
+version: "1.2.0"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 7
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Essential for application security assessment - ALWAYS use when SAST/SCA scanners flag findings in platform APIs, web applications, mobile apps, or data processing systems. CRITICAL for interpreting security scan results in sensitive data processing contexts, ensuring data protection regulation compliance, and protecting user data, authentication workflows, and document processing systems. Use continuously for CI security gates, pre-release for Gate 6 Security Sign-off, and post-incident analysis. Essential for financial services, government systems, and enterprise application security posture."
+language_default: en
+integrations: [code_quality, vcs, ci]
+description: "Essential for application security assessment - ALWAYS use when {{CODE_QUALITY_TOOL}} SAST/SCA scanners flag findings in platform APIs, web applications, mobile apps, or data processing systems. CRITICAL for interpreting security scan results in sensitive data processing contexts, ensuring data protection regulation compliance, and protecting user data, authentication workflows, and document processing systems. Use continuously for CI security gates, pre-release for Gate 6 Security Sign-off, and post-incident analysis. Domain-agnostic — regulatory weighting parameterizes via {{COMPLIANCE_FRAMEWORK}} for the active {{INDUSTRY}} (e.g. financial services, government, healthcare). Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)."
 ---
 
 # Vulnerability Assessment Interpreter
 
-Phase: 7 — Security | Gate: contributes to Gate 6 | Language: English + Spanish (executive)
+Phase: 7 — Security | Gate: contributes to Gate 6 | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The executive summary renders in the client locale.
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds the concrete {{CODE_QUALITY_TOOL}} (SAST/SCA), {{VCS_TOOL}}, and {{CI_TOOL}} in `clients/<CODE>.yaml`. Regulatory weighting resolves via {{COMPLIANCE_FRAMEWORK}} for the active {{INDUSTRY}}.
+
+## Relationship to BMAD
+
+LIDR-unique: triages and prioritizes findings emitted by the {{CODE_QUALITY_TOOL}} SAST/SCA scanners (severity escalation, OWASP mapping, compliance-weighted criticality), producing the Gate-6 Security Sign-off evidence. Complements `bmad-testarch-nfr` (which audits NFR evidence including security posture) by owning the vulnerability-finding interpretation layer BMad does not cover.
 
 ## Workflow
 
-1. **Read security scan reports**: SAST (SonarQube/Semgrep/CodeQL) + SCA (Snyk/npm audit)
+1. **Read security scan reports**: {{CODE_QUALITY_TOOL}} SAST + SCA outputs
 2. **Analyze application context**: Data sensitivity, data protection regulation requirements, regulatory compliance
    - Sensitive data storage and encryption
    - API endpoints handling user data
    - Document processing workflows
    - Cross-border data transfer mechanisms
 3. **Classify by business impact**: OWASP Top 10 + domain-specific attack vectors
-4. **Prioritize by business criticality**:
-   - Financial Services = Critical (regulatory + financial impact)
-   - Government Systems = Critical (citizen privacy + national security)
-   - Consumer Applications = High (brand + data protection regulation fines)
+4. **Prioritize by business criticality** (weighted by {{COMPLIANCE_FRAMEWORK}} for the active {{INDUSTRY}}):
+   - Highly regulated industries = Critical (regulatory + financial/privacy impact)
+   - Public-sector / citizen-data systems = Critical (privacy + sovereignty)
+   - Consumer applications = High (brand + data protection regulation fines)
 5. **Generate context-aware remediation**: Code fixes + compliance requirements
 6. **Trend analysis**: Security posture improvement for systems
-7. **Compliance validation**: Ensure fixes maintain GDPR/eIDAS/PSD2 compliance
+7. **Compliance validation**: Ensure fixes maintain {{COMPLIANCE_FRAMEWORK}} compliance
 
 ## Input
 
-| Input             | Required  | Source                         |
-| ----------------- | --------- | ------------------------------ |
-| SAST report       | ✅        | SonarQube / Semgrep / CodeQL   |
-| SCA report        | ✅        | Snyk / npm audit / Dependabot  |
-| Project context   | ✅        | `rules/project.md`, PRD-T §5.4 |
-| Tech stack        | ✅        | `rules/tech-stack.md`          |
-| Previous baseline | Desirable | Prior assessment               |
-| Threat model      | Desirable | Security architecture docs     |
+| Input             | Required  | Source                                        |
+| ----------------- | --------- | --------------------------------------------- |
+| SAST report       | ✅        | {{CODE_QUALITY_TOOL}} (SAST engine)           |
+| SCA report        | ✅        | {{CODE_QUALITY_TOOL}} (SCA / dependency scan) |
+| Project context   | ✅        | `rules/project.md`, PRD-T §5.4                |
+| Tech stack        | ✅        | `rules/tech-stack.md`                         |
+| Previous baseline | Desirable | Prior assessment                              |
+| Threat model      | Desirable | Security architecture docs                    |
 
 ## Output Template
 
 ```markdown
 # Vulnerability Assessment: [PROJECT] — [DATE]
 
-## Executive Summary (Spanish)
+## Executive Summary (client locale)
 
 - Total findings: {N} ({critical}, {high}, {medium}, {low})
 - New since baseline: {N}
@@ -94,8 +102,8 @@ Phase: 7 — Security | Gate: contributes to Gate 6 | Language: English + Spanis
 ## Key Rules (Sensitive Data Context)
 
 - **Sensitive data elevates severity**: Any vulnerability affecting sensitive data storage, core processing workflows, or document handling is automatically +1 severity level (Medium→High, High→Critical)
-- **GDPR amplifies impact**: Data exposure vulnerabilities in systems risk regulatory fines up to 4% global revenue
-- **Regulated context = Critical**: Vulnerabilities in financial, healthcare, or government systems are always Critical due to regulatory requirements
+- **{{COMPLIANCE_FRAMEWORK}} amplifies impact**: Data exposure vulnerabilities risk regulatory fines defined by the active {{COMPLIANCE_FRAMEWORK}} (e.g. GDPR caps at 4% global revenue)
+- **Regulated context = Critical**: Vulnerabilities in systems governed by {{COMPLIANCE_FRAMEWORK}} (highly regulated {{INDUSTRY}} verticals) are always Critical due to regulatory requirements
 - **Sensitive data encryption mandatory**: Any finding that could expose unencrypted sensitive data records is Critical regardless of CVSS
 - **Cross-border compliance**: Vulnerabilities affecting data residency or cross-region transfer are High+ due to legal implications
 - **API security priority**: Authentication bypasses on core service endpoints are Critical (service integrity core)
@@ -175,29 +183,31 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 ## Industry-Specific Risk Context
 
-### Banking/Fintech (PSD2 + AML/KYC)
+Risk weighting parameterizes per the active {{INDUSTRY}} and its bound {{COMPLIANCE_FRAMEWORK}} (resolved via `clients/<CODE>.yaml`). The blocks below are **clearly-labelled examples** illustrating how concrete verticals map; substitute the client's own {{INDUSTRY}}/{{COMPLIANCE_FRAMEWORK}}.
 
-- verification bypass = Critical (regulatory non-compliance)
-- Template exposure = Critical (customer financial data linkage)
-- API vulnerabilities = High (payment authentication impact)
+> **Example — Banking/Fintech ({{COMPLIANCE_FRAMEWORK}} = PSD2 + AML/KYC):**
+>
+> - verification bypass = Critical (regulatory non-compliance)
+> - Template exposure = Critical (customer financial data linkage)
+> - API vulnerabilities = High (payment authentication impact)
 
-### Government/eID (GDPR + National Security)
+> **Example — Government/eID ({{COMPLIANCE_FRAMEWORK}} = GDPR + national security):**
+>
+> - Citizen identity data exposure = Critical (national security implications)
+> - Cross-border data leaks = Critical (sovereignty violations)
+> - Accessibility bypasses = Medium (digital inclusion requirements)
 
-- Citizen identity data exposure = Critical (national security implications)
-- Cross-border data leaks = Critical (sovereignty violations)
-- Accessibility bypasses = Medium (digital inclusion requirements)
-
-### Healthcare/Insurance (GDPR + HIPAA)
-
-- Sensitive health data linkage = Critical (double privacy protection)
-- User correlation attacks = High (patient identification risk)
-- Audit trail tampering = High (compliance reporting integrity)
+> **Example — Healthcare/Insurance ({{COMPLIANCE_FRAMEWORK}} = GDPR + HIPAA):**
+>
+> - Sensitive health data linkage = Critical (double privacy protection)
+> - User correlation attacks = High (patient identification risk)
+> - Audit trail tampering = High (compliance reporting integrity)
 
 ## Resources
 
@@ -205,3 +215,10 @@ npx tsx scripts/validate-examples.ts
 - **GDPR vulnerability mapping**: `references/gdpr-security-compliance.md`
 - **Industry-specific threats**: `references/industry-threat-models.md`
 - **Remediation templates**: `references/remediation-patterns.md`
+
+## Changelog
+
+| Version | Date       | Author                       | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-09 | TL: BMAD-coherence batch-fix | Parameterized industry/regulation specifics via {{INDUSTRY}}/{{COMPLIANCE_FRAMEWORK}} (industry risk blocks reframed as labelled examples); abstracted SAST/SCA scanners to {{CODE_QUALITY_TOOL}} in Workflow + Input; language to English-default-configurable (exec summary renders in client locale); added "Relationship to BMAD" note (triages {{CODE_QUALITY_TOOL}} findings for Gate-6, complements bmad-testarch-nfr); added language_default + integrations frontmatter |
+| 1.1.0   | 2026-03-16 | System: QA Enhancement       | Quality assurance integration                                                                                                                                                                                                                                                                                                                                                                                                                                                    |

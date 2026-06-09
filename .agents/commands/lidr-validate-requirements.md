@@ -44,6 +44,8 @@ CHANGELOG:
 
 # Validate Requirements for $1
 
+> **Relationship (de-duplication):** This command owns the `/lidr-validate-requirements` slash and orchestrates Phase 3 — RFs via `lidr-generate-rf`, NFRs via `lidr-generate-nfr`, the RTM / 5-pass cross-validation via the **`lidr-validate-requirements` skill** (the engine), then epic breakdown via `bmad-create-epics-and-stories`. The engine logic is the skill; this command is the verb that chains it. The skill is marked `user-invocable: false` so it no longer competes for the same slash — reach it by delegation, not the `/` menu.
+
 Load: @../rules/org.md and @../rules/tech-stack.md and @../rules/project.md
 
 ## Validate Preconditions

@@ -69,6 +69,8 @@ CHANGELOG:
 
 Load: @../rules/org.md and @../rules/project.md and @../rules/documentation.md
 
+> **Relationship to BMad (de-duplication):** Base PRD structural and quality validation is owned by **`bmad-prd` (validate intent)** — invoke it first and consume its findings. Do **not** re-implement generic PRD completeness/consistency checks here. This command is the **LIDR governance layer on top**: it adds the scored Gate-1 readiness verdict, RACI/role gating, traceability to Business Case, and the `lidr-review-cruzado` F+T cross-check. (Note: the standalone `bmad-validate-prd` skill is deprecated and folds into `bmad-prd` validate in v7 — target `bmad-prd`, not the deprecated alias.)
+
 ## Validate Preconditions
 
 If "$1" is empty:

@@ -1,20 +1,26 @@
 ---
 name: lidr-validate-requirements
 id: validate-requirements
-version: "1.2.0"
-last_updated: "2026-04-06"
-updated_by: "System: Phase 4 Python Script Remediation"
+version: "1.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
+user-invocable: false # The /lidr-validate-requirements command owns the slash; this skill is the delegated RTM / 5-pass validation engine (reached via the command or model auto-load, not the / menu). Resolves the command↔skill name collision.
 phase: 3
 owner_role: "PO + TL"
 automation: true
 domain_agnostic: true
-description: "🤖 AUTOMATED cross-validation of functional (RFs) and non-functional (NFRs) requirements against PRDs using Python automation scripts. Executes 5-pass validation in <5 minutes vs 6+ hours manual. Auto-generates RTM, gap reports with owner assignment, and implementation clusters. Automation-first with manual fallback. Triggers on "validate requirements", "requirements automation", "RTM generation", "5-pass validation", "Gate 2 readiness", "requirements traceability". Essential for Gate 2 evaluation. Use after generate-rf AND generate-nfr. ROI: 150+ hours/year saved. ALWAYS use before Sprint Planning to ensure requirements are complete and testable."
+language_default: en
+description: "🤖 AUTOMATED cross-validation of functional (RFs) and non-functional (NFRs) requirements against PRDs using Python automation scripts. Executes 5-pass validation in <5 minutes vs 6+ hours manual. Auto-generates RTM, gap reports with owner assignment, and implementation clusters. Automation-first with manual fallback. Triggers on "validate requirements", "requirements automation", "RTM generation", "5-pass validation", "Gate 2 readiness", "requirements traceability". Essential for Gate 2 evaluation. Use after generate-rf AND generate-nfr. Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). ROI: 150+ hours/year saved. ALWAYS use before Sprint Planning to ensure requirements are complete and testable."
 ---
 
 # Requirements Validator & Traceability Matrix Generator
 
-Phase: 3 — Specification | Gate: 2 (final validation) | Language: Spanish
+Phase: 3 — Specification | Gate: 2 (final validation) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+## Relationship to BMAD
+
+LIDR-unique: the Gate-2 quality enforcer. Consumes the Functional + Technical PRD from `bmad-prd` and the requirements authored by `lidr-generate-rf` / `lidr-generate-nfr`, then produces the bidirectional RTM, gap report, and 5-pass Gate-2 validation that BMad's flow does not provide. Feeds `bmad-create-epics-and-stories` (validated requirements ready for decomposition).
 
 ## Workflow
 
@@ -41,7 +47,7 @@ Phase: 3 — Specification | Gate: 2 (final validation) | Language: Spanish
 
 - If automated scripts succeed → Continue with automated results + human review
 - If automated scripts fail → Fallback to manual process
-- Either path leads to: If PASS → Ready for `epic-breakdown` and Gate 2
+- Either path leads to: If PASS → Ready for `bmad-create-epics-and-stories` and Gate 2
 
 ## Input
 
@@ -49,8 +55,8 @@ Phase: 3 — Specification | Gate: 2 (final validation) | Language: Spanish
 | ------------------------ | --------- | -------------------------------------------- | ---------------------------------------------- |
 | All RFs                  | ✅        | skill `generate-rf/`                         | ✅ `rtm-generator.py` auto-loads from outputs/ |
 | All NFRs                 | ✅        | skill `generate-nfr/`                        | ✅ `rtm-generator.py` auto-loads from outputs/ |
-| PRD Funcional (approved) | ✅        | skill `prd-funcional/`                       | ✅ `prd-parser.py` auto-discovers and parses   |
-| PRD Técnico (approved)   | ✅        | skill `prd-tecnico/`                         | ✅ `prd-parser.py` auto-discovers and parses   |
+| PRD Funcional (approved) | ✅        | skill `bmad-prd/`                            | ✅ `prd-parser.py` auto-discovers and parses   |
+| PRD Técnico (approved)   | ✅        | skill `bmad-prd/`                            | ✅ `prd-parser.py` auto-discovers and parses   |
 | RF Coherence checklist   | ✅        | `@../generate-rf/checklists/rf-coherence.md` | ✅ Automated coherence validation              |
 | Risk Log                 | Desirable | skill `risk-log/`                            | ⚠️ Manual integration                          |
 
@@ -76,8 +82,8 @@ python scripts/prd-parser.py --output-dir validation-results
 
 # Explicit paths
 python scripts/prd-parser.py \
-  --prd-funcional docs/projects/PRD-Funcional.md \
-  --prd-tecnico docs/projects/PRD-Tecnico.md \
+  --bmad-prd docs/projects/PRD-Funcional.md \
+  --bmad-prd docs/projects/PRD-Tecnico.md \
   --output-dir validation-results
 ```
 
@@ -441,11 +447,11 @@ for cluster in clusters:
 
 ### Final Gate 2 Decision
 
-| Overall Status  | Criteria         | Action                                                     |
-| --------------- | ---------------- | ---------------------------------------------------------- |
-| **PASS**        | All passes ✅    | → Ready for `/epic-breakdown` and Gate 2 approval          |
-| **CONDITIONAL** | Some ⚠️ warnings | → Fix critical gaps, warnings acceptable for Gate 2        |
-| **FAIL**        | Any pass ❌      | → **BLOCK Gate 2**, return to `generate-rf`/`generate-nfr` |
+| Overall Status  | Criteria         | Action                                                           |
+| --------------- | ---------------- | ---------------------------------------------------------------- |
+| **PASS**        | All passes ✅    | → Ready for `/bmad-create-epics-and-stories` and Gate 2 approval |
+| **CONDITIONAL** | Some ⚠️ warnings | → Fix critical gaps, warnings acceptable for Gate 2              |
+| **FAIL**        | Any pass ❌      | → **BLOCK Gate 2**, return to `generate-rf`/`generate-nfr`       |
 
 ### Business Rules (Non-negotiable)
 
@@ -543,8 +549,8 @@ python scripts/rtm-generator.py --verbose
 ```bash
 # Ready for next phase
 # Execute epic breakdown
-cd .claude/skills/epic-breakdown
-# ... (epic-breakdown skill workflow)
+cd .claude/skills/bmad-create-epics-and-stories
+# ... (bmad-create-epics-and-stories skill workflow)
 
 # Execute Gate 2 evaluation
 /advance-gate 2
@@ -594,7 +600,7 @@ See original skill sections (retained below) for manual 5-pass validation:
 ### Process Enforcement
 
 - **Gaps produce action items**, not just warnings — each gap has owner assignment (automated)
-- **Implementation clusters** feed directly into `epic-breakdown` and Sprint Planning (automated generation)
+- **Implementation clusters** feed directly into `bmad-create-epics-and-stories` and Sprint Planning (automated generation)
 - **Traceability maintained**: Every RF must trace to PRD functionality, every NFR to PRD category (automated validation)
 - **Measurability enforced**: All NFRs must have metric + threshold + validation method (automated check)
 
@@ -658,7 +664,7 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
@@ -666,5 +672,6 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.1   | 2026-06-09 | TL: BMAD-coherence batch-fix              | Language to English-default-configurable; added "Relationship to BMAD" note (Gate-2 enforcer consuming bmad-prd + lidr-generate-rf/nfr, producing RTM/Gate-2 validation, feeding bmad-create-epics-and-stories); added language_default frontmatter                        |
 | 1.2.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Domain-agnostic remediation: replaced hardcoded biometric patterns in validation-engine.py, prd-parser.py, and validation_config.yaml with template variables ({{INDUSTRY_TIER_1}}, {{SENSITIVE_DATA_TYPE}}, {{ACCURACY_METRIC}}, etc.) - achieving 78→93/100 target score |
 | 1.1.0   | 2026-03-25 | System: Domain-Agnostic Normalization     | Initial domain-agnostic normalization                                                                                                                                                                                                                                      |

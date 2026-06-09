@@ -1,30 +1,36 @@
 ---
 name: lidr-sdlc-tracking
 id: sdlc-tracking
-version: "1.0.0"
-last_updated: "2026-03-17"
-updated_by: "SDLC Enhancement Team"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 0
 owner_role: "PME, PO, TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking, docs, chat]
 description: >
   Centralized SDLC project tracking with phase visibility and portfolio management.
   ALWAYS use when managing active projects requiring lifecycle state tracking across gates.
-  Tracking pipeline: this OWNS `sdlc-tracking.yaml` (internal state); `lidr-tracking-integration` creates the external structure first, `lidr-external-sync` syncs this file to Jira/Linear/Notion.
+  Tracking pipeline: this OWNS `sdlc-tracking.yaml` (internal state); `lidr-tracking-integration` creates the external structure first, `lidr-external-sync` syncs this file to the bound {{TRACKING_TOOL}}/{{DOCS_TOOL}}.
 ---
 
 # SKILL: SDLC Tracking System
 
 > **Phase 2 Enhancement**: Centralized project state tracking with sdlc-tracking.yaml for all PME portfolio projects.
 
+Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
 ## Related — tracking pipeline
 
 This skill is the **STATE** step — it owns `sdlc-tracking.yaml`, the internal source of truth. See also:
 
 - **`lidr-tracking-integration`** — one-time CREATE of the external project/epic structure (run first, post-Gate 0).
-- **`lidr-external-sync`** — RECONCILES this file ↔ Jira/Linear/Notion (optional, portfolio-scale).
+- **`lidr-external-sync`** — RECONCILES this file ↔ the bound {{TRACKING_TOOL}}/{{DOCS_TOOL}} (optional, portfolio-scale).
+
+> Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`. The `external_sync:` YAML keys below are illustrative examples only.
 
 ## Purpose
 
@@ -36,7 +42,7 @@ Create and maintain centralized SDLC tracking across the 500-project PME portfol
 - **Phase Transitions**: When advancing through SDLC gates
 - **Progress Monitoring**: Weekly project health checks
 - **Portfolio Management**: PME dashboard updates and cross-project analytics
-- **External Sync**: Before synchronizing with Jira/Linear/Notion
+- **External Sync**: Before synchronizing with the bound {{TRACKING_TOOL}}/{{DOCS_TOOL}}
 
 ## Triggers
 
@@ -56,7 +62,7 @@ Create and maintain centralized SDLC tracking across the 500-project PME portfol
 
 ### Step 1: Initialize SDLC Tracking
 
-Create `sdlc-tracking.yaml` in project root:
+Create `sdlc-tracking.yaml` in project root. The `external_refs:`, `external_sync:`, `pr:`, and `branch:` keys keep a multi-tool catalog so any bound tracker/VCS maps cleanly — concrete tool names below (e.g. `jira`, `linear`, `notion`, `github.com`) are illustrative; the active client binds its tools via the registry:
 
 ```yaml
 # SDLC Tracking Configuration - Central Source of Truth
@@ -64,7 +70,7 @@ project:
   id: "PROJ-2026-{NNN}"
   name: "Project Name"
   type: "Enhancement" | "New Feature" | "Bug Fix" | "Technical Debt" | "Infrastructure"
-  domain: "Authentication" | "Identity Verification" | "Platform Core" | "Security" | "Custom"
+  domain: "{{PROJECT_DOMAIN}}"  # e.g. "Platform Core" | "Security" | "Payments" | "Custom"
 
 portfolio:
   pme_priority: "P1" | "P2" | "P3"
@@ -203,12 +209,12 @@ docs/projects/{project-id}/implementation/
 
 ### Step 3: Story Frontmatter Template
 
-Each story file uses rich frontmatter:
+Each story file uses rich frontmatter. The `branch`, `pr`, and `external_refs` values below are illustrative — Example ({{VCS_TOOL}} + {{TRACKING_TOOL}}); the active client binds concrete tools via the registry:
 
 ```yaml
 ---
 id: us-proj-001
-title: "User can authenticate with their credentials"
+title: "User can authenticate with their credentials" # illustrative example title
 type: "user_story"
 epic: "epic-001"
 priority: "P1"
@@ -292,7 +298,7 @@ velocity_trends:
 
 - **Command**: `/track-sdlc` - Update project state
 - **Dashboard**: IntegrityTests.tsx integration for health visualization
-- **External Tools**: Bidirectional sync with Jira/Linear/Notion
+- **External Tools**: Bidirectional sync with the bound {{TRACKING_TOOL}}/{{DOCS_TOOL}}
 - **Automation**: CI/CD pipeline updates tracking state
 - **Reporting**: Automated PME dashboard generation
 
@@ -315,10 +321,10 @@ velocity_trends:
 ## Related Skills
 
 - `bmad-document-project` - Document & classify project
-- `epic-breakdown` - Decompose projects into epics
-- `user-stories` - Generate stories with external refs
-- `sprint-capacity` - Calculate team capacity
-- `advance-gate` - Update gate status in tracking
+- `bmad-create-epics-and-stories` - Decompose projects into epics
+- `lidr-user-stories` - Generate stories with external refs
+- `lidr-sprint-capacity` - Calculate team capacity
+- `lidr-advance-gate` - Update gate status in tracking
 
 ## Templates
 
@@ -333,3 +339,10 @@ This skill includes self-contained templates:
 ---
 
 **Phase 2 Status**: Ready for implementation after Phase 1 critical fixes complete.
+
+## Changelog
+
+| Version | Date       | Author                       | Changes                                                                                                           |
+| ------- | ---------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira/Linear/Notion/Confluence/GitHub/Slack via tool-registry |
+| 1.0.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Coherence batch-fix                                                                                               |

@@ -1,14 +1,16 @@
 ---
 name: lidr-propuesta-builder
 id: propuesta-builder
-version: "1.0.0"
-last_updated: "2026-05-14"
+version: "1.1.0"
+last_updated: "2026-06-09"
 updated_by: "PME: Luis Urdaneta"
 status: active
 phase: 2
 owner_role: "PME"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [docs]
 description: >
   Generate the three JSON artifacts that power the "Propuesta de Mejora" UI for a new client
   (diagnostico.json, mejoras.json, flujo.json) by reading a structured discovery report markdown.
@@ -21,24 +23,29 @@ description: >
   Do NOT use for editing diagrams (use diagram-store JSONs directly), for generating the
   discovery report itself (the report is the input — produced by the discovery session and
   the kickoff/bmad-document-project skills), or for the metrics tab (separate component).
-  Output: 3 validated JSONs in `src/data/clients/<clientId>/propuesta/` + a brief summary
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+  Emits 3 validated JSONs in `src/data/clients/<clientId>/propuesta/` + a brief summary
   of which sections came from where in the report.
   Audience: PME (drives), TL (validates technical content), PO (validates business framing).
 ---
 
-# Propuesta de Mejora Builder
+# Improvement Proposal Builder
 
-Phase: 2 — Discovery (post-session) | Language: Spanish (content) + English (metadata) | Domain: Any
+Phase: 2 — Discovery (post-session) | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). | Domain: Any
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ## What this skill does
 
 Given a structured discovery report markdown for a client (e.g.,
 `docs/guides/lidr-core/<cliente>-discovery-report.md`), this skill produces three JSONs
-that drive the `Propuesta de Mejora` UI for that client:
+that drive the Improvement Proposal UI (component name in the codebase: `Propuesta de Mejora`)
+for that client. The JSON filenames and the `propuesta/` directory are fixed codebase
+identifiers; their rendered content follows the client `language` setting.
 
 ```
 src/data/clients/<clientId>/propuesta/
-├── diagnostico.json   ← executive summary + fortalezas/oportunidades/gaps + pain points
+├── diagnostico.json   ← executive summary + strengths/opportunities/gaps + pain points
 ├── mejoras.json       ← 8 SDLC phases mapped to gates with AS-IS vs TO-BE
 └── flujo.json         ← React Flow diagram + Quality Gates summary
 ```
@@ -66,17 +73,19 @@ DO NOT use when:
 ## Expected discovery report structure
 
 The skill expects a report with these (or equivalent) headings — Aramis discovery report v1.4.0
-is the canonical reference (`docs/guides/lidr-core/aramis-discovery-report.md`).
+is the canonical reference (`docs/guides/lidr-core/aramis-discovery-report.md`). Heading labels
+below are shown in English; a report written in the client's configured language uses the
+equivalent localized headings — map them before extracting.
 
-| Section in report                                                                   | Feeds into JSON                        |
-| ----------------------------------------------------------------------------------- | -------------------------------------- |
-| `## Resumen Ejecutivo`                                                              | `diagnostico.summary.executiveSummary` |
-| `## Pain Points Identificados` (PP-01 to PP-NN)                                     | `diagnostico.painPoints[]`             |
-| `## Análisis de Gaps vs. LIDR SDLC Methodology` → "Puntos de fortaleza"             | `diagnostico.summary.fortalezas`       |
-| `## Análisis de Gaps vs. LIDR SDLC Methodology` → gaps table                        | `diagnostico.summary.gapsCriticos`     |
-| `## Propuesta TO-BE` (Visión + Quick Wins + Cambios Estructurales + Automatización) | `mejoras.fases[].propuesta`            |
-| `## Flujo de Desarrollo Actual` (AS-IS narrative)                                   | `mejoras.fases[].actual` per phase     |
-| Specific extensions (e.g., Bridge Impact, Cross-Country)                            | extra nodes in `flujo.diagram`         |
+| Section in report                                                           | Feeds into JSON                        |
+| --------------------------------------------------------------------------- | -------------------------------------- |
+| `## Executive Summary`                                                      | `diagnostico.summary.executiveSummary` |
+| `## Identified Pain Points` (PP-01 to PP-NN)                                | `diagnostico.painPoints[]`             |
+| `## Gap Analysis vs. LIDR SDLC Methodology` → "Strengths"                   | `diagnostico.summary.fortalezas`       |
+| `## Gap Analysis vs. LIDR SDLC Methodology` → gaps table                    | `diagnostico.summary.gapsCriticos`     |
+| `## TO-BE Proposal` (Vision + Quick Wins + Structural Changes + Automation) | `mejoras.fases[].propuesta`            |
+| `## Current Development Flow` (AS-IS narrative)                             | `mejoras.fases[].actual` per phase     |
+| Specific extensions (e.g., Bridge Impact, Cross-Country)                    | extra nodes in `flujo.diagram`         |
 
 If the report uses different headings, map them explicitly before extracting.
 
@@ -85,7 +94,7 @@ If the report uses different headings, map them explicitly before extracting.
 1. **Read the discovery report** end-to-end. Identify:
    - Client name (matches `client-registry`)
    - Report version + date + author (goes to `metadata.sourceReport`)
-   - Section anchors (Resumen, Pain Points, Análisis AS-IS, Propuesta TO-BE)
+   - Section anchors (Summary, Pain Points, AS-IS Analysis, TO-BE Proposal)
 
 2. **Read the schema** to know the contract:
    - `src/data/schemas/propuesta-schema.ts` — DiagnosticoSchema, MejorasSchema, FlujoSchema
@@ -184,14 +193,14 @@ failure.
 
 ## Quality bar
 
-A propuesta is "good enough to present" when:
+An improvement proposal is "good enough to present" when:
 
 1. Every pain point has a verbatim quote with verified speaker attribution
 2. Every solution references an existing LIDR skill, gate, or proposed agent
-3. Existing client fortalezas are preserved in the TO-BE (not replaced — extended)
-4. Client-specific extensions are visually distinct in the flujo diagram
+3. Existing client strengths (`fortalezas`) are preserved in the TO-BE (not replaced — extended)
+4. Client-specific extensions are visually distinct in the flow (`flujo`) diagram
 5. All 3 JSONs (or only diagnostico.json + base inheritance) validate against Zod
-6. The Propuesta UI renders without errors for the client
+6. The Improvement Proposal UI renders without errors for the client
 7. The report `version` and JSON `metadata.version` match
 
 ## Examples
@@ -204,5 +213,12 @@ See `examples/` for the canonical case:
 
 - `kickoff` — produces the initial session summary the discovery report builds on
 - `bmad-document-project` — produces the inventory of artifacts to read during discovery
-- `prd-funcional` / `prd-tecnico` — what comes AFTER the propuesta is approved
+- `bmad-prd` / `bmad-prd` — what comes AFTER the improvement proposal is approved
 - `risk-log` — Pain points often duplicate risks; cross-reference to avoid duplicates
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                                                    |
+| ------- | ---------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; documented tool resolution via tool-registry (no concrete tools were hardcoded). |
+| 1.0.0   | 2026-05-14 | PME: Luis Urdaneta     | Initial version.                                                                                                           |

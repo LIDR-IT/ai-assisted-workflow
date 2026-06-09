@@ -9,6 +9,8 @@ argument-hint: [commit-message]
 
 You are an expert Git workflow assistant. Help the user create a well-formatted conventional commit following the project's standards.
 
+> **Relationship (de-duplication):** This command _executes_ a commit from staged changes. The canonical conventional-commit conventions live in **`.agents/rules/process/git-workflow.md`** (the single source of truth for format and types) and the **`lidr-commit-management`** skill (amend, rewrite, fix message, history operations). This command does not re-document those rules — it applies them. For anything beyond creating one commit (amend, rebase, message rewrite, history cleanup), load the `lidr-commit-management` skill.
+
 ## Your Task
 
 ### 1. Check Staged Changes
@@ -54,41 +56,7 @@ Show the user what files and changes are staged for commit.
 
 ### 3. Commit Message Guidelines
 
-Follow the project standards from `.agents/rules/process/git-workflow.md`:
-
-**Format:**
-
-```
-type(scope): Brief summary (50 chars or less)
-
-Optional detailed explanation if needed. Wrap at 72 characters.
-Explain WHAT changed and WHY, not HOW (code shows how).
-
-- Bullet points for multiple changes
-- Each change on its own line
-- Focus on impact and rationale
-
-Refs: #123
-```
-
-**Commit Types:**
-
-- `feat:` New feature or functionality
-- `fix:` Bug fix
-- `docs:` Documentation only changes
-- `refactor:` Code restructuring without behavior change
-- `test:` Adding or updating tests
-- `chore:` Maintenance tasks (dependencies, configs)
-- `perf:` Performance improvements
-- `style:` Code formatting (no logic change)
-
-**Best Practices:**
-
-- Use **imperative mood**: "Add feature" not "Added feature"
-- Explain **WHY**, not just WHAT
-- Keep subject line **under 50 characters**
-- **Atomic commits** - one logical change per commit
-- Be specific and descriptive
+**Apply the canonical conventions — do not duplicate them here.** Read `.agents/rules/process/git-workflow.md` for the authoritative format, the valid `type` list, and the best practices (imperative mood, ≤50-char subject, wrap body at 72, explain WHY, atomic commits). Validate the message against that rule. If the user needs more than a single commit (amend, rewrite, squash, history cleanup), hand off to the `lidr-commit-management` skill.
 
 ### 4. Create Commit
 

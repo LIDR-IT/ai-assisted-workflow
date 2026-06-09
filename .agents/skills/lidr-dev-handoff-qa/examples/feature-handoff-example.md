@@ -1,261 +1,194 @@
-# 🔄 Handoff Dev → QA
+---
+id: dev-handoff-qa-feature-example
+version: "1.2.0"
+last_updated: "2026-06-09"
+updated_by: "TL: align example to canonical template + validation script"
+status: active
+type: example
+---
 
-**Ticket**: SDLC-456 - Implementar autenticación por reconocimiento facial
-**Developer**: García, Miguel
-**QA Assigned**: López, Ana
-**Date**: 2026-03-16
-**Environment**: https://staging.{{CLIENT_CODE}}.com
-**Status**: READY FOR QA ✅
+# Handoff Dev → QA: SDLC-456 — Implement facial-recognition authentication
+
+Example (Jira tracking + GitHub PRs + Slack chat — illustrative, not canonical; concrete tools resolve via the registry).
+
+| Field                     | Value                                                                                  |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| **Ticket**                | [SDLC-456](https://jira.example.com/browse/SDLC-456)                                   |
+| **Source RF (RF Origen)** | RF-SDLC-012                                                                            |
+| **PR**                    | [#1310](https://github.com/example-org/platform/pull/1310) — merged 2026-03-16         |
+| **Environment (Entorno)** | [https://staging.example.com](https://staging.example.com) — deployed 2026-03-16 15:45 |
+| **Feature Flag**          | `FACE_AUTH_V1 = ON` or "No flag" / "Sin flag"                                          |
+| **Developer**             | García, Miguel (@miguel.garcia)                                                        |
+| **QA Assigned**           | López, Ana (@ana.lopez)                                                                |
+
+## 1. What Was Implemented? (¿Qué se Implementó?)
+
+### Functional Description (Descripción Funcional — USER language, not developer)
+
+- **New flow**: The usuario puede now authenticate using facial recognition for passwordless login on mobile.
+- **Improved validation**: The system can verificar whether a real, live person is present (liveness detection), not a photo.
+- **Visual feedback**: Real-time capture guidance with an oval overlay (green/red frames).
+- **Immediate results**: Identity validated in under 3 seconds with an accept/reject decision.
+
+### Visible Changes (Cambios Visibles)
+
+| Change                      | Where                      | Screenshot                                      |
+| --------------------------- | -------------------------- | ----------------------------------------------- |
+| "Login with Face ID" button | Mobile login screen        | `test-screenshots/login-face-id-button.png`     |
+| Camera with guide overlay   | Facial capture screen      | `test-screenshots/camera-overlay-guides.png`    |
+| Face ID setup section       | Settings > Security        | `test-screenshots/settings-face-id-section.png` |
+| Results screen              | On verification completion | `test-screenshots/results-screen.png`           |
+
+### What Was NOT Implemented (Lo que NO se Implementó — explicit exclusions to avoid false bugs)
+
+- ❌ Offline mode (requires an internet connection)
+- ❌ Multiple templates per user (single face template only)
+- ❌ Landscape capture (portrait mode only)
+- ❌ Third-party biometric service integration (proprietary algorithms only)
+
+> These exclusions are intentional. Do not file bugs against them.
+
+## 2. Technical Changes Relevant for QA (Cambios Técnicos Relevantes para QA)
+
+### Endpoints
+
+| Method | Path                       | Description                        | Status |
+| ------ | -------------------------- | ---------------------------------- | ------ |
+| POST   | `/api/v1/auth/face/verify` | Verifies a captured face for login | New    |
+| GET    | `/api/v1/auth/face/status` | Returns enrollment/template status | New    |
+| POST   | `/api/v1/auth/face/enroll` | Registers a face template          | New    |
+
+- Input for verify: `{ image: base64, sessionId: string }`
+- Output for verify: `{ success: boolean, token?: string, confidence: number }`
+- Rate limit: 5 requests/minute per IP
+
+### Database (Base de Datos)
+
+| Table            | Change                                 | Migration                         | QA Impact                              |
+| ---------------- | -------------------------------------- | --------------------------------- | -------------------------------------- |
+| `face_templates` | New table for encrypted biometric data | `20260316_add_face_templates.sql` | Verify the DB stores no raw image data |
+| `users`          | Added column `face_enrolled` BOOLEAN   | Same migration                    | Verify the flag flips after enrollment |
+
+### Configuration (Configuración)
+
+| Variable             | Staging Value | Notes                        |
+| -------------------- | ------------- | ---------------------------- |
+| `LIVENESS_THRESHOLD` | `0.75`        | Minimum confidence to accept |
+| `MAX_FACE_ATTEMPTS`  | `3`           | Maximum attempts per session |
+| `FACE_AUTH_V1`       | `true`        | Feature Flag active          |
+
+### External Dependencies (Dependencias Externas)
+
+| Service                   | Status    | Impact if down                   |
+| ------------------------- | --------- | -------------------------------- |
+| Identity Verification API | ✅ Active | Liveness detection does not work |
+| Redis Cache               | ✅ Active | Sessions expire immediately      |
+
+## 3. How to Test It (Cómo Probarlo)
+
+### Prerequisites (Prerequisitos — verifiable checklist)
+
+- [ ] Feature Flag `FACE_AUTH_V1 = ON` verified at `/admin/flags`
+- [ ] Device: smartphone with a front camera, camera permission granted to the staging domain
+- [ ] Test user enrolled: `qa_user1@example.com` / `TestPass2024!` (role: verified_user)
+- [ ] Good lighting (avoid backlight)
+- [ ] Test data available in folder `test-data/documents/`
+
+### Main Flow — Happy Path (Flujo Principal)
+
+| Step | Action                    | Data                                    | Expected Result                       |
+| ---- | ------------------------- | --------------------------------------- | ------------------------------------- |
+| 1    | Open the mobile app       | -                                       | Login screen visible                  |
+| 2    | Tap "Login with Face ID"  | -                                       | Camera screen opens                   |
+| 3    | Allow camera access       | -                                       | Active camera preview with oval guide |
+| 4    | Position face in the oval | `test-data/documents/dni-valid-001.jpg` | Green frame, capture begins           |
+| 5    | Wait for analysis         | ~2-3 seconds                            | Score > 0.75, status "ACCEPTED"       |
+| 6    | Verify access             | -                                       | Automatic login to the main dashboard |
+
+### Error Scenarios (Escenarios de Error)
+
+| #   | Scenario             | How to Reproduce                   | Expected Result                                |
+| --- | -------------------- | ---------------------------------- | ---------------------------------------------- |
+| 1   | Photo spoofing       | Hold a printed photo to the camera | Error "Please use your real face, not a photo" |
+| 2   | Unregistered face    | Capture a different person's face  | Error "We could not verify your identity"      |
+| 3   | No camera permission | Deny camera access                 | Message "We need access to your camera"        |
+| 4   | 3 failed attempts    | Fail liveness 3 times in a row     | Error "Attempt limit reached. Use password"    |
+
+### Edge Cases
+
+| #   | Case            | How to Reproduce         | Expected Result                      |
+| --- | --------------- | ------------------------ | ------------------------------------ |
+| 1   | Poor lighting   | Test in a dark room      | Guidance message; no false accept    |
+| 2   | Multiple faces  | Two people in frame      | Rejected; "Only one face allowed"    |
+| 3   | Expired session | Wait 15 minutes inactive | Redirect to login, "Session expired" |
+
+## 4. Test Data (Datos de Prueba)
+
+### Test Documents/Files (Test Documents)
+
+| File                       | Type               | Purpose                | Expected Result                   |
+| -------------------------- | ------------------ | ---------------------- | --------------------------------- |
+| `dni-valid-001.jpg`        | Valid face capture | Basic happy path       | Successful login, status ACCEPTED |
+| `dni-valid-002.jpg`        | Valid face capture | Alternative happy path | Successful login, status ACCEPTED |
+| `face-photo-spoof-001.jpg` | Printed photo      | Liveness rejection     | Error "Please use your real face" |
+| `face-corrupted-001.jpg`   | Corrupted file     | Format error           | Error "Invalid file format"       |
+
+### Test Users
+
+| User                 | Password      | Role          | Status  | Notes                        |
+| -------------------- | ------------- | ------------- | ------- | ---------------------------- |
+| qa_user1@example.com | TestPass2024! | verified_user | Active  | Template already enrolled    |
+| qa_user2@example.com | TestPass2024! | verified_user | Active  | No template, requires enroll |
+| qa_user3@example.com | TestPass2024! | verified_user | Blocked | For testing blocked users    |
+
+## 5. Regression Areas (Áreas de Regresión)
+
+### Impact areas
+
+| Area               | Why Affected                   | Regression Priority |
+| ------------------ | ------------------------------ | ------------------- |
+| Traditional login  | Shares JWT/session logic       | 🔴 High             |
+| Settings screen    | New Face ID section added      | 🟡 Medium           |
+| Session management | New state during capture       | 🟡 Medium           |
+| 2FA flow           | Face ID counts as first factor | 🟡 Medium           |
+
+### Suggested Smoke Test (top 5 tests to run FIRST)
+
+1. **Traditional login/logout** still works normally
+2. **Settings screen** loads with the new Face ID section
+3. **Dashboard** loads without errors after Face ID login
+4. **API health** responds OK at `/health`
+5. **Feature Flag** can be enabled/disabled correctly
+
+## 6. Risks and Limitations (Riesgos y Limitaciones)
+
+| Risk                            | Testing Impact                           | Workaround                                     |
+| ------------------------------- | ---------------------------------------- | ---------------------------------------------- |
+| Liveness sensitive to lighting  | Tests may fail in poor light             | Test in well-lit conditions                    |
+| Dependency on external services | Intermittent tests if services go down   | Check status at `/admin/health` before testing |
+| Feature Flag may change         | Tests fail if the flag is disabled       | Verify the flag at the start of each session   |
+| 3-attempt limit per session     | Cannot test multiple errors back-to-back | Use a new session for each error test          |
+
+## 7. Screenshots / Demo
+
+- **Login screen**: `test-screenshots/login-face-id-button.png`
+- **Camera overlay**: `test-screenshots/camera-overlay-guides.png`
+- **Settings section**: `test-screenshots/settings-face-id-section.png`
+- **Success result**: `test-screenshots/results-screen.png`
+- **Liveness error**: `test-screenshots/liveness-error-message.png`
+
+**Full Demo video**: `test-videos/face-auth-complete-flow.mp4`
 
 ---
 
-## 📋 Resumen de la Implementación
-
-### ¿Qué se implementó?
-
-Nuevo flujo de autenticación usando reconocimiento facial para usuarios móviles. Permite login sin contraseña usando la cámara del dispositivo.
-
-### Cambios principales:
-
-- **Frontend**: Nueva pantalla de captura facial en app móvil
-- **Backend**: API de verificación facial con liveness detection
-- **Base de datos**: Tabla para almacenar templates biométricos cifrados
-- **Seguridad**: Implementación GDPR-compliant para datos biométricos
-
----
-
-## 🎯 User Story y Criterios de Aceptación
-
-### US Original
-
-**Como** usuario de la app móvil
-**Quiero** autenticarme usando mi rostro
-**Para** acceder de forma rápida y segura sin recordar contraseñas
-
-### Criterios de Aceptación (BDD)
-
-```gherkin
-Scenario: Login exitoso con reconocimiento facial
-  Given que soy un usuario registrado con template facial
-  And que abro la app móvil
-  When selecciono "Login con rostro"
-  And permito acceso a la cámara
-  And capturo mi rostro siguiendo las instrucciones
-  Then el sistema valida mi identidad en menos de 3 segundos
-  And accedo al dashboard principal
-
-Scenario: Rechazo por rostro no reconocido
-  Given que abro la app móvil
-  When selecciono "Login con rostro"
-  And capturo un rostro no registrado
-  Then veo mensaje "Usuario no reconocido"
-  And se me ofrece opción de login tradicional
-
-Scenario: Error de liveness detection
-  Given que intento hacer login facial
-  When el sistema detecta que uso una foto en lugar de rostro real
-  Then veo mensaje "Por favor, usa tu rostro real"
-  And se solicita nueva captura
-```
-
----
-
-## 🔧 Detalles Técnicos de la Implementación
-
-### API Endpoints Nuevos
-
-```
-POST /api/v1/auth/face/verify
-- Input: { image: base64, sessionId: string }
-- Output: { success: boolean, token?: string, confidence: number }
-- Rate limit: 5 requests/minute por IP
-
-GET /api/v1/auth/face/status
-- Output: { enrolled: boolean, templateExists: boolean }
-
-POST /api/v1/auth/face/enroll
-- Input: { userId: string, images: base64[] }
-- Output: { templateId: string, quality: number }
-```
-
-### Base de Datos
-
-**Nueva tabla**: `domain-specific_templates`
-
-```sql
-- id (UUID, primary key)
-- user_id (UUID, foreign key)
-- template_data (encrypted blob)
-- created_at, updated_at
-- quality_score (float)
-- algorithm_version (string)
-```
-
-### Frontend Changes
-
-- **Nueva pantalla**: `FaceAuthScreen.tsx`
-- **Componentes**: `CameraCapture.tsx`, `LivenessGuide.tsx`
-- **Estados**: loading, capturing, processing, success, error
-- **Permisos**: Camera permission request flow
-
----
-
-## 🧪 Cómo Probar
-
-### Pre-requisitos
-
-- [ ] **Device**: Smartphone con cámara frontal
-- [ ] **Permissions**: Permitir acceso a cámara cuando la app lo solicite
-- [ ] **Lighting**: Probar en buena iluminación (evitar contraluz)
-- [ ] **Test users**: Usar cuentas `qa_user1@{{CLIENT_CODE}}.com` a `qa_user5@{{CLIENT_CODE}}.com`
-
-### Flujo de Testing Principal
-
-#### 1. Enrollment (Registro de Template)
-
-1. Login con usuario QA usando password tradicional
-2. Ve a Settings > Security > Face Authentication
-3. Tap "Configurar Face ID"
-4. Sigue instrucciones de captura (5 fotos en diferentes ángulos)
-5. **Verificar**: Mensaje "Face ID configurado correctamente"
-
-#### 2. Face Login Happy Path
-
-1. Logout completo de la app
-2. En login screen, tap "Login con Face ID"
-3. Permite acceso a cámara
-4. Posiciona rostro en el óvalo guía
-5. **Verificar**: Login automático en <3 segundos
-
-#### 3. Edge Cases a Validar
-
-- **Lighting pobre**: Probar en ambiente oscuro → debe guiar al usuario
-- **Múltiples rostros**: Probar con varias personas en cámara → debe rechazar
-- **Sin rostro**: Probar con objeto, mano, etc. → debe solicitar rostro válido
-- **Photo spoofing**: Probar con foto de la persona → debe detectar y rechazar
-- **Rostro no registrado**: Usar persona diferente → debe rechazar elegantemente
-
-### Test Data
-
-- **qa_user1@{{CLIENT_CODE}}.com**: Template ya registrado, login debe funcionar
-- **qa_user2@{{CLIENT_CODE}}.com**: Sin template, debe requerir enrollment
-- **qa_user3@{{CLIENT_CODE}}.com**: Template corrupted (test edge case)
-
----
-
-## 🚦 Estados y Mensajes de Error
-
-| Escenario                 | Mensaje Mostrado                              | Acción Siguiente         |
-| ------------------------- | --------------------------------------------- | ------------------------ |
-| **Cámara sin permiso**    | "Necesitamos acceso a tu cámara para Face ID" | Botón "Ir a Settings"    |
-| **Sin rostro detectado**  | "Posiciona tu rostro dentro del óvalo"        | Guía visual animada      |
-| **Liveness fallo**        | "Por favor, usa tu rostro real, no una foto"  | Nueva captura automática |
-| **Usuario no reconocido** | "No pudimos verificar tu identidad"           | Botón "Usar contraseña"  |
-| **Error de red**          | "Error de conexión. Intentando de nuevo..."   | Retry automático 3x      |
-| **Error de servidor**     | "Servicio temporalmente no disponible"        | Botón "Usar contraseña"  |
-
----
-
-## 🔍 Regression Areas
-
-### Impacto en Funcionalidades Existentes
-
-- **Login tradicional**: NO afectado, sigue funcionando igual
-- **Password reset**: NO afectado
-- **2FA**: Face ID cuenta como primer factor, sigue requiriendo 2FA si está habilitado
-- **Session management**: Usa misma lógica de tokens JWT
-
-### Areas a Re-testear
-
-- [ ] **Login flow completo** (tradicional) - debe seguir funcionando
-- [ ] **Settings screen** - nueva sección Face ID visible
-- [ ] **Security settings** - opciones de disable/enable Face ID
-- [ ] **Logout flow** - debe limpiar session normalmente
-
----
-
-## 📱 Device Testing Matrix
-
-| Device                | OS Version  | Camera          | Expected Result                   |
-| --------------------- | ----------- | --------------- | --------------------------------- |
-| **iPhone 12+**        | iOS 15+     | Front TrueDepth | ✅ Full functionality             |
-| **Samsung S21+**      | Android 11+ | Front 32MP      | ✅ Full functionality             |
-| **iPhone SE**         | iOS 15+     | Front standard  | ⚠️ Reduced liveness accuracy      |
-| **Android mid-range** | Android 9+  | Front 8MP       | ⚠️ Slower processing              |
-| **Tablets**           | Any OS      | Front camera    | ❌ Not supported (blocked in app) |
-
----
-
-## 🔐 Security & Compliance Notes
-
-### GDPR Compliance
-
-- ✅ **Explicit consent**: Usuario debe aprobar en enrollment
-- ✅ **Data minimization**: Solo template matemático, no imagen original
-- ✅ **Right to deletion**: Botón "Eliminar Face ID" en settings
-- ✅ **Encryption**: Templates cifrados con AES-256
-
-### Testing Security Aspects
-
-- [ ] **Template encryption**: Verificar que DB no contiene datos raw
-- [ ] **Consent flow**: Debe mostrar disclaimer de GDPR antes de enrollment
-- [ ] **Data deletion**: "Eliminar Face ID" debe limpiar template de DB
-- [ ] **Anti-spoofing**: Probar con fotos, videos, máscaras (debe fallar)
-
----
-
-## ⚠️ Known Issues & Limitations
-
-### Limitaciones Actuales
-
-- **Network dependency**: Requiere conexión para verificación (no offline)
-- **Single template**: Un template por usuario (no múltiples rostros)
-- **Device rotation**: Solo funciona en portrait mode
-- **Background app**: Si app va a background durante captura, debe reiniciar
-
-### Bugs Pendientes (No blocking)
-
-- **SDLC-458**: Mejora de UI feedback durante processing
-- **SDLC-461**: Optimización para Android low-end devices
-
----
-
-## ✅ Definition of Done Checklist
-
-### Development
-
-- [x] Código implementado y code review aprobado
-- [x] Unit tests escritos y pasando (coverage 85%)
-- [x] Integration tests para API endpoints
-- [x] Error handling completo implementado
-- [x] Logging y monitoring agregado
-
-### Security
-
-- [x] Security review completado (CISO approval)
-- [x] GDPR compliance validado (Privacy Officer)
-- [x] Penetration testing básico pasado
-- [x] No vulnerabilidades críticas en SAST scan
-
-### QA Readiness
-
-- [x] Feature flag configurado (pode disable en prod)
-- [x] Test environment con data seeded
-- [x] Documentation actualizada
-- [x] Rollback plan documentado
-
----
-
-## 📞 Support & Questions
+## Support & Questions
 
 **Primary Developer**: García, Miguel (@miguel.garcia)
 **Backup Support**: Rodríguez, Sandra (@sandra.rodriguez)
 **Security Questions**: Martínez, Carlos (@carlos.martinez)
 **QA Questions**: López, Ana (@ana.lopez)
 
-**Slack Channel**: #facial-auth-testing
+**Chat Channel**: #facial-auth-testing
 **Environment Issues**: #devops-support
 
----
-
-**✨ Happy Testing! Si algo no queda claro, ping a Miguel antes que QA fail 😄**
+**Happy Testing! If anything is unclear, ping Miguel before QA fails.**

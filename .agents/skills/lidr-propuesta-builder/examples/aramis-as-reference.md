@@ -8,8 +8,9 @@ status: active
 
 # Aramis Group — End-to-end Reference
 
-This document maps the Aramis discovery report sections to the three propuesta JSONs.
-Use this as the canonical example when applying the `propuesta-builder` skill to a new client.
+This document maps the Aramis discovery report sections to the three improvement-proposal
+JSONs (`propuesta/`). Use this as the canonical example when applying the `propuesta-builder`
+skill to a new client.
 
 ## Inputs
 
@@ -24,38 +25,38 @@ Use this as the canonical example when applying the `propuesta-builder` skill to
 
 | File                                                 | Lines | Highlights                                                          |
 | ---------------------------------------------------- | ----- | ------------------------------------------------------------------- |
-| `src/data/clients/aramis/propuesta/diagnostico.json` | ~122  | 9 PP, 8 fortalezas, 8 oportunidades, 9 gaps                         |
-| `src/data/clients/aramis/propuesta/mejoras.json`     | ~189  | 8 fases ordenadas F1→F8, mapeo gate 0–7                             |
-| `src/data/clients/aramis/propuesta/flujo.json`       | ~190  | 32 nodos, 39 edges, hotfix paralelo + Bridge Impact + Cross-Country |
+| `src/data/clients/aramis/propuesta/diagnostico.json` | ~122  | 9 PP, 8 strengths, 8 opportunities, 9 gaps                          |
+| `src/data/clients/aramis/propuesta/mejoras.json`     | ~189  | 8 phases ordered F1→F8, gate mapping 0–7                            |
+| `src/data/clients/aramis/propuesta/flujo.json`       | ~190  | 32 nodes, 39 edges, parallel hotfix + Bridge Impact + Cross-Country |
 
 ## Section mapping (report → JSON)
 
 ### Report → diagnostico.json
 
-| Report section                                       | JSON path                          | Notes                                                             |
-| ---------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------- |
-| `## Resumen Ejecutivo`                               | `summary.executiveSummary`         | Condensed; reference v1.4.0 + survey 2026-04-07                   |
-| `### 1.1 Participantes`                              | (implicit, not stored)             | Use to attribute quotes correctly                                 |
-| `## 2. Análisis AS-IS` → "Fortalezas" subset         | `summary.fortalezas[]`             | Prefix each with `• `                                             |
-| `## 4. Análisis de Gaps vs LIDR` → strengths bullets | merged into `summary.fortalezas[]` | Pre-Code-Review CI Gate, SCA parcial, etc.                        |
-| `## 4. Análisis de Gaps vs LIDR` → gap table         | `summary.gapsCriticos[]`           | Reference PP-NN + impact level                                    |
-| `## 3. Pain Points Identificados` (PP-01..PP-09)     | `painPoints[]` (9 items)           | One JSON entry per `### PP-NN`. Include verbatim quote + speaker. |
-| Each PP body                                         | `painPoints[].problema`            | Keep verbatim quote, attribute speaker                            |
-| Each PP "Referencia LIDR" or "Oportunidad"           | `painPoints[].mejora`              | Use the LIDR skill/gate names                                     |
-| Source location of evidence                          | `painPoints[].evidence`            | "discovery report sec. 3 PP-05 · VTT ≈1:49:14 (David)"            |
+| Report section                                   | JSON path                          | Notes                                                             |
+| ------------------------------------------------ | ---------------------------------- | ----------------------------------------------------------------- |
+| `## Executive Summary`                           | `summary.executiveSummary`         | Condensed; reference v1.4.0 + survey 2026-04-07                   |
+| `### 1.1 Participants`                           | (implicit, not stored)             | Use to attribute quotes correctly                                 |
+| `## 2. AS-IS Analysis` → "Strengths" subset      | `summary.fortalezas[]`             | Prefix each with `• `                                             |
+| `## 4. Gap Analysis vs LIDR` → strengths bullets | merged into `summary.fortalezas[]` | Pre-Code-Review CI Gate, partial SCA, etc.                        |
+| `## 4. Gap Analysis vs LIDR` → gap table         | `summary.gapsCriticos[]`           | Reference PP-NN + impact level                                    |
+| `## 3. Identified Pain Points` (PP-01..PP-09)    | `painPoints[]` (9 items)           | One JSON entry per `### PP-NN`. Include verbatim quote + speaker. |
+| Each PP body                                     | `painPoints[].problema`            | Keep verbatim quote, attribute speaker                            |
+| Each PP "LIDR Reference" or "Opportunity"        | `painPoints[].mejora`              | Use the LIDR skill/gate names                                     |
+| Source location of evidence                      | `painPoints[].evidence`            | "discovery report sec. 3 PP-05 · VTT ≈1:49:14 (David)"            |
 
 ### Report → mejoras.json (only if client-specific extensions exist)
 
 For Aramis, extensions emitted in `mejoras.json`:
 
-| Fase                 | Aramis-specific element                                                      | Source in report                    |
-| -------------------- | ---------------------------------------------------------------------------- | ----------------------------------- |
-| F2 — Discovery & PRD | Polaris Knowledge Agent integration, formalize Luis Marco's orchestrator     | sec. 5.2 + 8 "innovadores internos" |
-| F3 — Especificación  | Cross-Country Compatibility Check, Sheila ATDD pre-Ready-for-Dev             | PP-03 + PP-06                       |
-| F5 — Desarrollo      | Bridge Impact Analyzer, CLAUDE.md por repo, preserve Pre-Code-Review CI Gate | PP-01, PP-02, PP-05, PP-08          |
-| F6 — QA              | Move Cypress to FE repo or bloqueante CI, Playwright MCP auto-update         | PP-04                               |
-| F7 — Seguridad       | Coordination with Ciberseguridad Aramis Group VP + GDPR hook                 | "Sobre el equipo de Ciberseguridad" |
-| F8 — Despliegue      | Hotfix paralelo respected + Sprint Review recovered                          | sec. 2.3 branching + survey gap     |
+| Phase                | Aramis-specific element                                                      | Source in report                   |
+| -------------------- | ---------------------------------------------------------------------------- | ---------------------------------- |
+| F2 — Discovery & PRD | Polaris Knowledge Agent integration, formalize Luis Marco's orchestrator     | sec. 5.2 + 8 "internal innovators" |
+| F3 — Specification   | Cross-Country Compatibility Check, Sheila ATDD pre-Ready-for-Dev             | PP-03 + PP-06                      |
+| F5 — Development     | Bridge Impact Analyzer, per-repo CLAUDE.md, preserve Pre-Code-Review CI Gate | PP-01, PP-02, PP-05, PP-08         |
+| F6 — QA              | Move Cypress to FE repo or make CI blocking, Playwright MCP auto-update      | PP-04                              |
+| F7 — Security        | Coordination with Aramis Group Cybersecurity VP + GDPR hook                  | "About the Cybersecurity team"     |
+| F8 — Deployment      | Parallel hotfix respected + Sprint Review recovered                          | sec. 2.3 branching + survey gap    |
 
 If the client has NO extensions, do not emit `mejoras.json` — it will inherit from `base/`.
 
@@ -63,12 +64,12 @@ If the client has NO extensions, do not emit `mejoras.json` — it will inherit 
 
 For Aramis, flow extensions emitted in `flujo.json`:
 
-| Aramis extension                  | Diagram nodes/edges                                                              |
-| --------------------------------- | -------------------------------------------------------------------------------- |
-| Hotfix paralelo (`main → main`)   | Node `hotfix-in` (purple at x=900, y=0) + dashed edge to `comite`                |
-| Pre-Code-Review CI Gate existente | Node `ci-existing` (emerald, "preserved + extended")                             |
-| Bridge Impact Analyzer            | Node `bridge-impact` (red) parallel to `sast`, with rejection edge to `sast-blk` |
-| Cross-Country Check pre-Gate 2    | Node `cross-country` (cyan) parallel to `rf`, feeding into `rtm`                 |
+| Aramis extension                 | Diagram nodes/edges                                                              |
+| -------------------------------- | -------------------------------------------------------------------------------- |
+| Parallel hotfix (`main → main`)  | Node `hotfix-in` (purple at x=900, y=0) + dashed edge to `comite`                |
+| Existing Pre-Code-Review CI Gate | Node `ci-existing` (emerald, "preserved + extended")                             |
+| Bridge Impact Analyzer           | Node `bridge-impact` (red) parallel to `sast`, with rejection edge to `sast-blk` |
+| Cross-Country Check pre-Gate 2   | Node `cross-country` (cyan) parallel to `rf`, feeding into `rtm`                 |
 
 If the client has NO flow extensions, do not emit `flujo.json` — base/ covers it.
 

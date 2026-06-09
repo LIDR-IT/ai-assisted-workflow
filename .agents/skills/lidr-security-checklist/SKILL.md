@@ -1,22 +1,30 @@
 ---
 name: lidr-security-checklist
 id: security-checklist
-version: "1.0.1"
-last_updated: "2026-03-16"
-updated_by: "System: Quality Assurance Integration"
+version: "1.0.2"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 7
 owner_role: "Sec Lead"
 automation: true
 domain_agnostic: true
-description: "🤖 Essential for platform security validation - ALWAYS use before Gate 6 approval for deployments, algorithm releases, authentication systems, or data processing APIs. CRITICAL for evaluating data encryption, regulatory compliance, attack prevention, API authentication for service endpoints, and cross-border data transfer security. Use when deploying banking systems, government platforms, fintech verification, or any sensitive data processing workflows. Mandatory for production security sign-off."
+language_default: en
+integrations: [code_quality, tracking]
+description: "🤖 Essential for platform security validation - ALWAYS use before Gate 6 approval for deployments, algorithm releases, authentication systems, or data processing APIs. CRITICAL for evaluating data encryption, regulatory compliance, attack prevention, API authentication for service endpoints, and cross-border data transfer security. Use for any sensitive-data processing workflow in regulated or high-assurance domains (specifics resolve via the client `domain` setting). Mandatory for production security sign-off."
 ---
 
 # Security Checklist Evaluator
 
-Phase: 7 — Security | Gate: 6 (Security Sign-off) | Language: Spanish + English
+Phase: 7 — Security | Gate: 6 (Security Sign-off) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 **Principle:** Security is not a gate you pass — it's a property you continuously verify.
+
+## Relationship to BMad
+
+This skill is a **LIDR extension on top of BMad** (BMad = source of truth; LIDR fills gaps BMad has no concept of). It owns the **Gate-6 security sign-off**: an OWASP Top 10 + regulatory compliance checklist that gates production deployment — a governance artifact BMad has no equivalent for. It complements `bmad-testarch-nfr` (which audits NFR evidence including security) by producing the formal CISO sign-off record.
 
 ## Automated Workflow (NEW)
 
@@ -25,7 +33,7 @@ Phase: 7 — Security | Gate: 6 (Security Sign-off) | Language: Spanish + Englis
 1. **Execute Security Analyzer**: `scripts/compliance-analyzer.py` processes SAST/SCA/DAST results automatically
 2. **Domain Classification**: Auto-categorizes findings with domain-specific relevance and applicable regulatory context (e.g., GDPR Article 9 for sensitive data)
 3. **Generate Security Analysis**: Structured security findings with business impact and remediation priority
-4. **Apply Industry Standards**: Automated assessment against banking/government/consumer security requirements
+4. **Apply Industry Standards**: Automated assessment against {{INDUSTRY_TIER_1}}/{{INDUSTRY_TIER_2}}/{{INDUSTRY_TIER_3}} security requirements (resolved per client `domain`)
 
 ### Phase 2: Checklist Generation (Automated)
 
@@ -65,7 +73,7 @@ If automation fails, use original manual process:
 5. **Assess API security for sensitive endpoints**: Authentication (OAuth2), authorization (RBAC), rate limiting, input validation
 6. **Review cross-border compliance**: Data residency requirements, transfer mechanisms, encryption standards
 7. **Evaluate each checklist item** with domain context: ✅ Pass / ❌ Fail / ⚠️ Partial / N/A
-8. **Generate industry-specific remediation**: Banking-grade vs. consumer-grade vs. government-grade security requirements
+8. **Generate industry-specific remediation**: {{INDUSTRY_TIER_1}}-grade vs. {{INDUSTRY_TIER_2}}-grade vs. {{INDUSTRY_TIER_3}}-grade security requirements (per client `domain`)
 9. **Determine Gate 6 readiness** with regulatory compliance attestation
 
 ## Automation Scripts
@@ -76,10 +84,10 @@ If automation fails, use original manual process:
 
 **Key Features**:
 
-- **Multi-Source Integration**: Auto-discovers SonarQube, Snyk, OWASP ZAP reports in project directory
+- **Multi-Source Integration**: Auto-discovers {{CODE_QUALITY_TOOL}} (SAST/SCA/DAST) reports in project directory
 - **Domain Classification**: Specialized patterns for sensitive data encryption, authentication security, API security
-- **Data Protection Regulation Validation**: Automated compliance assessment for sensitive data processing (GDPR, HIPAA, PCI-DSS, etc.)
-- **Industry Standards Assessment**: Banking-grade vs consumer-grade vs government-grade security requirements
+- **Data Protection Regulation Validation**: Automated compliance assessment for sensitive data processing against the {{COMPLIANCE_STANDARD}} applicable to the client domain
+- **Industry Standards Assessment**: {{INDUSTRY_TIER_1}}-grade vs {{INDUSTRY_TIER_2}}-grade vs {{INDUSTRY_TIER_3}}-grade security requirements
 - **Remediation Prioritization**: Risk-based priority scoring with domain-specific relevance weighting
 - **Gate 6 Assessment**: Automated PASS/CONDITIONAL/FAIL evaluation with blocking issues identification
 
@@ -108,7 +116,7 @@ python scripts/compliance-analyzer.py \
 **Key Features**:
 
 - **Automated Report Generation**: Transforms analysis JSON into actionable security checklists
-- **Industry-Specific Assessment**: Banking/Government/Consumer security requirement validation
+- **Industry-Specific Assessment**: Industry-tiered security requirement validation (resolves to the client's applicable regulation)
 - **Gate 6 Integration**: PASS/CONDITIONAL/FAIL determination with specific remediation actions
 - **CSV Export Integration**: Project management tools integration for remediation tracking
 - **GDPR Article 9 Reporting**: Special category data handling compliance assessment
@@ -132,19 +140,19 @@ python scripts/checklist-generator.py \
 **Outputs**:
 
 - `security-checklist-YYYY-MM-DD.md`: Human-readable security checklist report
-- `security-remediation-YYYYMMDD.csv`: CSV export for Jira/project management import
+- `security-remediation-YYYYMMDD.csv`: CSV export for {{TRACKING_TOOL}} import
 - Industry-specific compliance assessment reports
 
 ## Input
 
 | Input                     | Required  | Source                          | Automated Processing                                        |
 | ------------------------- | --------- | ------------------------------- | ----------------------------------------------------------- |
-| SAST results              | ✅        | SonarQube / Semgrep             | ✅ `compliance-analyzer.py` auto-discovers JSON exports     |
-| SCA results               | ✅        | Snyk / npm audit                | ✅ `compliance-analyzer.py` processes vulnerability reports |
-| DAST results              | Desirable | OWASP ZAP / Burp                | ✅ `compliance-analyzer.py` parses dynamic scan results     |
+| SAST results              | ✅        | {{CODE_QUALITY_TOOL}} (SAST)    | ✅ `compliance-analyzer.py` auto-discovers JSON exports     |
+| SCA results               | ✅        | {{CODE_QUALITY_TOOL}} (SCA)     | ✅ `compliance-analyzer.py` processes vulnerability reports |
+| DAST results              | Desirable | {{CODE_QUALITY_TOOL}} (DAST)    | ✅ `compliance-analyzer.py` parses dynamic scan results     |
 | Infrastructure config     | ✅        | Nginx, K8s, headers             | ⚠️ Manual configuration review                              |
 | ADRs (security decisions) | Desirable | skill `adr/`                    | ⚠️ Manual context integration                               |
-| PRD-T security NFRs       | Desirable | skill `prd-tecnico/`            | ⚠️ Manual requirements mapping                              |
+| PRD-T security NFRs       | Desirable | skill `bmad-prd/`               | ⚠️ Manual requirements mapping                              |
 | Applicable regulations    | Desirable | Legal (GDPR, PCI-DSS, SOC2)     | ✅ Auto-detected from project context                       |
 | Security Sign-off format  | ✅        | `@signoffs/security-signoff.md` | ✅ Automated sign-off generation                            |
 
@@ -196,7 +204,7 @@ python scripts/checklist-generator.py \
 
 ### 9. Logging & Monitoring
 
-### 10. Compliance-specific (GDPR/PCI-DSS/SOC2 if applicable)
+### 10. Compliance-specific (client's applicable regulations — e.g. GDPR/PCI-DSS/SOC2)
 
 ## Failures & Remediation
 
@@ -219,11 +227,11 @@ Use `@signoffs/security-signoff.md` format for formal sign-off.
 
 - **{{SENSITIVE_DATA_TYPE}} encryption is mandatory**: AES-256-GCM minimum, HSM preferred for {{INDUSTRY_TIER_1}}/{{INDUSTRY_TIER_3}} grade
 - **Zero-tolerance for sensitive data exposure**: Any vulnerability affecting sensitive data storage/transmission is Critical
-- **Data protection regulation compliance required**: Consent, processing lawfulness, deletion, data subject rights must be verified (GDPR, HIPAA, or applicable regulation)
+- **Data protection regulation compliance required**: Consent, processing lawfulness, deletion, data subject rights must be verified per the {{COMPLIANCE_STANDARD}} applicable to the client domain
 - **API authentication enforced**: All sensitive-data endpoints require OAuth2 + API keys, no exceptions
 - **Attack prevention validated**: Authentication and anti-abuse security tested against known attack vectors
 - **Cross-border compliance verified**: Data residency, transfer agreements, encryption standards per jurisdiction
-- **Industry standards apply**: Banking (PCI-DSS level), Government (FedRAMP equivalent), Consumer (OWASP baseline)
+- **Industry standards apply**: {{INDUSTRY_TIER_1}}, {{INDUSTRY_TIER_2}}, and {{INDUSTRY_TIER_3}} assurance levels resolve to the concrete standard (e.g. PCI-DSS, FedRAMP, OWASP baseline) via the client `domain` setting
 - **Audit trail immutability**: All sensitive operations logged with tamper-evident storage
 - **Data isolation protection**: Technical measures prevent unauthorized linking of data records across services
 
@@ -471,7 +479,7 @@ python scripts/checklist-generator.py \
 - **Zero tolerance for Critical security findings** — automation blocks Gate 6 if Critical issues exist
 - **Data protection regulation compliance required** — sensitive data processing violations auto-escalate to CISO
 - **Sensitive data encryption mandatory** — any sensitive data storage/transmission vulnerability is Critical
-- **Industry standards enforcement** — banking/government/consumer requirements automatically assessed
+- **Industry standards enforcement** — {{INDUSTRY_TIER_1}}/{{INDUSTRY_TIER_2}}/{{INDUSTRY_TIER_3}} requirements automatically assessed
 
 ### Quality Enforcement (Automated Validation)
 
@@ -484,8 +492,8 @@ python scripts/checklist-generator.py \
 
 - **SAST/SCA/DAST integration mandatory** — all security scan types consumed and analyzed automatically
 - **Gate 6 evaluation enhancement** — automated checklist results required input for gate approval
-- **CSV export for tracking** — all remediation items become trackable issues in project management tools
-- **Industry compliance validation** — banking (PCI-DSS), government (FedRAMP), consumer (OWASP) requirements automatically assessed
+- **CSV export for tracking** — all remediation items become trackable issues in the bound {{TRACKING_TOOL}}
+- **Industry compliance validation** — {{INDUSTRY_TIER_1}}/{{INDUSTRY_TIER_2}}/{{INDUSTRY_TIER_3}} requirements ({{COMPLIANCE_STANDARD}}) automatically assessed
 
 ## ROI and Efficiency Gains
 
@@ -501,7 +509,7 @@ python scripts/checklist-generator.py \
 - **Consistency**: 100% systematic application of security checklist criteria vs human variation
 - **Comprehensiveness**: No missed security categories due to time pressure or human oversight
 - **Domain Expertise**: Specialized domain knowledge applied consistently to every evaluation
-- **Industry Compliance**: Automated assessment against banking/government/consumer requirements
+- **Industry Compliance**: Automated assessment against {{INDUSTRY_TIER_1}}/{{INDUSTRY_TIER_2}}/{{INDUSTRY_TIER_3}} requirements
 - **Evidence Trail**: Perfect audit trail of security assessment decisions and remediation actions
 
 ### Team Productivity
@@ -515,7 +523,7 @@ python scripts/checklist-generator.py \
 
 - **Reduced Security Risk**: Comprehensive automated assessment reduces chance of security oversights
 - **Faster Time-to-Market**: 3.5 hours saved per release × 26 releases = 91 hours annually
-- **Compliance Confidence**: Automated GDPR/PCI-DSS/industry requirements validation
+- **Compliance Confidence**: Automated validation against the client's applicable regulations
 - **Audit Readiness**: Complete security assessment documentation and evidence for regulatory audits
 
 ---
@@ -549,6 +557,6 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills

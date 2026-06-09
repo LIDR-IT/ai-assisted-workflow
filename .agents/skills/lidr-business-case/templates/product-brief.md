@@ -12,232 +12,232 @@ owner_role: "Product Owner"
 
 # Template: Product Brief
 
-> **Propósito**: Documento de arranque que captura la visión, problema, y alcance inicial de un producto/proyecto.
-> **Cuándo se crea**: Fase 1 — Originación, antes del kick-off
-> **Quién lo llena**: PME / Product Owner con asistencia de skill `business-case`
-> **Quién lo valida**: Sponsor ejecutivo + stakeholders clave
-> **Gate asociado**: Gate 0 — Intake Aprobado
-> **Instancias por proyecto**: `docs/projects/{proyecto}/product-brief.md`
+> **Purpose**: Startup document that captures the vision, problem, and initial scope of a product/project.
+> **When it is created**: Phase 1 — Origination, before the kick-off
+> **Who fills it**: PME / Product Owner with assistance from skill `business-case`
+> **Who validates it**: Executive sponsor + key stakeholders
+> **Associated gate**: Gate 0 — Intake Approved
+> **Instances per project**: `docs/projects/{project}/product-brief.md`
 
 ---
 
-## Secciones del Documento
+## Document Sections
 
-### 1. Resumen Ejecutivo
+### 1. Executive Summary
 
 ```markdown
-## Resumen Ejecutivo
+## Executive Summary
 
-**Nombre del producto/proyecto**: {nombre}
-**Sponsor**: {nombre y rol}
-**Product Owner**: {nombre}
-**Fecha**: {YYYY-MM-DD}
-**Estado**: Borrador | En Revisión | Aprobado
+**Product/project name**: {name}
+**Sponsor**: {name and role}
+**Product Owner**: {name}
+**Date**: {YYYY-MM-DD}
+**Status**: Draft | Under Review | Approved
 
-### Elevator Pitch (2-3 oraciones)
+### Elevator Pitch (2-3 sentences)
 
-{Qué es, para quién, qué problema resuelve, y por qué ahora}
+{What it is, for whom, what problem it solves, and why now}
 ```
 
-**Criterio de validación**: Elevator pitch ≤3 oraciones. Debe responder QUÉ, PARA QUIÉN, POR QUÉ.
+**Validation criterion**: Elevator pitch ≤3 sentences. Must answer WHAT, FOR WHOM, WHY.
 
-### 2. Problema
+### 2. Problem
 
 ```markdown
-## Problema
+## Problem
 
-### Situación Actual
+### Current Situation
 
-{Describir el estado actual — qué existe hoy, cómo funciona, qué dolor causa}
+{Describe the current state — what exists today, how it works, what pain it causes}
 
-### Impacto del Problema
+### Problem Impact
 
-| Dimensión | Impacto                           | Evidencia                          |
-| --------- | --------------------------------- | ---------------------------------- |
-| Usuarios  | {cuántos afectados, cómo}         | {datos, métricas, feedback}        |
-| Negocio   | {revenue, eficiencia, riesgo}     | {datos financieros si disponibles} |
-| Técnico   | {deuda, escalabilidad, seguridad} | {métricas técnicas}                |
+| Dimension | Impact                        | Evidence                      |
+| --------- | ----------------------------- | ----------------------------- |
+| Users     | {how many affected, how}      | {data, metrics, feedback}     |
+| Business  | {revenue, efficiency, risk}   | {financial data if available} |
+| Technical | {debt, scalability, security} | {technical metrics}           |
 
-### Raíz del Problema
+### Root of the Problem
 
-{Análisis causal — por qué existe el problema, no solo los síntomas}
+{Causal analysis — why the problem exists, not just the symptoms}
 ```
 
-**Criterios de validación**:
+**Validation criteria**:
 
-- [ ] Situación actual describe el status quo sin proponer soluciones
-- [ ] Impacto cuantificado con al menos 1 métrica o dato concreto
-- [ ] Raíz del problema identificada (no solo síntomas)
+- [ ] Current situation describes the status quo without proposing solutions
+- [ ] Impact quantified with at least 1 concrete metric or data point
+- [ ] Root of the problem identified (not just symptoms)
 
-### 3. Solución Propuesta
+### 3. Proposed Solution
 
 ```markdown
-## Solución Propuesta
+## Proposed Solution
 
-### Visión del Producto
+### Product Vision
 
-{1-2 párrafos describiendo la solución en lenguaje de negocio}
+{1-2 paragraphs describing the solution in business language}
 
-### Objetivos Clave (máximo 5)
+### Key Objectives (maximum 5)
 
-| #   | Objetivo | Métrica de Éxito | Target |
-| --- | -------- | ---------------- | ------ |
-| O1  |          |                  |        |
-| O2  |          |                  |        |
+| #   | Objective | Success Metric | Target |
+| --- | --------- | -------------- | ------ |
+| O1  |           |                |        |
+| O2  |           |                |        |
 
-### Alcance Inicial (MVP)
+### Initial Scope (MVP)
 
-#### Incluye
+#### Includes
 
-- {Funcionalidad 1}
-- {Funcionalidad 2}
+- {Feature 1}
+- {Feature 2}
 
-#### Excluye (explícitamente)
+#### Excludes (explicitly)
 
-- {Funcionalidad fuera de scope} — razón: {justificación}
+- {Feature out of scope} — reason: {justification}
 
-### Anti-scope (lo que NUNCA será)
+### Anti-scope (what it will NEVER be)
 
-- {Funcionalidad que no se construirá bajo ninguna circunstancia}
+- {Feature that will not be built under any circumstance}
 ```
 
-**Criterios de validación**:
+**Validation criteria**:
 
-- [ ] Objetivos SMART (Specific, Measurable, Achievable, Relevant, Time-bound)
-- [ ] ≤5 objetivos (foco)
-- [ ] Alcance con inclusiones Y exclusiones explícitas
-- [ ] Cada exclusión tiene justificación
+- [ ] SMART objectives (Specific, Measurable, Achievable, Relevant, Time-bound)
+- [ ] ≤5 objectives (focus)
+- [ ] Scope with explicit inclusions AND exclusions
+- [ ] Each exclusion has justification
 
-### 4. Usuarios y Stakeholders
+### 4. Users and Stakeholders
 
 ```markdown
-## Usuarios y Stakeholders
+## Users and Stakeholders
 
-### Usuarios Primarios
+### Primary Users
 
-| Persona | Rol | Necesidad Principal | Frecuencia de Uso          |
-| ------- | --- | ------------------- | -------------------------- |
-|         |     |                     | Diaria / Semanal / Mensual |
+| Persona | Role | Main Need | Usage Frequency          |
+| ------- | ---- | --------- | ------------------------ |
+|         |      |           | Daily / Weekly / Monthly |
 
 ### Stakeholders
 
-| Nombre | Rol | Influencia      | Interés         | Canal de Comunicación |
-| ------ | --- | --------------- | --------------- | --------------------- |
-|        |     | Alta/Media/Baja | Alto/Medio/Bajo |                       |
+| Name | Role | Influence       | Interest        | Communication Channel |
+| ---- | ---- | --------------- | --------------- | --------------------- |
+|      |      | High/Medium/Low | High/Medium/Low |                       |
 ```
 
-**Criterios de validación**:
+**Validation criteria**:
 
-- [ ] Al menos 1 usuario primario identificado con necesidad concreta
-- [ ] Stakeholders con nivel de influencia e interés mapeados
-- [ ] Sponsor ejecutivo identificado
+- [ ] At least 1 primary user identified with a concrete need
+- [ ] Stakeholders with influence and interest levels mapped
+- [ ] Executive sponsor identified
 
-### 5. Contexto Técnico Inicial
+### 5. Initial Technical Context
 
 ```markdown
-## Contexto Técnico (Alto Nivel)
+## Technical Context (High Level)
 
-### Stack Propuesto (si se conoce)
+### Proposed Stack (if known)
 
-{Tecnologías principales propuestas o restricciones técnicas conocidas}
+{Main proposed technologies or known technical constraints}
 
-### Integraciones Necesarias
+### Required Integrations
 
-| Sistema | Tipo                  | Criticidad      | Estado                    |
-| ------- | --------------------- | --------------- | ------------------------- |
-|         | API / SDK / DB / File | Alta/Media/Baja | Disponible / Por negociar |
+| System | Type                  | Criticality     | Status                       |
+| ------ | --------------------- | --------------- | ---------------------------- |
+|        | API / SDK / DB / File | High/Medium/Low | Available / To be negotiated |
 
-### Restricciones Técnicas Conocidas
+### Known Technical Constraints
 
-- {Restricción 1 — ej: debe funcionar offline}
-- {Restricción 2 — ej: compatibilidad con sistema legacy X}
+- {Constraint 1 — e.g.: must work offline}
+- {Constraint 2 — e.g.: compatibility with legacy system X}
 
-### Requisitos de Seguridad/Compliance
+### Security/Compliance Requirements
 
-- {Regulación aplicable — ej: GDPR, HIPAA}
-- {Datos sensibles — ej: PII, financieros}
+- {Applicable regulation — e.g.: GDPR, HIPAA}
+- {Sensitive data — e.g.: PII, financial}
 ```
 
-**Criterios de validación**:
+**Validation criteria**:
 
-- [ ] Integraciones identificadas con criticidad
-- [ ] Restricciones técnicas explícitas
-- [ ] Requisitos de compliance identificados si aplica
+- [ ] Integrations identified with criticality
+- [ ] Explicit technical constraints
+- [ ] Compliance requirements identified if applicable
 
-### 6. Timeline y Recursos
+### 6. Timeline and Resources
 
 ```markdown
-## Timeline y Recursos
+## Timeline and Resources
 
-### Hitos Clave
+### Key Milestones
 
-| Hito      | Fecha Target | Dependencia |
-| --------- | ------------ | ----------- |
-| Kick-off  |              |             |
-| MVP listo |              |             |
-| Go-live   |              |             |
+| Milestone | Target Date | Dependency |
+| --------- | ----------- | ---------- |
+| Kick-off  |             |            |
+| MVP ready |             |            |
+| Go-live   |             |            |
 
-### Recursos Necesarios
+### Required Resources
 
-| Rol | Cantidad | Dedicación | Disponibilidad |
-| --- | -------- | ---------- | -------------- |
-|     |          | %          | Desde {fecha}  |
+| Role | Quantity | Dedication | Availability |
+| ---- | -------- | ---------- | ------------ |
+|      |          | %          | From {date}  |
 
-### Presupuesto Estimado (si aplica)
+### Estimated Budget (if applicable)
 
-| Concepto        | Estimación | Notas |
-| --------------- | ---------- | ----- |
-| Desarrollo      |            |       |
-| Infraestructura |            |       |
-| Licencias       |            |       |
+| Concept        | Estimate | Notes |
+| -------------- | -------- | ----- |
+| Development    |          |       |
+| Infrastructure |          |       |
+| Licenses       |          |       |
 ```
 
-### 7. Riesgos Iniciales
+### 7. Initial Risks
 
 ```markdown
-## Riesgos Iniciales
+## Initial Risks
 
-| #   | Riesgo | Probabilidad    | Impacto         | Mitigación Propuesta |
-| --- | ------ | --------------- | --------------- | -------------------- |
-| R1  |        | Alta/Media/Baja | Alto/Medio/Bajo |                      |
+| #   | Risk | Probability     | Impact          | Proposed Mitigation |
+| --- | ---- | --------------- | --------------- | ------------------- |
+| R1  |      | High/Medium/Low | High/Medium/Low |                     |
 ```
 
-### 8. Aprobación
+### 8. Approval
 
 ```markdown
-## Aprobación
+## Approval
 
-| Rol     | Nombre | Decisión                     | Firma | Fecha |
-| ------- | ------ | ---------------------------- | ----- | ----- |
-| Sponsor |        | Aprobar / Rechazar / Diferir |       |       |
-| PO      |        | Aprobar / Rechazar           |       |       |
+| Role    | Name | Decision                 | Signature | Date |
+| ------- | ---- | ------------------------ | --------- | ---- |
+| Sponsor |      | Approve / Reject / Defer |           |      |
+| PO      |      | Approve / Reject         |           |      |
 ```
 
 ---
 
-## Criterios de Completitud Global
+## Global Completeness Criteria
 
-| Criterio                              | Obligatorio | Validación                |
-| ------------------------------------- | ----------- | ------------------------- |
-| Elevator pitch presente               | Sí          | Automática (≤3 oraciones) |
-| Problema con impacto cuantificado     | Sí          | Semi-auto                 |
-| ≤5 objetivos SMART                    | Sí          | Automática                |
-| Alcance con inclusiones + exclusiones | Sí          | Automática                |
-| Al menos 1 usuario primario           | Sí          | Automática                |
-| Sponsor identificado                  | Sí          | Automática                |
-| Timeline con ≥3 hitos                 | Sí          | Automática                |
-| Al menos 1 riesgo identificado        | Sí          | Automática                |
-| Aprobación del sponsor                | Sí          | Manual                    |
-
----
-
-## Skills que Asisten
-
-- **Generación**: Skill `business-case` genera borrador desde el problema de negocio
-- **Stakeholders**: Skill `stakeholder-map` sugiere mapa de interesados
-- **Validación**: Command `/validate-project-docs` verifica criterios de completitud
-- **Siguiente paso**: Skill `kickoff` genera acta de kick-off desde este brief
+| Criterion                          | Required | Validation               |
+| ---------------------------------- | -------- | ------------------------ |
+| Elevator pitch present             | Yes      | Automatic (≤3 sentences) |
+| Problem with quantified impact     | Yes      | Semi-auto                |
+| ≤5 SMART objectives                | Yes      | Automatic                |
+| Scope with inclusions + exclusions | Yes      | Automatic                |
+| At least 1 primary user            | Yes      | Automatic                |
+| Sponsor identified                 | Yes      | Automatic                |
+| Timeline with ≥3 milestones        | Yes      | Automatic                |
+| At least 1 risk identified         | Yes      | Automatic                |
+| Sponsor approval                   | Yes      | Manual                   |
 
 ---
 
-_Template de formato — cada proyecto crea su instancia en `docs/projects/{proyecto}/product-brief.md`_
+## Assisting Skills
+
+- **Generation**: Skill `business-case` generates a draft from the business problem
+- **Stakeholders**: Skill `stakeholder-map` suggests a stakeholder map
+- **Validation**: Command `/validate-project-docs` verifies completeness criteria
+- **Next step**: Skill `kickoff` generates the kick-off minutes from this brief
+
+---
+
+_Format template — each project creates its instance in `docs/projects/{project}/product-brief.md`_

@@ -1,24 +1,28 @@
 ---
 name: lidr-refinement-notes
 id: refinement-notes
-version: "1.1.0"
-last_updated: "2026-03-25"
-updated_by: "System: Domain-Agnostic Normalization"
+version: "1.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 4
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking]
 description: "POST-BMad WRAPPER: consumes user stories from `bmad-create-story` and captures DoR-readiness backlog grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer that BMad's story creation does not provide. ALWAYS use after `bmad-create-story` during backlog grooming, before sprint commitment."
 ---
 
 # Refinement Notes Structurer
 
-Phase: 4 — Sprint Planning | Language: Spanish
+Phase: 4 — Sprint Planning | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ## Workflow
 
-1. **Read US** discussed in session (Jira backlog, prioritized by PO)
+1. **Read US** discussed in session ({{TRACKING_TOOL}} backlog, prioritized by PO)
 2. **Capture domain-specific decisions**:
    - Accuracy or quality thresholds (precision, performance targets)
    - Performance targets (response time, throughput)
@@ -33,52 +37,52 @@ Phase: 4 — Sprint Planning | Language: Spanish
 
 ## Input
 
-| Input                       | Required  | Source                   |
-| --------------------------- | --------- | ------------------------ |
-| US discussed (IDs + titles) | ✅        | Jira backlog             |
-| Session notes or transcript | ✅        | Facilitator / recording  |
-| Participants                | ✅        | Attendance               |
-| Sprint capacity             | Desirable | skill `sprint-capacity/` |
-| DoR checklist               | Desirable | checklists/dor.md        |
+| Input                       | Required  | Source                    |
+| --------------------------- | --------- | ------------------------- |
+| US discussed (IDs + titles) | ✅        | {{TRACKING_TOOL}} backlog |
+| Session notes or transcript | ✅        | Facilitator / recording   |
+| Participants                | ✅        | Attendance                |
+| Sprint capacity             | Desirable | skill `sprint-capacity/`  |
+| DoR checklist               | Desirable | checklists/dor.md         |
 
 ## Output Template
 
 ```markdown
 # Refinement Notes — [DD/MM/YYYY]
 
-| Campo           | Valor                        |
+| Field           | Value                        |
 | --------------- | ---------------------------- |
-| **Sesión**      | Refinement #{N} — Sprint {N} |
-| **Fecha**       | [YYYY-MM-DD HH:MM]           |
-| **Facilitador** | [SM]                         |
-| **Asistentes**  | [Names + roles]              |
-| **Duración**    | [Xh Xmin]                    |
+| **Session**     | Refinement #{N} — Sprint {N} |
+| **Date**        | [YYYY-MM-DD HH:MM]           |
+| **Facilitator** | [SM]                         |
+| **Attendees**   | [Names + roles]              |
+| **Duration**    | [Xh Xmin]                    |
 
-## US Discutidas
+## User Stories Discussed
 
 ### US-{PROJ}-{NNN}: {Title}
 
-| Campo          | Valor                                   |
+| Field          | Value                                   |
 | -------------- | --------------------------------------- |
-| **Estimación** | [X]h (rango: [min]-[max]h)              |
-| **Prioridad**  | Must / Should / Could                   |
+| **Estimate**   | [X]h (range: [min]-[max]h)              |
+| **Priority**   | Must / Should / Could                   |
 | **DoR Status** | ✅ Ready / ⚠️ Needs work / ❌ Not ready |
 | **Blockers**   | [None / description]                    |
 
-**Decisiones:**
+**Decisions:**
 
 - [Decision 1 — what was agreed]
 - [Decision 2]
 
-**Dudas resueltas:**
+**Questions resolved:**
 
 - Q: [question] → A: [answer, who answered]
 
-**Preguntas abiertas:**
+**Open questions:**
 
 - [Open question — owner to resolve by date]
 
-**Cambios al scope/criteria:**
+**Changes to scope/criteria:**
 
 - [What changed from original US]
 
@@ -86,21 +90,21 @@ Phase: 4 — Sprint Planning | Language: Spanish
 
 [Repeat for each US]
 
-## Resumen de Sesión
+## Session Summary
 
-| US       | Estimación | DoR      | Sprint-Ready? |
-| -------- | ---------- | -------- | ------------- |
-| US-{NNN} | {X}h       | ✅/⚠️/❌ | Yes/No        |
+| US       | Estimate | DoR      | Sprint-Ready? |
+| -------- | -------- | -------- | ------------- |
+| US-{NNN} | {X}h     | ✅/⚠️/❌ | Yes/No        |
 
 ## Action Items
 
-| #   | Acción | Responsable | Fecha Límite |
-| --- | ------ | ----------- | ------------ |
+| #   | Action | Owner | Due Date |
+| --- | ------ | ----- | -------- |
 
-## Próxima Sesión
+## Next Session
 
-- **Fecha**: [next refinement date]
-- **US a discutir**: [backlog items for next session]
+- **Date**: [next refinement date]
+- **US to discuss**: [backlog items for next session]
 ```
 
 ## Key Rules
@@ -145,6 +149,13 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                       | Changes                                                                                |
+| ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| 1.2.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added `language_default: en` frontmatter (P5 bookkeeping)                              |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira (tracking) via tool-registry |

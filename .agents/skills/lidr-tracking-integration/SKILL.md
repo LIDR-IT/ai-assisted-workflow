@@ -9,6 +9,8 @@ phase: 1
 owner_role: "PME"
 automation: false
 domain_agnostic: true
+integrations: [tracking] # capabilities bound via _shared/lidr/integrations/tool-registry.yaml
+language_default: en # artifact language; overridable per client (clients/<CODE>.yaml)
 description: >
   Create properly structured project tracking hierarchy for any tracking system (Jira, Linear, Notion, etc.).
   Adaptive skill that detects client's tracking tool and uses appropriate adapter for epic/project creation.
@@ -17,7 +19,7 @@ description: >
   Always use after Gate 0 approval, always use when project key is assigned and team is confirmed.
   Do NOT use for individual user stories (use user-stories), for sprint planning (use sprint-capacity), or for projects without formal tracking tools.
   Triggers on "create epic", "set up project tracking", "initialize tracking", "create master epic", "project setup", "post-kickoff actions".
-  Output in Spanish (descriptions) + English (keys, labels).
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: PME (creates structure), Dev (references tickets), QA (links test cases).
   Tracking pipeline: this is the CREATE step (one-time external structure); `lidr-sdlc-tracking` owns the internal state file, `lidr-external-sync` reconciles them — do NOT use this for ongoing state or sync.
 ---
@@ -28,7 +30,7 @@ description: >
 
 **Triggers**: "create epic", "set up project tracking", "initialize tracking", "create master epic", "project setup", "post-kickoff actions"
 
-Phase: 1 — Origination | Post kick-off | Language: Spanish + English | Duration: 15-30min
+Phase: 1 — Origination | Post kick-off | Language: English (default, per-client configurable) | Duration: 15-30min
 
 ## Related — tracking pipeline
 
@@ -40,37 +42,38 @@ This skill is the **CREATE** step. The three tracking skills form a pipeline, no
 
 ## Adaptive Architecture
 
-This skill **automatically detects** the client's tracking tool and uses the appropriate adapter:
+This skill resolves the client's `{{TRACKING_TOOL}}` from the central registry
+(`_shared/lidr/integrations/tool-registry.yaml`) and uses the bound adapter.
+Concrete tools are NEVER hardcoded here — they live in `clients/<CODE>.yaml`.
 
-| Tool             | Adapter             | Epic Format          | Integration              |
-| ---------------- | ------------------- | -------------------- | ------------------------ |
-| **Jira**         | `jira-adapter.py`   | Standard Epic        | Atlassian MCP / REST API |
-| **Linear**       | `linear-adapter.py` | Project + Milestones | Linear API / GraphQL     |
-| **Notion**       | `notion-adapter.py` | Database Entry       | Notion API               |
-| **Azure DevOps** | `azure-adapter.py`  | Epic Work Item       | Azure DevOps REST API    |
-| **GitHub**       | `github-adapter.py` | Project + Issues     | GitHub API               |
+| Tool        | Binding (per `tool-registry.yaml`)                         | Status         |
+| ----------- | ---------------------------------------------------------- | -------------- |
+| **Jira**    | `adapters/jira-adapter.py` (REST)                          | ✅ implemented |
+| **Linear**  | `adapters/linear-adapter.py` (GraphQL)                     | ✅ implemented |
+| **Redmine** | `adapters/redmine-adapter.py` (REST)                       | ✅ implemented |
+| **Notion**  | Notion MCP (`claude_ai_Notion`) — no python adapter needed | registry       |
+| **GitHub**  | `gh` CLI (`gh issue` / project)                            | registry       |
+| **Custom**  | client MCP server declared in `clients/<CODE>.yaml`        | registry       |
 
-### Auto-Detection Logic
+Add a tool by registering it under `capabilities.tracking.tools` in the
+registry; add a python adapter only when REST/GraphQL integration is needed
+(implement the shared `TrackingToolAdapter` ABC).
+
+### Tool Resolution Logic
 
 ```python
-def detect_tracking_tool(client_config):
-    """Auto-detect tracking tool from client configuration"""
-    if client_config.tracking_tool:
-        return client_config.tracking_tool
+def resolve_tracking_tool(client_config, registry):
+    """Resolve the concrete tracking tool for the active client.
 
-    # Client-specific defaults
-    if client_config.name == 'Docline':
-        return 'linear'
-    elif client_config.name == 'FacePhi':
-        return 'jira'
-
-    # Industry defaults
-    if client_config.industry == 'Healthcare':
-        return 'linear'
-    elif client_config.industry == 'Biometric':
-        return 'jira'
-
-    return 'jira'  # Conservative default
+    Precedence: explicit client binding > registry default. No client names or
+    industries are hardcoded — the binding lives in clients/<CODE>.yaml.
+    """
+    # 1. Explicit per-client binding (clients/<CODE>.yaml -> tools.tracking)
+    bound = client_config.get('tools', {}).get('tracking')
+    if bound:
+        return bound
+    # 2. Registry default (tool-registry.yaml -> capabilities.tracking.default)
+    return registry['capabilities']['tracking']['default']
 ```
 
 ## Critical Success Workflow

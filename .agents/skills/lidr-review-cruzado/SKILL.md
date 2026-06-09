@@ -1,20 +1,21 @@
 ---
 name: lidr-review-cruzado
 id: review-cruzado
-version: "1.0.1"
-last_updated: "2026-03-16"
-updated_by: "System: Quality Assurance Integration"
+version: "1.0.2"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 2
 owner_role: "TL"
 automation: false
 domain_agnostic: true
-description: "Gate 1 enforcer: validates that bmad-prd output contains both Functional sections (user journeys, personas, business requirements) AND Technical sections (architecture, NFRs, integrations, compliance) complete and aligned. Acts as the LIDR wrapper after bmad-prd in the LIDR-on-BMad architecture. Detects misalignments between business intent and technical feasibility. ALWAYS use after bmad-prd produces the unified PRD, before invoking lidr-gate-evaluation for Gate 1."
+language_default: en
+description: "Gate 1 enforcer: validates that bmad-prd output contains both Functional sections (user journeys, personas, business requirements) AND Technical sections (architecture, NFRs, integrations, compliance) complete and aligned. Acts as the LIDR wrapper after bmad-prd in the LIDR-on-BMad architecture. Detects misalignments between business intent and technical feasibility. Recommended after bmad-prd produces the unified PRD, before invoking lidr-gate-evaluation for Gate 1."
 ---
 
 # PRD Cross-Review Facilitator
 
-Phase: 2 — Discovery | Gate: 1 (mandatory prerequisite) | Language: Spanish
+Phase: 2 — Discovery | Gate: 1 (optional evidence) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 ## Workflow
 
@@ -34,8 +35,8 @@ Phase: 2 — Discovery | Gate: 1 (mandatory prerequisite) | Language: Spanish
 
 | Input                          | Required  | Source                        |
 | ------------------------------ | --------- | ----------------------------- |
-| PRD Técnico (complete draft)   | ✅        | skill `prd-tecnico/`          |
-| PRD Funcional (complete draft) | ✅        | skill `prd-funcional/`        |
+| PRD Técnico (complete draft)   | ✅        | skill `bmad-prd/`             |
+| PRD Funcional (complete draft) | ✅        | skill `bmad-prd/`             |
 | Cross-review checklist         | ✅        | @checklists/review-cruzado.md |
 | Business Case                  | Reference | For alignment verification    |
 
@@ -43,17 +44,17 @@ Phase: 2 — Discovery | Gate: 1 (mandatory prerequisite) | Language: Spanish
 
 Check alignment across these cross-cutting dimensions:
 
-| Dimension                                             | PRD-F Section             | PRD-T Section    | What to Compare                                                                  |
-| ----------------------------------------------------- | ------------------------- | ---------------- | -------------------------------------------------------------------------------- |
-| **Functionalities ↔ Capabilities**                    | §4 Functionalities        | §3 Architecture  | Core features (verification, processing, integrations) are technically supported |
-| **User Journeys ↔ API Flow**                          | §5 Journeys               | §3 Architecture  | Each user step maps to API calls and processing capabilities                     |
-| **Compliance Requirements ↔ Compliance Architecture** | §4 Consent flows          | §5 Security      | User rights (deletion, access) have technical implementation                     |
-| **Accuracy Expectations ↔ System Performance**        | §7 Success metrics        | §5 NFRs          | Expected quality metrics align with system capabilities                          |
-| **Error Handling ↔ Failover Design**                  | §5 Journey error paths    | §3 Architecture  | User-friendly errors map to technical exception handling                         |
-| **Performance Expectations ↔ Infrastructure**         | §7 KPIs (speed)           | §5 NFRs          | User expectation (<3s) matches technical capacity                                |
-| **Data Retention ↔ Storage Design**                   | Business rules            | §7 Data model    | Regulatory retention periods match database architecture                         |
-| **Accessibility ↔ Technical Support**                 | §5 User personas          | §5 NFRs          | Special user needs and accessibility support in technical design                 |
-| **Compliance Scope ↔ Technical Scope**                | §8 Regulatory constraints | §8 Risk analysis | Industry/regulatory requirements covered technically                             |
+| Dimension                                             | PRD-F Section             | PRD-T Section    | What to Compare                                                               |
+| ----------------------------------------------------- | ------------------------- | ---------------- | ----------------------------------------------------------------------------- |
+| **Functionalities ↔ Capabilities**                    | §4 Functionalities        | §3 Architecture  | Core features (processing, integrations, workflows) are technically supported |
+| **User Journeys ↔ API Flow**                          | §5 Journeys               | §3 Architecture  | Each user step maps to API calls and processing capabilities                  |
+| **Compliance Requirements ↔ Compliance Architecture** | §4 Consent flows          | §5 Security      | User rights (deletion, access) have technical implementation                  |
+| **Accuracy Expectations ↔ System Performance**        | §7 Success metrics        | §5 NFRs          | Expected quality metrics align with system capabilities                       |
+| **Error Handling ↔ Failover Design**                  | §5 Journey error paths    | §3 Architecture  | User-friendly errors map to technical exception handling                      |
+| **Performance Expectations ↔ Infrastructure**         | §7 KPIs (speed)           | §5 NFRs          | User expectation (<3s) matches technical capacity                             |
+| **Data Retention ↔ Storage Design**                   | Business rules            | §7 Data model    | Regulatory retention periods match database architecture                      |
+| **Accessibility ↔ Technical Support**                 | §5 User personas          | §5 NFRs          | Special user needs and accessibility support in technical design              |
+| **Compliance Scope ↔ Technical Scope**                | §8 Regulatory constraints | §8 Risk analysis | Industry/regulatory requirements covered technically                          |
 
 ## Output Template
 
@@ -105,11 +106,11 @@ Check alignment across these cross-cutting dimensions:
 
 - **Every functional requirement needs technical capability**: PRD-F lists a core feature → PRD-T must have the corresponding architecture or API
 - **Compliance alignment is mandatory**: User consent flows in PRD-F must match data protection architecture in PRD-T
-- **Accuracy expectations must be realistic**: PRD-F promises "instant verification" → PRD-T must show sub-second capability
+- **Performance expectations must be realistic**: PRD-F promises a quality/latency target → PRD-T must show the matching capability
 - **Error paths need technical support**: PRD-F describes failure recovery → PRD-T needs fallback mechanisms
-- **Compliance requirements consistent**: Regulatory security in PRD-F → Enterprise encryption and controls in PRD-T
+- **Compliance requirements consistent**: Regulatory controls in PRD-F → Encryption and controls in PRD-T
 - **AI detects patterns, humans validate context**: AI finds structural gaps; humans verify business-technical semantics
-- **Be specific with context**: "Verification misaligned" → "PRD-F expects <2s processing for mobile users, but PRD-T shows 4s average latency. Resolution: optimize algorithm or adjust user expectation."
+- **Be specific with context**: "Feature misaligned" → "PRD-F expects <2s processing for mobile users, but PRD-T shows 4s average latency. Resolution: optimize the implementation or adjust user expectation."
 
 ## Cross-Review Example
 
@@ -161,6 +162,6 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills

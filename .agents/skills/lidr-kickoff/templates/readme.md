@@ -1,8 +1,8 @@
 ---
 id: readme-template
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Template Migration"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 type: template
 review_cycle: 90
@@ -12,93 +12,94 @@ owner_role: "Tech Lead"
 
 # README Template
 
-> **Proposito**: Template base para generar el README.md de cualquier proyecto del ecosistema.
-> **Usado por**: `/init-project-docs` al crear scaffold de proyecto.
-> **Formato**: Markdown con secciones estandar. Adaptar al stack concreto.
+> **Purpose**: Base template to generate the README.md of any project in the ecosystem.
+> **Used by**: `/init-project-docs` when creating a project scaffold.
+> **Format**: Markdown with standard sections. Adapt to the concrete stack.
+> **Output**: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 ---
 
-## Estructura recomendada
+## Recommended Structure
 
 ````markdown
-# {Nombre del Proyecto}
+# {Project Name}
 
-> Descripcion breve en 1-2 lineas: que hace, para quien, por que existe.
+> Brief description in 1-2 lines: what it does, for whom, why it exists.
 
 ## Quick Start
 
-### Prerrequisitos
+### Prerequisites
 
-- Node.js >= 20 LTS (o runtime del proyecto)
-- {DB si aplica}
-- {Otras dependencias de sistema}
+- Node.js >= 20 LTS (or the project runtime)
+- {DB if applicable}
+- {Other system dependencies}
 
-### Instalacion
+### Installation
 
 \```bash
 git clone {url}
-cd {proyecto}
-{comando de instalacion: npm install / pnpm install / etc.}
+cd {project}
+{install command: npm install / pnpm install / etc.}
 cp .env.example .env
-{comando de setup: migrations, seeds, etc.}
+{setup command: migrations, seeds, etc.}
 \```
 
-### Ejecucion
+### Run
 
 \```bash
-{comando de dev: npm run dev / etc.}
+{dev command: npm run dev / etc.}
 \```
 
-## Arquitectura
+## Architecture
 
-Diagrama o resumen de alto nivel (1 parrafo + link a docs/architecture/).
+High-level diagram or summary (1 paragraph + link to docs/architecture/).
 
-## Stack Tecnologico
+## Technology Stack
 
-| Capa          | Tecnologia                        |
-| ------------- | --------------------------------- |
-| Frontend      | {React, Vue, etc.}                |
-| Backend       | {Node.js, Go, etc.}               |
-| Base de datos | {PostgreSQL, MongoDB, etc.}       |
-| CI/CD         | {GitHub Actions, GitLab CI, etc.} |
+| Layer    | Technology                        |
+| -------- | --------------------------------- |
+| Frontend | {React, Vue, etc.}                |
+| Backend  | {Node.js, Go, etc.}               |
+| Database | {PostgreSQL, MongoDB, etc.}       |
+| CI/CD    | {GitHub Actions, GitLab CI, etc.} |
 
-## Estructura del Proyecto
+## Project Structure
 
 \```
 src/
-api/ # Controladores y rutas
-core/ # Logica de dominio
-components/ # Componentes UI (si frontend)
-utils/ # Utilidades transversales
+api/ # Controllers and routes
+core/ # Domain logic
+components/ # UI components (if frontend)
+utils/ # Cross-cutting utilities
 tests/ # Tests
-docs/ # Documentacion
+docs/ # Documentation
 \```
 
-## Contribuir
+## Contributing
 
-Ver [CONTRIBUTING.md](./CONTRIBUTING.md) para convenciones de codigo, branching, PRs y testing.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for code conventions, branching, PRs, and testing.
 
-## Seguridad
+## Security
 
-Ver [SECURITY.md](./SECURITY.md) para politica de reporte de vulnerabilidades.
+See [SECURITY.md](./SECURITY.md) for the vulnerability reporting policy.
 
-## Licencia
+## License
 
-Ver [LICENSE](./LICENSE).
+See [LICENSE](./LICENSE).
 
-## Enlaces
+## Links
 
-- [Arquitectura detallada](./docs/architecture/)
+- [Detailed architecture](./docs/architecture/)
 - [ADRs](./docs/adrs/)
 - [Changelog](./CHANGELOG.md)
-- {Link a Jira/Confluence si aplica}
+- {Link to {{TRACKING_TOOL}}/{{DOCS_TOOL}} if applicable}
 ````
 
 ---
 
-## Principios del README
+## README Principles
 
-1. **Puerta de entrada**: Un dev nuevo debe poder clonar, instalar y ejecutar en <15 min leyendo solo el README
-2. **Conciso**: No duplicar documentacion — enlazar a docs/ para detalles
-3. **Actualizado**: Revisar en cada release major. El comando `/sync-docs` detecta drift
-4. **Badges**: Opcional pero recomendado — CI status, coverage, version, license
+1. **Entry point**: A new dev should be able to clone, install, and run in <15 min reading only the README
+2. **Concise**: Do not duplicate documentation — link to docs/ for details
+3. **Up to date**: Review on every major release. The `/sync-docs` command detects drift
+4. **Badges**: Optional but recommended — CI status, coverage, version, license

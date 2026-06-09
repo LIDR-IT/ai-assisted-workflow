@@ -1,25 +1,31 @@
 ---
 name: lidr-external-sync
 id: external-sync
-version: "1.0.0"
-last_updated: "2026-03-17"
-updated_by: "System: SDLC Enhancement Plan Phase 4"
+version: "1.1.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+integrations: [tracking, chat, vcs] # capabilities bound via _shared/lidr/integrations/tool-registry.yaml
+language_default: en # artifact language; overridable per client (clients/<CODE>.yaml)
 description: >
-  Synchronize project data bidirectionally across external tools (Jira, Linear, Notion)
-  with conflict resolution. ALWAYS use when managing multi-tool SDLC workflows at scale.
+  Synchronize project data bidirectionally across multiple external tracking tools
+  (resolved per client via the registry) with conflict resolution. ALWAYS use when managing multi-tool SDLC workflows at scale.
   Tracking pipeline: this is the optional SYNC step; it requires `lidr-sdlc-tracking` (owns the `sdlc-tracking.yaml` it syncs) and `lidr-tracking-integration` (creates the initial external structure). Skip for single-tool or non-portfolio projects.
 ---
 
 # SKILL: External Tool Synchronization Engine
 
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
 > **Phase 4 Enhancement**: Multi-tool orchestration with conflict resolution and health monitoring
-> **Scope**: Bidirectional sync across Jira, Linear, Notion with portfolio-scale reliability
+> **Scope**: Bidirectional sync across every tracking target in the registry supported list ({{TRACKING_TOOL}}) with portfolio-scale reliability
 > **ROI**: Eliminates manual data entry, ensures consistency across 500+ projects
+
+This is a **multi-tool** skill: it reconciles state across the several tracking targets a portfolio binds. Where the canonical text refers to "the client tracker" it uses {{TRACKING_TOOL}}; where it enumerates which targets are supported, it points to the registry `tracking.tools` supported list rather than a fixed list.
 
 ---
 
@@ -32,7 +38,7 @@ This skill is the **SYNC** step (optional, portfolio-scale). It reconciles the f
 
 ## Purpose
 
-This skill orchestrates bidirectional synchronization between SDLC tracking (sdlc-tracking.yaml) and external tools (Jira, Linear, Notion). It provides conflict resolution, sync health monitoring, and automated sync scheduling for portfolio-scale operations.
+This skill orchestrates bidirectional synchronization between SDLC tracking (sdlc-tracking.yaml) and the external tracking targets a client binds ({{TRACKING_TOOL}}; supported targets enumerated in the registry `tracking.tools` list). It provides conflict resolution, sync health monitoring, and automated sync scheduling for portfolio-scale operations.
 
 ### When to Use
 
@@ -47,14 +53,18 @@ This skill orchestrates bidirectional synchronization between SDLC tracking (sdl
 
 ### Sync Engine Components
 
-| Component             | Purpose                 | Responsibility                                     |
-| --------------------- | ----------------------- | -------------------------------------------------- |
-| **Orchestrator**      | Multi-tool coordination | Schedule, batch operations, retry logic            |
-| **Conflict Resolver** | Data consistency        | Last-modified-wins, manual resolution triggers     |
-| **Health Monitor**    | Sync status tracking    | Success rates, error patterns, performance metrics |
-| **Rate Manager**      | API limits compliance   | Jira: 300/min, Linear: 60/min, Notion: 3/sec       |
+| Component             | Purpose                 | Responsibility                                       |
+| --------------------- | ----------------------- | ---------------------------------------------------- |
+| **Orchestrator**      | Multi-tool coordination | Schedule, batch operations, retry logic              |
+| **Conflict Resolver** | Data consistency        | Last-modified-wins, manual resolution triggers       |
+| **Health Monitor**    | Sync status tracking    | Success rates, error patterns, performance metrics   |
+| **Rate Manager**      | API limits compliance   | Per-target API limits (read from each bound adapter) |
 
 ### Supported Tools and Capabilities
+
+The set of supported tracking targets is **not hardcoded here** — it is the registry `tracking.tools` supported list (`_shared/lidr/integrations/tool-registry.yaml`). Each bound target supplies its own connector/adapter, read/write semantics, and rate limit. The illustrative rows below show the bidirectional sync contract every target must satisfy.
+
+Example (Jira / Linear / Notion-as-tracker — illustrative, not canonical):
 
 | Tool       | Connector           | Read                | Write             | Bidirectional    | Rate Limit  |
 | ---------- | ------------------- | ------------------- | ----------------- | ---------------- | ----------- |
@@ -68,11 +78,12 @@ This skill orchestrates bidirectional synchronization between SDLC tracking (sdl
 
 ### 1. Sync Project to External Tools
 
-**Input**: Project ID, tool list, sync mode
+**Input**: Project ID, tool list (registry {{TRACKING_TOOL}} target keys), sync mode
 **Output**: Sync report with success/failure details
 
 ```typescript
-// Example sync operation
+// Example sync operation — `tools` holds registry tracking.tools keys.
+// Example (jira / linear / notion-as-tracker) values shown:
 const syncResult = await syncEngine.syncProject("PROJ-2026-001", {
   tools: ["jira", "linear", "notion"],
   mode: "bidirectional",
@@ -123,21 +134,21 @@ const syncResult = await syncEngine.syncProject("PROJ-2026-001", {
 
 ### Automatic Sync Triggers
 
-| Event               | Frequency     | Tools        | Conflict Handling   |
-| ------------------- | ------------- | ------------ | ------------------- |
-| **Sprint Planning** | Per sprint    | Jira, Linear | Push to external    |
-| **Daily Standup**   | Daily 9 AM    | All tools    | Pull + push         |
-| **PR Merge**        | Real-time     | Jira, Notion | Update story status |
-| **Epic Completion** | Event-driven  | All tools    | Comprehensive sync  |
-| **Health Check**    | Weekly Sunday | All tools    | Audit + remediation |
+| Event               | Frequency     | Tools                           | Conflict Handling   |
+| ------------------- | ------------- | ------------------------------- | ------------------- |
+| **Sprint Planning** | Per sprint    | Bound {{TRACKING_TOOL}} targets | Push to external    |
+| **Daily Standup**   | Daily 9 AM    | All bound targets               | Pull + push         |
+| **PR Merge**        | Real-time     | Bound {{TRACKING_TOOL}} targets | Update story status |
+| **Epic Completion** | Event-driven  | All bound targets               | Comprehensive sync  |
+| **Health Check**    | Weekly Sunday | All bound targets               | Audit + remediation |
 
 ### Manual Sync Commands
 
 ```bash
-# Sync specific project
+# Sync specific project (all bound {{TRACKING_TOOL}} targets)
 /track-sdlc sync PROJ-2026-001
 
-# Sync with specific tool
+# Sync with a specific bound target — Example (jira): --tools=<registry tool key>
 /track-sdlc sync PROJ-2026-001 --tools=jira
 
 # Force sync (ignore timestamps)
@@ -208,8 +219,12 @@ interface SyncMetrics {
 
 ### Sync Configuration Template
 
+Each key under `tools:` is a {{TRACKING_TOOL}} target key from the registry `tracking.tools` supported list — a portfolio enables one block per bound target. Notification channels resolve to the bound {{CHAT_TOOL}}.
+
+Example (jira / linear / notion-as-tracker — illustrative target keys, not canonical):
+
 ```yaml
-# .claude/skills/external-sync/templates/sync-config.yaml
+# templates/sync-config.yaml
 sync_config:
   project_id: "{project-id}"
 
@@ -246,13 +261,17 @@ sync_config:
     success: false
     warnings: true
     errors: true
-    channels: ["slack", "email"]
+    channels: ["{{CHAT_TOOL}}"] # resolves to the bound chat target (Example: slack)
 ```
 
 ### Sync Report Template
 
+The `tools:` block reports one entry per bound {{TRACKING_TOOL}} target. The keys below are illustrative.
+
+Example (jira / linear / notion-as-tracker — illustrative target keys, not canonical):
+
 ```yaml
-# .claude/skills/external-sync/templates/sync-report.yaml
+# templates/sync-report.yaml
 sync_report:
   project_id: "{project-id}"
   timestamp: "{ISO-timestamp}"
@@ -333,8 +352,10 @@ const resolved = await conflictResolver.resolve(conflict, "last-modified-wins");
 
 ### Enhanced /track-sdlc Command
 
+`--sync` takes the {{TRACKING_TOOL}} target keys to fan out to, drawn from the registry `tracking.tools` supported list.
+
 ```bash
-# Initialize project with external sync
+# Initialize project with external sync — Example (jira,linear): --sync=<registry tool keys>
 /track-sdlc init my-project --sync=jira,linear
 
 # Update project status and sync
@@ -351,9 +372,10 @@ const resolved = await conflictResolver.resolve(conflict, "last-modified-wins");
 
 ```typescript
 // Phase 4: Development → QA
-// Auto-sync story status to external tools
+// Auto-sync story status to the bound {{TRACKING_TOOL}} targets
+// (`tools` array holds registry tool keys; Example values: ["jira", "linear"])
 await syncEngine.syncProject(projectId, {
-  tools: ["jira", "linear"],
+  tools: boundTrackingTargets, // resolved per client from the registry supported list
   trigger: "gate-advancement",
   fields: ["status", "qa_assignee"],
 });
@@ -364,6 +386,10 @@ await syncEngine.syncProject(projectId, {
 ## Security and Compliance
 
 ### API Key Management
+
+Each bound {{TRACKING_TOOL}} target declares its own credential env vars in the registry (`tracking.tools.<key>.env`). Provision exactly those — never hardcode keys.
+
+Example (jira / linear / notion-as-tracker — illustrative env vars, not canonical):
 
 ```yaml
 # Environment variables (never in code)
@@ -426,8 +452,8 @@ interface SyncAuditEntry {
 
 ### Roadmap Items
 
-1. **Q2 2026**: GitHub integration for PR/commit sync
-2. **Q3 2026**: Slack notifications for sync events
+1. **Q2 2026**: {{VCS_TOOL}} integration for PR/commit sync
+2. **Q3 2026**: {{CHAT_TOOL}} notifications for sync events
 3. **Q4 2026**: AI-powered conflict resolution
 4. **Q1 2027**: Real-time sync with webhooks
 
@@ -466,6 +492,7 @@ const validationRules = [
 
 ## Changelog
 
-| Version | Date       | Author                   | Changes                                                   |
-| ------- | ---------- | ------------------------ | --------------------------------------------------------- |
-| 1.0.0   | 2026-03-17 | System: Enhancement Plan | Initial implementation with three-tool sync orchestration |
+| Version | Date       | Author                   | Changes                                                                                                                        |
+| ------- | ---------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic   | Language to English-default-configurable; abstracted tracking/chat/VCS tools via tool-registry (supported list, not hardcoded) |
+| 1.0.0   | 2026-03-17 | System: Enhancement Plan | Initial implementation with three-tool sync orchestration                                                                      |

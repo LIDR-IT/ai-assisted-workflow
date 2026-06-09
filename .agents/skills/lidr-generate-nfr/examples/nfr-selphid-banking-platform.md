@@ -1,39 +1,41 @@
-# NFR: SelphID Banking Platform - Requisitos No Funcionales
+# NFR: SelphID Banking Platform - Non-Functional Requirements
 
-**Proyecto**: BBVA Digital Onboarding Platform
-**Generado desde**: PRD Técnico v1.0 § 5 Non-Functional Requirements
-**Fecha**: 2026-03-15
+**Project**: BBVA Digital Onboarding Platform
+**Generated from**: Technical PRD v1.0 § 5 Non-Functional Requirements
+**Date**: 2026-03-15
 **Owner**: Solution Architect + Performance Engineer
-**Aprobado por**: CTO + Security Officer
+**Approved by**: CTO + Security Officer
 
 ---
 
-## NFR-001: Performance y Throughput
+## NFR-001: Performance and Throughput
 
-### NFR-001.1: Latencia de Respuesta
+### NFR-001.1: Response Latency
 
-**Requirement**: El sistema debe procesar verificaciones de identidad con latencias ultra-bajas
-**Criterio de Medición**: Response time percentiles bajo carga normal y peak
+**Requirement**: The system must process identity verifications with ultra-low latency
+**Measurement Criteria**: Response time percentiles under normal and peak load
 
-| Componente                     | P50    | P95    | P99    | Peak Load P95 |
+| Component                      | P50    | P95    | P99    | Peak Load P95 |
 | ------------------------------ | ------ | ------ | ------ | ------------- |
 | **API Gateway**                | <100ms | <200ms | <500ms | <300ms        |
 | **Document OCR** (SelphID)     | <800ms | <1.2s  | <2s    | <1.8s         |
 | **Face Verification** (Selphi) | <400ms | <600ms | <1s    | <800ms        |
 | **End-to-end flow**            | <1.5s  | <2s    | <3s    | <2.5s         |
 
-**Herramientas de Medición**:
+**Measurement Tools**:
 
-- Prometheus + Grafana para métricas en tiempo real
-- Load testing con k6 (500 concurrent users)
-- APM con New Relic para tracing distribuido
+Example (Prometheus + Grafana / k6 / New Relic):
 
-### NFR-001.2: Throughput y Concurrencia
+- Prometheus + Grafana for real-time metrics
+- Load testing with k6 (500 concurrent users)
+- APM with New Relic for distributed tracing
 
-**Requirement**: Soportar volumen de onboarding bancario en horario pico
-**Criterio de Medición**: Transacciones procesadas simultáneamente sin degradación
+### NFR-001.2: Throughput and Concurrency
 
-| Métrica                      | Normal | Peak   | Stress Test |
+**Requirement**: Support banking onboarding volume during peak hours
+**Measurement Criteria**: Transactions processed simultaneously without degradation
+
+| Metric                       | Normal | Peak   | Stress Test |
 | ---------------------------- | ------ | ------ | ----------- |
 | **Concurrent verifications** | 200    | 500    | 750         |
 | **Daily volume**             | 8,000  | 15,000 | 25,000      |
@@ -57,36 +59,36 @@ Horizontal scaling limits:
 
 ---
 
-## NFR-002: Disponibilidad y Confiabilidad
+## NFR-002: Availability and Reliability
 
-### NFR-002.1: Uptime y SLA
+### NFR-002.1: Uptime and SLA
 
-**Requirement**: Servicio bancario crítico con alta disponibilidad
-**Criterio de Medición**: Uptime medido por monitoring externo (StatusCake)
+**Requirement**: Critical banking service with high availability
+**Measurement Criteria**: Uptime measured by external monitoring (StatusCake)
 
-| Período                     | Uptime Target | Downtime Máximo | Penalización SLA |
-| --------------------------- | ------------- | --------------- | ---------------- |
-| **Business hours** (8h-20h) | 99.99%        | 4.3 min/mes     | Crédito 10%      |
-| **24x7 global**             | 99.95%        | 21.9 min/mes    | Crédito 5%       |
-| **Planned maintenance**     | 4h/mes max    | Weekend only    | Notificación 48h |
+| Period                      | Uptime Target | Maximum Downtime | SLA Penalty      |
+| --------------------------- | ------------- | ---------------- | ---------------- |
+| **Business hours** (8h-20h) | 99.99%        | 4.3 min/month    | 10% credit       |
+| **24x7 global**             | 99.95%        | 21.9 min/month   | 5% credit        |
+| **Planned maintenance**     | 4h/month max  | Weekend only     | 48h notification |
 
 **Downtime Categorization**:
 
-- **S1 Critical**: Sistema completamente inaccesible > 5 minutos
-- **S2 Major**: Funcionalidad core afectada > 15 minutos
-- **S3 Minor**: Funcionalidad secundaria > 1 hora
+- **S1 Critical**: System completely inaccessible > 5 minutes
+- **S2 Major**: Core functionality affected > 15 minutes
+- **S3 Minor**: Secondary functionality > 1 hour
 
 ### NFR-002.2: Disaster Recovery
 
-**Requirement**: Recuperación rápida ante fallos catastróficos
-**Criterio de Medición**: RTO y RPO medibles y testables
+**Requirement**: Fast recovery from catastrophic failures
+**Measurement Criteria**: RTO and RPO measurable and testable
 
-| Escenario          | RTO (Recovery Time) | RPO (Recovery Point) | Test Frequency    |
+| Scenario           | RTO (Recovery Time) | RPO (Recovery Point) | Test Frequency    |
 | ------------------ | ------------------- | -------------------- | ----------------- |
-| **Pod failure**    | <30 segundos        | 0 (stateless)        | Automático        |
-| **Node failure**   | <2 minutos          | 0 (stateless)        | Chaos engineering |
-| **AZ failure**     | <5 minutos          | <1 minuto            | Monthly           |
-| **Region failure** | <1 hora             | <15 minutos          | Quarterly         |
+| **Pod failure**    | <30 seconds         | 0 (stateless)        | Automatic         |
+| **Node failure**   | <2 minutes          | 0 (stateless)        | Chaos engineering |
+| **AZ failure**     | <5 minutes          | <1 minute            | Monthly           |
+| **Region failure** | <1 hour             | <15 minutes          | Quarterly         |
 
 **Backup Strategy**:
 
@@ -109,17 +111,17 @@ Biometric templates (HSM):
 
 ---
 
-## NFR-003: Seguridad Biométrica
+## NFR-003: Biometric Security
 
 ### NFR-003.1: Biometric Accuracy
 
-**Requirement**: Precisión biométrica para cumplir estándares bancarios
-**Criterio de Medición**: Métricas de accuracy medidas mensualmente con dataset real
+**Requirement**: Biometric precision to meet banking standards
+**Measurement Criteria**: Accuracy metrics measured monthly against a real dataset
 
-| Métrica                      | Target | Measurement         | Industry Benchmark         |
+| Metric                       | Target | Measurement         | Industry Benchmark         |
 | ---------------------------- | ------ | ------------------- | -------------------------- |
-| **False Accept Rate** (FAR)  | <0.01% | 1 en 10,000         | Tier 1 banking             |
-| **False Reject Rate** (FRR)  | <2%    | 98% legítimos pasan | User experience acceptable |
+| **False Accept Rate** (FAR)  | <0.01% | 1 in 10,000         | Tier 1 banking             |
+| **False Reject Rate** (FRR)  | <2%    | 98% of legit. pass  | User experience acceptable |
 | **Liveness Detection**       | >99%   | Spoofing detection  | ISO 30107-1 Level 2        |
 | **Document Fraud Detection** | >95%   | Falsified documents | Manual review fallback     |
 
@@ -138,10 +140,10 @@ Error analysis:
   - Edge cases: Specialized dataset creation
 ```
 
-### NFR-003.2: Anti-Spoofing y Fraud Prevention
+### NFR-003.2: Anti-Spoofing and Fraud Prevention
 
-**Requirement**: Protección contra ataques sofisticados de identity fraud
-**Criterio de Medición**: Tasa de detección de ataques conocidos
+**Requirement**: Protection against sophisticated identity fraud attacks
+**Measurement Criteria**: Detection rate of known attacks
 
 | Attack Vector       | Detection Rate | Response Time | Mitigation                      |
 | ------------------- | -------------- | ------------- | ------------------------------- |
@@ -169,12 +171,12 @@ Fraud analytics:
 
 ---
 
-## NFR-004: Compliance y Privacidad
+## NFR-004: Compliance and Privacy
 
 ### NFR-004.1: GDPR Article 9 (Biometric Data)
 
-**Requirement**: Cumplimiento estricto de normativa de datos biométricos
-**Criterio de Medición**: Auditoría mensual de compliance + 0 infracciones
+**Requirement**: Strict compliance with biometric data regulations
+**Measurement Criteria**: Monthly compliance audit + 0 violations
 
 | Requirement            | Implementation                | Measurement              | Penalty Risk |
 | ---------------------- | ----------------------------- | ------------------------ | ------------ |
@@ -203,8 +205,8 @@ Audit trail:
 
 ### NFR-004.2: Banking Compliance (PCI DSS, EBA)
 
-**Requirement**: Cumplir regulaciones bancarias de identidad digital
-**Criterio de Medición**: Auditorías trimestrales + certificaciones anuales
+**Requirement**: Comply with banking regulations for digital identity
+**Measurement Criteria**: Quarterly audits + annual certifications
 
 | Standard               | Requirement                     | Evidence                        | Audit Frequency |
 | ---------------------- | ------------------------------- | ------------------------------- | --------------- |
@@ -215,12 +217,12 @@ Audit trail:
 
 ---
 
-## NFR-005: Integración y Interoperabilidad
+## NFR-005: Integration and Interoperability
 
-### NFR-005.1: API Performance y Reliability
+### NFR-005.1: API Performance and Reliability
 
-**Requirement**: Integración perfecta con ecosistema bancario existente
-**Criterio de Medición**: SLA de APIs y tiempo de respuesta de integraciones
+**Requirement**: Seamless integration with the existing banking ecosystem
+**Measurement Criteria**: API SLAs and integration response time
 
 | Integration              | SLA   | Timeout | Circuit Breaker | Fallback            |
 | ------------------------ | ----- | ------- | --------------- | ------------------- |
@@ -248,8 +250,8 @@ API versioning:
 
 ### NFR-005.2: Data Synchronization
 
-**Requirement**: Consistencia de datos entre sistemas críticos
-**Criterio de Medición**: 0 discrepancias en reconciliación diaria
+**Requirement**: Data consistency across critical systems
+**Measurement Criteria**: 0 discrepancies in daily reconciliation
 
 | Data Sync               | Frequency      | Latency | Consistency Check      |
 | ----------------------- | -------------- | ------- | ---------------------- |
@@ -260,12 +262,12 @@ API versioning:
 
 ---
 
-## NFR-006: Scalability y Capacity Planning
+## NFR-006: Scalability and Capacity Planning
 
 ### NFR-006.1: Growth Accommodation
 
-**Requirement**: Soportar crecimiento proyectado de 300% en 2 años
-**Criterio de Medición**: Capacity planning vs actual usage
+**Requirement**: Support projected growth of 300% over 2 years
+**Measurement Criteria**: Capacity planning vs actual usage
 
 | Metric                  | Current | Year 1 | Year 2 | Architecture Impact   |
 | ----------------------- | ------- | ------ | ------ | --------------------- |
@@ -276,8 +278,8 @@ API versioning:
 
 ### NFR-006.2: Resource Optimization
 
-**Requirement**: Eficiencia de recursos para control de costos
-**Criterio de Medición**: Cost per verification trending down
+**Requirement**: Resource efficiency for cost control
+**Measurement Criteria**: Cost per verification trending down
 
 ```yaml
 Resource efficiency targets:
@@ -295,19 +297,21 @@ Cost optimization:
 
 ---
 
-## NFR-007: Monitoring y Observabilidad
+## NFR-007: Monitoring and Observability
 
 ### NFR-007.1: Comprehensive Monitoring
 
-**Requirement**: Visibilidad completa del sistema para operaciones 24/7
-**Criterio de Medición**: MTTD (Mean Time To Detection) < 2 minutes para issues críticos
+**Requirement**: Full system visibility for 24/7 operations
+**Measurement Criteria**: MTTD (Mean Time To Detection) < 2 minutes for critical issues
 
-| Monitoring Layer   | Tools                | Metrics              | Alerting       |
-| ------------------ | -------------------- | -------------------- | -------------- |
-| **Application**    | Prometheus + Grafana | Business KPIs + SLIs | PagerDuty      |
-| **Infrastructure** | New Relic APM        | Resource utilization | Slack warnings |
-| **Security**       | Splunk SIEM          | Security events      | SOC alerts     |
-| **Business**       | Custom dashboard     | Conversion rates     | Email reports  |
+Example (Prometheus + Grafana / New Relic / Splunk / PagerDuty / chat tool):
+
+| Monitoring Layer   | Tools                | Metrics              | Alerting           |
+| ------------------ | -------------------- | -------------------- | ------------------ |
+| **Application**    | Prometheus + Grafana | Business KPIs + SLIs | PagerDuty          |
+| **Infrastructure** | New Relic APM        | Resource utilization | Chat-tool warnings |
+| **Security**       | Splunk SIEM          | Security events      | SOC alerts         |
+| **Business**       | Custom dashboard     | Conversion rates     | Email reports      |
 
 **Key Monitoring Metrics**:
 
@@ -331,10 +335,10 @@ Security Metrics:
   - Certificate expiration alerts
 ```
 
-### NFR-007.2: Troubleshooting y Debugging
+### NFR-007.2: Troubleshooting and Debugging
 
-**Requirement**: Capacidad de diagnóstico rápido para minimizar MTTR
-**Criterio de Medición**: MTTR < 30 minutes para incidentes P1
+**Requirement**: Fast diagnostic capability to minimize MTTR
+**Measurement Criteria**: MTTR < 30 minutes for P1 incidents
 
 | Capability                | Implementation    | Target                  | Tools         |
 | ------------------------- | ----------------- | ----------------------- | ------------- |
@@ -345,7 +349,7 @@ Security Metrics:
 
 ---
 
-## Validation y Testing NFRs
+## Validation and Testing NFRs
 
 ### Performance Testing Strategy
 

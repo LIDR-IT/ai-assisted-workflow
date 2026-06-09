@@ -99,6 +99,8 @@
 
 ### Phase 1: Decision & Communication (2 minutes)
 
+Example (Slack + email CLI — illustrative; the active client binds the concrete {{CHAT_TOOL}} via the tool-registry):
+
 ```bash
 # 1. Activate incident response
 ./scripts/activate-incident-response.sh --severity=P1 --type=rollback
@@ -198,6 +200,8 @@ curl "http://prometheus:9090/api/v1/query?query={{PRODUCT_NAME_1}}_response_time
    ```
 
 2. **Incident Documentation**
+
+   Example (Jira — illustrative; the active client binds the concrete {{TRACKING_TOOL}} via the tool-registry):
 
    ```bash
    # Create incident ticket with full timeline

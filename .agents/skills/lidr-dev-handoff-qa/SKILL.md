@@ -1,14 +1,16 @@
 ---
 name: lidr-dev-handoff-qa
 id: dev-handoff-qa
-version: "1.2.0"
-last_updated: "2026-03-16"
-updated_by: "Tech Lead: System"
+version: "1.4.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 5
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking, chat, vcs]
 description: >
   Generate comprehensive Dev-to-QA handoff documentation when tickets transition to "Ready for QA" status.
   Domain-agnostic — works for any software development, platform, or application type.
@@ -17,98 +19,114 @@ description: >
   Always use when marking tickets ready for testing, always use after PR merge or approved code review when completing User Story implementation.
   Do NOT use for post-QA deployment handoffs (use change-request), for production incidents (use postmortem), or for test case creation (use create-test-cases).
   Triggers on "generate handoff", "ready for QA", "handoff to QA", "pass to testing", "development complete", "transition to testing".
-  Output in Spanish (functional description for QA), English (technical implementation details).
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: QA (primary tester), QA Lead (validates completeness), Dev (reference for questions).
 ---
 
 # Dev → QA Handoff Generator
 
-Phase: 5→6 transition | Gate: contributes to Gate 5 | Language: Spanish (functional, not technical)
+Phase: 5 (Development) → 6 (QA) | Gate: **G4 evidence — Dev→QA, `required: true`** | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 **Principle:** If QA needs to ask "how do I test this?" after reading the handoff, the handoff failed.
 
+## Relationship to BMad
+
+This skill is a **LIDR extension on top of BMad** (BMad = source of truth; LIDR fills gaps BMad has no concept of). BMad's `bmad-dev-story` produces the _implemented story_ and `bmad-code-review` reviews it statically — but BMad has **no human-readable Dev→QA handoff** for a manual QA tester. That gap is this skill.
+
+- **Consumes (base):** `bmad-dev-story` output (implemented-story context) + the merged diff.
+- **Consumes (LIDR siblings, same G4):** `/lidr-spec-verify` → `test-report.md` + `reports/` (Step N+1/N+2/N+3 evidence); `lidr-playwright-cli` runtime/visual review (its screenshots feed §5 and §7).
+- **Feeds (QA flow):** `bmad-testarch-test-design`, `bmad-testarch-trace` (traceability + gate decision), the `bmad-tea` Test Architect, and `lidr-create-test-cases`.
+
+Wired into `_shared/lidr/gate-evidence.yaml` → **G4** as `required: true` at `{client_root}/handoffs/dev-qa-*.md`.
+
 ## Workflow
 
-1. Read Jira ticket: US + BDD acceptance criteria + linked RF
+1. Read the BMad implemented story (`bmad-dev-story`) + {{TRACKING_TOOL}} ticket: US + BDD acceptance criteria + linked RF
 2. Read PR diff to identify changes (endpoints, DB, config, components)
-3. Generate handoff using template below
-4. Identify regression areas from diff analysis
-5. Attach to Jira ticket and transition to "Ready for QA"
+3. Read `/lidr-spec-verify` outputs: `test-report.md` + `reports/` (unit / curl / E2E evidence)
+4. Generate handoff using template below; pull screenshots & runtime evidence from `lidr-playwright-cli` (§5, §7)
+5. Identify regression areas from diff analysis
+6. Save to `docs/projects/{client}/handoffs/dev-qa-{PROJ-XXX}.md`, attach to {{TRACKING_TOOL}}, transition to "Ready for QA"
 
 ## Input
 
-| Input                           | Required  | Source                       |
-| ------------------------------- | --------- | ---------------------------- |
-| Jira ticket (US + BDD criteria) | ✅        | Manual or script             |
-| PR with merged diff             | ✅        | Git CLI                      |
-| DoD checklist completed         | ✅        | PR description               |
-| Staging environment URL         | ✅        | DevOps                       |
-| Test data                       | Desirable | Developer / QA shared folder |
+| Input                                        | Required  | Source                             |
+| -------------------------------------------- | --------- | ---------------------------------- |
+| {{TRACKING_TOOL}} ticket (US + BDD criteria) | ✅        | Manual or script                   |
+| PR with merged diff                          | ✅        | {{VCS_TOOL}}                       |
+| DoD checklist completed                      | ✅        | PR description                     |
+| Staging environment URL                      | ✅        | DevOps                             |
+| Test data                                    | Desirable | Developer / QA shared folder       |
+| `test-report.md` + `reports/`                | ✅        | `/lidr-spec-verify` (G4 sibling)   |
+| Runtime/visual review + shots                | Desirable | `lidr-playwright-cli` (G4 sibling) |
+| Implemented-story context                    | Desirable | `bmad-dev-story` (BMad base)       |
 
 ## Output Template
 
-ALWAYS use this structure:
+ALWAYS use this structure. Save to `docs/projects/{client}/handoffs/dev-qa-{PROJ-XXX}.md` — the exact path the G4 gate reads (`_shared/lidr/gate-evidence.yaml`).
 
 ```markdown
 # Handoff Dev → QA: {PROJ-XXX} — {US Title}
 
-| Campo            | Valor                               |
-| ---------------- | ----------------------------------- |
-| **Ticket**       | [{PROJ-XXX}]({url})                 |
-| **RF Origen**    | RF-{PROJ}-{NNN}                     |
-| **PR**           | [#{number}]({url}) — merged {date}  |
-| **Entorno**      | [Staging URL] — deployed {datetime} |
-| **Feature Flag** | {flag name = ON/OFF} or "Sin flag"  |
+| Field                     | Value                               |
+| ------------------------- | ----------------------------------- |
+| **Ticket**                | [{PROJ-XXX}]({url})                 |
+| **Source RF (RF Origen)** | RF-{PROJ}-{NNN}                     |
+| **PR**                    | [#{number}]({url}) — merged {date}  |
+| **Environment**           | [Staging URL] — deployed {datetime} |
+| **Feature Flag**          | {flag name = ON/OFF} or "No flag"   |
 
-## 1. ¿Qué se Implementó?
+## 1. What Was Implemented?
 
-### Descripción Funcional (USER language, not developer)
+### Functional Description (USER language, not developer)
 
-### Cambios Visibles (table: change, where, screenshot)
+### Visible Changes (table: change, where, screenshot)
 
-### Lo que NO se Implementó (explicit exclusions to avoid false bugs)
+### What Was NOT Implemented (explicit exclusions to avoid false bugs)
 
-## 2. Cambios Técnicos Relevantes para QA
+## 2. Technical Changes Relevant for QA
 
 ### Endpoints (Method, Path, Description, New/Modified)
 
-### Base de Datos (Table, Change, Migration, QA Impact)
+### Database (Table, Change, Migration, QA Impact)
 
-### Configuración (Variable, Staging Value, Notes)
+### Configuration (Variable, Staging Value, Notes)
 
-### Dependencias Externas (Service, Status, Impact if down)
+### External Dependencies (Service, Status, Impact if down)
 
-## 3. Cómo Probarlo
+## 3. How to Test It
 
-### Prerequisitos (verifiable checklist: env, user, data, flags, services)
+### Prerequisites (verifiable checklist: env, user, data, flags, services)
 
-### Flujo Principal — Happy Path (table: Step, Action, Data, Expected Result)
+### Main Flow — Happy Path (table: Step, Action, Data, Expected Result)
 
-### Escenarios de Error (table: #, Scenario, How to Reproduce, Expected)
+### Error Scenarios (table: #, Scenario, How to Reproduce, Expected)
 
 ### Edge Cases (table: #, Case, How to Reproduce, Expected)
 
-## 4. Datos de Prueba
+## 4. Test Data
 
 ### Test Documents/Files (table: File, Type, Purpose, Expected Result)
 
 ### Test Users (table: User, Password, Role, Status, Notes)
 
-## 5. Áreas de Regresión
+## 5. Regression Areas
 
 ### Impact areas (table: Area, Why affected, Regression priority)
 
 ### Suggested Smoke Test (top 5 tests to run FIRST)
 
-## 6. Riesgos y Limitaciones (table: Risk, Testing Impact, Workaround)
+## 6. Risks and Limitations (table: Risk, Testing Impact, Workaround)
 
 ## 7. Screenshots / Demo (visual evidence of each key screen)
 ```
 
 ## Key Rules
 
-- Write in USER language: "Se añadió POST /verify" → "Ahora el usuario puede subir un documento para verificar su identidad"
-- Concrete data, not generic: "Subir una imagen válida" → "Subir `test-data/dni-valid-001.jpg`"
+- Write in USER language: "Added POST /verify" → "The user can now upload a document to verify their identity"
+- Concrete data, not generic: "Upload a valid image" → "Upload `test-data/dni-valid-001.jpg`"
 - Errors are first-class citizens: same detail level as happy path
 - Explicit exclusions prevent false bug reports
 - Prerequisites must be a verifiable checklist
@@ -128,175 +146,177 @@ ALWAYS use this structure:
 
 ### Realistic Complete Handoff Document
 
+Example (Jira tracking + GitHub PRs — illustrative, not canonical; concrete tools resolve via the registry):
+
 ```markdown
-# Handoff Dev → QA: FACE-456 — Implementar verificación de documentos con liveness
+# Handoff Dev → QA: FACE-456 — Implement document verification with liveness
 
-| Campo            | Valor                                                                                  |
-| ---------------- | -------------------------------------------------------------------------------------- |
-| **Ticket**       | [FACE-456](https://jira.example.com/browse/FACE-456)                                   |
-| **RF Origen**    | RF-FACE-012                                                                            |
-| **PR**           | [#1247](https://github.com/example-org/platform/pull/1247) — merged 2026-03-08 14:30   |
-| **Entorno**      | [https://staging.example.com](https://staging.example.com) — deployed 2026-03-08 15:45 |
-| **Feature Flag** | `LIVENESS_DETECTION_V2 = ON`                                                           |
+| Field                     | Value                                                                                  |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| **Ticket**                | [FACE-456](https://jira.example.com/browse/FACE-456)                                   |
+| **Source RF (RF Origen)** | RF-FACE-012                                                                            |
+| **PR**                    | [#1247](https://github.com/example-org/platform/pull/1247) — merged 2026-03-08 14:30   |
+| **Environment**           | [https://staging.example.com](https://staging.example.com) — deployed 2026-03-08 15:45 |
+| **Feature Flag**          | `LIVENESS_DETECTION_V2 = ON`                                                           |
 
-## 1. ¿Qué se Implementó?
+## 1. What Was Implemented?
 
-### Descripción Funcional
+### Functional Description
 
-- **Nuevo flujo**: El usuario puede ahora verificar documentos de identidad con detección de vida automática
-- **Validación mejorada**: El sistema detecta si el documento es real y si la persona está presente físicamente
-- **Feedback visual**: Indicadores en tiempo real durante la captura (marcos verdes/rojos)
-- **Resultados inmediatos**: Score de confianza y decisión accept/reject al finalizar
+- **New flow**: The user can now verify identity documents with automatic liveness detection
+- **Improved validation**: The system detects whether the document is real and whether the person is physically present
+- **Visual feedback**: Real-time indicators during capture (green/red frames)
+- **Immediate results**: Confidence score and accept/reject decision on completion
 
-### Cambios Visibles
+### Visible Changes
 
-| Cambio                         | Dónde                            | Screenshot                                   |
-| ------------------------------ | -------------------------------- | -------------------------------------------- |
-| Botón "Verificar con Liveness" | Página principal de verificación | `test-screenshots/main-page-new-button.png`  |
-| Cámara con overlay de guías    | Modal de captura                 | `test-screenshots/camera-overlay-guides.png` |
-| Pantalla de resultados         | Al finalizar verificación        | `test-screenshots/results-screen.png`        |
-| Indicador de progreso          | Durante procesamiento            | `test-screenshots/progress-indicator.png`    |
+| Change                        | Where                      | Screenshot                                   |
+| ----------------------------- | -------------------------- | -------------------------------------------- |
+| "Verify with Liveness" button | Main verification page     | `test-screenshots/main-page-new-button.png`  |
+| Camera with guide overlay     | Capture modal              | `test-screenshots/camera-overlay-guides.png` |
+| Results screen                | On verification completion | `test-screenshots/results-screen.png`        |
+| Progress indicator            | During processing          | `test-screenshots/progress-indicator.png`    |
 
-### Lo que NO se Implementó
+### What Was NOT Implemented
 
-- ❌ Soporte para documentos extranjeros (solo DNI/NIE español)
-- ❌ Modo offline (requiere conexión a internet)
-- ❌ Guardado automático de imágenes capturadas
-- ❌ Integración con servicios de terceros (solo algoritmos propios)
+- ❌ Support for foreign documents (Spanish DNI/NIE only)
+- ❌ Offline mode (requires an internet connection)
+- ❌ Automatic saving of captured images
+- ❌ Third-party service integration (proprietary algorithms only)
 
-## 2. Cambios Técnicos Relevantes para QA
+## 2. Technical Changes Relevant for QA
 
 ### Endpoints
 
-| Método | Path                                               | Descripción                                | Estado     |
-| ------ | -------------------------------------------------- | ------------------------------------------ | ---------- |
-| POST   | `/api/v1/verification/liveness`                    | Inicia sesión de verificación con liveness | Nuevo      |
-| GET    | `/api/v1/verification/liveness/{sessionId}`        | Estado de la verificación                  | Nuevo      |
-| POST   | `/api/v1/verification/liveness/{sessionId}/upload` | Sube imagen de documento                   | Modificado |
+| Method | Path                                               | Description                            | Status   |
+| ------ | -------------------------------------------------- | -------------------------------------- | -------- |
+| POST   | `/api/v1/verification/liveness`                    | Starts a liveness verification session | New      |
+| GET    | `/api/v1/verification/liveness/{sessionId}`        | Verification status                    | New      |
+| POST   | `/api/v1/verification/liveness/{sessionId}/upload` | Uploads document image                 | Modified |
 
-### Base de Datos
+### Database
 
-| Tabla                   | Cambio                                        | Migración                         | Impacto QA                                  |
-| ----------------------- | --------------------------------------------- | --------------------------------- | ------------------------------------------- |
-| `verification_sessions` | Añadida columna `liveness_score` DECIMAL(5,4) | `20260308_add_liveness_score.sql` | Verificar que score se guarda correctamente |
-| `document_captures`     | Añadida columna `quality_metrics` JSONB       | Misma migración                   | Probar con diferentes calidades de imagen   |
+| Table                   | Change                                     | Migration                         | QA Impact                            |
+| ----------------------- | ------------------------------------------ | --------------------------------- | ------------------------------------ |
+| `verification_sessions` | Added column `liveness_score` DECIMAL(5,4) | `20260308_add_liveness_score.sql` | Verify the score is stored correctly |
+| `document_captures`     | Added column `quality_metrics` JSONB       | Same migration                    | Test with different image qualities  |
 
-### Configuración
+### Configuration
 
-| Variable                | Valor en Staging | Notas                        |
-| ----------------------- | ---------------- | ---------------------------- |
-| `LIVENESS_THRESHOLD`    | `0.75`           | Score mínimo para aceptar    |
-| `MAX_CAPTURE_ATTEMPTS`  | `3`              | Máximo 3 intentos por sesión |
-| `LIVENESS_DETECTION_V2` | `true`           | Feature flag activa          |
+| Variable                | Staging Value | Notes                          |
+| ----------------------- | ------------- | ------------------------------ |
+| `LIVENESS_THRESHOLD`    | `0.75`        | Minimum score to accept        |
+| `MAX_CAPTURE_ATTEMPTS`  | `3`           | Maximum 3 attempts per session |
+| `LIVENESS_DETECTION_V2` | `true`        | Feature flag active            |
 
-### Dependencias Externas
+### External Dependencies
 
-| Servicio                  | Estado    | Impacto si no disponible         |
+| Service                   | Status    | Impact if down                   |
 | ------------------------- | --------- | -------------------------------- |
-| Identity Verification API | ✅ Activo | No funciona la detección de vida |
-| Document OCR Service      | ✅ Activo | No extrae datos del documento    |
-| Redis Cache               | ✅ Activo | Sesiones expiran inmediatamente  |
+| Identity Verification API | ✅ Active | Liveness detection does not work |
+| Document OCR Service      | ✅ Active | Does not extract document data   |
+| Redis Cache               | ✅ Active | Sessions expire immediately      |
 
-## 3. Cómo Probarlo
+## 3. How to Test It
 
-### Prerequisitos
+### Prerequisites
 
-- [ ] Feature flag `LIVENESS_DETECTION_V2 = ON` verificada en `/admin/flags`
-- [ ] Usuario test: `qa.tester@example.com` / `TestPass2024!` (rol: verified_user)
-- [ ] Browser con soporte para cámara (Chrome/Firefox últimas versiones)
-- [ ] Documentos de prueba en carpeta `test-data/documents/`
-- [ ] Permisos de cámara concedidos al dominio staging
+- [ ] Feature flag `LIVENESS_DETECTION_V2 = ON` verified at `/admin/flags`
+- [ ] Test user: `qa.tester@example.com` / `TestPass2024!` (role: verified_user)
+- [ ] Browser with camera support (latest Chrome/Firefox versions)
+- [ ] Test documents in folder `test-data/documents/`
+- [ ] Camera permissions granted to the staging domain
 
-### Flujo Principal — Happy Path
+### Main Flow — Happy Path
 
-| Paso | Acción                           | Datos                                   | Resultado Esperado                       |
-| ---- | -------------------------------- | --------------------------------------- | ---------------------------------------- |
-| 1    | Hacer login                      | qa.tester@example.com                   | Dashboard principal visible              |
-| 2    | Clic en "Verificar con Liveness" | -                                       | Modal de cámara se abre                  |
-| 3    | Permitir acceso a cámara         | -                                       | Vista previa de cámara activa            |
-| 4    | Colocar DNI en marco             | `test-data/documents/dni-valid-001.jpg` | Marco verde, botón "Capturar" habilitado |
-| 5    | Clic "Capturar"                  | -                                       | Progreso de procesamiento visible        |
-| 6    | Esperar análisis                 | ~10-15 segundos                         | Pantalla de resultados aparece           |
-| 7    | Verificar resultado              | -                                       | Score > 0.75, estado "ACEPTADO"          |
+| Step | Action                       | Data                                    | Expected Result                       |
+| ---- | ---------------------------- | --------------------------------------- | ------------------------------------- |
+| 1    | Log in                       | qa.tester@example.com                   | Main dashboard visible                |
+| 2    | Click "Verify with Liveness" | -                                       | Camera modal opens                    |
+| 3    | Allow camera access          | -                                       | Active camera preview                 |
+| 4    | Place DNI in frame           | `test-data/documents/dni-valid-001.jpg` | Green frame, "Capture" button enabled |
+| 5    | Click "Capture"              | -                                       | Processing progress visible           |
+| 6    | Wait for analysis            | ~10-15 seconds                          | Results screen appears                |
+| 7    | Verify result                | -                                       | Score > 0.75, status "ACCEPTED"       |
 
-### Escenarios de Error
+### Error Scenarios
 
-| #   | Escenario           | Reproducir                                       | Resultado Esperado                                         |
-| --- | ------------------- | ------------------------------------------------ | ---------------------------------------------------------- |
-| 1   | Archivo corrupto    | Usar `test-data/files/profile-corrupted-001.jpg` | Error "Archivo dañado, por favor seleccione otro"          |
-| 2   | Sin selección       | Hacer clic en "Enviar" sin seleccionar archivo   | Error "Debe seleccionar al menos un archivo"               |
-| 3   | Formato no válido   | Usar `test-data/files/document-invalid-001.txt`  | Error "Formato de archivo no permitido"                    |
-| 4   | Tamaño excedido     | Subir archivo >5MB                               | Error "El archivo excede el tamaño máximo permitido"       |
-| 5   | 3 intentos fallidos | Fallar 3 veces consecutivas                      | Error "Límite de intentos alcanzado. Contacte con soporte" |
+| #   | Scenario          | How to Reproduce                                | Expected Result                                   |
+| --- | ----------------- | ----------------------------------------------- | ------------------------------------------------- |
+| 1   | Corrupted file    | Use `test-data/files/profile-corrupted-001.jpg` | Error "File damaged, please select another"       |
+| 2   | No selection      | Click "Submit" without selecting a file         | Error "You must select at least one file"         |
+| 3   | Invalid format    | Use `test-data/files/document-invalid-001.txt`  | Error "File format not allowed"                   |
+| 4   | Size exceeded     | Upload a file >5MB                              | Error "The file exceeds the maximum allowed size" |
+| 5   | 3 failed attempts | Fail 3 times in a row                           | Error "Attempt limit reached. Contact support"    |
 
 ### Edge Cases
 
-| #   | Caso               | Reproducir                  | Resultado Esperado                              |
-| --- | ------------------ | --------------------------- | ----------------------------------------------- |
-| 1   | Red lenta          | Throttle conexión a 3G      | Timeout después de 30s con mensaje apropiado    |
-| 2   | Sesión expirada    | Esperar 15 minutos inactivo | Redirigir a login con mensaje "Sesión expirada" |
-| 3   | Múltiples pestañas | Abrir 2 pestañas del flujo  | Solo una sesión activa, la otra muestra error   |
+| #   | Case            | How to Reproduce          | Expected Result                                   |
+| --- | --------------- | ------------------------- | ------------------------------------------------- |
+| 1   | Slow network    | Throttle connection to 3G | Timeout after 30s with an appropriate message     |
+| 2   | Expired session | Wait 15 minutes inactive  | Redirect to login with message "Session expired"  |
+| 3   | Multiple tabs   | Open 2 tabs of the flow   | Only one active session, the other shows an error |
 
-## 4. Datos de Prueba
+## 4. Test Data
 
 ### Test Files/Data
 
-| Archivo                     | Tipo                    | Propósito                   | Resultado Esperado                   |
-| --------------------------- | ----------------------- | --------------------------- | ------------------------------------ |
-| `profile-valid-001.jpg`     | Imagen de perfil válida | Happy path básico           | Validación exitosa, estado ACEPTADO  |
-| `profile-valid-002.jpg`     | Imagen de perfil válida | Happy path alternativo      | Validación exitosa, estado ACEPTADO  |
-| `profile-large-001.jpg`     | Imagen >5MB             | Validación de tamaño        | Error "Archivo demasiado grande"     |
-| `profile-corrupted-001.jpg` | Archivo corrupto        | Error de formato            | Error "Formato de archivo inválido"  |
-| `invoice-valid-001.pdf`     | Factura válida          | Procesamiento de documentos | Procesado correctamente              |
-| `invoice-invalid-001.txt`   | Archivo de texto        | Formato no soportado        | Error "Tipo de archivo no permitido" |
+| File                        | Type                | Purpose                | Expected Result                        |
+| --------------------------- | ------------------- | ---------------------- | -------------------------------------- |
+| `profile-valid-001.jpg`     | Valid profile image | Basic happy path       | Successful validation, status ACCEPTED |
+| `profile-valid-002.jpg`     | Valid profile image | Alternative happy path | Successful validation, status ACCEPTED |
+| `profile-large-001.jpg`     | Image >5MB          | Size validation        | Error "File too large"                 |
+| `profile-corrupted-001.jpg` | Corrupted file      | Format error           | Error "Invalid file format"            |
+| `invoice-valid-001.pdf`     | Valid invoice       | Document processing    | Processed correctly                    |
+| `invoice-invalid-001.txt`   | Text file           | Unsupported format     | Error "File type not allowed"          |
 
 ### Test Users
 
-| Usuario                | Password      | Rol           | Estado    | Notas                               |
-| ---------------------- | ------------- | ------------- | --------- | ----------------------------------- |
-| qa.tester@example.com  | TestPass2024! | verified_user | Activo    | Usuario principal de testing        |
-| qa.premium@example.com | TestPass2024! | premium_user  | Activo    | Usuario con límites extendidos      |
-| qa.blocked@example.com | TestPass2024! | verified_user | Bloqueado | Para testing de usuarios bloqueados |
+| User                   | Password      | Role          | Status  | Notes                     |
+| ---------------------- | ------------- | ------------- | ------- | ------------------------- |
+| qa.tester@example.com  | TestPass2024! | verified_user | Active  | Main testing user         |
+| qa.premium@example.com | TestPass2024! | premium_user  | Active  | User with extended limits |
+| qa.blocked@example.com | TestPass2024! | verified_user | Blocked | For testing blocked users |
 
-## 5. Áreas de Regresión
+## 5. Regression Areas
 
 ### Impact Areas
 
-| Área                      | Por qué Afectada                | Prioridad Regresión |
-| ------------------------- | ------------------------------- | ------------------- |
-| Procesamiento de archivos | Misma base de código modificada | 🔴 Alta             |
-| Sistema de sesiones       | Nueva gestión de estado         | 🟡 Media            |
-| Dashboard principal       | Nuevo botón añadido             | 🟡 Media            |
-| API de uploads            | Endpoint modificado             | 🔴 Alta             |
-| Base de datos             | Nueva columna añadida           | 🟡 Media            |
+| Area            | Why Affected            | Regression Priority |
+| --------------- | ----------------------- | ------------------- |
+| File processing | Same code base modified | 🔴 High             |
+| Session system  | New state management    | 🟡 Medium           |
+| Main dashboard  | New button added        | 🟡 Medium           |
+| Uploads API     | Endpoint modified       | 🔴 High             |
+| Database        | New column added        | 🟡 Medium           |
 
 ### Suggested Smoke Test
 
-1. **Subida de archivos** estándar sigue funcionando
-2. **Login/logout** funcionan normalmente
-3. **Dashboard** carga sin errores
-4. **API health** responde OK en `/health`
-5. **Feature flag** se puede activar/desactivar correctamente
+1. **File upload** standard still works
+2. **Login/logout** work normally
+3. **Dashboard** loads without errors
+4. **API health** responds OK at `/health`
+5. **Feature flag** can be enabled/disabled correctly
 
-## 6. Riesgos y Limitaciones
+## 6. Risks and Limitations
 
-| Riesgo                                     | Impacto en Testing                           | Workaround                                           |
-| ------------------------------------------ | -------------------------------------------- | ---------------------------------------------------- |
-| Procesamiento sensible a tamaño de archivo | Tests pueden fallar con archivos muy grandes | Usar archivos de prueba optimizados                  |
-| Dependencia de servicios externos          | Tests intermitentes si servicios caen        | Verificar estado en `/admin/health` antes de testing |
-| Feature flag puede cambiar                 | Tests fallan si flag se desactiva            | Verificar flag al inicio de cada sesión              |
-| Límite de 3 intentos por sesión            | No se pueden probar múltiples errores        | Usar sesiones diferentes para cada test de error     |
+| Risk                              | Testing Impact                         | Workaround                                     |
+| --------------------------------- | -------------------------------------- | ---------------------------------------------- |
+| Processing sensitive to file size | Tests may fail with very large files   | Use optimized test files                       |
+| Dependency on external services   | Intermittent tests if services go down | Check status at `/admin/health` before testing |
+| Feature flag may change           | Tests fail if the flag is disabled     | Verify the flag at the start of each session   |
+| 3-attempt limit per session       | Cannot test multiple errors            | Use different sessions for each error test     |
 
 ## 7. Screenshots / Demo
 
-- **Pantalla principal**: `test-screenshots/main-page-new-feature.png`
-- **Modal de subida**: `test-screenshots/upload-modal-active.png`
-- **Archivo seleccionado**: `test-screenshots/file-selected-preview.png`
-- **Procesando**: `test-screenshots/upload-progress-animation.png`
-- **Resultado exitoso**: `test-screenshots/upload-success-message.png`
-- **Error de formato**: `test-screenshots/format-error-message.png`
+- **Main screen**: `test-screenshots/main-page-new-feature.png`
+- **Upload modal**: `test-screenshots/upload-modal-active.png`
+- **File selected**: `test-screenshots/file-selected-preview.png`
+- **Processing**: `test-screenshots/upload-progress-animation.png`
+- **Success result**: `test-screenshots/upload-success-message.png`
+- **Format error**: `test-screenshots/format-error-message.png`
 
-**Video demo completo**: `test-videos/file-upload-complete-flow.mp4`
+**Full demo video**: `test-videos/file-upload-complete-flow.mp4`
 ```
 
 ## Quality Validation Checklist
@@ -416,10 +436,10 @@ Use this checklist to validate handoff quality before sending to QA:
 ```markdown
 ### Correct Format:
 
-| Usuario               | Password       | Rol           | Notas                  |
-| --------------------- | -------------- | ------------- | ---------------------- |
-| qa.tester@example.com | TestPass2024!  | verified_user | Usuario principal      |
-| qa.admin@example.com  | AdminPass2024! | admin         | Para tests de permisos |
+| User                  | Password       | Role          | Notes                |
+| --------------------- | -------------- | ------------- | -------------------- |
+| qa.tester@example.com | TestPass2024!  | verified_user | Main user            |
+| qa.admin@example.com  | AdminPass2024! | admin         | For permission tests |
 ```
 
 ### Unclear Acceptance Criteria
@@ -454,7 +474,7 @@ Use this checklist to validate handoff quality before sending to QA:
 
 **Pitfall**: "Updated POST /api/v1/users endpoint to validate JWT tokens"
 
-**Solution**: "Los usuarios ahora deben estar autenticados para actualizar su perfil. Si no han hecho login, verán un error pidiendo que inicien sesión."
+**Solution**: "Users must now be authenticated to update their profile. If they have not logged in, they will see an error asking them to sign in."
 
 ### Missing Environment Setup
 
@@ -485,10 +505,8 @@ Use this checklist to validate handoff quality before sending to QA:
 
 ## Resources
 
-- **Handoff completeness checklist**: `references/handoff-checklist.md`
-- **Test data management guide**: `references/test-data-management.md`
-- **Staging environment guide**: `references/staging-environment-guide.md`
-- **Examples**: `references/handoff-verification.md`, `references/handoff-dashboard-crud.md`
+- **Complete handoff example**: `examples/feature-handoff-example.md`
+- **Validation script**: `scripts/validate-examples.ts` (see Quality Assurance below)
 
 ## Quality Assurance
 
@@ -517,6 +535,12 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                        |
+| ------- | ---------- | ---------------------- | ---------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tracking/chat/vcs tools via tool-registry |

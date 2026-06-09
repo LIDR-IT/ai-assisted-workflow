@@ -1,8 +1,8 @@
 ---
 id: project-structure-template
-version: "1.0.0"
-last_updated: "2026-03-17"
-updated_by: "System: Phase 3 Enhancement"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 type: template
 review_cycle: 60
@@ -148,9 +148,9 @@ Each project automatically generates:
 
 ## Quick Actions
 
-- [Create Epic](../../../.claude/skills/sdlc-tracking/templates/epic.md)
-- [Create Story](../../../.claude/skills/sdlc-tracking/templates/story.md)
-- [Generate Handoff](../../../.claude/skills/sdlc-tracking/templates/handoff.md)
+- [Create Epic](../../../.agents/skills/lidr-sdlc-tracking/templates/epic.md)
+- [Create Story](../../../.agents/skills/lidr-sdlc-tracking/templates/story.md)
+- [Generate Handoff](../../../.agents/skills/lidr-sdlc-tracking/templates/handoff.md)
 ```
 
 ### Portfolio Dashboard Integration
@@ -208,10 +208,12 @@ const validationRules: StructureValidation = {
 
 ## External Tool Integration
 
+> Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`. The keys below keep a multi-tool catalog so any bound {{TRACKING_TOOL}}/{{DOCS_TOOL}}/{{VCS_TOOL}} maps cleanly — concrete tool names are illustrative.
+
 ### File Mapping to External Systems
 
 ```yaml
-# Automatic mapping for sync operations
+# Automatic mapping for sync operations (illustrative multi-tool catalog)
 external_mapping:
   jira:
     epics: "implementation/epics/*.md"
@@ -231,10 +233,12 @@ external_mapping:
     procedures: "deployment/runbooks/*.md"
 ```
 
-### GitHub Integration
+### {{VCS_TOOL}} Integration
+
+Example ({{VCS_TOOL}}, e.g. GitHub/GitLab/Bitbucket):
 
 ```yaml
-github_integration:
+vcs_integration:
   branch_naming: "feat/{PROJECT-ID}-{STORY-NUMBER}-{SHORT-NAME}"
   pr_templates: "Link to implementation/stories/{story-file}.md"
   commit_linking: "Auto-link commits to story IDs"
@@ -335,7 +339,7 @@ id: story-{project-id}-{auto-increment}
 epic: "{parent-epic-id}"
 project_id: "{project-id}"
 folder: "implementation/stories/"
-external_refs:
+external_refs: # illustrative — key resolves to the bound {{TRACKING_TOOL}} via tool-registry
   jira: "{auto-generated-if-sync-enabled}"
 ---
 
@@ -405,6 +409,7 @@ external_refs:
 
 ## Changelog
 
-| Version | Date       | Author                      | Changes                                                      |
-| ------- | ---------- | --------------------------- | ------------------------------------------------------------ |
-| 1.0.0   | 2026-03-17 | System: Phase 3 Enhancement | Initial standardized project structure for portfolio scaling |
+| Version | Date       | Author                      | Changes                                                                                    |
+| ------- | ---------- | --------------------------- | ------------------------------------------------------------------------------------------ |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic      | Abstracted GitHub/Jira/Linear/Notion/Confluence via tool-registry; fixed stale skill paths |
+| 1.0.0   | 2026-03-17 | System: Phase 3 Enhancement | Initial standardized project structure for portfolio scaling                               |

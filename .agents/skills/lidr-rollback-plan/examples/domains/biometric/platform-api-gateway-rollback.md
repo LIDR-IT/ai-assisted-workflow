@@ -129,6 +129,8 @@ CREATE INDEX idx_multi_modal_expires ON multi_modal_sessions(expires_at);
 
 ### Phase 1: Incident Declaration & Communication (1 minute)
 
+Example (Slack + PagerDuty CLI — illustrative; the active client binds the concrete {{CHAT_TOOL}} via the tool-registry):
+
 ```bash
 # 1. Declare incident and lock deployments
 ./scripts/incident-declare.sh --service=platform-api --severity=P1
@@ -349,6 +351,7 @@ docker rmi {{CLIENT_CODE}}/webhook-service:v3.1.0
     --business-impact="[QUANTIFY_IMPACT]"
 
 # Create post-mortem ticket
+# Example (Jira — illustrative; the active client binds the concrete {{TRACKING_TOOL}} via the tool-registry):
 jira create --project=PLATFORM --type=Post-Mortem \
     --summary="Platform v3.1 rollback analysis and learnings"
 ```

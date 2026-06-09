@@ -484,7 +484,7 @@ Special Instructions: Monitor accuracy metrics closely during first 48 hours
 ```yaml
 Engineering Teams:
   - Pre-deployment: Technical briefing and Q&A session
-  - During deployment: Real-time updates via Slack
+  - During deployment: Real-time updates via {{CHAT_TOOL}} # Example (Slack)
   - Post-deployment: Performance review and lessons learned
 
 Customer Success:

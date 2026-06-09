@@ -60,6 +60,8 @@ CHANGELOG:
 
 # Course Correction for Project $1
 
+> **Relationship (de-duplication):** Core sprint-change management is owned by **`bmad-correct-course`** — invoke it for the base change-impact analysis and change proposal. This command is the **LIDR governance layer on top**: SDLC drift detection (scope/timeline/budget/quality variance), stakeholder-impact matrix, RACI, and ROI tracking. Consume BMad's change proposal; do not re-implement it here.
+
 Load context from rules FIRST:
 
 - @../rules/org.md -> organizational standards, escalation paths, change management

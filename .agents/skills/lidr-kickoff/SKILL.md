@@ -1,20 +1,23 @@
 ---
 name: lidr-kickoff
 id: kickoff
-version: "1.4.0"
-last_updated: "2026-03-25"
-updated_by: "System: Domain-Agnostic Normalization"
+version: "1.5.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 1
 owner_role: "SM"
 automation: false
 domain_agnostic: true
-description: "Generate comprehensive project kickoff meeting documentation: agenda, stakeholder roles, timeline, constraints, risks, decisions, and action items. Domain-agnostic — works for any project type, technology stack, or industry vertical. Use for project initiation, stakeholder alignment, and discovery phase preparation. ALWAYS use at project start to align team on objectives before work begins."
+language_default: en
+integrations: [tracking, docs, chat, vcs, code_quality]
+description: >-
+  Generate comprehensive project kickoff meeting documentation: agenda, stakeholder roles, timeline, constraints, risks, decisions, and action items. Domain-agnostic — works for any project type, technology stack, or industry vertical. Use for project initiation, stakeholder alignment, and discovery phase preparation. ALWAYS use at project start to align team on objectives before work begins.
   Essential when Gate 0 has passed and Business Case is approved.
   Always use when starting a new project formally, always use when sponsor requests project initiation documentation.
-  Do NOT use for ongoing projects past Originación phase, for sprint ceremonies (use sprint-capacity), or for incident reports (use postmortem).
+  Do NOT use for ongoing projects past Origination phase, for sprint ceremonies (use sprint-capacity), or for incident reports (use postmortem).
   Triggers on "prepare kick-off", "generate kick-off agenda", "meeting minutes", "project kick-off", "Gate 0 passed now what", "start project", "begin discovery prep", "stakeholder alignment meeting", "project initiation documents".
-  Output in Spanish (document), English (code references).
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: Scrum Master (facilitates), PME (governance), Tech Lead (technical commitments).
 ---
 
@@ -24,12 +27,18 @@ description: "Generate comprehensive project kickoff meeting documentation: agen
 
 **Critical for stakeholder alignment and project launch success. Must be executed before Discovery phase begins.**
 
-> **Phase**: 1 (Originación) — Post Gate 0 | **Language**: Spanish | **Owner**: Scrum Master
+> **Phase**: 1 (Origination) — Post Gate 0 | **Language**: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`) | **Owner**: Scrum Master
 > **Triggers on**: "prepare kick-off", "generate kick-off agenda", "meeting minutes", "project kick-off", "Gate 0 passed now what", "start project", "begin discovery prep", "stakeholder alignment meeting"
+
+> Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ## Purpose
 
 This skill generates comprehensive kickoff meeting documentation for any project after Gate 0 approval, ensuring proper project initiation, team alignment, and clear success criteria before Discovery phase begins.
+
+## Relationship to BMAD
+
+LIDR-unique Phase-1 / post-Gate-0 governance artifact — BMad has no kickoff-meeting equivalent. Consumes the approved `lidr-business-case` output and feeds the Discovery phase (`bmad-prd`) by seeding stakeholders, scope, and initial risks.
 
 ## Workflow
 
@@ -57,7 +66,7 @@ This skill generates comprehensive kickoff meeting documentation for any project
 | **Gate 0 Resolution**      | ✅       | `/advance-gate 0` output     | Approval status + conditions                               |
 | **Participant List**       | ✅       | PME / SM                     | Names, roles, dedication %, expertise areas                |
 | **Meeting Date/Time**      | ✅       | Calendar invite              | Include timezone for distributed teams                     |
-| **Project Code (Jira)**    | ✅       | PME                          | Format: {PRODUCT}-{NUMBER} (e.g., PROJ-2024)               |
+| **Project Code**           | ✅       | PME ({{TRACKING_TOOL}})      | Format: {PRODUCT}-{NUMBER} (e.g., PROJ-2024)               |
 | **Known Constraints**      | Optional | Sponsor / PME                | Budget, timeline, resource limitations                     |
 | **Regulatory Context**     | Optional | Legal / Compliance           | Applicable data protection regulations, industry standards |
 
@@ -68,175 +77,175 @@ This skill generates comprehensive kickoff meeting documentation for any project
 Uses: templates/kickoff.md
 
 ```markdown
-# Acta de Kick-off: [PROJECT NAME]
+# Kick-off Minutes: [PROJECT NAME]
 
-| Campo                     | Valor                               |
-| ------------------------- | ----------------------------------- |
-| **Proyecto**              | [Código Jira] — [Nombre Completo]   |
-| **Línea de Producto**     | [product line or component name]    |
-| **Fecha**                 | [YYYY-MM-DD HH:MM Timezone]         |
-| **Duración**              | [HH:MM] (objetivo: máx 90 minutos)  |
-| **Facilitador**           | [SM name]                           |
-| **Asistentes**            | [Name — Role — Área — % Dedicación] |
-| **Ausentes justificados** | [Name — Role — Área]                |
+| Field                | Value                                  |
+| -------------------- | -------------------------------------- |
+| **Project**          | [{{TRACKING_TOOL}} code] — [Full Name] |
+| **Product Line**     | [product line or component name]       |
+| **Date**             | [YYYY-MM-DD HH:MM Timezone]            |
+| **Duration**         | [HH:MM] (target: max 90 minutes)       |
+| **Facilitator**      | [SM name]                              |
+| **Attendees**        | [Name — Role — Area — % Dedication]    |
+| **Excused Absences** | [Name — Role — Area]                   |
 
-## 1. Contexto y Objetivo del Proyecto
+## 1. Project Context and Objective
 
-**Problema de negocio**: [from BC §2 Problem Statement]
-**Oportunidad**: [from BC §4 Market Opportunity]
-**Objetivo**: [from BC §1 Executive Summary]
-**Alineación estratégica**: [from BC §5 Strategic Alignment]
+**Business problem**: [from BC §2 Problem Statement]
+**Opportunity**: [from BC §4 Market Opportunity]
+**Objective**: [from BC §1 Executive Summary]
+**Strategic alignment**: [from BC §5 Strategic Alignment]
 
-## 2. Alcance y Entregables Confirmados
+## 2. Confirmed Scope and Deliverables
 
 ### ✅ In Scope (from BC §3 Proposed Solution)
 
-- [Entregable 1 — Criterio de éxito]
-- [Entregable 2 — Criterio de éxito]
+- [Deliverable 1 — Success criterion]
+- [Deliverable 2 — Success criterion]
 
 ### ❌ Out of Scope (Explicit Exclusions)
 
-- [Exclusión 1 — Razón]
-- [Exclusión 2 — Razón]
+- [Exclusion 1 — Reason]
+- [Exclusion 2 — Reason]
 
 ### 🔮 Future Scope (Post-MVP Considerations)
 
-- [Funcionalidad futura 1]
-- [Funcionalidad futura 2]
+- [Future capability 1]
+- [Future capability 2]
 
-## 3. Equipo del Proyecto y Responsabilidades
+## 3. Project Team and Responsibilities
 
-| Rol               | Nombre  | Área     | Dedicación | Responsabilidad Principal               |
-| ----------------- | ------- | -------- | ---------- | --------------------------------------- |
-| **PME**           | [Name]  | PME      | [%]        | Governance, gates, stakeholders         |
-| **Product Owner** | [Name]  | Producto | [%]        | PRD, priorización, validación funcional |
-| **R&D/Core Lead** | [Name]  | R&D      | [%]        | Arquitectura, PoCs, decisiones técnicas |
-| **Tech Lead**     | [Name]  | Dev      | [%]        | Code quality, mentoring, DoD            |
-| **Developers**    | [Names] | Dev      | [%]        | Implementación, PRs, handoffs           |
-| **QA Lead**       | [Name]  | QA       | [%]        | Test strategy, sign-off                 |
-| **Security Lead** | [Name]  | Sec      | [%]        | Vuln assessment, compliance             |
-| **DevOps**        | [Name]  | Ops      | [%]        | CI/CD, deploy, monitoreo                |
-| **Scrum Master**  | [Name]  | PME      | [%]        | Facilitación, impedimentos              |
+| Role              | Name    | Area    | Dedication | Primary Responsibility                   |
+| ----------------- | ------- | ------- | ---------- | ---------------------------------------- |
+| **PME**           | [Name]  | PME     | [%]        | Governance, gates, stakeholders          |
+| **Product Owner** | [Name]  | Product | [%]        | PRD, prioritization, functional sign-off |
+| **R&D/Core Lead** | [Name]  | R&D     | [%]        | Architecture, PoCs, technical decisions  |
+| **Tech Lead**     | [Name]  | Dev     | [%]        | Code quality, mentoring, DoD             |
+| **Developers**    | [Names] | Dev     | [%]        | Implementation, PRs, handoffs            |
+| **QA Lead**       | [Name]  | QA      | [%]        | Test strategy, sign-off                  |
+| **Security Lead** | [Name]  | Sec     | [%]        | Vuln assessment, compliance              |
+| **DevOps**        | [Name]  | Ops     | [%]        | CI/CD, deploy, monitoring                |
+| **Scrum Master**  | [Name]  | PME     | [%]        | Facilitation, impediments                |
 
-## 4. Timeline y Hitos Críticos
+## 4. Timeline and Critical Milestones
 
-**Duración total**: [N semanas/meses] — [Fecha inicio] a [Fecha fin]
-**Sprints**: [N sprints de 2 semanas]
+**Total duration**: [N weeks/months] — [Start date] to [End date]
+**Sprints**: [N sprints of 2 weeks]
 
-| Hito                    | Fecha Target | Owner    | Gate   |
-| ----------------------- | ------------ | -------- | ------ |
-| Discovery completa      | [YYYY-MM-DD] | PO + R&D | Gate 1 |
-| Especificación aprobada | [YYYY-MM-DD] | PO + QA  | Gate 2 |
-| Primer sprint committed | [YYYY-MM-DD] | SM       | Gate 3 |
-| Desarrollo completo     | [YYYY-MM-DD] | TL       | Gate 4 |
-| QA Sign-off             | [YYYY-MM-DD] | QA Lead  | Gate 5 |
-| Security Sign-off       | [YYYY-MM-DD] | Security | Gate 6 |
-| Release a Producción    | [YYYY-MM-DD] | DevOps   | Gate 7 |
+| Milestone              | Target Date  | Owner    | Gate   |
+| ---------------------- | ------------ | -------- | ------ |
+| Discovery complete     | [YYYY-MM-DD] | PO + R&D | Gate 1 |
+| Specification approved | [YYYY-MM-DD] | PO + QA  | Gate 2 |
+| First sprint committed | [YYYY-MM-DD] | SM       | Gate 3 |
+| Development complete   | [YYYY-MM-DD] | TL       | Gate 4 |
+| QA Sign-off            | [YYYY-MM-DD] | QA Lead  | Gate 5 |
+| Security Sign-off      | [YYYY-MM-DD] | Security | Gate 6 |
+| Release to Production  | [YYYY-MM-DD] | DevOps   | Gate 7 |
 
-## 5. Restricciones y Dependencias Críticas
+## 5. Constraints and Critical Dependencies
 
-### Restricciones (No Negociables)
+### Constraints (Non-Negotiable)
 
-- **Presupuesto**: [€ amount] — aprobado por [Sponsor]
-- **Timeline**: [Fecha máxima] — razón: [driver de negocio]
-- **Recursos**: [Limitaciones de equipo o tecnología]
-- **Compliance**: [Regulaciones aplicables: {{APPLICABLE_REGULATIONS}}]
+- **Budget**: [€ amount] — approved by [Sponsor]
+- **Timeline**: [Maximum date] — reason: [business driver]
+- **Resources**: [Team or technology limitations]
+- **Compliance**: [Applicable regulations: {{APPLICABLE_REGULATIONS}}]
 
-### Dependencias Externas
+### External Dependencies
 
-| Dependencia              | Owner              | Fecha Crítica | Riesgo si Falla     |
-| ------------------------ | ------------------ | ------------- | ------------------- |
-| [Sistema/API externo]    | [Área/Vendor]      | [YYYY-MM-DD]  | [Impact assessment] |
-| [Aprobación regulatoria] | [Legal/Compliance] | [YYYY-MM-DD]  | [Impact assessment] |
+| Dependency            | Owner              | Critical Date | Risk if It Fails    |
+| --------------------- | ------------------ | ------------- | ------------------- |
+| [External system/API] | [Area/Vendor]      | [YYYY-MM-DD]  | [Impact assessment] |
+| [Regulatory approval] | [Legal/Compliance] | [YYYY-MM-DD]  | [Impact assessment] |
 
-## 6. Riesgos Iniciales Identificados (Top 5 from BC)
+## 6. Initial Identified Risks (Top 5 from BC)
 
-| ID    | Riesgo                                   | Probabilidad      | Impacto           | Mitigación Propuesta | Owner  |
-| ----- | ---------------------------------------- | ----------------- | ----------------- | -------------------- | ------ |
-| R-001 | [Riesgo técnico específico del proyecto] | [Alta/Media/Baja] | [Alto/Medio/Bajo] | [Plan de mitigación] | [Role] |
-| R-002 | [Riesgo regulatorio/compliance]          | [Alta/Media/Baja] | [Alto/Medio/Bajo] | [Plan de mitigación] | [Role] |
-| R-003 | [Riesgo de mercado/competencia]          | [Alta/Media/Baja] | [Alto/Medio/Bajo] | [Plan de mitigación] | [Role] |
+| ID    | Risk                              | Probability       | Impact            | Proposed Mitigation | Owner  |
+| ----- | --------------------------------- | ----------------- | ----------------- | ------------------- | ------ |
+| R-001 | [Project-specific technical risk] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation plan]   | [Role] |
+| R-002 | [Regulatory/compliance risk]      | [High/Medium/Low] | [High/Medium/Low] | [Mitigation plan]   | [Role] |
+| R-003 | [Market/competition risk]         | [High/Medium/Low] | [High/Medium/Low] | [Mitigation plan]   | [Role] |
 
-## 7. Decisiones Tomadas en la Reunión
+## 7. Decisions Made in the Meeting
 
-| #     | Decisión                  | Contexto/Alternativas   | Responsable | Justificación           |
-| ----- | ------------------------- | ----------------------- | ----------- | ----------------------- |
-| D-001 | [Decisión arquitectónica] | [Opciones consideradas] | [TL]        | [Razón técnica/negocio] |
-| D-002 | [Decisión de proceso]     | [Alternativas]          | [SM]        | [Justificación]         |
+| #     | Decision                 | Context/Alternatives | Owner | Rationale                   |
+| ----- | ------------------------ | -------------------- | ----- | --------------------------- |
+| D-001 | [Architectural decision] | [Options considered] | [TL]  | [Technical/business reason] |
+| D-002 | [Process decision]       | [Alternatives]       | [SM]  | [Rationale]                 |
 
-## 8. Preguntas Abiertas / Escalamiento Requerido
+## 8. Open Questions / Escalation Required
 
-| #     | Pregunta                      | Contexto                | Escalar a       | Fecha Límite |
-| ----- | ----------------------------- | ----------------------- | --------------- | ------------ |
-| Q-001 | [Pregunta técnica específica] | [Por qué es importante] | [Tech Lead/R&D] | [YYYY-MM-DD] |
-| Q-002 | [Pregunta regulatoria]        | [Impacto en proyecto]   | [Legal/CISO]    | [YYYY-MM-DD] |
+| #     | Question                      | Context             | Escalate To     | Deadline     |
+| ----- | ----------------------------- | ------------------- | --------------- | ------------ |
+| Q-001 | [Specific technical question] | [Why it matters]    | [Tech Lead/R&D] | [YYYY-MM-DD] |
+| Q-002 | [Regulatory question]         | [Impact on project] | [Legal/CISO]    | [YYYY-MM-DD] |
 
 ## 9. Action Items (SMART)
 
-| #      | Acción                                      | Owner      | Fecha Límite | Criterio de Completitud                       | Status |
-| ------ | ------------------------------------------- | ---------- | ------------ | --------------------------------------------- | ------ |
-| AI-001 | Crear épica master en Jira con sub-épicas   | [PME]      | [YYYY-MM-DD] | Jira epic visible al equipo                   | 📝     |
-| AI-002 | Iniciar PRD Técnico (skill prd-tecnico)     | [R&D Lead] | [YYYY-MM-DD] | Borrador PRD-T v0.1 en Confluence             | 📝     |
-| AI-003 | Iniciar PRD Funcional (skill prd-funcional) | [PO]       | [YYYY-MM-DD] | Borrador PRD-F v0.1 en Confluence             | 📝     |
-| AI-004 | Setup proyecto en herramientas              | [DevOps]   | [YYYY-MM-DD] | Repo, CI/CD, entornos DEV/STG                 | 📝     |
-| AI-005 | Análisis de compliance inicial              | [Security] | [YYYY-MM-DD] | Evaluación de impacto de privacidad si aplica | 📝     |
+| #      | Action                                                 | Owner      | Deadline     | Completion Criterion                       | Status |
+| ------ | ------------------------------------------------------ | ---------- | ------------ | ------------------------------------------ | ------ |
+| AI-001 | Create master epic in {{TRACKING_TOOL}} with sub-epics | [PME]      | [YYYY-MM-DD] | {{TRACKING_TOOL}} epic visible to the team | 📝     |
+| AI-002 | Start Technical PRD (skill bmad-prd)                   | [R&D Lead] | [YYYY-MM-DD] | PRD-T v0.1 draft in {{DOCS_TOOL}}          | 📝     |
+| AI-003 | Start Functional PRD (skill bmad-prd)                  | [PO]       | [YYYY-MM-DD] | PRD-F v0.1 draft in {{DOCS_TOOL}}          | 📝     |
+| AI-004 | Set up project in tooling                              | [DevOps]   | [YYYY-MM-DD] | Repo, CI/CD, DEV/STG environments          | 📝     |
+| AI-005 | Initial compliance analysis                            | [Security] | [YYYY-MM-DD] | Privacy impact assessment if applicable    | 📝     |
 
-## 10. Próximos Pasos y Gate 1 Preparation
+## 10. Next Steps and Gate 1 Preparation
 
-**Inmediato (esta semana)**:
+**Immediate (this week)**:
 
-1. Completar action items AI-001 a AI-005
-2. Agendar sesiones de Discovery (PO + R&D)
-3. Identificar stakeholders clave para entrevistas
+1. Complete action items AI-001 to AI-005
+2. Schedule Discovery sessions (PO + R&D)
+3. Identify key stakeholders for interviews
 
-**Sprint 1 (próximas 2 semanas)**:
+**Sprint 1 (next 2 weeks)**:
 
-1. Ejecutar skill `prd-funcional` con PO
-2. Ejecutar skill `prd-tecnico` con R&D Lead
-3. Identificar PoCs técnicos críticos
+1. Run skill `bmad-prd` with PO
+2. Run skill `bmad-prd` with R&D Lead
+3. Identify critical technical PoCs
 
-**Objetivo Gate 1** (en [N] semanas):
+**Gate 1 Objective** (in [N] weeks):
 
-- PRD Funcional y Técnico completos
-- Review cruzado aprobado (skill `review-cruzado`)
-- Risk log actualizado (skill `risk-log`)
-- PoC reports de viabilidad técnica (si aplica)
+- Functional and Technical PRD complete
+- Cross-review approved (skill `review-cruzado`)
+- Risk log updated (skill `risk-log`)
+- Technical feasibility PoC reports (if applicable)
 
-## 11. Criterios de Éxito del Proyecto
+## 11. Project Success Criteria
 
-### Métricas de Negocio
+### Business Metrics
 
-- [ ] [KPI específico 1 — valor numérico objetivo]
-- [ ] [KPI específico 2 — valor numérico objetivo]
-- [ ] [KPI específico 3 — valor numérico objetivo]
+- [ ] [Specific KPI 1 — target numeric value]
+- [ ] [Specific KPI 2 — target numeric value]
+- [ ] [Specific KPI 3 — target numeric value]
 
-### Métricas Técnicas
+### Technical Metrics
 
-- [ ] Performance: [métrica específica]
-- [ ] Availability: [SLA objetivo]
-- [ ] Security: 0 vulnerabilidades críticas/altas
-- [ ] Compliance: Certificaciones obtenidas
+- [ ] Performance: [specific metric]
+- [ ] Availability: [target SLA]
+- [ ] Security: 0 critical/high vulnerabilities
+- [ ] Compliance: Certifications obtained
 
-### Métricas de Proceso
+### Process Metrics
 
-- [ ] Timeline: ±5% de fecha target
-- [ ] Budget: ±5% de presupuesto aprobado
-- [ ] Quality: >85% gate pass rate en primer intento
+- [ ] Timeline: ±5% of target date
+- [ ] Budget: ±5% of approved budget
+- [ ] Quality: >85% gate pass rate on first attempt
 
-## 12. Firmas y Compromisos
+## 12. Signatures and Commitments
 
-| Rol               | Nombre | Firma | Fecha        | Compromiso                               |
-| ----------------- | ------ | ----- | ------------ | ---------------------------------------- |
-| **Sponsor**       | [Name] | ⭐    | [YYYY-MM-DD] | Presupuesto y escalamiento garantizados  |
-| **Product Owner** | [Name] | ⭐    | [YYYY-MM-DD] | PRDs y priorización comprometidas        |
-| **Tech Lead**     | [Name] | ⭐    | [YYYY-MM-DD] | Calidad técnica y mentoring garantizados |
-| **Scrum Master**  | [Name] | ⭐    | [YYYY-MM-DD] | Facilitación y métricas comprometidas    |
+| Role              | Name   | Signature | Date         | Commitment                                 |
+| ----------------- | ------ | --------- | ------------ | ------------------------------------------ |
+| **Sponsor**       | [Name] | ⭐        | [YYYY-MM-DD] | Budget and escalation guaranteed           |
+| **Product Owner** | [Name] | ⭐        | [YYYY-MM-DD] | PRDs and prioritization committed          |
+| **Tech Lead**     | [Name] | ⭐        | [YYYY-MM-DD] | Technical quality and mentoring guaranteed |
+| **Scrum Master**  | [Name] | ⭐        | [YYYY-MM-DD] | Facilitation and metrics committed         |
 
 ---
 
-**Documento generado por**: skill `kickoff` v1.1.0
-**Próxima revisión**: Post Gate 1 o en 30 días
-**Storage**: Confluence → [URL a completar post-meeting]
+**Document generated by**: skill `kickoff` v1.5.0
+**Next review**: Post Gate 1 or in 30 days
+**Storage**: {{DOCS_TOOL}} → [URL to complete post-meeting]
 ```
 
 ## Execution Rules
@@ -258,8 +267,8 @@ Uses: templates/kickoff.md
 ### Post-Meeting (Documentation)
 
 - **Immediate distribution**: Share within 24h of meeting
-- **Confluence storage**: Centralized knowledge management
-- **Jira epic creation**: Link meeting outcomes to trackable work
+- **{{DOCS_TOOL}} storage**: Centralized knowledge management
+- **{{TRACKING_TOOL}} epic creation**: Link meeting outcomes to trackable work
 - **Gate 1 preparation**: Clear next steps toward Discovery phase completion
 
 ## Examples
@@ -276,9 +285,9 @@ See `examples/` directory for domain-specific kickoff examples:
 
 - **Prerequisite**: `business-case` — Must have approved BC before kickoff
 - **Prerequisite**: `/advance-gate 0` — Gate 0 must pass before kickoff meeting
-- **Follow-up**: `prd-funcional` — Action item for PO post-kickoff
-- **Follow-up**: `prd-tecnico` — Action item for R&D Lead post-kickoff
-- **Follow-up**: `tracking-integration` — Create project structure in tracking tool
+- **Follow-up**: `bmad-prd` — Action item for PO post-kickoff
+- **Follow-up**: `bmad-prd` — Action item for R&D Lead post-kickoff
+- **Follow-up**: `tracking-integration` — Create project structure in {{TRACKING_TOOL}}
 
 ### Templates and Documents
 
@@ -339,12 +348,12 @@ Business Case → Gate 0 → KICKOFF SKILL → Discovery Phase
 - [ ] Minimum 5 action items with SMART criteria
 - [ ] Risk register seeded with 3+ identified risks
 - [ ] Next steps clearly defined for Discovery phase
-- [ ] Document published to Confluence within 24h
+- [ ] Document published to {{DOCS_TOOL}} within 24h
 
 ### Handoff to Discovery Phase
 
 - [ ] PRD initiation action items assigned
-- [ ] Jira epic created with proper structure
+- [ ] {{TRACKING_TOOL}} epic created with proper structure
 - [ ] Team roles and responsibilities confirmed
 - [ ] Compliance requirements identified and documented
 - [ ] Risk log initialized with monitoring plan
@@ -378,13 +387,15 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 ## Changelog
 
-| Versión | Fecha      | Autor             | Cambios                                                                                      |
-| ------- | ---------- | ----------------- | -------------------------------------------------------------------------------------------- |
-| 1.1.0   | 2026-03-09 | TL: Lead Engineer | Enhanced with domain examples, expanded template, regulatory context, comprehensive workflow |
-| 1.0.0   | 2025-02-01 | SM: Scrum Master  | Versión inicial básica                                                                       |
+| Version | Date       | Author                       | Changes                                                                                      |
+| ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------- |
+| 1.5.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-unique Phase-1 governance artifact)                  |
+| 1.5.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira/Confluence/Slack via tool-registry |
+| 1.1.0   | 2026-03-09 | TL: Lead Engineer            | Enhanced with domain examples, expanded template, regulatory context, comprehensive workflow |
+| 1.0.0   | 2025-02-01 | SM: Scrum Master             | Initial basic version                                                                        |

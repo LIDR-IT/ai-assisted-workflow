@@ -4,6 +4,8 @@ prompt = """
 
 # Command: Quick Development
 
+> **Relationship (de-duplication):** Actual code production is owned by **`bmad-quick-dev`** (implements any intent following the project's patterns). This command is the LIDR wrapper for **small tasks (<8h)**: eligibility check, branch, micro-plan, fast DoD, PR — and auto-escalates to `/lidr-implement-ticket` when scope grows. It is the lightweight sibling of `/lidr-implement-ticket` (same workflow, smaller envelope); delegate the coding to `bmad-quick-dev` instead of re-implementing it.
+
 > **Propósito**: Flujo de desarrollo rápido para tareas pequeñas (< 8 horas). Bypass de procesos pesados para cambios menores, optimizado para velocidad.
 > **Tier**: 2 (Tactical)
 > **Roles**: Dev, Tech Lead

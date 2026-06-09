@@ -43,10 +43,12 @@ assignment:
   actual_hours: 0
 
 # External references
+# Illustrative multi-tool catalog — tools resolve via `_shared/lidr/integrations/tool-registry.yaml`;
+# the active client binds concrete tracker/docs/VCS in `clients/<CODE>.yaml`. Keep only the bound tools' keys.
 external_refs:
   jira: "{PROJECT}-{NNN}"
   linear: "LIN-{NNN}"
-  github_issue: null # Will be populated if GitHub issue created
+  github_issue: null # Will be populated if a VCS issue is created
   confluence: null # Link to any related documentation
 
 # Technical details

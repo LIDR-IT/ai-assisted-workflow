@@ -34,6 +34,8 @@ CHANGELOG:
 
 # Sprint Health Monitor — Sprint: $1
 
+> **Relationship (de-duplication):** Base sprint status + risk surfacing is owned by **`bmad-sprint-status`**; capacity analysis by the **`lidr-sprint-capacity`** skill. This command is the **LIDR monitoring layer**: it consumes those, computes the multi-dimensional health/risk score (velocity/capacity/quality/scope/dependency), renders the dashboard, and fires escalation/follow-up. Delegate status collection — don't re-implement it.
+
 Load: @../skills/sprint-capacity/SKILL.md
 Load: bmad-retrospective skill (post-epic retro reference)
 Load: @../rules/org.md

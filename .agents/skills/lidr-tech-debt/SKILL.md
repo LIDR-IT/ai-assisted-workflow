@@ -1,26 +1,34 @@
 ---
 name: lidr-tech-debt
 id: tech-debt
-version: "2.2.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "2.2.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 5
 owner_role: "TL + Dev Team"
 automation: true
 domain_agnostic: true
-description: "🤖 AUTOMATED technical debt identification and management using SonarQube integration. Auto-parses 847+ SonarQube issues, classifies by category/severity, generates sprint-ready User Stories with BDD criteria. Transforms 6+ hour manual analysis into 5-minute automated workflow. Includes debt registry, lifecycle tracking, and Jira export. Automation-first with manual fallback. Triggers on "SonarQube automation", "tech debt analysis", "debt registry generation", "automated user stories", "sprint debt planning". ROI: 120+ hours/year saved. Use every 2-3 sprints or after major releases. ALWAYS use when analyzing codebases to prioritize technical debt remediation."
+language_default: en
+integrations: [code_quality, tracking]
+description: "🤖 AUTOMATED technical debt identification and management using the bound {{CODE_QUALITY_TOOL}}. Auto-parses hundreds of quality issues, classifies by category/severity, generates sprint-ready User Stories with BDD criteria. Transforms 6+ hour manual analysis into 5-minute automated workflow. Includes debt registry, lifecycle tracking, and {{TRACKING_TOOL}} export. Automation-first with manual fallback. Triggers on "tech debt analysis", "debt registry generation", "automated user stories", "sprint debt planning", "analyze technical debt". ROI: 120+ hours/year saved. Use every 2-3 sprints or after major releases. ALWAYS use when analyzing codebases to prioritize technical debt remediation."
 ---
 
 # Technical Debt Identifier
 
-Phase: 5 — Development (detection) → all phases (backlog maintenance) | Language: English
+Phase: 5 — Development (detection) → all phases (backlog maintenance) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`. Code-quality scanning uses `{{CODE_QUALITY_TOOL}}`; backlog export targets `{{TRACKING_TOOL}}`.
+
+## Relationship to BMad
+
+This skill is a **LIDR-native artifact** (no BMad equivalent). BMad has no concept of a tech-debt registry or quadrant-prioritized debt backlog. This skill detects and classifies debt from `{{CODE_QUALITY_TOOL}}` output and emits sprint-ready User Stories that feed `bmad-sprint-planning` and `bmad-create-epics-and-stories`.
 
 ## Automated Workflow (NEW)
 
-### Phase 1: SonarQube Integration (Automated)
+### Phase 1: {{CODE_QUALITY_TOOL}} Integration (Automated)
 
-1. **Execute SonarQube Analyzer**: `scripts/sonarqube-analyzer.py` parses 847+ issues automatically
+1. **Execute Code-Quality Analyzer**: `scripts/sonarqube-analyzer.py` parses the {{CODE_QUALITY_TOOL}} issue set automatically
 2. **Classify and Prioritize**: Auto-categorization by code/architecture/test/security/documentation
 3. **Generate Debt Registry**: Structured debt items with business impact and cost estimation
 4. **Apply Quadrant Matrix**: Automated priority assignment (DO FIRST/PLAN/OPPORTUNISTIC/DEFER)
@@ -29,7 +37,7 @@ Phase: 5 — Development (detection) → all phases (backlog maintenance) | Lang
 
 1. **Execute Debt Tracker**: `scripts/debt-tracker.py` generates sprint-ready User Stories
 2. **Capacity Management**: Allocates 15-20% of sprint capacity to technical debt
-3. **Jira Export**: CSV export for seamless Jira import with BDD acceptance criteria
+3. **Tracking Export**: CSV export for seamless {{TRACKING_TOOL}} import with BDD acceptance criteria
 4. **Lifecycle Tracking**: Status management from identification to resolution
 
 ### Phase 3: Team Review (Human)
@@ -43,7 +51,7 @@ Phase: 5 — Development (detection) → all phases (backlog maintenance) | Lang
 
 If automation fails, use original manual process:
 
-1. Manual SonarQube report analysis (6+ hours)
+1. Manual {{CODE_QUALITY_TOOL}} report analysis (6+ hours)
 2. Manual classification by category and origin (2+ hours)
 3. Manual business impact assessment (1+ hour)
 4. Manual quadrant prioritization (1+ hour)
@@ -51,24 +59,24 @@ If automation fails, use original manual process:
 
 ## Input
 
-| Input                  | Required    | Source                             | Automated Processing                             |
-| ---------------------- | ----------- | ---------------------------------- | ------------------------------------------------ |
-| **SonarQube Reports**  | ✅          | SonarQube API/Export               | ✅ `sonarqube-analyzer.py` auto-fetches via API  |
-| SonarQube JSON Export  | Alternative | Manual export                      | ✅ `sonarqube-analyzer.py` processes JSON format |
-| SonarQube CSV Export   | Alternative | Manual export                      | ✅ `sonarqube-analyzer.py` processes CSV format  |
-| Sprint Capacity        | ✅          | Team planning                      | ✅ `debt-tracker.py` calculates debt allocation  |
-| Project Configuration  | Desirable   | Repository                         | ⚠️ Auto-discovery from project structure         |
-| Code source or diff    | Desirable   | Repository                         | ⚠️ Manual integration (future automation)        |
-| TODOs/FIXMEs           | Desirable   | `grep -r "TODO\|FIXME\|HACK\|XXX"` | ⚠️ Manual integration                            |
-| Git history (hotspots) | Desirable   | `git log --stat`                   | ⚠️ Manual integration                            |
-| Bug history            | Desirable   | Jira                               | ⚠️ Manual correlation                            |
-| Dependency audit       | Desirable   | `npm audit`, Snyk                  | ⚠️ Manual integration                            |
+| Input                    | Required    | Source                             | Automated Processing                             |
+| ------------------------ | ----------- | ---------------------------------- | ------------------------------------------------ |
+| **Code-Quality Reports** | ✅          | {{CODE_QUALITY_TOOL}} API/Export   | ✅ `sonarqube-analyzer.py` auto-fetches via API  |
+| Code-Quality JSON Export | Alternative | Manual export                      | ✅ `sonarqube-analyzer.py` processes JSON format |
+| Code-Quality CSV Export  | Alternative | Manual export                      | ✅ `sonarqube-analyzer.py` processes CSV format  |
+| Sprint Capacity          | ✅          | Team planning                      | ✅ `debt-tracker.py` calculates debt allocation  |
+| Project Configuration    | Desirable   | Repository                         | ⚠️ Auto-discovery from project structure         |
+| Code source or diff      | Desirable   | Repository                         | ⚠️ Manual integration (future automation)        |
+| TODOs/FIXMEs             | Desirable   | `grep -r "TODO\|FIXME\|HACK\|XXX"` | ⚠️ Manual integration                            |
+| Git history (hotspots)   | Desirable   | `git log --stat`                   | ⚠️ Manual integration                            |
+| Bug history              | Desirable   | {{TRACKING_TOOL}}                  | ⚠️ Manual correlation                            |
+| Dependency audit         | Desirable   | `npm audit`, {{CODE_QUALITY_TOOL}} | ⚠️ Manual integration                            |
 
 ## Automation Scripts
 
-### `scripts/sonarqube-analyzer.py` — SonarQube Integration and Debt Classification
+### `scripts/sonarqube-analyzer.py` — Code-Quality Integration and Debt Classification
 
-**Purpose**: Automatically analyzes SonarQube reports and generates structured technical debt items.
+**Purpose**: Automatically analyzes {{CODE_QUALITY_TOOL}} reports and generates structured technical debt items.
 
 **Key Features**:
 
@@ -111,7 +119,7 @@ python scripts/sonarqube-analyzer.py \
 
 - **Sprint Capacity Management**: Allocates 15-20% capacity to technical debt automatically
 - **User Story Generation**: BDD acceptance criteria, story points (Fibonacci), epic assignment
-- **Jira Integration**: CSV export format for seamless Jira import
+- **Tracking Integration**: CSV export format for seamless {{TRACKING_TOOL}} import
 - **Lifecycle Tracking**: Identified → Planned → In Progress → Resolved → Deferred
 - **Debt Backlog Reports**: Comprehensive reports for sprint planning and tracking
 
@@ -134,7 +142,7 @@ python scripts/debt-tracker.py \
 
 **Outputs**:
 
-- `debt-user-stories.csv`: Jira-ready import file with full BDD criteria
+- `debt-user-stories.csv`: {{TRACKING_TOOL}}-ready import file with full BDD criteria
 - `debt-backlog-report.md`: Sprint planning report with capacity recommendations
 - User Story templates by category (Code/Architecture/Test/Documentation/Security)
 
@@ -142,7 +150,7 @@ python scripts/debt-tracker.py \
 
 | Category           | Examples                                                         | Detected By                     |
 | ------------------ | ---------------------------------------------------------------- | ------------------------------- |
-| **Code**           | Functions >100 lines, cyclomatic complexity >15, duplication >5% | SonarQube, ESLint               |
+| **Code**           | Functions >100 lines, cyclomatic complexity >15, duplication >5% | {{CODE_QUALITY_TOOL}}, ESLint   |
 | **Architecture**   | Monolith needs modularization, excessive coupling                | ADR review, dependency analysis |
 | **Test**           | Coverage <80%, fragile tests, slow tests                         | Coverage reports, CI metrics    |
 | **Documentation**  | Missing JSDoc, outdated README, missing ADRs                     | Manual review                   |
@@ -152,7 +160,7 @@ python scripts/debt-tracker.py \
 
 ## Practical Implementation Instructions
 
-### Step 1: SonarQube Data Preparation
+### Step 1: Code-Quality Data Preparation (example uses SonarQube)
 
 **Option A: API Access (Recommended)**
 
@@ -211,7 +219,7 @@ python scripts/debt-tracker.py \
 # 📝 Backlog Report: sprint-planning/debt-backlog-report.md
 ```
 
-### Step 4: Import to Jira and Sprint Planning
+### Step 4: Import to {{TRACKING_TOOL}} and Sprint Planning (example uses Jira)
 
 ```bash
 # Import user stories to Jira
@@ -301,7 +309,7 @@ Update vulnerable dependencies, replace unmaintained packages, implement securit
 
 ## Automated Output Format — User Stories
 
-**Generated CSV Structure** for Jira import:
+**Generated CSV Structure** for {{TRACKING_TOOL}} import (example shows Jira columns):
 
 ```csv
 Summary,Issue Type,Description,Acceptance Criteria,Story Points,Priority,Epic Link,Labels,Component/s,Custom Field (Debt Items)
@@ -318,8 +326,8 @@ Summary,Issue Type,Description,Acceptance Criteria,Story Points,Priority,Epic Li
 
 ### Time Savings Achieved
 
-- **Manual SonarQube Analysis**: 6+ hours of developer time for 847 issues
-- **Automated SonarQube Analysis**: < 5 minutes computer time + 30 minutes review
+- **Manual {{CODE_QUALITY_TOOL}} Analysis**: 6+ hours of developer time for hundreds of issues
+- **Automated {{CODE_QUALITY_TOOL}} Analysis**: < 5 minutes computer time + 30 minutes review
 - **Manual User Story Creation**: 2+ hours per sprint for debt stories
 - **Automated Story Generation**: < 2 minutes + 15 minutes validation
 - **Net Savings Per Cycle**: ~8 hours
@@ -329,9 +337,9 @@ Summary,Issue Type,Description,Acceptance Criteria,Story Points,Priority,Epic Li
 
 - **Consistency**: 100% systematic application of categorization rules
 - **Completeness**: No missed debt items due to human oversight
-- **Traceability**: Perfect mapping between SonarQube issues and User Stories
+- **Traceability**: Perfect mapping between {{CODE_QUALITY_TOOL}} issues and User Stories
 - **Prioritization**: Objective quadrant-based priority assignment
-- **Sprint Integration**: Ready-to-import Jira format with BDD criteria
+- **Sprint Integration**: Ready-to-import {{TRACKING_TOOL}} format with BDD criteria
 
 ## Prioritization Quadrant
 
@@ -355,7 +363,7 @@ Summary,Issue Type,Description,Acceptance Criteria,Story Points,Priority,Epic Li
 ### Automation-First Principles
 
 - **Always run automated analysis first** — manual review only for validation and edge cases
-- **SonarQube integration is mandatory** — debt without metrics is not actionable debt
+- **{{CODE_QUALITY_TOOL}} integration is mandatory** — debt without metrics is not actionable debt
 - **Automated classification is authoritative** — human override only for exceptional cases
 - **Sprint capacity allocation is systematic** — 15-20% automated calculation, not negotiable
 
@@ -363,46 +371,46 @@ Summary,Issue Type,Description,Acceptance Criteria,Story Points,Priority,Epic Li
 
 - **DO FIRST items must be planned** — cannot defer items marked as high-impact + low-cost
 - **Deliberate debt requires tracking** — all debt items get lifecycle management automatically
-- **Bitrot detection is continuous** — weekly SonarQube analysis catches accumulation early
+- **Bitrot detection is continuous** — weekly {{CODE_QUALITY_TOOL}} analysis catches accumulation early
 - **Negligence escalation** — critical security debt auto-escalates to tech lead if not addressed in 2 sprints
 
 ### Quality Enforcement (Automated Validation)
 
 - **Budget 15-20% of sprint capacity** for technical debt automatically allocated by debt tracker
-- **Never invent severity** — all severity comes from SonarQube analysis, never manually assigned
+- **Never invent severity** — all severity comes from {{CODE_QUALITY_TOOL}} analysis, never manually assigned
 - **BDD acceptance criteria required** — all generated user stories include testable criteria
-- **Cost estimation is data-driven** — based on SonarQube rule complexity + issue count scaling
+- **Cost estimation is data-driven** — based on {{CODE_QUALITY_TOOL}} rule complexity + issue count scaling
 
 ### Process Integration
 
-- **Jira integration mandatory** — all debt items become trackable user stories
+- **{{TRACKING_TOOL}} integration mandatory** — all debt items become trackable user stories
 - **Sprint planning inclusion** — debt backlog report required input for sprint planning
-- **Resolution validation** — debt status updates require evidence of SonarQube issue resolution
+- **Resolution validation** — debt status updates require evidence of {{CODE_QUALITY_TOOL}} issue resolution
 
 ## Resources and Integration
 
 ### Automation Scripts
 
-- **SonarQube Analyzer**: `scripts/sonarqube-analyzer.py` — Core debt detection and classification
+- **Code-Quality Analyzer**: `scripts/sonarqube-analyzer.py` — Core debt detection and classification ({{CODE_QUALITY_TOOL}})
 - **Debt Tracker**: `scripts/debt-tracker.py` — Sprint planning and user story generation
-- **Configuration**: Auto-discovery from SonarQube project configuration
+- **Configuration**: Auto-discovery from {{CODE_QUALITY_TOOL}} project configuration
 
 ### Legacy References (Fallback)
 
 - **Debt classification guide**: `references/debt-classification.md` — Manual classification if automation fails
-- **SonarQube interpretation**: `references/sonarqube-guide.md` — Manual analysis guidance
+- **Code-Quality interpretation**: `references/sonarqube-guide.md` — Manual {{CODE_QUALITY_TOOL}} analysis guidance
 - **Prioritization framework**: `references/debt-prioritization.md` — Manual quadrant assignment
 
 ### Integration Points
 
-- **SonarQube API**: Direct integration for real-time debt detection
-- **Jira CSV Import**: Seamless user story creation workflow
+- **{{CODE_QUALITY_TOOL}} API**: Direct integration for real-time debt detection
+- **{{TRACKING_TOOL}} CSV Import**: Seamless user story creation workflow
 - **Sprint Planning**: Automated capacity allocation and backlog preparation
 - **Code Review**: Integration with PR automation (future enhancement)
 
 ### Monitoring and Metrics
 
-- **Weekly Analysis**: Automated SonarQube analysis every sprint boundary
+- **Weekly Analysis**: Automated {{CODE_QUALITY_TOOL}} analysis every sprint boundary
 - **Debt Trend Tracking**: Historical analysis of debt accumulation vs resolution
 - **Team Productivity**: Impact measurement of debt reduction on velocity
 - **ROI Calculation**: Time saved vs investment tracking
@@ -438,6 +446,6 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills

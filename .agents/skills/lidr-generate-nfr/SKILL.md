@@ -1,23 +1,25 @@
 ---
 name: lidr-generate-nfr
 id: generate-nfr
-version: "2.3.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "2.6.0"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 3
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: []
 description: >
-  Generate measurable Non-Functional Requirements (NFRs) covering performance, scalability, security, availability, and maintainability from PRD Técnico.
+  Generate measurable Non-Functional Requirements (NFRs) covering performance, scalability, security, availability, and maintainability from the Technical PRD.
   Domain-agnostic — works for any software system, platform, or API type.
   Use for defining verifiable quality constraints that complement functional requirements.
   Essential at Gate 2: NFRs must be measurable and testable before Sprint Planning.
-  Always use when PRD Técnico section 5 (NFRs) exists, always use when defining SLAs, performance targets, or security baselines.
+  Always use when Technical PRD section 5 (NFRs) exists, always use when defining SLAs, performance targets, or security baselines.
   Do NOT use for functional requirements (use generate-rf), for test cases (use create-test-cases), or for compliance checklists (use security-checklist).
   Triggers on "non-functional requirements", "NFR", "performance requirements", "scalability requirements", "security NFR", "availability SLA", "quality attributes".
-  Output in Spanish (requirements document), English (metrics and thresholds).
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Metrics and thresholds stay in English.
   Audience: Tech Lead (owns NFRs), QA (verifies compliance), Security (validates security NFRs).
 ---
 
@@ -27,12 +29,18 @@ description: >
 
 **Triggers**: "generate NFRs", "non-functional requirements", "create NFRs", "performance requirements", "security requirements", "SLA definition", "quality attributes", "compliance requirements", "latency targets"
 
-Phase: 3 — Specification | Gate: 2 (with RFs) | Language: Spanish + English (metrics)
+Phase: 3 — Specification | Gate: 2 (with RFs) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Metrics stay in English.
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMAD
+
+LIDR-unique: authors measurable, testable NFRs at Gate 2 (Specification) — a contract that `bmad-testarch-nfr` later audits against implementation evidence. Consumes the Technical PRD from `bmad-prd` (§5) and feeds `lidr-validate-requirements` (RTM coverage + gap detection).
 
 ## Workflow
 
-1. Read PRD-T §5 (NFRs de alto nivel) — source of categories and initial targets
-2. Read PRD-F §2.5 (Métricas de éxito) — business-driven quality targets
+1. Read PRD-T §5 (high-level NFRs) — source of categories and initial targets
+2. Read PRD-F §2.5 (success metrics) — business-driven quality targets
 3. Read `rules/tech-stack.md` — infrastructure constraints and capabilities
 4. Read `rules/org.md` §1.3 — data criticality rules (sensitive data, compliance)
 5. **Domain Analysis**: Identify specific workflows and data flows that drive quality constraints
@@ -58,14 +66,14 @@ When generating NFRs, **always include**:
 
 ## Input
 
-| Input                     | Required     | Source                          |
-| ------------------------- | ------------ | ------------------------------- |
-| PRD Técnico (approved)    | ✅           | skill `prd-tecnico/` §5         |
-| PRD Funcional (approved)  | ✅           | skill `prd-funcional/` §2.5     |
-| Risk Log                  | Desirable    | skill `risk-log/`               |
-| Current architecture docs | Desirable    | skill `architecture-doc/`       |
-| Existing SLAs / OLAs      | If available | Operations / DevOps             |
-| NFR Compliance Checklist  | ✅           | `@checklists/nfr-compliance.md` |
+| Input                     | Required     | Source                            |
+| ------------------------- | ------------ | --------------------------------- |
+| Technical PRD (approved)  | ✅           | skill `bmad-prd/` §5              |
+| Functional PRD (approved) | ✅           | skill `bmad-prd/` §2.5            |
+| Risk Log                  | Desirable    | skill `risk-log/`                 |
+| Current architecture docs | Desirable    | skill `bmad-create-architecture/` |
+| Existing SLAs / OLAs      | If available | Operations / DevOps               |
+| NFR Compliance Checklist  | ✅           | `@checklists/nfr-compliance.md`   |
 
 ## NFR Categories
 
@@ -95,62 +103,62 @@ When generating NFRs, **always include**:
 ```markdown
 # NFR-{PROJ}-{CAT}-{NNN}: {Title}
 
-| Campo          | Valor                                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| **ID**         | NFR-{PROJ}-{CAT}-{NNN}                                                                           |
-| **Categoría**  | Performance / Security / Scalability / Availability / Compliance / Accessibility / Observability |
-| **Versión**    | 1.0                                                                                              |
-| **Estado**     | Borrador / En Revisión / Aprobado                                                                |
-| **Prioridad**  | Must / Should / Could                                                                            |
-| **Criticidad** | Bloqueante / Alta / Media / Baja                                                                 |
+| Field           | Value                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------ |
+| **ID**          | NFR-{PROJ}-{CAT}-{NNN}                                                                           |
+| **Category**    | Performance / Security / Scalability / Availability / Compliance / Accessibility / Observability |
+| **Version**     | 1.0                                                                                              |
+| **Status**      | Draft / In Review / Approved                                                                     |
+| **Priority**    | Must / Should / Could                                                                            |
+| **Criticality** | Blocking / High / Medium / Low                                                                   |
 
-## Trazabilidad
+## Traceability
 
-| Referencia            | Valor                            |
-| --------------------- | -------------------------------- |
-| **PRD-T origen**      | PRD-T §5.X                       |
-| **PRD-F métricas**    | PRD-F §2.5                       |
-| **RFs afectados**     | RF-{PROJ}-{NNN}, RF-{PROJ}-{NNN} |
-| **Riesgos asociados** | RISK-{NNN} (from risk-log)       |
+| Reference         | Value                            |
+| ----------------- | -------------------------------- |
+| **PRD-T source**  | PRD-T §5.X                       |
+| **PRD-F metrics** | PRD-F §2.5                       |
+| **Affected RFs**  | RF-{PROJ}-{NNN}, RF-{PROJ}-{NNN} |
+| **Related risks** | RISK-{NNN} (from risk-log)       |
 
-## Definición
+## Definition
 
-{Qué se requiere — 1-2 oraciones claras, sin ambigüedad}
+{What is required — 1-2 clear, unambiguous sentences}
 
-## Métrica y Umbral
+## Metric and Threshold
 
-| Métrica       | Valor Actual (baseline) | Target   | Máximo Aceptable | Método de Medición |
-| ------------- | ----------------------- | -------- | ---------------- | ------------------ |
-| {metric name} | {current}               | {target} | {max acceptable} | {how to measure}   |
+| Metric        | Current Value (baseline) | Target   | Maximum Acceptable | Measurement Method |
+| ------------- | ------------------------ | -------- | ------------------ | ------------------ |
+| {metric name} | {current}                | {target} | {max acceptable}   | {how to measure}   |
 
-## Escenarios de Validación
+## Validation Scenarios
 
-### Escenario Normal (expected load)
+### Normal Scenario (expected load)
 
-- Condiciones: {load profile}
-- Resultado esperado: {meets target}
+- Conditions: {load profile}
+- Expected result: {meets target}
 
-### Escenario de Estrés (peak load)
+### Stress Scenario (peak load)
 
-- Condiciones: {peak profile}
-- Resultado esperado: {degradation acceptable within max}
+- Conditions: {peak profile}
+- Expected result: {degradation acceptable within max}
 
-### Escenario de Fallo (failure mode)
+### Failure Scenario (failure mode)
 
-- Condiciones: {failure scenario}
-- Resultado esperado: {graceful degradation / failover}
+- Conditions: {failure scenario}
+- Expected result: {graceful degradation / failover}
 
-## Implicaciones de Arquitectura
+## Architecture Implications
 
-{Qué decisiones arquitectónicas requiere este NFR — caching, CDN, DB tuning, etc.}
+{Which architectural decisions this NFR requires — caching, CDN, DB tuning, etc.}
 
-## Dependencias
+## Dependencies
 
-| Tipo            | Recurso               | Estado                 |
-| --------------- | --------------------- | ---------------------- |
-| Infraestructura | {e.g., Redis cluster} | Disponible / Pendiente |
-| Terceros        | {e.g., CDN provider}  | Contratado / Pendiente |
-| Equipo          | {e.g., DevOps config} | Asignado / Pendiente   |
+| Type           | Resource              | Status               |
+| -------------- | --------------------- | -------------------- |
+| Infrastructure | {e.g., Redis cluster} | Available / Pending  |
+| Third parties  | {e.g., CDN provider}  | Contracted / Pending |
+| Team           | {e.g., DevOps config} | Assigned / Pending   |
 ```
 
 ## Output — NFR Summary Matrix
@@ -160,26 +168,26 @@ After all individual NFRs, generate:
 ```markdown
 # NFR Summary Matrix: {PROJECT}
 
-## Por Categoría
+## By Category
 
-| Categoría   | # NFRs | Must | Should | Could | Bloqueantes |
-| ----------- | ------ | ---- | ------ | ----- | ----------- |
-| Performance | N      | N    | N      | N     | N           |
-| Security    | N      | N    | N      | N     | N           |
-| ...         |        |      |        |       |             |
+| Category    | # NFRs | Must | Should | Could | Blocking |
+| ----------- | ------ | ---- | ------ | ----- | -------- |
+| Performance | N      | N    | N      | N     | N        |
+| Security    | N      | N    | N      | N     | N        |
+| ...         |        |      |        |       |          |
 
-## Mapa NFR → RF
+## NFR → RF Map
 
-| NFR ID          | RFs Afectados        | Impacto                   |
+| NFR ID          | Affected RFs         | Impact                    |
 | --------------- | -------------------- | ------------------------- |
 | NFR-XX-PERF-001 | RF-XX-001, RF-XX-005 | Latency constraint on API |
 | NFR-XX-SEC-001  | ALL                  | Encryption mandatory      |
 
-## Riesgos de NFR no cumplidos
+## Risks of Unmet NFRs
 
-| NFR ID | Consecuencia si no se cumple | Mitigación |
-| ------ | ---------------------------- | ---------- |
-|        |                              |            |
+| NFR ID | Consequence if unmet | Mitigation |
+| ------ | -------------------- | ---------- |
+|        |                      |            |
 ```
 
 ## Key Rules
@@ -301,7 +309,7 @@ Per NFR:
 - [ ] Architectural implications documented
 - [ ] For Security/Compliance: references specific regulation (GDPR article, OWASP item, PCI requirement)
 - [ ] For Performance: has baseline, target, AND maximum acceptable
-- [ ] Criticality assigned (Bloqueante = cannot deploy without meeting this)
+- [ ] Criticality assigned (Blocking = cannot deploy without meeting this)
 - [ ] For ML/AI systems: includes accuracy metric and test methodology when applicable
 - [ ] For systems handling personal data: includes explicit data handling and retention requirements
 
@@ -369,17 +377,19 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
 
 ## Changelog
 
-| Versión | Fecha      | Autor                                 | Cambios                                                                                                                                                                                                                                                                    |
+| Version | Date       | Author                                | Changes                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.6.0   | 2026-06-09 | TL: BMAD-coherence batch-fix          | Added "Relationship to BMAD" note (LIDR-unique NFR authoring; consumes bmad-prd, audited by bmad-testarch-nfr, feeds lidr-validate-requirements)                                                                                                                           |
+| 2.5.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tools via tool-registry                                                                                                                                                                                               |
 | 2.4.0   | 2026-03-25 | TL: domain-agnostic-fix               | Removed remaining domain-specific terminology from active instruction cross-references; changelog entries neutralized                                                                                                                                                      |
 | 2.3.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific categories with high-traffic API/fintech/healthcare examples; moved domain-specific content to examples/domain-example.md; replaced domain-specific validation checklist with Domain-Specific NFR Validation Checklist |
 | 2.2.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                                                                                                                                                                              |
 | 2.1.0   | 2026-03-09 | System: Improvement                   | Added domain-specific NFR examples and accuracy benchmarks                                                                                                                                                                                                                 |
 | 2.0.0   | 2026-02-15 | TL: García                            | Added NFR Summary Matrix and architectural implications                                                                                                                                                                                                                    |
-| 1.0.0   | 2026-01-20 | TL: García                            | Versión inicial del skill                                                                                                                                                                                                                                                  |
+| 1.0.0   | 2026-01-20 | TL: García                            | Initial version of the skill                                                                                                                                                                                                                                               |

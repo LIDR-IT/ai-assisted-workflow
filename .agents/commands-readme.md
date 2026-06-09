@@ -2,7 +2,7 @@
 
 Source-of-truth for user-invocable slash commands across 5 platforms.
 
-**Source:** `.agents/commands/<name>.md` — 32 commands (19 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic).
+**Source:** `.agents/commands/<name>.md` — 30 commands (17 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic). `lidr-help` is now a skill (still invocable as `/lidr-help`); `lidr-product-brief` removed (use `bmad-product-brief`).
 
 Each platform calls the feature by a different name and expects a different file format. The adapter generates / symlinks per platform.
 
@@ -52,7 +52,7 @@ Markdown content here. Use $ARGUMENTS for user input.
 - **Antigravity:** reads markdown body; `description` shown in `/` dropdown
 - **Copilot:** adapter injects `agent: 'agent'` + maps `$ARGUMENTS` → `{{{ input }}}`
 
-## Available commands (32)
+## Available commands (30)
 
 ### Generic (6)
 
@@ -63,9 +63,11 @@ Markdown content here. Use $ARGUMENTS for user input.
 - `/sync-setup` — Run `./.agents/sync.sh`
 - `/test-hooks` — Test cross-platform hooks
 
-### LIDR SDLC (19 — partial listing)
+### LIDR SDLC (17 — partial listing)
 
-`lidr-advance-gate`, `lidr-course-correct`, `lidr-create-branch`, `lidr-create-pr`, `lidr-create-release-notes`, `lidr-help`, `lidr-implement-ticket`, `lidr-init-project-docs`, `lidr-prepare-testing`, `lidr-product-brief`, `lidr-quick-dev`, `lidr-quick-spec`, `lidr-sprint-health`, `lidr-sync-docs`, `lidr-track-sdlc`, `lidr-update-changelog`, `lidr-validate-prd`, `lidr-validate-project-docs`, `lidr-validate-requirements`
+`lidr-advance-gate`, `lidr-course-correct`, `lidr-create-branch`, `lidr-create-pr`, `lidr-create-release-notes`, `lidr-implement-ticket`, `lidr-init-project-docs`, `lidr-prepare-testing`, `lidr-quick-dev`, `lidr-quick-spec`, `lidr-sprint-health`, `lidr-sync-docs`, `lidr-track-sdlc`, `lidr-update-changelog`, `lidr-validate-prd`, `lidr-validate-project-docs`, `lidr-validate-requirements`
+
+> `/lidr-help` moved to a skill (`.agents/skills/lidr-help/`) — still invocable as `/lidr-help`. `lidr-product-brief` was removed; use the `bmad-product-brief` skill.
 
 See `.agents/rules/lidr-sdlc/workflows.md` for the role × command matrix.
 

@@ -31,6 +31,8 @@ CHANGELOG:
 
 # Generate Release Notes
 
+> **Relationship (de-duplication):** Release-notes content generation is owned by the **`lidr-release-notes`** skill (the reusable engine that owns the note format). This command is the thin orchestrator: scan merged PRs since the last tag, enrich with tracking context, invoke `lidr-release-notes` for the document, then publish. Pairs with `/lidr-update-changelog` (which writes CHANGELOG.md + git tag).
+
 Load: @../rules/org.md and @../rules/project.md
 
 ## Identify Changes

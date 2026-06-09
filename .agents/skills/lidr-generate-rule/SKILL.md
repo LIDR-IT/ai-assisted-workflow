@@ -1,23 +1,25 @@
 ---
 name: lidr-generate-rule
 id: generate-rule
-version: "1.2.0"
-last_updated: "2026-03-16"
-updated_by: "System: Quality Assurance Integration"
+version: "1.3.0"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: []
 description: >
   Generate Claude Code rule files (.md) with correct frontmatter, scope, and content structure to guide AI behavior in a project.
   Domain-agnostic — works for any project type, technology stack, or industry.
   Use for creating organizational rules, project context rules, tech-stack conventions, workflow orchestration maps, and documentation governance rules.
   Essential when a new project needs Claude Code behavioral guidelines or when existing rules need updating.
   Always use when setting up a new .claude/ ecosystem, always use when defining how Claude should behave for a specific project or team.
-  Do NOT use for skill creation (use skill-development), for command creation (use command-development), or for documentation that is not a rule file.
+  Do NOT use for skill creation (use bmad-workflow-builder), for command creation (use command-development), or for documentation that is not a rule file.
   Triggers on "generate rule", "create rule file", "claude rule", "ai behavioral guideline", "project rule", "tech-stack rule", "org rule", "documentation rule".
-  Output in English (rule files) or project language (content per team conventions).
+  Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: Tech Lead (creates and owns rules), Developer (follows rules automatically).
 ---
 
@@ -199,6 +201,13 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                                | Changes                                                                                                       |
+| ------- | ---------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 1.3.0   | 2026-06-09 | TL: BMAD-coherence batch-fix          | Added `language_default: en` + `integrations: []`; reframed language to English-authored, client-configurable |
+| 1.2.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                 |

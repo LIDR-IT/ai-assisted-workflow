@@ -1,14 +1,15 @@
 ---
 name: lidr-dast-interpretation
 id: dast-interpretation
-version: "1.1.0"
-last_updated: "2026-03-25"
-updated_by: "TL: tier3-remediation"
+version: "1.1.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 7
 owner_role: "TL"
 automation: false
 domain_agnostic: true
+language_default: en
 description: "Interpret DAST (Dynamic Application Security Testing) scan reports from OWASP ZAP, Burp Suite, or Nuclei against running applications. Unlike SAST, DAST tests the app at runtime (black-box) finding configuration issues, missing headers, CORS problems, and runtime vulnerabilities. Use for any dynamic security testing or runtime vulnerability assessment. Essential for production security validation and compliance reporting. Always use before releases and after infrastructure changes. Use pre-release before Gate 6 against staging, post-deployment for production smoke, after infrastructure changes, or when new public endpoints are added. Triggers on "interpret DAST results", "ZAP scan report", "Burp scan", "security headers check", "DAST findings", "runtime security scan"."
 ---
 
@@ -458,6 +459,6 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills

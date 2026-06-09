@@ -1,187 +1,187 @@
-# Business Case: {{PRODUCT_NAME_1}}D Para Onboarding Digital Bancario
+# Business Case: {{PRODUCT_NAME_1}}D For Banking Digital Onboarding
 
-**Cliente**: Banco Nacional de España (ejemplo)
-**Producto**: {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}}
-**Presupuesto Estimado**: €180K
-**Timeline**: 6 meses
-**Tipo**: Nuevo cliente enterprise
+**Client**: Banco Nacional de España (example)
+**Product**: {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}}
+**Estimated Budget**: €180K
+**Timeline**: 6 months
+**Type**: New enterprise client
 
-## 1. Problema de Negocio
+## 1. Business Problem
 
-### Situación Actual
+### Current Situation
 
-- **Onboarding manual**: 45 minutos promedio por cliente en sucursal
-- **Abandono digital**: 67% de usuarios abandonan el proceso online
-- **Costos operativos**: €25 por onboarding completado
-- **Compliance**: Requiere cumplir PSD2 SCA + AML + GDPR Art. 9
-- **Fraude**: 3.2% de intentos fraudulentos en onboarding actual
+- **Manual onboarding**: 45 minutes average per client at the branch
+- **Digital abandonment**: 67% of users abandon the online process
+- **Operational costs**: €25 per completed onboarding
+- **Compliance**: Must comply with PSD2 SCA + AML + GDPR Art. 9
+- **Fraud**: 3.2% of fraudulent attempts in current onboarding
 
-### Impacto en el Negocio
+### Business Impact
 
-- **Pérdida de clientes**: 2,300 clientes/mes abandonan proceso
-- **Costos de sucursal**: €1.2M anuales en personal de onboarding
-- **Multas regulatorias**: €450K en 2024 por incumplimiento AML
-- **Reputación**: NPS de onboarding: 23 (detractores)
+- **Client loss**: 2,300 clients/month abandon the process
+- **Branch costs**: €1.2M annually in onboarding personnel
+- **Regulatory fines**: €450K in 2024 for AML non-compliance
+- **Reputation**: Onboarding NPS: 23 (detractors)
 
-## 2. Solución Propuesta
+## 2. Proposed Solution
 
-### Componentes Tecnológicos
+### Technological Components
 
-| Producto {{CLIENT_NAME}} | Función                               | Cumplimiento Regulatorio         |
-| ------------------------ | ------------------------------------- | -------------------------------- |
-| **{{PRODUCT_NAME_1}}D**  | Verificación de documento (OCR + NFC) | eIDAS qualified, ISO 19092       |
-| **{{PRODUCT_NAME_1}}**   | Verificación facial + liveness        | ISO 30107-1 PAD Level 2          |
-| **Platform**             | Orquestación + dashboard              | GDPR Art. 25 (privacy by design) |
+| {{CLIENT_NAME}} Product | Function                          | Regulatory Compliance            |
+| ----------------------- | --------------------------------- | -------------------------------- |
+| **{{PRODUCT_NAME_1}}D** | Document verification (OCR + NFC) | eIDAS qualified, ISO 19092       |
+| **{{PRODUCT_NAME_1}}**  | Facial verification + liveness    | ISO 30107-1 PAD Level 2          |
+| **Platform**            | Orchestration + dashboard         | GDPR Art. 25 (privacy by design) |
 
-### Flujo de Onboarding Mejorado
+### Improved Onboarding Flow
 
-1. **Captura de documento** → OCR + NFC del DNI/Pasaporte
-2. **Extracción de datos** → Nombre, fecha nacimiento, número documento
-3. **Verificación biométrica** → Selfie + liveness detection
-4. **Matching 1:1** → Foto documento vs selfie (score > 0.85)
-5. **Validación externa** → Consulta bases de datos oficiales
-6. **Decisión automática** → Auto-aprobación o escalado manual
+1. **Document capture** → OCR + NFC of the ID/Passport
+2. **Data extraction** → Name, date of birth, document number
+3. **Biometric verification** → Selfie + liveness detection
+4. **Matching 1:1** → Document photo vs selfie (score > 0.85)
+5. **External validation** → Query official databases
+6. **Automatic decision** → Auto-approval or manual escalation
 
 ### GDPR Art. 9 Compliance
 
-- **Base legal**: Consentimiento explícito del usuario
-- **Minimización**: Solo datos estrictamente necesarios para identificación
-- **Retention**: Templates biométricos eliminados tras 30 días
-- **Portabilidad**: Export de datos del usuario en formato estándar
-- **DPIA**: Evaluación de impacto completada antes de go-live
+- **Legal basis**: Explicit user consent
+- **Minimization**: Only data strictly necessary for identification
+- **Retention**: Biometric templates deleted after 30 days
+- **Portability**: User data export in standard format
+- **DPIA**: Impact assessment completed before go-live
 
-## 3. Beneficios Cuantificables
+## 3. Quantifiable Benefits
 
-### Reducción de Costos
+### Cost Reduction
 
-| Concepto             | Actual | Con {{CLIENT_NAME}} | Ahorro Anual |
-| -------------------- | ------ | ------------------- | ------------ |
-| Tiempo de onboarding | 45 min | 3 min               | €850K        |
-| Personal de sucursal | 12 FTE | 4 FTE               | €640K        |
-| Procesamiento manual | 100%   | 15%                 | €320K        |
-| **Total ahorro**     |        |                     | **€1.81M**   |
+| Concept           | Current | With {{CLIENT_NAME}} | Annual Savings |
+| ----------------- | ------- | -------------------- | -------------- |
+| Onboarding time   | 45 min  | 3 min                | €850K          |
+| Branch personnel  | 12 FTE  | 4 FTE                | €640K          |
+| Manual processing | 100%    | 15%                  | €320K          |
+| **Total savings** |         |                      | **€1.81M**     |
 
-### Incremento de Conversión
+### Conversion Increase
 
-- **Tasa de abandono**: 67% → 15% (target)
-- **Clientes adicionales**: +1,800/mes
-- **Revenue adicional**: €4.2M anuales (€195 ARPU)
+- **Abandonment rate**: 67% → 15% (target)
+- **Additional clients**: +1,800/month
+- **Additional revenue**: €4.2M annually (€195 ARPU)
 
-### Cumplimiento y Seguridad
+### Compliance and Security
 
-- **Reducción de fraude**: 3.2% → 0.8% (target)
-- **Ahorro en fraude**: €280K anuales
-- **Multas evitadas**: €450K (cumplimiento automático AML)
+- **Fraud reduction**: 3.2% → 0.8% (target)
+- **Fraud savings**: €280K annually
+- **Fines avoided**: €450K (automatic AML compliance)
 
-## 4. Inversión y ROI
+## 4. Investment and ROI
 
-### Inversión Total
+### Total Investment
 
-| Concepto                          | Costo     | Notas                   |
+| Concept                           | Cost      | Notes                   |
 | --------------------------------- | --------- | ----------------------- |
-| Licencias {{CLIENT_NAME}} (año 1) | €120K     | 50K transacciones/mes   |
-| Integración y desarrollo          | €45K      | 3 meses, equipo interno |
-| Consultoría compliance            | €15K      | DPIA + certificaciones  |
-| **Total inversión**               | **€180K** |                         |
+| {{CLIENT_NAME}} licenses (year 1) | €120K     | 50K transactions/month  |
+| Integration and development       | €45K      | 3 months, internal team |
+| Compliance consulting             | €15K      | DPIA + certifications   |
+| **Total investment**              | **€180K** |                         |
 
-### Retorno
+### Return
 
-- **Ahorro directo**: €1.81M (reducción costos)
-- **Revenue incremental**: €4.2M (nuevos clientes)
-- **ROI año 1**: 3,240% ((6.01M - 0.18M) / 0.18M \* 100)
-- **Payback period**: 1.1 meses
+- **Direct savings**: €1.81M (cost reduction)
+- **Incremental revenue**: €4.2M (new clients)
+- **ROI year 1**: 3,240% ((6.01M - 0.18M) / 0.18M \* 100)
+- **Payback period**: 1.1 months
 
-## 5. Riesgos y Mitigaciones
+## 5. Risks and Mitigations
 
-### Riesgos Técnicos
+### Technical Risks
 
-| Riesgo                          | Probabilidad | Impacto | Mitigación                           |
-| ------------------------------- | ------------ | ------- | ------------------------------------ |
-| Integración compleja            | Media        | Alto    | PoC de 2 semanas antes de compromiso |
-| Performance en móviles antiguos | Alta         | Medio   | Fallback a verificación manual       |
-| Falsos rechazos (FRR alto)      | Baja         | Alto    | Tuning de umbrales en piloto         |
+| Risk                        | Probability | Impact | Mitigation                      |
+| --------------------------- | ----------- | ------ | ------------------------------- |
+| Complex integration         | Medium      | High   | 2-week PoC before commitment    |
+| Performance on old mobiles  | High        | Medium | Fallback to manual verification |
+| False rejections (high FRR) | Low         | High   | Threshold tuning in pilot       |
 
-### Riesgos Regulatorios
+### Regulatory Risks
 
-| Riesgo                         | Probabilidad | Impacto | Mitigación                          |
-| ------------------------------ | ------------ | ------- | ----------------------------------- |
-| Cambios en GDPR interpretation | Baja         | Alto    | Cláusulas de adaptación en contrato |
-| Auditoría regulatoria          | Media        | Medio   | Documentación exhaustiva + logs     |
-| Rechazo del consentimiento     | Media        | Bajo    | Proceso de onboarding alternativo   |
+| Risk                           | Probability | Impact | Mitigation                         |
+| ------------------------------ | ----------- | ------ | ---------------------------------- |
+| Changes in GDPR interpretation | Low         | High   | Adaptation clauses in the contract |
+| Regulatory audit               | Medium      | Medium | Exhaustive documentation + logs    |
+| Consent rejection              | Medium      | Low    | Alternative onboarding process     |
 
-### Riesgos de Negocio
+### Business Risks
 
-- **Adopción lenta**: Comunicación + incentivos
-- **Competencia**: Time-to-market acelerado
-- **Costos ocultos**: Contingencia del 15% incluida
+- **Slow adoption**: Communication + incentives
+- **Competition**: Accelerated time-to-market
+- **Hidden costs**: 15% contingency included
 
-## 6. Cronograma
+## 6. Schedule
 
-### Fase 1: Discovery y PoC (4 semanas)
+### Phase 1: Discovery and PoC (4 weeks)
 
-- Análisis de integración técnica
-- PoC con 500 transacciones reales
-- DPIA preliminar
+- Technical integration analysis
+- PoC with 500 real transactions
+- Preliminary DPIA
 - **Go/No-go decision**
 
-### Fase 2: Desarrollo (8 semanas)
+### Phase 2: Development (8 weeks)
 
-- Integración backend {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}}
-- Frontend móvil + web
-- Testing + certificación
+- Backend integration {{PRODUCT_NAME_1}}D + {{PRODUCT_NAME_1}}
+- Mobile + web frontend
+- Testing + certification
 
-### Fase 3: Piloto (4 semanas)
+### Phase 3: Pilot (4 weeks)
 
-- 10,000 onboardings reales
-- Tuning de umbrales
-- Training del equipo de soporte
+- 10,000 real onboardings
+- Threshold tuning
+- Support team training
 
-### Fase 4: Go-Live (2 semanas)
+### Phase 4: Go-Live (2 weeks)
 
-- Migración gradual 10% → 50% → 100%
-- Monitoreo 24/7
-- Soporte intensivo
+- Gradual migration 10% → 50% → 100%
+- 24/7 monitoring
+- Intensive support
 
-## 7. Métricas de Éxito
+## 7. Success Metrics
 
-### KPIs Primarios
+### Primary KPIs
 
-| Métrica               | Baseline | Target Mes 3 | Target Mes 6 |
-| --------------------- | -------- | ------------ | ------------ |
-| Tiempo onboarding     | 45 min   | 5 min        | 3 min        |
-| Tasa de abandono      | 67%      | 25%          | 15%          |
-| Conversión completa   | 33%      | 75%          | 85%          |
-| Costos por onboarding | €25      | €8           | €5           |
+| Metric              | Baseline | Target Month 3 | Target Month 6 |
+| ------------------- | -------- | -------------- | -------------- |
+| Onboarding time     | 45 min   | 5 min          | 3 min          |
+| Abandonment rate    | 67%      | 25%            | 15%            |
+| Complete conversion | 33%      | 75%            | 85%            |
+| Cost per onboarding | €25      | €8             | €5             |
 
-### KPIs Secundarios
+### Secondary KPIs
 
-- **Satisfacción del cliente**: NPS > 70
-- **Precisión biométrica**: FAR < 0.1%, FRR < 2%
-- **Disponibilidad del sistema**: > 99.9%
-- **Cumplimiento regulatorio**: 0 incidencias
+- **Customer satisfaction**: NPS > 70
+- **Biometric accuracy**: FAR < 0.1%, FRR < 2%
+- **System availability**: > 99.9%
+- **Regulatory compliance**: 0 incidents
 
-## 8. Factores Críticos de Éxito
+## 8. Critical Success Factors
 
-### Técnicos
+### Technical
 
-- API response time < 2 segundos
-- Compatibilidad con 95% de dispositivos móviles
-- Fallback robusto para casos edge
+- API response time < 2 seconds
+- Compatibility with 95% of mobile devices
+- Robust fallback for edge cases
 
-### Regulatorios
+### Regulatory
 
-- DPIA aprobada por DPO antes de go-live
-- Audit trail completo de todas las transacciones
-- Consentimiento granular y revocable
+- DPIA approved by DPO before go-live
+- Complete audit trail of all transactions
+- Granular and revocable consent
 
-### Organizacionales
+### Organizational
 
-- Sponsorship del CEO y CTO
-- Change management para equipos de sucursal
-- Training intensivo del call center
+- CEO and CTO sponsorship
+- Change management for branch teams
+- Intensive call center training
 
 ---
 
-**Aprobación Requerida**: Comité Ejecutivo
-**Next Steps**: Si se aprueba → iniciar procurement + PoC
-**Deadline para decisión**: 15 días laborables
+**Approval Required**: Executive Committee
+**Next Steps**: If approved → start procurement + PoC
+**Decision Deadline**: 15 business days

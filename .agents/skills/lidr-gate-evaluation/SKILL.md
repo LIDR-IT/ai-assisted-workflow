@@ -1,14 +1,16 @@
 ---
 name: lidr-gate-evaluation
 id: gate-evaluation
-version: "1.0.0"
-last_updated: "2026-04-06"
+version: "1.2.0"
+last_updated: "2026-06-09"
 updated_by: "TL: epic-jira-cleanup"
 status: active
 phase: 0
 owner_role: "PME"
 automation: false
 domain_agnostic: true
+language_default: en
+integrations: [tracking]
 description: >
   Generate standardized gate evaluation reports for SDLC phase transitions.
   Tool-agnostic - works across all project tracking systems and methodologies.
@@ -17,7 +19,7 @@ description: >
   Always use when transitioning between SDLC phases, always use for gate pass/fail decisions.
   Do NOT use for individual task evaluation or informal progress checks.
   Triggers on "gate evaluation", "phase transition", "gate assessment", "handoff package".
-  Output in Spanish (descriptions) + English (technical terms).
+  Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: PME (conducts evaluations), PO/TL (receives results), QA/Security (provides sign-offs).
 ---
 
@@ -27,7 +29,9 @@ description: >
 
 **Triggers**: "gate evaluation", "phase transition", "gate assessment", "handoff package", "advance gate"
 
-Phase: Cross-cutting (Gates 0-7) | Language: Spanish + English | Duration: 15-45min
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+Phase: Cross-cutting (Gates 0-7) | Language: English (default; configurable per client `language` setting) | Duration: 15-45min
 
 ## Critical Success Workflow
 
@@ -87,5 +91,6 @@ This workflow is MANDATORY for every gate transition — ensures systematic eval
 
 | Version | Date       | Author                  | Changes                                                                                                                                                           |
 | ------- | ---------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic  | Language to English-default-configurable; abstracted tracking (Jira) via tool-registry                                                                            |
 | 1.1.0   | 2026-06-09 | TL: LIDR Gate-over-BMad | Evidence sourcing now reads `_shared/lidr/gate-evidence.yaml` — gate verifies BMad artifacts (primary) + LIDR gap-fillers instead of phase-specific re-generation |
 | 1.0.0   | 2026-04-06 | TL: epic-jira-cleanup   | Initial skill creation — extracted from deprecated epic-jira                                                                                                      |

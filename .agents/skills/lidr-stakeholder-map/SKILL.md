@@ -1,20 +1,25 @@
 ---
 name: lidr-stakeholder-map
 id: stakeholder-map
-version: "1.1.0"
-last_updated: "2026-03-16"
-updated_by: "System: Quality Assurance Enhancement"
+version: "1.1.1"
+last_updated: "2026-06-09"
+updated_by: "TL: BMAD-coherence batch-fix"
 status: active
 phase: 1
 owner_role: "PME"
 automation: false
 domain_agnostic: true
-description: "Generate a stakeholder map with power/interest matrix and communication plan for a project. Use at project start to identify ALL stakeholders, define engagement strategy, and prevent late-appearing stakeholders changing scope. Triggers on create stakeholder map, who are the stakeholders, communication plan, identify stakeholders, who do we need to involve. Informs Discovery sessions (who to interview) and ongoing project communication. Output in Spanish. ALWAYS use at project start to identify all stakeholders and define engagement strategies."
+language_default: en
+description: "Generate a stakeholder map with power/interest matrix and communication plan for a project. Use at project start to identify ALL stakeholders, define engagement strategy, and prevent late-appearing stakeholders changing scope. Triggers on create stakeholder map, who are the stakeholders, communication plan, identify stakeholders, who do we need to involve. Informs Discovery sessions (who to interview) and ongoing project communication. Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). ALWAYS use at project start to identify all stakeholders and define engagement strategies."
 ---
 
 # Stakeholder Map Generator
 
-Phase: 1 — Origination | Language: Spanish
+Phase: 1 — Origination | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The Spanish headings in the output template below are illustrative — the bound client `language` drives the emitted artifact.
+
+## Relationship to BMad
+
+This skill is a **LIDR-unique artifact** (no BMad equivalent). BMad has no concept of a power/interest stakeholder matrix or communication plan. This skill feeds Discovery — its stakeholder list informs who to interview and supplies the stakeholder context that `bmad-prd` references when capturing requirements.
 
 ## Workflow
 
@@ -111,6 +116,6 @@ npx tsx scripts/validate-examples.ts
 
 **Integration with ecosystem:**
 
-- Used by `/multi-agent-audit` for ecosystem validation
+- Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills

@@ -1,12 +1,16 @@
 ---
 name: lidr-commit-management
 description: This skill should be used when the user asks about "commit best practices", "fix commit", "amend commit", "commit message guidelines", "conventional commits", "rewrite commits", "commit history", or needs help managing git commits following project standards.
-version: 1.0.0
+version: 1.1.0
+last_updated: "2026-06-09"
+integrations: [tracking]
 ---
 
 # Commit Management Skill
 
 Comprehensive guidance for managing git commits following conventional commit standards and project best practices.
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ## Overview
 
@@ -613,6 +617,12 @@ Before committing, verify:
 - [ ] Code is working (tests pass)
 - [ ] No sensitive data included
 - [ ] Commit is atomic (single logical change)
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                               |
+| ------- | ---------- | ---------------------- | ----------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tracking/CI/chat tool mentions via tool-registry |
 
 ---
 
