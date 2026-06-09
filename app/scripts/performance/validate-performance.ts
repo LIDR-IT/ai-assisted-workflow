@@ -312,7 +312,7 @@ class PerformanceValidator {
       'Performance regression thresholds created': true, // Thresholds defined in config
       'Performance monitoring scripts setup': true, // All scripts created
       'Lazy loading improvements validated': results.some((r) =>
-        r.improvements.some((imp) => imp.includes('lazy'))
+        r.improvements.some((imp) => imp.toLowerCase().includes('lazy'))
       ),
       'Performance impact documented': true, // Reports generated
       'Performance validation command created': true, // This script exists
