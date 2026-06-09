@@ -23,19 +23,15 @@ _Working title — confirm._
 
 ## 2. Target User
 
-### 2.1 Primary Persona
+### 2.1 Jobs To Be Done
 
-[Vivid but tight. Who they are, how this product fits their context.]
+[Bulleted. Emotional, social, functional, contextual — whichever apply. Even "this is for me as the builder" is a valid framing for a hobby project.]
 
-### 2.2 Jobs To Be Done
-
-[Bulleted. Emotional, social, functional, contextual — whichever apply. Even "this is for me as the builder" is a valid persona for a hobby project.]
-
-### 2.3 Non-Users (v1) _(add when the audience boundary is non-obvious)_
+### 2.2 Non-Users (v1) _(add when the audience boundary is non-obvious)_
 
 [Who this is explicitly not for in v1.]
 
-### 2.4 Key User Journeys
+### 2.3 Key User Journeys
 
 _Named-persona narratives the product enables. Numbered globally as UJ-1 through UJ-N. FRs reference journeys by ID inline ("realizes UJ-3"); SMs may also cross-reference. If a UX doc already exists, mirror its UJ IDs here and point to the source._
 
