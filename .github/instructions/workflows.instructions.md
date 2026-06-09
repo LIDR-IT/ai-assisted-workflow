@@ -29,6 +29,8 @@ applyTo: "**"
 | `/init-project-docs [name]`     | Crea documentación de proyecto desde templates                                        | Tech Lead, PO, PME                                 | Proyecto nuevo aprobado           |
 | `/validate-project-docs [name]` | Valida docs contra criterios de templates                                             | Tech Lead, PO, QA Lead, PME                        | Docs existentes en docs/projects/ |
 
+> **Nota — `validate-requirements` (verbo vs motor):** `/validate-requirements` es el **comando orquestador** de Fase 3 (encadena `lidr-generate-rf` + `lidr-generate-nfr` + el motor RTM + `bmad-create-epics-and-stories`). Existe además una **skill** homónima `lidr-validate-requirements` que es el motor RTM / validación 5-pass; está marcada `user-invocable: false`, así que el slash `/validate-requirements` siempre resuelve al comando y la skill se alcanza por delegación. Ver `docs/adr/ADR-0007-command-skill-name-resolution.md`.
+
 ### Tier 2 — Tactical (workflow enfocado, pueden invocarse standalone o encadenados)
 
 | Command                       | Propósito                                                     | Roles Autorizados                  | Precondición                   |
