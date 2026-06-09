@@ -90,7 +90,7 @@ hook_count=0
 checklist_count=0
 
 if [ -d ".agents/skills" ]; then
-  skill_count=$(find .agents/skills/ -name "SKILL.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+  skill_count=$(find .agents/skills/ -maxdepth 2 -name "SKILL.md" -type f 2>/dev/null | wc -l | tr -d ' ')
 fi
 if [ -d ".agents/commands" ]; then
   command_count=$(find .agents/commands/ -maxdepth 1 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')

@@ -19,6 +19,7 @@ description: >
   Triggers on "create epic", "set up project tracking", "initialize tracking", "create master epic", "project setup", "post-kickoff actions".
   Output in Spanish (descriptions) + English (keys, labels).
   Audience: PME (creates structure), Dev (references tickets), QA (links test cases).
+  Tracking pipeline: this is the CREATE step (one-time external structure); `lidr-sdlc-tracking` owns the internal state file, `lidr-external-sync` reconciles them — do NOT use this for ongoing state or sync.
 ---
 
 # Tracking Integration — Adaptive Project Kickstart
@@ -28,6 +29,14 @@ description: >
 **Triggers**: "create epic", "set up project tracking", "initialize tracking", "create master epic", "project setup", "post-kickoff actions"
 
 Phase: 1 — Origination | Post kick-off | Language: Spanish + English | Duration: 15-30min
+
+## Related — tracking pipeline
+
+This skill is the **CREATE** step. The three tracking skills form a pipeline, not duplicates:
+
+- **`lidr-tracking-integration`** (this) — one-time CREATE of the external project/epic structure, post-Gate 0.
+- **`lidr-sdlc-tracking`** — OWNS `sdlc-tracking.yaml`, the internal lifecycle/state source of truth.
+- **`lidr-external-sync`** — RECONCILES `sdlc-tracking.yaml` ↔ external tools (optional, portfolio-scale).
 
 ## Adaptive Architecture
 

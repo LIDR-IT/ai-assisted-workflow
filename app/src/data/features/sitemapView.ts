@@ -395,7 +395,7 @@ export const projectTree: TreeNode[] = [
             name: 'Cross-cutting — Governance & utilidades',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '9 skills', color: 'bg-indigo-100 text-indigo-700' },
+            badge: { label: '8 skills', color: 'bg-indigo-100 text-indigo-700' },
             desc: 'Skills que aplican transversalmente a múltiples fases (Gate orchestration, auditoría, tracking, handoffs, utilidades de Dev).',
             children: [
               {
@@ -415,12 +415,6 @@ export const projectTree: TreeNode[] = [
                 type: 'file',
                 desc: 'Portfolio state centralizado, métricas LIDR SDLC y health checks',
                 docPath: '.claude/skills/lidr-sdlc-tracking/SKILL.md',
-              },
-              {
-                name: 'lidr-automated-handoffs/SKILL.md',
-                type: 'file',
-                desc: 'Automatiza transiciones de fase Dev→QA→Sec→DevOps con notificaciones',
-                docPath: '.claude/skills/lidr-automated-handoffs/SKILL.md',
               },
               {
                 name: 'lidr-external-sync/SKILL.md',
@@ -583,10 +577,10 @@ export const projectTree: TreeNode[] = [
                     docPath: '.claude/skills/bmad-validate-prd/SKILL.md',
                   },
                   {
-                    name: 'bmad-create-ux-design/SKILL.md',
+                    name: 'bmad-ux/SKILL.md',
                     type: 'file',
                     desc: 'Plan de UX patterns y design specifications',
-                    docPath: '.claude/skills/bmad-create-ux-design/SKILL.md',
+                    docPath: '.claude/skills/bmad-ux/SKILL.md',
                   },
                 ],
               },
@@ -961,10 +955,10 @@ export const projectTree: TreeNode[] = [
                     docPath: '.claude/skills/bmad-index-docs/SKILL.md',
                   },
                   {
-                    name: 'bmad-distillator/SKILL.md',
+                    name: 'bmad-spec/SKILL.md',
                     type: 'file',
                     desc: 'Lossless LLM-optimized compression de source documents',
-                    docPath: '.claude/skills/bmad-distillator/SKILL.md',
+                    docPath: '.claude/skills/bmad-spec/SKILL.md',
                   },
                   {
                     name: 'bmad-party-mode/SKILL.md',

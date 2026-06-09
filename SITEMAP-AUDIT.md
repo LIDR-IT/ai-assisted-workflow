@@ -172,7 +172,7 @@ Las 19 rutas de `ROUTE_REGISTRY` (`app/src/app/route-registry.ts`). **Todos los 
 
 **Core flow + TestArch (34)** — todas ACTIVE salvo 3 DEPRECATED auto-declaradas:
 
-`bmad-product-brief`, `bmad-brainstorming`, `bmad-advanced-elicitation`, `bmad-domain-research`, `bmad-market-research`, `bmad-technical-research`, **`bmad-prd`** (unificado: create/update/validate), `bmad-create-ux-design`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-check-implementation-readiness`, `bmad-sprint-planning`, `bmad-sprint-status`, `bmad-create-story`, `bmad-dev-story`, `bmad-quick-dev`, `bmad-correct-course`, `bmad-prfaq`, `bmad-retrospective`, `bmad-teach-me-testing`, `bmad-testarch-{test-design,framework,ci,atdd,automate,nfr,test-review,trace}`, `bmad-tea`, `bmad-code-review`, `bmad-qa-generate-e2e-tests`.
+`bmad-product-brief`, `bmad-brainstorming`, `bmad-advanced-elicitation`, `bmad-domain-research`, `bmad-market-research`, `bmad-technical-research`, **`bmad-prd`** (unificado: create/update/validate), `bmad-ux`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-check-implementation-readiness`, `bmad-sprint-planning`, `bmad-sprint-status`, `bmad-create-story`, `bmad-dev-story`, `bmad-quick-dev`, `bmad-correct-course`, `bmad-prfaq`, `bmad-retrospective`, `bmad-teach-me-testing`, `bmad-testarch-{test-design,framework,ci,atdd,automate,nfr,test-review,trace}`, `bmad-tea`, `bmad-code-review`, `bmad-qa-generate-e2e-tests`.
 
 | DEPRECATED (auto-declarada) | Reemplazo                    |
 | --------------------------- | ---------------------------- |
@@ -186,7 +186,7 @@ Las 19 rutas de `ROUTE_REGISTRY` (`app/src/app/route-registry.ts`). **Todos los 
 
 **BMad Builder / meta (4):** `bmad-bmb-setup`, `bmad-agent-builder`, `bmad-module-builder`, `bmad-workflow-builder`.
 
-**Core utilities (13):** `bmad-help`, `bmad-customize`, `bmad-shard-doc`, `bmad-index-docs`, `bmad-distillator`, `bmad-party-mode`, `bmad-checkpoint-preview`, `bmad-investigate`, `bmad-eval-runner`, `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`, `bmad-editorial-review-{prose,structure}`.
+**Core utilities (13):** `bmad-help`, `bmad-customize`, `bmad-shard-doc`, `bmad-index-docs`, `bmad-spec`, `bmad-party-mode`, `bmad-checkpoint-preview`, `bmad-investigate`, `bmad-eval-runner`, `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`, `bmad-editorial-review-{prose,structure}`.
 
 ### 2.4 Commands (37)
 

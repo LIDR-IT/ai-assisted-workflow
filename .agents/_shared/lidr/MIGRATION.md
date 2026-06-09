@@ -49,7 +49,7 @@ Templates moved to `.agents/_shared/lidr/templates/architecture/`:
 
 **How to use:** Reference both files when invoking `bmad-create-epics-and-stories` for projects following the LIDR Gate model.
 
-### `lidr-ux-design-spec` → `bmad-create-ux-design`
+### `lidr-ux-design-spec` → `bmad-ux`
 
 - Template: `.agents/_shared/lidr/templates/ux-design-spec.md`
 - Custom rule: "Every screen has 4+ states (default/loading/empty/error)"
@@ -104,7 +104,7 @@ No asset migration needed. BMad's retro is 1513 lines (vs LIDR's 149) with Party
 | `lidr-prd-tecnico`         | `bmad-prd` becomes Gate 1 input. `lidr-review-cruzado` validates T-section.                         | `prd-tecnico.md`, `prd-system-design.md`       |
 | `lidr-epic-review`         | `bmad-retrospective` (10× larger, covers post-epic review with lessons learned).                    | `epic-review.md`                               |
 | `lidr-poc-report`          | `bmad-technical-research` covers technical validation. GO/NO-GO documented as invocation guideline. | (no template)                                  |
-| `lidr-use-cases`           | Embedded inside `bmad-create-prd` output (BMad PRD already includes use cases section).             | `use-cases.md`                                 |
+| `lidr-use-cases`           | Embedded inside `bmad-prd` output (BMad PRD already includes use cases section).                    | `use-cases.md`                                 |
 | `lidr-business-model`      | `bmad-prfaq` (Working Backwards) covers business positioning.                                       | `business-model.md`                            |
 | `lidr-changelog-generator` | Consolidated into `lidr-release-notes` (3-level: exec + technical + customer in one skill).         | (no template)                                  |
 
@@ -244,12 +244,12 @@ After reading BMad Vol I-V and cross-referencing all 35 LIDR skills with the 69 
 ## Final inventory (after Phase F)
 
 ```
-LIDR:    36 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 4 OPCIONAL)
+LIDR:    35 skills (23 OBLIGATORIO + 8 RECOMENDABLE + 4 OPCIONAL)
 BMad:    69 skills (base flow, untouched)
 Anytime: 5 skills (all OPCIONAL — 5 claude-* meta-tooling)
-Total:   110 skills
+Total:   109 skills
 ```
 
-`lidr-` is now the consistent prefix for all 36 LIDR-methodology skills (no naked "anytime" entries remain).
+`lidr-` is now the consistent prefix for all 35 LIDR-methodology skills (no naked "anytime" entries remain).
 
-_Post-Phase F (gate-over-BMAD cleanup): `lidr-project-classifier` was removed — `bmad-document-project` covers project classification + documentation requirements. Inventory dropped 37→36 LIDR / 111→110 total._
+_Post-Phase F (gate-over-BMAD cleanup): removed `lidr-project-classifier` (→ `bmad-document-project`) and `lidr-automated-handoffs` (redundant with the gate handoff system; its QA→Sec / Sec→DevOps content folded into `gate-evidence.yaml` G5/G6). Inventory dropped 37→35 LIDR / 111→109 total._

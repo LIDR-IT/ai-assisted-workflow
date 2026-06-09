@@ -14,7 +14,7 @@ description: >
   This skill structures the OUTBOUND QA→Dev bug report: <5min reproduction goal, environment snapshot, severity classification, Jira-ready structure.
   When `bmad-investigate` finds the root cause, this skill formats it as a QA bug ticket the dev team consumes.
   Use for unexpected behavior, performance issues, production incidents, or user complaints — QA-facing.
-  Do NOT use for forensic investigation (use `bmad-investigate`), feature requests (use `bmad-prd`), or design changes (use `bmad-create-ux-design`).
+  Do NOT use for forensic investigation (use `bmad-investigate`), feature requests (use `bmad-prd`), or design changes (use `bmad-ux`).
   Triggers on "report bug", "create bug report", "found a bug", "defect report", "file issue", "production issue", "unexpected behavior".
   Output in Spanish (functional description), English (technical data, logs), structured for Jira/tracking tools.
   Audience: Developer (reproduces and fixes), QA Lead (triages priority), PO (assesses business impact).
