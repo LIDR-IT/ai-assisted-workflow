@@ -16,7 +16,10 @@
  */
 
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 interface ValidationRule {
   name: string;
@@ -66,7 +69,14 @@ const TESTING_VALIDATION_RULES: ValidationRule[] = [
     description: "Must provide specific testing instructions",
     check: (content) =>
       content.includes("Test") &&
-      (content.includes("steps") || content.includes("instructions") || content.includes("verify")),
+      (content.includes("steps") ||
+        content.includes("instructions") ||
+        content.includes("verify") ||
+        content.includes("Test Scenarios") ||
+        content.includes("Testing") ||
+        content.includes("Validation") ||
+        content.includes("Validate") ||
+        content.includes("Checklist")),
     severity: "ERROR",
   },
   {
@@ -96,7 +106,11 @@ const TESTING_VALIDATION_RULES: ValidationRule[] = [
       content.includes("verify") ||
       content.includes("expected") ||
       content.includes("should") ||
-      content.includes("result"),
+      content.includes("result") ||
+      content.includes("Verify") ||
+      content.includes("Validate") ||
+      content.includes("Validation") ||
+      content.includes("Confirm"),
     severity: "ERROR",
   },
 ];

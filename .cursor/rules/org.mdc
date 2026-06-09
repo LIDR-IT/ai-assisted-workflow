@@ -220,14 +220,16 @@ Excepciones de emergencia (hotfix):
 
 ### 6.2 Estándares de Documentación
 
-| Tipo                     | Ubicación           | Formato              | Idioma         |
-| ------------------------ | ------------------- | -------------------- | -------------- |
-| Documentación de negocio | Confluence          | Templates estándar   | Español        |
-| Documentación técnica    | Confluence + código | Markdown / JSDoc     | Inglés         |
-| Tickets y tracking       | Jira                | Campos estándar      | Español        |
-| Código fuente + PRs      | GitHub              | Conventional Commits | Inglés         |
-| Test management          | TestRail / Xray     | Gherkin (BDD)        | Inglés         |
-| Comunicación             | Slack               | Libre                | Español/Inglés |
+| Tipo                     | Ubicación           | Formato              | Idioma                         |
+| ------------------------ | ------------------- | -------------------- | ------------------------------ |
+| Documentación de negocio | Confluence          | Templates estándar   | Per client config (default EN) |
+| Documentación técnica    | Confluence + código | Markdown / JSDoc     | Inglés                         |
+| Tickets y tracking       | Jira                | Campos estándar      | Per client config (default EN) |
+| Código fuente + PRs      | GitHub              | Conventional Commits | Inglés                         |
+| Test management          | TestRail / Xray     | Gherkin (BDD)        | Inglés                         |
+| Comunicación             | Slack               | Libre                | Español/Inglés                 |
+
+> Output language is a per-client setting resolved via `_shared/lidr/integrations/tool-registry.yaml` (default `en`). Code, inline technical docs, PRs and commits remain English.
 
 ### 6.3 Versionado de Documentos
 

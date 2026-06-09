@@ -43,6 +43,16 @@ Both must appear in YAML frontmatter delimited by `---` at the very start of `SK
 
 Full reference: https://code.claude.com/docs/en/skills
 
+## Same-name command + skill (collision resolution)
+
+A command and a skill MAY intentionally share a name when the command is the **verb/orchestrator** and the skill is the **reusable engine** it delegates to (the `command → skill` pattern). Both would otherwise register under the same `/<name>` slash, causing ambiguous invocation.
+
+**Rule:** the skill-engine declares `user-invocable: false`. The command owns `/<name>`; the skill is reached only by delegation (the command calls it) or by the model's auto-load — never from the `/` menu. This resolves the collision with one frontmatter line and **zero churn** (no rename of refs, `gate-evidence.yaml`, validators, or script paths).
+
+Canonical example (the only collision in the ecosystem): command `lidr-validate-requirements` (Phase-3 orchestrator) + skill `lidr-validate-requirements` (RTM / 5-pass engine, `user-invocable: false`). Full rationale and the rejected rename option: `docs/adr/ADR-0007-command-skill-name-resolution.md`.
+
+Do NOT introduce a new same-name pair without applying this flag. Prefer distinct names for genuinely independent artifacts; reserve the shared name for true verb↔engine pairs.
+
 ## Progressive disclosure pattern
 
 Skills can bundle supporting files that load only when needed:
@@ -119,12 +129,13 @@ Organized by SDLC phase, all prefixed `lidr-*`. Run `ls .agents/skills/ | grep ^
 
 ## Common pitfalls
 
-| Symptom                            | Cause                                                                      | Fix                                                                  |
-| ---------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Skill doesn't appear in Gemini     | Missing `name:` or `description:`, or content before `---`                 | Add required fields; verify file starts with `---\n`                 |
-| Claude lists name without desc     | Description budget overflow                                                | Trim descriptions; check `/doctor`; set `skillListingBudgetFraction` |
-| Skill ignored after first response | Skill content is in context but model chose another approach               | Strengthen description; use hooks for hard enforcement               |
-| Duplicate skills in Copilot/Gemini | Created `.github/skills/` or `.gemini/skills/` alongside `.agents/skills/` | Remove the extra dir; `.agents/skills/` is the canonical path        |
+| Symptom                                          | Cause                                                                       | Fix                                                                              |
+| ------------------------------------------------ | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Skill doesn't appear in Gemini                   | Missing `name:` or `description:`, or content before `---`                  | Add required fields; verify file starts with `---\n`                             |
+| Claude lists name without desc                   | Description budget overflow                                                 | Trim descriptions; check `/doctor`; set `skillListingBudgetFraction`             |
+| Skill ignored after first response               | Skill content is in context but model chose another approach                | Strengthen description; use hooks for hard enforcement                           |
+| Duplicate skills in Copilot/Gemini               | Created `.github/skills/` or `.gemini/skills/` alongside `.agents/skills/`  | Remove the extra dir; `.agents/skills/` is the canonical path                    |
+| `/<name>` ambiguous (command + skill share name) | Skill-engine still `user-invocable` while a command of the same name exists | Set `user-invocable: false` on the skill (see ADR-0007); command keeps the slash |
 
 ## Official references
 

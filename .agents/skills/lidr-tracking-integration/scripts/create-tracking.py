@@ -17,6 +17,67 @@ from pathlib import Path
 ADAPTERS_DIR = Path(__file__).parent.parent / "adapters"
 sys.path.insert(0, str(ADAPTERS_DIR))
 
+# Default tracking tool emitted by the sample generator. Override via env to
+# scaffold samples for a different tool without editing this script. Defaults
+# to the current tool so existing behavior is preserved byte-for-byte.
+TRACKING_TOOL = os.getenv("LIDR_TRACKING_TOOL", "jira")
+
+# Conservative fallback tool when no rule matches. Overridable via env.
+DEFAULT_TRACKING_TOOL = os.getenv("LIDR_DEFAULT_TRACKING_TOOL", "jira")
+
+# --- Detection mappings (industry-agnostic, overridable) -------------------
+# LIDR is a multi-industry framework, so the substring rules below are NOT
+# hardcoded to any single client or vertical. They are OVERRIDABLE DEFAULTS:
+# each maps a lowercase substring (matched against the client name or the
+# industry field of the client config) to a tracking tool. Override the whole
+# table via the LIDR_CLIENT_TOOL_MAP / LIDR_INDUSTRY_TOOL_MAP env vars (JSON
+# objects). When no override is provided, these example packs reproduce the
+# previous behavior byte-for-byte, so the matching MECHANISM is preserved.
+#
+# Example industry pack (default): the concrete substrings below are just one
+# sample mapping (originally derived from biometric/identity + early pilot
+# clients). Replace them per deployment without editing this script.
+_DEFAULT_CLIENT_TOOL_MAP: Dict[str, str] = {
+    "docline": "linear",
+    "facephi": "jira",
+    "acme": "jira",
+}
+_DEFAULT_INDUSTRY_TOOL_MAP: Dict[str, str] = {
+    "healthcare": "linear",
+    "biometric": "jira",
+    "identity": "jira",
+    "startup": "linear",
+    "saas": "linear",
+    "enterprise": "jira",
+    "finance": "jira",
+}
+
+
+def _load_tool_map(env_var: str, default_map: Dict[str, str]) -> Dict[str, str]:
+    """
+    Load a substring->tool mapping from an env var (JSON), falling back to the
+    provided default map. Invalid or absent JSON yields the default, preserving
+    existing behavior.
+
+    Args:
+        env_var: Name of the environment variable holding a JSON object
+        default_map: Fallback mapping used when the env var is unset/invalid
+
+    Returns:
+        A {substring: tool_name} mapping (lowercased keys)
+    """
+    raw = os.getenv(env_var)
+    if not raw:
+        return default_map
+    try:
+        parsed = json.loads(raw)
+    except (ValueError, TypeError):
+        return default_map
+    if not isinstance(parsed, dict):
+        return default_map
+    return {str(k).lower(): str(v).lower() for k, v in parsed.items()}
+
+
 def detect_tracking_tool(client_config: Dict[str, Any]) -> str:
     """
     Auto-detect tracking tool from client configuration
@@ -43,26 +104,25 @@ def detect_tracking_tool(client_config: Dict[str, Any]) -> str:
     if 'github' in client_config and client_config['github'].get('token'):
         return 'github'
 
-    # Client-specific defaults (evidence-based)
+    # Client-specific defaults (evidence-based, overridable industry pack).
+    # Resolved from the configurable substring map rather than hardcoded
+    # client literals, so the framework stays multi-industry.
     client_name = client_config.get('name', '').lower()
-    if 'docline' in client_name:
-        return 'linear'
-    if 'facephi' in client_name or 'acme' in client_name:
-        return 'jira'
+    client_tool_map = _load_tool_map('LIDR_CLIENT_TOOL_MAP', _DEFAULT_CLIENT_TOOL_MAP)
+    for substring, tool in client_tool_map.items():
+        if substring in client_name:
+            return tool
 
-    # Industry defaults
+    # Industry defaults (overridable industry pack). Same configurable
+    # substring mechanism; no hardcoded vertical literals.
     industry = client_config.get('industry', '').lower()
-    if 'healthcare' in industry:
-        return 'linear'
-    if 'biometric' in industry or 'identity' in industry:
-        return 'jira'
-    if 'startup' in industry or 'saas' in industry:
-        return 'linear'
-    if 'enterprise' in industry or 'finance' in industry:
-        return 'jira'
+    industry_tool_map = _load_tool_map('LIDR_INDUSTRY_TOOL_MAP', _DEFAULT_INDUSTRY_TOOL_MAP)
+    for substring, tool in industry_tool_map.items():
+        if substring in industry:
+            return tool
 
     # Conservative default
-    return 'jira'
+    return DEFAULT_TRACKING_TOOL
 
 def load_adapter(tool_name: str):
     """
@@ -231,8 +291,8 @@ Usage:
     python create-tracking.py <business_case_file> <client_config_file>
 
 Examples:
-    python create-tracking.py bc-project-alpha.json client-docline.yaml
-    python create-tracking.py bc-biometric-v3.yaml client-facephi.json
+    python create-tracking.py bc-project-alpha.json client-config.yaml
+    python create-tracking.py bc-feature-v3.yaml client-config.json
 
 Supported Tools:
     • Jira (Atlassian Cloud/Server)
@@ -264,8 +324,8 @@ if __name__ == "__main__":
         sample_config = {
             'name': 'Sample Client',
             'industry': 'Software Development',
-            'tracking_tool': 'jira',
-            'jira': {
+            'tracking_tool': TRACKING_TOOL,
+            TRACKING_TOOL: {
                 'server': 'https://your-instance.atlassian.net',
                 'project_key': 'SAMPLE'
             }

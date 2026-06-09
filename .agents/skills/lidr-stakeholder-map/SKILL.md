@@ -1,21 +1,24 @@
 ---
 name: lidr-stakeholder-map
 id: stakeholder-map
-version: "1.1.1"
+version: "1.2.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 1
 owner_role: "PME"
 automation: false
 domain_agnostic: true
 language_default: en
+integrations: [chat]
 description: "Generate a stakeholder map with power/interest matrix and communication plan for a project. Use at project start to identify ALL stakeholders, define engagement strategy, and prevent late-appearing stakeholders changing scope. Triggers on create stakeholder map, who are the stakeholders, communication plan, identify stakeholders, who do we need to involve. Informs Discovery sessions (who to interview) and ongoing project communication. Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). ALWAYS use at project start to identify all stakeholders and define engagement strategies."
 ---
 
 # Stakeholder Map Generator
 
-Phase: 1 — Origination | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The Spanish headings in the output template below are illustrative — the bound client `language` drives the emitted artifact.
+Phase: 1 — Origination | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The headings in the output template below are illustrative — the bound client `language` drives the emitted artifact.
+
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ## Relationship to BMad
 
@@ -42,42 +45,42 @@ This skill is a **LIDR-unique artifact** (no BMad equivalent). BMad has no conce
 ## Output Template
 
 ```markdown
-# Mapa de Stakeholders: [PROJECT NAME]
+# Stakeholder Map: [PROJECT NAME]
 
-## 1. Stakeholders Identificados
+## 1. Identified Stakeholders
 
-| #   | Nombre | Rol/Cargo | Departamento | Tipo | Influencia | Interés |
-| --- | ------ | --------- | ------------ | ---- | ---------- | ------- |
+| #   | Name | Role/Title | Department | Type | Power | Interest |
+| --- | ---- | ---------- | ---------- | ---- | ----- | -------- |
 
-## 2. Matriz Poder × Interés
+## 2. Power × Interest Matrix
 ```
 
-         ALTO INTERÉS
-              │
+          HIGH INTEREST
+               │
 
-MANTENER │ GESTIONAR
-SATISFECHO │ ACTIVAMENTE
-(informar) │ (colaborar)
+KEEP │ MANAGE
+SATISFIED │ ACTIVELY
+(inform) │ (collaborate)
 │
 ─────────────┼───────────────
 │
-MONITOREAR │ MANTENER
-(mínimo) │ INFORMADO
+MONITOR │ KEEP
+(minimal) │ INFORMED
 │
-BAJO INTERÉS
-ALTO PODER ←──→ BAJO PODER
+LOW INTEREST
+HIGH POWER ←──→ LOW POWER
 
 ```
 
-## 3. Plan de Comunicación
-| Stakeholder/Grupo | Cuadrante | Frecuencia | Canal | Contenido | Responsable |
-|-------------------|-----------|------------|-------|-----------|-------------|
+## 3. Communication Plan
+| Stakeholder/Group | Quadrant | Frequency | Channel | Content | Owner |
+|-------------------|----------|-----------|---------|---------|-------|
 
-## 4. Riesgos de Stakeholders
-| Riesgo | Stakeholder | Impacto | Mitigación |
-|--------|-------------|---------|-----------|
+## 4. Stakeholder Risks
+| Risk | Stakeholder | Impact | Mitigation |
+|------|-------------|--------|-----------|
 
-## 5. Stakeholders Potenciales No Confirmados
+## 5. Unconfirmed Potential Stakeholders
 [People who MIGHT need to be involved — flag for validation]
 ```
 
@@ -119,3 +122,9 @@ npx tsx scripts/validate-examples.ts
 - Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                             |
+| ------- | ---------- | ---------------------- | ----------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted chat (Slack) via tool-registry |

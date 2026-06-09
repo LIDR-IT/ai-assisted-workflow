@@ -1,67 +1,69 @@
 ---
 id: tpl-tech-debt
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Template Migration"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 type: template
 review_cycle: 30
-next_review: "2026-04-15"
+next_review: "2026-07-09"
 owner_role: "Tech Lead"
+language_default: en
 ---
 
 # Tech Debt Registry Template
 
-> **Uso**: Catalogo centralizado de deuda tecnica. Usado por el skill `tech-debt`.
-> **Gate**: Transversal (aplica en todas las fases)
+> **Usage**: Centralized technical debt catalog. Used by the `lidr-tech-debt` skill.
+> **Gate**: Cross-cutting (applies across all phases)
+> Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 ---
 
-## Metadatos del Registro
+## Registry Metadata
 
-| Campo                | Valor             |
-| -------------------- | ----------------- |
-| Proyecto             | {nombre_proyecto} |
-| Responsable          | {nombre_tl}       |
-| Fecha de creacion    | {YYYY-MM-DD}      |
-| Ultima actualizacion | {YYYY-MM-DD}      |
-
----
-
-## Catalogo de Deuda
-
-| ID     | Tipo                                      | Descripcion         | Origen                            | Severidad                     | Esfuerzo estimado | Impacto si no se paga | Estrategia                  | Sprint target        | Estado                                    |
-| ------ | ----------------------------------------- | ------------------- | --------------------------------- | ----------------------------- | ----------------- | --------------------- | --------------------------- | -------------------- | ----------------------------------------- |
-| TD-001 | code / architecture / test / docs / infra | {descripcion_clara} | deliberada / accidental / bit rot | critica / alta / media / baja | {N}h / {N}d       | {descripcion_impacto} | refactor / rewrite / accept | Sprint {N} / backlog | abierto / en progreso / pagado / aceptado |
+| Field        | Value          |
+| ------------ | -------------- |
+| Project      | {project_name} |
+| Owner        | {tl_name}      |
+| Created date | {YYYY-MM-DD}   |
+| Last updated | {YYYY-MM-DD}   |
 
 ---
 
-## Clasificacion de Tipos
+## Debt Catalog
 
-| Tipo             | Descripcion                         | Ejemplos                                                         |
-| ---------------- | ----------------------------------- | ---------------------------------------------------------------- |
-| **code**         | Deuda en codigo fuente              | Duplicacion, complejidad ciclomatica alta, TODO/HACK             |
-| **architecture** | Deuda en diseno/arquitectura        | Acoplamiento fuerte, patron inadecuado, monolito sin descomponer |
-| **test**         | Deuda en cobertura/calidad de tests | Cobertura < 80%, tests fragiles, sin E2E                         |
-| **docs**         | Deuda en documentacion              | PRDs desactualizados, ADRs faltantes, README obsoleto            |
-| **infra**        | Deuda en infraestructura/CI/CD      | Pipeline lento, sin IaC, dependencias desactualizadas            |
+| ID     | Type                                      | Description         | Origin                            | Severity                       | Estimated effort | Impact if unpaid     | Strategy                    | Sprint target        | Status                               |
+| ------ | ----------------------------------------- | ------------------- | --------------------------------- | ------------------------------ | ---------------- | -------------------- | --------------------------- | -------------------- | ------------------------------------ |
+| TD-001 | code / architecture / test / docs / infra | {clear_description} | deliberate / accidental / bit rot | critical / high / medium / low | {N}h / {N}d      | {impact_description} | refactor / rewrite / accept | Sprint {N} / backlog | open / in progress / paid / accepted |
 
 ---
 
-## Metricas Agregadas
+## Type Classification
 
-| Metrica                         | Valor                             |
-| ------------------------------- | --------------------------------- |
-| Total items de deuda            | {N}                               |
-| Deuda critica/alta              | {N}                               |
-| Esfuerzo total estimado         | {N} horas                         |
-| Items pagados este quarter      | {N}                               |
-| Tendencia (vs quarter anterior) | creciendo / estable / decreciendo |
+| Type             | Description                   | Examples                                                  |
+| ---------------- | ----------------------------- | --------------------------------------------------------- |
+| **code**         | Debt in source code           | Duplication, high cyclomatic complexity, TODO/HACK        |
+| **architecture** | Debt in design/architecture   | Tight coupling, inadequate pattern, undecomposed monolith |
+| **test**         | Debt in test coverage/quality | Coverage < 80%, flaky tests, no E2E                       |
+| **docs**         | Debt in documentation         | Stale PRDs, missing ADRs, outdated README                 |
+| **infra**        | Debt in infrastructure/CI/CD  | Slow pipeline, no IaC, outdated dependencies              |
 
 ---
 
-## Tendencia por Sprint
+## Aggregate Metrics
 
-| Sprint     | Items nuevos | Items pagados | Balance neto | Total acumulado |
-| ---------- | ------------ | ------------- | ------------ | --------------- |
-| Sprint {N} | {N}          | {N}           | +{N} / -{N}  | {N}             |
+| Metric                      | Value                        |
+| --------------------------- | ---------------------------- |
+| Total debt items            | {N}                          |
+| Critical/high debt          | {N}                          |
+| Total estimated effort      | {N} hours                    |
+| Items paid this quarter     | {N}                          |
+| Trend (vs previous quarter) | growing / stable / shrinking |
+
+---
+
+## Trend by Sprint
+
+| Sprint     | New items | Items paid | Net balance | Cumulative total |
+| ---------- | --------- | ---------- | ----------- | ---------------- |
+| Sprint {N} | {N}       | {N}        | +{N} / -{N} | {N}              |

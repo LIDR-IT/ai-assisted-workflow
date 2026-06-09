@@ -10,9 +10,9 @@ import {
   ValidationResult,
   ValidationIssue,
   ValidationSeverity,
-} from "../../../_shared/validators/types.js";
-import { validateBDDPatterns } from "../../../_shared/validators/validate-bdd-patterns.js";
-import { validateAcceptanceCriteria } from "../../../_shared/validators/validate-acceptance-criteria.js";
+} from "../../../_shared/lidr/validators/types.js";
+import { validateBDDPatterns } from "../../../_shared/lidr/validators/validate-bdd-patterns.js";
+import { validateAcceptanceCriteria } from "../../../_shared/lidr/validators/validate-acceptance-criteria.js";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -990,7 +990,7 @@ function createFailureResult(issues: ValidationIssue[]): ValidationResult {
 /**
  * CLI entry point for script execution
  */
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url.endsWith("validate-user-stories.ts")) {
   const storiesPath = process.argv[2];
   const epicPath = process.argv[3];
   const requirementsPath = process.argv[4];

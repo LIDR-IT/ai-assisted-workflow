@@ -3,7 +3,7 @@ name: lidr-business-case
 id: business-case
 version: "1.2.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 1
 owner_role: "TL"
@@ -21,7 +21,7 @@ Phase: 1 — Origination | Gate: 0 (Intake) | Output: English by default; artifa
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 BMad's `bmad-prfaq` and `bmad-product-brief` shape the product concept and value proposition. This skill is LIDR-unique: a formal Gate-0 financial/ROI Business Case (costs, NPV, payback, alternatives analysis, sponsor sign-off) — the governance artifact that secures investment approval before discovery begins.
 

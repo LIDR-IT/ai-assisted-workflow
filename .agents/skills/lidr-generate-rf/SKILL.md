@@ -3,7 +3,7 @@ name: lidr-generate-rf
 id: generate-rf
 version: "1.7.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 3
 owner_role: "PO"
@@ -35,7 +35,7 @@ description: >
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 LIDR-unique: authors atomic, BDD-bearing Functional Requirements (Given/When/Then) at Gate 2 — the testable contract that BMad's epic flow assumes. Consumes the Functional PRD from `bmad-prd`; feeds `bmad-create-epics-and-stories` (decomposition) and `lidr-validate-requirements` (RTM + coherence).
 
@@ -424,7 +424,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                | Changes                                                                                                                                                                   |
 | ------- | ---------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.7.0   | 2026-06-09 | TL: BMAD-coherence batch-fix          | Added "Relationship to BMAD" note (LIDR-unique BDD-bearing RF authoring; consumes bmad-prd, feeds bmad-create-epics-and-stories + lidr-validate-requirements)             |
+| 1.7.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added "Relationship to BMad" note (LIDR-unique BDD-bearing RF authoring; consumes bmad-prd, feeds bmad-create-epics-and-stories + lidr-validate-requirements)             |
 | 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tracking/docs tools via tool-registry                                                                                |
 | 1.5.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific patterns with e-commerce/SaaS/healthcare examples; moved domain-specific content to examples/client-domain-example.md |
 | 1.4.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                                                                             |

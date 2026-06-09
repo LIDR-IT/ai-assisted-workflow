@@ -9,7 +9,10 @@
  */
 
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 interface ValidationRule {
   name: string;
@@ -57,12 +60,12 @@ const BUG_REPORT_RULES: ValidationRule[] = [
 
 const validationCases = [
   {
-    file: "comprehensive-bug-report.md",
+    file: "platform-api-memory-leak.md",
     rules: BUG_REPORT_RULES,
     description: "Comprehensive Bug Report Template",
   },
   {
-    file: "biometric-verification-bug.md",
+    file: "selphi-liveness-false-rejection-bug.md",
     rules: BUG_REPORT_RULES,
     description: "Biometric Verification Bug Report",
   },

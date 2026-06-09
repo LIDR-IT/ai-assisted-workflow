@@ -3,7 +3,7 @@ name: lidr-audit-standards
 id: audit-standards
 version: "2.1.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"
@@ -18,7 +18,7 @@ description: "ECOSYSTEM-SCOPE WRAPPER complementing `bmad-review-adversarial-gen
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 This skill audits the **structure** of the `.agents/` ecosystem itself — frontmatter consistency, domain-agnostic phrasing, methodology uniformity, staleness, path correctness, drift between sources of truth. It is orthogonal to `bmad-review-adversarial-general`, which reviews the **content** quality of a single artifact. Use this for periodic ecosystem health checks; use `bmad-review-adversarial-general` to critique what a document actually says.
 
@@ -901,5 +901,5 @@ _This enhanced audit skill ensures reliable, efficient, and scalable ecosystem-w
 
 | Version | Date       | Author                       | Changes                                                                                                                                                                                                         |
 | ------- | ---------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.1.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added `language_default: en`; tightened Language Compliance to flag hardcoded Spanish-without-language_default; added Relationship-to-BMAD note (audits STRUCTURE vs `bmad-review-adversarial-general` CONTENT) |
+| 2.1.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added `language_default: en`; tightened Language Compliance to flag hardcoded Spanish-without-language_default; added Relationship-to-BMad note (audits STRUCTURE vs `bmad-review-adversarial-general` CONTENT) |
 | 2.1.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted tools via tool-registry (no concrete tools in scope — `integrations: []`)                                                                                  |

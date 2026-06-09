@@ -1,423 +1,423 @@
-# Formato Estándar: Requisito Funcional (RF)
+# Standard Format: Functional Requirement (RF)
 
-> **Propósito**: Formato obligatorio que define la estructura de todo RF en el proyecto.
-> **Referenciado por**: `.claude/rules/org.md` via `@../templates/rf-format.md`
-> **Usado por**: `skills/generate-rf/SKILL.md` como formato de output obligatorio
-> **Gate asociado**: Gate 2 — RF Completos
-> **Política**: Todo RF debe seguir este formato exacto. RFs que no cumplan son rechazados en revisión.
-
----
-
-## 1. Estructura Completa del RF
-
-### 1.1 Encabezado (Obligatorio)
-
-```markdown
----
-id: RF-{PROY}-{NNN}
-título: { Título descriptivo del requisito — máximo 15 palabras }
-versión: { 1.0 }
-estado: Borrador | En Revisión | Aprobado | Obsoleto
-prd_origen: { Link al PRD Técnico y/o Funcional }
-autor: { Nombre completo }
-fecha_creación: { YYYY-MM-DD }
-fecha_última_modificación: { YYYY-MM-DD }
-prioridad: Must Have | Should Have | Could Have | Won't Have (MoSCoW)
-complejidad: Baja | Media | Alta | Muy Alta
-estimación_sprint: { Sprint N — estimación preliminar }
----
-```
-
-**Reglas del encabezado:**
-
-- **ID**: Formato estricto `RF-{PROY}-{NNN}` donde PROY = código del proyecto (3-5 chars), NNN = secuencial sin gaps
-- **Título**: Descriptivo, sin jerga, comprensible por PO y QA (no solo devs)
-- **Estado**: Solo transiciones válidas: Borrador → En Revisión → Aprobado. Aprobado → Obsoleto si se reemplaza
-- **Prioridad**: MoSCoW asignada por PO. "Must Have" = no se cierra el sprint sin esto
-
-### 1.2 Objetivo (Obligatorio)
-
-```markdown
-## Objetivo
-
-{Qué logra este requisito — 1-2 oraciones máximo. Responde: "¿Qué valor aporta al usuario/negocio?"}
-```
-
-**Reglas:**
-
-- No técnico — escribir en lenguaje de negocio
-- No describir HOW (implementación), solo WHAT (qué se logra) y WHY (para qué)
-- Si no puedes explicar el objetivo en 2 oraciones, el RF es demasiado grande → dividir
-
-### 1.3 Actores (Obligatorio)
-
-```markdown
-## Actores
-
-| Actor              | Rol en este RF             | Permisos requeridos     |
-| ------------------ | -------------------------- | ----------------------- |
-| {Actor principal}  | {Qué hace en este RF}      | {Qué permisos necesita} |
-| {Actor secundario} | {Qué hace}                 | {Qué permisos necesita} |
-| {Sistema}          | {Qué hace automáticamente} | N/A                     |
-```
-
-**Reglas:**
-
-- Los actores deben existir en el stakeholder map del proyecto
-- Siempre distinguir entre actor humano y sistema/servicio
-- Si un actor aparece en múltiples RFs, usar el mismo nombre consistentemente (ver `docs/checklists/rf-coherence.md`)
-
-### 1.4 Alcance (Obligatorio)
-
-```markdown
-## Alcance
-
-### Incluye
-
-- {Funcionalidad 1 que SÍ cubre este RF}
-- {Funcionalidad 2 que SÍ cubre}
-
-### Excluye
-
-- {Funcionalidad 1 que explícitamente NO cubre} → cubierta por RF-{PROY}-{XXX}
-- {Funcionalidad 2 que NO cubre} → fuera de scope del proyecto
-```
-
-**Reglas:**
-
-- Las exclusiones son tan importantes como las inclusiones
-- Cada exclusión debe referenciar dónde se cubre (otro RF o "fuera de scope")
-- Si no hay exclusiones, escribir "Sin exclusiones explícitas — todo lo descrito en Objetivo está en scope"
-
-### 1.5 Prerrequisitos (Obligatorio si existen)
-
-```markdown
-## Prerrequisitos
-
-| Prerrequisito                  | Tipo    | Estado                             |
-| ------------------------------ | ------- | ---------------------------------- |
-| RF-{PROY}-{XXX}: {descripción} | RF      | Aprobado / En Revisión / Pendiente |
-| {Condición técnica}            | Técnico | Cumplido / Pendiente               |
-| {Condición de negocio}         | Negocio | Cumplido / Pendiente               |
-```
-
-**Reglas:**
-
-- Prerrequisitos de tipo RF deben existir en el mismo proyecto
-- Verificar que no se crean dependencias circulares (ver coherence checklist)
-- Si un prerrequisito está "Pendiente", este RF no puede pasar a "Aprobado"
+> **Purpose**: Mandatory format defining the structure of every RF in the project.
+> **Referenced by**: `.claude/rules/org.md` via `@../templates/rf-format.md`
+> **Used by**: `skills/generate-rf/SKILL.md` as the mandatory output format
+> **Associated Gate**: Gate 2 — RFs Complete
+> **Policy**: Every RF must follow this exact format. RFs that do not comply are rejected in review.
 
 ---
 
-## 2. Comportamiento (Obligatorio)
+## 1. Complete RF Structure
 
-### 2.1 Flujo Principal
-
-```markdown
-## Flujo Principal
-
-### Precondiciones
-
-- {Qué debe ser verdad antes de iniciar este flujo}
-- {Estado del sistema/datos necesarios}
-
-### Pasos
-
-1. **{Actor}** {acción en presente indicativo — ej: "selecciona la opción X"}
-2. **{Sistema}** {respuesta/acción automática — ej: "valida los datos ingresados"}
-3. **{Actor}** {siguiente acción}
-4. **{Sistema}** {resultado — ej: "muestra confirmación con mensaje: '{texto exacto}'"}
-
-### Postcondiciones
-
-- {Estado del sistema después del flujo exitoso}
-- {Datos creados/modificados/eliminados}
-- {Notificaciones enviadas}
-```
-
-**Reglas de los pasos:**
-
-- Cada paso tiene un actor explícito (humano o sistema)
-- Verbos en presente indicativo: "selecciona", "valida", "muestra" — no "seleccionará"
-- Mensajes al usuario entre comillas con texto exacto
-- Máximo 10 pasos en flujo principal. Si más → dividir RF
-
-### 2.2 Flujos Alternativos
+### 1.1 Header (Mandatory)
 
 ```markdown
-## Flujos Alternativos
-
-### FA-{N}: {Nombre descriptivo del flujo alternativo}
-
-- **Punto de bifurcación**: Paso {N} del flujo principal
-- **Condición de activación**: {Cuándo se toma este camino alternativo}
-- **Pasos**:
-  1. **{Actor}** {acción alternativa}
-  2. **{Sistema}** {respuesta}
-- **Punto de retorno**: Paso {M} del flujo principal | Fin del flujo
+---
+id: RF-{PROJ}-{NNN}
+title: { Descriptive requirement title — maximum 15 words }
+version: { 1.0 }
+status: Draft | In Review | Approved | Obsolete
+prd_source: { Link to the Technical and/or Functional PRD }
+author: { Full name }
+created_date: { YYYY-MM-DD }
+last_modified_date: { YYYY-MM-DD }
+priority: Must Have | Should Have | Could Have | Won't Have (MoSCoW)
+complexity: Low | Medium | High | Very High
+sprint_estimate: { Sprint N — preliminary estimate }
+---
 ```
 
-**Reglas:**
+**Header rules:**
 
-- Mínimo 1 flujo alternativo por RF (excepto RFs triviales con justificación)
-- Cada alternativo debe indicar de dónde sale (punto de bifurcación) y a dónde vuelve (punto de retorno)
-- Si hay más de 3 alternativas complejas, considerar si este RF debería dividirse
+- **ID**: Strict format `RF-{PROJ}-{NNN}` where PROJ = project code (3-5 chars), NNN = sequential with no gaps
+- **Title**: Descriptive, jargon-free, understandable by PO and QA (not only devs)
+- **Status**: Only valid transitions: Draft → In Review → Approved. Approved → Obsolete if replaced
+- **Priority**: MoSCoW assigned by PO. "Must Have" = the sprint does not close without this
 
-### 2.3 Flujos de Error
+### 1.2 Objective (Mandatory)
 
 ```markdown
-## Flujos de Error
+## Objective
 
-### FE-{N}: {Nombre del error}
-
-- **Condición de activación**: {Cuándo ocurre este error — ser específico}
-- **Comportamiento esperado**:
-  1. **{Sistema}** {acción ante el error}
-  2. **{Sistema}** muestra mensaje: "{Texto exacto del mensaje de error}"
-- **Recuperación**: {Cómo puede el usuario recuperarse del error}
-- **Logging**: {Qué se loggea — nivel, datos, sin PII}
+{What this requirement achieves — 1-2 sentences maximum. Answers: "What value does it bring to the user/business?"}
 ```
 
-**Reglas:**
+**Rules:**
 
-- Mínimo 1 flujo de error por RF
-- Mensajes de error con texto exacto (entre comillas)
-- Siempre incluir camino de recuperación (¿qué puede hacer el usuario?)
-- Nunca exponer detalles técnicos al usuario en el mensaje de error
+- Non-technical — write in business language
+- Do not describe HOW (implementation), only WHAT (what is achieved) and WHY (for what purpose)
+- If you cannot explain the objective in 2 sentences, the RF is too large → split it
 
-### 2.4 Reglas de Negocio
+### 1.3 Actors (Mandatory)
 
 ```markdown
-## Reglas de Negocio
+## Actors
 
-| ID            | Regla                | Lógica                                           | Fuente                                           |
-| ------------- | -------------------- | ------------------------------------------------ | ------------------------------------------------ |
-| RN-{RF-ID}-01 | {Nombre de la regla} | {Lógica exacta: condiciones, fórmulas, umbrales} | {Quién definió esta regla: PO, regulación, etc.} |
-| RN-{RF-ID}-02 |                      |                                                  |                                                  |
+| Actor             | Role in this RF              | Required permissions      |
+| ----------------- | ---------------------------- | ------------------------- |
+| {Primary actor}   | {What it does in this RF}    | {What permissions needed} |
+| {Secondary actor} | {What it does}               | {What permissions needed} |
+| {System}          | {What it does automatically} | N/A                       |
 ```
 
-**Reglas:**
+**Rules:**
 
-- Cada RN tiene ID único vinculado al RF
-- La lógica debe ser precisa: no "aproximadamente X" sino "exactamente X"
-- Incluir fuente para trazabilidad (quién definió la regla)
-- RNs compartidas entre RFs se documentan en cada RF que las usa (con referencia cruzada)
+- Actors must exist in the project stakeholder map
+- Always distinguish between a human actor and a system/service
+- If an actor appears in multiple RFs, use the same name consistently (see `docs/checklists/rf-coherence.md`)
+
+### 1.4 Scope (Mandatory)
+
+```markdown
+## Scope
+
+### Includes
+
+- {Functionality 1 that this RF DOES cover}
+- {Functionality 2 that it DOES cover}
+
+### Excludes
+
+- {Functionality 1 it explicitly does NOT cover} → covered by RF-{PROJ}-{XXX}
+- {Functionality 2 it does NOT cover} → out of project scope
+```
+
+**Rules:**
+
+- Exclusions are as important as inclusions
+- Each exclusion must reference where it is covered (another RF or "out of scope")
+- If there are no exclusions, write "No explicit exclusions — everything described in Objective is in scope"
+
+### 1.5 Prerequisites (Mandatory if they exist)
+
+```markdown
+## Prerequisites
+
+| Prerequisite                   | Type      | Status                         |
+| ------------------------------ | --------- | ------------------------------ |
+| RF-{PROJ}-{XXX}: {description} | RF        | Approved / In Review / Pending |
+| {Technical condition}          | Technical | Met / Pending                  |
+| {Business condition}           | Business  | Met / Pending                  |
+```
+
+**Rules:**
+
+- RF-type prerequisites must exist in the same project
+- Verify that no circular dependencies are created (see coherence checklist)
+- If a prerequisite is "Pending", this RF cannot move to "Approved"
 
 ---
 
-## 3. Criterios de Aceptación — BDD (Obligatorio)
+## 2. Behavior (Mandatory)
+
+### 2.1 Main Flow
+
+```markdown
+## Main Flow
+
+### Preconditions
+
+- {What must be true before starting this flow}
+- {Required system/data state}
+
+### Steps
+
+1. **{Actor}** {action in present indicative — e.g.: "selects option X"}
+2. **{System}** {automatic response/action — e.g.: "validates the entered data"}
+3. **{Actor}** {next action}
+4. **{System}** {result — e.g.: "shows confirmation with message: '{exact text}'"}
+
+### Postconditions
+
+- {System state after a successful flow}
+- {Data created/modified/deleted}
+- {Notifications sent}
+```
+
+**Step rules:**
+
+- Each step has an explicit actor (human or system)
+- Verbs in present indicative: "selects", "validates", "shows" — not "will select"
+- User messages in quotes with exact text
+- Maximum 10 steps in the main flow. If more → split the RF
+
+### 2.2 Alternative Flows
+
+```markdown
+## Alternative Flows
+
+### FA-{N}: {Descriptive name of the alternative flow}
+
+- **Branch point**: Step {N} of the main flow
+- **Trigger condition**: {When this alternative path is taken}
+- **Steps**:
+  1. **{Actor}** {alternative action}
+  2. **{System}** {response}
+- **Return point**: Step {M} of the main flow | End of flow
+```
+
+**Rules:**
+
+- Minimum 1 alternative flow per RF (except trivial RFs with justification)
+- Each alternative must indicate where it branches from (branch point) and where it returns (return point)
+- If there are more than 3 complex alternatives, consider whether this RF should be split
+
+### 2.3 Error Flows
+
+```markdown
+## Error Flows
+
+### FE-{N}: {Error name}
+
+- **Trigger condition**: {When this error occurs — be specific}
+- **Expected behavior**:
+  1. **{System}** {action on the error}
+  2. **{System}** shows message: "{Exact text of the error message}"
+- **Recovery**: {How the user can recover from the error}
+- **Logging**: {What is logged — level, data, no PII}
+```
+
+**Rules:**
+
+- Minimum 1 error flow per RF
+- Error messages with exact text (in quotes)
+- Always include a recovery path (what can the user do?)
+- Never expose technical details to the user in the error message
+
+### 2.4 Business Rules
+
+```markdown
+## Business Rules
+
+| ID            | Rule        | Logic                                           | Source                                        |
+| ------------- | ----------- | ----------------------------------------------- | --------------------------------------------- |
+| RN-{RF-ID}-01 | {Rule name} | {Exact logic: conditions, formulas, thresholds} | {Who defined this rule: PO, regulation, etc.} |
+| RN-{RF-ID}-02 |             |                                                 |                                               |
+```
+
+**Rules:**
+
+- Each RN has a unique ID linked to the RF
+- The logic must be precise: not "approximately X" but "exactly X"
+- Include the source for traceability (who defined the rule)
+- RNs shared across RFs are documented in each RF that uses them (with cross-reference)
+
+---
+
+## 3. Acceptance Criteria — BDD (Mandatory)
 
 ```gherkin
-## Criterios de Aceptación
+## Acceptance Criteria
 
-### CA-{RF-ID}-01: {Nombre descriptivo del criterio}
+### CA-{RF-ID}-01: {Descriptive criterion name}
 
-Scenario: Happy path — {descripción breve}
-  Given {precondición con datos concretos}
-    And {precondición adicional con datos concretos}
-  When {acción del usuario — 1 acción atómica}
-  Then {resultado esperado observable y verificable}
-    And {resultado adicional}
+Scenario: Happy path — {brief description}
+  Given {precondition with concrete data}
+    And {additional precondition with concrete data}
+  When {user action — 1 atomic action}
+  Then {expected observable and verifiable result}
+    And {additional result}
 
-Scenario: Alternativo — {descripción}
-  Given {precondición diferente con datos concretos}
-  When {acción del usuario}
-  Then {resultado diferente}
+Scenario: Alternative — {description}
+  Given {different precondition with concrete data}
+  When {user action}
+  Then {different result}
 
-Scenario: Error — {descripción del error}
-  Given {precondición que causa el error}
-  When {acción del usuario}
-  Then {sistema muestra mensaje: "{texto exacto}"}
-    And {sistema loggea evento de nivel WARN/ERROR}
-    And {usuario puede: "{acción de recuperación}"}
+Scenario: Error — {error description}
+  Given {precondition that causes the error}
+  When {user action}
+  Then {system shows message: "{exact text}"}
+    And {system logs a WARN/ERROR level event}
+    And {user can: "{recovery action}"}
 
-### CA-{RF-ID}-02: {Otro criterio}
+### CA-{RF-ID}-02: {Another criterion}
 ...
 ```
 
-**Reglas de los criterios BDD:**
+**BDD criteria rules:**
 
-| Regla                          | Detalle                                  | Ejemplo malo → bueno                                              |
-| ------------------------------ | ---------------------------------------- | ----------------------------------------------------------------- |
-| **Datos concretos**            | No usar abstractos                       | "un usuario" → "usuario admin con email admin@corp.com"           |
-| **Acciones atómicas**          | 1 When = 1 acción                        | "When ingresa datos y hace clic" → Separar en 2 scenarios         |
-| **Resultados observables**     | Verificable por QA                       | "funciona correctamente" → "muestra mensaje: 'Operación exitosa'" |
-| **Sin ambigüedades**           | Prohibidos: debería, podría, normalmente | "debería mostrar" → "muestra"                                     |
-| **Mínimos por RF**             | ≥1 happy + ≥1 error                      | Si solo hay happy path → agregar error                            |
-| **Precondiciones alcanzables** | Given debe ser un estado reproducible    | "Given el sistema está en modo especial" → describir cómo llegar  |
-
----
-
-## 4. Metadatos (Obligatorio)
-
-### 4.1 Dependencias
-
-```markdown
-## Dependencias
-
-| Tipo                   | RF              | Descripción                                        |
-| ---------------------- | --------------- | -------------------------------------------------- |
-| **Depende de**         | RF-{PROY}-{XXX} | {Por qué depende — qué necesita de ese RF}         |
-| **Es prerequisito de** | RF-{PROY}-{YYY} | {Qué RF necesita que este esté listo}              |
-| **Relacionado con**    | RF-{PROY}-{ZZZ} | {Relación no bloqueante — comparten entidad/flujo} |
-```
-
-### 4.2 Notas Técnicas (Opcional pero recomendado)
-
-```markdown
-## Notas Técnicas
-
-{Consideraciones técnicas relevantes para implementación. No es especificación técnica,
-sino contexto que ayuda al dev a entender restricciones o sugerencias.}
-
-- {Restricción de API: endpoint X tiene rate limit de N/min}
-- {Dato: tabla Y ya tiene campo Z que puede reutilizarse}
-- {Consideración de performance: query sobre tabla con >1M registros}
-```
-
-### 4.3 Historial de Cambios (Obligatorio)
-
-```markdown
-## Historial de Cambios
-
-| Versión | Fecha      | Autor    | Cambio                   | Aprobado por   |
-| ------- | ---------- | -------- | ------------------------ | -------------- |
-| 1.0     | YYYY-MM-DD | {Nombre} | Versión inicial          | —              |
-| 1.1     | YYYY-MM-DD | {Nombre} | {Descripción del cambio} | {PO/Tech Lead} |
-```
+| Rule                        | Detail                              | Bad → good example                                                  |
+| --------------------------- | ----------------------------------- | ------------------------------------------------------------------- |
+| **Concrete data**           | Do not use abstractions             | "a user" → "admin user with email admin@corp.com"                   |
+| **Atomic actions**          | 1 When = 1 action                   | "When enters data and clicks" → Split into 2 scenarios              |
+| **Observable results**      | Verifiable by QA                    | "works correctly" → "shows message: 'Operation successful'"         |
+| **No ambiguities**          | Prohibited: should, could, normally | "should show" → "shows"                                             |
+| **Minimums per RF**         | ≥1 happy + ≥1 error                 | If there is only a happy path → add an error                        |
+| **Reachable preconditions** | Given must be a reproducible state  | "Given the system is in a special mode" → describe how to get there |
 
 ---
 
-## 5. Reglas Globales del Formato
+## 4. Metadata (Mandatory)
 
-### 5.1 Reglas Estrictas (Violación = RF rechazado)
+### 4.1 Dependencies
 
-| #   | Regla                                                                       | Verificación |
-| --- | --------------------------------------------------------------------------- | ------------ |
-| 1   | **ID único**: RF-{PROY}-{NNN} secuencial sin gaps ni duplicados             | Automática   |
-| 2   | **Criterios BDD obligatorios**: Mínimo 1 happy path + 1 error               | Automática   |
-| 3   | **Sin ambigüedades**: Prohibidos "debería", "podría", "normalmente", "etc." | Automática   |
-| 4   | **Datos concretos**: Criterios con datos de ejemplo reales, no abstractos   | Automática   |
-| 5   | **Testable**: Cada criterio verificable por QA (automática o manualmente)   | Semi-auto    |
-| 6   | **Actor explícito**: Cada paso tiene actor claro (humano o sistema)         | Automática   |
-| 7   | **Mensajes exactos**: Mensajes al usuario con texto exacto entre comillas   | Automática   |
-| 8   | **Flujo de error**: Mínimo 1 flujo de error con recuperación documentada    | Automática   |
+```markdown
+## Dependencies
 
-### 5.2 Recomendaciones (No bloquean pero mejoran calidad)
+| Type                   | RF              | Description                                    |
+| ---------------------- | --------------- | ---------------------------------------------- |
+| **Depends on**         | RF-{PROJ}-{XXX} | {Why it depends — what it needs from that RF}  |
+| **Is prerequisite of** | RF-{PROJ}-{YYY} | {Which RF needs this one to be ready}          |
+| **Related to**         | RF-{PROJ}-{ZZZ} | {Non-blocking relation — share an entity/flow} |
+```
 
-| #   | Recomendación                    | Beneficio                               |
-| --- | -------------------------------- | --------------------------------------- |
-| 1   | ≤10 pasos en flujo principal     | RFs más granulares y mantenibles        |
-| 2   | ≥3 escenarios BDD por RF         | Mayor cobertura de testing              |
-| 3   | Notas técnicas incluidas         | Dev tiene más contexto para implementar |
-| 4   | Flujos alternativos documentados | Reduce ambigüedad mid-sprint            |
-| 5   | RN con fórmulas exactas          | No queda a interpretación del dev       |
+### 4.2 Technical Notes (Optional but recommended)
+
+```markdown
+## Technical Notes
+
+{Relevant technical considerations for implementation. Not a technical specification,
+but context that helps the dev understand constraints or suggestions.}
+
+- {API constraint: endpoint X has a rate limit of N/min}
+- {Note: table Y already has field Z that can be reused}
+- {Performance consideration: query over a table with >1M rows}
+```
+
+### 4.3 Change History (Mandatory)
+
+```markdown
+## Change History
+
+| Version | Date       | Author | Change               | Approved by    |
+| ------- | ---------- | ------ | -------------------- | -------------- |
+| 1.0     | YYYY-MM-DD | {Name} | Initial version      | —              |
+| 1.1     | YYYY-MM-DD | {Name} | {Change description} | {PO/Tech Lead} |
+```
 
 ---
 
-## 6. Ejemplo Completo — RF de Referencia
+## 5. Global Format Rules
+
+### 5.1 Strict Rules (Violation = RF rejected)
+
+| #   | Rule                                                                      | Verification |
+| --- | ------------------------------------------------------------------------- | ------------ |
+| 1   | **Unique ID**: RF-{PROJ}-{NNN} sequential with no gaps or duplicates      | Automatic    |
+| 2   | **Mandatory BDD criteria**: Minimum 1 happy path + 1 error                | Automatic    |
+| 3   | **No ambiguities**: Prohibited "should", "could", "normally", "etc."      | Automatic    |
+| 4   | **Concrete data**: Criteria with real example data, not abstractions      | Automatic    |
+| 5   | **Testable**: Each criterion verifiable by QA (automatically or manually) | Semi-auto    |
+| 6   | **Explicit actor**: Each step has a clear actor (human or system)         | Automatic    |
+| 7   | **Exact messages**: User messages with exact text in quotes               | Automatic    |
+| 8   | **Error flow**: Minimum 1 error flow with documented recovery             | Automatic    |
+
+### 5.2 Recommendations (Do not block but improve quality)
+
+| #   | Recommendation               | Benefit                                    |
+| --- | ---------------------------- | ------------------------------------------ |
+| 1   | ≤10 steps in the main flow   | More granular and maintainable RFs         |
+| 2   | ≥3 BDD scenarios per RF      | Greater testing coverage                   |
+| 3   | Technical notes included     | Dev has more context to implement          |
+| 4   | Alternative flows documented | Reduces mid-sprint ambiguity               |
+| 5   | RN with exact formulas       | Leaves nothing to the dev's interpretation |
+
+---
+
+## 6. Complete Example — Reference RF
 
 ```markdown
 ---
 id: RF-BIO-001
-título: Enrolamiento facial con validación de liveness
-versión: 1.0
-estado: Aprobado
-prd_origen: PRD-T-BIO §3.2, PRD-F-BIO §2.1
-autor: María González
-fecha_creación: 2025-11-15
-fecha_última_modificación: 2025-11-20
-prioridad: Must Have
-complejidad: Alta
-estimación_sprint: Sprint 3
+title: Facial enrollment with liveness validation
+version: 1.0
+status: Approved
+prd_source: PRD-T-BIO §3.2, PRD-F-BIO §2.1
+author: María González
+created_date: 2025-11-15
+last_modified_date: 2025-11-20
+priority: Must Have
+complexity: High
+sprint_estimate: Sprint 3
 ---
 
-## Objetivo
+## Objective
 
-Permitir a un usuario nuevo registrar su identidad facial con verificación
-de que es una persona real (liveness detection), almacenando el template
-biométrico de forma segura para futuras autenticaciones.
+Allow a new user to register their facial identity with verification
+that they are a real person (liveness detection), storing the biometric
+template securely for future authentications.
 
-## Actores
+## Actors
 
-| Actor               | Rol                                      | Permisos                  |
-| ------------------- | ---------------------------------------- | ------------------------- |
-| Usuario nuevo       | Inicia enrolamiento, sigue instrucciones | Acceso público (pre-auth) |
-| {{CLIENT_NAME}} SDK | Captura imagen, ejecuta liveness         | API key válida            |
-| Backend API         | Procesa template, almacena cifrado       | Service account           |
+| Actor               | Role                                    | Permissions              |
+| ------------------- | --------------------------------------- | ------------------------ |
+| New user            | Starts enrollment, follows instructions | Public access (pre-auth) |
+| {{CLIENT_NAME}} SDK | Captures image, runs liveness           | Valid API key            |
+| Backend API         | Processes template, stores it encrypted | Service account          |
 
-## Alcance
+## Scope
 
-### Incluye
+### Includes
 
-- Captura de imagen facial via cámara
+- Facial image capture via camera
 - Liveness detection (anti-spoofing)
-- Generación y almacenamiento de template biométrico
+- Generation and storage of the biometric template
 
-### Excluye
+### Excludes
 
-- Verificación 1:1 contra template existente → RF-BIO-002
-- Gestión de consentimiento GDPR → RF-BIO-005
+- 1:1 verification against an existing template → RF-BIO-002
+- GDPR consent management → RF-BIO-005
 
-## Criterios de Aceptación
+## Acceptance Criteria
 
-### CA-BIO-001-01: Enrolamiento exitoso
+### CA-BIO-001-01: Successful enrollment
 
-Scenario: Happy path — usuario con buena iluminación
-Given usuario "juan.perez@example.com" no tiene template biométrico
-And la cámara del dispositivo está activa
-And la iluminación es ≥300 lux (sensor)
-When el usuario posiciona su rostro dentro del óvalo guía
-And el sistema detecta liveness score ≥0.95
-Then el sistema genera template biométrico
-And almacena template cifrado (AES-256) vinculado al usuario
-And muestra mensaje: "Registro facial completado exitosamente"
-And loggea evento: ENROLLMENT_SUCCESS (sin PII)
+Scenario: Happy path — user with good lighting
+Given user "juan.perez@example.com" has no biometric template
+And the device camera is active
+And lighting is ≥300 lux (sensor)
+When the user positions their face inside the guide oval
+And the system detects a liveness score ≥0.95
+Then the system generates the biometric template
+And stores the encrypted template (AES-256) linked to the user
+And shows message: "Facial registration completed successfully"
+And logs event: ENROLLMENT_SUCCESS (no PII)
 
-Scenario: Error — liveness detection falla
-Given usuario posiciona su rostro dentro del óvalo guía
-And el sistema detecta liveness score <0.95
-When el intento de liveness falla 3 veces consecutivas
-Then el sistema muestra: "No pudimos verificar que es una persona real.
-Intente en un lugar con mejor iluminación."
-And loggea evento: ENROLLMENT_LIVENESS_FAIL (attempt_count, score, sin PII)
-And el usuario puede: reintentar o cancelar
+Scenario: Error — liveness detection fails
+Given the user positions their face inside the guide oval
+And the system detects a liveness score <0.95
+When the liveness attempt fails 3 consecutive times
+Then the system shows: "We could not verify that you are a real person.
+Try again in a place with better lighting."
+And logs event: ENROLLMENT_LIVENESS_FAIL (attempt_count, score, no PII)
+And the user can: retry or cancel
 
-## Reglas de Negocio
+## Business Rules
 
-| ID            | Regla              | Lógica                                        | Fuente               |
-| ------------- | ------------------ | --------------------------------------------- | -------------------- |
-| RN-BIO-001-01 | Liveness threshold | Score ≥0.95 para PASS                         | Security Policy v2.1 |
-| RN-BIO-001-02 | Max intentos       | 3 intentos fallidos → bloqueo temporal 5 min  | UX Guidelines        |
-| RN-BIO-001-03 | Cifrado template   | AES-256-GCM, key en KMS, key rotation 90 días | GDPR Art. 9          |
+| ID            | Rule                | Logic                                         | Source               |
+| ------------- | ------------------- | --------------------------------------------- | -------------------- |
+| RN-BIO-001-01 | Liveness threshold  | Score ≥0.95 to PASS                           | Security Policy v2.1 |
+| RN-BIO-001-02 | Max attempts        | 3 failed attempts → temporary 5 min lockout   | UX Guidelines        |
+| RN-BIO-001-03 | Template encryption | AES-256-GCM, key in KMS, key rotation 90 days | GDPR Art. 9          |
 
-## Dependencias
+## Dependencies
 
-| Tipo               | RF         | Descripción                              |
-| ------------------ | ---------- | ---------------------------------------- |
-| Es prerequisito de | RF-BIO-002 | Verificación requiere template existente |
-| Relacionado con    | RF-BIO-005 | Consentimiento GDPR necesario antes      |
+| Type               | RF         | Description                                |
+| ------------------ | ---------- | ------------------------------------------ |
+| Is prerequisite of | RF-BIO-002 | Verification requires an existing template |
+| Related to         | RF-BIO-005 | GDPR consent required beforehand           |
 ```
 
 ---
 
-## 7. Conexión con el Flujo SDLC
+## 7. Connection with the SDLC Flow
 
 ```
-PRD aprobado (Gate 1) → RFs generados (skill: generate-rf) → Coherence check → Gate 2
+PRD approved (Gate 1) → RFs generated (skill: generate-rf) → Coherence check → Gate 2
                             ↑                                        ↑
-                     Este formato obligatorio              docs/checklists/rf-coherence.md
+                     This mandatory format            docs/checklists/rf-coherence.md
 ```
 
-### Referencias Cruzadas
+### Cross-References
 
-- **Generación de RFs**: `skills/generate-rf/SKILL.md` — usa este formato como output
-- **Coherence Check**: `docs/checklists/rf-coherence.md` — valida RFs generados
-- **User Stories (siguiente)**: `skills/user-stories/SKILL.md` — consume RFs como input
-- **Review Cruzado**: `docs/checklists/review-cruzado.md` — PRDs → RFs
+- **RF Generation**: `skills/generate-rf/SKILL.md` — uses this format as output
+- **Coherence Check**: `docs/checklists/rf-coherence.md` — validates generated RFs
+- **User Stories (next)**: `skills/user-stories/SKILL.md` — consumes RFs as input
+- **Cross Review**: `docs/checklists/review-cruzado.md` — PRDs → RFs
 - **Org Standards**: `docs/standards/org.md` — Gate 2 criteria
 
 ---
 
-_Formato de referencia para toda generación de RFs._
-_El skill generate-rf DEBE producir RFs en este formato exacto. Desviaciones son rechazadas._
+_Reference format for all RF generation._
+_The generate-rf skill MUST produce RFs in this exact format. Deviations are rejected._

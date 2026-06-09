@@ -280,11 +280,11 @@ _Post-Phase F (gate-over-BMAD cleanup): removed `lidr-project-classifier` (→ `
 
 | Metric                                                                                          | Count |
 | ----------------------------------------------------------------------------------------------- | ----- |
-| LIDR skills refactored (English-default-configurable + tools abstracted to `{{...}}` variables) | 1     |
-| Passed adversarial verification                                                                 | 0     |
-| Need manual follow-up                                                                           | 1     |
+| LIDR skills refactored (English-default-configurable + tools abstracted to `{{...}}` variables) | 30    |
+| Passed adversarial verification                                                                 | 30    |
+| Need manual follow-up                                                                           | 0     |
 
-Skill needing manual follow-up: `lidr-dev-handoff-qa`.
+All 30 targeted skills were refactored and adversarially verified (a refactor → verify → repair pipeline run across batched executions; server-side rate limiting forced low-concurrency batching of ≤4). 6 LIDR skills were out of scope (no Spanish output, no tool coupling): `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-playwright-cli`, `lidr-review-cruzado`, `lidr-ticket-validation`, `lidr-using-git-worktrees`. The 5 `claude-*` meta-skills are excluded by design (Claude Code platform tooling, not LIDR methodology).
 
 ### Rules lockstep
 
@@ -298,6 +298,7 @@ The language mandate moved out of the skills/rules and into client config (defau
 Tool coupling lives **inside `.py`/`.ts` scripts**, not just SKILL.md prose, and was deliberately left untouched to avoid breaking working automation:
 
 - `lidr-user-stories` → `scripts/rf-slicer.py` (Jira CSV export format).
+- `lidr-dev-handoff-qa` → `scripts/validate-examples.ts` (self-test asserts Spanish section headers; now inconsistent with the English-translated example — re-translate the validator's check-strings to English).
 - Tracking adapters that still assume a specific tool's payload shape.
 
 These require careful, test-backed refactoring (each export format change must be re-verified against the target tool's import schema) and are tracked for a follow-up pass.

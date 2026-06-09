@@ -94,39 +94,54 @@ class DeploymentAnalyzer:
     - Configuration updates
     """
 
-    def __init__(self, project_dir: str = ".", output_dir: str = "rollback-analysis"):
+    # Overridable default domain pattern pack (EXAMPLE industry pack).
+    # The matching MECHANISM is industry-agnostic; only this concrete pattern
+    # SET is domain-flavored. Override it per project by passing a JSON config
+    # path to `domain_patterns_config` (or via the --domain-patterns CLI flag),
+    # or by setting the LIDR_DOMAIN_PATTERNS env var to a JSON file path.
+    # The JSON must mirror this structure:
+    #   { "<risk_type>": { "patterns": [<regex>...],
+    #                       "risk_level": "LOW|MEDIUM|HIGH|CRITICAL",
+    #                       "rollback_impact": "<text>" }, ... }
+    # When no override is provided, this default set is used so behavior is
+    # identical to the original implementation.
+    DEFAULT_DOMAIN_RISK_PATTERNS = {
+        'algorithm_changes': {
+            'patterns': [r'{{PRODUCT_NAME_1}}.*algorithm', r'face.*recognition', r'template.*generation'],
+            'risk_level': 'HIGH',
+            'rollback_impact': 'Algorithm rollback requires template revalidation'
+        },
+        'domain_specific_api_changes': {
+            'patterns': [r'verification.*endpoint', r'enroll.*api', r'match.*service'],
+            'risk_level': 'MEDIUM',
+            'rollback_impact': 'API changes may affect client integrations'
+        },
+        'template_storage': {
+            'patterns': [r'template.*storage', r'domain-specific.*database', r'encryption.*key'],
+            'risk_level': 'CRITICAL',
+            'rollback_impact': 'Template storage changes risk data corruption'
+        },
+        'liveness_detection': {
+            'patterns': [r'liveness.*detection', r'anti.*spoofing', r'pam.*detection'],
+            'risk_level': 'HIGH',
+            'rollback_impact': 'Liveness changes affect security posture'
+        },
+        'compliance_changes': {
+            'patterns': [r'gdpr.*compliance', r'consent.*management', r'audit.*trail'],
+            'risk_level': 'HIGH',
+            'rollback_impact': 'Compliance changes may affect regulatory approval'
+        }
+    }
+
+    def __init__(self, project_dir: str = ".", output_dir: str = "rollback-analysis",
+                 domain_patterns_config: Optional[str] = None):
         self.project_dir = Path(project_dir).resolve()
         self.output_dir = Path(output_dir).resolve()
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # domain-specific platform patterns for {{CLIENT_NAME}} domain
-        self.domain-specific_risk_patterns = {
-            'algorithm_changes': {
-                'patterns': [r'{{PRODUCT_NAME_1}}.*algorithm', r'face.*recognition', r'template.*generation'],
-                'risk_level': 'HIGH',
-                'rollback_impact': 'Algorithm rollback requires template revalidation'
-            },
-            'domain-specific_api_changes': {
-                'patterns': [r'verification.*endpoint', r'enroll.*api', r'match.*service'],
-                'risk_level': 'MEDIUM',
-                'rollback_impact': 'API changes may affect client integrations'
-            },
-            'template_storage': {
-                'patterns': [r'template.*storage', r'domain-specific.*database', r'encryption.*key'],
-                'risk_level': 'CRITICAL',
-                'rollback_impact': 'Template storage changes risk data corruption'
-            },
-            'liveness_detection': {
-                'patterns': [r'liveness.*detection', r'anti.*spoofing', r'pam.*detection'],
-                'risk_level': 'HIGH',
-                'rollback_impact': 'Liveness changes affect security posture'
-            },
-            'compliance_changes': {
-                'patterns': [r'gdpr.*compliance', r'consent.*management', r'audit.*trail'],
-                'risk_level': 'HIGH',
-                'rollback_impact': 'Compliance changes may affect regulatory approval'
-            }
-        }
+        # Resolve overridable domain pattern pack (industry-agnostic mechanism).
+        # Precedence: explicit arg > LIDR_DOMAIN_PATTERNS env var > default pack.
+        self.domain_specific_risk_patterns = self._load_domain_patterns(domain_patterns_config)
 
         # High-risk file patterns
         self.high_risk_files = [
@@ -158,6 +173,39 @@ class DeploymentAnalyzer:
             'index': [r'CREATE INDEX', r'DROP INDEX'],
             'constraint': [r'ADD CONSTRAINT', r'DROP CONSTRAINT']
         }
+
+    def _load_domain_patterns(self, domain_patterns_config: Optional[str]) -> Dict:
+        """Resolve the domain (industry) risk-pattern pack.
+
+        Industry-agnostic: the concrete pattern SET is configurable. An optional
+        JSON file (passed via arg or the LIDR_DOMAIN_PATTERNS env var) overrides
+        the example default pack. Falls back to DEFAULT_DOMAIN_RISK_PATTERNS so
+        behavior is unchanged when no override is provided.
+        """
+        config_path = domain_patterns_config or os.environ.get('LIDR_DOMAIN_PATTERNS')
+
+        if config_path:
+            try:
+                patterns_file = Path(config_path)
+                if not patterns_file.is_absolute():
+                    patterns_file = (self.project_dir / patterns_file)
+                if patterns_file.exists():
+                    loaded = json.loads(patterns_file.read_text(encoding='utf-8'))
+                    if isinstance(loaded, dict) and loaded:
+                        logger.info(f"Loaded domain risk patterns from {patterns_file}")
+                        return loaded
+                    logger.warning(
+                        f"Domain patterns file {patterns_file} is empty or invalid; using default pack"
+                    )
+                else:
+                    logger.warning(
+                        f"Domain patterns file not found: {patterns_file}; using default pack"
+                    )
+            except (json.JSONDecodeError, OSError) as e:
+                logger.warning(f"Could not load domain patterns from {config_path}: {e}; using default pack")
+
+        # Default example pack (preserves original behavior).
+        return dict(self.DEFAULT_DOMAIN_RISK_PATTERNS)
 
     def discover_changes_since_last_release(self) -> Tuple[List[str], str]:
         """Auto-discover PRs merged since last release tag"""
@@ -374,8 +422,8 @@ class DeploymentAnalyzer:
                     data_impact = 'Significant'
                     estimated_time = 10
 
-                # Check for domain-specific-specific risks
-                for risk_type, risk_info in self.domain-specific_risk_patterns.items():
+                # Check for domain-specific risks
+                for risk_type, risk_info in self.domain_specific_risk_patterns.items():
                     if any(re.search(pattern, content, re.IGNORECASE) for pattern in risk_info['patterns']):
                         risk_level = risk_info['risk_level']
                         break
@@ -699,7 +747,7 @@ class DeploymentAnalyzer:
             'infrastructure_changes': [asdict(i) for i in infra_changes],
             'feature_flags': [asdict(f) for f in flags],
             'risk_assessment': asdict(risk_assessment),
-            'domain-specific_domain_risks': self._assess_domain-specific_risks(prs, migrations, infra_changes),
+            'domain_specific_domain_risks': self._assess_domain_specific_risks(prs, migrations, infra_changes),
             'summary_statistics': {
                 'total_prs': len(prs),
                 'total_migrations': len(migrations),
@@ -724,10 +772,10 @@ class DeploymentAnalyzer:
 
         logger.info(f"Analysis results saved to {self.output_dir}")
 
-    def _assess_domain-specific_risks(self, prs: List[PRAnalysis], migrations: List[MigrationAnalysis],
+    def _assess_domain_specific_risks(self, prs: List[PRAnalysis], migrations: List[MigrationAnalysis],
                               infra_changes: List[InfrastructureChange]) -> Dict:
-        """Assess domain-specific-specific deployment risks"""
-        domain-specific_risks = {
+        """Assess domain-specific deployment risks"""
+        domain_specific_risks = {
             'gdpr_compliance_risk': False,
             'algorithm_change_risk': False,
             'template_storage_risk': False,
@@ -737,24 +785,37 @@ class DeploymentAnalyzer:
 
         # Check PR titles and file changes for domain-specific patterns
         for pr in prs:
-            for risk_type, patterns in self.domain-specific_risk_patterns.items():
+            for risk_type, patterns in self.domain_specific_risk_patterns.items():
                 for pattern in patterns['patterns']:
                     if re.search(pattern, pr.title, re.IGNORECASE):
                         if 'gdpr' in risk_type or 'compliance' in risk_type:
-                            domain-specific_risks['gdpr_compliance_risk'] = True
+                            domain_specific_risks['gdpr_compliance_risk'] = True
                         elif 'algorithm' in risk_type:
-                            domain-specific_risks['algorithm_change_risk'] = True
+                            domain_specific_risks['algorithm_change_risk'] = True
                         elif 'template' in risk_type:
-                            domain-specific_risks['template_storage_risk'] = True
+                            domain_specific_risks['template_storage_risk'] = True
                         elif 'api' in risk_type:
-                            domain-specific_risks['api_compatibility_risk'] = True
+                            domain_specific_risks['api_compatibility_risk'] = True
 
-        # Check migrations for template storage changes
+        # Check migrations for template storage changes.
+        # Keywords are derived from the configured domain pattern pack (any
+        # risk type whose name contains 'template'/'storage') so they stay
+        # industry-agnostic. Neutral defaults are always included as a fallback.
+        storage_keywords = {'template', 'domain-specific'}
+        for risk_type, risk_info in self.domain_specific_risk_patterns.items():
+            if 'template' in risk_type or 'storage' in risk_type:
+                for pattern in risk_info.get('patterns', []):
+                    # Use the leading alphanumeric token of each regex as a
+                    # filename keyword indicator (e.g. r'template.*storage' -> 'template').
+                    token_match = re.match(r'[a-z0-9_-]+', pattern, re.IGNORECASE)
+                    if token_match:
+                        storage_keywords.add(token_match.group(0).lower())
+
         for migration in migrations:
-            if any(keyword in migration.file.lower() for keyword in ['template', 'domain-specific', 'face', 'voice']):
-                domain-specific_risks['template_storage_risk'] = True
+            if any(keyword in migration.file.lower() for keyword in storage_keywords):
+                domain_specific_risks['template_storage_risk'] = True
 
-        return domain-specific_risks
+        return domain_specific_risks
 
     def _generate_human_readable_report(self, analysis_result: Dict):
         """Generate human-readable analysis report"""
@@ -853,6 +914,9 @@ def main():
                       help='Output directory for analysis results (default: rollback-analysis)')
     parser.add_argument('--since-tag', '-s',
                       help='Analyze changes since specific tag (auto-detects latest if not provided)')
+    parser.add_argument('--domain-patterns', '-d',
+                      help='Path to a JSON file overriding the domain (industry) risk-pattern pack '
+                           '(falls back to the built-in example pack; also reads LIDR_DOMAIN_PATTERNS env var)')
     parser.add_argument('--verbose', '-v', action='store_true',
                       help='Enable verbose logging')
 
@@ -862,7 +926,7 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
 
     # Initialize analyzer
-    analyzer = DeploymentAnalyzer(args.project_dir, args.output_dir)
+    analyzer = DeploymentAnalyzer(args.project_dir, args.output_dir, args.domain_patterns)
 
     try:
         # Auto-discover changes

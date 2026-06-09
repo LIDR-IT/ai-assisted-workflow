@@ -1,9 +1,9 @@
 ---
 name: lidr-tech-debt
 id: tech-debt
-version: "2.2.1"
+version: "2.3.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 5
 owner_role: "TL + Dev Team"
@@ -148,15 +148,15 @@ python scripts/debt-tracker.py \
 
 ## Debt Taxonomy
 
-| Category           | Examples                                                         | Detected By                     |
-| ------------------ | ---------------------------------------------------------------- | ------------------------------- |
-| **Code**           | Functions >100 lines, cyclomatic complexity >15, duplication >5% | {{CODE_QUALITY_TOOL}}, ESLint   |
-| **Architecture**   | Monolith needs modularization, excessive coupling                | ADR review, dependency analysis |
-| **Test**           | Coverage <80%, fragile tests, slow tests                         | Coverage reports, CI metrics    |
-| **Documentation**  | Missing JSDoc, outdated README, missing ADRs                     | Manual review                   |
-| **Dependency**     | Libraries with CVEs, unmaintained packages                       | npm audit, Snyk                 |
-| **Infrastructure** | CI >15 min, manual deploys, no monitoring                        | CI metrics, incident review     |
-| **Design**         | Missing abstractions, God classes, SOLID violations              | Code review                     |
+| Category           | Examples                                                         | Detected By                      |
+| ------------------ | ---------------------------------------------------------------- | -------------------------------- |
+| **Code**           | Functions >100 lines, cyclomatic complexity >15, duplication >5% | {{CODE_QUALITY_TOOL}}, ESLint    |
+| **Architecture**   | Monolith needs modularization, excessive coupling                | ADR review, dependency analysis  |
+| **Test**           | Coverage <80%, fragile tests, slow tests                         | Coverage reports, CI metrics     |
+| **Documentation**  | Missing JSDoc, outdated README, missing ADRs                     | Manual review                    |
+| **Dependency**     | Libraries with CVEs, unmaintained packages                       | npm audit, {{CODE_QUALITY_TOOL}} |
+| **Infrastructure** | CI >15 min, manual deploys, no monitoring                        | CI metrics, incident review      |
+| **Design**         | Missing abstractions, God classes, SOLID violations              | Code review                      |
 
 ## Practical Implementation Instructions
 
@@ -181,13 +181,13 @@ curl -u $SONAR_TOKEN: https://sonar.example.com/api/projects/search
 # 3. Download to project directory
 ```
 
-### Step 2: Execute Technical Debt Analysis
+### Step 2: Execute Technical Debt Analysis (example uses SonarQube)
 
 ```bash
 # Navigate to skill directory
 cd .claude/skills/tech-debt
 
-# Run automated SonarQube analysis
+# Run automated {{CODE_QUALITY_TOOL}} analysis (example uses SonarQube)
 python scripts/sonarqube-analyzer.py \
   --project-key "org:your-project" \
   --sonar-url "https://sonar.example.com" \
@@ -196,7 +196,7 @@ python scripts/sonarqube-analyzer.py \
   --verbose
 
 # Expected output:
-# 🔍 Analyzing 847 SonarQube issues...
+# 🔍 Analyzing 847 {{CODE_QUALITY_TOOL}} issues...
 # ✅ Generated 23 technical debt items
 # 📊 Registry: analysis-results/tech-debt-registry.md
 # 📁 JSON: analysis-results/tech-debt-analysis.json
@@ -215,7 +215,7 @@ python scripts/debt-tracker.py \
 # Expected output:
 # 📊 Sprint capacity: 400h | Debt allocation: 80h (20%)
 # ✅ Generated 5 user stories (78h / 80h capacity)
-# 📊 CSV for Jira: sprint-planning/debt-user-stories.csv
+# 📊 CSV for {{TRACKING_TOOL}} (example: Jira): sprint-planning/debt-user-stories.csv
 # 📝 Backlog Report: sprint-planning/debt-backlog-report.md
 ```
 
@@ -245,7 +245,7 @@ python scripts/debt-tracker.py --update-status \
 
 ## Automated Output Format — Debt Registry
 
-**Generated Structure** (replaces manual template):
+**Generated Structure** (replaces manual template). Example (SonarQube) — the concrete tool name in the sample output reflects whatever `{{CODE_QUALITY_TOOL}}` the client binds:
 
 ```markdown
 # Technical Debt Registry - SonarQube Analysis
@@ -449,3 +449,9 @@ npx tsx scripts/validate-examples.ts
 - Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                                                               |
+| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.3.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted SonarQube/Jira/Snyk via tool-registry ({{CODE_QUALITY_TOOL}}, {{TRACKING_TOOL}}) |

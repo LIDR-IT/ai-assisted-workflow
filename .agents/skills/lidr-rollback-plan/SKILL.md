@@ -3,7 +3,7 @@ name: lidr-rollback-plan
 id: rollback-plan
 version: "1.3.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 8
 owner_role: "DevOps"
@@ -23,7 +23,7 @@ Output: English by default; artifact language follows the client `language` sett
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 No BMad equivalent: this is a LIDR-native deployment-safety artifact. It analyzes release diffs, migrations, and infra changes to produce an executable rollback runbook that feeds the Change Request at Gate 7 (`lidr-change-request`).
 
@@ -286,5 +286,5 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                       | Changes                                                                                                               |
 | ------- | ---------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| 1.3.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-native); added `vcs` to integrations frontmatter                              |
+| 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added "Relationship to BMad" note (LIDR-native); added `vcs` to integrations frontmatter                              |
 | 1.3.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted {{VCS_TOOL}}, {{TRACKING_TOOL}}, {{CHAT_TOOL}} via tool-registry |

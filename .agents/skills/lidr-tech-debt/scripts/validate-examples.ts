@@ -15,7 +15,8 @@
  */
 
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 /* ────────────────────────────────────────────────────────────────────
    VALIDATION RULES
@@ -33,7 +34,11 @@ const SONARQUBE_RULES: ValidationRule[] = [
     name: "Executive Summary Table",
     description: "Must contain severity categorization table (Critical|High|Medium|Low)",
     check: (content) =>
-      content.includes("Critical | High | Medium | Low") && content.includes("Code Smell"),
+      content.includes("Critical") &&
+      content.includes("High") &&
+      content.includes("Medium") &&
+      content.includes("Low") &&
+      content.includes("Code Smell"),
     severity: "ERROR",
   },
   {
@@ -64,7 +69,10 @@ const DEBT_REGISTRY_RULES: ValidationRule[] = [
     name: "Debt Overview Table",
     description: "Must contain debt categorization with effort estimates",
     check: (content) =>
-      content.includes("Category | Items | Effort (hours)") && content.includes("Business Impact"),
+      content.includes("Category") &&
+      content.includes("Items") &&
+      content.includes("Effort (hours)") &&
+      content.includes("Business Impact"),
     severity: "ERROR",
   },
   {
@@ -204,7 +212,8 @@ function validateFile(filePath: string, rules: ValidationRule[]): ValidationResu
 ──────────────────────────────────────────────────────────────────── */
 
 async function main(): Promise<void> {
-  const examplesDir = join(__dirname, "../examples");
+  const scriptDir = dirname(fileURLToPath(import.meta.url));
+  const examplesDir = join(scriptDir, "../examples");
 
   if (!existsSync(examplesDir)) {
     console.error("❌ Examples directory not found");

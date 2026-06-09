@@ -3,7 +3,7 @@ name: lidr-risk-log
 id: risk-log
 version: "1.2.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 2
 owner_role: "TL"
@@ -20,7 +20,7 @@ Phase: 2 — Discovery (creation) → all phases (maintenance) | Language: Engli
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 LIDR-unique: BMad has no formal risk-registry artifact. This skill consumes the risk sections of `bmad-prd` (PRD-T §8 / PRD-F §8) plus `lidr-business-case` §6, and produces a living risk log that feeds Gate 1 evidence and is maintained across all phases.
 
@@ -219,5 +219,5 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                       | Changes                                                                                                  |
 | ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------- |
-| 1.2.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-unique; consumes bmad-prd risk sections + business-case)         |
+| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added "Relationship to BMad" note (LIDR-unique; consumes bmad-prd risk sections + business-case)         |
 | 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; added registry-resolution note (no concrete tools to abstract) |

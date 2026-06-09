@@ -1,9 +1,9 @@
 ---
 name: lidr-user-stories
 id: user-stories
-version: "2.3.1"
+version: "2.4.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 4
 owner_role: "PO"
@@ -131,7 +131,7 @@ python scripts/rf-slicer.py \
 **Outputs**:
 
 - `user-stories-generated.md`: Complete User Story backlog with BDD scenarios
-- `user-stories-jira.csv`: Jira-ready import file with story points and labels
+- `user-stories-jira.csv`: {{TRACKING_TOOL}}-ready import file with story points and labels (filename emitted by the script; Example tool: Jira)
 - Automatic INVEST compliance validation and slicing pattern reporting
 
 ## Practical Implementation Instructions
@@ -182,17 +182,17 @@ python scripts/rf-slicer.py \
 # Review generated backlog
 open sprint-backlog/user-stories-generated.md
 
-# Check Jira import file
+# Check the {{TRACKING_TOOL}} import file (filename emitted by the script)
 head -5 sprint-backlog/user-stories-jira.csv
 ```
 
-### Step 4: Import to Jira and Sprint Planning
+### Step 4: Import to {{TRACKING_TOOL}} and Sprint Planning
 
 ```bash
-# Import to Jira:
-# 1. Jira → Projects → Your Project → Issues
+# Import to the tracking tool (Example: Jira):
+# 1. Tracking tool → Projects → Your Project → Issues
 # 2. More → Import Issues from CSV
-# 3. Select user-stories-jira.csv
+# 3. Select the generated CSV
 # 4. Map fields: Summary, Story Points, Priority, Epic
 
 # Review in Sprint Planning meeting
@@ -241,9 +241,9 @@ The automation performs INVEST validation automatically, but review these key po
 
 **Automatic Persona Detection**:
 
-- `usuario final` → End user stories
-- `administrador` → Admin configuration stories
-- `operador` → Operator workflow stories
+- `end user` → End user stories
+- `administrator` → Admin configuration stories
+- `operator` → Operator workflow stories
 - `auditor` → Compliance and monitoring stories
 
 ### Capacity Management Rules
@@ -269,83 +269,83 @@ User Story Selection:
 **Auto-generated from RF-PROJ-001** (example):
 
 ```markdown
-### US-PROJ-003: Verificación de identidad - Happy Path (Slice 1/3 - Vertical Path)
+### US-PROJ-003: Identity verification - Happy Path (Slice 1/3 - Vertical Path)
 
 ## Story
 
-**Como** usuario final
-**Quiero** verificar mi identidad (happy path)
-**Para** obtener acceso seguro al sistema
+**As a** end user
+**I want** to verify my identity (happy path)
+**So that** I get secure access to the system
 
-## Ficha
+## Card
 
-| Campo          | Valor         |
-| -------------- | ------------- |
-| **ID**         | US-PROJ-003   |
-| **Sprint**     | Sprint Actual |
-| **RF Origen**  | RF-PROJ-001   |
-| **Prioridad**  | Must          |
-| **Estimación** | 6-10h         |
-| **Estado**     | To Do         |
+| Field         | Value          |
+| ------------- | -------------- |
+| **ID**        | US-PROJ-003    |
+| **Sprint**    | Current Sprint |
+| **RF Origin** | RF-PROJ-001    |
+| **Priority**  | Must           |
+| **Estimate**  | 6-10h          |
+| **Status**    | To Do          |
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 
-### Scenario: Flujo principal exitoso
+### Scenario: Successful main flow
 
-**Given** el usuario está autenticado
-**And** el sistema está disponible
-**When** ejecuta la funcionalidad principal
-**Then** el sistema procesa correctamente
-**And** se muestra el resultado esperado
+**Given** the user is authenticated
+**And** the system is available
+**When** they execute the main functionality
+**Then** the system processes it correctly
+**And** the expected result is shown
 
-### Scenario: Verificación exitosa
+### Scenario: Successful verification
 
-**Given** el usuario inicia el proceso de verificación
-**When** el sistema procesa la solicitud
-**Then** se realiza la verificación correctamente
-**And** se valida la identidad
-**And** se concede acceso al sistema
+**Given** the user starts the verification process
+**When** the system processes the request
+**Then** the verification is completed correctly
+**And** the identity is validated
+**And** access to the system is granted
 
-## Notas Técnicas
+## Technical Notes
 
-Integración con el SDK de verificación del sistema. Considerar condiciones de entorno y calidad de entrada.
+Integration with the system verification SDK. Consider environmental conditions and input quality.
 
-## Definición de Done
+## Definition of Done
 
-- [ ] Code review aprobado (mínimo 1 peer + Tech Lead)
-- [ ] Tests unitarios pasan (cobertura ≥ 80% en lógica de negocio)
-- [ ] SAST/SCA limpio (0 vulnerabilidades Críticas/Altas)
-- [ ] PR description completa
-- [ ] Handoff dev→QA generado y adjunto al ticket
-- [ ] Documentación actualizada si aplica
-- [ ] Security review aprobado por CISO
+- [ ] Code review approved (at least 1 peer + Tech Lead)
+- [ ] Unit tests pass (coverage ≥ 80% in business logic)
+- [ ] SAST/SCA clean (0 Critical/High vulnerabilities)
+- [ ] PR description complete
+- [ ] Dev→QA handoff generated and attached to the ticket
+- [ ] Documentation updated if applicable
+- [ ] Security review approved by CISO
 
-## Dependencias
+## Dependencies
 
 RF-PROJ-002, RF-PROJ-005
 
 ## Subtasks
 
-No requeridos
+Not required
 ```
 
-### Jira CSV Export Format
+### {{TRACKING_TOOL}} CSV Export Format
 
-**Auto-generated for import**:
+**Auto-generated for import** — Example (Jira):
 
 ```csv
 Summary,Issue Type,Description,Acceptance Criteria,Story Points,Priority,Epic Link,Labels,Component/s,Custom Field (RF Origin),Reporter
-"Verificación de identidad - Happy Path",Story,"Como usuario final, quiero verificar mi identidad (happy path) para obtener acceso seguro al sistema.
+"Identity verification - Happy Path",Story,"As a end user, I want to verify my identity (happy path) so that I get secure access to the system.
 
-Estimación: 6-10 horas","Scenario: Flujo principal exitoso
-Given el usuario está autenticado
-When ejecuta la funcionalidad principal
-Then el sistema procesa correctamente
+Estimate: 6-10 hours","Scenario: Successful main flow
+Given the user is authenticated
+When they execute the main functionality
+Then the system processes it correctly
 
-Scenario: Verificación exitosa
-Given el usuario inicia el proceso de verificación
-When el sistema procesa la solicitud
-Then se realiza la verificación correctamente",3,Must,"Feature Development","user-story,must,slice-1-of-3,vertical-path","User Stories","RF-PROJ-001","RF Slicer System"
+Scenario: Successful verification
+Given the user starts the verification process
+When the system processes the request
+Then the verification is completed correctly",3,Must,"Feature Development","user-story,must,slice-1-of-3,vertical-path","User Stories","RF-PROJ-001","RF Slicer System"
 ```
 
 ### Sprint Backlog Summary Report
@@ -394,7 +394,7 @@ Then se realiza la verificación correctamente",3,Must,"Feature Development","us
 
 ### Quality Enforcement (Automated Validation)
 
-- **Story value must be real** — automation detects and flags generic "para poder hacerlo" phrases
+- **Story value must be real** — automation detects and flags generic "so that I can do it" phrases
 - **BDD inherited and enhanced** — RF Gherkin is refined per slice (happy path vs validations vs edge cases)
 - **Estimates as ranges** — automation provides min-max ranges based on complexity analysis
 - **INVEST compliance mandatory** — automated validation against all criteria with detailed reporting
@@ -475,7 +475,7 @@ npx tsx scripts/validate-examples.ts
 
 ### ✅ **Automated Validation** (Performed by `rf-slicer.py`)
 
-- [x] Story follows "Como/Quiero/Para" format with real business value
+- [x] Story follows "As a / I want / So that" format with real business value
 - [x] Meets all 6 INVEST criteria (Independent, Negotiable, Valuable, Estimable, Small, Testable)
 - [x] BDD scenarios inherited from RF and adapted for slice context
 - [x] Perfect traceability to RF origin maintained
@@ -541,7 +541,8 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                                                                                                                          |
 | ------- | ---------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 2.3.1   | 2026-06-09 | TL: BMAD-coherence batch-fix              | Language to English-default-configurable (BDD stays English); abstracted tracking tool via {{TRACKING_TOOL}} in generic prose; added language_default + integrations frontmatter                                                                                                                                                                 |
+| 2.4.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted tracking tool (Jira) via tool-registry. Translated remaining Spanish example user story, BDD scenarios, CSV export, template, and examples to English                                                                                                                                       |
+| 2.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix              | Language to English-default-configurable (BDD stays English); abstracted tracking tool via {{TRACKING_TOOL}} in generic prose; added language_default + integrations frontmatter                                                                                                                                                                 |
 | 2.3.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Complete domain-agnostic remediation: replaced examples/user-stories-selphi-document-capture.md with user-stories-document-capture-feature.md using comprehensive template variables ({{PRIMARY_WORKFLOW}}, {{DOCUMENT_TYPE}}, {{VERIFICATION_DEVICE}}, etc.). Removed all banking/biometric-specific content. Achieving 75→92/100 target score. |
 | 2.2.0   | 2026-03-16 | System: QA Enhancement                    | Previous QA improvements                                                                                                                                                                                                                                                                                                                         |
 

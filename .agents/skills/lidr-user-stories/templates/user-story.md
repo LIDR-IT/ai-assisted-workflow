@@ -12,90 +12,90 @@ owner_role: "Product Owner"
 
 # User Story Template
 
-> **Uso**: Formato estandar para User Stories con criterios BDD. Usado por el skill `user-stories`.
+> **Usage**: Standard format for User Stories with BDD criteria. Used by the `user-stories` skill.
 > **Gate**: Gate 3 (Sprint Planning)
 
 ---
 
-## Identificacion
+## Identification
 
-| Campo              | Valor                         |
-| ------------------ | ----------------------------- |
-| ID                 | US-{NNN}                      |
-| Titulo             | {titulo_descriptivo}          |
-| RF Origen          | RF-{NNN}                      |
-| Epica              | PROJ-{NNN}                    |
-| Prioridad (MoSCoW) | Must / Should / Could / Won't |
-| Estimacion         | {N} horas / {N} story points  |
-| Sprint target      | Sprint {N}                    |
-
----
-
-## Narrativa
-
-```
-As a {rol/persona},
-I want {accion/funcionalidad},
-So that {beneficio/valor de negocio}.
-```
+| Field             | Value                         |
+| ----------------- | ----------------------------- |
+| ID                | US-{NNN}                      |
+| Title             | {descriptive_title}           |
+| RF Origin         | RF-{NNN}                      |
+| Epic              | PROJ-{NNN}                    |
+| Priority (MoSCoW) | Must / Should / Could / Won't |
+| Estimate          | {N} hours / {N} story points  |
+| Sprint target     | Sprint {N}                    |
 
 ---
 
-## Criterios de Aceptacion (BDD / Gherkin)
+## Narrative
 
-### Scenario 1: {nombre_escenario_happy_path}
-
-```gherkin
-Given {contexto_inicial}
-  And {condicion_adicional}
-When {accion_del_usuario}
-Then {resultado_esperado}
-  And {resultado_adicional}
 ```
-
-### Scenario 2: {nombre_escenario_alternativo}
-
-```gherkin
-Given {contexto_inicial}
-When {accion_alternativa}
-Then {resultado_alternativo}
-```
-
-### Scenario 3: {nombre_escenario_error}
-
-```gherkin
-Given {contexto_inicial}
-When {accion_que_falla}
-Then {mensaje_error_esperado}
-  And {estado_sistema_post_error}
+As a {role/persona},
+I want {action/functionality},
+So that {benefit/business value}.
 ```
 
 ---
 
-## Dependencias
+## Acceptance Criteria (BDD / Gherkin)
 
-| Tipo          | ID                    | Descripcion   |
-| ------------- | --------------------- | ------------- |
-| Bloqueada por | US-{NNN} / PROJ-{NNN} | {descripcion} |
-| Bloquea a     | US-{NNN}              | {descripcion} |
-| API externa   | {nombre_api}          | {descripcion} |
+### Scenario 1: {happy_path_scenario_name}
+
+```gherkin
+Given {initial_context}
+  And {additional_condition}
+When {user_action}
+Then {expected_result}
+  And {additional_result}
+```
+
+### Scenario 2: {alternative_scenario_name}
+
+```gherkin
+Given {initial_context}
+When {alternative_action}
+Then {alternative_result}
+```
+
+### Scenario 3: {error_scenario_name}
+
+```gherkin
+Given {initial_context}
+When {failing_action}
+Then {expected_error_message}
+  And {post_error_system_state}
+```
+
+---
+
+## Dependencies
+
+| Type         | ID                    | Description   |
+| ------------ | --------------------- | ------------- |
+| Blocked by   | US-{NNN} / PROJ-{NNN} | {description} |
+| Blocks       | US-{NNN}              | {description} |
+| External API | {api_name}            | {description} |
 
 ---
 
 ## DoR Checklist (Definition of Ready)
 
-- [ ] Narrativa completa (As a / I want / So that)
-- [ ] Minimo 2 criterios de aceptacion en Gherkin
-- [ ] RF origen identificado y aprobado
-- [ ] Dependencias mapeadas
-- [ ] Estimacion acordada en refinement
-- [ ] Mockups/wireframes adjuntos (si aplica)
-- [ ] Datos de prueba definidos (si aplica)
+- [ ] Complete narrative (As a / I want / So that)
+- [ ] At least 2 acceptance criteria in Gherkin
+- [ ] RF origin identified and approved
+- [ ] Dependencies mapped
+- [ ] Estimate agreed in refinement
+- [ ] Mockups/wireframes attached (if applicable)
+- [ ] Test data defined (if applicable)
 
 ---
 
-## Notas de Refinement
+## Refinement Notes
 
-| Fecha        | Participantes | Decisiones   | Dudas pendientes |
-| ------------ | ------------- | ------------ | ---------------- |
-| {YYYY-MM-DD} | {nombres}     | {decisiones} | {dudas}          |
+| Date         | Participants | Decisions   | Open questions |
+| ------------ | ------------ | ----------- | -------------- |
+| {YYYY-MM-DD} | {names}      | {decisions} | {questions}    |

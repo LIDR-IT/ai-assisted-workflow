@@ -1,18 +1,18 @@
 # User Stories: {{PRIMARY_WORKFLOW}} Document Capture Feature
 
-**Generado desde**: RF-001 {{DOCUMENT_PROCESSING}} Capture
+**Generated from**: RF-001 {{DOCUMENT_PROCESSING}} Capture
 **Epic**: {{CLIENT_CODE}}-124 ({{PRIMARY_WORKFLOW}})
-**Sprint**: Planificado para Sprint 3
-**Fecha**: 2026-04-06
-**Total Estimation**: 34 horas
+**Sprint**: Planned for Sprint 3
+**Date**: 2026-04-06
+**Total Estimation**: 34 hours
 
 ---
 
-## US-{{CLIENT_CODE}}-124-01: {{DOCUMENT_PROCESSING}} Automática de Documento
+## US-{{CLIENT_CODE}}-124-01: Automatic Document {{DOCUMENT_PROCESSING}}
 
-**Como** usuario que quiere completar {{PRIMARY_WORKFLOW}}
-**Quiero** poder fotografiar mi {{DOCUMENT_TYPE}} fácilmente con el {{DEVICE_TYPE}}
-**Para** iniciar el proceso de verificación sin retrasos
+**As a** user who wants to complete {{PRIMARY_WORKFLOW}}
+**I want** to easily photograph my {{DOCUMENT_TYPE}} with the {{DEVICE_TYPE}}
+**So that** I can start the verification process without delays
 
 ### Story Details
 
@@ -20,73 +20,73 @@
 - **RF Reference**: RF-001.1, RF-001.2
 - **Priority**: High (Critical Path)
 - **Story Points**: 8
-- **Estimation**: 13 horas
+- **Estimation**: 13 hours
 - **Dependencies**: None
 
 ### Acceptance Criteria
 
 ```gherkin
-Scenario: {{DOCUMENT_PROCESSING}} exitosa de {{DOCUMENT_TYPE}} anverso
-Given el usuario ha iniciado el proceso de {{PRIMARY_WORKFLOW}}
-  And está en la pantalla de "{{VERIFICATION_STEP}}"
-  And tiene un {{DOCUMENT_TYPE}} válido
-When pulsa el botón "Fotografiar anverso del {{DOCUMENT_TYPE}}"
-  And apunta la {{VERIFICATION_DEVICE}} al anverso del documento
-Then debe mostrar una vista previa en tiempo real
-  And debe detectar automáticamente los bordes del documento
-  And debe mostrar un marco verde cuando el documento esté bien posicionado
-  And debe habilitar el botón "Capturar" cuando la detección sea exitosa
+Scenario: Successful {{DOCUMENT_PROCESSING}} of {{DOCUMENT_TYPE}} front side
+Given the user has started the {{PRIMARY_WORKFLOW}} process
+  And is on the "{{VERIFICATION_STEP}}" screen
+  And has a valid {{DOCUMENT_TYPE}}
+When they press the "Photograph {{DOCUMENT_TYPE}} front" button
+  And point the {{VERIFICATION_DEVICE}} at the front of the document
+Then it must show a real-time preview
+  And must automatically detect the document edges
+  And must show a green frame when the document is well positioned
+  And must enable the "Capture" button when detection is successful
 
-Scenario: Guías visuales para posicionamiento óptimo
-Given el usuario está en la captura de documento
-When el documento no está bien posicionado o iluminado
-Then debe mostrar consejos contextuales:
-  | Condición | Mensaje |
-  | Documento parcialmente visible | "Asegúrate de que todo el documento esté en el marco" |
-  | Poca luz | "Busca mejor iluminación" |
-  | Demasiados reflejos | "Evita los reflejos en el documento" |
-  | Documento borroso | "Mantén el {{DEVICE_TYPE}} estable" |
+Scenario: Visual guides for optimal positioning
+Given the user is on the document capture step
+When the document is not well positioned or lit
+Then it must show contextual tips:
+  | Condition | Message |
+  | Document partially visible | "Make sure the whole document is inside the frame" |
+  | Low light | "Find better lighting" |
+  | Too much glare | "Avoid glare on the document" |
+  | Blurry document | "Keep the {{DEVICE_TYPE}} steady" |
 
-Scenario: Captura con calidad suficiente
-Given el documento está correctamente posicionado
-When el usuario pulsa "Capturar"
-Then debe tomar la foto instantáneamente
-  And debe validar automáticamente la calidad de la imagen
-  And si la calidad es suficiente (>80% confianza):
-    - Debe mostrar "✓ Anverso capturado correctamente"
-    - Debe proceder automáticamente a "Fotografiar reverso"
-  And si la calidad es insuficiente:
-    - Debe mostrar "Imagen no clara. Inténtalo de nuevo"
-    - Debe ofrecer consejos específicos de mejora
+Scenario: Capture with sufficient quality
+Given the document is correctly positioned
+When the user presses "Capture"
+Then it must take the photo instantly
+  And must automatically validate the image quality
+  And if the quality is sufficient (>80% confidence):
+    - Must show "✓ Front captured correctly"
+    - Must automatically proceed to "Photograph back"
+  And if the quality is insufficient:
+    - Must show "Unclear image. Try again"
+    - Must offer specific improvement tips
 ```
 
 ### Definition of Done
 
-- [ ] UI responsive implementada (mobile-first)
-- [ ] Detección automática de bordes funcionando
-- [ ] Validación de calidad de imagen implementada
-- [ ] Guías contextuales funcionando
-- [ ] Tests unitarios (>80% coverage)
-- [ ] Tests de integración con {{VERIFICATION_DEVICE}}
-- [ ] Tests de compatibilidad en {{PLATFORM_1}}/{{PLATFORM_2}}
-- [ ] Performance <2s para detección
+- [ ] Responsive UI implemented (mobile-first)
+- [ ] Automatic edge detection working
+- [ ] Image quality validation implemented
+- [ ] Contextual guides working
+- [ ] Unit tests (>80% coverage)
+- [ ] Integration tests with {{VERIFICATION_DEVICE}}
+- [ ] Compatibility tests on {{PLATFORM_1}}/{{PLATFORM_2}}
+- [ ] Performance <2s for detection
 
 ### Technical Tasks
 
-1. Implementar componente `DocumentCapture.tsx`
-2. Integrar librería de detección de bordes ({{TECHNICAL_LIBRARY}})
-3. Implementar validación de calidad de imagen
-4. Crear sistema de guías contextuales
-5. Implementar captura y compresión de imagen
-6. Tests automatizados
+1. Implement `DocumentCapture.tsx` component
+2. Integrate edge detection library ({{TECHNICAL_LIBRARY}})
+3. Implement image quality validation
+4. Create contextual guides system
+5. Implement image capture and compression
+6. Automated tests
 
 ---
 
-## US-{{CLIENT_CODE}}-124-02: Verificación de {{DOCUMENT_PROCESSING}} Reverso
+## US-{{CLIENT_CODE}}-124-02: {{DOCUMENT_PROCESSING}} Verification - Back Side
 
-**Como** usuario completando {{PRIMARY_WORKFLOW}}
-**Quiero** fotografiar automáticamente el reverso de mi {{DOCUMENT_TYPE}}
-**Para** completar el proceso de verificación de documento
+**As a** user completing {{PRIMARY_WORKFLOW}}
+**I want** to automatically photograph the back of my {{DOCUMENT_TYPE}}
+**So that** I can complete the document verification process
 
 ### Story Details
 
@@ -94,70 +94,70 @@ Then debe tomar la foto instantáneamente
 - **RF Reference**: RF-001.3, RF-001.4
 - **Priority**: High (Critical Path)
 - **Story Points**: 5
-- **Estimation**: 8 horas
+- **Estimation**: 8 hours
 - **Dependencies**: US-{{CLIENT_CODE}}-124-01
 
 ### Acceptance Criteria
 
 ```gherkin
-Scenario: Flujo automático desde anverso a reverso
-Given el usuario ha capturado exitosamente el anverso del {{DOCUMENT_TYPE}}
-When el sistema muestra "✓ Anverso capturado correctamente"
-Then debe mostrar automáticamente la pantalla "Fotografiar reverso"
-  And debe mostrar una vista previa de la imagen del anverso como confirmación
-  And debe mostrar instrucciones "Ahora fotografía el reverso de tu {{DOCUMENT_TYPE}}"
+Scenario: Automatic flow from front to back
+Given the user has successfully captured the front of the {{DOCUMENT_TYPE}}
+When the system shows "✓ Front captured correctly"
+Then it must automatically show the "Photograph back" screen
+  And must show a preview of the front image as confirmation
+  And must show the instruction "Now photograph the back of your {{DOCUMENT_TYPE}}"
 
-Scenario: Captura de reverso con validaciones específicas
-Given el usuario está en la captura de reverso
-  And ha dado la vuelta al {{DOCUMENT_TYPE}}
-When apunta la {{VERIFICATION_DEVICE}} al reverso
-Then debe aplicar las mismas validaciones de calidad que en el anverso
-  And debe detectar elementos específicos del reverso ({{DOCUMENT_ELEMENT_1}}, {{DOCUMENT_ELEMENT_2}})
-  And debe validar que es el mismo documento (correlación con anverso)
+Scenario: Back capture with specific validations
+Given the user is on the back capture step
+  And has turned the {{DOCUMENT_TYPE}} over
+When they point the {{VERIFICATION_DEVICE}} at the back
+Then it must apply the same quality validations as for the front
+  And must detect back-specific elements ({{DOCUMENT_ELEMENT_1}}, {{DOCUMENT_ELEMENT_2}})
+  And must validate that it is the same document (correlation with the front)
 
-Scenario: Validación de completitud del documento
-Given el usuario ha capturado anverso y reverso
-When el sistema valida ambas imágenes
-Then debe extraer los datos principales:
-  | Campo | Validación |
-  | {{DATA_FIELD_1}} | Presente y legible |
-  | {{DATA_FIELD_2}} | Formato válido |
-  | {{DATA_FIELD_3}} | Coincide entre anverso y reverso |
-  | {{DATA_FIELD_4}} | No expirado |
-  And si todos los datos son válidos:
-    - Debe mostrar "✓ Documento verificado correctamente"
-    - Debe proceder al siguiente paso del {{PRIMARY_WORKFLOW}}
-  And si hay errores de validación:
-    - Debe mostrar errores específicos
-    - Debe permitir recaptura del lado correspondiente
+Scenario: Document completeness validation
+Given the user has captured front and back
+When the system validates both images
+Then it must extract the main data:
+  | Field | Validation |
+  | {{DATA_FIELD_1}} | Present and legible |
+  | {{DATA_FIELD_2}} | Valid format |
+  | {{DATA_FIELD_3}} | Matches between front and back |
+  | {{DATA_FIELD_4}} | Not expired |
+  And if all data is valid:
+    - Must show "✓ Document verified correctly"
+    - Must proceed to the next step of {{PRIMARY_WORKFLOW}}
+  And if there are validation errors:
+    - Must show specific errors
+    - Must allow recapture of the corresponding side
 ```
 
 ### Definition of Done
 
-- [ ] Validación de correlación anverso-reverso implementada
-- [ ] Extracción de datos principales funcionando
-- [ ] Detección de elementos específicos del reverso
-- [ ] Flow automático anverso→reverso implementado
-- [ ] Validaciones de completitud implementadas
-- [ ] Tests unitarios (>80% coverage)
-- [ ] Tests de integración con {{VERIFICATION_SERVICE}}
+- [ ] Front-back correlation validation implemented
+- [ ] Main data extraction working
+- [ ] Detection of back-specific elements
+- [ ] Automatic front→back flow implemented
+- [ ] Completeness validations implemented
+- [ ] Unit tests (>80% coverage)
+- [ ] Integration tests with {{VERIFICATION_SERVICE}}
 
 ### Technical Tasks
 
-1. Implementar validación de correlación anverso-reverso
-2. Integrar {{VERIFICATION_SERVICE}} para extracción de datos
-3. Implementar detección de elementos específicos del reverso
-4. Crear flow automático entre capturas
-5. Implementar validaciones de completitud
-6. Tests automatizados end-to-end
+1. Implement front-back correlation validation
+2. Integrate {{VERIFICATION_SERVICE}} for data extraction
+3. Implement detection of back-specific elements
+4. Create automatic flow between captures
+5. Implement completeness validations
+6. Automated end-to-end tests
 
 ---
 
-## US-{{CLIENT_CODE}}-124-03: Manejo de Errores y Re-captura
+## US-{{CLIENT_CODE}}-124-03: Error Handling and Re-capture
 
-**Como** usuario realizando {{PRIMARY_WORKFLOW}}
-**Quiero** recibir feedback claro cuando hay problemas con la captura
-**Para** poder corregir los errores y completar el proceso exitosamente
+**As a** user performing {{PRIMARY_WORKFLOW}}
+**I want** to receive clear feedback when there are problems with the capture
+**So that** I can correct the errors and complete the process successfully
 
 ### Story Details
 
@@ -165,66 +165,66 @@ Then debe extraer los datos principales:
 - **RF Reference**: RF-001.5, RF-001.6
 - **Priority**: Medium
 - **Story Points**: 3
-- **Estimation**: 5 horas
+- **Estimation**: 5 hours
 - **Dependencies**: US-{{CLIENT_CODE}}-124-01, US-{{CLIENT_CODE}}-124-02
 
 ### Acceptance Criteria
 
 ```gherkin
-Scenario: Manejo de errores de captura con feedback específico
-Given el usuario intenta capturar una imagen del {{DOCUMENT_TYPE}}
-When la captura falla por razones técnicas
-Then debe mostrar mensajes específicos según el tipo de error:
-  | Error | Mensaje | Acción |
-  | Imagen borrosa | "La imagen está borrosa. Mantén el {{DEVICE_TYPE}} más estable" | Permitir re-intento inmediato |
-  | Poca iluminación | "Necesitas más luz. Busca un lugar mejor iluminado" | Permitir re-intento inmediato |
-  | {{DOCUMENT_TYPE}} no detectado | "No se detecta el {{DOCUMENT_TYPE}}. Asegúrate de que esté completamente visible" | Volver a vista de captura |
-  | Formato no válido | "El documento no parece ser un {{DOCUMENT_TYPE}} válido" | Permitir seleccionar otro tipo |
+Scenario: Capture error handling with specific feedback
+Given the user tries to capture an image of the {{DOCUMENT_TYPE}}
+When the capture fails for technical reasons
+Then it must show specific messages depending on the error type:
+  | Error | Message | Action |
+  | Blurry image | "The image is blurry. Keep the {{DEVICE_TYPE}} steadier" | Allow immediate retry |
+  | Low lighting | "You need more light. Find a better-lit place" | Allow immediate retry |
+  | {{DOCUMENT_TYPE}} not detected | "The {{DOCUMENT_TYPE}} is not detected. Make sure it is fully visible" | Return to capture view |
+  | Invalid format | "The document does not seem to be a valid {{DOCUMENT_TYPE}}" | Allow selecting another type |
 
-Scenario: Límite de re-intentos con escalamiento
-Given el usuario ha intentado capturar {{MAX_RETRY_COUNT}} veces sin éxito
-When intenta capturar nuevamente
-Then debe mostrar "¿Tienes problemas con la captura?"
-  And debe ofrecer opciones alternativas:
-    - "Intentar con manual" (captura manual sin auto-detección)
-    - "Contactar soporte" (chat/teléfono)
-    - "Continuar más tarde" (guardar progreso)
+Scenario: Retry limit with escalation
+Given the user has tried to capture {{MAX_RETRY_COUNT}} times without success
+When they try to capture again
+Then it must show "Are you having trouble with the capture?"
+  And must offer alternative options:
+    - "Try manual mode" (manual capture without auto-detection)
+    - "Contact support" (chat/phone)
+    - "Continue later" (save progress)
 
-Scenario: Re-captura selectiva de lados específicos
-Given el usuario ha completado la captura de anverso y reverso
-  And el sistema detecta errores en uno de los lados
-When muestra los errores específicos
-Then debe permitir re-capturar solo el lado con errores
-  And debe mantener la imagen válida del otro lado
-  And debe mostrar claramente qué necesita ser corregido
+Scenario: Selective recapture of specific sides
+Given the user has completed the front and back capture
+  And the system detects errors on one of the sides
+When it shows the specific errors
+Then it must allow recapturing only the side with errors
+  And must keep the valid image of the other side
+  And must clearly show what needs to be corrected
 ```
 
 ### Definition of Done
 
-- [ ] Sistema de manejo de errores implementado
-- [ ] Mensajes específicos por tipo de error
-- [ ] Límite de re-intentos implementado
-- [ ] Opciones de escalamiento disponibles
-- [ ] Re-captura selectiva funcionando
-- [ ] Tests de error scenarios (>90% coverage)
-- [ ] Tests de usabilidad completados
+- [ ] Error handling system implemented
+- [ ] Specific messages per error type
+- [ ] Retry limit implemented
+- [ ] Escalation options available
+- [ ] Selective recapture working
+- [ ] Error scenario tests (>90% coverage)
+- [ ] Usability tests completed
 
 ### Technical Tasks
 
-1. Implementar sistema de clasificación de errores
-2. Crear componente de mensajes de error contextuales
-3. Implementar límite de re-intentos con escalamiento
-4. Desarrollar opciones alternativas (manual, soporte)
-5. Implementar re-captura selectiva
-6. Tests de error scenarios y edge cases
+1. Implement error classification system
+2. Create contextual error message component
+3. Implement retry limit with escalation
+4. Develop alternative options (manual, support)
+5. Implement selective recapture
+6. Error scenario and edge case tests
 
 ---
 
-## US-{{CLIENT_CODE}}-124-04: Optimización de Performance y Experiencia
+## US-{{CLIENT_CODE}}-124-04: Performance and Experience Optimization
 
-**Como** usuario completando {{PRIMARY_WORKFLOW}} en diferentes dispositivos
-**Quiero** una experiencia fluida independientemente de mi {{DEVICE_TYPE}}
-**Para** completar el proceso sin frustraciones técnicas
+**As a** user completing {{PRIMARY_WORKFLOW}} on different devices
+**I want** a smooth experience regardless of my {{DEVICE_TYPE}}
+**So that** I can complete the process without technical frustrations
 
 ### Story Details
 
@@ -232,94 +232,94 @@ Then debe permitir re-capturar solo el lado con errores
 - **RF Reference**: RF-001.7, RF-001.8
 - **Priority**: Medium
 - **Story Points**: 8
-- **Estimation**: 8 horas
-- **Dependencies**: Todas las US anteriores
+- **Estimation**: 8 hours
+- **Dependencies**: All previous US
 
 ### Acceptance Criteria
 
 ```gherkin
-Scenario: Performance óptima en dispositivos de gama media/baja
-Given el usuario tiene un {{DEVICE_TYPE}} de gama media ({{MIN_DEVICE_SPECS}})
-When inicia la captura de {{DOCUMENT_TYPE}}
-Then debe cargar la vista de captura en <3 segundos
-  And debe mantener 30+ FPS en la vista previa
-  And debe completar la detección automática en <2 segundos
-  And debe procesar la imagen capturada en <5 segundos
+Scenario: Optimal performance on mid/low-range devices
+Given the user has a mid-range {{DEVICE_TYPE}} ({{MIN_DEVICE_SPECS}})
+When they start the {{DOCUMENT_TYPE}} capture
+Then it must load the capture view in <3 seconds
+  And must maintain 30+ FPS in the preview
+  And must complete automatic detection in <2 seconds
+  And must process the captured image in <5 seconds
 
-Scenario: Adaptación automática a capacidades del dispositivo
-Given el sistema detecta las capacidades del {{DEVICE_TYPE}} del usuario
-When configura la experiencia de captura
-Then debe adaptar automáticamente:
-  | Capacidad | Configuración |
-  | {{VERIFICATION_DEVICE}} de alta resolución | Calidad máxima, detección avanzada |
-  | {{VERIFICATION_DEVICE}} básica | Calidad optimizada, detección simplificada |
-  | Procesador potente | Procesamiento local, tiempo real |
-  | Procesador limitado | Procesamiento diferido, optimizaciones |
-  | Conexión rápida | Validación en tiempo real |
-  | Conexión lenta | Validación offline, sincronización posterior |
+Scenario: Automatic adaptation to device capabilities
+Given the system detects the capabilities of the user's {{DEVICE_TYPE}}
+When it configures the capture experience
+Then it must automatically adapt:
+  | Capability | Configuration |
+  | High-resolution {{VERIFICATION_DEVICE}} | Maximum quality, advanced detection |
+  | Basic {{VERIFICATION_DEVICE}} | Optimized quality, simplified detection |
+  | Powerful processor | Local processing, real time |
+  | Limited processor | Deferred processing, optimizations |
+  | Fast connection | Real-time validation |
+  | Slow connection | Offline validation, later sync |
 
-Scenario: Manejo offline y sincronización inteligente
-Given el usuario pierde conexión a internet durante la captura
-When completa la captura de {{DOCUMENT_TYPE}}
-Then debe poder continuar offline:
-  - Almacenar imágenes temporalmente de forma segura
-  - Realizar validaciones básicas localmente
-  - Mostrar indicador de "Pendiente de sincronización"
-  And cuando recupere la conexión:
-  - Sincronizar automáticamente en segundo plano
-  - Completar validaciones avanzadas
-  - Actualizar el estado del {{PRIMARY_WORKFLOW}}
+Scenario: Offline handling and intelligent sync
+Given the user loses internet connection during capture
+When they complete the {{DOCUMENT_TYPE}} capture
+Then they must be able to continue offline:
+  - Temporarily store images securely
+  - Perform basic validations locally
+  - Show a "Pending sync" indicator
+  And when the connection is restored:
+  - Automatically sync in the background
+  - Complete advanced validations
+  - Update the {{PRIMARY_WORKFLOW}} status
 ```
 
 ### Definition of Done
 
-- [ ] Performance optimizada para dispositivos de gama media
-- [ ] Adaptación automática de calidad implementada
-- [ ] Modo offline funcional
-- [ ] Sincronización inteligente implementada
-- [ ] Tests de performance en dispositivos reales
-- [ ] Tests de conectividad (online/offline/intermitente)
-- [ ] Benchmarks documentados
+- [ ] Performance optimized for mid-range devices
+- [ ] Automatic quality adaptation implemented
+- [ ] Offline mode functional
+- [ ] Intelligent sync implemented
+- [ ] Performance tests on real devices
+- [ ] Connectivity tests (online/offline/intermittent)
+- [ ] Benchmarks documented
 
 ### Technical Tasks
 
-1. Implementar detección de capacidades del dispositivo
-2. Crear sistema de configuración adaptativa
-3. Implementar procesamiento offline con almacenamiento seguro
-4. Desarrollar sincronización inteligente en segundo plano
-5. Optimizar algoritmos para dispositivos de gama media/baja
-6. Tests de performance y benchmarking
+1. Implement device capability detection
+2. Create adaptive configuration system
+3. Implement offline processing with secure storage
+4. Develop intelligent background sync
+5. Optimize algorithms for mid/low-range devices
+6. Performance tests and benchmarking
 
 ---
 
-## Resumen del Epic
+## Epic Summary
 
-### Estimación Total
+### Total Estimation
 
 - **Story Points**: 24 points
-- **Horas estimadas**: 34 horas
-- **Sprint capacity**: ~1.5 sprints para un dev
+- **Estimated hours**: 34 hours
+- **Sprint capacity**: ~1.5 sprints for one dev
 
-### Dependencies y Orden de Implementación
+### Dependencies and Implementation Order
 
-1. **Sprint 1**: US-{{CLIENT_CODE}}-124-01 (Captura básica)
-2. **Sprint 1**: US-{{CLIENT_CODE}}-124-02 (Reverso + validaciones)
+1. **Sprint 1**: US-{{CLIENT_CODE}}-124-01 (Basic capture)
+2. **Sprint 1**: US-{{CLIENT_CODE}}-124-02 (Back + validations)
 3. **Sprint 2**: US-{{CLIENT_CODE}}-124-03 (Error handling)
 4. **Sprint 2**: US-{{CLIENT_CODE}}-124-04 (Performance + offline)
 
 ### Acceptance Criteria Summary
 
-- ✅ Captura automática de anverso y reverso
-- ✅ Validación de calidad y correlación
-- ✅ Manejo robusto de errores con re-captura selectiva
-- ✅ Performance optimizada para dispositivos diversos
-- ✅ Capacidad offline con sincronización inteligente
-- ✅ UX fluida independientemente del dispositivo
+- ✅ Automatic capture of front and back
+- ✅ Quality and correlation validation
+- ✅ Robust error handling with selective recapture
+- ✅ Performance optimized for diverse devices
+- ✅ Offline capability with intelligent sync
+- ✅ Smooth UX regardless of device
 
 ### Test Strategy
 
-- **Unit tests**: >80% coverage en lógica de negocio
-- **Integration tests**: {{VERIFICATION_DEVICE}}, {{VERIFICATION_SERVICE}}, sincronización
-- **E2E tests**: Flujos completos en dispositivos reales
-- **Performance tests**: Benchmarks en gama media/baja
-- **Accessibility tests**: Compatibilidad con lectores de pantalla
+- **Unit tests**: >80% coverage in business logic
+- **Integration tests**: {{VERIFICATION_DEVICE}}, {{VERIFICATION_SERVICE}}, sync
+- **E2E tests**: Complete flows on real devices
+- **Performance tests**: Benchmarks on mid/low range
+- **Accessibility tests**: Screen reader compatibility

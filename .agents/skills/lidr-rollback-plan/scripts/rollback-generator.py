@@ -104,8 +104,8 @@ class RollbackPlanGenerator:
             'incident_created': "🚨 Incident ticket created: {incident_id}. Root cause analysis will follow."
         }
 
-        # domain-specific domain-specific patterns
-        self.domain-specific_rollback_patterns = {
+        # Domain-specific rollback patterns
+        self.domain_specific_rollback_patterns = {
             'algorithm_rollback': {
                 'critical_steps': [
                     'Stop all domain-specific processing workflows',
@@ -193,10 +193,10 @@ class RollbackPlanGenerator:
         # Critical user journeys
         if analysis.get('domain-specific_domain_risks', {}).get('algorithm_change_risk'):
             criteria.append(RollbackCriteria(
-                condition="domain-specific verification fails",
+                condition="Domain-specific verification fails",
                 baseline="> 95% success rate",
                 threshold="< 90% success rate",
-                monitoring_alert="domain-specificVerificationFailed"
+                monitoring_alert="DomainVerificationFailed"
             ))
 
         # Template compatibility
@@ -357,19 +357,19 @@ class RollbackPlanGenerator:
 
         return steps
 
-    def generate_domain-specific_specific_steps(self, analysis: Dict, start_step: int) -> Tuple[List[RollbackStep], int]:
-        """Generate domain-specific domain-specific rollback steps"""
+    def generate_domain_specific_steps(self, analysis: Dict, start_step: int) -> Tuple[List[RollbackStep], int]:
+        """Generate domain-specific rollback steps"""
         steps = []
         step_number = start_step
-        domain-specific_risks = analysis.get('domain-specific_domain_risks', {})
+        domain_risks = analysis.get('domain-specific_domain_risks', {})
 
         # Algorithm rollback
-        if domain-specific_risks.get('algorithm_change_risk'):
+        if domain_risks.get('algorithm_change_risk'):
             steps.append(RollbackStep(
                 step_number=step_number,
                 action="Stop domain-specific processing workflows",
-                command="kubectl scale deployment domain-specific-processor --replicas=0 -n production",
-                verification="kubectl get pods -l app=domain-specific-processor -n production",
+                command="kubectl scale deployment domain-processor --replicas=0 -n production",
+                verification="kubectl get pods -l app=domain-processor -n production",
                 duration_minutes=1,
                 critical=True
             ))
@@ -386,7 +386,7 @@ class RollbackPlanGenerator:
             step_number += 1
 
         # Template encryption rollback
-        if domain-specific_risks.get('template_storage_risk'):
+        if domain_risks.get('template_storage_risk'):
             steps.append(RollbackStep(
                 step_number=step_number,
                 action="Rollback template encryption configuration",
@@ -398,7 +398,7 @@ class RollbackPlanGenerator:
             step_number += 1
 
         # API compatibility rollback
-        if domain-specific_risks.get('api_compatibility_risk'):
+        if domain_risks.get('api_compatibility_risk'):
             steps.append(RollbackStep(
                 step_number=step_number,
                 action="Test domain-specific API compatibility",
@@ -477,9 +477,9 @@ class RollbackPlanGenerator:
         db_steps, next_step = self.generate_database_rollback_steps(analysis.get('database_migrations', []), next_step)
         infra_steps, next_step = self.generate_infrastructure_rollback_steps(analysis.get('infrastructure_changes', []), next_step)
         flag_steps = self.generate_feature_flag_steps(analysis.get('feature_flags', []))
-        domain-specific_steps, _ = self.generate_domain-specific_specific_steps(analysis, next_step)
+        domain_steps, _ = self.generate_domain_specific_steps(analysis, next_step)
 
-        all_steps = app_steps + db_steps + infra_steps + domain-specific_steps
+        all_steps = app_steps + db_steps + infra_steps + domain_steps
 
         # Build the document
         doc = f"""# Rollback Plan: {analysis.get('analysis_metadata', {}).get('since_release', 'Unknown Version')} — {datetime.now().strftime('%Y-%m-%d')}
@@ -599,15 +599,15 @@ Trigger rollback if ANY of these occur within {classification['estimated_time']}
 
         if analysis.get('domain-specific_domain_risks'):
             doc += """
-## domain-specific-Specific Considerations
+## Domain-Specific Considerations
 
 """
-            domain-specific_risks = analysis['domain-specific_domain_risks']
-            if domain-specific_risks.get('algorithm_change_risk'):
+            domain_risks = analysis['domain-specific_domain_risks']
+            if domain_risks.get('algorithm_change_risk'):
                 doc += "- ⚠️ **Algorithm Change Risk**: Template compatibility must be verified post-rollback\n"
-            if domain-specific_risks.get('template_storage_risk'):
+            if domain_risks.get('template_storage_risk'):
                 doc += "- ⚠️ **Template Storage Risk**: Encryption rollback requires careful key management\n"
-            if domain-specific_risks.get('gdpr_compliance_risk'):
+            if domain_risks.get('gdpr_compliance_risk'):
                 doc += "- ⚠️ **GDPR Compliance Risk**: Ensure consent mechanisms remain valid\n"
 
         doc += f"""
@@ -632,9 +632,9 @@ Trigger rollback if ANY of these occur within {classification['estimated_time']}
         app_steps, next_step = self.generate_application_rollback_steps(analysis.get('pull_requests', []))
         db_steps, next_step = self.generate_database_rollback_steps(analysis.get('database_migrations', []), next_step)
         infra_steps, next_step = self.generate_infrastructure_rollback_steps(analysis.get('infrastructure_changes', []), next_step)
-        domain-specific_steps, _ = self.generate_domain-specific_specific_steps(analysis, next_step)
+        domain_steps, _ = self.generate_domain_specific_steps(analysis, next_step)
 
-        all_steps = app_steps + db_steps + infra_steps + domain-specific_steps
+        all_steps = app_steps + db_steps + infra_steps + domain_steps
 
         for step in all_steps:
             component = "Application"
@@ -643,7 +643,7 @@ Trigger rollback if ANY of these occur within {classification['estimated_time']}
             elif "kubernetes" in step.command or "terraform" in step.command:
                 component = "Infrastructure"
             elif "domain-specific" in step.action.lower():
-                component = "domain-specific"
+                component = "Domain-Specific"
 
             csv_content += f"{step.step_number},{component},{step.action.replace(',', ';')},{step.command.replace(',', ';')},{step.duration_minutes},{step.critical},\n"
 

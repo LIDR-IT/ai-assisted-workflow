@@ -85,13 +85,13 @@ Raw Capacity = 700 hours
 
 ### Sprint Buffers & Allocations
 
-| Buffer Type          | Hours | Percentage | Justification                            |
-| -------------------- | ----- | ---------- | ---------------------------------------- |
-| **Sprint Buffer**    | 96h   | 15%        | Unplanned work, scope creep protection   |
-| **Bug Fixing**       | 37h   | 10% of dev | Production issues, QA feedback           |
-| **Technical Debt**   | 19h   | 5% of dev  | SonarQube critical issues                |
-| **Meetings & Admin** | 64h   | 10%        | Sprint ceremonies, standups, planning    |
-| **Total Allocated**  | 216h  | ~34%       | Industry standard for biometric projects |
+| Buffer Type          | Hours | Percentage | Justification                                                    |
+| -------------------- | ----- | ---------- | ---------------------------------------------------------------- |
+| **Sprint Buffer**    | 96h   | 15%        | Unplanned work, scope creep protection                           |
+| **Bug Fixing**       | 37h   | 10% of dev | Production issues, QA feedback                                   |
+| **Technical Debt**   | 19h   | 5% of dev  | Example ({{CODE_QUALITY_TOOL}}, e.g. SonarQube): critical issues |
+| **Meetings & Admin** | 64h   | 10%        | Sprint ceremonies, standups, planning                            |
+| **Total Allocated**  | 216h  | ~34%       | Industry standard for biometric projects                         |
 
 ### Net Commitment Capacity
 
@@ -270,7 +270,7 @@ Confidence Level: High (based on 6-sprint trend)
 ### If Sprint is Ahead of Schedule (>110% velocity)
 
 1. **Add Voice v3.0 stories** from backlog (VOICE-2501, VOICE-2502)
-2. **Technical debt reduction** - additional SonarQube issue resolution
+2. **Technical debt reduction** - additional {{CODE_QUALITY_TOOL}} issue resolution (Example: SonarQube)
 3. **Documentation improvement** - architecture diagram updates
 4. **Cross-training activities** - knowledge sharing sessions
 
@@ -311,12 +311,12 @@ Confidence Level: High (based on 6-sprint trend)
 
 ### Stakeholder Updates
 
-| Audience             | Frequency    | Medium               | Content Focus             |
-| -------------------- | ------------ | -------------------- | ------------------------- |
-| **Product Owner**    | Daily        | Slack + Standup      | Sprint progress, blockers |
-| **CTO**              | Twice weekly | Email summary        | Key metrics, risks        |
-| **Customer Success** | Weekly       | Demo session         | User-facing improvements  |
-| **Security Team**    | As needed    | Direct communication | Security test results     |
+| Audience             | Frequency    | Medium                  | Content Focus             |
+| -------------------- | ------------ | ----------------------- | ------------------------- |
+| **Product Owner**    | Daily        | {{CHAT_TOOL}} + Standup | Sprint progress, blockers |
+| **CTO**              | Twice weekly | Email summary           | Key metrics, risks        |
+| **Customer Success** | Weekly       | Demo session            | User-facing improvements  |
+| **Security Team**    | As needed    | Direct communication    | Security test results     |
 
 ---
 
@@ -324,13 +324,13 @@ Confidence Level: High (based on 6-sprint trend)
 
 ### Sprint Success Metrics
 
-| Metric                    | Target | Current Baseline | Measurement Method   |
-| ------------------------- | ------ | ---------------- | -------------------- |
-| **Story Point Delivery**  | ≥85%   | 96.5% avg        | Jira burndown        |
-| **Defect Escape Rate**    | <5%    | 3.2% avg         | QA → Production bugs |
-| **Algorithm Accuracy**    | ≥98.5% | 97.9%            | Automated test suite |
-| **Performance Benchmark** | ≤3.0s  | 3.8s             | Device test farm     |
-| **Team Satisfaction**     | ≥4/5   | 4.2/5            | Retro survey         |
+| Metric                    | Target | Current Baseline | Measurement Method         |
+| ------------------------- | ------ | ---------------- | -------------------------- |
+| **Story Point Delivery**  | ≥85%   | 96.5% avg        | {{TRACKING_TOOL}} burndown |
+| **Defect Escape Rate**    | <5%    | 3.2% avg         | QA → Production bugs       |
+| **Algorithm Accuracy**    | ≥98.5% | 97.9%            | Automated test suite       |
+| **Performance Benchmark** | ≤3.0s  | 3.8s             | Device test farm           |
+| **Team Satisfaction**     | ≥4/5   | 4.2/5            | Retro survey               |
 
 ### Business Impact Metrics
 

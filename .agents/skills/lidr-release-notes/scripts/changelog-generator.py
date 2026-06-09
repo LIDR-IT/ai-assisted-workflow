@@ -79,7 +79,17 @@ class ReleaseNotes:
     statistics: Dict[str, Any]
 
 class BusinessImpactClassifier:
-    """Classifier for business impact of changes"""
+    """Classifier for business impact of changes.
+
+    The classifier is industry-agnostic. General (cross-industry) business
+    impact categories live in ``BUSINESS_IMPACT_PATTERNS``. Industry-specific
+    categories are kept in ``DEFAULT_DOMAIN_PATTERNS`` and act as an
+    *overridable default* — an "industry pack" example. To adapt the tool to a
+    different vertical (fintech, healthcare, e-commerce, etc.), pass a
+    ``domain_patterns`` dict to the constructor (or point it at a JSON file via
+    ``domain_patterns_path``) without editing this file. When no override is
+    provided, the default set is used so behavior is unchanged.
+    """
 
     BUSINESS_IMPACT_PATTERNS = {
         'high_value_features': {
@@ -183,7 +193,17 @@ class BusinessImpactClassifier:
         }
     }
 
-    domain-specific_DOMAIN_PATTERNS = {
+    # ------------------------------------------------------------------ #
+    # OVERRIDABLE DEFAULT — example "industry pack".                       #
+    # ------------------------------------------------------------------ #
+    # This default set ships with a biometric / identity-verification     #
+    # example (liveness, anti-spoofing, EER/FAR/FRR, regulatory packs).    #
+    # It is ONLY an example: provide your own ``domain_patterns`` dict     #
+    # (or a JSON file via ``domain_patterns_path``) to the constructor to  #
+    # adapt the generator to any other industry without editing this file.#
+    # The matching mechanism in ``_classify_single_change`` is the same    #
+    # regardless of which pattern set is active.                           #
+    DEFAULT_DOMAIN_PATTERNS = {
         'algorithm_improvements': {
             'priority': 1,
             'user_facing': True,
@@ -215,6 +235,64 @@ class BusinessImpactClassifier:
         }
     }
 
+    def __init__(
+        self,
+        domain_patterns: Optional[Dict[str, Dict[str, Any]]] = None,
+        domain_patterns_path: Optional[str] = None,
+    ):
+        """Initialize the classifier.
+
+        Args:
+            domain_patterns: Optional industry-pack pattern set. When provided,
+                it overrides the bundled ``DEFAULT_DOMAIN_PATTERNS`` example.
+                Same shape as ``DEFAULT_DOMAIN_PATTERNS``
+                (``{category: {priority, user_facing, patterns, description}}``).
+            domain_patterns_path: Optional path to a JSON file with the same
+                shape. Used only when ``domain_patterns`` is not given. If the
+                file is missing or invalid, the bundled default is used.
+
+        When neither override is supplied, the bundled default set is used so
+        behavior is identical to previous versions.
+        """
+        if domain_patterns is None and domain_patterns_path:
+            domain_patterns = self._load_domain_patterns(domain_patterns_path)
+
+        # Keep the active set on the instance under a neutral name. Fall back to
+        # the bundled example default to preserve existing behavior.
+        self.domain_patterns: Dict[str, Dict[str, Any]] = (
+            domain_patterns if domain_patterns is not None
+            else dict(self.DEFAULT_DOMAIN_PATTERNS)
+        )
+
+    @staticmethod
+    def _load_domain_patterns(path: str) -> Optional[Dict[str, Dict[str, Any]]]:
+        """Load an industry-pack pattern set from a JSON file.
+
+        Returns ``None`` (so the caller falls back to the default) if the file
+        is missing or cannot be parsed.
+        """
+        try:
+            patterns_file = Path(path)
+            if not patterns_file.exists():
+                logger.warning(
+                    "Domain patterns file not found: %s — using default industry pack",
+                    patterns_file,
+                )
+                return None
+            with open(patterns_file, encoding='utf-8') as f:
+                loaded = json.load(f)
+            logger.info(
+                "Loaded %d domain pattern categories from %s",
+                len(loaded), patterns_file,
+            )
+            return loaded
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.warning(
+                "Failed to load domain patterns from %s (%s) — using default industry pack",
+                path, exc,
+            )
+            return None
+
     def classify_changes(self, changes: List[Dict]) -> List[BusinessImpactCategory]:
         """Classify changes by business impact"""
         logger.info("Classifying changes by business impact...")
@@ -225,7 +303,7 @@ class BusinessImpactClassifier:
             impact_category = self._classify_single_change(change)
             if impact_category not in categories:
                 pattern_info = (
-                    self.domain-specific_DOMAIN_PATTERNS.get(impact_category) or
+                    self.domain_patterns.get(impact_category) or
                     self.BUSINESS_IMPACT_PATTERNS.get(impact_category, {})
                 )
                 categories[impact_category] = BusinessImpactCategory(
@@ -248,8 +326,8 @@ class BusinessImpactClassifier:
         """Classify a single change"""
         text = f"{change.get('description', '')} {change.get('business_impact', '')}".lower()
 
-        # Check domain-specific domain patterns first (higher specificity)
-        for category, pattern_info in self.domain-specific_DOMAIN_PATTERNS.items():
+        # Check domain-specific patterns first (higher specificity)
+        for category, pattern_info in self.domain_patterns.items():
             if any(re.search(pattern, text) for pattern in pattern_info['patterns']):
                 return category
 
@@ -271,12 +349,15 @@ class BusinessImpactClassifier:
 class ChangelogGenerator:
     """Main generator for release notes and changelogs"""
 
-    def __init__(self, input_dir: str = "release-analysis", output_dir: str = "release-notes"):
+    def __init__(self, input_dir: str = "release-analysis", output_dir: str = "release-notes",
+                 domain_patterns_path: Optional[str] = None):
         self.input_dir = Path(input_dir)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
 
-        self.classifier = BusinessImpactClassifier()
+        # ``domain_patterns_path`` is optional: when omitted the classifier uses
+        # its bundled example industry pack (default behavior preserved).
+        self.classifier = BusinessImpactClassifier(domain_patterns_path=domain_patterns_path)
         self.git_analysis: Optional[Dict] = None
 
     def load_git_analysis(self) -> Dict:
@@ -320,9 +401,16 @@ class ChangelogGenerator:
 
         summary_parts.append(".")
 
-        # Add specific highlights for domain-specific domain
-        if any('domain-specific' in c.category or 'algorithm' in c.category for c in high_impact_categories):
-            summary_parts.append(" Key highlights include enhanced domain-specific algorithm performance and improved user verification workflows.")
+        # Add a highlight when a high-impact change comes from the active
+        # industry pack (domain patterns) rather than the generic business
+        # categories. The set of domain category keys is derived from the
+        # configured ``domain_patterns`` so this stays industry-agnostic: with
+        # the bundled default pack this matches the example domain categories
+        # (e.g. ``algorithm_improvements``); with a custom pack it matches that
+        # pack's categories instead — no code change required.
+        domain_category_keys = set(self.classifier.domain_patterns.keys())
+        if any(c.category in domain_category_keys for c in high_impact_categories):
+            summary_parts.append(" Key highlights include enhanced domain-specific performance and improved user-facing workflows.")
 
         return ''.join(summary_parts)
 
@@ -802,11 +890,20 @@ def main():
     parser.add_argument("--input-dir", default="release-analysis", help="Input directory with git analysis")
     parser.add_argument("--output-dir", default="release-notes", help="Output directory for release notes")
     parser.add_argument("--version", required=True, help="Release version (e.g., 1.2.0)")
+    parser.add_argument(
+        "--domain-patterns",
+        default=None,
+        help=(
+            "Optional path to a JSON file with an industry-specific pattern set "
+            "(industry pack). Overrides the bundled example default. When omitted, "
+            "the default pattern set is used."
+        ),
+    )
 
     args = parser.parse_args()
 
     try:
-        generator = ChangelogGenerator(args.input_dir, args.output_dir)
+        generator = ChangelogGenerator(args.input_dir, args.output_dir, args.domain_patterns)
         file_paths = generator.run_generation(args.version)
 
         print("✅ Release notes generation completed successfully!")

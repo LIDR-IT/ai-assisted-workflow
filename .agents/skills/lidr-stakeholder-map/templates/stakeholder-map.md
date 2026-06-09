@@ -1,81 +1,85 @@
 ---
 id: tpl-stakeholder-map
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Template Migration"
+version: "1.1.0"
+last_updated: "2026-06-09"
+updated_by: "TL: lang+tool agnostic"
 status: active
 type: template
 review_cycle: 60
 next_review: "2026-05-15"
 owner_role: "PME"
+language_default: en
+integrations: [chat]
 ---
 
 # Stakeholder Map Template
 
-> **Uso**: Mapa de interesados con matriz poder-interes. Usado por el skill `stakeholder-map`.
+> **Usage**: Stakeholder map with power-interest matrix. Used by the `stakeholder-map` skill.
 > **Gate**: Gate 0 (Intake)
 
----
-
-## Metadatos
-
-| Campo                | Valor             |
-| -------------------- | ----------------- |
-| Proyecto             | {nombre_proyecto} |
-| Responsable          | {nombre_pme}      |
-| Fecha de creacion    | {YYYY-MM-DD}      |
-| Ultima actualizacion | {YYYY-MM-DD}      |
+Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 ---
 
-## Mapa de Interesados
+## Metadata
 
-| Nombre   | Rol   | Organizacion | Influencia      | Interes         | Estrategia                                                | Canal preferido                  | Frecuencia                             | Notas   |
-| -------- | ----- | ------------ | --------------- | --------------- | --------------------------------------------------------- | -------------------------------- | -------------------------------------- | ------- |
-| {nombre} | {rol} | {org/area}   | alto/medio/bajo | alto/medio/bajo | manage closely / keep satisfied / keep informed / monitor | email / slack / meeting / report | diaria / semanal / quincenal / mensual | {notas} |
+| Field         | Value          |
+| ------------- | -------------- |
+| Project       | {project_name} |
+| Owner         | {pme_name}     |
+| Creation date | {YYYY-MM-DD}   |
+| Last updated  | {YYYY-MM-DD}   |
 
 ---
 
-## Matriz Poder-Interes (2x2)
+## Stakeholder Map
+
+| Name   | Role   | Organization | Power           | Interest        | Strategy                                                  | Preferred channel                        | Frequency                           | Notes   |
+| ------ | ------ | ------------ | --------------- | --------------- | --------------------------------------------------------- | ---------------------------------------- | ----------------------------------- | ------- |
+| {name} | {role} | {org/area}   | high/medium/low | high/medium/low | manage closely / keep satisfied / keep informed / monitor | email / {{CHAT_TOOL}} / meeting / report | daily / weekly / biweekly / monthly | {notes} |
+
+---
+
+## Power-Interest Matrix (2x2)
 
 ```
-Influencia ↑
+Power ↑
 
-  ALTA  │  Keep Satisfied    │  Manage Closely     │
-        │  {nombres}         │  {nombres}          │
+  HIGH  │  Keep Satisfied    │  Manage Closely     │
+        │  {names}           │  {names}            │
         │                    │                     │
   ──────┼────────────────────┼─────────────────────┤
         │                    │                     │
-  BAJA  │  Monitor           │  Keep Informed      │
-        │  {nombres}         │  {nombres}          │
+  LOW   │  Monitor           │  Keep Informed      │
+        │  {names}           │  {names}            │
         │                    │                     │
         └────────────────────┴─────────────────────→
-              BAJO                 ALTO          Interes
+              LOW                  HIGH         Interest
 ```
 
 ---
 
-## Estrategias de Gestion
+## Management Strategies
 
-| Cuadrante                                          | Estrategia              | Acciones tipicas                                              |
-| -------------------------------------------------- | ----------------------- | ------------------------------------------------------------- |
-| **Manage Closely** (alta influencia, alto interes) | Engagement activo       | Reuniones regulares, decision-making conjunto, feedback loops |
-| **Keep Satisfied** (alta influencia, bajo interes) | Informar proactivamente | Reportes ejecutivos, escalamiento temprano de riesgos         |
-| **Keep Informed** (baja influencia, alto interes)  | Comunicacion regular    | Newsletters, demos, acceso a dashboards                       |
-| **Monitor** (baja influencia, bajo interes)        | Observacion pasiva      | Comunicaciones generales, informes trimestrales               |
-
----
-
-## Plan de Comunicacion Derivado
-
-| Audiencia      | Mensaje clave   | Canal   | Frecuencia   | Responsable |
-| -------------- | --------------- | ------- | ------------ | ----------- |
-| {grupo/nombre} | {que comunicar} | {canal} | {frecuencia} | {nombre}    |
+| Quadrant                                       | Strategy              | Typical actions                                         |
+| ---------------------------------------------- | --------------------- | ------------------------------------------------------- |
+| **Manage Closely** (high power, high interest) | Active engagement     | Regular meetings, joint decision-making, feedback loops |
+| **Keep Satisfied** (high power, low interest)  | Inform proactively    | Executive reports, early risk escalation                |
+| **Keep Informed** (low power, high interest)   | Regular communication | Newsletters, demos, dashboard access                    |
+| **Monitor** (low power, low interest)          | Passive observation   | General communications, quarterly reports               |
 
 ---
 
-## Historial de Cambios
+## Derived Communication Plan
 
-| Fecha        | Cambio                                                                  | Responsable |
-| ------------ | ----------------------------------------------------------------------- | ----------- |
-| {YYYY-MM-DD} | {descripcion del cambio: nuevo stakeholder, cambio de estrategia, etc.} | {nombre}    |
+| Audience     | Key message           | Channel   | Frequency   | Owner  |
+| ------------ | --------------------- | --------- | ----------- | ------ |
+| {group/name} | {what to communicate} | {channel} | {frequency} | {name} |
+
+---
+
+## Change History
+
+| Date         | Change                                                       | Owner  |
+| ------------ | ------------------------------------------------------------ | ------ |
+| {YYYY-MM-DD} | {change description: new stakeholder, strategy change, etc.} | {name} |

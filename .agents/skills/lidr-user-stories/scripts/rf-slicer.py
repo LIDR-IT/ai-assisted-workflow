@@ -5,6 +5,7 @@ Automatically slices large RFs into INVEST-compliant User Stories with BDD scena
 """
 
 import json
+import os
 import re
 import argparse
 import sys
@@ -14,6 +15,11 @@ from dataclasses import dataclass, asdict, field
 from enum import Enum
 from datetime import datetime
 import yaml
+
+# Tracking tool used as the export/format identifier for generated artifacts.
+# Defaults to the current tool so existing behavior is preserved byte-for-byte;
+# override via the LIDR_TRACKING_TOOL environment variable.
+TRACKING_TOOL = os.getenv("LIDR_TRACKING_TOOL", "jira")
 
 class UserStorySize(Enum):
     SMALL = "S"      # 2-8h
@@ -78,21 +84,112 @@ class UserStory:
     slice_index: int = 1
     total_slices: int = 1
 
+# ---------------------------------------------------------------------------
+# Industry pack (overridable default)
+#
+# LIDR is a multi-industry framework, so the concrete domain vocabulary below
+# is only an EXAMPLE industry pack (here: biometric / identity verification).
+# It is the fallback used when no override is supplied, which keeps behavior
+# byte-for-byte identical to previous versions. To target another industry,
+# pass `domain_config=` to RFSlicer(...) or point LIDR_DOMAIN_CONFIG at a JSON
+# file with any subset of these keys; missing keys fall back to this default.
+#
+# Keys:
+#   patterns             -> category -> list of matching keywords
+#   complexity_keywords  -> keywords that bump domain complexity hours
+#   complexity_factor    -> keyword list for the "Domain-Specific Processing" factor
+#   phrases              -> neutral business-value / action strings (see usage)
+# ---------------------------------------------------------------------------
+DEFAULT_DOMAIN_CONFIG = {
+    # Example industry pack: biometric / identity verification.
+    'patterns': {
+        'onboarding': ['registration', 'enrollment', 'signup', 'alta'],
+        'authentication': ['login', 'verify', 'authenticate', 'verificar'],
+        'document_processing': ['ocr', 'document', 'dni', 'passport', '{{PRODUCT_NAME_1}}d'],
+        'facial_recognition': ['face', 'facial', 'liveness', '{{PRODUCT_NAME_1}}', 'selfie'],
+        'voice_verification': ['voice', 'vocal', 'speech', 'audio'],
+        'admin_operations': ['admin', 'configure', 'manage', 'dashboard'],
+    },
+    # Keywords that signal domain-heavy processing (extra estimation hours).
+    'complexity_keywords': ['facial', 'voice', 'domain-specific', 'liveness', 'ocr', 'template'],
+    # Keyword list backing the "Domain-Specific Processing" complexity factor.
+    'complexity_factor': ['domain-specific', 'facial', 'voice', 'liveness', 'template'],
+    # Neutral business-value / action phrases inferred when the RF does not
+    # state them explicitly. Override these to drop industry-specific wording.
+    'phrases': {
+        'value_verification': "verify the user's identity securely and quickly",
+        'value_onboarding': "enable an efficient and secure user onboarding process",
+        'value_security': "protect against fraud and comply with security regulations",
+        'value_default': "improve the user experience in the biometric system",
+        'value_security_factor': "guarantee the security and protection of biometric data",
+        'value_performance_factor': "obtain fast and efficient results in the biometric process",
+        'value_compliance_factor': "comply with privacy and data protection regulations",
+        'value_generic_factor': "improve the user experience and security in the system",
+        'action_register': 'register biometric data',
+        'action_capture': 'capture biometric information',
+        'action_analyze': 'analyze biometric data',
+        'action_facial': 'verify facial identity',
+        'action_document': 'process the identity document',
+        'action_voice': 'verify voice identity',
+        'action_default': 'use biometric functionality',
+    },
+}
+
+
+def _load_domain_config(domain_config: Optional[Dict] = None) -> Dict:
+    """Resolve the active industry pack.
+
+    Resolution order (later steps only fill keys not already provided):
+      1. explicit ``domain_config`` argument
+      2. JSON file referenced by the ``LIDR_DOMAIN_CONFIG`` env variable
+      3. ``DEFAULT_DOMAIN_CONFIG`` (the example biometric industry pack)
+
+    Any subset of keys may be supplied; missing keys fall back to the default,
+    so an empty/absent override reproduces the original behavior exactly.
+    """
+    resolved: Dict = {key: value for key, value in DEFAULT_DOMAIN_CONFIG.items()}
+
+    override: Dict = {}
+    config_path = os.getenv("LIDR_DOMAIN_CONFIG")
+    if config_path and Path(config_path).exists():
+        try:
+            override = json.loads(Path(config_path).read_text(encoding='utf-8')) or {}
+        except (json.JSONDecodeError, OSError):
+            override = {}
+
+    if domain_config:
+        # Explicit argument takes precedence over the env-provided file.
+        override = {**override, **domain_config}
+
+    for key, value in override.items():
+        if value is not None:
+            resolved[key] = value
+
+    # Ensure the phrases dict keeps default entries for any keys not overridden.
+    merged_phrases = {key: value for key, value in DEFAULT_DOMAIN_CONFIG['phrases'].items()}
+    merged_phrases.update(resolved.get('phrases') or {})
+    resolved['phrases'] = merged_phrases
+
+    return resolved
+
+
 class RFSlicer:
-    def __init__(self, project_code: str = "{{CLIENT_CODE_UPPER}}"):
+    def __init__(self, project_code: str = "{{CLIENT_CODE_UPPER}}", domain_config: Optional[Dict] = None):
         self.project_code = project_code
         self.rfs: Dict[str, RequirementFunction] = {}
         self.user_stories: Dict[str, UserStory] = {}
 
-        # {{CLIENT_NAME}}-specific patterns for domain-specific domain
-        self.domain-specific_patterns = {
-            'onboarding': ['registration', 'enrollment', 'signup', 'alta'],
-            'authentication': ['login', 'verify', 'authenticate', 'verificar'],
-            'document_processing': ['ocr', 'document', 'dni', 'passport', '{{PRODUCT_NAME_1}}d'],
-            'facial_recognition': ['face', 'facial', 'liveness', '{{PRODUCT_NAME_1}}', 'selfie'],
-            'voice_verification': ['voice', 'vocal', 'speech', 'audio'],
-            'admin_operations': ['admin', 'configure', 'manage', 'dashboard'],
-        }
+        # Active industry pack (overridable default — see DEFAULT_DOMAIN_CONFIG).
+        # With no override this reproduces the previous biometric vocabulary.
+        self._domain_config = _load_domain_config(domain_config)
+
+        # Domain category -> matching keywords (overridable default).
+        self.domain_patterns = self._domain_config['patterns']
+        # Keywords used by complexity estimation / factor detection (overridable).
+        self.domain_keywords = self._domain_config['complexity_keywords']
+        self.domain_complexity_factor_keywords = self._domain_config['complexity_factor']
+        # Neutral inferred phrases (overridable).
+        self.domain_phrases = self._domain_config['phrases']
 
         # Slicing strategies by pattern
         self.slicing_strategies = {
@@ -106,12 +203,12 @@ class RFSlicer:
 
         # Standard DoD items for {{CLIENT_NAME}}
         self.standard_dod = [
-            "Code review aprobado (mínimo 1 peer + Tech Lead)",
-            "Tests unitarios pasan (cobertura ≥ 80% en lógica de negocio)",
-            "SAST/SCA limpio (0 vulnerabilidades Críticas/Altas)",
-            "PR description completa",
-            "Handoff dev→QA generado y adjunto al ticket",
-            "Documentación actualizada si aplica"
+            "Code review approved (minimum 1 peer + Tech Lead)",
+            "Unit tests pass (coverage >= 80% on business logic)",
+            "SAST/SCA clean (0 Critical/High vulnerabilities)",
+            "PR description complete",
+            "Dev->QA handoff generated and attached to the ticket",
+            "Documentation updated if applicable"
         ]
 
     def load_requirements(self, rf_dir: str) -> bool:
@@ -260,9 +357,9 @@ class RFSlicer:
         domain_factor = 0
         content_lower = content.lower() + title.lower()
 
-        # domain-specific processing is more complex
-        domain-specific_keywords = ['facial', 'voice', 'domain-specific', 'liveness', 'ocr', 'template']
-        if any(keyword in content_lower for keyword in domain-specific_keywords):
+        # domain-specific processing is more complex (keywords overridable via industry pack)
+        domain_keywords = self.domain_keywords
+        if any(keyword in content_lower for keyword in domain_keywords):
             domain_factor += 4
 
         # Security and compliance add complexity
@@ -286,7 +383,7 @@ class RFSlicer:
         content_lower = content.lower()
 
         complexity_indicators = {
-            'domain-specific Processing': ['domain-specific', 'facial', 'voice', 'liveness', 'template'],
+            'Domain-Specific Processing': self.domain_complexity_factor_keywords,
             'Real-time Requirements': ['real-time', 'instant', 'immediate', 'live'],
             'Security Requirements': ['encrypt', 'security', 'secure', 'auth', 'crypto'],
             'Compliance Requirements': ['gdpr', 'compliance', 'regulation', 'audit', 'eidas'],
@@ -348,16 +445,16 @@ class RFSlicer:
                 if not any(phrase in value.lower() for phrase in ['poder', 'can', 'able to', 'hacerlo']):
                     return value
 
-        # If no explicit value found, infer from domain
+        # If no explicit value found, infer from domain (phrases overridable via industry pack)
         content_lower = combined_text.lower()
         if any(word in content_lower for word in ['verification', 'verify', 'authentication']):
-            return "verificar la identidad del usuario de forma segura y rápida"
+            return self.domain_phrases['value_verification']
         elif any(word in content_lower for word in ['onboarding', 'registration', 'enrollment']):
-            return "permitir un proceso de alta de usuario eficiente y seguro"
+            return self.domain_phrases['value_onboarding']
         elif any(word in content_lower for word in ['fraud', 'security', 'compliance']):
-            return "proteger contra fraude y cumplir normativas de seguridad"
+            return self.domain_phrases['value_security']
         else:
-            return "mejorar la experiencia del usuario en el sistema biométrico"
+            return self.domain_phrases['value_default']
 
     def determine_slicing_strategy(self, rf: RequirementFunction) -> Tuple[UserStorySize, SlicingPattern]:
         """Determine the appropriate slicing strategy for an RF"""
@@ -423,7 +520,7 @@ class RFSlicer:
     def _create_single_user_story(self, rf: RequirementFunction) -> UserStory:
         """Create a single User Story from an RF (no slicing)"""
         # Choose primary persona
-        actor = rf.personas[0] if rf.personas else "usuario"
+        actor = rf.personas[0] if rf.personas else "user"
 
         # Generate action from RF title
         action = self._extract_action_from_title(rf.title)
@@ -462,10 +559,10 @@ class RFSlicer:
 
         # Add RF-specific DoD items
         if any(factor in ['Security Requirements', 'Compliance Requirements'] for factor in rf.complexity_factors):
-            user_story.definition_of_done.append("Security review aprobado por CISO")
+            user_story.definition_of_done.append("Security review approved by CISO")
 
         if any(factor in ['Performance Requirements'] for factor in rf.complexity_factors):
-            user_story.definition_of_done.append("Performance testing ejecutado y aprobado")
+            user_story.definition_of_done.append("Performance testing executed and approved")
 
         return user_story
 
@@ -477,15 +574,15 @@ class RFSlicer:
         if size == UserStorySize.MEDIUM:
             # 2 stories: happy path + validations/errors
             hours_split = [int(base_hours * 0.6), int(base_hours * 0.4)]
-            slice_names = ["Happy Path", "Validaciones y Errores"]
+            slice_names = ["Happy Path", "Validations and Errors"]
         elif size == UserStorySize.LARGE:
             # 3 stories: happy path + validations + edge cases
             hours_split = [int(base_hours * 0.4), int(base_hours * 0.4), int(base_hours * 0.2)]
-            slice_names = ["Happy Path", "Validaciones y Errores", "Casos Límite y Optimización"]
+            slice_names = ["Happy Path", "Validations and Errors", "Edge Cases and Optimization"]
         else:  # EXTRA_LARGE
             # 4 stories: basic + standard + advanced + polish
             hours_split = [int(base_hours * 0.3), int(base_hours * 0.3), int(base_hours * 0.25), int(base_hours * 0.15)]
-            slice_names = ["Funcionalidad Básica", "Validaciones Estándar", "Funcionalidad Avanzada", "Optimización y Pulido"]
+            slice_names = ["Basic Functionality", "Standard Validations", "Advanced Functionality", "Optimization and Polish"]
 
         for i, (slice_hours, slice_name) in enumerate(zip(hours_split, slice_names)):
             story = self._create_story_slice(rf, i+1, len(slice_names), slice_name, slice_hours, SlicingPattern.VERTICAL_PATH)
@@ -506,7 +603,7 @@ class RFSlicer:
         hours_per_step = rf.estimated_hours // len(workflow_steps)
 
         for i, step in enumerate(workflow_steps):
-            story = self._create_story_slice(rf, i+1, len(workflow_steps), f"Paso: {step}", hours_per_step, SlicingPattern.WORKFLOW_STEPS)
+            story = self._create_story_slice(rf, i+1, len(workflow_steps), f"Step: {step}", hours_per_step, SlicingPattern.WORKFLOW_STEPS)
             stories.append(story)
 
         return stories
@@ -517,10 +614,10 @@ class RFSlicer:
         content_lower = (rf.description + " " + " ".join(rf.acceptance_criteria)).lower()
 
         crud_patterns = {
-            'Crear': ['create', 'add', 'new', 'register', 'crear'],
-            'Leer': ['read', 'view', 'display', 'list', 'get', 'leer'],
-            'Actualizar': ['update', 'edit', 'modify', 'change', 'actualizar'],
-            'Eliminar': ['delete', 'remove', 'destroy', 'eliminar']
+            'Create': ['create', 'add', 'new', 'register', 'crear'],
+            'Read': ['read', 'view', 'display', 'list', 'get', 'leer'],
+            'Update': ['update', 'edit', 'modify', 'change', 'actualizar'],
+            'Delete': ['delete', 'remove', 'destroy', 'eliminar']
         }
 
         for operation, keywords in crud_patterns.items():
@@ -548,7 +645,7 @@ class RFSlicer:
         hours_per_role = rf.estimated_hours // len(rf.personas)
 
         for i, persona in enumerate(rf.personas):
-            story = self._create_story_slice(rf, i+1, len(rf.personas), f"Para {persona}", hours_per_role, SlicingPattern.USER_ROLES)
+            story = self._create_story_slice(rf, i+1, len(rf.personas), f"For {persona}", hours_per_role, SlicingPattern.USER_ROLES)
             # Override actor for this slice
             story.actor = persona
             stories.append(story)
@@ -571,12 +668,12 @@ class RFSlicer:
         rule_hours = int(rf.estimated_hours * 0.6) // len(business_rules)  # 60% split among rules
 
         # Core functionality story
-        core_story = self._create_story_slice(rf, 1, len(business_rules) + 1, "Funcionalidad Core", base_hours, SlicingPattern.BUSINESS_RULES)
+        core_story = self._create_story_slice(rf, 1, len(business_rules) + 1, "Core Functionality", base_hours, SlicingPattern.BUSINESS_RULES)
         stories.append(core_story)
 
         # Business rule stories
         for i, rule in enumerate(business_rules):
-            rule_story = self._create_story_slice(rf, i+2, len(business_rules) + 1, f"Regla: {rule[:50]}...", rule_hours, SlicingPattern.BUSINESS_RULES)
+            rule_story = self._create_story_slice(rf, i+2, len(business_rules) + 1, f"Rule: {rule[:50]}...", rule_hours, SlicingPattern.BUSINESS_RULES)
             stories.append(rule_story)
 
         return stories
@@ -595,7 +692,7 @@ class RFSlicer:
         hours_per_slice = rf.estimated_hours // len(slices)
 
         for i, criteria_group in enumerate(slices):
-            slice_name = f"Criterios {i+1}-{min(i+criteria_per_slice, len(rf.acceptance_criteria))}"
+            slice_name = f"Criteria {i+1}-{min(i+criteria_per_slice, len(rf.acceptance_criteria))}"
             story = self._create_story_slice(rf, i+1, len(slices), slice_name, hours_per_slice, SlicingPattern.ACCEPTANCE_CRITERIA)
 
             # Add only relevant acceptance criteria to this slice
@@ -615,7 +712,7 @@ class RFSlicer:
         slice_title = f"{rf.title} - {slice_name}"
 
         # Choose primary persona
-        actor = rf.personas[0] if rf.personas else "usuario"
+        actor = rf.personas[0] if rf.personas else "user"
 
         # Generate action with slice context
         action = f"{self._extract_action_from_title(rf.title)} ({slice_name.lower()})"
@@ -623,7 +720,7 @@ class RFSlicer:
         # Business value remains the same but may be refined for slice
         business_value = rf.business_value or self._generate_business_value(rf)
         if slice_index > 1:
-            business_value += f" (incremento {slice_index})"
+            business_value += f" (increment {slice_index})"
 
         # Determine priority - first slices are usually higher priority
         priority = Priority.MUST if slice_index <= 2 else Priority.SHOULD
@@ -682,18 +779,20 @@ class RFSlicer:
 
     def _extract_action_from_title(self, title: str) -> str:
         """Extract action verb from RF title for User Story action"""
-        # Common action patterns in {{CLIENT_NAME}} domain
+        # Common action patterns in {{CLIENT_NAME}} domain.
+        # Domain-flavored actions come from the industry pack (overridable);
+        # neutral verbs stay inline. Defaults reproduce previous behavior.
         actions = {
-            'verify': 'verificar la identidad',
-            'authenticate': 'autenticar al usuario',
-            'register': 'registrar datos biométricos',
-            'validate': 'validar información',
-            'process': 'procesar datos',
-            'capture': 'capturar información biométrica',
-            'analyze': 'analizar datos biométricos',
-            'manage': 'gestionar configuración',
-            'configure': 'configurar parámetros',
-            'monitor': 'monitorear sistema'
+            'verify': 'verify the identity',
+            'authenticate': 'authenticate the user',
+            'register': self.domain_phrases['action_register'],
+            'validate': 'validate information',
+            'process': 'process data',
+            'capture': self.domain_phrases['action_capture'],
+            'analyze': self.domain_phrases['action_analyze'],
+            'manage': 'manage configuration',
+            'configure': 'configure parameters',
+            'monitor': 'monitor the system'
         }
 
         title_lower = title.lower()
@@ -701,30 +800,30 @@ class RFSlicer:
             if keyword in title_lower:
                 return action
 
-        # Default action based on common patterns
+        # Default action based on common patterns (returned phrases overridable via industry pack)
         if any(word in title_lower for word in ['facial', 'face', '{{PRODUCT_NAME_1}}']):
-            return 'verificar identidad facial'
+            return self.domain_phrases['action_facial']
         elif any(word in title_lower for word in ['document', 'ocr', '{{PRODUCT_NAME_1}}d']):
-            return 'procesar documento de identidad'
+            return self.domain_phrases['action_document']
         elif any(word in title_lower for word in ['voice', 'vocal']):
-            return 'verificar identidad vocal'
+            return self.domain_phrases['action_voice']
         else:
-            return 'utilizar funcionalidad biométrica'
+            return self.domain_phrases['action_default']
 
     def _generate_business_value(self, rf: RequirementFunction) -> str:
         """Generate business value based on RF content"""
         if rf.business_value:
             return rf.business_value
 
-        # Infer from domain and complexity factors
+        # Infer from domain and complexity factors (phrases overridable via industry pack)
         if 'Security Requirements' in rf.complexity_factors:
-            return "garantizar la seguridad y protección de datos biométricos"
+            return self.domain_phrases['value_security_factor']
         elif 'Performance Requirements' in rf.complexity_factors:
-            return "obtener resultados rápidos y eficientes en el proceso biométrico"
+            return self.domain_phrases['value_performance_factor']
         elif 'Compliance Requirements' in rf.complexity_factors:
-            return "cumplir con normativas de privacidad y protección de datos"
+            return self.domain_phrases['value_compliance_factor']
         else:
-            return "mejorar la experiencia y seguridad del usuario en el sistema"
+            return self.domain_phrases['value_generic_factor']
 
     def _determine_priority(self, rf: RequirementFunction) -> Priority:
         """Determine User Story priority based on RF content"""
@@ -789,24 +888,24 @@ class RFSlicer:
 
         if slice_index == 1:  # Happy path
             scenarios.append(BDDScenario(
-                name="Flujo principal exitoso",
-                given=["el usuario está autenticado", "el sistema está disponible"],
-                when=["ejecuta la funcionalidad principal"],
-                then=["el sistema procesa correctamente", "se muestra el resultado esperado"]
+                name="Successful main flow",
+                given=["the user is authenticated", "the system is available"],
+                when=["the main functionality is executed"],
+                then=["the system processes correctly", "the expected result is displayed"]
             ))
         elif slice_index == 2:  # Validations
             scenarios.append(BDDScenario(
-                name="Validación de datos incorrectos",
-                given=["el usuario proporciona datos inválidos"],
-                when=["intenta ejecutar la funcionalidad"],
-                then=["el sistema valida los datos", "se muestra mensaje de error apropiado"]
+                name="Invalid data validation",
+                given=["the user provides invalid data"],
+                when=["they attempt to execute the functionality"],
+                then=["the system validates the data", "an appropriate error message is displayed"]
             ))
         else:  # Edge cases
             scenarios.append(BDDScenario(
-                name="Casos límite y excepciones",
-                given=["existe una condición límite"],
-                when=["se ejecuta la funcionalidad"],
-                then=["el sistema maneja apropiadamente la excepción"]
+                name="Edge cases and exceptions",
+                given=["a boundary condition exists"],
+                when=["the functionality is executed"],
+                then=["the system handles the exception appropriately"]
             ))
 
         return scenarios
@@ -818,38 +917,38 @@ class RFSlicer:
         # Standard technical subtasks based on complexity factors
         if 'User Interface' in rf.complexity_factors:
             subtasks.extend([
-                "Diseñar interfaces de usuario",
-                "Implementar componentes UI responsivos",
-                "Integrar validación frontend"
+                "Design user interfaces",
+                "Implement responsive UI components",
+                "Integrate frontend validation"
             ])
 
         if 'Database Operations' in rf.complexity_factors:
             subtasks.extend([
-                "Diseñar esquema de base de datos",
-                "Implementar operaciones CRUD",
-                "Optimizar queries y rendimiento"
+                "Design database schema",
+                "Implement CRUD operations",
+                "Optimize queries and performance"
             ])
 
         if 'Integration Complexity' in rf.complexity_factors:
             subtasks.extend([
-                "Diseñar interfaces API",
-                "Implementar integración con servicios externos",
-                "Manejar errores de conectividad"
+                "Design API interfaces",
+                "Implement integration with external services",
+                "Handle connectivity errors"
             ])
 
         if 'Security Requirements' in rf.complexity_factors:
             subtasks.extend([
-                "Implementar validación y sanitización",
-                "Configurar autenticación y autorización",
-                "Realizar review de seguridad"
+                "Implement validation and sanitization",
+                "Configure authentication and authorization",
+                "Perform security review"
             ])
 
         # Always include testing subtasks for complex stories
         if estimated_hours > 16:
             subtasks.extend([
-                "Escribir tests unitarios",
-                "Crear tests de integración",
-                "Ejecutar testing manual"
+                "Write unit tests",
+                "Create integration tests",
+                "Run manual testing"
             ])
 
         return subtasks
@@ -918,7 +1017,7 @@ class RFSlicer:
 id: user-stories-{datetime.now().strftime('%Y%m%d')}
 version: "1.0.0"
 last_updated: "{datetime.now().strftime('%Y-%m-%d')}"
-updated_by: "Sistema: RF Slicer"
+updated_by: "System: RF Slicer"
 status: active
 type: backlog
 owner_role: "PO + SM"
@@ -975,8 +1074,8 @@ owner_role: "PO + SM"
 
     def _generate_story_markdown(self, story: UserStory) -> str:
         """Generate markdown for individual User Story"""
-        dependencies_text = ", ".join(story.dependencies) if story.dependencies else "Ninguna"
-        subtasks_text = "\n".join([f"- [ ] {task}" for task in story.subtasks]) if story.subtasks else "No requeridos"
+        dependencies_text = ", ".join(story.dependencies) if story.dependencies else "None"
+        subtasks_text = "\n".join([f"- [ ] {task}" for task in story.subtasks]) if story.subtasks else "Not required"
 
         scenarios_text = ""
         for scenario in story.bdd_scenarios:
@@ -991,14 +1090,14 @@ owner_role: "PO + SM"
 
         if not scenarios_text:
             scenarios_text = """### Scenario 1: Happy Path
-**Given** el usuario está autenticado
-**When** ejecuta la funcionalidad
-**Then** obtiene el resultado esperado
+**Given** the user is authenticated
+**When** they execute the functionality
+**Then** they obtain the expected result
 
-### Scenario 2: Validación de errores
-**Given** se proporcionan datos inválidos
-**When** ejecuta la funcionalidad
-**Then** se muestra mensaje de error apropiado
+### Scenario 2: Error validation
+**Given** invalid data is provided
+**When** they execute the functionality
+**Then** an appropriate error message is displayed
 """
 
         dod_text = "\n".join([f"- [ ] {item}" for item in story.definition_of_done])
@@ -1010,30 +1109,30 @@ owner_role: "PO + SM"
         return f"""### {story.id}: {story.title}{slice_info}
 
 ## Story
-**Como** {story.actor}
-**Quiero** {story.action}
-**Para** {story.business_value}
+**As a** {story.actor}
+**I want** {story.action}
+**So that** {story.business_value}
 
-## Ficha
-| Campo | Valor |
+## Details
+| Field | Value |
 |-------|-------|
 | **ID** | {story.id} |
-| **Sprint** | Sprint Actual |
-| **RF Origen** | {story.rf_origin} |
-| **Prioridad** | {story.priority.value} |
-| **Estimación** | {story.estimated_hours_min}-{story.estimated_hours_max}h |
-| **Estado** | To Do |
+| **Sprint** | Current Sprint |
+| **RF Origin** | {story.rf_origin} |
+| **Priority** | {story.priority.value} |
+| **Estimate** | {story.estimated_hours_min}-{story.estimated_hours_max}h |
+| **Status** | To Do |
 
-## Criterios de Aceptación (BDD)
+## Acceptance Criteria (BDD)
 {scenarios_text}
 
-## Notas Técnicas
-{story.technical_notes or "Ver RF origen para detalles técnicos."}
+## Technical Notes
+{story.technical_notes or "See origin RF for technical details."}
 
-## Definición de Done
+## Definition of Done
 {dod_text}
 
-## Dependencias
+## Dependencies
 {dependencies_text}
 
 ## Subtasks
@@ -1041,7 +1140,7 @@ owner_role: "PO + SM"
 """
 
     def export_to_jira_csv(self, output_file: str = "user-stories-jira.csv") -> str:
-        """Export User Stories to CSV for Jira import"""
+        """Export User Stories to CSV for tracking tool import"""
         if not self.user_stories:
             print("❌ No User Stories to export.")
             return ""
@@ -1052,7 +1151,7 @@ owner_role: "PO + SM"
         with open(output_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
 
-            # Header for Jira import
+            # Header for tracking tool import
             writer.writerow([
                 'Summary', 'Issue Type', 'Description', 'Acceptance Criteria',
                 'Story Points', 'Priority', 'Epic Link', 'Labels',
@@ -1086,10 +1185,10 @@ owner_role: "PO + SM"
                     criteria_text += "\n"
 
                 # Format description
-                description = f"Como {story.actor}, quiero {story.action} para {story.business_value}.\n\n"
+                description = f"As a {story.actor}, I want {story.action} so that {story.business_value}.\n\n"
                 if story.technical_notes:
-                    description += f"Notas técnicas: {story.technical_notes}\n\n"
-                description += f"Estimación: {story.estimated_hours_min}-{story.estimated_hours_max} horas"
+                    description += f"Technical notes: {story.technical_notes}\n\n"
+                description += f"Estimate: {story.estimated_hours_min}-{story.estimated_hours_max} hours"
 
                 # Labels
                 labels = ['user-story', story.priority.value.lower()]
@@ -1112,7 +1211,7 @@ owner_role: "PO + SM"
                     'RF Slicer System'
                 ])
 
-        print(f"✅ Jira CSV export created: {output_path}")
+        print(f"✅ {TRACKING_TOOL.title()} CSV export created: {output_path}")
         return str(output_path)
 
 def main():
@@ -1123,7 +1222,7 @@ def main():
     parser.add_argument("--debt-percentage", type=float, default=0.20, help="Percentage reserved for tech debt")
     parser.add_argument("--output-dir", default=".", help="Output directory")
     parser.add_argument("--markdown-output", default="user-stories-generated.md", help="Markdown output filename")
-    parser.add_argument("--csv-output", default="user-stories-jira.csv", help="CSV output for Jira import")
+    parser.add_argument("--csv-output", default="user-stories-jira.csv", help=f"CSV output for {TRACKING_TOOL.title()} import")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
@@ -1173,11 +1272,11 @@ def main():
 
     print(f"\n📄 Outputs Generated:")
     print(f"   📝 Markdown: {markdown_path}")
-    print(f"   📊 Jira CSV: {csv_path}")
+    print(f"   📊 {TRACKING_TOOL.title()} CSV: {csv_path}")
 
     print(f"\n💡 Next Steps:")
     print(f"   1. Review User Stories for INVEST compliance")
-    print(f"   2. Import CSV to Jira for sprint planning")
+    print(f"   2. Import CSV to {TRACKING_TOOL.title()} for sprint planning")
     print(f"   3. Validate estimates with development team")
     print(f"   4. Assign stories to developers")
 

@@ -39,6 +39,11 @@ import difflib
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
+# Tracking tool consuming the CSV export (project management / issue tracker).
+# Read from the environment so the export label stays tool-agnostic; the default
+# preserves the current behavior.
+TRACKING_TOOL = os.getenv("LIDR_TRACKING_TOOL", "jira")
+
 @dataclass
 class Commit:
     """Individual commit information"""
@@ -732,7 +737,7 @@ class GitAnalyzer:
         report_file = self.output_dir / "git-analysis-report.md"
         self._generate_markdown_report(report_file, analysis)
 
-        # Save CSV for project management
+        # Save CSV for the tracking tool (project management / issue tracker: TRACKING_TOOL)
         csv_file = self.output_dir / "git-changes-summary.csv"
         self._generate_csv_summary(csv_file, analysis)
 
@@ -822,7 +827,7 @@ class GitAnalyzer:
 """)
 
     def _generate_csv_summary(self, file_path: Path, analysis: ReleaseAnalysis):
-        """Generate CSV summary for project management"""
+        """Generate CSV summary for the tracking tool (project management / issue tracker: TRACKING_TOOL)"""
         import csv
 
         with open(file_path, 'w', newline='', encoding='utf-8') as f:
