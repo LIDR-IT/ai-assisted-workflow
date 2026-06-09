@@ -234,7 +234,7 @@ DEV → STG → UAT → PRE-PROD → PROD
 
 ### 7.3 Reglas de Documentación
 
-10. Documentación funcional en **español**
+10. Functional documentation language follows the client config (default English; Spanish when the client sets `language: es`) — see `_shared/lidr/integrations/`
 11. Código y documentación técnica (inline) en **inglés**
 12. PRs y commits en **inglés** (conventional commits)
 13. Toda decisión arquitectónica significativa REQUIERE un ADR
