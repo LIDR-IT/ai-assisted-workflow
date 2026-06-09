@@ -3,7 +3,7 @@ name: lidr-adr
 id: adr
 version: "1.4.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 5
 owner_role: "TL"
@@ -27,7 +27,7 @@ Phase: any (typically 5 — Development) | Content authored in English (MADR for
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{CHAT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 `bmad-create-architecture` owns the broader architecture/solution-design document. This LIDR skill produces immutable, single-decision MADR records that annotate and feed that document — each ADR captures the why behind one hard-to-reverse choice so the architecture doc and future contributors can reference it without re-debating.
 

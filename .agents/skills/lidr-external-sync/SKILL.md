@@ -3,7 +3,7 @@ name: lidr-external-sync
 id: external-sync
 version: "1.1.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"

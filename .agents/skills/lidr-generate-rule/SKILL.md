@@ -3,7 +3,7 @@ name: lidr-generate-rule
 id: generate-rule
 version: "1.3.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"
@@ -209,5 +209,5 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                | Changes                                                                                                       |
 | ------- | ---------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| 1.3.0   | 2026-06-09 | TL: BMAD-coherence batch-fix          | Added `language_default: en` + `integrations: []`; reframed language to English-authored, client-configurable |
+| 1.3.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added `language_default: en` + `integrations: []`; reframed language to English-authored, client-configurable |
 | 1.2.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                 |

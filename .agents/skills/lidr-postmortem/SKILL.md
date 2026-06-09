@@ -3,7 +3,7 @@ name: lidr-postmortem
 id: postmortem
 version: "1.2.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 8
 owner_role: "PME"
@@ -22,7 +22,7 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 **Culture:** Blameless — the postmortem analyzes SYSTEMS, not blame PEOPLE.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 LIDR-unique post-incident artifact — distinct from `bmad-retrospective`, which is a post-epic review of planned work. A postmortem is triggered by an unplanned production incident (S1/S2) and applies Five Whys root-cause analysis; the retrospective looks back at a completed epic for process improvement. The two are complementary, not interchangeable.
 
@@ -251,7 +251,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                       | Changes                                                                                                                                    |
 | ------- | ---------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1.2.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-unique post-incident artifact, distinct from bmad-retrospective)                                   |
+| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added "Relationship to BMad" note (LIDR-unique post-incident artifact, distinct from bmad-retrospective)                                   |
 | 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted chat tools via tool-registry                                                          |
 | 1.1.0   | 2026-04-06 | System: Phase 2 Remediation  | Added comprehensive "When to Use" section, expanded Key Rules with structured guidelines, added changelog section for LIDR SDLC compliance |
 | 1.0.1   | 2026-03-16 | System: Normalization        | Domain-agnostic normalization updates                                                                                                      |

@@ -3,7 +3,7 @@ name: lidr-hook-development
 id: hook-development
 version: "2.3.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 0
 owner_role: "TL"
@@ -941,7 +941,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                       | Changes                                                                                                                            |
 | ------- | ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| 2.3.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added `language_default: en`; reframed description language statement to client-configurable                                       |
+| 2.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added `language_default: en`; reframed description language statement to client-configurable                                       |
 | 2.3.0   | 2026-03-25 | TL: tier3-remediation        | Domain-agnostic normalization: moved domain-specific patterns to examples/client-domain-example.md. Genericized all hook examples. |
 | 2.2.0   | 2026-03-16 | Tech Lead: System            | Added Quality Assurance section with validation framework                                                                          |
 | 2.0.0   | 2026-03-09 | Claude Agent                 | Complete rewrite with security-focused hook examples, DTC validation, security gate automation                                     |

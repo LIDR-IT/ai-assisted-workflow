@@ -3,7 +3,7 @@ name: lidr-dast-interpretation
 id: dast-interpretation
 version: "1.1.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 7
 owner_role: "TL"

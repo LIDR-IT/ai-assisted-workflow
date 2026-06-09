@@ -3,7 +3,7 @@ name: lidr-review-cruzado
 id: review-cruzado
 version: "1.0.2"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 2
 owner_role: "TL"

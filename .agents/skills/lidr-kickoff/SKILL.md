@@ -3,7 +3,7 @@ name: lidr-kickoff
 id: kickoff
 version: "1.5.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 1
 owner_role: "SM"
@@ -36,7 +36,7 @@ description: >-
 
 This skill generates comprehensive kickoff meeting documentation for any project after Gate 0 approval, ensuring proper project initiation, team alignment, and clear success criteria before Discovery phase begins.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 LIDR-unique Phase-1 / post-Gate-0 governance artifact — BMad has no kickoff-meeting equivalent. Consumes the approved `lidr-business-case` output and feeds the Discovery phase (`bmad-prd`) by seeding stakeholders, scope, and initial risks.
 
@@ -395,7 +395,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                       | Changes                                                                                      |
 | ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------- |
-| 1.5.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added "Relationship to BMAD" note (LIDR-unique Phase-1 governance artifact)                  |
+| 1.5.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added "Relationship to BMad" note (LIDR-unique Phase-1 governance artifact)                  |
 | 1.5.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira/Confluence/Slack via tool-registry |
 | 1.1.0   | 2026-03-09 | TL: Lead Engineer            | Enhanced with domain examples, expanded template, regulatory context, comprehensive workflow |
 | 1.0.0   | 2025-02-01 | SM: Scrum Master             | Initial basic version                                                                        |

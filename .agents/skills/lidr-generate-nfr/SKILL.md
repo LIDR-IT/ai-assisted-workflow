@@ -3,7 +3,7 @@ name: lidr-generate-nfr
 id: generate-nfr
 version: "2.6.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 3
 owner_role: "TL"
@@ -33,7 +33,7 @@ Phase: 3 — Specification | Gate: 2 (with RFs) | Language: English by default; 
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 LIDR-unique: authors measurable, testable NFRs at Gate 2 (Specification) — a contract that `bmad-testarch-nfr` later audits against implementation evidence. Consumes the Technical PRD from `bmad-prd` (§5) and feeds `lidr-validate-requirements` (RTM coverage + gap detection).
 
@@ -385,7 +385,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                | Changes                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.6.0   | 2026-06-09 | TL: BMAD-coherence batch-fix          | Added "Relationship to BMAD" note (LIDR-unique NFR authoring; consumes bmad-prd, audited by bmad-testarch-nfr, feeds lidr-validate-requirements)                                                                                                                           |
+| 2.6.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added "Relationship to BMad" note (LIDR-unique NFR authoring; consumes bmad-prd, audited by bmad-testarch-nfr, feeds lidr-validate-requirements)                                                                                                                           |
 | 2.5.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tools via tool-registry                                                                                                                                                                                               |
 | 2.4.0   | 2026-03-25 | TL: domain-agnostic-fix               | Removed remaining domain-specific terminology from active instruction cross-references; changelog entries neutralized                                                                                                                                                      |
 | 2.3.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific categories with high-traffic API/fintech/healthcare examples; moved domain-specific content to examples/domain-example.md; replaced domain-specific validation checklist with Domain-Specific NFR Validation Checklist |

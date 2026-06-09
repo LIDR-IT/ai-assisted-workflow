@@ -345,4 +345,4 @@ This skill includes self-contained templates:
 | Version | Date       | Author                       | Changes                                                                                                           |
 | ------- | ---------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | 1.1.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira/Linear/Notion/Confluence/GitHub/Slack via tool-registry |
-| 1.0.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Coherence batch-fix                                                                                               |
+| 1.0.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Coherence batch-fix                                                                                               |

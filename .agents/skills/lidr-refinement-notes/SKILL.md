@@ -3,7 +3,7 @@ name: lidr-refinement-notes
 id: refinement-notes
 version: "1.2.1"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 4
 owner_role: "TL"
@@ -157,5 +157,5 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                       | Changes                                                                                |
 | ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------- |
-| 1.2.1   | 2026-06-09 | TL: BMAD-coherence batch-fix | Added `language_default: en` frontmatter (P5 bookkeeping)                              |
+| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added `language_default: en` frontmatter (P5 bookkeeping)                              |
 | 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira (tracking) via tool-registry |
