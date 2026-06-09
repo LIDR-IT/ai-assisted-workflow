@@ -164,7 +164,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/hooks/scripts/protect-secrets.sh',
   '.claude/hooks/scripts/validate-ecosystem-counts.sh',
 
-  // Skills (112)
+  // Skills (111)
   '.claude/skills/bmad-advanced-elicitation/SKILL.md',
   '.claude/skills/bmad-agent-analyst/SKILL.md',
   '.claude/skills/bmad-agent-architect/SKILL.md',
@@ -242,7 +242,6 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/skills/lidr-mcp-integration/SKILL.md',
   '.claude/skills/lidr-adr/SKILL.md',
   '.claude/skills/lidr-audit-standards/SKILL.md',
-  '.claude/skills/lidr-automated-handoffs/SKILL.md',
   '.claude/skills/lidr-bug-report/SKILL.md',
   '.claude/skills/lidr-business-case/SKILL.md',
   '.claude/skills/lidr-change-request/SKILL.md',
@@ -411,7 +410,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/hooks/scripts/protect-secrets.sh',
   '.claude/hooks/scripts/validate-ecosystem-counts.sh',
 
-  // Skills (112)
+  // Skills (111)
   '.claude/skills/bmad-advanced-elicitation/SKILL.md',
   '.claude/skills/bmad-agent-analyst/SKILL.md',
   '.claude/skills/bmad-agent-architect/SKILL.md',
@@ -489,7 +488,6 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/skills/lidr-mcp-integration/SKILL.md',
   '.claude/skills/lidr-adr/SKILL.md',
   '.claude/skills/lidr-audit-standards/SKILL.md',
-  '.claude/skills/lidr-automated-handoffs/SKILL.md',
   '.claude/skills/lidr-bug-report/SKILL.md',
   '.claude/skills/lidr-business-case/SKILL.md',
   '.claude/skills/lidr-change-request/SKILL.md',

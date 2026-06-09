@@ -5,7 +5,7 @@
 
 // Conteos automáticos basados en la estructura real del directorio POST-MERGE BMAD + LIDR Spec Lifecycle
 export const ecosystemStats = {
-  skills: 112, // 43 LIDR (incl. spec-lifecycle + meta-tooling) + 69 BMAD
+  skills: 111, // 42 LIDR (incl. spec-lifecycle + meta-tooling) + 69 BMAD
   automatedSkills: 8, // validate-requirements, tech-debt, user-stories, lidr-run-parallel-tasks, security-checklist, test-plan, release-notes, rollback-plan
   commands: 32, // 21 LIDR SDLC + 7 LIDR spec-lifecycle (lidr-spec-*) + 4 generic
   templates: 0, // ✨ ELIMINATED - integrated into skills (29→0)

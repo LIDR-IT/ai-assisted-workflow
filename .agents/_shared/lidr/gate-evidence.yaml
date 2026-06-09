@@ -203,10 +203,14 @@ gates:
       - skill: lidr-dev-handoff-qa
         artifact: "{client_root}/handoffs/dev-qa-*.md"
         required: true
+      - skill: lidr-playwright-cli
+        artifact: "{client_root}/reviews/runtime-review-*.md"
+        required: false
     checklist:
       - "DoD met: code review approved, unit tests pass, SAST/SCA clean (0 crit/high)"
       - "test-report verdict is PASSED (or WARNINGS explicitly accepted)"
       - "Docs updated in the same change (DTC) per documentation.md"
+      - "Runtime/visual review of changed UI passed (lidr-playwright-cli via Playwright MCP): renders, key flows, console errors, a11y — complements bmad-code-review"
     signoffs:
       - role: TL
         artifact: "{handoffs}/gate-4-handoff.md"
@@ -229,6 +233,7 @@ gates:
     checklist:
       - "All planned test cases executed; 0 blocking defects open"
       - "Regression suite green"
+      - "QA→Security handoff includes: QA results + coverage, security-test focus areas, vuln-assessment checklist, compliance verification, perf/load results"
     signoffs:
       - role: QA Lead
         artifact: "{client_root}/signoffs/qa-signoff.md"
@@ -255,6 +260,7 @@ gates:
       - "0 Critical/High vulnerabilities open (zero-tolerance per org.md §7)"
       - "DAST clean on a prod-replica environment"
       - "OWASP Top 10 + applicable compliance (GDPR/PSD2) reviewed"
+      - "Security→DevOps handoff includes: security assessment results, deploy requirements/constraints, monitoring/alerting, rollback procedures + emergency contacts, infra/config changes"
     signoffs:
       - role: CISO
         artifact: "{client_root}/signoffs/security-signoff.md"

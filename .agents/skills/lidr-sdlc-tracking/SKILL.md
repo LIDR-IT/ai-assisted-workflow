@@ -12,11 +12,19 @@ domain_agnostic: true
 description: >
   Centralized SDLC project tracking with phase visibility and portfolio management.
   ALWAYS use when managing active projects requiring lifecycle state tracking across gates.
+  Tracking pipeline: this OWNS `sdlc-tracking.yaml` (internal state); `lidr-tracking-integration` creates the external structure first, `lidr-external-sync` syncs this file to Jira/Linear/Notion.
 ---
 
 # SKILL: SDLC Tracking System
 
 > **Phase 2 Enhancement**: Centralized project state tracking with sdlc-tracking.yaml for all PME portfolio projects.
+
+## Related — tracking pipeline
+
+This skill is the **STATE** step — it owns `sdlc-tracking.yaml`, the internal source of truth. See also:
+
+- **`lidr-tracking-integration`** — one-time CREATE of the external project/epic structure (run first, post-Gate 0).
+- **`lidr-external-sync`** — RECONCILES this file ↔ Jira/Linear/Notion (optional, portfolio-scale).
 
 ## Purpose
 

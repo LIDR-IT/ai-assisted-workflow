@@ -10,12 +10,34 @@ owner_role: "QA"
 automation: false
 domain_agnostic: true
 description: >
-  Automate browser interactions for web testing, form filling, screenshots, and data extraction.
+  Automate browser interactions for web testing, form filling, screenshots, and data extraction
+  — via the `playwright-cli` binary OR the Playwright MCP (`mcp__playwright__*`).
   ALWAYS use when navigating websites, testing web applications, or extracting information from pages.
-allowed-tools: Bash(playwright-cli:*)
+  Also serves as a RUNTIME/VISUAL REVIEW LAYER on top of BMad's static reviews (`bmad-code-review`):
+  drives the browser to confirm changed UI renders, key flows work, and there are no console/a11y/visual regressions.
+allowed-tools: Bash(playwright-cli:*), mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_console_messages, mcp__playwright__browser_fill_form, mcp__playwright__browser_evaluate
 ---
 
 # Browser Automation with playwright-cli
+
+## As an extra review layer for BMad reviews
+
+BMad's reviews (`bmad-code-review`, `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`)
+read code **statically** — they don't exercise the running UI. Use this skill as the **runtime/visual
+review layer** that complements them:
+
+1. Run it AFTER the static review (`bmad-code-review`) on any change that touches the UI.
+2. Drive the browser — via the **Playwright MCP** (`mcp__playwright__browser_*`, the live-tool engine
+   that `lidr-sdlc/spec-execution.md` Step N+3 already mandates for E2E) or the `playwright-cli`
+   binary documented below — to validate:
+   - changed pages render (no blank/error states),
+   - key user flows complete end-to-end,
+   - no new console errors / failed network requests,
+   - basic accessibility (focus, labels, contrast) and no visual regressions.
+3. Capture a snapshot/screenshot as the review artifact (e.g. `docs/projects/{client}/reviews/runtime-review-*.md`).
+
+Wired into the gate model as **optional G4 evidence** (`_shared/lidr/gate-evidence.yaml` → G4):
+a "runtime/visual review passed" check before the Dev→QA handoff.
 
 ## When to Use
 

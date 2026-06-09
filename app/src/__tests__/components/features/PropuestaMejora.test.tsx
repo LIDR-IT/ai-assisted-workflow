@@ -96,12 +96,12 @@ describe('PropuestaMejora Component', () => {
     // ecosystemStats is computed dynamically from artifact registries (NOT filesystem),
     // post-removal of the 3 deleted artifacts (skill lidr-project-classifier + commands
     // lidr-document-project, lidr-check-readiness):
-    // - 112 skills (skills.length from skills.ts: 43 LIDR + 69 BMAD)
+    // - 111 skills (skills.length from skills.ts: 42 LIDR + 69 BMAD)
     // - 26 commands (commands.length from commands.ts: LIDR SDLC + 7 lidr-spec-*)
     //   Note: generic commands exist on filesystem but are not in the app registry yet.
-    // - 260 totalArtifacts (computed sum across registries)
-    expect(screen.getByText(/260 artefactos/)).toBeInTheDocument();
-    expect(screen.getByText(/112 skills/)).toBeInTheDocument();
+    // - 259 totalArtifacts (computed sum across registries)
+    expect(screen.getByText(/259 artefactos/)).toBeInTheDocument();
+    expect(screen.getByText(/111 skills/)).toBeInTheDocument();
     expect(screen.getByText(/26 commands/)).toBeInTheDocument();
   });
 

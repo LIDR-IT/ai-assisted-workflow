@@ -30,7 +30,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 
 - Edit once in `.agents/` → automatically synced to all 5 platforms
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic) — new in this version: `spec-execution.md` and `model-selection.md` for the LIDR Spec Lifecycle
-- **112 skills** (43 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
+- **111 skills** (42 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
 - **32 commands** (19 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic) — the 7 `lidr-spec-*` change-lifecycle commands (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`); `document-project` and `check-readiness` removed (BMAD `bmad-document-project` + `bmad-check-implementation-readiness` cover them; readiness now lives in Gate 3)
 - **23 subagents** (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`) — new: `lidr-spec-orchestrator` for end-to-end change execution
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
@@ -151,7 +151,7 @@ ls .github/agents/*.agent.md
 │   ├── process/              # git-workflow.md, documentation.md
 │   ├── product/, quality/, team/, tools/
 │
-├── skills/                   # 112 skills (43 lidr-* + 69 bmad-*) — Agent Skills open standard
+├── skills/                   # 111 skills (42 lidr-* + 69 bmad-*) — Agent Skills open standard
 │   ├── lidr-business-case/   # ← LIDR Phase 1: Originación
 │   ├── lidr-generate-rf/     # ← LIDR Phase 3: Specification
 │   ├── lidr-user-stories/    # ← LIDR Phase 4: Sprint Planning

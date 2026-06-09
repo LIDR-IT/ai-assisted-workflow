@@ -12,6 +12,7 @@ domain_agnostic: true
 description: >
   Synchronize project data bidirectionally across external tools (Jira, Linear, Notion)
   with conflict resolution. ALWAYS use when managing multi-tool SDLC workflows at scale.
+  Tracking pipeline: this is the optional SYNC step; it requires `lidr-sdlc-tracking` (owns the `sdlc-tracking.yaml` it syncs) and `lidr-tracking-integration` (creates the initial external structure). Skip for single-tool or non-portfolio projects.
 ---
 
 # SKILL: External Tool Synchronization Engine
@@ -21,6 +22,13 @@ description: >
 > **ROI**: Eliminates manual data entry, ensures consistency across 500+ projects
 
 ---
+
+## Related — tracking pipeline
+
+This skill is the **SYNC** step (optional, portfolio-scale). It reconciles the file the others produce:
+
+- **`lidr-sdlc-tracking`** — OWNS `sdlc-tracking.yaml` (the artifact this skill syncs). Required.
+- **`lidr-tracking-integration`** — created the external structure this syncs into. Run first.
 
 ## Purpose
 
