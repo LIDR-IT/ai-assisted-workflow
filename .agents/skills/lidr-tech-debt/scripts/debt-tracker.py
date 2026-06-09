@@ -6,12 +6,19 @@ Manages technical debt lifecycle and generates Sprint-ready User Stories.
 
 import json
 import argparse
+import os
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta
 from enum import Enum
+
+# Tool names used as output labels / format identifiers. Defaults preserve the
+# current behavior byte-for-byte; override via environment variables to retarget
+# the generated artifacts at a different toolchain.
+TRACKING_TOOL = os.getenv("LIDR_TRACKING_TOOL", "Jira")
+CODE_ANALYSIS_TOOL = os.getenv("LIDR_CODE_ANALYSIS_TOOL", "SonarQube")
 
 class DebtStatus(Enum):
     IDENTIFIED = "Identified"
@@ -133,7 +140,7 @@ So that security risks are minimized and compliance is maintained.
         }
 
     def load_debt_registry(self, registry_file: str) -> bool:
-        """Load debt registry from SonarQube analyzer output"""
+        """Load debt registry from the code analysis tool output"""
         try:
             registry_path = Path(registry_file)
             if registry_path.suffix == '.json':
@@ -349,7 +356,7 @@ So that security risks are minimized and compliance is maintained.
             criteria.extend([
                 f"Given the codebase has {sonar_issues} code quality issues",
                 "When I implement the refactoring changes",
-                "Then the SonarQube issues for this component are reduced by at least 80%",
+                f"Then the {CODE_ANALYSIS_TOOL} issues for this component are reduced by at least 80%",
                 "And the code complexity metrics improve",
                 "And existing functionality remains intact (all tests pass)"
             ])
@@ -395,7 +402,7 @@ So that security risks are minimized and compliance is maintained.
         return criteria
 
     def export_user_stories_to_csv(self, output_file: str = "debt-user-stories.csv") -> str:
-        """Export user stories to CSV for Jira import"""
+        """Export user stories to CSV for tracking-tool import"""
         if not self.user_stories:
             print("❌ No user stories to export.")
             return ""
@@ -407,7 +414,7 @@ So that security risks are minimized and compliance is maintained.
         with open(output_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
 
-            # Header (Jira import format)
+            # Header (tracking-tool import format)
             writer.writerow([
                 'Summary', 'Issue Type', 'Description', 'Acceptance Criteria',
                 'Story Points', 'Priority', 'Epic Link', 'Labels',
@@ -453,7 +460,7 @@ So that security risks are minimized and compliance is maintained.
 id: debt-backlog-report-{datetime.now().strftime('%Y%m%d')}
 version: "1.0.0"
 last_updated: "{datetime.now().strftime('%Y-%m-%d')}"
-updated_by: "Sistema: Debt Tracker"
+updated_by: "System: Debt Tracker"
 status: active
 type: report
 owner_role: "TL + SM"
@@ -546,21 +553,21 @@ Based on standard 15-20% technical debt allocation:
 ## Tracking and Lifecycle
 
 ### Status Definitions
-- **Identified**: Detected by SonarQube analysis, not yet planned
+- **Identified**: Detected by {CODE_ANALYSIS_TOOL} analysis, not yet planned
 - **Planned**: Included in sprint backlog, user story created
 - **In Progress**: Currently being worked on by development team
 - **Resolved**: Completed and validated, technical debt eliminated
 - **Deferred**: Consciously postponed, reviewed periodically
 
 ### Lifecycle Management
-1. **Automated Detection**: SonarQube analyzer runs weekly
+1. **Automated Detection**: {CODE_ANALYSIS_TOOL} analyzer runs weekly
 2. **Story Generation**: Debt tracker generates sprint-ready user stories
 3. **Sprint Planning**: Team prioritizes debt stories (15-20% capacity)
 4. **Execution**: Developers complete debt stories with full DoD
 5. **Validation**: Tech lead validates debt elimination
 
 ### Next Review Cycle
-- **Weekly**: New SonarQube analysis and debt detection
+- **Weekly**: New {CODE_ANALYSIS_TOOL} analysis and debt detection
 - **Sprint Planning**: Review and prioritize debt backlog
 - **Monthly**: Assess debt trends and category focus areas
 - **Quarterly**: Strategic debt reduction planning
@@ -607,7 +614,7 @@ def main():
     parser.add_argument("--sprint-capacity", type=int, default=400, help="Sprint capacity in hours")
     parser.add_argument("--debt-percentage", type=float, default=0.20, help="Percentage of capacity for debt (0.15-0.20)")
     parser.add_argument("--output-dir", default=".", help="Output directory")
-    parser.add_argument("--csv-output", default="debt-user-stories.csv", help="CSV output for Jira import")
+    parser.add_argument("--csv-output", default="debt-user-stories.csv", help="CSV output for tracking-tool import")
     parser.add_argument("--report-output", default="debt-backlog-report.md", help="Backlog report filename")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
@@ -655,11 +662,11 @@ def main():
     print(f"   Estimated Effort: {total_hours} hours")
 
     print(f"\n📄 Outputs Generated:")
-    print(f"   📊 CSV for Jira: {csv_path}")
+    print(f"   📊 CSV for {TRACKING_TOOL}: {csv_path}")
     print(f"   📝 Backlog Report: {report_path}")
 
     print(f"\n💡 Next Steps:")
-    print(f"   1. Import {args.csv_output} into Jira")
+    print(f"   1. Import {args.csv_output} into {TRACKING_TOOL}")
     print(f"   2. Review and prioritize stories in Sprint Planning")
     print(f"   3. Assign stories to developers")
     print(f"   4. Track progress and update debt status")

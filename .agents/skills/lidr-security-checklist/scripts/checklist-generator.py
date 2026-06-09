@@ -17,6 +17,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Tracking tool used as the label/target for the CSV remediation export.
+# Defaults to the current tool so existing behavior is preserved; override via env.
+TRACKING_TOOL = os.getenv("LIDR_TRACKING_TOOL", "jira")
+
 class SecurityChecklistGenerator:
     """
     Generate security checklists from analysis results
@@ -504,7 +508,7 @@ class SecurityChecklistGenerator:
 
     def generate_csv_export(self, remediation_items, analysis):
         """
-        Generate CSV export for project management tools
+        Generate CSV export for the configured tracking tool ({TRACKING_TOOL})
         """
         csv_file = self.output_dir / f'security-remediation-{datetime.now().strftime("%Y%m%d")}.csv'
 
@@ -524,7 +528,7 @@ class SecurityChecklistGenerator:
 
                 f.write(f'{issue_id},"{description}",{severity},{category},"{current_state}","{required_fix}",{effort},{owner},{status}\n')
 
-        print(f"📊 CSV export generated: {csv_file}")
+        print(f"📊 CSV export generated for {TRACKING_TOOL}: {csv_file}")
 
 def main():
     parser = argparse.ArgumentParser(description='Security Checklist Generator for {{CLIENT_NAME}} Projects')

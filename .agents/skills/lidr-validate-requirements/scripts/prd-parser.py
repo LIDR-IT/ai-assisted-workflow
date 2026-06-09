@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 {{CLIENT_NAME}} PRD Parser and Requirements Extractor
-Systematically parses PRD Funcional and PRD Técnico to extract functionalities and NFR categories.
+Systematically parses the Functional PRD and Technical PRD to extract functionalities and NFR categories.
 """
 
 import re
@@ -70,56 +70,56 @@ class PRDParser:
         ]
 
     def parse_prd_funcional(self, file_path: Path) -> Dict[str, PRDFunctionality]:
-        """Parse PRD Funcional to extract functionalities, personas, and journeys"""
+        """Parse the Functional PRD to extract functionalities, personas, and journeys"""
         try:
             content = file_path.read_text(encoding='utf-8')
-            print(f"📖 Parsing PRD Funcional: {file_path.name}")
+            print(f"📖 Parsing Functional PRD: {file_path.name}")
 
             # Extract metadata
             self._extract_metadata(content, "funcional")
 
-            # Parse section 2.4: Funcionalidades Clave
+            # Parse section 2.4: Key Features
             self._parse_functionalities_section(content)
 
             # Parse section 3: User Journeys (for context)
             self._parse_user_journeys(content)
 
-            # Parse section 4: Casos de Uso (for acceptance criteria)
+            # Parse section 4: Use Cases (for acceptance criteria)
             self._parse_use_cases(content)
 
-            print(f"✅ Extracted {len(self.functionalities)} functionalities from PRD Funcional")
+            print(f"✅ Extracted {len(self.functionalities)} functionalities from the Functional PRD")
             return self.functionalities
 
         except Exception as e:
-            print(f"❌ Error parsing PRD Funcional {file_path}: {e}")
+            print(f"❌ Error parsing Functional PRD {file_path}: {e}")
             return {}
 
     def parse_prd_tecnico(self, file_path: Path) -> Dict[str, NFRCategory]:
-        """Parse PRD Técnico to extract NFR categories and technical requirements"""
+        """Parse the Technical PRD to extract NFR categories and technical requirements"""
         try:
             content = file_path.read_text(encoding='utf-8')
-            print(f"📖 Parsing PRD Técnico: {file_path.name}")
+            print(f"📖 Parsing Technical PRD: {file_path.name}")
 
             # Extract metadata
             self._extract_metadata(content, "tecnico")
 
-            # Parse section 5: Requisitos No Funcionales
+            # Parse section 5: Non-Functional Requirements
             self._parse_nfr_section(content)
 
-            # Parse section 3: Arquitectura Propuesta (for additional NFRs)
+            # Parse section 3: Proposed Architecture (for additional NFRs)
             self._parse_architecture_nfrs(content)
 
-            # Parse section 6: Consideraciones Técnicas
+            # Parse section 6: Technical Considerations
             self._parse_technical_considerations(content)
 
             # Validate mandatory categories for {{CLIENT_NAME}} domain-specific projects
             self._validate_mandatory_nfrs()
 
-            print(f"✅ Extracted {len(self.nfr_categories)} NFR categories from PRD Técnico")
+            print(f"✅ Extracted {len(self.nfr_categories)} NFR categories from the Technical PRD")
             return self.nfr_categories
 
         except Exception as e:
-            print(f"❌ Error parsing PRD Técnico {file_path}: {e}")
+            print(f"❌ Error parsing Technical PRD {file_path}: {e}")
             return {}
 
     def _extract_metadata(self, content: str, doc_type: str):
@@ -147,16 +147,16 @@ class PRDParser:
         if version_match:
             self.metadata.version = version_match.group(1).strip()
 
-        author_match = re.search(r'(?:autor|author|responsable):\s*([^\n]+)', content, re.IGNORECASE)
+        author_match = re.search(r'(?:autor|author|responsable|owner):\s*([^\n]+)', content, re.IGNORECASE)
         if author_match:
             self.metadata.authors = [author_match.group(1).strip()]
 
     def _parse_functionalities_section(self, content: str):
-        """Parse section 2.4: Funcionalidades Clave"""
+        """Parse section 2.4: Key Features"""
         # Find section 2.4
         section_patterns = [
             r'##\s*2\.4[.\s]*(?:Funcionalidades?\s*Clave|Key\s*Features)\s*\n(.*?)(?=##|$)',
-            r'##\s*Funcionalidades?\s*Clave\s*\n(.*?)(?=##|$)',
+            r'##\s*(?:Funcionalidades?\s*Clave|Key\s*Features)\s*\n(.*?)(?=##|$)',
             r'##\s*Features\s*\n(.*?)(?=##|$)'
         ]
 
@@ -168,7 +168,7 @@ class PRDParser:
                 break
 
         if not section_content:
-            print("⚠️  Section 2.4 (Funcionalidades Clave) not found")
+            print("⚠️  Section 2.4 (Key Features) not found")
             return
 
         # Extract functionalities with multiple patterns
@@ -210,7 +210,7 @@ class PRDParser:
     def _parse_user_journeys(self, content: str):
         """Parse user journeys for additional context"""
         journey_section = re.search(
-            r'##\s*3[.\s]*(?:User\s*Journey|Journey|Flujo)\s*\n(.*?)(?=##|$)',
+            r'##\s*3[.\s]*(?:User\s*Journey|Journey|Flujo|Flow)\s*\n(.*?)(?=##|$)',
             content,
             re.DOTALL | re.IGNORECASE
         )
@@ -253,7 +253,7 @@ class PRDParser:
                                 functionality.acceptance_criteria.append(match.strip())
 
     def _parse_nfr_section(self, content: str):
-        """Parse section 5: Requisitos No Funcionales"""
+        """Parse section 5: Non-Functional Requirements"""
         section_patterns = [
             r'##\s*5[.\s]*(?:Requisitos?\s*No\s*Funcionales?|Non.?Functional|NFR)\s*\n(.*?)(?=##|$)',
             r'##\s*NFR\s*\n(.*?)(?=##|$)',
@@ -274,42 +274,42 @@ class PRDParser:
         # Define NFR categories with patterns
         nfr_category_patterns = {
             'performance': [
-                r'(?:performance|rendimiento|velocidad|latencia|throughput)',
+                r'(?:performance|rendimiento|velocidad|speed|latencia|latency|throughput)',
                 r'(?:tiempo\s+de\s+respuesta|response\s+time)',
                 r'(?:carga|load|stress)'
             ],
             'security': [
-                r'(?:security|seguridad|autenticación|autorización)',
+                r'(?:security|seguridad|autenticación|authentication|autorización|authorization)',
                 r'(?:cifrado|encryption|crypto)',
                 r'(?:gdpr|privacidad|privacy)'
             ],
             'availability': [
                 r'(?:availability|disponibilidad|uptime)',
                 r'(?:alta\s+disponibilidad|high\s+availability)',
-                r'(?:continuidad|disaster\s+recovery)'
+                r'(?:continuidad|continuity|disaster\s+recovery)'
             ],
             'scalability': [
-                r'(?:scalability|escalabilidad|crecimiento)',
+                r'(?:scalability|escalabilidad|crecimiento|growth)',
                 r'(?:horizontal|vertical)',
                 r'(?:auto.?scaling|elastic)'
             ],
             'usability': [
-                r'(?:usability|usabilidad|ux|experiencia)',
+                r'(?:usability|usabilidad|ux|experiencia|experience)',
                 r'(?:accesibilidad|accessibility|wcag)',
                 r'(?:interfaz|interface|ui)'
             ],
             'compliance': [
-                r'(?:compliance|cumplimiento|regulación)',
+                r'(?:compliance|cumplimiento|regulación|regulation)',
                 r'(?:iso|sox|pci|gdpr|eidas)',
                 r'(?:auditoría|audit|legal)'
             ],
             'reliability': [
-                r'(?:reliability|fiabilidad|estabilidad)',
+                r'(?:reliability|fiabilidad|estabilidad|stability)',
                 r'(?:error\s+rate|tasa\s+de\s+error)',
                 r'(?:mtbf|mttr|recovery)'
             ],
             'maintainability': [
-                r'(?:maintainability|mantenibilidad|soporte)',
+                r'(?:maintainability|mantenibilidad|soporte|support)',
                 r'(?:código\s+limpio|clean\s+code)',
                 r'(?:documentación|documentation)'
             ]
@@ -397,7 +397,7 @@ class PRDParser:
 
             # Extract specific metrics mentioned
             metric_patterns = [
-                r'(?:(\d+(?:\.\d+)?)\s*(?:ms|milliseconds?|segundos?|minutes?))',  # Time metrics
+                r'(?:(\d+(?:\.\d+)?)\s*(?:ms|milliseconds?|segundos?|seconds?|minutos?|minutes?))',  # Time metrics
                 r'(?:(\d+(?:\.\d+)?)\s*(?:mb|gb|kb|bytes?))',  # Size metrics
                 r'(?:(\d+(?:\.\d+)?)\s*(?:%|percent|porcentaje))',  # Percentage metrics
                 r'(?:(\d+(?:\.\d+)?)\s*(?:rps|requests?.*?second|req.*?seg))'  # Throughput metrics
@@ -511,14 +511,14 @@ class PRDParser:
 
         content = f"""# PRD Analysis Summary
 
-**Documento**: {self.metadata.title}
-**Versión**: {self.metadata.version}
-**Última actualización**: {self.metadata.last_updated}
+**Document**: {self.metadata.title}
+**Version**: {self.metadata.version}
+**Last updated**: {self.metadata.last_updated}
 
-## Funcionalidades Extraídas ({len(self.functionalities)})
+## Extracted Functionalities ({len(self.functionalities)})
 
-| ID | Título | Prioridad | Criterios | Personas |
-|----|--------|-----------|-----------|----------|
+| ID | Title | Priority | Criteria | Personas |
+|----|-------|----------|----------|----------|
 """
 
         for func in self.functionalities.values():
@@ -532,8 +532,8 @@ class PRDParser:
         content += f"""
 ## NFR Categories Identified ({len(self.nfr_categories)})
 
-| Categoría | Sección | Obligatoria | Requisitos |
-|-----------|---------|-------------|------------|
+| Category | Section | Mandatory | Requirements |
+|----------|---------|-----------|--------------|
 """
 
         for nfr in self.nfr_categories.values():
@@ -584,8 +584,8 @@ class PRDParser:
 
 def main():
     parser = argparse.ArgumentParser(description="{{CLIENT_NAME}} PRD Parser and Requirements Extractor")
-    parser.add_argument("--prd-funcional", help="Path to PRD Funcional file")
-    parser.add_argument("--prd-tecnico", help="Path to PRD Técnico file")
+    parser.add_argument("--prd-funcional", help="Path to the Functional PRD file")
+    parser.add_argument("--prd-tecnico", help="Path to the Technical PRD file")
     parser.add_argument("--output-dir", default=".", help="Output directory")
     parser.add_argument("--json-output", default="prd-analysis.json", help="JSON output filename")
     parser.add_argument("--summary-output", default="prd-summary.md", help="Summary report filename")
@@ -598,37 +598,37 @@ def main():
 
     parser_instance = PRDParser()
 
-    # Parse PRD Funcional
+    # Parse Functional PRD
     if args.prd_funcional:
         prd_f_path = Path(args.prd_funcional)
         if prd_f_path.exists():
             parser_instance.parse_prd_funcional(prd_f_path)
         else:
-            print(f"❌ PRD Funcional not found: {prd_f_path}")
+            print(f"❌ Functional PRD not found: {prd_f_path}")
     else:
-        # Auto-discover PRD Funcional
+        # Auto-discover Functional PRD
         search_paths = [Path("."), Path("docs"), Path("docs/projects")]
         for search_path in search_paths:
             if search_path.exists():
                 for prd_file in search_path.glob("*funcional*.md"):
-                    print(f"📁 Auto-discovered PRD Funcional: {prd_file}")
+                    print(f"📁 Auto-discovered Functional PRD: {prd_file}")
                     parser_instance.parse_prd_funcional(prd_file)
                     break
 
-    # Parse PRD Técnico
+    # Parse Technical PRD
     if args.prd_tecnico:
         prd_t_path = Path(args.prd_tecnico)
         if prd_t_path.exists():
             parser_instance.parse_prd_tecnico(prd_t_path)
         else:
-            print(f"❌ PRD Técnico not found: {prd_t_path}")
+            print(f"❌ Technical PRD not found: {prd_t_path}")
     else:
-        # Auto-discover PRD Técnico
+        # Auto-discover Technical PRD
         search_paths = [Path("."), Path("docs"), Path("docs/projects")]
         for search_path in search_paths:
             if search_path.exists():
                 for prd_file in search_path.glob("*tecnico*.md"):
-                    print(f"📁 Auto-discovered PRD Técnico: {prd_file}")
+                    print(f"📁 Auto-discovered Technical PRD: {prd_file}")
                     parser_instance.parse_prd_tecnico(prd_file)
                     break
 
