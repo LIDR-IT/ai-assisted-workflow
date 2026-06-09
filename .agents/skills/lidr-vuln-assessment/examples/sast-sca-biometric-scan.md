@@ -1,8 +1,8 @@
-# Vulnerability Assessment Report: SAST/SCA Scan Results for {{PRODUCT_NAME_1}}D Platform
+# Vulnerability Assessment Report: SAST/SCA Scan Results for {{PRODUCT_NAME}} Platform
 
 **Scan Date**: March 10, 2025
 **Assessment Type**: Static Application Security Testing (SAST) + Software Composition Analysis (SCA)
-**Target System**: {{PRODUCT_NAME_1}}D Platform v4.3.0 (Pre-Production)
+**Target System**: {{PRODUCT_NAME}} Platform v4.3.0 (Pre-Production)
 
 ---
 
@@ -10,13 +10,13 @@
 
 ### Scan Overview
 
-**Scope**: Complete static analysis of {{PRODUCT_NAME_1}}D domain-specific authentication platform including facial recognition, voice verification, and document processing modules.
+**Scope**: Complete static analysis of {{PRODUCT_NAME}} domain-specific authentication platform including facial recognition, voice verification, and document processing modules.
 
 **Tools Used**:
 
-- **SAST**: SonarQube Enterprise 9.9 + Checkmarx SAST
-- **SCA**: Snyk + OWASP Dependency-Check
-- **Additional**: Bandit (Python), ESLint Security, Semgrep
+- **SAST**: {{CODE_QUALITY_TOOL}} (SAST engine) — _Example (SonarQube Enterprise 9.9 + Checkmarx SAST)_
+- **SCA**: {{CODE_QUALITY_TOOL}} (SCA / dependency scan) — _Example (Snyk + OWASP Dependency-Check)_
+- **Additional**: {{CODE_QUALITY_TOOL}} (language-specific linters) — _Example (Bandit for Python, ESLint Security, Semgrep)_
 
 **Code Coverage**: 847,000 lines of code across 12 repositories
 
@@ -56,16 +56,16 @@ Hardcoded AES encryption keys discovered in the domain-specific template process
 ```typescript
 // VULNERABLE CODE - src/core/domain-specific/TemplateEncryption.ts
 export class TemplateEncryption {
-    // ❌ CRITICAL: Hardcoded encryption key
-    private static readonly TEMPLATE_KEY = "aH4kL9mN2pQ7sT1vY8zA3bC6eF4gI5j";
-    private static readonly IV_KEY = "1234567890123456";
+  // ❌ CRITICAL: Hardcoded encryption key
+  private static readonly TEMPLATE_KEY = "aH4kL9mN2pQ7sT1vY8zA3bC6eF4gI5j";
+  private static readonly IV_KEY = "1234567890123456";
 
-    public static encryptTemplate(template: domain-specificTemplate): EncryptedTemplate {
-        const cipher = crypto.createCipher('aes-256-cbc', this.TEMPLATE_KEY);
-        // domain-specific template encryption with static key
-        const encrypted = cipher.update(template.data, 'utf8', 'hex');
-        return new EncryptedTemplate(encrypted + cipher.final('hex'));
-    }
+  public static encryptTemplate(template: DomainTemplate): EncryptedTemplate {
+    const cipher = crypto.createCipher("aes-256-cbc", this.TEMPLATE_KEY);
+    // domain-specific template encryption with static key
+    const encrypted = cipher.update(template.data, "utf8", "hex");
+    return new EncryptedTemplate(encrypted + cipher.final("hex"));
+  }
 }
 ```
 
@@ -88,26 +88,23 @@ export class TemplateEncryption {
 ```typescript
 // ✅ SECURE IMPLEMENTATION
 export class TemplateEncryption {
-    private keyService: KeyManagementService;
+  private keyService: KeyManagementService;
 
-    constructor(keyService: KeyManagementService) {
-        this.keyService = keyService;
-    }
+  constructor(keyService: KeyManagementService) {
+    this.keyService = keyService;
+  }
 
-    public async encryptTemplate(template: domain-specificTemplate): Promise<EncryptedTemplate> {
-        // Generate unique key per template
-        const templateKey = await this.keyService.generateTemplateKey();
-        const iv = crypto.randomBytes(16);
+  public async encryptTemplate(template: DomainTemplate): Promise<EncryptedTemplate> {
+    // Generate unique key per template
+    const templateKey = await this.keyService.generateTemplateKey();
+    const iv = crypto.randomBytes(16);
 
-        const cipher = crypto.createCipher('aes-256-gcm', templateKey, iv);
-        const encrypted = Buffer.concat([
-            cipher.update(template.data, 'utf8'),
-            cipher.final()
-        ]);
+    const cipher = crypto.createCipher("aes-256-gcm", templateKey, iv);
+    const encrypted = Buffer.concat([cipher.update(template.data, "utf8"), cipher.final()]);
 
-        // Store key reference, not the key itself
-        return new EncryptedTemplate(encrypted, templateKey.id, iv);
-    }
+    // Store key reference, not the key itself
+    return new EncryptedTemplate(encrypted, templateKey.id, iv);
+  }
 }
 ```
 
@@ -135,7 +132,7 @@ export class UserRepository {
   async authenticateUser(username: string, password: string): Promise<User | null> {
     // ❌ CRITICAL: SQL Injection vulnerability
     const query = `
-            SELECT id, username, role, domain-specific_template_id
+            SELECT id, username, role, domain_template_id
             FROM users
             WHERE username = '${username}'
             AND password_hash = SHA256('${password}')
@@ -152,7 +149,7 @@ export class UserRepository {
 ```sql
 -- Malicious input: username = "admin' OR '1'='1' --"
 -- Results in query:
-SELECT id, username, role, domain-specific_template_id
+SELECT id, username, role, domain_template_id
 FROM users
 WHERE username = 'admin' OR '1'='1' --'
 AND password_hash = SHA256('anything')
@@ -167,7 +164,7 @@ AND password_hash = SHA256('anything')
 export class UserRepository {
   async authenticateUser(username: string, password: string): Promise<User | null> {
     const query = `
-            SELECT id, username, role, domain-specific_template_id
+            SELECT id, username, role, domain_template_id
             FROM users
             WHERE username = $1
             AND password_hash = SHA256($2)
@@ -192,15 +189,15 @@ Unsafe deserialization of domain-specific template objects allows remote code ex
 ```typescript
 // VULNERABLE CODE - src/core/domain-specific/TemplateProcessor.ts
 export class TemplateProcessor {
-    public deserializeTemplate(serializedTemplate: string): domain-specificTemplate {
-        try {
-            // ❌ CRITICAL: Unsafe deserialization
-            const template = eval(`(${serializedTemplate})`);
-            return template as domain-specificTemplate;
-        } catch (error) {
-            throw new Error('Template deserialization failed');
-        }
+  public deserializeTemplate(serializedTemplate: string): DomainTemplate {
+    try {
+      // ❌ CRITICAL: Unsafe deserialization
+      const template = eval(`(${serializedTemplate})`);
+      return template as DomainTemplate;
+    } catch (error) {
+      throw new Error("Template deserialization failed");
     }
+  }
 }
 ```
 
@@ -209,26 +206,26 @@ export class TemplateProcessor {
 ```typescript
 // ✅ SECURE IMPLEMENTATION
 export class TemplateProcessor {
-    private readonly ALLOWED_PROPERTIES = ['version', 'algorithm', 'features', 'metadata'];
+  private readonly ALLOWED_PROPERTIES = ["version", "algorithm", "features", "metadata"];
 
-    public deserializeTemplate(serializedTemplate: string): domain-specificTemplate {
-        try {
-            const parsed = JSON.parse(serializedTemplate);
+  public deserializeTemplate(serializedTemplate: string): DomainTemplate {
+    try {
+      const parsed = JSON.parse(serializedTemplate);
 
-            // Validate object structure
-            if (!this.isValidTemplateStructure(parsed)) {
-                throw new Error('Invalid template structure');
-            }
+      // Validate object structure
+      if (!this.isValidTemplateStructure(parsed)) {
+        throw new Error("Invalid template structure");
+      }
 
-            return new domain-specificTemplate(parsed);
-        } catch (error) {
-            throw new Error(`Template deserialization failed: ${error.message}`);
-        }
+      return new DomainTemplate(parsed);
+    } catch (error) {
+      throw new Error(`Template deserialization failed: ${error.message}`);
     }
+  }
 
-    private isValidTemplateStructure(obj: any): boolean {
-        return Object.keys(obj).every(key => this.ALLOWED_PROPERTIES.includes(key));
-    }
+  private isValidTemplateStructure(obj: any): boolean {
+    return Object.keys(obj).every((key) => this.ALLOWED_PROPERTIES.includes(key));
+  }
 }
 ```
 
@@ -534,25 +531,34 @@ src/core/domain-specific/
 
 #### Security Tooling Enhancement
 
+Tool placeholders resolve per the active client via the tool registry. Example product bindings are shown in parentheses.
+
 ```
 Current → Target Security Pipeline:
 ┌─────────────────────────────────────────────────────────┐
 │ Enhanced Security Pipeline                               │
 ├─────────────────────────────────────────────────────────┤
-│ 1. Pre-commit Hooks (Secrets, SAST)                    │
-│ 2. SAST Integration (SonarQube + Checkmarx)           │
-│ 3. SCA Scanning (Snyk + OWASP Dependency Check)       │
-│ 4. IAST Runtime Testing (Interactive Testing)          │
-│ 5. DAST API Testing (OWASP ZAP + Burp Enterprise)     │
-│ 6. Container Security (Twistlock + Clair)             │
-│ 7. Infrastructure Security (Terraform Security)        │
-│ 8. Compliance Scanning (GDPR + PSD2 Automated)        │
+│ 1. Pre-commit Hooks (Secrets, SAST)                     │
+│ 2. SAST Integration ({{CODE_QUALITY_TOOL}})             │
+│ 3. SCA Scanning ({{CODE_QUALITY_TOOL}})                 │
+│ 4. IAST Runtime Testing (Interactive Testing)           │
+│ 5. DAST API Testing ({{DAST_TOOL}})                     │
+│ 6. Container Security ({{CONTAINER_SECURITY_TOOL}})     │
+│ 7. Infrastructure Security ({{IAC_SECURITY_TOOL}})      │
+│ 8. Compliance Scanning ({{COMPLIANCE_FRAMEWORK}})       │
 └─────────────────────────────────────────────────────────┘
 ```
 
+- **Example (SAST Integration)**: SonarQube + Checkmarx
+- **Example (SCA Scanning)**: Snyk + OWASP Dependency Check
+- **Example (DAST API Testing)**: OWASP ZAP + Burp Enterprise
+- **Example (Container Security)**: Twistlock + Clair
+- **Example (Infrastructure Security)**: Terraform Security
+- **Example (Compliance Scanning)**: GDPR + PSD2 Automated
+
 #### Monitoring and Alerting
 
-- **SIEM Integration**: Splunk Enterprise Security for security event correlation
+- **SIEM Integration**: {{SIEM_TOOL}} for security event correlation — _Example (Splunk Enterprise Security)_
 - **Threat Intelligence**: Integration with external threat intelligence feeds
 - **Incident Response**: Automated incident response for critical findings
 - **Metrics Dashboard**: Real-time security metrics and KPI tracking

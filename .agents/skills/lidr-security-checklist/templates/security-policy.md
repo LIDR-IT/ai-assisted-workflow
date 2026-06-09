@@ -12,76 +12,76 @@ owner_role: "Security Lead"
 
 # SECURITY.md Template
 
-> **Proposito**: Template para generar la politica de seguridad (SECURITY.md) de cualquier proyecto.
-> **Criticidad**: ALTA — Manejo de datos sensibles requiere politicas claras.
-> **Compilado desde**: Convenciones de seguridad, GDPR, OWASP guidelines.
+> **Purpose**: Template to generate the security policy (SECURITY.md) for any project.
+> **Criticality**: HIGH — Handling sensitive data requires clear policies.
+> **Compiled from**: Security conventions, GDPR, OWASP guidelines.
 
 ---
 
-## Estructura recomendada
+## Recommended structure
 
 ```markdown
-# Politica de Seguridad — {Nombre del Proyecto}
+# Security Policy — {Project Name}
 
-## Versiones soportadas
+## Supported versions
 
-| Version | Soportada |
+| Version | Supported |
 | ------- | --------- |
-| x.y.z   | Si        |
+| x.y.z   | Yes       |
 | < x.0.0 | No        |
 
-## Reportar una vulnerabilidad
+## Reporting a vulnerability
 
-Si descubres una vulnerabilidad de seguridad, por favor **NO abras un issue publico**.
+If you discover a security vulnerability, please **do NOT open a public issue**.
 
-### Canal de reporte
+### Reporting channel
 
 1. **Email**: security@{domain}.com
-2. **Asunto**: `[SECURITY] {proyecto} — {breve descripcion}`
-3. **PGP**: {Adjuntar PGP public key o enlace si aplica}
+2. **Subject**: `[SECURITY] {project} — {brief description}`
+3. **PGP**: {Attach PGP public key or link if applicable}
 
-### Que incluir en el reporte
+### What to include in the report
 
-- Tipo de vulnerabilidad (ej: XSS, SQLi, IDOR, privilege escalation)
-- Pasos para reproducir
-- Impacto estimado (confidencialidad, integridad, disponibilidad)
-- Version afectada
-- Posible mitigacion (si la conoces)
+- Vulnerability type (e.g.: XSS, SQLi, IDOR, privilege escalation)
+- Steps to reproduce
+- Estimated impact (confidentiality, integrity, availability)
+- Affected version
+- Possible mitigation (if known)
 
-### SLA de respuesta
+### Response SLA
 
-| Accion                   | Tiempo           |
-| ------------------------ | ---------------- |
-| Acuse de recibo          | 24 horas habiles |
-| Evaluacion inicial       | 72 horas habiles |
-| Plan de remediacion      | 7 dias habiles   |
-| Fix desplegado (critico) | 14 dias habiles  |
-| Fix desplegado (alto)    | 30 dias habiles  |
+| Action                  | Time              |
+| ----------------------- | ----------------- |
+| Acknowledgement         | 24 business hours |
+| Initial assessment      | 72 business hours |
+| Remediation plan        | 7 business days   |
+| Fix deployed (critical) | 14 business days  |
+| Fix deployed (high)     | 30 business days  |
 
-### Reconocimiento
+### Acknowledgement
 
-Agradecemos a los investigadores responsables. Si lo deseas, incluiremos tu nombre
-en nuestro Hall of Fame de seguridad (salvo que prefieras anonimato).
+We thank responsible researchers. If you wish, we will include your name
+in our security Hall of Fame (unless you prefer anonymity).
 
-## Practicas de seguridad del proyecto
+## Project security practices
 
-### Datos sensibles
+### Sensitive data
 
-Este proyecto puede procesar datos sensibles. Aplicamos:
+This project may process sensitive data. We apply:
 
-- **Cifrado en transito**: TLS 1.2+ minimo
-- **Cifrado en reposo**: AES-256 minimo
-- **Logging**: NUNCA se loguean datos PII/sensibles
-- **Retencion**: Politica de retencion minima documentada
+- **Encryption in transit**: TLS 1.2+ minimum
+- **Encryption at rest**: AES-256 minimum
+- **Logging**: PII/sensitive data is NEVER logged
+- **Retention**: Minimum retention policy documented
 
 ### OWASP Top 10
 
-Evaluamos continuamente contra OWASP Top 10 (2021) via:
+We continuously evaluate against OWASP Top 10 (2021) via:
 
-- SAST automatizado en cada PR
-- SCA (dependency audit) en cada build
-- DAST periodico en staging
-- Pen testing antes de releases major
+- Automated SAST on every PR
+- SCA (dependency audit) on every build
+- Periodic DAST on staging
+- Pen testing before major releases
 
 ### Security headers
 
@@ -90,18 +90,18 @@ Evaluamos continuamente contra OWASP Top 10 (2021) via:
 - X-Frame-Options
 - X-Content-Type-Options
 
-### Dependencias
+### Dependencies
 
-- Audit automatico en CI/CD (`npm audit` / `snyk` / equivalente)
-- Renovate/Dependabot para actualizaciones automaticas
-- SCA scanning para vulnerabilidades conocidas
+- Automatic audit in CI/CD via {{CODE_QUALITY_TOOL}} — Example (Snyk): `npm audit` / `snyk` / equivalent
+- Automatic dependency updates — Example (Dependabot/Renovate)
+- SCA scanning via {{CODE_QUALITY_TOOL}} for known vulnerabilities
 ```
 
 ---
 
-## Notas para el generador
+## Notes for the generator
 
-- Los SLAs de respuesta deben alinearse con la politica corporativa
-- El email de security debe ser validado con el equipo de seguridad
-- Adaptar la seccion de datos sensibles segun el tipo de proyecto
-- El skill `security-checklist` valida que estas practicas se cumplan pre-deploy
+- Response SLAs must align with the corporate policy
+- The security email must be validated with the security team
+- Adapt the sensitive-data section according to the project type
+- The `security-checklist` skill validates that these practices are met pre-deploy

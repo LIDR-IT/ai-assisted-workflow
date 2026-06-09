@@ -1,9 +1,9 @@
 ---
 name: lidr-vuln-assessment
 id: vuln-assessment
-version: "1.2.0"
+version: "1.3.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 7
 owner_role: "TL"
@@ -20,7 +20,7 @@ Phase: 7 — Security | Gate: contributes to Gate 6 | Content authored in Englis
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds the concrete {{CODE_QUALITY_TOOL}} (SAST/SCA), {{VCS_TOOL}}, and {{CI_TOOL}} in `clients/<CODE>.yaml`. Regulatory weighting resolves via {{COMPLIANCE_FRAMEWORK}} for the active {{INDUSTRY}}.
 
-## Relationship to BMAD
+## Relationship to BMad
 
 LIDR-unique: triages and prioritizes findings emitted by the {{CODE_QUALITY_TOOL}} SAST/SCA scanners (severity escalation, OWASP mapping, compliance-weighted criticality), producing the Gate-6 Security Sign-off evidence. Complements `bmad-testarch-nfr` (which audits NFR evidence including security posture) by owning the vulnerability-finding interpretation layer BMad does not cover.
 
@@ -118,12 +118,12 @@ LIDR-unique: triages and prioritizes findings emitted by the {{CODE_QUALITY_TOOL
 ```markdown
 # Vulnerability Assessment: User Authentication Platform v3.0 — 2026-03-09
 
-## Executive Summary (Spanish)
+## Executive Summary (client locale)
 
-- Total findings: 23 (2 críticos, 5 altos, 12 medios, 4 bajos)
-- New since baseline: 3 (1 crítico nuevo en SDK móvil)
-- Gate 6 readiness: ⚠️ CONDITIONAL (pendiente remediación 2 críticos)
-- Top 3 risks: Exposición datos sensibles, bypass autenticación API, transferencia datos no cifrada
+- Total findings: 23 (2 critical, 5 high, 12 medium, 4 low)
+- New since baseline: 3 (1 new critical in mobile SDK)
+- Gate 6 readiness: ⚠️ CONDITIONAL (2 criticals pending remediation)
+- Top 3 risks: Sensitive data exposure, API authentication bypass, unencrypted data transfer
 
 ## Findings by Severity
 
@@ -220,5 +220,6 @@ Risk weighting parameterizes per the active {{INDUSTRY}} and its bound {{COMPLIA
 
 | Version | Date       | Author                       | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.2.0   | 2026-06-09 | TL: BMAD-coherence batch-fix | Parameterized industry/regulation specifics via {{INDUSTRY}}/{{COMPLIANCE_FRAMEWORK}} (industry risk blocks reframed as labelled examples); abstracted SAST/SCA scanners to {{CODE_QUALITY_TOOL}} in Workflow + Input; language to English-default-configurable (exec summary renders in client locale); added "Relationship to BMAD" note (triages {{CODE_QUALITY_TOOL}} findings for Gate-6, complements bmad-testarch-nfr); added language_default + integrations frontmatter |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable (worked-example exec summary translated to English under client-locale label); abstracted SAST/SCA scanners via tool-registry ({{CODE_QUALITY_TOOL}})                                                                                                                                                                                                                                                                                   |
+| 1.2.0   | 2026-06-09 | TL: BMad-coherence batch-fix | Parameterized industry/regulation specifics via {{INDUSTRY}}/{{COMPLIANCE_FRAMEWORK}} (industry risk blocks reframed as labelled examples); abstracted SAST/SCA scanners to {{CODE_QUALITY_TOOL}} in Workflow + Input; language to English-default-configurable (exec summary renders in client locale); added "Relationship to BMad" note (triages {{CODE_QUALITY_TOOL}} findings for Gate-6, complements bmad-testarch-nfr); added language_default + integrations frontmatter |
 | 1.1.0   | 2026-03-16 | System: QA Enhancement       | Quality assurance integration                                                                                                                                                                                                                                                                                                                                                                                                                                                    |

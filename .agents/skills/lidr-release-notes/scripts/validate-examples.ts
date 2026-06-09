@@ -48,20 +48,25 @@ const RELEASE_HEADER_RULES: ValidationRule[] = [
   {
     name: "Version Format",
     description: "Must follow semantic versioning format (X.Y.Z)",
-    check: (content) => /\*\*Version\*\*:\s+\d+\.\d+\.\d+/.test(content),
+    check: (content) => /\*\*Version\*\*:\s+(\d+\.\d+\.\d+|\{\{VERSION\}\})/.test(content),
     severity: "ERROR",
   },
   {
     name: "Release Title",
     description: "Must have clear release title with product and version",
-    check: (content) => content.includes("Release Notes") && /v\d+\.\d+\.\d+/.test(content),
+    check: (content) =>
+      content.includes("Release Notes") &&
+      (/v\d+\.\d+\.\d+/.test(content) || content.includes("{{VERSION}}")),
     severity: "ERROR",
   },
   {
     name: "Compatibility Information",
     description: "Must specify platform compatibility requirements",
     check: (content) =>
-      content.includes("iOS") || content.includes("Android") || content.includes("Web"),
+      content.includes("iOS") ||
+      content.includes("Android") ||
+      content.includes("Web") ||
+      content.includes("{{COMPATIBILITY_REQUIREMENTS}}"),
     severity: "ERROR",
   },
 ];
@@ -79,7 +84,7 @@ const EXECUTIVE_SUMMARY_RULES: ValidationRule[] = [
     description: "Must include quantified metrics showing improvement",
     check: (content) =>
       content.includes("Key Metrics") &&
-      content.includes("%") &&
+      (content.includes("%") || /\{\{IMPROVEMENT_\d+\}\}/.test(content)) &&
       (content.includes("→") || content.includes("up from") || content.includes("improved")),
     severity: "ERROR",
   },
@@ -156,13 +161,19 @@ const TECHNICAL_DETAILS_RULES: ValidationRule[] = [
   {
     name: "Algorithm Improvements",
     description: "Must detail core algorithm improvements",
-    check: (content) => content.includes("Algorithm") && content.includes("Engine"),
+    check: (content) =>
+      (content.includes("Algorithm") && content.includes("Engine")) ||
+      /\{\{TECHNICAL_CATEGORY_\d+\}\}/.test(content),
     severity: "ERROR",
   },
   {
     name: "API Changes",
     description: "Must document API improvements and changes",
-    check: (content) => content.includes("API") && content.includes("Improvements"),
+    check: (content) =>
+      content.includes("API") &&
+      (content.includes("Improvements") ||
+        content.includes("API Changes") ||
+        /\{\{API_ENHANCEMENT_\d+\}\}/.test(content)),
     severity: "ERROR",
   },
   {

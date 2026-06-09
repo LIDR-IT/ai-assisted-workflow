@@ -17,7 +17,10 @@
  */
 
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /* ────────────────────────────────────────────────────────────────────
    VALIDATION RULES
@@ -119,9 +122,9 @@ const DEFINITION_OF_DONE_RULES: ValidationRule[] = [
     description: "Must include testing requirements in DoD",
     check: (content) =>
       content.includes("test") &&
-      (content.includes("unitarios") ||
+      (content.includes("Unit tests") ||
         content.includes("unit") ||
-        content.includes("integración")),
+        content.includes("Integration tests")),
     severity: "ERROR",
   },
   {
@@ -143,13 +146,13 @@ const TECHNICAL_TASKS_RULES: ValidationRule[] = [
   {
     name: "Technical Tasks Section",
     description: "Must contain technical implementation tasks",
-    check: (content) => content.includes("Technical Tasks") && content.includes("Implementar"),
+    check: (content) => content.includes("Technical Tasks") && content.includes("Implement"),
     severity: "ERROR",
   },
   {
     name: "Component Implementation",
     description: "Must specify component implementation tasks",
-    check: (content) => content.includes("componente") && content.includes(".tsx"),
+    check: (content) => content.includes("component") && content.includes(".tsx"),
     severity: "ERROR",
   },
   {
@@ -161,7 +164,7 @@ const TECHNICAL_TASKS_RULES: ValidationRule[] = [
   {
     name: "Testing Implementation",
     description: "Must include testing implementation tasks",
-    check: (content) => content.includes("Tests") && content.includes("automatizados"),
+    check: (content) => content.includes("tests") && content.includes("Automated"),
     severity: "ERROR",
   },
 ];
@@ -355,7 +358,7 @@ async function main(): Promise<void> {
 
   const validationCases = [
     {
-      file: "user-stories-selphi-document-capture.md",
+      file: "user-stories-document-capture-feature.md",
       rules: [
         ...USER_STORY_FORMAT_RULES,
         ...BDD_ACCEPTANCE_CRITERIA_RULES,

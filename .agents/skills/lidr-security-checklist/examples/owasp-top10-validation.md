@@ -306,7 +306,7 @@ SSL/TLS Optimization Timeline:
 **Software Bill of Materials (SBOM)**:
 
 - ✅ Complete SBOM generated and maintained
-- ✅ Automated vulnerability scanning active (Snyk + OWASP Dependency Check)
+- ✅ Automated vulnerability scanning active — Example ({{CODE_QUALITY_TOOL}}: Snyk + OWASP Dependency Check)
 - ✅ Critical and high vulnerabilities remediated (0 remaining)
 - ✅ Medium vulnerabilities assessed and managed
 - ✅ Dependency update process automated

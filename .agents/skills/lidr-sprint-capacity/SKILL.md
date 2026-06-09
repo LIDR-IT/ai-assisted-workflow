@@ -1,9 +1,9 @@
 ---
 name: lidr-sprint-capacity
 id: sprint-capacity
-version: "1.2.1"
+version: "1.3.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 4
 owner_role: "TL"
@@ -182,3 +182,9 @@ npx tsx scripts/validate-examples.ts
 - Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                     |
+| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------- |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Jira/Slack/SonarQube via tool-registry |

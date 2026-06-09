@@ -1,9 +1,9 @@
 ---
 name: lidr-security-checklist
 id: security-checklist
-version: "1.0.2"
+version: "1.1.0"
 last_updated: "2026-06-09"
-updated_by: "TL: BMAD-coherence batch-fix"
+updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 7
 owner_role: "Sec Lead"
@@ -350,10 +350,12 @@ Use `@signoffs/security-signoff.md` format for formal sign-off.
 ### Step 1: Initial Setup and Security Report Preparation
 
 ```bash
-# Ensure security scan reports exist
-ls **/sonarqube*.json    # SAST results
-ls **/snyk*.json         # SCA results
-ls **/zap*.json          # DAST results (optional)
+# Ensure {{CODE_QUALITY_TOOL}} scan reports exist (file patterns below are
+# Example globs for SonarQube/Snyk/OWASP ZAP — the active client's bound
+# {{CODE_QUALITY_TOOL}} determines the actual export filenames)
+ls **/sonarqube*.json    # Example (SonarQube): SAST results
+ls **/snyk*.json         # Example (Snyk): SCA results
+ls **/zap*.json          # Example (OWASP ZAP): DAST results (optional)
 
 # Navigate to security checklist skill directory
 cd .claude/skills/security-checklist
@@ -418,7 +420,7 @@ open security-analysis/security-checklist-$(date +%Y-%m-%d).md
 cat security-analysis/security-analysis.json | python -m json.tool | head -30
 
 # Import remediation items to project management
-# Import security-analysis/security-remediation-YYYYMMDD.csv to Jira/Linear/GitHub Issues
+# Import security-analysis/security-remediation-YYYYMMDD.csv to {{TRACKING_TOOL}}
 ```
 
 ### Step 5: Address Critical Security Issues (if FAIL or CONDITIONAL status)
@@ -560,3 +562,9 @@ npx tsx scripts/validate-examples.ts
 - Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                 | Changes                                                                                                                   |
+| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted code-quality (SonarQube/Snyk/ZAP) + tracking tools via tool-registry |

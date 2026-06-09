@@ -18,7 +18,10 @@
  */
 
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 interface ValidationRule {
   name: string;
@@ -84,7 +87,7 @@ const FRONTMATTER_VALIDATION_RULES: ValidationRule[] = [
 
 const validationCases = [
   {
-    file: "audit-report-template.md",
+    file: "ecosystem-audit-report.md",
     rules: [...AUDIT_STRUCTURE_RULES, ...FRONTMATTER_VALIDATION_RULES],
     description: "Audit Report Template",
   },

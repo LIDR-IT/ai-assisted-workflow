@@ -40,10 +40,10 @@ owner_role: "Security Lead"
 
 ### 2.1 SAST — Static Application Security Testing
 
-| Tool              | Executed   | Date       | Scope               |
-| ----------------- | ---------- | ---------- | ------------------- |
-| SonarQube         | Yes/No     | YYYY-MM-DD | New + modified code |
-| Custom SAST rules | Yes/No/N/A |            | Specific rules      |
+| Tool                                        | Executed   | Date       | Scope               |
+| ------------------------------------------- | ---------- | ---------- | ------------------- |
+| {{CODE_QUALITY_TOOL}} — Example (SonarQube) | Yes/No     | YYYY-MM-DD | New + modified code |
+| Custom SAST rules                           | Yes/No/N/A |            | Specific rules      |
 
 **SAST Results:**
 
@@ -57,10 +57,10 @@ owner_role: "Security Lead"
 
 ### 2.2 SCA — Software Composition Analysis
 
-| Tool            | Executed | Date       | Scope                            |
-| --------------- | -------- | ---------- | -------------------------------- |
-| Dependabot/Snyk | Yes/No   | YYYY-MM-DD | Direct + transitive dependencies |
-| License check   | Yes/No   |            | Compatible licenses              |
+| Tool                                              | Executed | Date       | Scope                            |
+| ------------------------------------------------- | -------- | ---------- | -------------------------------- |
+| {{CODE_QUALITY_TOOL}} — Example (Dependabot/Snyk) | Yes/No   | YYYY-MM-DD | Direct + transitive dependencies |
+| License check                                     | Yes/No   |            | Compatible licenses              |
 
 **SCA Results:**
 
@@ -79,10 +79,10 @@ owner_role: "Security Lead"
 
 ### 2.3 DAST — Dynamic Application Security Testing
 
-| Tool       | Executed | Date       | Environment | Scope                |
-| ---------- | -------- | ---------- | ----------- | -------------------- |
-| OWASP ZAP  | Yes/No   | YYYY-MM-DD | Pre-prod    | Full scan/Targeted   |
-| Burp Suite | Yes/No   |            | Pre-prod    | Manual + Active scan |
+| Tool                                        | Executed | Date       | Environment | Scope                |
+| ------------------------------------------- | -------- | ---------- | ----------- | -------------------- |
+| {{CODE_QUALITY_TOOL}} — Example (OWASP ZAP) | Yes/No   | YYYY-MM-DD | Pre-prod    | Full scan/Targeted   |
+| Example (Burp Suite)                        | Yes/No   |            | Pre-prod    | Manual + Active scan |
 
 **DAST Results:**
 
