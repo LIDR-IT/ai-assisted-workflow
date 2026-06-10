@@ -16,8 +16,8 @@ Creates project documentation scaffold using self-contained skill templates.
 Generates all required docs with correct frontmatter and project context.
 
 USAGE:
-  /init-project-docs my-project
-  /init-project-docs {{CLIENT_CODE}}-enrollment
+  /lidr-init-project-docs my-project
+  /lidr-init-project-docs {{CLIENT_CODE}}-enrollment
 
 ARGUMENTS:
   project-name: Slug-format name (required). Used for folder and references.
@@ -27,13 +27,16 @@ REQUIREMENTS:
   - .claude/rules/ configured
 
 RELATED COMMANDS:
-  /validate-project-docs - Validates docs against template criteria
-  /sync-docs             - Updates docs after code changes
+  /lidr-validate-project-docs - Validates docs against template criteria
+  /lidr-sync-docs             - Updates docs after code changes
 
 SKILLS USED:
-  generate-rule          - Generates rule files for .claude/rules/
+  lidr-generate-rule     - Generates rule files for .claude/rules/lidr-sdlc/
 
 CHANGELOG:
+  v4.0.1 (2026-06-10): Repointed skill template paths (lidr-* prefixes, correct
+                        filenames product-brief.md/deployment.md); rules generated
+                        under lidr-sdlc/; lidr-generate-rule skill name.
   v4.0.0 (2026-03-17): Updated for self-contained architecture - templates now in skills/{name}/templates/
   v3.0.0 (2026-03-09): Added rule generation step using generate-rule skill
   v2.0.0 (2025-03-05): Rewritten to official command format
@@ -42,15 +45,15 @@ CHANGELOG:
 
 # Initialize Project Docs: $1
 
-Load: @../rules/documentation.md for frontmatter standards.
-Load: @../rules/project.md for project context.
+Load: @../rules/lidr-sdlc/documentation.md for frontmatter standards.
+Load: @../rules/lidr-sdlc/project.md for project context.
 
 ## Validate
 
 If "$1" is empty:
 ❌ Project name required.
-Usage: /init-project-docs [project-name]
-Example: /init-project-docs {{CLIENT_CODE}}-enrollment
+Usage: /lidr-init-project-docs [project-name]
+Example: /lidr-init-project-docs {{CLIENT_CODE}}-enrollment
 Exit.
 
 Check if docs already exist: !`test -d docs/projects/$1 && echo "EXISTS" || echo "NEW"`
@@ -114,7 +117,7 @@ Read template file from skills/{skill}/templates/
 Generate project-specific version:
 
 - Replace all {placeholders} with project context
-- Add frontmatter per @../rules/documentation.md:
+- Add frontmatter per @../rules/lidr-sdlc/documentation.md:
   ```yaml
   ---
   id: {doc-type}-$1
@@ -132,43 +135,42 @@ Generate project-specific version:
 
 Files to create (using self-contained templates):
 
-- docs/projects/$1/business-case.md (from .claude/skills/business-case/templates/business-case.md)
+- docs/projects/$1/business-case.md (from .claude/skills/lidr-business-case/templates/product-brief.md)
 - docs/projects/$1/prd-funcional.md (from .agents/\_shared/lidr/templates/prd-funcional.md — reference format for bmad-prd F-section)
 - docs/projects/$1/prd-tecnico.md (from .agents/\_shared/lidr/templates/prd-tecnico.md — reference format for bmad-prd T-section)
 - docs/projects/$1/architecture.md (from .agents/\_shared/lidr/templates/architecture/architecture.md)
-- docs/projects/$1/user-stories.md (from .claude/skills/user-stories/templates/user-story.md)
+- docs/projects/$1/user-stories.md (from .claude/skills/lidr-user-stories/templates/user-story.md)
 - docs/projects/$1/ux-design-spec.md (from .agents/\_shared/lidr/templates/ux-design-spec.md)
-- docs/projects/$1/risk-log.md (from .claude/skills/risk-log/templates/risk-log.md)
-- docs/projects/$1/change-request.md (from .claude/skills/change-request/templates/change-request.md)
+- docs/projects/$1/risk-log.md (from .claude/skills/lidr-risk-log/templates/risk-log.md)
+- docs/projects/$1/change-request.md (from .claude/skills/lidr-change-request/templates/deployment.md)
 - docs/projects/$1/specs/routes.md (from .agents/\_shared/lidr/templates/architecture/specs/routes.md)
 - docs/projects/$1/specs/components.md (from .agents/\_shared/lidr/templates/architecture/specs/components.md)
 - docs/projects/$1/specs/storage.md (from .agents/\_shared/lidr/templates/architecture/specs/storage.md)
 
 ## Update Project Rule
 
-Update @../rules/project.md to reference new project docs:
+Update @../rules/lidr-sdlc/project.md to reference new project docs:
 
 - Add: `@../../docs/projects/$1/` as active project context
 
 ## Generate Rule Files
 
-Use the `generate-rule` skill to create or update rule files in `.claude/rules/`:
+Use the `lidr-generate-rule` skill to create or update rule files in `.claude/rules/lidr-sdlc/`:
 
-Check if rules exist: !`ls .claude/rules/*.md 2>/dev/null | wc -l`
+Check if rules exist: !`ls .claude/rules/lidr-sdlc/*.md 2>/dev/null | wc -l`
 
 If no rules exist (new ecosystem):
-Use skill `generate-rule` to create all 5 rules from project context:
+Use skill `lidr-generate-rule` to create the 5 core SDLC rules from project context:
 
-- .claude/rules/org.md (from company info + regulatory context)
-- .claude/rules/tech-stack.md (from stack selection in Question 2)
-- .claude/rules/project.md (from project name, type, objectives)
-- .claude/rules/documentation.md (standard DTC governance)
-- .claude/rules/workflows.md (from commands catalog)
-  Template reference: skills/generate-rule/templates/rule.md
-  Guide reference: @../../docs/guides/claude-code/rule-development.md
+- .claude/rules/lidr-sdlc/org.md (from company info + regulatory context)
+- .claude/rules/lidr-sdlc/tech-stack.md (from stack selection in Question 2)
+- .claude/rules/lidr-sdlc/project.md (from project name, type, objectives)
+- .claude/rules/lidr-sdlc/documentation.md (standard DTC governance)
+- .claude/rules/lidr-sdlc/workflows.md (from commands catalog)
+  Template reference: skills/lidr-generate-rule/templates/rule.md
 
 If rules already exist (existing ecosystem):
-Use skill `generate-rule` to update `.claude/rules/project.md` only:
+Use skill `lidr-generate-rule` to update `.claude/rules/lidr-sdlc/project.md` only:
 
 - Add new project reference: @../../docs/projects/$1/
 - Update current state section
@@ -176,17 +178,17 @@ Use skill `generate-rule` to update `.claude/rules/project.md` only:
 ## Report
 
 ```
-/init-project-docs $1 ✅
+/lidr-init-project-docs $1 ✅
 
 Created: docs/projects/$1/
 Files:   {N} documents generated
 Status:  All in "draft" — ready to fill
 
 TODOs:   {N} sections need project-specific content
-         Run /validate-project-docs $1 to check completeness
+         Run /lidr-validate-project-docs $1 to check completeness
 
 Next steps:
 1. Fill in product-brief.md first (drives everything else)
 2. Then architecture.md (technical foundation)
-3. Run /validate-project-docs $1 when ready
+3. Run /lidr-validate-project-docs $1 when ready
 ```

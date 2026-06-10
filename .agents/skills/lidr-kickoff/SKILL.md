@@ -61,15 +61,15 @@ LIDR-unique Phase-1 / post-Gate-0 governance artifact — BMad has no kickoff-me
 
 ## Input
 
-| Input                      | Required | Source                       | Context                                                    |
-| -------------------------- | -------- | ---------------------------- | ---------------------------------------------------------- |
-| **Approved Business Case** | ✅       | skill `business-case` output | Complete BC with all sections                              |
-| **Gate 0 Resolution**      | ✅       | `/advance-gate 0` output     | Approval status + conditions                               |
-| **Participant List**       | ✅       | PME / SM                     | Names, roles, dedication %, expertise areas                |
-| **Meeting Date/Time**      | ✅       | Calendar invite              | Include timezone for distributed teams                     |
-| **Project Code**           | ✅       | PME ({{TRACKING_TOOL}})      | Format: {PRODUCT}-{NUMBER} (e.g., PROJ-2024)               |
-| **Known Constraints**      | Optional | Sponsor / PME                | Budget, timeline, resource limitations                     |
-| **Regulatory Context**     | Optional | Legal / Compliance           | Applicable data protection regulations, industry standards |
+| Input                      | Required | Source                        | Context                                                    |
+| -------------------------- | -------- | ----------------------------- | ---------------------------------------------------------- |
+| **Approved Business Case** | ✅       | skill `business-case` output  | Complete BC with all sections                              |
+| **Gate 0 Resolution**      | ✅       | `/lidr-advance-gate 0` output | Approval status + conditions                               |
+| **Participant List**       | ✅       | PME / SM                      | Names, roles, dedication %, expertise areas                |
+| **Meeting Date/Time**      | ✅       | Calendar invite               | Include timezone for distributed teams                     |
+| **Project Code**           | ✅       | PME ({{TRACKING_TOOL}})       | Format: {PRODUCT}-{NUMBER} (e.g., PROJ-2024)               |
+| **Known Constraints**      | Optional | Sponsor / PME                 | Budget, timeline, resource limitations                     |
+| **Regulatory Context**     | Optional | Legal / Compliance            | Applicable data protection regulations, industry standards |
 
 > **Domain note**: When executing for regulated industries ({{APPLICABLE_DOMAINS}}), the regulatory context becomes required input. Replace placeholders in the output template with your project's actual regulatory framework.
 
@@ -285,7 +285,7 @@ See `examples/` directory for domain-specific kickoff examples:
 ### Required Skills
 
 - **Prerequisite**: `business-case` — Must have approved BC before kickoff
-- **Prerequisite**: `/advance-gate 0` — Gate 0 must pass before kickoff meeting
+- **Prerequisite**: `/lidr-advance-gate 0` — Gate 0 must pass before kickoff meeting
 - **Follow-up**: `bmad-prd` — Action item for PO post-kickoff
 - **Follow-up**: `bmad-prd` — Action item for R&D Lead post-kickoff
 - **Follow-up**: `tracking-integration` — Create project structure in {{TRACKING_TOOL}}

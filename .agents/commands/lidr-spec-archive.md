@@ -95,7 +95,7 @@ Status:  archived
 
 Next:
   /lidr-create-pr <ticket-id>   → create PR referencing this archived change
-  /sync-docs                    → propagate any final doc updates
+  /lidr-sync-docs                    → propagate any final doc updates
 ```
 
 ## Guardrails

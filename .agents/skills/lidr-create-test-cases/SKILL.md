@@ -1,9 +1,9 @@
 ---
 name: lidr-create-test-cases
 id: create-test-cases
-version: "2.5.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "2.6.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
 stage: qa
@@ -31,6 +31,21 @@ Phase: 6 — QA | Gate: **G5 evidence (QA→Sec), `required: false`** | Output: 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 > **BMad relationship (extension):** BMad owns test _design_ — `bmad-testarch-test-design` (plan/strategy) and `bmad-testarch-atdd` (red-phase BDD scaffolds). This skill is the LIDR gap-filler that expands those BDD acceptance criteria into **executable, human-readable test cases** (importable to the bound `{{TEST_MGMT_TOOL}}`) for manual QA execution. Wired into `_shared/lidr/gate-evidence.yaml` → **G5** (optional).
+
+## Output Location
+
+Test cases are published as **one file per test-case set** under the per-client test-cases directory Gate 5 reads (`gate-evidence.yaml` G5 `lidr-create-test-cases` glob `{client_root}/test-cases/*.md`, `required: false`):
+
+**`docs/projects/{CLIENT_CODE}/test-cases/TC-{PROJ}-{NNN}.md`** (one file per test-case set, grouped by RF/US)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`). The `{{TEST_MGMT_TOOL}}` CSV import is generated alongside (e.g. `docs/projects/{CLIENT_CODE}/test-cases/import.csv`).
+
+Examples:
+
+- `docs/projects/docline/test-cases/TC-SHOP-003.md`
+- `docs/projects/docline/test-cases/import.csv`
+
+> **Gate 5 contract**: `test-cases/*.md` at the per-client root is optional evidence for G5. Publish per-set files under `test-cases/` so `/lidr-advance-gate 5` and `lidr-gate-evaluation` resolve them.
 
 ## Workflow
 
@@ -541,9 +556,10 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                                    |
-| ------- | ---------- | ---------------------- | ---------------------------------------------------------------------------------------------------------- |
-| 2.5.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tracking/test_management via tool-registry            |
-| 2.2.0   | 2026-03-16 | Tech Lead: System      | Added Quality Assurance section with validation framework                                                  |
-| 2.0.0   | 2026-03-09 | QA: Enhanced           | Added comprehensive examples, troubleshooting guide, regression guidance, and test data management section |
-| 1.0.0   | 2025-02-01 | QA: Initial            | Initial version of the skill                                                                               |
+| Version | Date       | Author                         | Changes                                                                                                                               |
+| ------- | ---------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.6.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes per-set files to `docs/projects/{CLIENT_CODE}/test-cases/*.md` (G5 optional gate-evidence path) |
+| 2.5.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted tracking/test_management via tool-registry                                       |
+| 2.2.0   | 2026-03-16 | Tech Lead: System              | Added Quality Assurance section with validation framework                                                                             |
+| 2.0.0   | 2026-03-09 | QA: Enhanced                   | Added comprehensive examples, troubleshooting guide, regression guidance, and test data management section                            |
+| 1.0.0   | 2025-02-01 | QA: Initial                    | Initial version of the skill                                                                                                          |

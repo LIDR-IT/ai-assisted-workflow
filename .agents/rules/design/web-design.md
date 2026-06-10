@@ -1,6 +1,10 @@
 ---
 name: web-design
 description: Review UI code for Vercel Web Interface Guidelines compliance
+id: web-design
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 argument-hint: <file-or-pattern>
 trigger: always_on

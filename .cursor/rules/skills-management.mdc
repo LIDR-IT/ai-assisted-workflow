@@ -1,6 +1,10 @@
 ---
 name: skills-management
 description: Review project for skills structure and compliance
+id: skills-management
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: [".agents/skills/**/*", ".claude/skills", ".cursor/skills"]
 argument-hint: <project-root>

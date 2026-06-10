@@ -1,7 +1,7 @@
 ---
 name: lidr-integrations-readme
 description: How LIDR skills stay tool-agnostic and language-agnostic — the central tool-registry + per-skill adapters (hybrid model) and per-client language/tool binding.
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 status: active
 type: reference
 ---
@@ -83,6 +83,10 @@ No skill edits required — that is the point.
 
 ## Migration status
 
-This pattern is being rolled out across the 35 LIDR skills. Tracking:
-`tracking-integration` (reference) ✅. Remaining language flips (16 skills) and
-tool abstractions (21 with hardcoded Jira) tracked in `MIGRATION.md` Phase G.
+The language-/tool-agnostic pattern has been rolled out across the LIDR skills
+(now **44**, all prefixed `lidr-*`). `lidr-tracking-integration` is the reference
+implementation. **Phase G is complete:** the 30 targeted skills were refactored and
+passed adversarial verification (English-default-configurable + tools abstracted to
+`{{...}}` capability variables). The remaining residual is tool-coupling that lives
+**inside `.py`/`.ts` scripts** (export formats, validator check-strings) — tracked as
+a follow-up in `MIGRATION.md` Phase G "Residual". See `MIGRATION.md` for the full log.

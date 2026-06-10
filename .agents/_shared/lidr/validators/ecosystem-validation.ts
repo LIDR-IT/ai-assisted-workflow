@@ -1,11 +1,11 @@
 /**
  * ECOSYSTEM VALIDATION ENGINE - Phase 1 Critical Fix
  * Comprehensive validation engine that synchronizes filesystem reality with tracked data
- * Integration point for dtc-write-guard hook and advance-gate command
+ * Integration point for the frontmatter-guard / validate-ecosystem-counts hooks and the advance-gate command
  *
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: SDLC Enhancement Team
- * Date: 2026-03-17
+ * Date: 2026-06-11
  */
 
 import * as fs from "fs";
@@ -254,7 +254,7 @@ function calculateDrift(filesystem: number, tracked: number): EcosystemCount {
 }
 
 /**
- * Integration point for dtc-write-guard hook
+ * Integration point for the frontmatter-guard hook (PreToolUse: Write|Edit)
  * Called before any Write/Edit operation to validate ecosystem health
  */
 export async function validateBeforeWrite(

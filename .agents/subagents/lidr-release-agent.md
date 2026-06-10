@@ -9,10 +9,10 @@ tools:
   - Glob
   - Bash
 skills:
-  - release-notes
-  - change-request
-  - rollback-plan
-  - retrospective
+  - lidr-release-notes
+  - lidr-change-request
+  - lidr-rollback-plan
+  - bmad-retrospective
 memory: project
 # ── Metadata ecosistema ──
 id: release-agent
@@ -23,7 +23,7 @@ status: active
 triggerType: event-driven
 mcps:
   - filesystem
-evolvedFrom: /create-release-notes + /update-changelog
+evolvedFrom: /lidr-create-release-notes + /lidr-update-changelog
 ---
 
 Use this agent when code is merged to main, a release branch is created, or when preparing release documentation for deployment.
@@ -49,14 +49,14 @@ Hotfix merge triggers fast-track release documentation generation.
 ## Chain Steps
 
 1. **GUARD: Verify prerequisites before execution**
-   - Verify Gate 6 has PASSED — read `.claude/handoffs/gate-6-handoff.local.md`. If not found, STOP and report: "Gate 6 handoff not found. Security gate must pass before release preparation. Run /advance-gate 6 first."
+   - Verify Gate 6 has PASSED — read `docs/projects/{client}/handoffs/gate-6-handoff.md`. If not found, STOP and report: "Gate 6 handoff not found. Security gate must pass before release preparation. Run /lidr-advance-gate 6 first."
    - Verify there are merged PRs since last tag via Git CLI — if none, WARN and ask for confirmation
    - Verify no open blocker/critical bugs via manual check — if any, STOP and list them
 2. Lee PRs mergeados via Git CLI (desde ultimo tag)
 3. Agrupa cambios: features, fixes, breaking changes
-4. Genera changelog a 2 niveles (negocio + tecnico) con skill release-notes
-5. Pre-llena Change Request con skill change-request
-6. Genera rollback plan con skill rollback-plan
+4. Genera changelog a 2 niveles (negocio + tecnico) con skill lidr-release-notes
+5. Pre-llena Change Request con skill lidr-change-request
+6. Genera rollback plan con skill lidr-rollback-plan
 7. Publica draft en Confluence via manual publication
 8. Notifica canal de releases via manual notification
 9. **VALIDATE OUTPUT: Verify generated documents match template schemas**
@@ -94,11 +94,11 @@ You are an expert release engineer specializing in preparing comprehensive relea
 1. **Consult Memory**: Check for release patterns, preferred formats, past incidents
 2. **Read PRs**: Via GitHub CLI, read all PRs merged since last tag
 3. **Classify Changes**: Group into features, fixes, breaking changes, chores
-4. **Generate Changelog**: Using preloaded release-notes skill, create:
+4. **Generate Changelog**: Using preloaded lidr-release-notes skill, create:
    - Business level: for PO/stakeholders (functional language)
    - Technical level: for devs (endpoints, DB changes, config)
-5. **Pre-fill CR**: Using preloaded change-request skill, populate Change Request
-6. **Create Rollback Plan**: Using preloaded rollback-plan skill, document rollback steps
+5. **Pre-fill CR**: Using preloaded lidr-change-request skill, populate Change Request
+6. **Create Rollback Plan**: Using preloaded lidr-rollback-plan skill, document rollback steps
 7. **Publish**: Draft to Confluence via Confluence MCP
 8. **Notify**: Release channel via manual notification
 9. **Update Memory**: Save release metadata and patterns

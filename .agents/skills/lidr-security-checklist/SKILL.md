@@ -1,9 +1,9 @@
 ---
 name: lidr-security-checklist
 id: security-checklist
-version: "1.1.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "1.2.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
 stage: security
@@ -26,6 +26,18 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 This skill is a **LIDR extension on top of BMad** (BMad = source of truth; LIDR fills gaps BMad has no concept of). It owns the **Gate-6 security sign-off**: an OWASP Top 10 + regulatory compliance checklist that gates production deployment — a governance artifact BMad has no equivalent for. It complements `bmad-testarch-nfr` (which audits NFR evidence including security) by producing the formal CISO sign-off record.
+
+## Output Location
+
+The automation scripts write working artifacts to a transient `security-analysis/` directory, but the **canonical checklist MUST be published to the per-client path Gate 6 reads** (`gate-evidence.yaml` G6 `lidr-security-checklist` glob `{client_root}/security-checklist*.md`, `required: true`):
+
+**`docs/projects/{CLIENT_CODE}/security-checklist.md`** (or `security-checklist-{date}.md` per evaluation)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`). The CISO sign-off record is written separately to `docs/projects/{CLIENT_CODE}/signoffs/security-signoff.md` (the G6 sign-off artifact).
+
+Example: `docs/projects/docline/security-checklist-2026-06-10.md`
+
+> **Gate 6 contract**: `security-checklist*.md` at the per-client root is REQUIRED evidence for G6. The transient `security-analysis/` copy does NOT satisfy the gate — always publish the final checklist to `docs/projects/{CLIENT_CODE}/security-checklist*.md`.
 
 ## Automated Workflow (NEW)
 
@@ -422,6 +434,10 @@ cat security-analysis/security-analysis.json | python -m json.tool | head -30
 
 # Import remediation items to project management
 # Import security-analysis/security-remediation-YYYYMMDD.csv to {{TRACKING_TOOL}}
+
+# Publish the final checklist to the per-client Gate 6 path (REQUIRED for the gate to resolve it)
+cp security-analysis/security-checklist-$(date +%Y-%m-%d).md \
+   docs/projects/{CLIENT_CODE}/security-checklist.md
 ```
 
 ### Step 5: Address Critical Security Issues (if FAIL or CONDITIONAL status)
@@ -460,12 +476,12 @@ python scripts/checklist-generator.py \
 # Ready for Gate 6 approval
 # Generate formal security sign-off using checklist report as evidence
 # Execute Gate 6 evaluation
-/advance-gate 6
+/lidr-advance-gate 6
 ```
 
 **Integration with Commands**:
 
-- `/advance-gate 6` should verify this skill's PASS status before proceeding
+- `/lidr-advance-gate 6` should verify this skill's PASS status before proceeding
 - Security checklist automation integrates with existing Gate 6 workflow
 
 ## Enhanced Key Rules (Updated for Automation)
@@ -566,6 +582,7 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                                                   |
-| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted code-quality (SonarQube/Snyk/ZAP) + tracking tools via tool-registry |
+| Version | Date       | Author                         | Changes                                                                                                                                                           |
+| ------- | ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location" + publish step: canonical checklist now lands at `docs/projects/{CLIENT_CODE}/security-checklist*.md` (required G6 gate-evidence path) |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted code-quality (SonarQube/Snyk/ZAP) + tracking tools via tool-registry                                         |

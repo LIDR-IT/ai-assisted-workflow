@@ -23,8 +23,8 @@
 #   project      — Active project context (changes per client)
 #   technical    — Stack and architecture references
 
-version: "1.0.0"
-last_updated: "2026-05-20"
+version: "1.0.1"
+last_updated: "2026-06-11"
 maintained_by: "TL: LIDR Spec Native"
 
 context:
@@ -115,12 +115,10 @@ context:
       always_load: false
       scope: reference
 
-  project:
-    # Active project artifacts — loaded as needed by skills/commands
-    - path: docs/projects/
-      description: "Per-client project documentation root (one subdir per client code)"
-      always_load: false
-      scope: project
+  # Note: per-client project artifacts live under docs/projects/<CLIENT_CODE>/
+  # once a client repo is initialized (created by /lidr-init-project-docs and the
+  # /lidr-spec-* lifecycle). This template repo has no docs/projects/ yet, so no
+  # entry is listed here — add one per client when the directory exists.
 
   technical:
     - path: .agents/orchestrator/AGENTS.md

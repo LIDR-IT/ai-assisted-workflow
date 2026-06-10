@@ -2,17 +2,26 @@
 
 **Source of Truth:** This directory contains all project rules synchronized to AI agents.
 
-## Character Limit
+## Character Target
 
-**Maximum:** 12,000 characters per rule file
+**Target:** keep rule files under ~12,000 characters. This is a **Cursor
+performance recommendation**, NOT a hard limit — it is not enforced by any hook
+or CI gate.
 
-**Why?** Based on Cursor's recommendation of ~500 lines and cross-platform compatibility:
+**Why?** Based on Cursor's ~500-line recommendation and cross-platform behavior:
 
-- Cursor: 500 lines recommended
+- Cursor: 500 lines recommended (perf)
 - Claude Code: No hard limit, but concise is better
 - Gemini CLI: Performance degrades with large files
 - Antigravity: Focused rules work best
 - Copilot (VSCode): Follows Cursor-like limits
+
+**Intentional exceptions:** the `lidr-sdlc/` governance rules (`workflows`,
+`tech-stack`, `documentation`, `org`, `project`, `spec-execution`) and
+`product/roadmap` are comprehensive references that exceed the target by design
+and load path-scoped/on-demand. Do **not** fragment them — see the
+"Rules Character Target" section in the orchestrator (`CLAUDE.md`) for the full
+list and rationale. Author **new** generic rules to stay under the target.
 
 **Check file size:**
 
@@ -20,7 +29,7 @@
 # Count characters in a rule
 wc -c .agents/rules/category/rule-name.md
 
-# Find rules exceeding limit
+# List rules over the target (the lidr-sdlc governance set is expected)
 find .agents/rules -name "*.md" -type f -exec wc -c {} + | awk '$1 > 12000 {print $1, $2}'
 ```
 
@@ -146,13 +155,12 @@ All components must use functional components...
 
 ### Platform-Specific Behavior
 
-**Cursor (.mdc format):**
+**Cursor (.md / .mdc format):**
 
-- ⚠️ **Extension MUST be `.mdc`** (sync script auto-converts .md → .mdc)
-- ⚠️ **NO subdirectories supported** - rules must be in flat structure
-- ⚠️ **`name` field REQUIRED** - rule won't appear in UI without it
-- Extracts: `name`, `description`, `alwaysApply`, `globs`
-- Flattened structure: `code/principles.md` → `principles.mdc`
+- Per [Cursor docs](https://cursor.com/docs/context/rules), both `.md` and `.mdc` extensions are supported and subdirectories are allowed. The adapter still converts `.md` → `.mdc` and flattens for simplicity, but neither is a hard requirement.
+- `name` is **non-standard** — harmlessly ignored. The documented schema is only `description`/`alwaysApply`/`globs` (all optional). Source files keep `name:` for legacy readability; Cursor does not require it.
+- Extracts: `description`, `alwaysApply`, `globs` (and tolerates the legacy `name`)
+- Flattened structure (adapter default): `code/principles.md` → `principles.mdc`
 - `alwaysApply: true` = always active, `false` = intelligent application
 - **Ignores:** `argument-hint`, `paths`, `trigger` (safe to include)
 
@@ -177,9 +185,9 @@ All components must use functional components...
 **Copilot/VSCode (.instructions.md format):**
 
 - ⚠️ **Extension MUST be `.instructions.md`** (sync script auto-converts)
-- ⚠️ **NO subdirectories supported** - rules must be in flat structure
-- Extracts: `description`, transforms `globs` → `applyTo`
-- Flattened structure: `code/principles.md` → `principles.instructions.md`
+- Per [VSCode docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions), the rules location is `.github/instructions/` and **recursive subdirectories are supported**. The adapter flattens for simplicity but subdirectories are not prohibited.
+- Extracts: `description`, transforms `globs` → `applyTo` (defaults to `"**"` when `globs` absent; required by GitHub Cloud Copilot)
+- Flattened structure (adapter default): `code/principles.md` → `principles.instructions.md`
 - **Ignores:** `name`, `alwaysApply`, `paths`, `trigger`, `argument-hint`
 - Also generates `.github/copilot-instructions.md` index file
 
@@ -189,7 +197,7 @@ All components must use functional components...
 
 ```yaml
 ---
-name: my-rule # For Cursor
+name: my-rule # Legacy, non-standard — harmlessly ignored by all platforms
 description: Rule description # For all platforms
 alwaysApply: false # For Cursor
 globs: ["**/*.ts"] # For Cursor
@@ -556,7 +564,7 @@ ls -la .github/instructions/  # Should contain .instructions.md files (Copilot) 
 Before adding a new rule file:
 
 - [ ] Single topic/theme
-- [ ] Under 12,000 characters (`wc -c file.md`)
+- [ ] Under ~12,000 characters target (`wc -c file.md`) — unless it's a documented comprehensive governance/reference rule
 - [ ] Descriptive filename (lowercase-hyphen)
 - [ ] Proper category subdirectory
 - [ ] Universal YAML frontmatter (all platform fields)
@@ -584,9 +592,11 @@ See these files as examples of well-structured rules:
 
 ## Common Mistakes to Avoid
 
-### ❌ Too Long (>12,000 chars)
+### ❌ Too Long (a generic rule >12,000 chars covering mixed topics)
 
-**Solution:** Split into multiple focused files
+**Solution:** Split a generic rule only when it covers two genuinely separate
+topics. Comprehensive single-topic governance/reference rules (the `lidr-sdlc/`
+set) are an accepted exception — trim redundancy rather than fragment them.
 
 ### ❌ Mixed Topics
 

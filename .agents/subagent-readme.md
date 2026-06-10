@@ -2,7 +2,7 @@
 
 Source-of-truth for autonomous subagents across 4 of 5 platforms (Antigravity does not support subagents).
 
-**Source:** `.agents/subagents/<name>.md` — 9 subagents (6 LIDR `lidr-*` + 3 generic).
+**Source:** `.agents/subagents/<name>.md` — 23 subagents (10 LIDR `lidr-*` + 13 BMad `bmad-*-agent`).
 
 ## Terminology and paths per platform (verified May 2026)
 
@@ -48,22 +48,29 @@ tools: # optional — restrict tool access
 | Gemini   | ✅                      | `@agent-name` prefix                     |
 | Copilot  | ✅                      | Selected from agent picker in chat UI    |
 
-## Available subagents (9)
+## Available subagents (23)
 
-### Generic (3)
+### LIDR (10) — `lidr-*`
 
-- `doc-improver` — Audit and improve documentation
-- `pr-validator` — Validate PRs against standards before opening
-- `ticket-enricher` — Enrich tickets with missing details
-
-### LIDR SDLC (6)
-
+- `lidr-doc-improver` — Audit and improve documentation
 - `lidr-docs-agent` — Documentation maintenance
 - `lidr-metrics-agent` — Sprint + DORA metrics collection
 - `lidr-onboarding-agent` — New team-member onboarding
+- `lidr-pr-validator` — Validate PRs against standards before opening
 - `lidr-qa-agent` — Testing suite preparation
 - `lidr-release-agent` — Release notes + change requests
 - `lidr-security-agent` — Vulnerability triage + remediation tickets
+- `lidr-spec-orchestrator` — End-to-end LIDR Spec Lifecycle (new → ff → apply → verify → archive)
+- `lidr-ticket-enricher` — Enrich tickets with missing details
+
+### BMad (13) — `bmad-*-agent` (file suffix `.agent.md`)
+
+Agent personas from the BMad module:
+
+- `bmad-agent-analyst`, `bmad-agent-architect`, `bmad-agent-dev`, `bmad-agent-pm`, `bmad-agent-tech-writer`, `bmad-agent-ux-designer`, `bmad-tea`
+- Creative/innovation (`cis`): `bmad-cis-agent-brainstorming-coach`, `bmad-cis-agent-creative-problem-solver`, `bmad-cis-agent-design-thinking-coach`, `bmad-cis-agent-innovation-strategist`, `bmad-cis-agent-presentation-master`, `bmad-cis-agent-storyteller`
+
+> The ex-generic subagents (`doc-improver`, `pr-validator`, `ticket-enricher`) were renamed with the `lidr-` prefix.
 
 ## Add a new subagent
 

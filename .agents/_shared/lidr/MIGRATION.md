@@ -1,7 +1,8 @@
 ---
 name: lidr-skills-migration
-description: Migration log for 17 LIDR skills consolidated into BMad family. Documents which assets moved here, why, and the BMad replacement.
-last_updated: "2026-05-19"
+version: "1.1.0"
+description: Migration log for LIDR skills consolidated into the BMad family, plus the prefix-unification and new-skill phases. Documents which assets moved here, why, and the BMad replacement.
+last_updated: "2026-06-11"
 status: active
 type: migration-log
 ---
@@ -86,11 +87,11 @@ No asset migration needed. BMad's retro is 1513 lines (vs LIDR's 149) with Party
 
 ## Skills KEPT (no migration — LIDR substantively unique)
 
-| LIDR (kept)              | Why kept                                                                                                                                            |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `lidr-pr-description`    | No BMad equivalent. DoD checklist (`checklists/dod.md`) is wired into hook `dtc-write-guard` and `/lidr-advance-gate 4`.                            |
-| `lidr-user-stories`      | `scripts/rf-slicer.py` (1184 lines): 8 slicing patterns + INVEST + Jira CSV export. BMad stories are dev-agent fodder, not Jira-ready PO artifacts. |
-| `lidr-create-test-cases` | Xray-importable QA test cases. BMad ATDD generates code scaffolds for devs — different role, different deliverable.                                 |
+| LIDR (kept)              | Why kept                                                                                                                                                 |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lidr-pr-description`    | No BMad equivalent. DoD checklist (`checklists/dod.md`) is enforced at `/lidr-advance-gate 4` (and the `lidr-frontmatter-guard` hook guards .md writes). |
+| `lidr-user-stories`      | `scripts/rf-slicer.py` (1184 lines): 8 slicing patterns + INVEST + Jira CSV export. BMad stories are dev-agent fodder, not Jira-ready PO artifacts.      |
+| `lidr-create-test-cases` | Xray-importable QA test cases. BMad ATDD generates code scaffolds for devs — different role, different deliverable.                                      |
 
 ## Phase D — Repositioning LIDR as thin BMad complement (2026-05-20)
 
@@ -139,40 +140,46 @@ After Phase D (7 parallel-flow deleted): 38 LIDR + 69 BMad + 4 anytime = 111
 Final LIDR breakdown by criticality:
 
 - 🔴 OBLIGATORIO: 23 (BMad doesn't cover; cannot be skipped)
-- 🟡 RECOMENDABLE: 9 (BMad covers partially; LIDR adds automation/Spanish/Gate-binding)
+- 🟡 RECOMENDABLE: 9 (BMad covers partially; LIDR adds automation/localization/Gate-binding)
 - 🟢 OPCIONAL: 6 (niche use cases; only activate when relevant)
 
 Plus 4 anytime skills (agents-architecture, command-development, commit-management, ticket-validation) all OPCIONAL.
 
-## Phase E — Claude Code meta-tooling rename (2026-05-20)
+> **Note (superseded):** the above Phase-D snapshot counts predate the prefix unification.
+> See "Final inventory" at the end of this file for the current 44 LIDR / 69 BMad / 113 total.
 
-**Context:** 5 skills in `.agents/skills/` are not LIDR methodology — they extend the Claude Code platform itself (rules, hooks, MCP, commands, agents architecture). Renamed with `claude-` prefix to make this explicit and moved from `source: 'lidr'` to `source: 'anytime'`.
+## Phase E — meta-tooling prefix experiment, later reverted (2026-05-20)
 
-### Renames (5)
+**Context:** 5 meta-tooling skills in `.agents/skills/` extend the agent platform itself
+(rules, hooks, MCP, commands, agents architecture) rather than the LIDR SDLC Gate model.
+Phase E temporarily renamed them with a `claude-` prefix and moved them from
+`source: 'lidr'` to `source: 'anytime'` to make that distinction explicit.
 
-| Before                  | After                      | Source change         | Notes                                  |
-| ----------------------- | -------------------------- | --------------------- | -------------------------------------- |
-| `agents-architecture`   | `lidr-agents-architecture` | `anytime` (no change) | Meta entry-point for `.agents/` system |
-| `command-development`   | `lidr-command-development` | `anytime` (no change) | Slash command authoring                |
-| `lidr-generate-rule`    | `lidr-generate-rule`       | `lidr` → `anytime`    | Claude Code rule files                 |
-| `lidr-hook-development` | `lidr-hook-development`    | `lidr` → `anytime`    | PreToolUse/PostToolUse/Stop hooks      |
-| `lidr-mcp-integration`  | `lidr-mcp-integration`     | `lidr` → `anytime`    | MCP server config                      |
+### Renames in Phase E (5) — to `claude-*`
 
-### Why
+| Before                  | Phase E (claude-\*)          | Source change      |
+| ----------------------- | ---------------------------- | ------------------ |
+| `agents-architecture`   | `claude-agents-architecture` | `anytime`          |
+| `command-development`   | `claude-command-development` | `anytime`          |
+| `lidr-generate-rule`    | `claude-generate-rule`       | `lidr` → `anytime` |
+| `lidr-hook-development` | `claude-hook-development`    | `lidr` → `anytime` |
+| `lidr-mcp-integration`  | `claude-mcp-integration`     | `lidr` → `anytime` |
 
-These 5 skills extend the Claude Code platform — they're not LIDR methodology (Gate G0-G7) and not BMad (base flow). The `lidr-` prefix was misleading: it implied they were part of the LIDR SDLC, but they could be used by any Claude Code project regardless of methodology. The `claude-` prefix correctly identifies them as platform extensions.
+### Reverted — renamed back to `lidr-*` (the `claude-*` prefix no longer exists)
 
-### Updates
+The `claude-*` experiment was reversed: the methodology decision is that **every LIDR
+artifact, including meta-tooling, carries the `lidr-` prefix**. The 5 skills were renamed
+back and now live as:
 
-- 5 directories renamed in `.agents/skills/` via `git mv`
-- `name:` frontmatter updated in each `SKILL.md`
-- `skills.ts`: id/name/docPath updated; 3 entries moved from `source: 'lidr'` to `source: 'anytime'`
-- `.agents/rules/tools/claude-code-extensions.md`: table + Invoke references updated
-- `CRITICALITY.md`: OPCIONAL table reorganized to show the 5 as anytime/claude-\*
+`lidr-agents-architecture`, `lidr-command-development`, `lidr-generate-rule`,
+`lidr-hook-development`, `lidr-mcp-integration` (all classified OPCIONAL / anytime in
+`CRITICALITY.md`). No `claude-*`-prefixed skill exists anywhere in the ecosystem today.
 
-### Future work
+### Why the revert
 
-Pending in `TODO.md`: verify each renamed skill against the latest Anthropic upstream Claude Code skill (via `npx ctx7@latest docs /anthropic/claude-code`) and merge any improvements. Personalized sections should be marked with `<!-- LIDR customization -->` blocks for future upstream syncs.
+A single consistent prefix (`lidr-*` for LIDR, `bmad-*` for BMad) keeps the inventory,
+validators, and sitemap unambiguous. The "platform extension vs methodology" nuance is
+captured by the OPCIONAL/anytime classification, not by a separate prefix.
 
 ## Phase F — Prefix unprefixed + 4 LIDR refactors + BMad sitemap restructure (2026-05-20)
 
@@ -241,16 +248,16 @@ After reading BMad Vol I-V and cross-referencing all 35 LIDR skills with the 69 
 - `CRITICALITY.md` — table reorganized to reflect renames + wrapper notes
 - `TODO.md` — items completed in this phase marked as done
 
-## Final inventory (after Phase F)
+## Inventory snapshot (after Phase F — historical)
 
 ```
 LIDR:    35 skills (23 OBLIGATORIO + 8 RECOMENDABLE + 4 OPCIONAL)
 BMad:    69 skills (base flow, untouched)
-Anytime: 5 skills (all OPCIONAL — 5 claude-* meta-tooling)
+Anytime: 5 skills (all OPCIONAL — meta-tooling, then claude-* prefixed)
 Total:   109 skills
 ```
 
-`lidr-` is now the consistent prefix for all 35 LIDR-methodology skills (no naked "anytime" entries remain).
+`lidr-` became the consistent prefix for the LIDR-methodology skills (no naked "anytime" entries remained).
 
 _Post-Phase F (gate-over-BMAD cleanup): removed `lidr-project-classifier` (→ `bmad-document-project`) and `lidr-automated-handoffs` (redundant with the gate handoff system; its QA→Sec / Sec→DevOps content folded into `gate-evidence.yaml` G5/G6). Inventory dropped 37→35 LIDR / 111→109 total._
 
@@ -284,7 +291,7 @@ _Post-Phase F (gate-over-BMAD cleanup): removed `lidr-project-classifier` (→ `
 | Passed adversarial verification                                                                 | 30    |
 | Need manual follow-up                                                                           | 0     |
 
-All 30 targeted skills were refactored and adversarially verified (a refactor → verify → repair pipeline run across batched executions; server-side rate limiting forced low-concurrency batching of ≤4). 6 LIDR skills were out of scope (no Spanish output, no tool coupling): `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-playwright-cli`, `lidr-review-cruzado`, `lidr-ticket-validation`, `lidr-using-git-worktrees`. The 5 `claude-*` meta-skills are excluded by design (Claude Code platform tooling, not LIDR methodology).
+All 30 targeted skills were refactored and adversarially verified (a refactor → verify → repair pipeline run across batched executions; server-side rate limiting forced low-concurrency batching of ≤4). 6 LIDR skills were out of scope (no localized output, no tool coupling): `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-playwright-cli`, `lidr-review-cruzado`, `lidr-ticket-validation`, `lidr-using-git-worktrees`. The 5 meta-tooling skills (`lidr-agents-architecture`, `lidr-command-development`, `lidr-generate-rule`, `lidr-hook-development`, `lidr-mcp-integration`) are excluded by design (agent-platform tooling, not LIDR methodology).
 
 ### Rules lockstep
 
@@ -302,3 +309,38 @@ Tool coupling lives **inside `.py`/`.ts` scripts**, not just SKILL.md prose, and
 - Tracking adapters that still assume a specific tool's payload shape.
 
 These require careful, test-backed refactoring (each export format change must be re-verified against the target tool's import schema) and are tracked for a follow-up pass.
+
+## Phase H — prefix unification + new spec-lifecycle / impact skills (2026-06)
+
+**Context:** Two reconciling changes finalized the inventory at its current shape.
+
+### Meta-tooling renamed back `claude-*` → `lidr-*` (reverting Phase E)
+
+The 5 meta-tooling skills experimentally moved to a `claude-*` prefix in Phase E were
+renamed back to `lidr-*` (see Phase E above for the full reconciliation). Decision: a
+single `lidr-*` prefix covers every LIDR artifact, including meta-tooling. The `claude-*`
+prefix no longer exists anywhere in the ecosystem.
+
+### New LIDR skills added (4)
+
+| Skill                      | Role                                                                        | Criticality         |
+| -------------------------- | --------------------------------------------------------------------------- | ------------------- |
+| `lidr-help`                | Ecosystem guide (ex-command, now a skill; still invocable as `/lidr-help`)  | OPCIONAL (utility)  |
+| `lidr-impact-analysis`     | Contract impact + variant compatibility against client registries (G2 → G4) | RECOMENDABLE        |
+| `lidr-using-git-worktrees` | Create/use/clean up git worktrees safely; prerequisite for parallel work    | OPCIONAL (parallel) |
+| `lidr-run-parallel-tasks`  | Launch N changes in parallel, each in an isolated worktree                  | OPCIONAL (parallel) |
+
+These bring the LIDR count from 38 (post-Phase-F cleanup) to 44.
+
+## Final inventory (current — 2026-06-11)
+
+```
+LIDR:  44 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 12 OPCIONAL) — all prefixed lidr-*
+BMad:  69 skills (base flow, untouched) — all prefixed bmad-*
+Total: 113 skills
+```
+
+Companion ecosystem counts: 30 commands, 24 rules, 23 subagents, 6 hooks
+(`notify`, `auto-format`, `protect-secrets`, `frontmatter-guard`, `load-context`,
+`validate-ecosystem-counts`). See `.agents/_shared/lidr/CRITICALITY.md` for the
+per-skill criticality classification.

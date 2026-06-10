@@ -131,15 +131,13 @@ Schema verified against [code.visualstudio.com/docs/copilot/customization/hooks]
 ```
 .agents/hooks/
 ├── hooks.json                          # ← Source of truth
-├── scripts/                            # Generic, cross-platform
-│   ├── auto-format.sh
-│   ├── notify.sh
-│   ├── protect-secrets.sh
-│   └── lib/
-└── lidr/                               # LIDR SDLC, Claude-only
-    ├── frontmatter-guard.sh
-    ├── load-context.sh
-    └── validate-ecosystem-counts.sh
+└── scripts/                            # All hook scripts live here
+    ├── auto-format.sh                  # generic, cross-platform
+    ├── notify.sh                       # generic, cross-platform
+    ├── protect-secrets.sh              # generic, cross-platform
+    ├── frontmatter-guard.sh            # LIDR SDLC, Claude-only
+    ├── load-context.sh                 # LIDR SDLC, Claude-only
+    └── validate-ecosystem-counts.sh    # LIDR SDLC, Claude-only
 ```
 
 After sync, each platform gets a symlink or copy:
@@ -164,7 +162,7 @@ cat .github/hooks/hooks.json
 
 ## Add a new hook
 
-1. Write script in `.agents/hooks/scripts/<name>.sh` (or `.agents/hooks/lidr/` for SDLC-specific).
+1. Write script in `.agents/hooks/scripts/<name>.sh` (all hook scripts — generic and LIDR SDLC — live in `scripts/`).
 2. `chmod +x` it.
 3. Register in `.agents/hooks/hooks.json`:
 

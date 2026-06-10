@@ -112,7 +112,7 @@ Branch:   feature/<change-name>  (or feature/<ticket-id>-<slug>)
 
 Next:
   /lidr-create-pr <ticket-id>    → open PR referencing this change
-  /sync-docs                     → propagate any remaining doc updates
+  /lidr-sync-docs                     → propagate any remaining doc updates
 ```
 
 ## Guardrails

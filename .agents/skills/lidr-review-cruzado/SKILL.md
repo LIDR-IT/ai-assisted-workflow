@@ -1,9 +1,9 @@
 ---
 name: lidr-review-cruzado
 id: review-cruzado
-version: "1.0.2"
-last_updated: "2026-06-09"
-updated_by: "TL: BMad-coherence batch-fix"
+version: "1.1.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 2
 stage: planning
@@ -17,6 +17,18 @@ description: "Gate 1 enforcer: validates that bmad-prd output contains both Func
 # PRD Cross-Review Facilitator
 
 Phase: 2 — Discovery | Gate: 1 (optional evidence) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+## Output Location
+
+The cross-review report is published to the per-client path Gate 1 reads (`gate-evidence.yaml` G1 `lidr-review-cruzado` glob `{client_root}/review-cruzado*.md`, `required: false`):
+
+**`docs/projects/{CLIENT_CODE}/review-cruzado.md`** (or `review-cruzado-{date}.md` per review)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`).
+
+Example: `docs/projects/docline/review-cruzado.md`
+
+> **Gate 1 contract**: `review-cruzado*.md` at the per-client root is optional evidence for G1 (F+T alignment enforcement). Publish it here so `/lidr-advance-gate 1` and `lidr-gate-evaluation` resolve it.
 
 ## Workflow
 

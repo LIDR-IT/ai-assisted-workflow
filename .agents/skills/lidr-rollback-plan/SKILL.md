@@ -1,9 +1,9 @@
 ---
 name: lidr-rollback-plan
 id: rollback-plan
-version: "1.3.1"
-last_updated: "2026-06-09"
-updated_by: "TL: BMad-coherence batch-fix"
+version: "1.4.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
 stage: release
@@ -27,6 +27,18 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 No BMad equivalent: this is a LIDR-native deployment-safety artifact. It analyzes release diffs, migrations, and infra changes to produce an executable rollback runbook that feeds the Change Request at Gate 7 (`lidr-change-request`).
+
+## Output Location
+
+The automation scripts write working artifacts to a transient `rollback-analysis/` directory, but the **canonical rollback runbook MUST be published to the per-client path Gate 7 reads** (`gate-evidence.yaml` G7 `lidr-rollback-plan` glob `{client_root}/rollback-plan*.md`, `required: true`):
+
+**`docs/projects/{CLIENT_CODE}/rollback-plan.md`** (or `rollback-plan-{release}.md` per release)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`).
+
+Example: `docs/projects/docline/rollback-plan-v1.4.0.md`
+
+> **Gate 7 contract**: `rollback-plan*.md` at the per-client root is REQUIRED evidence for G7. The transient `rollback-analysis/` copy does NOT satisfy the gate — always publish the final runbook to `docs/projects/{CLIENT_CODE}/rollback-plan*.md`.
 
 **Principle:** A rollback plan that can't be executed in <15 minutes under stress is not a rollback plan.
 
@@ -285,7 +297,8 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                       | Changes                                                                                                               |
-| ------- | ---------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added "Relationship to BMad" note (LIDR-native); added `vcs` to integrations frontmatter                              |
-| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted {{VCS_TOOL}}, {{TRACKING_TOOL}}, {{CHAT_TOOL}} via tool-registry |
+| Version | Date       | Author                         | Changes                                                                                                                                              |
+| ------- | ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": canonical rollback runbook publishes to `docs/projects/{CLIENT_CODE}/rollback-plan*.md` (required G7 gate-evidence path) |
+| 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix   | Added "Relationship to BMad" note (LIDR-native); added `vcs` to integrations frontmatter                                                             |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted {{VCS_TOOL}}, {{TRACKING_TOOL}}, {{CHAT_TOOL}} via tool-registry                                |

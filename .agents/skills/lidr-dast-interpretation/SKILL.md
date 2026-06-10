@@ -1,9 +1,9 @@
 ---
 name: lidr-dast-interpretation
 id: dast-interpretation
-version: "1.1.1"
-last_updated: "2026-06-09"
-updated_by: "TL: BMad-coherence batch-fix"
+version: "1.2.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
 stage: security
@@ -11,12 +11,24 @@ owner_role: "TL"
 automation: false
 domain_agnostic: true
 language_default: en
-description: "Interpret DAST (Dynamic Application Security Testing) scan reports from OWASP ZAP, Burp Suite, or Nuclei against running applications. Unlike SAST, DAST tests the app at runtime (black-box) finding configuration issues, missing headers, CORS problems, and runtime vulnerabilities. Use for any dynamic security testing or runtime vulnerability assessment. Essential for production security validation and compliance reporting. Always use before releases and after infrastructure changes. Use pre-release before Gate 6 against staging, post-deployment for production smoke, after infrastructure changes, or when new public endpoints are added. Triggers on "interpret DAST results", "ZAP scan report", "Burp scan", "security headers check", "DAST findings", "runtime security scan"."
+description: "Interpret DAST (Dynamic Application Security Testing) scan reports from OWASP ZAP, Burp Suite, or Nuclei against running applications. Unlike SAST, DAST tests the app at runtime (black-box) finding configuration issues, missing headers, CORS problems, and runtime vulnerabilities. Use for any dynamic security testing or runtime vulnerability assessment. Essential for production security validation and compliance reporting. Always use before releases and after infrastructure changes. Use pre-release before Gate 6 against staging, post-deployment for production smoke, after infrastructure changes, or when new public endpoints are added. Triggers on 'interpret DAST results', 'ZAP scan report', 'Burp scan', 'security headers check', 'DAST findings', 'runtime security scan'."
 ---
 
 # DAST Scan Interpreter
 
 Phase: 7 — Security | Gate: contributes to Gate 6 | Language: English
+
+## Output Location
+
+The DAST interpretation report is published to the per-client path Gate 6 reads (`gate-evidence.yaml` G6 `lidr-dast-interpretation` glob `{client_root}/dast-*.md`, `required: false`):
+
+**`docs/projects/{CLIENT_CODE}/dast-report.md`** (or `dast-{date}.md` per scan — the filename MUST start with `dast-`)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`).
+
+Example: `docs/projects/docline/dast-2026-06-10.md`
+
+> **Gate 6 contract**: a `dast-*.md` file at the per-client root is optional evidence for G6. Use the `dast-` filename prefix so the gate glob and `lidr-gate-evaluation` resolve it.
 
 ## Workflow
 

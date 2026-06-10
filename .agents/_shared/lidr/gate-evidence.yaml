@@ -15,7 +15,7 @@
 # BMad is NEVER modified. Gates only READ its outputs under {bmad_output}.
 #
 # Read by:
-#   /advance-gate [N]      → Step 4: validates existence + content of the
+#   /lidr-advance-gate [N] → Step 4: validates existence + content of the
 #                            listed evidence for gate N before allowing transition
 #   lidr-gate-evaluation   → scores the evidence against its 4 weighted dimensions
 #                            (Artifacts 40% / Checklists 35% / Coherence 15% / Sign-offs 10%)
@@ -37,9 +37,9 @@
 #           artifact: <path or glob, may use {vars}>
 #           required: true|false        # true = gate FAILS without it
 #       lidr_evidence:
-#         - skill: <lidr-skill>
-#           artifact: <path or glob>
-#           required: true|false
+#         - skill: <lidr-skill>           # OR `command: <lidr-command>` when the
+#           artifact: <path or glob>      #   artifact is produced by a /lidr-* command
+#           required: true|false          #   (spec-lifecycle), not a .agents/skills/ entry
 #       checklist:                      # scored under the Checklists dimension
 #         - "<binary check the evaluator must confirm>"
 #       signoffs:                       # scored under the Sign-offs dimension
@@ -47,9 +47,26 @@
 #           artifact: <path>            # the file that records the human approval
 # ─────────────────────────────────────────────────────────────────────────────
 
-version: "2.0.0"
+version: "2.1.0"
 last_updated: "2026-06-10"
 maintained_by: "TL: LIDR Gate-over-BMad"
+
+# Changelog (comment-tracked; this file is parsed as data, not Markdown):
+#   2.1.0 (2026-06-10) — Gate-evidence contract fix (TL):
+#     - Added bmad_test path_var (TEA test_artifacts = _bmad-output/test-artifacts).
+#     - G0: bmad-generate-project-context → {bmad_output}/project-context.md (was docs/);
+#           bmad-product-brief → {bmad_planning}/briefs/**/brief.md (nested run folder).
+#     - G1: bmad-prd → {bmad_planning}/prds/**/prd.md (nested, lowercase; was flat PRD*.md);
+#           bmad-ux → {bmad_planning}/ux-designs/**/*.md (nested run folder, DESIGN.md).
+#     - G2: bmad-create-architecture → recursive (handles sharded *architecture*/index.md);
+#           bmad-testarch-test-design → {bmad_test}/test-design/**/*.md (was planning-artifacts).
+#     - G3: bmad-sprint-planning → {bmad_impl}/sprint-status*.yaml (was planning-artifacts).
+#     - G5: bmad-testarch-automate/trace globs scoped to {bmad_test} (TEA test_artifacts root).
+#     - G4: bmad-code-review glob REMOVED (CR emits inline findings, no file → checklist item);
+#           lidr-spec-verify relabeled `command:` (spec-lifecycle, not a skill) and set
+#           required: false so the pure-BMad RUTA A dev route can pass G4 via the DoD
+#           checklist (the hard G4 gate) + bmad-code-review. RUTA B still produces test-report.md.
+#   2.0.0 (2026-06-10) — Unified phase model + gate-over-BMad rewrite.
 
 # Unified phase model (see .agents/_shared/lidr/UNIFIED-PHASES.md):
 #   Phase 1 Analysis → G0 | Phase 2 Planning → G1
@@ -62,18 +79,19 @@ maintained_by: "TL: LIDR Gate-over-BMad"
 # (see .agents/rules/lidr-sdlc/project.md).
 path_vars:
   bmad_output: "_bmad-output"
-  bmad_planning: "_bmad-output/planning-artifacts"
-  bmad_impl: "_bmad-output/implementation-artifacts"
+  bmad_planning: "_bmad-output/planning-artifacts" # BMM planning_artifacts (_bmad/bmm/config.yaml)
+  bmad_impl: "_bmad-output/implementation-artifacts" # BMM implementation_artifacts
+  bmad_test: "_bmad-output/test-artifacts" # TEA test_artifacts (_bmad/tea/config.yaml)
   project_knowledge: "docs" # BMad project_knowledge (brownfield scan output)
   client_root: "docs/projects/{client}" # LIDR per-client artifacts
   handoffs: "docs/projects/{client}/handoffs" # gate-N-handoff.md lives here
   changes: "docs/projects/{client}/changes" # LIDR change-lifecycle artifacts
 
-# How /advance-gate and lidr-gate-evaluation interpret each entry.
+# How /lidr-advance-gate and lidr-gate-evaluation interpret each entry.
 matching:
   # An artifact "exists" if at least one file matches its glob.
   glob: true
-  # Content validity (reuses advance-gate Step 4 rules):
+  # Content validity (reuses /lidr-advance-gate Step 4 rules):
   #   - >50 chars of meaningful content excluding frontmatter
   #   - no unjustified "TBD" / "TODO" / "N/A" in required sections
   min_content_chars: 50
@@ -94,11 +112,15 @@ gates:
       - skill: bmad-document-project
         artifact: "{project_knowledge}/index.md"
         required: false
+      # bmad-generate-project-context writes to {output_folder}/project-context.md
+      # (= _bmad-output/), NOT docs/ (per its SKILL.md output_file + CSV output-location).
       - skill: bmad-generate-project-context
-        artifact: "{project_knowledge}/project-context.md"
+        artifact: "{bmad_output}/project-context.md"
         required: false
+      # bmad-product-brief uses a nested run folder: briefs/brief-{project}-{date}/brief.md
+      # (per customize.toml brief_output_path + run_folder_pattern). Match recursively.
       - skill: bmad-product-brief
-        artifact: "{bmad_planning}/product-brief*.md"
+        artifact: "{bmad_planning}/briefs/**/brief.md"
         required: false
     lidr_evidence:
       - skill: lidr-business-case
@@ -120,13 +142,18 @@ gates:
     transition: "Phase 2 Planning → Phase 3 Solutioning (PRD approved)"
     owner: [PO, TL]
     bmad_evidence:
+      # bmad-prd writes a nested run folder: prds/prd-{project}-{date}/prd.md (lowercase,
+      # per customize.toml prd_output_path + run_folder_pattern + SKILL.md). The old
+      # "{bmad_planning}/PRD*.md" (uppercase, flat) never matched — broaden to recursive.
       - skill: bmad-prd
-        artifact: "{bmad_planning}/PRD*.md"
+        artifact: "{bmad_planning}/prds/**/prd.md"
         required: true
       # Architecture moved to G2: bmad-create-architecture is 3-Solutioning in
       # BMad's own phase model, not Planning (unified-phases audit 2026-06-10).
+      # bmad-ux writes a nested run folder: ux-designs/ux-{project}-{date}/DESIGN.md
+      # (per customize.toml ux_output_path + run_folder_pattern). Match recursively.
       - skill: bmad-ux
-        artifact: "{bmad_planning}/*ux*.md"
+        artifact: "{bmad_planning}/ux-designs/**/*.md"
         required: false
     lidr_evidence:
       - skill: lidr-risk-log
@@ -148,14 +175,19 @@ gates:
     transition: "Phase 3 Solutioning: specification → sprint-planning (Specs complete)"
     owner: [PO, QA]
     bmad_evidence:
+      # bmad-create-architecture writes {planning_artifacts}/*architecture*.md (whole doc)
+      # or a sharded folder *architecture*/index.md (per step-01-init.md). Match both.
       - skill: bmad-create-architecture
-        artifact: "{bmad_planning}/*architecture*.md"
+        artifact: "{bmad_planning}/**/*architecture*.md"
         required: true
+      # bmad-create-epics-and-stories writes {planning_artifacts}/epics.md (per step-01).
       - skill: bmad-create-epics-and-stories
         artifact: "{bmad_planning}/epics*.md"
         required: true
+      # bmad-testarch-test-design is a TEA module: it writes to {test_artifacts}/test-design
+      # (= _bmad-output/test-artifacts/, per _bmad/tea/config.yaml), NOT planning-artifacts.
       - skill: bmad-testarch-test-design
-        artifact: "{bmad_planning}/*test-design*.md"
+        artifact: "{bmad_test}/test-design/**/*.md"
         required: false
     lidr_evidence:
       - skill: lidr-generate-rf
@@ -185,14 +217,18 @@ gates:
   # G3 absorbs the former /lidr-check-readiness. Spec-completeness comes from
   # bmad-check-implementation-readiness; capacity from lidr-sprint-capacity;
   # team/skill-gap/infra readiness from the checklist below; go/no-go is the
-  # gate verdict + the role-auth /advance-gate already performs.
+  # gate verdict + the role-auth /lidr-advance-gate already performs.
   G3:
     transition: "Phase 3 Solutioning → Phase 4 Implementation (Ready to implement)"
     owner: [PO, TL]
     bmad_evidence:
+      # bmad-sprint-planning writes sprint-status.yaml to {implementation_artifacts}
+      # (its story_location, per SKILL.md + CSV output-location), NOT planning-artifacts.
       - skill: bmad-sprint-planning
-        artifact: "{bmad_planning}/sprint-status*.yaml"
+        artifact: "{bmad_impl}/sprint-status*.yaml"
         required: true
+      # bmad-check-implementation-readiness writes implementation-readiness-report-{date}.md
+      # to {planning_artifacts} (per step-03 outputFile).
       - skill: bmad-check-implementation-readiness
         artifact: "{bmad_planning}/*readiness*.md"
         required: true
@@ -220,13 +256,18 @@ gates:
       - skill: bmad-dev-story
         artifact: "{bmad_impl}/**/*.md"
         required: false
-      - skill: bmad-code-review
-        artifact: "{bmad_impl}/**/*review*.md"
-        required: false
+      # bmad-code-review (CR) produces NO file artifact — it emits inline findings and
+      # routes back to dev-story (CSV output-location is blank). Tracked as a checklist
+      # item ("code review approved") below instead of a non-existent file glob.
     lidr_evidence:
-      - skill: lidr-spec-verify
+      # test-report.md is produced ONLY by RUTA B (the /lidr-spec-* change lifecycle).
+      # It is a COMMAND/spec-lifecycle artifact, not a skill output (there is no
+      # .agents/skills/lidr-spec-verify; verify is the /lidr-spec-verify command).
+      # RUTA A teams (pure BMad dev-story + bmad-code-review) satisfy G4 via the DoD
+      # checklist below, so this is required: false to avoid coupling G4 to RUTA B.
+      - command: lidr-spec-verify
         artifact: "{changes}/*/test-report.md"
-        required: true
+        required: false
       - skill: lidr-dev-handoff-qa
         artifact: "{client_root}/handoffs/dev-qa-*.md"
         required: true
@@ -239,8 +280,10 @@ gates:
         artifact: "{client_root}/impact/contract-impact-*.md"
         required: false
     checklist:
-      - "DoD met: code review approved, unit tests pass, SAST/SCA clean (0 crit/high)"
-      - "test-report verdict is PASSED (or WARNINGS explicitly accepted)"
+      # DoD is the HARD G4 gate (binding for both routes). RUTA A (bmad-dev-story +
+      # bmad-code-review) and RUTA B (/lidr-spec-* with test-report.md) both must pass it.
+      - "DoD met: code review approved (bmad-code-review or peer review), unit tests pass, SAST/SCA clean (0 crit/high)"
+      - "RUTA B only: test-report verdict is PASSED (or WARNINGS explicitly accepted). RUTA A satisfies this via the DoD checklist + bmad-code-review."
       - "Docs updated in the same change (DTC) per documentation.md"
       - "Runtime/visual review of changed UI passed (lidr-playwright-cli via Playwright MCP): renders, key flows, console errors, a11y — complements bmad-code-review"
     signoffs:
@@ -252,11 +295,13 @@ gates:
     transition: "Phase 4 Implementation: qa → security (QA sign-off)"
     owner: [QA Lead]
     bmad_evidence:
+      # TEA outputs land under {test_artifacts} (= _bmad-output/test-artifacts, per
+      # _bmad/tea/config.yaml). Scope the globs to that root for precision.
       - skill: bmad-testarch-automate
-        artifact: "{bmad_output}/**/*test*"
+        artifact: "{bmad_test}/**/*test*"
         required: false
       - skill: bmad-testarch-trace
-        artifact: "{bmad_output}/**/*trace*"
+        artifact: "{bmad_test}/traceability/**/*"
         required: false
     lidr_evidence:
       - skill: lidr-test-execution-report

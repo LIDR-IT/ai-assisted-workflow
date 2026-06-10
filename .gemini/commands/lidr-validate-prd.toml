@@ -14,9 +14,9 @@ quality gates, scoring, and actionable recommendations. Orchestrates validation
 of PRD completeness, coherence, testability, and readiness for Gate 1 approval.
 
 USAGE:
-  /validate-prd my-project               # Validates both PRDs
-  /validate-prd my-project funcional     # Validates only PRD-F
-  /validate-prd my-project tecnico       # Validates only PRD-T
+  /lidr-validate-prd my-project               # Validates both PRDs
+  /lidr-validate-prd my-project funcional     # Validates only PRD-F
+  /lidr-validate-prd my-project tecnico       # Validates only PRD-T
 
 ARGUMENTS:
   project-name: Name of the project (matches docs/projects/{name}/)
@@ -28,9 +28,9 @@ REQUIREMENTS:
   - Stakeholder map and kickoff completed
 
 RELATED COMMANDS:
-  /advance-gate 0   - Must have passed before PRD creation
-  /advance-gate 1   - Run after this command to evaluate Gate 1
-  /validate-requirements - Next command after Gate 1 approval
+  /lidr-advance-gate 0   - Must have passed before PRD creation
+  /lidr-advance-gate 1   - Run after this command to evaluate Gate 1
+  /lidr-validate-requirements - Next command after Gate 1 approval
 
 RELATED SKILLS:
   bmad-prd              - Unified PRD generation (functional + technical sections)
@@ -49,14 +49,14 @@ CHANGELOG:
 
 # Validate PRD Quality for $1
 
-Load: @../rules/org.md and @../rules/project.md and @../rules/documentation.md
+Load: @../rules/lidr-sdlc/org.md and @../rules/lidr-sdlc/project.md and @../rules/lidr-sdlc/documentation.md
 
 > **Relationship to BMad (de-duplication):** Base PRD structural and quality validation is owned by **`bmad-prd` (validate intent)** — invoke it first and consume its findings. Do **not** re-implement generic PRD completeness/consistency checks here. This command is the **LIDR governance layer on top**: it adds the scored Gate-1 readiness verdict, RACI/role gating, traceability to Business Case, and the `lidr-review-cruzado` F+T cross-check. (Note: the standalone `bmad-validate-prd` skill is deprecated and folds into `bmad-prd` validate in v7 — target `bmad-prd`, not the deprecated alias.)
 
 ## Validate Preconditions
 
 If "$1" is empty:
-❌ Project name required. Usage: /validate-prd [project-name] [prd-type]
+❌ Project name required. Usage: /lidr-validate-prd [project-name] [prd-type]
 Exit.
 
 Set prd_type = "$2" or "both" if empty
@@ -137,7 +137,7 @@ Output: Information density score (0-100%), fluff detection report
 
 #### Step 4: Scope Coverage & Alignment
 
-Load: @../skills/business-case/SKILL.md for reference
+Load: @../skills/lidr-business-case/SKILL.md for reference
 
 1. **Business Case Alignment**:
    - Verify all business objectives mapped to PRD features
@@ -206,7 +206,7 @@ Output: Abstraction score (0-100%), implementation leakage detection
 
 #### Step 8: Domain Compliance Validation
 
-Load: @../rules/org.md for regulatory context
+Load: @../rules/lidr-sdlc/org.md for regulatory context
 
 1. **domain-specific Industry Compliance**:
    - GDPR Art. 9 domain-specific data requirements
@@ -309,7 +309,7 @@ Output: Overall score (0-100%), status determination, action plan
 
 ## Phase 2: Cross-PRD Alignment Validation
 
-If both PRD-F and PRD-T exist, execute cross-review using skill `review-cruzado`:
+If both PRD-F and PRD-T exist, execute cross-review using skill `lidr-review-cruzado`:
 
 Use AskUserQuestion:
 
@@ -453,7 +453,7 @@ markdown
 
 **Next Steps**:
 
-- If APPROVE: Proceed to `/advance-gate 1`
+- If APPROVE: Proceed to `/lidr-advance-gate 1`
 - If CONDITIONAL: Complete remediation actions, then re-validate
 - If REJECT: Address critical issues, complete re-write if necessary
 
@@ -553,8 +553,8 @@ If Confluence MCP unavailable:
 
 This command integrates with:
 
-- **validate-requirements**: Enhanced with LIDR SDLC patterns for Phase 3
-- **review-cruzado**: Cross-PRD validation engine
-- **advance-gate**: Quantitative scoring for gate decisions
+- **lidr-validate-requirements**: Feeds the Phase 3 Solutioning specification stage
+- **lidr-review-cruzado**: Cross-PRD validation engine
+- **/lidr-advance-gate**: Quantitative scoring for gate decisions
 - **Memory System**: Persistent validation learning and improvement
 """

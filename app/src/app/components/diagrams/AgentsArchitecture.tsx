@@ -360,7 +360,7 @@ function getAgentsForClient(client: ClientConfig): AgentDefinition[] {
       id: 'docs-agent',
       name: 'docs-agent',
       whenToUse:
-        'Use this agent when documentation may be out of sync, after merging to develop, at end of session, or when integrity tests need to be run.\n<example>TL runs: sync docs after sprint -- docs-agent detects stale files, updates cross-references, runs 32 integrity tests.</example>',
+        'Use this agent when documentation may be out of sync, after merging to develop, at end of session, or when integrity tests need to be run.\n<example>TL runs: sync docs after sprint -- docs-agent detects stale files, updates cross-references, runs 36 integrity tests.</example>',
       agentColor: 'blue',
       preloadedSkills: ['architecture-doc', 'implementation-phases'],
       description:
@@ -379,7 +379,7 @@ function getAgentsForClient(client: ClientConfig): AgentDefinition[] {
       ],
       chainSteps: [
         'GUARD: Validar integridad de CLAUDE.md -- checksum + version + frontmatter valido. Si corrupto -> ABORT: "fuente raiz comprometida"',
-        'Ejecuta los 32 integrity tests (T1-T32) para detectar drift',
+        'Ejecuta los 36 integrity tests (T1-T36) para detectar drift',
         'Identifica documentos desincronizados entre las 8 fuentes de verdad',
         'Clasifica drift: critico (bloquea gates) vs menor (cosmetico)',
         'Propone correcciones con diff concreto',
@@ -657,7 +657,7 @@ const delegateYes = [
   {
     task: 'Detectar drift entre fuentes de verdad',
     agent: 'docs-agent',
-    reason: 'Verificacion mecanica de 32 tests de integridad',
+    reason: 'Verificacion mecanica de 36 tests de integridad',
   },
   {
     task: 'Recopilar metricas Sprint + DORA',

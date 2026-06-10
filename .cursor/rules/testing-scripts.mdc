@@ -1,6 +1,10 @@
 ---
 name: testing-scripts
 description: Review bash scripts for testing patterns and best practices
+id: testing-scripts
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: ["**/*.sh", "**/*test*.sh"]
 argument-hint: <script-file>

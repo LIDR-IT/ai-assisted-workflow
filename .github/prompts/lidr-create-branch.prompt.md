@@ -11,7 +11,8 @@ LAST UPDATED: 2026-03-17
 
 PURPOSE:
 Enhanced branch creation with SDLC tracking integration, external tool synchronization,
-and automated story linking. Part of Phase 5 Developer Workflow Enhancement.
+and automated story linking. Runs in Phase 4 Implementation (development stage) of the
+unified phase model.
 
 FEATURES:
 - SDLC tracking integration (links branch to story)
@@ -21,9 +22,9 @@ FEATURES:
 - Portfolio-scale project context loading
 
 USAGE:
-  /create-branch PROJ-123
-  /create-branch PROJ-123 --project=PROJ-2026-001
-  /create-branch PROJ-123 --sync=false
+  /lidr-create-branch PROJ-123
+  /lidr-create-branch PROJ-123 --project=PROJ-2026-001
+  /lidr-create-branch PROJ-123 --sync=false
 
 ARGUMENTS:
   ticket-id: Jira/Linear ticket ID (required)
@@ -31,31 +32,33 @@ ARGUMENTS:
   --sync: Enable/disable external tool sync (default: true)
 
 RELATED COMMANDS:
-  /implement-ticket - Full workflow (includes enhanced branch creation)
-  /create-pr - Enhanced PR creation with context
-  /track-sdlc - SDLC tracking operations
+  /lidr-implement-ticket - Full workflow (includes enhanced branch creation)
+  /lidr-create-pr - Enhanced PR creation with context
+  /lidr-track-sdlc - SDLC tracking operations
 
 CHANGELOG:
-  v2.0.0 (2026-03-17): Phase 5 enhancement with SDLC tracking integration
+  v2.0.1 (2026-06-10): Repointed Skill() refs + skill loads to lidr-* prefixes;
+                        reframed Phase 5 → unified Phase 4 Implementation/development.
+  v2.0.0 (2026-03-17): SDLC tracking integration enhancement (then "Phase 5")
   v1.0.0 (2025-03-05): Initial release
 -->
 
 # Create Branch for $1
 
-Load: @../rules/tech-stack.md for branching strategy.
-Load: @../skills/sdlc-tracking/SKILL.md for tracking operations.
+Load: @../rules/lidr-sdlc/tech-stack.md for branching strategy.
+Load: @../skills/lidr-sdlc-tracking/SKILL.md for tracking operations.
 
-## Phase 5 Enhancement Features
+## Enhanced Workflow Features
 
 🚀 **New in v2.0**: SDLC tracking integration, external tool sync, automated story linking
 
 ## Input Validation and Project Detection
 
 If "$1" is empty:
-❌ Usage: /create-branch [TICKET-ID] [--project=PROJECT-ID] [--sync=true|false]
+❌ Usage: /lidr-create-branch [TICKET-ID] [--project=PROJECT-ID] [--sync=true|false]
 Examples:
-/create-branch PROJ-123
-/create-branch PROJ-123 --project=PROJ-2026-001
+/lidr-create-branch PROJ-123
+/lidr-create-branch PROJ-123 --project=PROJ-2026-001
 Exit.
 
 Extract flags:
@@ -75,7 +78,7 @@ Extract flags:
 // 4. Portfolio lookup by ticket ID
 ```
 
-Use Skill: sdlc-tracking with action "detect-project" for ticket $1.
+Use Skill: lidr-sdlc-tracking with action "detect-project" for ticket $1.
 
 If multiple projects found:
 Use AskUserQuestion:
@@ -91,7 +94,7 @@ Continue with basic branch creation.
 ## Load Story Context from SDLC Tracking
 
 If project detected:
-Use Skill: sdlc-tracking with action "get-story" for story-id derived from $1.
+Use Skill: lidr-sdlc-tracking with action "get-story" for story-id derived from $1.
 
 Extract story metadata:
 
@@ -260,7 +263,7 @@ If error:
 ### Update SDLC Tracking
 
 If project context available:
-Use Skill: sdlc-tracking with action "update-story":
+Use Skill: lidr-sdlc-tracking with action "update-story":
 
 - story-id: {derived from ticket}
 - branch: {branch-name}
@@ -284,7 +287,7 @@ workflow:
 ## External Tool Synchronization
 
 If --sync=true (default):
-Use Skill: external-sync with project context:
+Use Skill: lidr-external-sync with project context:
 
 ### Jira Updates
 
@@ -319,7 +322,7 @@ Log: {sync error details}
 ### Success Report
 
 ```
-/create-branch $1 ✅
+/lidr-create-branch $1 ✅
 
 📋 Story Context:
    Epic:     {epic-title}
@@ -345,9 +348,9 @@ Log: {sync error details}
 
 🚀 Next Steps:
    1. Start development: git checkout {branch-name}
-   2. Track progress:     /track-sdlc update {project-id}
-   3. Create PR:          /create-pr $1
-   4. Full workflow:      /implement-ticket $1
+   2. Track progress:     /lidr-track-sdlc update {project-id}
+   3. Create PR:          /lidr-create-pr $1
+   4. Full workflow:      /lidr-implement-ticket $1
 ```
 
 ### Error Recovery Guidance
@@ -358,10 +361,10 @@ If any step fails:
 ❌ Branch creation failed at: {step-name}
 
 🔧 Recovery Options:
-   1. Retry operation:     /create-branch $1 --retry
+   1. Retry operation:     /lidr-create-branch $1 --retry
    2. Manual cleanup:      git branch -D {branch-name}
-   3. Skip external sync:  /create-branch $1 --sync=false
-   4. Check project setup: /track-sdlc validate {project-id}
+   3. Skip external sync:  /lidr-create-branch $1 --sync=false
+   4. Check project setup: /lidr-track-sdlc validate {project-id}
 
 📞 Support:
    - Check project configuration
@@ -375,10 +378,10 @@ If any step fails:
 
 ```bash
 # Create branches for entire sprint
-/create-branch --sprint=2026-03 --project=PROJ-2026-001
+/lidr-create-branch --sprint=2026-03 --project=PROJ-2026-001
 
 # Create branches for epic
-/create-branch --epic=epic-001 --project=PROJ-2026-001
+/lidr-create-branch --epic=epic-001 --project=PROJ-2026-001
 ```
 
 ### Analytics and Tracking
@@ -398,16 +401,17 @@ Validate branch creation against quality gates:
 - Architecture decisions documented
 
 
-## Migration from Basic create-branch
+## Adoption Notes
 
-Existing `/create-branch` command remains available for backward compatibility.
-`/create-branch` provides full Phase 5 functionality.
+`/lidr-create-branch` provides full SDLC-tracking-integrated branch creation
+(Phase 4 Implementation, development stage). For projects not yet on SDLC
+tracking it degrades gracefully to basic branch creation.
 
-Gradual migration path:
+Gradual adoption path:
 
-1. Use enhanced command for new projects
+1. Use the command for new projects
 2. Migrate existing projects to SDLC tracking
-3. Deprecate basic command in Phase 6
+3. Enable external-tool sync once tracking is wired up
 
 
 ## Performance Optimizations

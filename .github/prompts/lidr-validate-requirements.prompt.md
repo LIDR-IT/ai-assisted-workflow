@@ -10,12 +10,12 @@ AUTHOR: SDLC Team
 LAST UPDATED: 2026-03-06
 
 PURPOSE:
-Orchestrates Phase 3 (Specification) end-to-end: generates RFs with BDD,
-generates standalone NFRs, validates traceability (RTM), detects gaps,
-and optionally breaks down the master epic into feature sub-epics.
+Orchestrates the Phase 3 Solutioning specification stage end-to-end (gate G2):
+generates RFs with BDD, generates standalone NFRs, validates traceability (RTM),
+detects gaps, and optionally breaks down the master epic into feature sub-epics.
 
 USAGE:
-  /validate-requirements my-project
+  /lidr-validate-requirements my-project
 
 ARGUMENTS:
   project-name: Name of the project (matches docs/projects/{name}/)
@@ -26,30 +26,33 @@ REQUIREMENTS:
   - Business Case and Epic master exist (from Phase 1)
 
 RELATED COMMANDS:
-  /advance-gate 1   - Must have passed before running this
-  /advance-gate 2   - Run after this command to evaluate Gate 2
-  /advance-gate 3   - Next gate after epic decomposition + sprint planning
+  /lidr-advance-gate 1   - Must have passed before running this
+  /lidr-advance-gate 2   - Run after this command to evaluate Gate 2
+  /lidr-advance-gate 3   - Next gate after epic decomposition + sprint planning
 
 RELATED SKILLS:
-  generate-rf            - Step 1: Generates RFs with BDD from PRDs
-  generate-nfr           - Step 2: Generates NFRs from PRD-T §5
-  validate-requirements  - Step 3: Cross-validates RFs + NFRs, generates RTM
+  lidr-generate-rf            - Step 1: Generates RFs with BDD from PRDs
+  lidr-generate-nfr           - Step 2: Generates NFRs from PRD-T §5
+  lidr-validate-requirements  - Step 3: Cross-validates RFs + NFRs, generates RTM
   bmad-create-epics-and-stories - Step 4: Decomposes master epic (LIDR rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
 
 CHANGELOG:
-  v1.0.0 (2026-03-06): Initial version — orchestrates 4 Phase 3 skills
+  v1.0.1 (2026-06-10): Prefixed skill refs (lidr-*); reframed "Phase 3
+                        (Specification)" → unified "Phase 3 Solutioning,
+                        specification stage".
+  v1.0.0 (2026-03-06): Initial version — orchestrates the specification-stage skills
 -->
 
 # Validate Requirements for $1
 
-> **Relationship (de-duplication):** This command owns the `/lidr-validate-requirements` slash and orchestrates Phase 3 — RFs via `lidr-generate-rf`, NFRs via `lidr-generate-nfr`, the RTM / 5-pass cross-validation via the **`lidr-validate-requirements` skill** (the engine), then epic breakdown via `bmad-create-epics-and-stories`. The engine logic is the skill; this command is the verb that chains it. The skill is marked `user-invocable: false` so it no longer competes for the same slash — reach it by delegation, not the `/` menu.
+> **Relationship (de-duplication):** This command owns the `/lidr-validate-requirements` slash and orchestrates the Phase 3 Solutioning specification stage — RFs via `lidr-generate-rf`, NFRs via `lidr-generate-nfr`, the RTM / 5-pass cross-validation via the **`lidr-validate-requirements` skill** (the engine), then epic breakdown via `bmad-create-epics-and-stories`. The engine logic is the skill; this command is the verb that chains it. The skill is marked `user-invocable: false` so it no longer competes for the same slash — reach it by delegation, not the `/` menu.
 
-Load: @../rules/org.md and @../rules/tech-stack.md and @../rules/project.md
+Load: @../rules/lidr-sdlc/org.md and @../rules/lidr-sdlc/tech-stack.md and @../rules/lidr-sdlc/project.md
 
 ## Validate Preconditions
 
 If "$1" is empty:
-❌ Project name required. Usage: /validate-requirements [project-name]
+❌ Project name required. Usage: /lidr-validate-requirements [project-name]
 Exit.
 
 Check for approved PRDs:
@@ -70,13 +73,13 @@ Use AskUserQuestion:
 
 ## Step 1: Generate Functional Requirements (RFs)
 
-Using skill `generate-rf`:
+Using skill `lidr-generate-rf`:
 
 1. Read PRD-F §2.4 (Funcionalidades Clave) and PRD-T §3 (Arquitectura)
 2. Decompose each functionality into atomic RFs
 3. Generate BDD Gherkin scenarios per RF (min: happy + alt + error)
 4. Build dependency map with implementation clusters
-5. Validate with @../skills/generate-rf/checklists/rf-coherence.md
+5. Validate with @../skills/lidr-generate-rf/checklists/rf-coherence.md
 
 Use AskUserQuestion:
 
@@ -90,12 +93,12 @@ Output: RF documents saved to `docs/projects/$1/rfs/`
 
 ## Step 2: Generate Non-Functional Requirements (NFRs)
 
-Using skill `generate-nfr`:
+Using skill `lidr-generate-nfr`:
 
 1. Read PRD-T §5 (NFRs de alto nivel)
 2. Read PRD-F §2.5 (Métricas de éxito)
 3. Read `rules/tech-stack.md` for infrastructure constraints
-4. Generate NFRs per category using @../skills/generate-nfr/templates/nfr-format.md:
+4. Generate NFRs per category using @../skills/lidr-generate-nfr/templates/nfr-format.md:
    - **Mandatory**: Performance, Security, Scalability, Availability, Compliance
    - **Conditional**: Accessibility, Observability, Interoperability, Maintainability
 5. Cross-reference each NFR with applicable RFs
@@ -112,7 +115,7 @@ Output: NFR documents saved to `docs/projects/$1/nfrs/`
 
 ## Step 3: Validate Traceability (RTM)
 
-Using skill `validate-requirements`:
+Using skill `lidr-validate-requirements`:
 
 Execute 5 validation passes:
 
@@ -146,7 +149,7 @@ For each NFR:
 ✅ All NFRs have measurable metrics
 ✅ Implementation clusters identified
 
-Generate RTM using @../skills/validate-requirements/templates/rtm.md
+Generate RTM using @../skills/lidr-validate-requirements/templates/rtm.md
 Output: `docs/projects/$1/rtm.md`
 
 ## Step 4: Epic Breakdown (Optional)
@@ -186,15 +189,15 @@ Evaluate Gate 2 criteria:
 | RTM generated and complete | ✅/❌ |
 | Implementation clusters identified | ✅/❌ |
 
-If all PASS → "Ready for /advance-gate 2"
+If all PASS → "Ready for /lidr-advance-gate 2"
 If any FAIL → Report gaps with action items
 
 ## Report
 
 ```
-/validate-requirements $1 ✅
+/lidr-validate-requirements $1 ✅
 
-Phase 3 Specification Complete:
+Phase 3 Solutioning — Specification stage complete (toward G2):
   - RFs generated: {N} ({N} Must, {N} Should, {N} Could)
   - NFRs generated: {N} ({N} categories covered)
   - RTM coverage: {N}% functional, {N}% NFR
@@ -210,7 +213,7 @@ Artifacts generated:
   📄 docs/projects/$1/rtm.md
   📄 docs/projects/$1/epics.md (if generated)
 
-Next: /advance-gate 2 (if PASS)
+Next: /lidr-advance-gate 2 (if PASS)
 ```
 
 ## Error Handling

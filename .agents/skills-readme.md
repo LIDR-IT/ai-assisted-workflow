@@ -2,7 +2,7 @@
 
 Source-of-truth for Agent Skills across 5 AI platforms. Skills follow the [Agent Skills](https://agentskills.io) open standard, supported by Claude Code, Cursor, Gemini CLI, GitHub Copilot, and Antigravity.
 
-**Source:** `.agents/skills/<skill-name>/SKILL.md` — 67 skills (62 LIDR SDLC + 5 generic meta-skills).
+**Source:** `.agents/skills/<skill-name>/SKILL.md` — 113 skills (44 LIDR `lidr-*` + 69 BMad `bmad-*`).
 
 ## How each platform discovers skills (verified against official docs, May 2026)
 
@@ -117,15 +117,46 @@ Anti-patterns:
 - "I help with X" (first person — doesn't match how Claude/Gemini reason about skills)
 - Multi-paragraph descriptions (most chars never reach Claude's listing budget)
 
-## Inventory (66 skills)
+## Inventory (113 skills)
 
-### Generic meta-skills (4)
+All artifacts inherited from the LIDR SDLC methodology are prefixed `lidr-*`;
+BMad skills (base flow + agents + utilities) keep the `bmad-*` prefix. LIDR
+wraps BMad outputs rather than duplicating them — see
+`.agents/_shared/lidr/MIGRATION.md`.
 
-- `agents-architecture`, `command-development`, `commit-management`, `ticket-validation`
+### LIDR skills (44) — `lidr-*`
 
-### LIDR SDLC skills (62)
+SDLC phases 0–4 (unified BMad numbering) plus the spec-lifecycle and the
+meta-tooling skills. Run `ls .agents/skills/ | grep ^lidr-` for the live list,
+or see the orchestrator AGENTS.md "LIDR SDLC Methodology" section for the
+phase-by-phase mapping. Includes:
 
-Organized by SDLC phase, all prefixed `lidr-*`. Run `ls .agents/skills/ | grep ^lidr-` for the full list, or see the orchestrator AGENTS.md "LIDR SDLC Methodology" section for phase-by-phase mapping.
+- **Meta-tooling (5):** `lidr-agents-architecture`, `lidr-command-development`,
+  `lidr-hook-development`, `lidr-mcp-integration`, `lidr-generate-rule`
+- **SDLC + spec-lifecycle (39):** `lidr-business-case`, `lidr-kickoff`,
+  `lidr-stakeholder-map`, `lidr-risk-log`, `lidr-review-cruzado`,
+  `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements`,
+  `lidr-user-stories`, `lidr-refinement-notes`, `lidr-sprint-capacity`,
+  `lidr-adr`, `lidr-pr-description`, `lidr-tech-debt`, `lidr-dev-handoff-qa`,
+  `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`,
+  `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report`,
+  `lidr-vuln-assessment`, `lidr-dast-interpretation`, `lidr-pentest-report`,
+  `lidr-security-checklist`, `lidr-change-request`, `lidr-rollback-plan`,
+  `lidr-release-notes`, `lidr-postmortem`, `lidr-gate-evaluation`,
+  `lidr-impact-analysis`, `lidr-audit-standards`, `lidr-commit-management`,
+  `lidr-ticket-validation`, `lidr-tracking-integration`, `lidr-sdlc-tracking`,
+  `lidr-external-sync`, `lidr-playwright-cli`, `lidr-propuesta-builder`,
+  `lidr-help`
+
+### BMad skills (69) — `bmad-*`
+
+The full BMad set: base flow (`bmad-prd`, `bmad-create-architecture`,
+`bmad-create-epics-and-stories`, `bmad-document-project`, `bmad-dev-story`,
+`bmad-create-story`, `bmad-sprint-planning`, `bmad-retrospective`, …),
+test-architecture (`bmad-testarch-*`, `bmad-tea`), creative/innovation
+(`bmad-cis-*`, `bmad-brainstorming`), agent personas (`bmad-agent-*`), and
+utilities (`bmad-spec`, `bmad-shard-doc`, `bmad-index-docs`, …). Run
+`ls .agents/skills/ | grep ^bmad-` for the live list.
 
 ## Common pitfalls
 

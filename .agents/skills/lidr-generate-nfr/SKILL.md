@@ -1,9 +1,9 @@
 ---
 name: lidr-generate-nfr
 id: generate-nfr
-version: "2.6.0"
-last_updated: "2026-06-09"
-updated_by: "TL: BMad-coherence batch-fix"
+version: "2.7.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 3
 stage: specification
@@ -37,6 +37,22 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 LIDR-unique: authors measurable, testable NFRs at Gate 2 (Specification) — a contract that `bmad-testarch-nfr` later audits against implementation evidence. Consumes the Technical PRD from `bmad-prd` (§5) and feeds `lidr-validate-requirements` (RTM coverage + gap detection).
+
+## Output Location
+
+Generated requirements are saved as **one file per NFR** under the per-client requirements directory — this is the exact path Gate 2 reads (`gate-evidence.yaml` G2 `lidr-generate-nfr` glob `{client_root}/requirements/NFR-*.md`):
+
+**`docs/projects/{CLIENT_CODE}/requirements/NFR-{PROJ}-{CAT}-{NNN}.md`** (one file per NFR)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`). RFs and NFRs share the `requirements/` directory so `lidr-validate-requirements` can build the RTM from a single location. The NFR Summary Matrix is written alongside as **`docs/projects/{CLIENT_CODE}/requirements/nfr-summary-matrix.md`**.
+
+Examples:
+
+- `docs/projects/docline/requirements/NFR-API-PERF-001.md`
+- `docs/projects/docline/requirements/NFR-FIN-SEC-002.md`
+- `docs/projects/docline/requirements/nfr-summary-matrix.md`
+
+> **Gate 2 contract**: the gate's optional NFR evidence is the presence of `requirements/NFR-*.md` files with measurable content. Do NOT write to a separate `nfrs/` directory — keep NFRs in `requirements/` so the gate glob and RTM resolve correctly.
 
 ## Workflow
 
@@ -344,8 +360,8 @@ Additional validation by system type — select the checklist(s) applicable to y
 
 After execution, this skill produces:
 
-1. **Individual NFRs**: `docs/projects/{project}/nfrs/NFR-{PROJ}-{CAT}-{NNN}.md`
-2. **NFR Summary Matrix**: Cross-reference with RFs and risk assessment
+1. **Individual NFRs**: `docs/projects/{CLIENT_CODE}/requirements/NFR-{PROJ}-{CAT}-{NNN}.md` (one file per NFR — matches G2 gate-evidence glob)
+2. **NFR Summary Matrix**: `docs/projects/{CLIENT_CODE}/requirements/nfr-summary-matrix.md` — cross-reference with RFs and risk assessment
 3. **Architecture Impact Report**: Infrastructure and design implications
 4. **Compliance Mapping**: Regulatory requirements to technical implementation
 
@@ -386,6 +402,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                | Changes                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.7.0   | 2026-06-10 | TL: Gate-evidence contract fix        | Added "## Output Location": NFRs now emit to `docs/projects/{CLIENT_CODE}/requirements/NFR-*.md` (matching G2 gate-evidence glob) instead of `nfrs/`; summary matrix to `requirements/nfr-summary-matrix.md`                                                               |
 | 2.6.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added "Relationship to BMad" note (LIDR-unique NFR authoring; consumes bmad-prd, audited by bmad-testarch-nfr, feeds lidr-validate-requirements)                                                                                                                           |
 | 2.5.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tools via tool-registry                                                                                                                                                                                               |
 | 2.4.0   | 2026-03-25 | TL: domain-agnostic-fix               | Removed remaining domain-specific terminology from active instruction cross-references; changelog entries neutralized                                                                                                                                                      |

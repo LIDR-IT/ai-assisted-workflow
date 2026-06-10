@@ -5,9 +5,9 @@
 
 // Conteos automáticos basados en la estructura real del directorio POST-MERGE BMAD + LIDR Spec Lifecycle
 export const ecosystemStats = {
-  skills: 111, // 42 LIDR (incl. spec-lifecycle + meta-tooling) + 69 BMAD
+  skills: 113, // 44 LIDR (incl. spec-lifecycle + meta-tooling) + 69 BMAD (matches .agents/skills/)
   automatedSkills: 8, // validate-requirements, tech-debt, user-stories, lidr-run-parallel-tasks, security-checklist, test-plan, release-notes, rollback-plan
-  commands: 32, // 21 LIDR SDLC + 7 LIDR spec-lifecycle (lidr-spec-*) + 4 generic
+  commands: 30, // 24 LIDR SDLC + spec-lifecycle (lidr-*) + 6 generic (sync-setup, test-hooks, ...) — matches .agents/commands/
   templates: 0, // ✨ ELIMINATED - integrated into skills (29→0)
   rules: 24, // 7 LIDR SDLC + 17 generic (incl. spec-execution, model-selection)
   mcps: 3, // context7, playwright, chrome-devtools (from .mcp.json)
@@ -18,12 +18,12 @@ export const ecosystemStats = {
   docsSupport: 44, // docs/projects + docs/standards
   validationScripts: 31, // skill validators + shared validators (Node-side scan)
   gates: 8, // Gates 0-7
-  phases: 9, // Fases 0-8
+  phases: 5, // Unified Phases 0-4 (BMad numbering); legacy LIDR phases survive as stages
 
-  // Conteos por tier de commands
-  orchestratorCommands: 10, // Tier 1
-  tacticalCommands: 19, // Tier 2 (6 base + 7 lidr-spec-* + 6 enhanced/quick)
-  utilityCommands: 1, // Tier 3
+  // Conteos por tier de commands (sum = 30, matches .agents/commands/)
+  orchestratorCommands: 9, // Tier 1
+  tacticalCommands: 19, // Tier 2 (lidr-spec-* + create-* + enrich/commit/improve-docs + ...)
+  utilityCommands: 2, // Tier 3 (sync-setup, test-hooks)
 
   // Totales computados POST-CONSOLIDACIÓN
   get totalArtifacts() {

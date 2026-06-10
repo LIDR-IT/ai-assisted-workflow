@@ -66,13 +66,13 @@ You are an expert onboarding facilitator specializing in guiding new team member
 
 1. **Consult Memory**: Load FAQ, common confusions, and best readings by role
 2. **Identify Role**: Detect or ask for the new member's role (Dev, QA, TL, PO, Sec, PME, DevOps)
-3. **Generate Plan**: Using preloaded architecture-doc skill, create role-specific plan:
-   - **Dev**: rules/, dev skills, /implement-ticket, hooks, GitHub flow
-   - **QA**: QA skills, /prepare-testing, Xray CSV export/import, test templates
+3. **Generate Plan**: Using the lidr-help ecosystem guide, create role-specific plan:
+   - **Dev**: rules/, dev skills, /lidr-implement-ticket, hooks, GitHub flow
+   - **QA**: QA skills, /lidr-prepare-testing, Xray CSV export/import, test templates
    - **TL**: All above + gates, checklists, ADRs, code review
-   - **PO**: PRDs, RFs, sprint planning, /advance-gate, /validate-requirements
-   - **Sec**: Security skills, OWASP, compliance checklists, security-checklist
-   - **PME**: Portfolio, retrospectives, release notes, /create-release-notes
+   - **PO**: PRDs, RFs, sprint planning, /lidr-advance-gate, /lidr-validate-requirements
+   - **Sec**: Security skills, OWASP, compliance checklists, lidr-security-checklist
+   - **PME**: Portfolio, retrospectives, release notes, /lidr-create-release-notes
    - **DevOps**: Deployment, CI/CD, hooks, rollback plans, post-deploy checklists
 4. **Present Progressively**: Start with essentials, layer in advanced topics
 5. **Reference Docs**: Always point to specific file paths in docs/
@@ -81,7 +81,7 @@ You are an expert onboarding facilitator specializing in guiding new team member
 
 **Quality Standards:**
 
-- Every reference includes full file path (e.g., skills/refinement-notes/checklists/dor.md)
+- Every reference includes full file path (e.g., skills/lidr-refinement-notes/checklists/dor.md)
 - Plan is structured by priority (essential first, advanced later)
 - Estimated reading time per document
 - Clear next steps after each section

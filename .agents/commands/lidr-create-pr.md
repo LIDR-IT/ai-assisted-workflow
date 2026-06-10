@@ -1,12 +1,13 @@
 ---
 description: Create a PR with auto-generated description, SDLC tracking and automated dev→QA handoffs
 argument-hint: [ticket-id]
-allowed-tools: Read, Write, Bash(git:*), Bash(npm:*), Skill(sdlc-tracking), Skill(external-sync), Skill(dev-handoff-qa), AskUserQuestion
+allowed-tools: Read, Write, Bash(git:*), Bash(npm:*), Skill(lidr-sdlc-tracking), Skill(lidr-external-sync), Skill(lidr-dev-handoff-qa), AskUserQuestion
 model: sonnet
-version: "2.0.0"
-phase: 5
-last_updated: "2026-03-17"
-updated_by: "System: Phase 5 Enhancement"
+version: "2.0.1"
+phase: 4
+stage: development
+last_updated: "2026-06-10"
+updated_by: "TL: Stale-ref migration"
 ---
 
 <!--
@@ -17,8 +18,8 @@ LAST UPDATED: 2026-03-17
 
 PURPOSE:
 Enhanced Pull Request creation with SDLC tracking integration, external tool synchronization,
-automated handoff generation, and comprehensive quality validation. Part of Phase 5 Developer
-Workflow Enhancement.
+automated handoff generation, and comprehensive quality validation. Runs in Phase 4
+Implementation (development stage) of the unified phase model.
 
 FEATURES:
 - SDLC tracking integration (PR links to story and epic)
@@ -30,10 +31,10 @@ FEATURES:
 - Portfolio-scale context awareness
 
 USAGE:
-  /create-pr PROJ-123
-  /create-pr PROJ-123 --handoff=auto
-  /create-pr PROJ-123 --draft --security-review
-  /create-pr PROJ-123 --project=PROJ-2026-001
+  /lidr-create-pr PROJ-123
+  /lidr-create-pr PROJ-123 --handoff=auto
+  /lidr-create-pr PROJ-123 --draft --security-review
+  /lidr-create-pr PROJ-123 --project=PROJ-2026-001
 
 ARGUMENTS:
   ticket-id: Jira/Linear ticket ID (required)
@@ -45,33 +46,36 @@ ARGUMENTS:
   --no-notify: Skip team notifications (default: false)
 
 RELATED COMMANDS:
-  /create-branch - Enhanced branch creation
-  /implement-ticket - Full workflow including enhanced PR creation
-  /advance-gate 4 - Sprint aggregator after all PRs merged
+  /lidr-create-branch - Enhanced branch creation
+  /lidr-implement-ticket - Full workflow including enhanced PR creation
+  /lidr-advance-gate 4 - Sprint aggregator after all PRs merged
 
 CHANGELOG:
-  v2.0.0 (2026-03-17): Phase 5 enhancement with SDLC tracking and automation
+  v2.0.1 (2026-06-10): Repointed Skill() refs + skill loads to lidr-* prefixes;
+                        reframed Phase 5 → unified Phase 4 Implementation/development;
+                        /help → /lidr-help.
+  v2.0.0 (2026-03-17): SDLC tracking and automation enhancement (then "Phase 5")
   v1.0.0 (2025-03-05): Initial release
 -->
 
 # Create PR for $1
 
-Load: @../rules/tech-stack.md, @../rules/project.md, @../rules/org.md
-Load: @../skills/sdlc-tracking/SKILL.md, @../skills/external-sync/SKILL.md
+Load: @../rules/lidr-sdlc/tech-stack.md, @../rules/lidr-sdlc/project.md, @../rules/lidr-sdlc/org.md
+Load: @../skills/lidr-sdlc-tracking/SKILL.md, @../skills/lidr-external-sync/SKILL.md
 
-## Phase 5 Enhancement Features
+## Enhanced Workflow Features
 
 🚀 **New in v2.0**: SDLC tracking integration, automated handoffs, security checklist, portfolio awareness
 
 ## Input Validation and Project Detection
 
 If "$1" is empty:
-❌ Usage: /create-pr [TICKET-ID] [flags]
+❌ Usage: /lidr-create-pr [TICKET-ID] [flags]
 
 Examples:
-/create-pr PROJ-123
-/create-pr PROJ-123 --handoff=auto --security-review
-/create-pr PROJ-123 --draft --project=PROJ-2026-001
+/lidr-create-pr PROJ-123
+/lidr-create-pr PROJ-123 --handoff=auto --security-review
+/lidr-create-pr PROJ-123 --draft --project=PROJ-2026-001
 Exit.
 
 Extract flags from arguments:
@@ -87,7 +91,7 @@ Extract flags from arguments:
 
 ### Automatic Project Detection
 
-Use Skill: sdlc-tracking with action "detect-project" for ticket $1.
+Use Skill: lidr-sdlc-tracking with action "detect-project" for ticket $1.
 
 If project found, load comprehensive context:
 
@@ -103,7 +107,7 @@ Continue with enhanced features disabled.
 
 ### Story Context Integration
 
-Use Skill: sdlc-tracking with action "get-story" for derived story ID.
+Use Skill: lidr-sdlc-tracking with action "get-story" for derived story ID.
 
 Extract story context:
 
@@ -127,7 +131,7 @@ Conventional commits validation: Verify commit message format compliance.
 
 If no commits ahead:
 ❌ No commits to create PR for. Complete implementation first.
-Suggestions: 1. Make code changes for story $1 2. Commit with conventional format: "feat(PROJ-123): description" 3. Run /create-pr $1 again
+Suggestions: 1. Make code changes for story $1 2. Commit with conventional format: "feat(PROJ-123): description" 3. Run /lidr-create-pr $1 again
 Exit.
 
 ### Enhanced Diff Analysis
@@ -471,7 +475,7 @@ const generateLabels = (changes: ChangeAnalysis, story: Story) => {
 ### External Tool Synchronization
 
 If --sync=true (default):
-Use Skill: external-sync with comprehensive PR context:
+Use Skill: lidr-external-sync with comprehensive PR context:
 
 #### Jira Integration
 
@@ -500,7 +504,7 @@ Use Skill: external-sync with comprehensive PR context:
 ### Enhanced Handoff Creation
 
 If --handoff=auto (default) or --handoff=manual:
-Use Skill: dev-handoff-qa with enhanced context:
+Use Skill: lidr-dev-handoff-qa with enhanced context:
 
 ```typescript
 const handoffContext = {
@@ -582,7 +586,7 @@ const getNotificationRecipients = (project: Project, story: Story, pr: PR) => {
 ### Enhanced Success Report
 
 ```
-/create-pr $1 ✅
+/lidr-create-pr $1 ✅
 
 📋 Story Integration:
    Project:     {project.name} ({project.id})
@@ -641,7 +645,7 @@ const getNotificationRecipients = (project: Project, story: Story, pr: PR) => {
    2. Address review feedback
    3. Monitor CI/CD pipeline: {ci.pipeline.url}
    4. QA testing begins after merge
-   5. Track progress: /track-sdlc update {project.id}
+   5. Track progress: /lidr-track-sdlc update {project.id}
 
 📈 Developer Metrics:
    Story Lead Time: {story.lead.time}
@@ -662,14 +666,14 @@ If any step fails:
    Impact:      {impact.assessment}
 
 🛠️ Recovery Options:
-   1. Auto-fix:    /create-pr $1 --fix-{specific.issue}
+   1. Auto-fix:    /lidr-create-pr $1 --fix-{specific.issue}
    2. Manual fix:  {specific.manual.steps}
-   3. Skip sync:   /create-pr $1 --sync=false
-   4. Get help:    /help-{{CLIENT_CODE}} pr-creation-issues
+   3. Skip sync:   /lidr-create-pr $1 --sync=false
+   4. Get help:    /lidr-help pr-creation-issues
 
 📞 Escalation:
-   - Check project health: /track-sdlc health {project.id}
-   - Validate setup: /validate-project-docs {project.id}
+   - Check project health: /lidr-track-sdlc health {project.id}
+   - Validate setup: /lidr-validate-project-docs {project.id}
    - Team support: {team.support.channels}
 
 🔄 Partial Success Recovery:
@@ -699,8 +703,8 @@ If any step fails:
 
 ### Backward Compatibility
 
-- `/create-pr` command remains unchanged
-- `/create-pr` provides all new functionality
+- `/lidr-create-pr` command remains unchanged
+- `/lidr-create-pr` provides all new functionality
 - Gradual migration path for existing projects
 - Feature flags for progressive enhancement
 

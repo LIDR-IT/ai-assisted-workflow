@@ -9,12 +9,12 @@ arguments:
 
 # Enrich Ticket Command
 
-Validates ticket completeness, structure, and quality using the `ticket-validation` skill.
+Validates ticket completeness, structure, and quality using the `lidr-ticket-validation` skill.
 
 ## Usage
 
 ```bash
-/enrich-ticket TICK-XXX
+/lidr-enrich-ticket TICK-XXX
 ```
 
 **Arguments:**
@@ -24,8 +24,8 @@ Validates ticket completeness, structure, and quality using the `ticket-validati
 **Examples:**
 
 ```bash
-/enrich-ticket TICK-002
-/enrich-ticket TICK-005
+/lidr-enrich-ticket TICK-002
+/lidr-enrich-ticket TICK-005
 ```
 
 ## What This Command Does
@@ -50,15 +50,15 @@ Validates ticket completeness, structure, and quality using the `ticket-validati
 
 ## Implementation
 
-This command invokes the `ticket-enricher` agent, which uses the `ticket-validation` skill.
+This command invokes the `lidr-ticket-enricher` agent, which uses the `lidr-ticket-validation` skill.
 
 **Agent:**
 
 ```yaml
-name: ticket-enricher
+name: lidr-ticket-enricher
 description: Validates and enriches ticket quality
 tools: [Read, Skill]
-skills: [ticket-validation, bdd-gherkin-patterns]
+skills: [lidr-ticket-validation, bmad-testarch-atdd]
 ```
 
 **Process:**
@@ -242,11 +242,11 @@ Once validation passes:
 
 ## Related Commands
 
-- `/create-ticket [type]` - Create new ticket
-- `/validate-pr` - Check PR readiness before merge
+- `/lidr-create-ticket [type]` - Create new ticket
+- `lidr-pr-validator` agent - Check PR readiness before merge
 
 ## See Also
 
-- `.agents/skills/ticket-validation/` - Validation skill documentation
+- `.agents/skills/lidr-ticket-validation/` - Validation skill documentation
 - `.agents/rules/process/ai-workflow-system.md` - Complete workflow
 - `.agents/tickets/README.md` - Ticket system overview

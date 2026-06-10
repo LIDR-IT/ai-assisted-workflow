@@ -1,9 +1,9 @@
 ---
 name: lidr-generate-rf
 id: generate-rf
-version: "1.7.0"
-last_updated: "2026-06-09"
-updated_by: "TL: BMad-coherence batch-fix"
+version: "1.8.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 3
 stage: specification
@@ -60,11 +60,19 @@ LIDR-unique: authors atomic, BDD-bearing Functional Requirements (Given/When/The
 
 ## Output Location
 
-Generated documents should be saved to: **`docs/projects/{projectName}/requirements.md`**
+Generated requirements are saved as **one file per RF** under the per-client requirements directory — this is the exact path Gate 2 reads (`gate-evidence.yaml` G2 `lidr-generate-rf` glob `{client_root}/requirements/RF-*.md`):
 
-Contains complete functional requirements with BDD scenarios.
+**`docs/projects/{CLIENT_CODE}/requirements/RF-{PROJ}-{NNN}.md`** (one file per RF)
 
-Example: `docs/projects/identity-sdk-v3/requirements.md`
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`). The global dependency map is written alongside as **`docs/projects/{CLIENT_CODE}/requirements/dependency-map.md`**.
+
+Examples:
+
+- `docs/projects/docline/requirements/RF-SHOP-003.md`
+- `docs/projects/docline/requirements/RF-SHOP-004.md`
+- `docs/projects/docline/requirements/dependency-map.md`
+
+> **Gate 2 contract**: the gate's required evidence is the presence of `requirements/RF-*.md` files with real BDD content. Do NOT collapse all RFs into a single `requirements.md` — emit per-RF files so the gate glob and downstream traceability (`lidr-validate-requirements` RTM) resolve correctly.
 
 ## Decomposition Rules
 
@@ -97,27 +105,29 @@ Example: `docs/projects/identity-sdk-v3/requirements.md`
 - **Appointment RFs**: Availability lookup → Slot booking → Reminder dispatch → Cancellation handling
 - **Compliance RFs**: Audit logging → Data access control → Retention management → Data export
 
-## Output Template — Document Header
+## Output Template — Per-RF File Frontmatter
 
-The `requirements.md` document MUST start with proper frontmatter:
+Each `RF-{PROJ}-{NNN}.md` file MUST start with proper frontmatter:
 
 ```markdown
 ---
-id: {project-name}-requirements
+id: RF-{PROJ}-{NNN}
 version: "1.0.0"
-last_updated: "YYYY-MM-DD"            # date of generation
-updated_by: "PO: {Name}"              # Product Owner generates requirements
+last_updated: "YYYY-MM-DD" # date of generation
+updated_by: "PO: {Name}" # Product Owner generates requirements
 status: active
 type: project
-review_cycle: 60                      # days between reviews (project documentation)
-next_review: "YYYY-MM-DD"             # calculated: last_updated + review_cycle
-owner_role: "PO"                      # Product Owner maintains requirements
+review_cycle: 60 # days between reviews (project documentation)
+next_review: "YYYY-MM-DD" # calculated: last_updated + review_cycle
+owner_role: "PO" # Product Owner maintains requirements
 ---
 
-# Functional Requirements: {PROJECT_NAME}
+# RF-{PROJ}-{NNN}: {Title}
 
-[Document introduction and overview]
+[RF body — see "Output Template — Per RF" below]
 ```
+
+The `dependency-map.md` companion uses the same frontmatter shape with `id: {project-name}-rf-dependency-map`.
 
 ## Output Template — Per RF
 
@@ -423,12 +433,13 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                                | Changes                                                                                                                                                                   |
-| ------- | ---------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.7.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added "Relationship to BMad" note (LIDR-unique BDD-bearing RF authoring; consumes bmad-prd, feeds bmad-create-epics-and-stories + lidr-validate-requirements)             |
-| 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tracking/docs tools via tool-registry                                                                                |
-| 1.5.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific patterns with e-commerce/SaaS/healthcare examples; moved domain-specific content to examples/client-domain-example.md |
-| 1.4.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                                                                             |
-| 1.2.0   | 2026-03-09 | System: Improvement                   | Added concrete BDD scenarios and domain-specific RF patterns                                                                                                              |
-| 1.1.0   | 2026-02-15 | TL: García                            | Added decomposition rules and validation checklist                                                                                                                        |
-| 1.0.0   | 2026-01-20 | TL: García                            | Initial version of the skill                                                                                                                                              |
+| Version | Date       | Author                                | Changes                                                                                                                                                                                        |
+| ------- | ---------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.8.0   | 2026-06-10 | TL: Gate-evidence contract fix        | Output Location now emits per-RF files at `docs/projects/{CLIENT_CODE}/requirements/RF-*.md` (matching G2 gate-evidence glob) instead of a single requirements.md; per-RF frontmatter template |
+| 1.7.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added "Relationship to BMad" note (LIDR-unique BDD-bearing RF authoring; consumes bmad-prd, feeds bmad-create-epics-and-stories + lidr-validate-requirements)                                  |
+| 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tracking/docs tools via tool-registry                                                                                                     |
+| 1.5.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific patterns with e-commerce/SaaS/healthcare examples; moved domain-specific content to examples/client-domain-example.md                      |
+| 1.4.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                                                                                                  |
+| 1.2.0   | 2026-03-09 | System: Improvement                   | Added concrete BDD scenarios and domain-specific RF patterns                                                                                                                                   |
+| 1.1.0   | 2026-02-15 | TL: García                            | Added decomposition rules and validation checklist                                                                                                                                             |
+| 1.0.0   | 2026-01-20 | TL: García                            | Initial version of the skill                                                                                                                                                                   |

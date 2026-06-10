@@ -1,6 +1,10 @@
 ---
 name: principles
 description: Core principles and architectural decisions
+id: principles
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 trigger: always_on
 ---

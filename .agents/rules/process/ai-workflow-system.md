@@ -1,6 +1,10 @@
 ---
 name: ai-workflow-system
 description: Spec-driven development workflow from ticket creation to PR merge
+id: ai-workflow-system
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: [".agents/tickets/**/*.md", "docs/**/*.md"]
 argument-hint: <ticket-or-doc>

@@ -22,10 +22,10 @@ Detects project drift (scope, timeline, budget, quality) and guides realignment 
 stakeholder involvement. 60% automation level targeting 120+ hours/year ROI.
 
 USAGE:
-  /course-correct {{CLIENT_CODE}}-sdk scope        -> Scope drift correction
-  /course-correct mobile-app timeline     -> Timeline realignment
-  /course-correct identity-platform quality -> Quality degradation recovery
-  /course-correct domain-specific-api full      -> Comprehensive review
+  /lidr-course-correct {{CLIENT_CODE}}-sdk scope        -> Scope drift correction
+  /lidr-course-correct mobile-app timeline     -> Timeline realignment
+  /lidr-course-correct identity-platform quality -> Quality degradation recovery
+  /lidr-course-correct domain-specific-api full      -> Comprehensive review
 
 ARGUMENTS:
   project-name: Project identifier (required)
@@ -39,15 +39,14 @@ CORRECTION TYPES:
   full      = Comprehensive 360° project health assessment
 
 REQUIREMENTS:
-  - .claude/rules/ configured (org.md, project.md, workflows.md)
+  - .claude/rules/lidr-sdlc/ configured (org.md, project.md, workflows.md)
   - Current sprint data accessible via Jira/tools
   - Previous retrospective and risk-log data available
   - Stakeholder contact information in project documentation
 
 RELATED SKILLS:
-  retrospective - For data-driven analysis foundation
-  risk-log      - For risk reassessment and mitigation updates
-  epic-review   - For scope and delivery analysis
+  bmad-retrospective - For data-driven analysis foundation (and scope/delivery review)
+  lidr-risk-log      - For risk reassessment and mitigation updates
 
 OUTPUT TEMPLATE:
   command-specific output (no template needed) (new template)
@@ -71,17 +70,17 @@ CHANGELOG:
 
 Load context from rules FIRST:
 
-- @../rules/org.md -> organizational standards, escalation paths, change management
-- @../rules/project.md -> current project context, team, roadmap
-- @../rules/workflows.md -> role permissions, stakeholder communication
-- @../rules/documentation.md -> documentation update requirements
+- @../rules/lidr-sdlc/org.md -> organizational standards, escalation paths, change management
+- @../rules/lidr-sdlc/project.md -> current project context, team, roadmap
+- @../rules/lidr-sdlc/workflows.md -> role permissions, stakeholder communication
+- @../rules/lidr-sdlc/documentation.md -> documentation update requirements
 
 ## Step 1: Validate Input and Authorization
 
 **Validate project name:**
 If "$1" is empty or invalid:
 ERROR: Project name required.
-Usage: /course-correct [project-name] [scope|timeline|budget|quality|full]
+Usage: /lidr-course-correct [project-name] [scope|timeline|budget|quality|full]
 Exit.
 
 **Determine correction type:**
@@ -94,8 +93,8 @@ ERROR: Invalid correction type. Must be: scope | timeline | budget | quality | f
 Exit.
 
 **Verify role authorization:**
-Check @../rules/workflows.md for authorized roles.
-Authorized roles for /course-correct: PME, PO, Tech Lead.
+Check @../rules/lidr-sdlc/workflows.md for authorized roles.
+Authorized roles for /lidr-course-correct: PME, PO, Tech Lead.
 
 Use AskUserQuestion to confirm role and urgency:
 
@@ -109,7 +108,7 @@ Use AskUserQuestion to confirm role and urgency:
   - Tech Lead - Urgencia Alta (Deuda técnica crítica)
   - Tech Lead - Urgencia Media (Calidad en degradación)
 
-If role not authorized -> "Solo PME, PO y Tech Lead pueden ejecutar /course-correct." Exit.
+If role not authorized -> "Solo PME, PO y Tech Lead pueden ejecutar /lidr-course-correct." Exit.
 
 ## Step 2: Drift Detection and Analysis
 
@@ -433,7 +432,7 @@ If project docs exist at `docs/projects/$1.md`:
 **Generate follow-up skill recommendations:**
 Based on correction strategy chosen:
 
-- If scope changed: "Run /validate-requirements to update RFs"
+- If scope changed: "Run /lidr-validate-requirements to update RFs"
 - If timeline changed: "Run sprint-capacity skill to recalculate"
 - If quality issues: "Run tech-debt skill to prioritize improvements"
 - If budget changed: "Update business case with new projections"
@@ -489,7 +488,7 @@ Log this course correction execution for ROI analysis and pattern recognition to
 Present the course correction summary:
 
 ```
-## /course-correct $1 — Completed
+## /lidr-course-correct $1 — Completed
 
 Proyecto: $1
 Tipo: [correction_type]
@@ -504,8 +503,8 @@ Follow-up: Course correction review in [timeframe]
 Report saved: .claude/course-corrections/course-correct-$1-[date].local.md
 
 Next recommended commands:
-- /advance-gate [N] (after corrective actions implemented)
-- /validate-project-docs (after documentation updates)
+- /lidr-advance-gate [N] (after corrective actions implemented)
+- /lidr-validate-project-docs (after documentation updates)
 - Skills to run: [skill recommendations based on drift type]
 ```
 

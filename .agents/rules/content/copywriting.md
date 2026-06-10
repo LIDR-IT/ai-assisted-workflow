@@ -1,6 +1,10 @@
 ---
 name: copywriting
 description: Review copy for effective copywriting principles and best practices
+id: copywriting
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: ["**/*.md", "**/*.tsx", "**/*.jsx"]
 argument-hint: <file-or-pattern>

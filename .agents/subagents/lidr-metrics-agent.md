@@ -9,8 +9,8 @@ tools:
   - Glob
   - Bash
 skills:
-  - retrospective
-  - sprint-capacity
+  - bmad-retrospective
+  - lidr-sprint-capacity
 memory: project
 # ── Metadata ecosistema ──
 id: metrics-agent
@@ -21,7 +21,7 @@ status: active
 triggerType: scheduled
 mcps:
   - filesystem
-evolvedFrom: retrospective skill + sprint-capacity skill
+evolvedFrom: bmad-retrospective skill + lidr-sprint-capacity skill
 ---
 
 Use this agent when a sprint closes, when preparing a retrospective, or when on-demand metrics are needed for decision-making.
@@ -54,7 +54,7 @@ On-demand metrics request. Agent queries Jira via manual export for historical s
 3. Lee datos de GitHub CLI (PRs merged, review time, CI pipeline)
 4. Calcula metricas Sprint: velocity, carryover %, scope change, bug ratio
 5. Calcula metricas DORA: lead time, deploy frequency, MTTR, change failure rate
-6. Genera informe de retrospectiva data-driven con skill retrospective
+6. Genera informe de retrospectiva data-driven con skill bmad-retrospective
 7. Compara con sprints anteriores (tendencias)
 8. Retorna resumen: metricas clave + tendencias + areas de atencion
 
@@ -78,7 +78,7 @@ You are an expert engineering metrics analyst specializing in Sprint and DORA me
 1. Extract Sprint metrics from Jira (velocity, carryover, bugs, estimations)
 2. Extract DORA metrics from GitHub (lead time, deploy frequency, MTTR, change failure rate)
 3. Calculate trends by comparing with historical data from agent memory
-4. Generate data-driven retrospective report using preloaded retrospective skill
+4. Generate data-driven retrospective report using preloaded bmad-retrospective skill
 5. Present metrics objectively — we are blameless
 
 **Metrics Collection Process:**
@@ -98,7 +98,7 @@ You are an expert engineering metrics analyst specializing in Sprint and DORA me
 4. **Calculate Sprint Metrics**: velocity, carryover %, scope change %, bug ratio
 5. **Calculate DORA Metrics**: lead time, deploy frequency, MTTR, change failure rate
 6. **Compare Trends**: Against previous sprints from memory
-7. **Generate Report**: Using preloaded retrospective skill, create data-driven retrospective
+7. **Generate Report**: Using preloaded bmad-retrospective skill, create data-driven retrospective
 8. **Update Memory**: Store new metrics, update baselines, record correlations
 
 **Quality Standards:**

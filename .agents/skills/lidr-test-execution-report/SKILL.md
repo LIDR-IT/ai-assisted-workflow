@@ -1,9 +1,9 @@
 ---
 name: lidr-test-execution-report
 id: test-execution-report
-version: "1.6.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "1.7.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
 stage: qa
@@ -27,6 +27,18 @@ Phase: 6 — QA | Gate: **G5 (QA Sign-off), `required: true`** — primary input
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
 
 > **BMad relationship (extension):** BMad's `bmad-testarch-trace` emits a traceability matrix + quality-gate decision, `bmad-testarch-automate` runs the automated suite, and `bmad-tea` is the Test Architect advisor. This skill is the LIDR gap-filler that consolidates all of that (plus compliance / security / performance evidence) into a **formal executive GO/NO-GO QA sign-off** — an artifact BMad has no single concept for. Wired into `_shared/lidr/gate-evidence.yaml` → **G5** (`required: true`).
+
+## Output Location
+
+The QA sign-off report MUST be published to the per-client path Gate 5 reads (`gate-evidence.yaml` G5 `lidr-test-execution-report` glob `{client_root}/test-execution-report*.md`, `required: true`):
+
+**`docs/projects/{CLIENT_CODE}/test-execution-report.md`** (or `test-execution-report-{release}.md` per release/cycle)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`). The QA Lead sign-off record is written separately to `docs/projects/{CLIENT_CODE}/signoffs/qa-signoff.md` (the G5 sign-off artifact).
+
+Example: `docs/projects/docline/test-execution-report-v1.4.0.md`
+
+> **Gate 5 contract**: `test-execution-report*.md` at the per-client root is REQUIRED evidence for G5. Publish the final GO/NO-GO report here so `/lidr-advance-gate 5` and `lidr-gate-evaluation` resolve it.
 
 ## Workflow
 
@@ -278,6 +290,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                         |
 | ------- | ---------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.7.0   | 2026-06-10 | TL: Gate-evidence contract fix            | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/test-execution-report*.md` (required G5 gate-evidence path)                                                                                                               |
 | 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted tracking/test_management via tool-registry                                                                                                                                                 |
 | 1.4.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Complete domain-agnostic remediation: Lines 26-28 (workflow terminology), 105-114 (8 Key Rules with template variables), 117-214 (complete example rewrite from biometric banking to generic Customer Portal), achieving 72→95/100 target score |
 | 1.3.0   | 2026-03-26 | IA: domain-agnostic-fix                   | Previous domain-agnostic improvements                                                                                                                                                                                                           |

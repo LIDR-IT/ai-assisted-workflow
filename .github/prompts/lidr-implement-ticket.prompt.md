@@ -15,8 +15,8 @@ implementation plan, assists coding, validates DoD, creates PR, generates
 handoff for QA, and transitions ticket status.
 
 USAGE:
-  /implement-ticket PROJ-123
-  /implement-ticket PROJ-456
+  /lidr-implement-ticket PROJ-123
+  /lidr-implement-ticket PROJ-456
 
 ARGUMENTS:
   ticket-id: Jira ticket ID (required). Format: PROJECT-NUMBER
@@ -27,9 +27,9 @@ REQUIREMENTS:
   - .claude/rules/ configured
 
 RELATED COMMANDS:
-  /create-branch  - Standalone branch creation (Step 2 of this command)
-  /create-pr      - Standalone PR creation (Step 6 of this command)
-  /advance-gate 4 - Sprint aggregator after all tickets done
+  /lidr-create-branch  - Standalone branch creation (Step 2 of this command)
+  /lidr-create-pr      - Standalone PR creation (Step 6 of this command)
+  /lidr-advance-gate 4 - Sprint aggregator after all tickets done
 
 CHANGELOG:
   v2.0.0 (2025-03-05): Rewritten to official command format
@@ -40,16 +40,16 @@ CHANGELOG:
 
 Load rules context FIRST:
 
-- @../rules/org.md
-- @../rules/tech-stack.md
-- @../rules/project.md
+- @../rules/lidr-sdlc/org.md
+- @../rules/lidr-sdlc/tech-stack.md
+- @../rules/lidr-sdlc/project.md
 
 ## Step 1: Validate and Load Ticket
 
 If "$1" is empty:
 ❌ ERROR: Ticket ID required.
-Usage: /implement-ticket [TICKET-ID]
-Example: /implement-ticket PROJ-123
+Usage: /lidr-implement-ticket [TICKET-ID]
+Example: /lidr-implement-ticket PROJ-123
 Exit.
 
 Read ticket from Jira MCP: GET /issue/$1
@@ -155,8 +155,8 @@ During implementation:
 
 - Verify each function against BDD criteria from ticket
 - If code introduces a TODO without ticket: WARN
-- If tech-debt detected: use tech-debt skill to register, create Jira subtask
-- If architectural decision needed: suggest creating ADR with adr skill
+- If tech-debt detected: use lidr-tech-debt skill to register, create Jira subtask
+- If architectural decision needed: suggest creating ADR with lidr-adr skill
 
 Run validations continuously:
 
@@ -166,7 +166,7 @@ Run validations continuously:
 
 ## Step 6: Pre-PR Validation
 
-Validate Definition of Done checklist skills/pr-description/checklists/dod.md:
+Validate Definition of Done checklist skills/lidr-pr-description/checklists/dod.md:
 
 - ✅ Tests pass: !`npm test`
 - ✅ Lint clean: !`npm run lint`
@@ -178,7 +178,7 @@ If any FAIL → suggest specific fixes before continuing.
 
 ## Step 7: Create PR
 
-Generate PR description using pr-description skill:
+Generate PR description using lidr-pr-description skill:
 
 - Input: !`git diff origin/develop...HEAD --stat` and ticket context
 - Output: structured PR body with:
@@ -201,7 +201,7 @@ Add labels: type, component, priority, size.
 
 ## Step 8: Generate Handoff Dev→QA
 
-Use dev-handoff-qa skill to generate handoff document:
+Use lidr-dev-handoff-qa skill to generate handoff document:
 
 - Ticket reference and linked RF
 - What was implemented (functional language, not technical)
@@ -223,7 +223,7 @@ Slack MCP: notify QA channel:
 Report:
 
 ```
-## /implement-ticket $1 ✅
+## /lidr-implement-ticket $1 ✅
 
 PR: #{pr-number} — {title}
 Branch: {branch-name}
@@ -231,5 +231,5 @@ Status: Ready for QA
 Handoff: Attached to ticket
 
 DoD: ✅ Tests | ✅ Lint | ✅ Build | ⏳ Review
-Next: QA runs /prepare-testing $1
+Next: QA runs /lidr-prepare-testing $1
 ```

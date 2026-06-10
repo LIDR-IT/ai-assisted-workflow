@@ -18,13 +18,13 @@ This command launches the doc-improver agent to audit and enhance your project d
 
 ```bash
 # Audit entire project
-/improve-docs
+/lidr-improve-docs
 
 # Audit specific directory
-/improve-docs docs/guides
+/lidr-improve-docs docs/guides
 
 # Audit specific file
-/improve-docs README.md
+/lidr-improve-docs README.md
 ```
 
 ## What Gets Checked
@@ -51,17 +51,17 @@ The doc-improver agent will:
 **Example 1: Audit project root**
 
 ```bash
-/improve-docs
+/lidr-improve-docs
 ```
 
 **Example 2: Improve guides directory**
 
 ```bash
-/improve-docs docs/guides
+/lidr-improve-docs docs/guides
 ```
 
 **Example 3: Review specific README**
 
 ```bash
-/improve-docs src/README.md
+/lidr-improve-docs src/README.md
 ```

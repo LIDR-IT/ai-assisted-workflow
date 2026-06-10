@@ -1,6 +1,14 @@
 ---
 name: lidr-help
+id: help
 description: Answer questions about the LIDR SDLC ecosystem and recommend the next skill, command, workflow, or doc. LIDR is the SDLC governance layer (5 unified phases 0–4 aligned with BMad — Analysis, Planning, Solutioning, Implementation — with stages, gates G0–G7, roles/RACI) that wraps and extends BMad — for pure BMad module questions, this skill defers to `bmad-help`. Use when someone asks "what can you do", "how do I", "help me with", "what command/skill should I use", "which gate", "where is", "explain the process", "qué comando uso", "cómo empiezo".
+version: "1.1.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
+status: active
+phase: 0 # meta/cross-cutting — applies anytime
+stage: anytime
+owner_role: "TL"
 allowed-tools: Read, Grep, Glob, Bash(find:*), Bash(cat:*), Bash(grep:*), AskUserQuestion
 model: haiku
 ---
@@ -17,7 +25,7 @@ This skill replaces the former `/lidr-help` command. It keeps the same `/lidr-he
 
 When this skill completes, the user should:
 
-1. **Know where they are** — which SDLC phase (0–8) and gate (G0–G7), what's already done.
+1. **Know where they are** — which unified phase (0–4: Context, Analysis, Planning, Solutioning, Implementation), stage (context|anytime|analysis|planning|specification|sprint-planning|development|qa|security|release), and gate (G0–G7) they're in, and what's already done. See `.agents/_shared/lidr/UNIFIED-PHASES.md` (canonical model).
 2. **Know what to do next** — the next recommended/required skill or command, with reasoning and role check.
 3. **Know how to invoke it** — `/command` or skill name in backticks, plus args.
 4. **Get offered a quick start** — when one step is the clear next move, offer to run it now.
@@ -28,7 +36,9 @@ When this skill completes, the user should:
 
 Resolve the answer from the source-of-truth tree, not from memory:
 
-- **Workflow authority** — `.agents/rules/lidr-sdlc/workflows.md`: the role × command matrix, phase flow, gate preconditions, and typical command chains. This is the primary router.
+- **Unified phase model (canonical)** — `.agents/_shared/lidr/UNIFIED-PHASES.md`: the 5 phases (0–4) × 9 stages × 8 gates (G0–G7), the LIDR-old(0–8)→unified mapping, and the per-phase skill table (LIDR + BMad fused). Read this FIRST to place the user.
+- **Gate evidence contract** — `.agents/_shared/lidr/gate-evidence.yaml`: which artifacts (and at which paths) satisfy each gate G0–G7.
+- **Workflow authority** — `.agents/rules/lidr-sdlc/workflows.md`: the role × command matrix, phase flow, gate preconditions, and typical command chains. This is the primary command router.
 - **Command catalog** — `.agents/commands/*.md` frontmatter `description:` (live list of slash commands).
 - **Skill catalog** — `.agents/skills/*/SKILL.md` frontmatter `name:` + `description:` (both `lidr-*` and `bmad-*`).
 - **SDLC model** — `.agents/rules/lidr-sdlc/org.md` (phases, gates, RACI, quality/security policy), `project.md` (active client, team, roles), `model-selection.md` (Opus-planning vs Sonnet-impl), `spec-execution.md` (mandatory test steps), `documentation.md` (DTC).
@@ -64,7 +74,7 @@ When the user's need is the artifact itself → recommend the BMad skill. When i
 Parse `$ARGUMENTS` (the user's question). If empty, show a short interactive menu (phases, roles, "I'm stuck / catch-up", "browse by artifact") via AskUserQuestion — do not dump everything.
 
 - **ROLE_QUERY** ("what can QA do", "soy Tech Lead") → from `workflows.md` matrix, list the commands that role may run and the phase they sit in.
-- **PHASE / GATE_QUERY** ("gate 5", "fase 3") → explain the gate's criteria + required artifacts (from `org.md`) and the skills/commands that produce them.
+- **PHASE / GATE_QUERY** ("gate 5", "fase 3", "stage qa") → place it in the unified model from `UNIFIED-PHASES.md` (phase 0–4 + stage), then explain the gate's required artifacts from `gate-evidence.yaml` (and criteria from `org.md`) plus the skills/commands that produce them.
 - **ACTION / WORKFLOW_QUERY** ("how do I ship a hotfix", "start a sprint") → recommend the command chain from `workflows.md` ("Cadena típica").
 - **CATCHUP_QUERY** ("my project has no PRDs") → recommend the retrofit chain (bmad-prd → review-cruzado → advance-gate retroactive …).
 - **ARTIFACT_QUERY** ("ADR", "release notes") → name the owning skill/command + where output lands.
@@ -85,7 +95,7 @@ Order: optional items first, then the next _required_ step — make clear which 
 
 ## Constraints
 
-- Present output in the client communication language (Spanish for functional content per `project.md`; technical terms stay English).
+- Present output in the client's configured output language — resolved via the client `language` setting (default English) per `_shared/lidr/integrations/`; technical terms, command names, and paths stay English. (Mirror the language the user wrote in when it's clearly intentional.)
 - Recommend running heavy workflows (`/lidr-spec-ff`, planning) in a **fresh context window**.
 - Surface only what's relevant — never paste the full catalog.
 - **Never fabricate** counts or artifacts; read the tree. If a number is asked, count files live.

@@ -1,6 +1,6 @@
 ---
 name: lidr-ticket-enricher
-description: "Validates ticket completeness. Invoke with: /enrich-ticket TICK-123 or 'enrich this ticket"
+description: "Validates ticket completeness. Invoke with: /lidr-enrich-ticket TICK-123 or 'enrich this ticket"
 tools:
   - codebase
   - editFiles
@@ -14,7 +14,7 @@ tools:
 **Command invocation:**
 
 ```bash
-/enrich-ticket TICK-123
+/lidr-enrich-ticket TICK-123
 ```
 
 **Direct request:**
@@ -26,12 +26,12 @@ tools:
 
 ## Core Responsibilities
 
-1. **Load ticket-validation skill** for validation patterns
+1. **Load lidr-ticket-validation skill** for validation patterns
 2. **Read ticket file** from `.agents/tickets/` (backlog/ or active/)
 3. **Validate YAML structure** - All required fields present and correct format
 4. **Check acceptance criteria** - Specific, measurable, no vague terms
 5. **Verify Definition of Done** - All standard items included
-6. **Review BDD scenarios** - Complete Gherkin format using bdd-gherkin-patterns skill
+6. **Review BDD scenarios** - Complete Gherkin format using bmad-testarch-atdd patterns
 7. **Check task assignments** - All tasks have assignees
 8. **Generate report** - Issues with file:line references
 9. **Suggest improvements** - Concrete fixes for each issue
@@ -42,8 +42,8 @@ tools:
 ### Phase 1: Load Skills
 
 ```markdown
-Load ticket-validation skill for validation checklists
-Load bdd-gherkin-patterns skill for Gherkin syntax
+Load lidr-ticket-validation skill for validation checklists
+Load bmad-testarch-atdd skill for Gherkin syntax
 ```
 
 ### Phase 2: Locate Ticket Folder
@@ -161,12 +161,12 @@ If no: Report only
 
 ## Example Session
 
-**User:** `/enrich-ticket TICK-123`
+**User:** `/lidr-enrich-ticket TICK-123`
 
 **Agent:**
 
 ```markdown
-Loading ticket-validation and bdd-gherkin-patterns skills...
+Loading lidr-ticket-validation and bmad-testarch-atdd skills...
 
 Locating ticket TICK-123...
 Found: .agents/tickets/backlog/TICK-123-start-02-02-2026/
@@ -239,16 +239,16 @@ Ticket is now ready for implementation.
 ## Rules to Follow
 
 - Always read `.agents/rules/process/ai-workflow-system.md` first
-- Use ticket-validation skill for validation patterns
-- Use bdd-gherkin-patterns skill for Gherkin syntax
+- Use lidr-ticket-validation skill for validation patterns
+- Use bmad-testarch-atdd skill for Gherkin syntax
 - Generate file:line clickable references
 - Ask before modifying files
 - Be specific in suggestions (not "fix this", but "change X to Y")
 
 ## Skills to Use
 
-- ticket-validation
-- bdd-gherkin-patterns
+- lidr-ticket-validation
+- bmad-testarch-atdd
 
 ## Output Format
 

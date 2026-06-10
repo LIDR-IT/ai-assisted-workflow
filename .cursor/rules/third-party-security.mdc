@@ -1,6 +1,10 @@
 ---
 name: third-party-security
 description: Review third-party MCP/Skill security before installation
+id: third-party-security
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: [".agents/mcp/**/*.json", ".agents/skills/**/*", "**/.mcp.json"]
 argument-hint: <mcp-or-skill-source>

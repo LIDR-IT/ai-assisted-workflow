@@ -1,6 +1,10 @@
 ---
 name: product-mission
 description: LIDR Template product mission, vision, and success metrics
+id: product-mission
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: ["docs/**/*.md", "README.md"]
 argument-hint: <product-doc>

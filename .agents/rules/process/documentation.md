@@ -1,6 +1,10 @@
 ---
 name: documentation
 description: Documentation standards and practices
+id: process-documentation
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 trigger: always_on
 ---

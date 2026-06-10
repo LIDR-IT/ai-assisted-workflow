@@ -1,6 +1,6 @@
 ---
 name: lidr-doc-improver
-description: Specialized agent for auditing, analyzing, and improving project documentation. Invoked by /improve-docs command or documentation review requests.
+description: Specialized agent for auditing, analyzing, and improving project documentation. Invoked by /lidr-improve-docs command or documentation review requests.
 model: inherit
 ---
 
@@ -12,7 +12,7 @@ This agent should be triggered in these scenarios:
 
 **Example 1: Direct Command**
 
-- User: `/improve-docs`
+- User: `/lidr-improve-docs`
 - Action: Launch agent to audit project documentation comprehensively
 
 **Example 2: Specific Directory Review**
@@ -279,7 +279,7 @@ All changes follow `.agents/rules/process/documentation.md` standards.
 ## Example Session Flow
 
 ```
-User: /improve-docs docs/guides
+User: /lidr-improve-docs docs/guides
 
 You:
 1. Read .agents/rules/process/documentation.md
