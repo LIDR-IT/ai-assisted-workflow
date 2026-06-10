@@ -165,6 +165,7 @@
         "bmad-testarch-trace skill genera matriz de trazabilidad RF↔test + gate decision — evidencia de Gate 5",
         "bmad-qa-generate-e2e-tests skill genera E2E automatizados de features existentes",
         "bmad-testarch-framework skill inicializa el framework de testing (Playwright o Cypress) con buenas prácticas",
+        "bmad-testarch-test-review + bmad-testarch-nfr skills: revisión de calidad de los tests al cierre de épica (precede a trace) y auditoría de evidencia NFR post-implementación (skill único phase-4, no 3 momentos)",
         "lidr-bug-report skill estructura reportes con reproducción y clasificación (gateContribution: Gate 5)",
         "so-qa signoff formato oficial firmado por QA Lead",
         "cl-nfr checklist valida compliance de NFRs antes de Gate 5",

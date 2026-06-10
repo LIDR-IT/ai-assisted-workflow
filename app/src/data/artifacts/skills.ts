@@ -1060,7 +1060,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-ci',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
-    stage: 'qa',
+    stage: 'specification',
     source: 'bmad',
     description:
       'Scaffold CI/CD quality pipeline with test execution. Use when the user says "lets setup CI pipeline" or "I want to create quality gates".',
@@ -1073,7 +1073,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-framework',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
-    stage: 'qa',
+    stage: 'specification',
     source: 'bmad',
     description:
       'Initialize test framework with Playwright or Cypress. Use when the user says "lets setup test framework" or "I want to initialize testing framework".',
@@ -1099,7 +1099,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-test-design',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
-    stage: 'qa',
+    stage: 'specification',
     source: 'bmad',
     description:
       'Create system-level or epic-level test plans. Use when the user says "lets design test plan" or "I want to create test strategy".',
@@ -1246,7 +1246,7 @@ export const skills: Skill[] = [
     name: 'bmad-create-story',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
-    stage: 'sprint-planning',
+    stage: 'development',
     source: 'bmad',
     description:
       'Creates a dedicated story file with all the context the agent will need to implement it later. Use when the user says "create the next story" or "create story [id]".',
@@ -1311,7 +1311,7 @@ export const skills: Skill[] = [
     name: 'bmad-quick-dev',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
-    stage: 'development',
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Implements any user intent, requirement, story, bug fix or change request by producing clean working code artifacts following project conventions.',
@@ -1339,7 +1339,7 @@ export const skills: Skill[] = [
     name: 'bmad-correct-course',
     phase: 'BMad — Sprint & Process',
     phaseNum: 200,
-    stage: 'development',
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Manage significant changes during sprint execution. Use when the user says "correct course" or "propose sprint change".',
@@ -1445,7 +1445,7 @@ export const skills: Skill[] = [
     name: 'bmad-review-edge-case-hunter',
     phase: 'BMad — Review',
     phaseNum: 200,
-    stage: 'qa',
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Walk every branching path and boundary condition in content, report only unhandled edge cases. Use when you need exhaustive edge-case analysis.',
@@ -1579,7 +1579,7 @@ export const skills: Skill[] = [
     name: 'bmad-spec',
     phase: 'BMad — Utilities',
     phaseNum: 200,
-    stage: 'specification',
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Distill any intent input into a SPEC.md kernel + companions — the canonical, preservation-validated contract downstream work derives from. Locks the WHAT before the HOW.',
