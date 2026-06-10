@@ -66,9 +66,9 @@ const mockDiagnosticoContent = {
       '• PO definido (Danny) y estructura horizontal funcional',
     ],
     oportunidades: [
-      '• Formalizar PRDs con skills prd-funcional/prd-tecnico',
-      '• Extraer RFs desde PRDs con skill generate-rf',
-      '• QA proactivo con test-plan + create-test-cases',
+      '• Formalizar PRDs con bmad-prd + lidr-review-cruzado',
+      '• Extraer RFs desde PRDs con lidr-generate-rf + RTM',
+      '• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases',
       '• Adaptar Linear integration para commands LIDR',
     ],
     gapsCriticos: [
@@ -80,25 +80,25 @@ const mockDiagnosticoContent = {
   },
   painPoints: [
     {
-      fase: 'Discovery & PRD',
+      fase: 'Phase 2 — Planning',
       problema: 'Documentación dispersa entre diferentes herramientas',
       impacto: 'Crítico' as const,
       mejora: 'Centralización en Confluence con templates estándar',
     },
     {
-      fase: 'Desarrollo',
+      fase: 'Phase 4 — Implementation · development',
       problema: 'Procesos manuales de handoff QA',
       impacto: 'Alto' as const,
       mejora: 'Automatización con skills y hooks de Claude Code',
     },
     {
-      fase: 'Testing',
+      fase: 'Phase 4 — Implementation · qa',
       problema: 'Test cases dispersos y sin trazabilidad',
       impacto: 'Medio' as const,
       mejora: 'Integración con Xray y BDD automático',
     },
     {
-      fase: 'Despliegue',
+      fase: 'Phase 4 — Implementation · release',
       problema: 'Release notes manuales inconsistentes',
       impacto: 'Bajo' as const,
       mejora: 'Generación automática desde PRs',
@@ -152,25 +152,25 @@ vi.mock('@/data/features/propuestaMejora', () => ({
       'Análisis del estado actual del ecosistema SDLC con identificación de fortalezas y oportunidades de mejora.',
     painPoints: [
       {
-        fase: 'Discovery & PRD',
+        fase: 'Phase 2 — Planning',
         problema: 'Documentación dispersa entre diferentes herramientas',
         impacto: 'Crítico',
         mejora: 'Centralización en Confluence con templates estándar',
       },
       {
-        fase: 'Desarrollo',
+        fase: 'Phase 4 — Implementation · development',
         problema: 'Procesos manuales de handoff QA',
         impacto: 'Alto',
         mejora: 'Automatización con skills y hooks de Claude Code',
       },
       {
-        fase: 'Testing',
+        fase: 'Phase 4 — Implementation · qa',
         problema: 'Test cases dispersos y sin trazabilidad',
         impacto: 'Medio',
         mejora: 'Integración con Xray y BDD automático',
       },
       {
-        fase: 'Despliegue',
+        fase: 'Phase 4 — Implementation · release',
         problema: 'Release notes manuales inconsistentes',
         impacto: 'Bajo',
         mejora: 'Generación automática desde PRs',
@@ -254,13 +254,13 @@ describe('DiagnosticoTab', () => {
       render(<DiagnosticoTab />);
 
       expect(
-        screen.getByText('• Formalizar PRDs con skills prd-funcional/prd-tecnico')
+        screen.getByText('• Formalizar PRDs con bmad-prd + lidr-review-cruzado')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('• Extraer RFs desde PRDs con skill generate-rf')
+        screen.getByText('• Extraer RFs desde PRDs con lidr-generate-rf + RTM')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('• QA proactivo con test-plan + create-test-cases')
+        screen.getByText('• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases')
       ).toBeInTheDocument();
       expect(
         screen.getByText('• Adaptar Linear integration para commands LIDR')
@@ -312,10 +312,10 @@ describe('DiagnosticoTab', () => {
       render(<DiagnosticoTab />);
 
       // Based on mock data
-      expect(screen.getByText('Discovery & PRD')).toBeInTheDocument();
-      expect(screen.getByText('Desarrollo')).toBeInTheDocument();
-      expect(screen.getByText('Testing')).toBeInTheDocument();
-      expect(screen.getByText('Despliegue')).toBeInTheDocument();
+      expect(screen.getByText('Phase 2 — Planning')).toBeInTheDocument();
+      expect(screen.getByText('Phase 4 — Implementation · development')).toBeInTheDocument();
+      expect(screen.getByText('Phase 4 — Implementation · qa')).toBeInTheDocument();
+      expect(screen.getByText('Phase 4 — Implementation · release')).toBeInTheDocument();
     });
 
     it('renders problem descriptions', () => {
@@ -545,10 +545,10 @@ describe('DiagnosticoTab', () => {
       ).toBeInTheDocument();
 
       // Should render all pain points phases
-      expect(screen.getByText('Discovery & PRD')).toBeInTheDocument();
-      expect(screen.getByText('Desarrollo')).toBeInTheDocument();
-      expect(screen.getByText('Testing')).toBeInTheDocument();
-      expect(screen.getByText('Despliegue')).toBeInTheDocument();
+      expect(screen.getByText('Phase 2 — Planning')).toBeInTheDocument();
+      expect(screen.getByText('Phase 4 — Implementation · development')).toBeInTheDocument();
+      expect(screen.getByText('Phase 4 — Implementation · qa')).toBeInTheDocument();
+      expect(screen.getByText('Phase 4 — Implementation · release')).toBeInTheDocument();
     });
 
     it('handles empty pain points gracefully', () => {

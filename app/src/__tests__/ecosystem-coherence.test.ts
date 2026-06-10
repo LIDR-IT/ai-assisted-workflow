@@ -337,3 +337,26 @@ describe('app artifact registries match the .agents/ filesystem', () => {
   });
   // Note: docPath resolution (dead links) is covered by the integrity suite (t1/t2).
 });
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Shared-template references must resolve. The audit found legacy LIDR document
+// templates (prd-funcional, architecture, …) that BMad now owns; when one is
+// removed, every body that still cites it must be updated or the link dies.
+describe('_shared/lidr/templates references resolve to real files', () => {
+  const templateBodies = [
+    ...bodyFiles,
+    ...ruleFiles,
+    ...skillDirs.map((d) => path.join(AGENTS, 'skills', d, 'SKILL.md')),
+  ];
+  it.each(templateBodies)('%s cites no removed shared template', (file) => {
+    const content = read(file);
+    const refs = content.match(/_shared\/lidr\/templates\/[\w/-]+\.md/g) || [];
+    const broken = [...new Set(refs)].filter(
+      (ref) => !exists(path.join(AGENTS, ref.replace(/^.*?_shared/, '_shared')))
+    );
+    expect(
+      broken,
+      `${path.relative(AGENTS, file)} references removed templates: ${broken.join(', ')}`
+    ).toEqual([]);
+  });
+});

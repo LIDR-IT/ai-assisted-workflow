@@ -78,12 +78,13 @@ export function HandoffsTemplates() {
       {/* Page Header */}
       <PageHeader
         title="Handoffs & Templates"
-        subtitle="Entregables obligatorios, criterios de transición entre fases, catálogo de templates y artefactos de IA con Claude Code (.claude/)"
+        subtitle="Modelo unificado BMad × LIDR: 5 fases · 9 etapas · 8 gates (G0–G7). Catálogo de templates alineado 1:1 con gate-evidence.yaml — BMad produce, LIDR verifica"
       />
 
       {/* Stats Summary */}
       <StatsBar
         phases={stats.totalPhases}
+        stages={stats.totalStages}
         handoffs={stats.totalHandoffs}
         templatesTotal={stats.totalTemplates}
         mandatory={stats.mandatoryTemplates}
@@ -99,7 +100,7 @@ export function HandoffsTemplates() {
       </SectionBox>
 
       {/* Cross-cutting AI Section */}
-      <CrossCuttingSection artifacts={crossCuttingArtifacts} totalCrossCutting={15} />
+      <CrossCuttingSection artifacts={crossCuttingArtifacts} />
 
       {/* Phase-based Templates Section */}
       <SectionBox

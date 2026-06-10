@@ -32,7 +32,7 @@ export const methodology = {
     rules: '5 identity rules (Tier 1 + Tier 2)',
     gates: '8 formal quality gates (G0-G7)',
     hooks: '4 automated guards (DTC, context, notifications)',
-    phases: '8 SDLC phases with clear handoffs',
+    phases: '5 unified phases (0-4) · 9 stages with clear handoffs',
   },
 
   // Key Innovations

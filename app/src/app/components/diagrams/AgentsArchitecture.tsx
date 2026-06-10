@@ -100,10 +100,10 @@ function getAgentsForClient(client: ClientConfig): AgentDefinition[] {
         'Retorna resumen: N test cases creados, cobertura, gaps detectados, coverage_confidence',
       ],
       templates: [
-        { code: 'T-QA-001', name: 'Test Plan Template', role: 'produce' },
-        { code: 'T-QA-002', name: 'Test Case Template (BDD)', role: 'produce' },
-        { code: 'T-QA-006', name: 'Regression Test Suite', role: 'produce' },
-        { code: 'T-IA-DEV-003', name: 'Handoff Dev->QA', role: 'consume' },
+        { code: 'T-SOL-002', name: 'Test Design (BMad TEA)', role: 'consume' },
+        { code: 'T-QA-002', name: 'Test Cases (BDD)', role: 'produce' },
+        { code: 'T-QA-005', name: 'Regression Suite (BMad TEA)', role: 'produce' },
+        { code: 'T-DEV-006', name: 'Handoff Dev->QA', role: 'consume' },
       ],
       memoryInstructions:
         'Registra patrones de testing por tipo de feature (API, UI, integracion). Acumula edge cases descubiertos. Guarda metricas de cobertura por sprint. Anota bugs recurrentes y areas de codigo fragil para priorizar regresion.',
@@ -260,7 +260,7 @@ function getAgentsForClient(client: ClientConfig): AgentDefinition[] {
       templates: [
         { code: 'T-SEC-001', name: 'Vulnerability Assessment Report', role: 'produce' },
         { code: 'T-SEC-002', name: 'DAST Scan Report', role: 'produce' },
-        { code: 'T-SEC-005', name: 'Security Compliance Checklist', role: 'produce' },
+        { code: 'T-SEC-004', name: 'Security Checklist (OWASP + Compliance)', role: 'produce' },
       ],
       memoryInstructions:
         'Registra vulnerabilidades recurrentes por tipo (XSS, SQLi, IDOR, etc.). Guarda patrones de remediacion exitosos. Acumula conocimiento de la arquitectura de seguridad del proyecto. Anota falsos positivos confirmados para reducir ruido en futuras ejecuciones.',
@@ -326,7 +326,7 @@ function getAgentsForClient(client: ClientConfig): AgentDefinition[] {
         `Publica plan en ${docTool} via ${docTool === 'Sistema de documentación' ? 'Documentation System' : 'Confluence MCP'}`,
         'Retorna resumen: plan de onboarding + lecturas sugeridas + FAQ del rol',
       ],
-      templates: [{ code: 'T-ORI-002', name: 'Acta de Kick-off', role: 'consume' }],
+      templates: [{ code: 'T-ORI-003', name: 'Stakeholder Map', role: 'consume' }],
       memoryInstructions:
         'Acumula preguntas frecuentes por rol (Dev, QA, TL, etc.). Registra confusiones comunes de nuevos miembros. Guarda feedback sobre que lecturas fueron mas utiles. Anota atajos y tips que descubren los nuevos miembros.',
       agentInstructions: [

@@ -26,14 +26,6 @@ const phaseMap: Record<string, PhaseInfo> = {
   },
 
   // Phase 2 - Discovery
-  'prd-tecnico': {
-    label: 'Fase 2 — Planning',
-    color: 'bg-blue-100 text-blue-700',
-  },
-  'prd-funcional': {
-    label: 'Fase 2 — Planning',
-    color: 'bg-blue-100 text-blue-700',
-  },
   'review-cruzado': {
     label: 'Fase 2 — Planning',
     color: 'bg-blue-100 text-blue-700',
@@ -168,15 +160,7 @@ const phaseMap: Record<string, PhaseInfo> = {
     label: 'Cross-cutting',
     color: 'bg-slate-100 text-slate-700',
   },
-  'ux-design-spec': {
-    label: 'Cross-cutting',
-    color: 'bg-slate-100 text-slate-700',
-  },
   'implementation-phases': {
-    label: 'Cross-cutting',
-    color: 'bg-slate-100 text-slate-700',
-  },
-  'epic-review': {
     label: 'Cross-cutting',
     color: 'bg-slate-100 text-slate-700',
   },

@@ -7,4 +7,3 @@ export * from './DiagnosticoTab';
 export * from './MejorasTab';
 export * from './MetricasTab';
 export * from './RoadmapTab';
-export * from './DoclineEstadoActual';

@@ -101,7 +101,7 @@ export const iaUsageData: IASkillUsage[] = [
   },
   // Assisted skills
   {
-    skill: 'prd-tecnico',
+    skill: 'bmad-prd',
     category: 'planning',
     executions: 42,
     timesSaved: 168,

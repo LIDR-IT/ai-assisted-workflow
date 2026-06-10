@@ -8,10 +8,9 @@ import type { CrossCuttingArtifact } from '@/data/features/handoffsTemplates';
 
 interface CrossCuttingSectionProps {
   artifacts: CrossCuttingArtifact[];
-  totalCrossCutting: number;
 }
 
-export function CrossCuttingSection({ artifacts, totalCrossCutting }: CrossCuttingSectionProps) {
+export function CrossCuttingSection({ artifacts }: CrossCuttingSectionProps) {
   return (
     <div className="bg-violet-50 border border-violet-200 rounded-lg p-6">
       <div className="flex items-center gap-3 mb-4">
@@ -39,8 +38,7 @@ export function CrossCuttingSection({ artifacts, totalCrossCutting }: CrossCutti
       </div>
 
       <p className="text-xs text-slate-500 mt-4">
-        {totalCrossCutting} artefactos transversales (T-IA-CORE-001 a T-IA-AGT-002). Detalle
-        completo en{' '}
+        Inventario completo de rules, skills, commands, hooks y MCPs en{' '}
         <span className="font-semibold text-violet-600">Sitemap - Estructura .claude/</span>
       </p>
     </div>

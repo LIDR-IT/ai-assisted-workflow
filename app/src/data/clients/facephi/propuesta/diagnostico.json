@@ -2,12 +2,12 @@
   "metadata": {
     "id": "facephi-diagnostico",
     "title": "Diagnóstico AS-IS — FacePhi Biometrics (placeholder pre-discovery)",
-    "description": "⚠️ PLACEHOLDER — pendiente sesión de discovery real con FacePhi. Contiene los pain points genéricos LIDR con lenguaje adaptado al dominio biométrico (GDPR Art. 9, ISO 30107, eIDAS, PSD2). Reemplazar con auditoría real post-discovery.",
-    "version": "0.1.0",
+    "description": "⚠️ PLACEHOLDER — pendiente sesión de discovery real con FacePhi. Contiene los pain points genéricos LIDR con lenguaje adaptado al dominio biométrico (GDPR Art. 9, ISO 30107, eIDAS, PSD2). Nomenclatura alineada al modelo de fases unificado BMad × LIDR (Phase 0-4, gates G0-G7). Reemplazar con auditoría real post-discovery.",
+    "version": "0.2.0",
     "client": "FacePhi",
     "industry": "Biometric Identity Verification",
-    "tags": ["facephi", "biometric", "placeholder", "pre-discovery"],
-    "lastUpdated": "2026-05-14",
+    "tags": ["facephi", "biometric", "placeholder", "pre-discovery", "unified-phases"],
+    "lastUpdated": "2026-06-10",
     "author": "LIDR Framework",
     "sourceReport": "PENDIENTE — sesión de discovery FacePhi no realizada"
   },
@@ -23,7 +23,7 @@
       "• Realizar sesión de discovery completa con liderazgo + Engineering Managers + QA Lead + Security",
       "• Documentar workflows AS-IS específicos por producto (SDK móvil, SDK web, plataforma cloud)",
       "• Mapear gaps reales vs. ISO 30107 (anti-spoofing) e ISO 27001 (information security)",
-      "• Formalizar PRDs con prd-funcional + prd-tecnico skills incorporando dominio biométrico"
+      "• Formalizar PRDs con bmad-prd (PRD unificado F+T) + lidr-review-cruzado incorporando dominio biométrico"
     ],
     "gapsCriticos": [
       "• ⚠️ Discovery pendiente — pain points reales sin identificar",
@@ -40,28 +40,28 @@
       "mejora": "Ejecutar sesión de discovery LIDR con liderazgo + EMs + QA Lead + Security Lead. Producir aramis-style discovery report con hallazgos verbatim, citas verificables y atribuciones."
     },
     {
-      "fase": "Phase 2: PRDs (placeholder genérico)",
+      "fase": "Phase 2 — Planning (placeholder genérico)",
       "problema": "PRDs típicamente inconsistentes en madurez enterprise sin discovery confirmado. Pendiente validación.",
       "impacto": "Alto",
-      "mejora": "prd-funcional + prd-tecnico skills incorporando dominio biométrico (templates biométricos, métricas FAR/FRR, anti-spoofing, compliance multi-jurisdicción)"
+      "mejora": "bmad-prd (un solo PRD unificado F+T) + lidr-review-cruzado incorporando dominio biométrico (métricas FAR/FRR, anti-spoofing, compliance multi-jurisdicción)"
     },
     {
-      "fase": "Phase 3: Requisitos (placeholder genérico)",
+      "fase": "Phase 3 — Solutioning · specification (placeholder genérico)",
       "problema": "RFs y NFRs sin separación formal típicamente. Compliance multi-jurisdicción (GDPR + eIDAS + PSD2 + ISO) requiere NFRs cuantificables.",
       "impacto": "Crítico",
-      "mejora": "generate-rf + generate-nfr skills con threshold cuantificable por regulación (FAR/FRR, latencia liveness, retention period por jurisdicción)"
+      "mejora": "lidr-generate-rf + lidr-generate-nfr skills con threshold cuantificable por regulación (FAR/FRR, latencia liveness, retention period por jurisdicción) + RTM (lidr-validate-requirements) como evidencia del Gate 2"
     },
     {
-      "fase": "Phase 6: QA (placeholder genérico)",
+      "fase": "Phase 4 — Implementation · qa (placeholder genérico)",
       "problema": "Testing biométrico requiere infraestructura especializada (datasets anti-spoofing, dispositivos diversos, condiciones lumínicas). Sin información AS-IS.",
       "impacto": "Alto",
-      "mejora": "test-plan + create-test-cases skills extendidos con biometric-specific scenarios (spoofing attacks, edge demographics, lighting variations)"
+      "mejora": "bmad-testarch-test-design + lidr-create-test-cases skills extendidos con biometric-specific scenarios (spoofing attacks, edge demographics, lighting variations). Gate 5 con lidr-test-execution-report"
     },
     {
-      "fase": "Phase 7: Seguridad (placeholder genérico)",
+      "fase": "Phase 4 — Implementation · security (placeholder genérico)",
       "problema": "Datos biométricos = categoría especial GDPR Art. 9. Cualquier breach = sanción regulatoria severa. Sin proceso AS-IS auditado.",
       "impacto": "Crítico",
-      "mejora": "vuln-assessment + dast-interpretation + pentest-report + security-checklist skills coordinados con VP Seguridad. ISO 30107 compliance gate."
+      "mejora": "lidr-vuln-assessment + lidr-dast-interpretation + lidr-pentest-report + lidr-security-checklist skills coordinados con VP Seguridad. Gate 6 bloqueante con ISO 30107 compliance."
     }
   ]
 }

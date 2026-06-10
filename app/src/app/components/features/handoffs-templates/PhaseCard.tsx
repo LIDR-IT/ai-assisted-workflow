@@ -6,7 +6,7 @@
 
 import { useState, memo, useCallback } from 'react';
 import type { PhaseTemplates } from '@/data/features/handoffsTemplates';
-import { handoffs } from '@/data/features/handoffsTemplates';
+import { getHandoffByGateNumber } from '@/data/features/handoffsTemplates';
 import { TemplateTable } from './TemplateTable';
 
 interface PhaseCardProps {
@@ -15,7 +15,7 @@ interface PhaseCardProps {
 
 function PhaseCardComponent({ phase }: PhaseCardProps) {
   const [showTemplates, setShowTemplates] = useState(false);
-  const handoff = handoffs[phase.faseNum - 1];
+  const handoff = phase.gateNum !== undefined ? getHandoffByGateNumber(phase.gateNum) : undefined;
 
   // Memoize toggle handler to prevent unnecessary re-renders of TemplateTable
   const handleToggleTemplates = useCallback(() => {

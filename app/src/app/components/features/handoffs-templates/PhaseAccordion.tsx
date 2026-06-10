@@ -33,10 +33,10 @@ export function PhaseAccordion({ phases, expandedPhases, onTogglePhase }: PhaseA
               >
                 <div className="flex items-center gap-4">
                   <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold text-slate-700">
-                    {phase.faseNum}
+                    {phase.unifiedPhase}
                   </div>
                   <div>
-                    {/* phase.fase already carries the unified phase label (e.g. "Fase 3 — Solutioning (sprint planning · ex-F4)") */}
+                    {/* phase.fase carries the unified phase label (e.g. "Fase 3 — Solutioning (specification)") */}
                     <div className="font-semibold text-slate-800">{phase.fase}</div>
                     <div className="text-sm text-slate-600 flex items-center gap-2">
                       <span>
