@@ -17,13 +17,13 @@ applyTo: "**"
 
 ### Cadena de responsabilidad (inquebrantable)
 
-| Paso            | Quién                                         | Qué hace                                                                          | Cuándo                                    | Enforcement                 |
-| --------------- | --------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------- | --------------------------- |
-| **1. Autor**    | **Dev que hace el PR**                        | Actualiza TODOS los docs afectados por su cambio                                  | DURANTE la implementación, en el MISMO PR | DoD DD-20, DD-23            |
-| **2. Reviewer** | **TL en code review**                         | Valida que docs están actualizados y son correctos                                | AL revisar el PR                          | DD-04 (TL review)           |
-| **3. Hook**     | **dtc-write-guard (PreToolUse: Write\|Edit)** | Detecta archivos .md que DEBERÍAN haberse actualizado según matriz de impacto DTC | AL escribir/editar archivos               | Hook dtc-write-guard (WARN) |
-| **4. Sync**     | **/sync-docs**                                | Catch-all: detecta drift post-merge y auto-corrige                                | DESPUÉS de merge a develop                | Command Tier 2              |
-| **5. Gate**     | **Gate 4 (Dev→QA)**                           | Bloquea si DoD documentation criteria fallan                                      | AL avanzar de fase                        | /advance-gate 4             |
+| Paso            | Quién                                                | Qué hace                                                                          | Cuándo                                    | Enforcement                        |
+| --------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------- | ---------------------------------- |
+| **1. Autor**    | **Dev que hace el PR**                               | Actualiza TODOS los docs afectados por su cambio                                  | DURANTE la implementación, en el MISMO PR | DoD DD-20, DD-23                   |
+| **2. Reviewer** | **TL en code review**                                | Valida que docs están actualizados y son correctos                                | AL revisar el PR                          | DD-04 (TL review)                  |
+| **3. Hook**     | **lidr-frontmatter-guard (PreToolUse: Write\|Edit)** | Detecta archivos .md que DEBERÍAN haberse actualizado según matriz de impacto DTC | AL escribir/editar archivos               | Hook lidr-frontmatter-guard (WARN) |
+| **4. Sync**     | **/lidr-sync-docs**                                  | Catch-all: detecta drift post-merge y auto-corrige                                | DESPUÉS de merge a develop                | Command Tier 2                     |
+| **5. Gate**     | **Gate 4 (Dev→QA)**                                  | Bloquea si DoD documentation criteria fallan                                      | AL avanzar de fase                        | /lidr-advance-gate 4               |
 
 ### Matriz de impacto: Cambio → Docs afectados
 
@@ -37,7 +37,7 @@ applyTo: "**"
 | Rule, skill o command nuevo/modificado           | `CLAUDE.md`, HelpCenter, SitemapView, audit-catalog                                                                                                     | TL            |
 | Implementación de feature técnica (LIDR change)  | `docs/projects/{proyecto}/changes/<name>/{proposal,design,spec,tasks,test-report}.md` + `reports/YYYY-MM-DD-step-N+M-*.md` (creados por `/lidr-spec-*`) | Dev + TL      |
 | Cambio archivado (post-verify PASSED)            | Mover a `docs/projects/{proyecto}/changes/archive/YYYY-MM-DD-<name>/` (via `/lidr-spec-archive`)                                                        | Dev           |
-| Decisión arquitectónica nueva                    | `docs/projects/{proyecto}/adr/ADR-NNNN-*.md` con skill `adr`                                                                                            | TL            |
+| Decisión arquitectónica nueva                    | `docs/projects/{proyecto}/adr/ADR-NNNN-*.md` con skill `lidr-adr`                                                                                       | TL            |
 | Template skill (INMUTABLE)                       | **❌ PROHIBIDO** — templates en `.claude/skills/*/templates/` son inmutables                                                                            | NADIE         |
 | Checklist skill (INMUTABLE)                      | **❌ PROHIBIDO** — checklists en `.claude/skills/*/checklists/` son inmutables                                                                          | NADIE         |
 | Proceso de equipo / roles                        | `rules/project.md`, `rules/org.md`                                                                                                                      | PME           |
@@ -58,11 +58,11 @@ applyTo: "**"
 ### Qué pasa si NO actualizas docs
 
 ```
-1. Hook dtc-write-guard (PreToolUse: Write|Edit) → WARN al Dev (no bloquea, pero notifica al TL)
+1. Hook lidr-frontmatter-guard (PreToolUse: Write|Edit) → WARN al Dev (notifica al TL)
 2. TL en code review → RECHAZA el PR con comentario "Docs no actualizados"
-3. Si se escapa → /sync-docs lo detecta post-merge → genera ticket de deuda
+3. Si se escapa → /lidr-sync-docs lo detecta post-merge → genera ticket de deuda
 4. Gate 4 → FAIL si DoD DD-20 no se cumple → bloquea paso a QA
-5. /validate-project-docs → lo registra como gap en health report
+5. /lidr-validate-project-docs → lo registra como gap en health report
 ```
 
 ### Excepciones (únicas aceptables)
@@ -81,8 +81,8 @@ applyTo: "**"
 ### Principio de Inmutabilidad
 
 ```
-✅ CORRECTO: skills/adr/templates/adr.md (template local inmutable)
-❌ INCORRECTO: skills/adr/templates/adr.md (dependencia externa)
+✅ CORRECTO: lidr-adr/templates/adr.md (template local inmutable)
+❌ INCORRECTO: lidr-adr/templates/adr.md (dependencia externa)
 ```
 
 ### Separación Clara: Template vs Documento
@@ -112,7 +112,7 @@ Todo documento `.md` del ecosistema (excepto CLAUDE.md que es índice) DEBE tene
 ### Para Skills (SKILL.md)
 
 ```yaml
-id: { skill-id } # ej: business-case, prd-tecnico
+id: { skill-id } # ej: lidr-business-case, lidr-generate-rf
 version: "1.0.0" # semver
 last_updated: "YYYY-MM-DD" # fecha del último cambio significativo
 updated_by: "{rol}: {nombre}" # quién actualizó
@@ -124,7 +124,7 @@ owner_role: "{rol principal}" # quién mantiene este skill
 ### Para Commands
 
 ```yaml
-id: { command-name } # ej: implement-ticket, advance-gate
+id: { command-name } # ej: lidr-implement-ticket, lidr-advance-gate
 version: "1.0.0"
 last_updated: "YYYY-MM-DD"
 updated_by: "{rol}: {nombre}"
@@ -419,7 +419,7 @@ Cada documento DEBE tener una sección `## Changelog` al final:
 ⚫ CRITICAL:  last_updated > review_cycle * 2
 ```
 
-### Command `/sync-docs` detecta staleness automáticamente
+### Command `/lidr-sync-docs` detecta staleness automáticamente
 
 
 ## 8. Reglas de Actualización
@@ -453,17 +453,17 @@ Cada documento DEBE tener una sección `## Changelog` al final:
 
 ### Archivos
 
-| Tipo       | Pattern                                           | Ejemplo                                               |
-| ---------- | ------------------------------------------------- | ----------------------------------------------------- |
-| Skills     | `skills/{nombre}/SKILL.md`                        | `skills/business-case/SKILL.md`                       |
-| Rules      | `rules/{scope}.md`                                | `rules/documentation.md`                              |
-| Commands   | `commands/{verbo}-{sustantivo}.md`                | `commands/create-branch.md`                           |
-| Checklists | `skills/{skill-name}/checklists/{nombre}.md`      | `skills/refinement-notes/checklists/dor.md`           |
-| Signoffs   | `skills/{skill-name}/signoffs/{role}-signoff.md`  | `skills/test-execution-report/signoffs/qa-signoff.md` |
-| Templates  | `skills/{skill-name}/templates/{nombre}.md`       | `_shared/lidr/templates/architecture/architecture.md` |
-| Specs      | `skills/{skill-name}/templates/specs/{nombre}.md` | `skills/{skill-name}/templates/specs/routes.md`       |
-| Standards  | `docs/standards/{nombre}.md`                      | `docs/standards/org.md`                               |
-| Projects   | `docs/projects/{nombre}.md`                       | `docs/projects/sdlc-{{CLIENT_CODE}}.md`               |
+| Tipo       | Pattern                                           | Ejemplo                                                    |
+| ---------- | ------------------------------------------------- | ---------------------------------------------------------- |
+| Skills     | `skills/{nombre}/SKILL.md`                        | `skills/lidr-business-case/SKILL.md`                       |
+| Rules      | `rules/{scope}.md`                                | `rules/documentation.md`                                   |
+| Commands   | `commands/{verbo}-{sustantivo}.md`                | `commands/lidr-create-branch.md`                           |
+| Checklists | `skills/{skill-name}/checklists/{nombre}.md`      | `skills/lidr-refinement-notes/checklists/dor.md`           |
+| Signoffs   | `skills/{skill-name}/signoffs/{role}-signoff.md`  | `skills/lidr-test-execution-report/signoffs/qa-signoff.md` |
+| Templates  | `skills/{skill-name}/templates/{nombre}.md`       | `_shared/lidr/templates/architecture/architecture.md`      |
+| Specs      | `skills/{skill-name}/templates/specs/{nombre}.md` | `skills/{skill-name}/templates/specs/routes.md`            |
+| Standards  | `docs/standards/{nombre}.md`                      | `docs/standards/org.md`                                    |
+| Projects   | `docs/projects/{nombre}.md`                       | `docs/projects/sdlc-{{CLIENT_CODE}}.md`                    |
 
 ### Dentro del documento
 
@@ -474,7 +474,7 @@ Cada documento DEBE tener una sección `## Changelog` al final:
 | Sub-secciones        | `### Sub-sección`                | `### Paso 1: Cargar Contexto`               |
 | Tablas               | Headers en negrita, alineados    | `                                           | **Campo** | **Tipo** | `   |
 | Código               | Fenced con lenguaje              | ``markdown ... ` `                          |
-| Referencias cruzadas | `@ruta/al/doc.md`                | `skills/refinement-notes/checklists/dor.md` |
+| Referencias cruzadas | `@ruta/al/doc.md`                | `lidr-refinement-notes/checklists/dor.md`   |
 | TODOs                | `⚠️ TODO: {qué falta}`           | `⚠️ TODO: Completar sección de migraciones` |
 | Estado por items     | ✅ ⚠️ ❌ 📝                      | `✅ Completado`, `⚠️ Parcial`               |
 
@@ -486,8 +486,8 @@ Cada documento DEBE tener una sección `## Changelog` al final:
 Todos los documentos usan el formato `@ruta/desde/raíz` para referenciar otros docs:
 
 ```markdown
-Referencia: skills/refinement-notes/checklists/dor.md
-Skill: skills/business-case/SKILL.md
+Referencia: lidr-refinement-notes/checklists/dor.md
+Skill: lidr-business-case/SKILL.md
 Rule: org.md
 ```
 
@@ -500,7 +500,7 @@ Rule: org.md
 
 ## 11. Métricas de Documentación
 
-### Que `/validate-project-docs` y `/sync-docs` reportan:
+### Que `/lidr-validate-project-docs` y `/lidr-sync-docs` reportan:
 
 ```markdown
 ## Documentation Health Report
@@ -520,10 +520,11 @@ Rule: org.md
 
 ## 12. Changelog
 
-| Versión | Fecha      | Autor                                       | Cambios                                                                                     |
-| ------- | ---------- | ------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 2.1.0   | 2026-03-17 | TL: Self-Contained Architecture DTC Updates | Actualizada matriz DTC para patrón self-contained, agregadas reglas de templates inmutables |
-| 2.0.0   | 2026-03-15 | TL: Lead Engineer                           | Enhanced frontmatter LIDR SDLC standard, documentation health metrics                       |
+| Versión | Fecha      | Autor                                       | Cambios                                                                                           |
+| ------- | ---------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 2.2.0   | 2026-06-10 | TL: ecosystem coherence                     | Hooks y paths actualizados a artefactos reales (lidr-frontmatter-guard, commands/skills `lidr-*`) |
+| 2.1.0   | 2026-03-17 | TL: Self-Contained Architecture DTC Updates | Actualizada matriz DTC para patrón self-contained, agregadas reglas de templates inmutables       |
+| 2.0.0   | 2026-03-15 | TL: Lead Engineer                           | Enhanced frontmatter LIDR SDLC standard, documentation health metrics                             |
 
 
 _Esta rule es contexto persistente. La IA la aplica SIEMPRE al crear, leer, o modificar cualquier .md del ecosistema._

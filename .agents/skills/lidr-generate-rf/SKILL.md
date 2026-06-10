@@ -6,6 +6,7 @@ last_updated: "2026-06-09"
 updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 3
+stage: specification
 owner_role: "PO"
 automation: false
 domain_agnostic: true

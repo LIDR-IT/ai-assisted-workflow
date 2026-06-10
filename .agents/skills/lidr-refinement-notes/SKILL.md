@@ -5,7 +5,8 @@ version: "1.2.1"
 last_updated: "2026-06-09"
 updated_by: "TL: BMad-coherence batch-fix"
 status: active
-phase: 4
+phase: 3
+stage: sprint-planning
 owner_role: "TL"
 automation: false
 domain_agnostic: true

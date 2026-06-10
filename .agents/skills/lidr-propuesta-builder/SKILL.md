@@ -6,6 +6,7 @@ last_updated: "2026-06-09"
 updated_by: "PME: Luis Urdaneta"
 status: active
 phase: 2
+stage: planning
 owner_role: "PME"
 automation: false
 domain_agnostic: true

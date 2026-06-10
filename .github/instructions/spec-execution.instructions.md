@@ -6,7 +6,7 @@ applyTo: "**"
 # Rule: Spec Execution — Mandatory Steps for LIDR Changes
 
 > **Nivel**: Rule (workflow, alwaysApply: true)
-> **Carga**: SIEMPRE durante la Fase 5 (Desarrollo) y cuando se invocan los commands `/lidr-spec-apply` o `/lidr-spec-verify`
+> **Carga**: SIEMPRE durante la Phase 4 Implementation · stage development (ex-Fase 5) y cuando se invocan los commands `/lidr-spec-apply` o `/lidr-spec-verify`
 > **Propósito**: Imponer los pasos obligatorios y la generación de reportes auditables por cada change LIDR, garantizando que la IA EJECUTE los tests en lugar de delegarlos al usuario.
 > **Origen**: Adaptación nativa LIDR del patrón mandatory-steps. Pertenece al ecosistema LIDR, no a una dependencia externa.
 

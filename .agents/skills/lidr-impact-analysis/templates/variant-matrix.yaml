@@ -1,0 +1,101 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Variant Matrix — CLIENT-OWNED data artifact (format owned by the framework)
+#
+# Copy this template to: docs/projects/{client}/registries/variant-matrix.yaml
+# and populate it with YOUR product variants (countries, brands, tenants,
+# editions) and the configuration dimensions that differ between them.
+#
+# Maintained by: the client team (suggested owners: PO + Tech Lead).
+# DTC duty: update this file IN THE SAME PR that adds/changes a variant or a
+# configuration dimension.
+# Consumed by: skill `lidr-impact-analysis` (mode: variant-compatibility, Gate 2).
+#
+# Domain-agnostic: variants below are illustrative placeholders — replace them.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "1.0.0" # bump on every matrix change (semver)
+last_updated: "YYYY-MM-DD" # date of the last variant/dimension change
+maintained_by: "PO: {Name} + TL: {Name}"
+
+# ── Dimensions catalog ───────────────────────────────────────────────────────
+# Declare every configuration dimension that can differ between variants.
+# The analyzer matches a change's touched dimensions against this list.
+# ─────────────────────────────────────────────────────────────────────────────
+dimensions:
+  - id: currency
+    description: "Currency used for pricing and invoicing"
+  - id: tax-rules
+    description: "Tax/VAT calculation rule set"
+  - id: payment-providers
+    description: "Enabled payment providers"
+  - id: locale
+    description: "Default language + formatting rules"
+  - id: regulatory-pack
+    description: "Compliance rule set applied (data retention, consent, invoicing format)"
+
+# ── Variant schema ───────────────────────────────────────────────────────────
+# id:            unique kebab-case identifier
+# name:          human-readable variant name
+# type:          country | brand | tenant | edition
+# owner:         who answers for this variant (drives Critical/High resolution)
+# configuration: value per dimension (only dimensions that apply)
+# feature_flags: features enabled/disabled or overridden for this variant
+# overrides:     behaviors this variant changes vs. the global default —
+#                the analyzer flags any change touching an overridden area
+# ─────────────────────────────────────────────────────────────────────────────
+variants:
+  - id: country-a
+    name: "Country A"
+    type: country
+    owner: "EM Country A"
+    configuration:
+      currency: EUR
+      tax-rules: eu-vat-standard
+      payment-providers: [provider-x, provider-y]
+      locale: xx-XX
+      regulatory-pack: eu-baseline
+    feature_flags:
+      express-checkout: enabled
+      loyalty-program: disabled
+    overrides:
+      - "Invoice numbering follows local sequential format"
+
+  - id: country-b
+    name: "Country B"
+    type: country
+    owner: "EM Country B"
+    configuration:
+      currency: USD
+      tax-rules: sales-tax-by-state
+      payment-providers: [provider-x]
+      locale: yy-YY
+      regulatory-pack: local-baseline
+    feature_flags:
+      express-checkout: disabled
+      loyalty-program: enabled
+    overrides:
+      - "Returns flow adds a mandatory inspection step"
+
+  - id: brand-premium
+    name: "Premium Brand"
+    type: brand
+    owner: "Brand Manager Premium"
+    configuration:
+      currency: inherit # inherits from the country variant it deploys under
+      payment-providers: [provider-x, provider-z]
+    feature_flags:
+      concierge-support: enabled
+    overrides:
+      - "Custom theming + dedicated SLA tier on support endpoints"
+
+  - id: edition-enterprise
+    name: "Enterprise Edition"
+    type: edition
+    owner: "PO Enterprise"
+    configuration:
+      regulatory-pack: enterprise-audit
+    feature_flags:
+      sso: enabled
+      audit-export: enabled
+    overrides:
+      - "All destructive operations require dual approval"

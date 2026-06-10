@@ -6,6 +6,7 @@ last_updated: "2026-03-25"
 updated_by: "TL: tier3-remediation"
 status: active
 phase: 0
+stage: anytime
 owner_role: "TL"
 automation: false
 domain_agnostic: true

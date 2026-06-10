@@ -1,6 +1,6 @@
 ---
 name: lidr-help
-description: Answer questions about the LIDR SDLC ecosystem and recommend the next skill, command, workflow, or doc. LIDR is the SDLC governance layer (phases 0–8, gates G0–G7, roles/RACI) that wraps and extends BMad — for pure BMad module questions, this skill defers to `bmad-help`. Use when someone asks "what can you do", "how do I", "help me with", "what command/skill should I use", "which gate", "where is", "explain the process", "qué comando uso", "cómo empiezo".
+description: Answer questions about the LIDR SDLC ecosystem and recommend the next skill, command, workflow, or doc. LIDR is the SDLC governance layer (5 unified phases 0–4 aligned with BMad — Analysis, Planning, Solutioning, Implementation — with stages, gates G0–G7, roles/RACI) that wraps and extends BMad — for pure BMad module questions, this skill defers to `bmad-help`. Use when someone asks "what can you do", "how do I", "help me with", "what command/skill should I use", "which gate", "where is", "explain the process", "qué comando uso", "cómo empiezo".
 allowed-tools: Read, Grep, Glob, Bash(find:*), Bash(cat:*), Bash(grep:*), AskUserQuestion
 model: haiku
 ---

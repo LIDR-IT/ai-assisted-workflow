@@ -5,7 +5,8 @@ version: "1.3.0"
 last_updated: "2026-06-09"
 updated_by: "TL: lang+tool agnostic"
 status: active
-phase: 7
+phase: 4
+stage: security
 owner_role: "TL"
 automation: false
 domain_agnostic: true

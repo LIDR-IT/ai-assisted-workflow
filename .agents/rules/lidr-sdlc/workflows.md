@@ -2,9 +2,9 @@
 name: lidr-sdlc-workflows
 description: "LIDR SDLC: Workflow orchestration map — authorized roles per command, gate preconditions, skill chaining. Load when executing a command, evaluating a gate, or checking role permissions."
 id: workflows
-version: "1.0.0"
-last_updated: "2026-03-25"
-updated_by: "IA: sync-docs"
+version: "1.1.0"
+last_updated: "2026-06-10"
+updated_by: "TL: ecosystem coherence"
 status: active
 scope: workflow
 ---
@@ -26,31 +26,31 @@ scope: workflow
 
 ### Tier 1 — Orchestrators (encadenan múltiples skills + MCPs)
 
-| Command                         | Propósito                                                                             | Roles Autorizados                                  | Precondición                      |
-| ------------------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------- | --------------------------------- |
-| `/advance-gate [N]`             | Evalúa gate, genera handoff, transiciona fase                                         | PME, PO, Tech Lead, QA Lead, Security Lead, DevOps | Gate N-1 PASS                     |
-| `/implement-ticket [ID]`        | Dev workflow completo: ticket → PR → handoff QA                                       | Dev, Tech Lead                                     | Ticket status "Ready for Dev"     |
-| `/prepare-testing [ID]`         | Genera suite de testing completa                                                      | QA, QA Lead                                        | Ticket status "Ready for QA"      |
-| `/validate-requirements [name]` | Orquesta Fase 3: genera RFs + NFRs, valida RTM, epic breakdown                        | PO, Tech Lead                                      | Gate 1 PASS (PRDs aprobados)      |
-| `/validate-prd [name]`          | LIDR SDLC PRD quality validation con scoring automático y recomendaciones accionables | PO, Tech Lead, QA Lead, PME                        | PRDs en draft completados         |
-| `/init-project-docs [name]`     | Crea documentación de proyecto desde templates                                        | Tech Lead, PO, PME                                 | Proyecto nuevo aprobado           |
-| `/validate-project-docs [name]` | Valida docs contra criterios de templates                                             | Tech Lead, PO, QA Lead, PME                        | Docs existentes en docs/projects/ |
+| Command                              | Propósito                                                                             | Roles Autorizados                                  | Precondición                      |
+| ------------------------------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------- | --------------------------------- |
+| `/lidr-advance-gate [N]`             | Evalúa gate, genera handoff, transiciona fase                                         | PME, PO, Tech Lead, QA Lead, Security Lead, DevOps | Gate N-1 PASS                     |
+| `/lidr-implement-ticket [ID]`        | Dev workflow completo: ticket → PR → handoff QA                                       | Dev, Tech Lead                                     | Ticket status "Ready for Dev"     |
+| `/lidr-prepare-testing [ID]`         | Genera suite de testing completa                                                      | QA, QA Lead                                        | Ticket status "Ready for QA"      |
+| `/lidr-validate-requirements [name]` | Orquesta Fase 3: genera RFs + NFRs, valida RTM, epic breakdown                        | PO, Tech Lead                                      | Gate 1 PASS (PRDs aprobados)      |
+| `/lidr-validate-prd [name]`          | LIDR SDLC PRD quality validation con scoring automático y recomendaciones accionables | PO, Tech Lead, QA Lead, PME                        | PRDs en draft completados         |
+| `/lidr-init-project-docs [name]`     | Crea documentación de proyecto desde templates                                        | Tech Lead, PO, PME                                 | Proyecto nuevo aprobado           |
+| `/lidr-validate-project-docs [name]` | Valida docs contra criterios de templates                                             | Tech Lead, PO, QA Lead, PME                        | Docs existentes en docs/projects/ |
 
-> **Nota — `validate-requirements` (verbo vs motor):** `/validate-requirements` es el **comando orquestador** de Fase 3 (encadena `lidr-generate-rf` + `lidr-generate-nfr` + el motor RTM + `bmad-create-epics-and-stories`). Existe además una **skill** homónima `lidr-validate-requirements` que es el motor RTM / validación 5-pass; está marcada `user-invocable: false`, así que el slash `/validate-requirements` siempre resuelve al comando y la skill se alcanza por delegación. Ver `docs/adr/ADR-0007-command-skill-name-resolution.md`.
+> **Nota — `lidr-validate-requirements` (verbo vs motor):** `/lidr-validate-requirements` es el **comando orquestador** de Fase 3 (encadena `lidr-generate-rf` + `lidr-generate-nfr` + el motor RTM + `bmad-create-epics-and-stories`). Existe además una **skill** homónima `lidr-validate-requirements` que es el motor RTM / validación 5-pass; está marcada `user-invocable: false`, así que el slash `/lidr-validate-requirements` siempre resuelve al comando y la skill se alcanza por delegación. Ver `docs/adr/ADR-0007-command-skill-name-resolution.md`.
 
 ### Tier 2 — Tactical (workflow enfocado, pueden invocarse standalone o encadenados)
 
-| Command                       | Propósito                                                     | Roles Autorizados                  | Precondición                   |
-| ----------------------------- | ------------------------------------------------------------- | ---------------------------------- | ------------------------------ |
-| `/create-release-notes`       | Genera changelog desde PRs mergeados                          | DevOps, Tech Lead, Release Manager | PRs mergeados desde último tag |
-| `/create-branch [ID]`         | Crea feature branch desde ticket Jira                         | Dev, Tech Lead                     | Ticket asignado al dev         |
-| `/create-pr [ID]`             | Crea PR con description auto-generada                         | Dev, Tech Lead                     | Branch con commits listos      |
-| `/quick-spec [feature]`       | Especificación ligera para features ≤40h                      | PO, Tech Lead, Dev                 | Feature < 40h effort estimate  |
-| `/update-changelog [version]` | Actualiza CHANGELOG.md con version nueva                      | DevOps, Tech Lead, Release Manager | Release notes generadas        |
-| `/sync-docs [scope]`          | Sincroniza documentación tras cambios de código               | Dev, Tech Lead, QA Lead            | Cambios mergeados              |
-| `/sprint-health [sprint-id]`  | Monitoreo activo de salud del sprint con detección de riesgos | SM, PME, Tech Lead, QA Lead        | Sprint activo en progreso      |
+| Command                            | Propósito                                                     | Roles Autorizados                  | Precondición                   |
+| ---------------------------------- | ------------------------------------------------------------- | ---------------------------------- | ------------------------------ |
+| `/lidr-create-release-notes`       | Genera changelog desde PRs mergeados                          | DevOps, Tech Lead, Release Manager | PRs mergeados desde último tag |
+| `/lidr-create-branch [ID]`         | Crea feature branch desde ticket Jira                         | Dev, Tech Lead                     | Ticket asignado al dev         |
+| `/lidr-create-pr [ID]`             | Crea PR con description auto-generada                         | Dev, Tech Lead                     | Branch con commits listos      |
+| `/lidr-quick-spec [feature]`       | Especificación ligera para features ≤40h                      | PO, Tech Lead, Dev                 | Feature < 40h effort estimate  |
+| `/lidr-update-changelog [version]` | Actualiza CHANGELOG.md con version nueva                      | DevOps, Tech Lead, Release Manager | Release notes generadas        |
+| `/lidr-sync-docs [scope]`          | Sincroniza documentación tras cambios de código               | Dev, Tech Lead, QA Lead            | Cambios mergeados              |
+| `/lidr-sprint-health [sprint-id]`  | Monitoreo activo de salud del sprint con detección de riesgos | SM, PME, Tech Lead, QA Lead        | Sprint activo en progreso      |
 
-### Tier 2 — LIDR Spec Lifecycle (granular per-change workflow, Fase 5)
+### Tier 2 — LIDR Spec Lifecycle (granular per-change workflow, Phase 4 · development)
 
 Native LIDR change-lifecycle commands — paridad con el patrón specboot, implementado dentro del ecosistema LIDR sin dependencias externas. Cada change es un directorio versionable en `docs/projects/{cliente}/changes/<name>/` con artefactos `proposal.md`, `design.md`, `spec.md`, `tasks.md`, `test-report.md` y `reports/`.
 
@@ -81,29 +81,29 @@ Native LIDR change-lifecycle commands — paridad con el patrón specboot, imple
 ## 2. Matriz de Roles → Commands
 
 ```
-                          PME  PO  TL  Dev  QA  Sec  DevOps  SM
-/advance-gate              ✅   ✅   ✅   ❌   ✅   ✅   ✅    ❌
-/implement-ticket          ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/prepare-testing           ❌   ❌   ❌   ❌   ✅   ❌   ❌    ❌
-/validate-requirements     ❌   ✅   ✅   ❌   ❌   ❌   ❌    ❌
-/validate-prd              ✅   ✅   ✅   ❌   ✅   ❌   ❌    ❌
-/init-project-docs         ✅   ✅   ✅   ❌   ❌   ❌   ❌    ❌
-/validate-project-docs     ✅   ✅   ✅   ❌   ✅   ❌   ❌    ❌
-/create-release-notes      ❌   ❌   ✅   ❌   ❌   ❌   ✅    ❌
-/create-branch             ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/create-pr                 ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/quick-spec                ❌   ✅   ✅   ✅   ❌   ❌   ❌    ❌
-/update-changelog          ❌   ❌   ✅   ❌   ❌   ❌   ✅    ❌
-/sync-docs                 ❌   ❌   ✅   ✅   ✅   ❌   ❌    ❌
-/sprint-health             ✅   ❌   ✅   ❌   ✅   ❌   ❌    ✅
-/lidr-spec-new             ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/lidr-spec-ff              ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/lidr-spec-apply           ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/lidr-spec-verify          ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/lidr-spec-archive         ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/lidr-spec-continue        ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
-/lidr-spec-bulk-archive    ❌   ❌   ✅   ❌   ❌   ❌   ❌    ❌
-/lidr-help                      ✅   ✅   ✅   ✅   ✅   ✅   ✅    ✅
+                                PME  PO  TL  Dev  QA  Sec  DevOps  SM
+/lidr-advance-gate               ✅   ✅   ✅   ❌   ✅   ✅   ✅    ❌
+/lidr-implement-ticket           ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-prepare-testing            ❌   ❌   ❌   ❌   ✅   ❌   ❌    ❌
+/lidr-validate-requirements      ❌   ✅   ✅   ❌   ❌   ❌   ❌    ❌
+/lidr-validate-prd               ✅   ✅   ✅   ❌   ✅   ❌   ❌    ❌
+/lidr-init-project-docs          ✅   ✅   ✅   ❌   ❌   ❌   ❌    ❌
+/lidr-validate-project-docs      ✅   ✅   ✅   ❌   ✅   ❌   ❌    ❌
+/lidr-create-release-notes       ❌   ❌   ✅   ❌   ❌   ❌   ✅    ❌
+/lidr-create-branch              ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-create-pr                  ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-quick-spec                 ❌   ✅   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-update-changelog           ❌   ❌   ✅   ❌   ❌   ❌   ✅    ❌
+/lidr-sync-docs                  ❌   ❌   ✅   ✅   ✅   ❌   ❌    ❌
+/lidr-sprint-health              ✅   ❌   ✅   ❌   ✅   ❌   ❌    ✅
+/lidr-spec-new                   ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-ff                    ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-apply                 ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-verify                ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-archive               ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-continue              ❌   ❌   ✅   ✅   ❌   ❌   ❌    ❌
+/lidr-spec-bulk-archive          ❌   ❌   ✅   ❌   ❌   ❌   ❌    ❌
+/lidr-help                       ✅   ✅   ✅   ✅   ✅   ✅   ✅    ✅
 ```
 
 ### Roles Definidos
@@ -123,82 +123,96 @@ Native LIDR change-lifecycle commands — paridad con el patrón specboot, imple
 
 ## 3. Flujo Completo del SDLC — Quién ejecuta qué, cuándo
 
+> **Taxonomía unificada** (ver `.agents/_shared/lidr/UNIFIED-PHASES.md`): las fases
+> siguen la numeración BMad — Phase 0 Context & Anytime, Phase 1 Analysis, Phase 2
+> Planning, Phase 3 Solutioning (stages: specification + sprint-planning), Phase 4
+> Implementation (stages: development + qa + security + release). Los gates G0-G7
+> conservan sus IDs. Las etiquetas "ex-Fase N" referencian la antigua numeración LIDR.
+
 ```
-FASE 1: ORIGINACIÓN
+PHASE 0 — CONTEXT (obligatoria en brownfield; opcional en greenfield)
+  TL ejecuta:
+    bmad-document-project          → Inventario de docs del proyecto existente
+    bmad-generate-project-context  → project-context.md (contexto LLM)
+    /lidr-init-project-docs        → Scaffold docs/projects/{cliente}/
+    (rules org/project/tech-stack configuradas para el cliente activo)
+  ▸ Checklist "Context Ready" — evidencia brownfield evaluada en Gate 0
+
+PHASE 1 — ANALYSIS (ex-Fase 1 Originación)
   PME ejecuta:
-    skills/business-case     → Genera Business Case
-    skills/kickoff           → Genera Acta de Kick-off
-    skills/stakeholder-map   → Genera Stakeholder Map
-    skills/tracking-integration → Crea proyecto en herramienta de seguimiento (Jira/Linear/Notion)
+    lidr-business-case     → Genera Business Case
+    lidr-kickoff           → Genera Acta de Kick-off
+    lidr-stakeholder-map   → Genera Stakeholder Map
+    lidr-tracking-integration → Crea proyecto en herramienta de seguimiento (Jira/Linear/Notion)
   PME ejecuta:
-    /advance-gate 0          → Valida Gate 0, genera Handoff Package
+    /lidr-advance-gate 0          → Valida Gate 0, genera Handoff Package
                               → AUTO: crea subtareas PRD en Jira
                               → AUTO: notifica PO + R&D
 
-FASE 2: DISCOVERY (BMad-driven, LIDR wrappers)
+PHASE 2 — PLANNING (ex-Fase 2 Discovery & PRD; BMad-driven, LIDR wrappers)
   PO + TL ejecutan:
     bmad-prd                 → PRD unificado (F+T en un solo doc)
-    skills/review-cruzado    → 🔴 Gate 1 enforcer: valida F+T sections completas
-    skills/risk-log          → 🟡 Risk registry (LIDR-formal)
+    lidr-review-cruzado    → 🔴 Gate 1 enforcer: valida F+T sections completas
+    lidr-risk-log          → 🟡 Risk registry (LIDR-formal)
     bmad-technical-research  → PoC si aplica (con GO/NO-GO format)
   PO + QA + TL ejecutan:
-    /validate-prd my-project → LIDR SDLC 13-step validation, scoring, recomendaciones
+    /lidr-validate-prd my-project → LIDR SDLC 13-step validation, scoring, recomendaciones
                               → AUTO: detecta gaps críticos, genera action plan
                               → AUTO: scoring cuantitativo para Gate 1 decision
   PO ejecuta:
-    /advance-gate 1          → Valida Gate 1, genera Handoff
-                              → AUTO: invoca skill generate-rf (borrador)
+    /lidr-advance-gate 1          → Valida Gate 1, genera Handoff
+                              → AUTO: invoca skill lidr-generate-rf (borrador)
                               → AUTO: notifica equipo de Especificación
 
-FASE 3: ESPECIFICACIÓN
+PHASE 3 — SOLUTIONING · stage specification (ex-Fase 3 Especificación)
   PO ejecuta:
-    skills/generate-rf       → Genera RFs con BDD desde PRDs
+    lidr-generate-rf       → Genera RFs con BDD desde PRDs
   TL ejecuta:
-    skills/generate-nfr      → Genera NFRs standalone medibles desde PRD-T §5
+    lidr-generate-nfr      → Genera NFRs standalone medibles desde PRD-T §5
   PO + TL ejecutan:
-    skills/validate-requirements → Valida RFs + NFRs, genera RTM, detecta gaps
+    lidr-validate-requirements → Valida RFs + NFRs, genera RTM, detecta gaps
     (verifican coherencia con checklists)
   PO + TL ejecutan:
     bmad-create-epics-and-stories    → Descompone épica master en sub-épicas desde requisitos validados
   PO ejecuta:
-    /advance-gate 2          → Valida Gate 2 (coherencia, testabilidad, RTM completo)
-                              → AUTO: invoca skill user-stories (borrador)
+    /lidr-advance-gate 2          → Valida Gate 2 (coherencia, testabilidad, RTM completo)
+                              → AUTO: invoca skill lidr-user-stories (borrador)
                               → AUTO: notifica SM para Sprint Planning
 
 PRE-IMPLEMENTACIÓN (readiness = evidencia de Gate 3, ya no un command aparte)
   PO/TL ejecuta:
     bmad-check-implementation-readiness → completitud de specs (PRD/UX/Arch/Epics)
-    skills/sprint-capacity              → capacidad con buffer 15-20%
-    /advance-gate 3            → evalúa readiness vía _shared/lidr/gate-evidence.yaml (G3):
+    lidr-sprint-capacity              → capacidad con buffer 15-20%
+    /lidr-advance-gate 3            → evalúa readiness vía _shared/lidr/gate-evidence.yaml (G3):
       ├── specs completas (bmad-check-implementation-readiness)
       ├── capacidad confirmada (lidr-sprint-capacity)
       ├── checklist: equipo asignado, skill-gap, infra/deps externas, DoR por US
       └── verdicto PASS/CONDITIONAL/FAIL = go/no-go (role-gated)
 
-FASE 4: SPRINT PLANNING
+PHASE 3 — SOLUTIONING · stage sprint-planning (ex-Fase 4 Sprint Planning)
   PO ejecuta:
-    skills/user-stories      → Genera US con BDD desde RFs
+    lidr-user-stories      → Genera US con BDD desde RFs
   SM ejecuta:
-    skills/sprint-capacity   → Calcula capacidad
-    skills/refinement-notes  → Documenta refinement
+    lidr-sprint-capacity   → Calcula capacidad
+    lidr-refinement-notes  → Documenta refinement
   PO + TL ejecutan:
     (firman sprint commitment)
   PO ejecuta:
-    /advance-gate 3          → Valida Gate 3 (DoR, capacity, commitment)
+    /lidr-advance-gate 3          → Valida Gate 3 (DoR, capacity, commitment)
                               → AUTO: crea sprint en Jira
                               → AUTO: asigna US a devs
                               → AUTO: notifica equipo de Dev
 
-FASE 5: DESARROLLO (por cada ticket)
+PHASE 4 — IMPLEMENTATION · stage development (ex-Fase 5; por cada ticket)
   Dev ejecuta:
-    /create-branch [ID]      → Crea feature branch desde Jira
-    /implement-ticket [ID]   → Workflow completo (o ejecuta pasos individuales):
-      ├── skill: pr-description    → Auto-genera PR description
-      ├── skill: dev-handoff-qa    → Genera handoff
-      ├── skill: tech-debt         → Registra deuda si la detecta
-      ├── skill: adr               → Genera ADR si hay decisión arquitectónica
-      ├── hook: dtc-write-guard   → Valida DTC + DoD en PreToolUse:Write|Edit
-      └── /create-pr [ID]          → Crea PR (puede ser standalone)
+    /lidr-create-branch [ID]      → Crea feature branch desde Jira
+    /lidr-implement-ticket [ID]   → Workflow completo (o ejecuta pasos individuales):
+      ├── skill: lidr-pr-description    → Auto-genera PR description
+      ├── skill: lidr-dev-handoff-qa    → Genera handoff
+      ├── skill: lidr-tech-debt         → Registra deuda si la detecta
+      ├── skill: lidr-adr               → Genera ADR si hay decisión arquitectónica
+      ├── hook: lidr-frontmatter-guard  → Valida frontmatter docs (DTC) en PreToolUse:Write|Edit
+      └── /lidr-create-pr [ID]          → Crea PR (puede ser standalone)
 
   Dev ejecuta (LIDR Spec Lifecycle — granular per-change, opcional):
     /lidr-spec-new <name>    → Crea docs/projects/<cliente>/changes/<name>/ con scaffold
@@ -213,58 +227,58 @@ FASE 5: DESARROLLO (por cada ticket)
                               └── tasks.md                  → [x] tras cada task completada
     /lidr-spec-verify <name> → Re-ejecuta tests, detecta docs drift, escribe test-report.md
     /lidr-spec-archive <name>→ Mueve a changes/archive/YYYY-MM-DD-<name>/
-    /create-pr [ID]          → PR referencia el ticket + el change archivado
+    /lidr-create-pr [ID]          → PR referencia el ticket + el change archivado
 
   TL ejecuta (paralelización opcional):
     skill: lidr-run-parallel-tasks → Lanza N changes en worktrees aislados
                                    → cada sub-agente corre el pipeline completo
 
   TL ejecuta:
-    /advance-gate 4          → Agregador: ¿todos los tickets del sprint PASS?
+    /lidr-advance-gate 4          → Agregador: ¿todos los tickets del sprint PASS?
                               → AUTO: notifica QA team
 
-FASE 6: QA (por cada ticket)
+PHASE 4 — IMPLEMENTATION · stage qa (ex-Fase 6; por cada ticket)
   QA ejecuta:
-    /prepare-testing [ID]    → Genera suite de testing
+    /lidr-prepare-testing [ID]    → Genera suite de testing
       ├── skill: bmad-testarch-test-design → Test plan
-      ├── skill: create-test-cases → Test cases BDD
-      ├── skill: bug-report        → Estructura bug reports
-      ├── skill: test-execution-report → Interpreta resultados
+      ├── skill: lidr-create-test-cases → Test cases BDD
+      ├── skill: lidr-bug-report        → Estructura bug reports
+      ├── skill: lidr-test-execution-report → Interpreta resultados
       └── skill: bmad-testarch-automate    → Suite de regresión
   QA Lead ejecuta:
-    /advance-gate 5          → Valida Gate 5 (QA sign-off)
-                              → AUTO: invoca skill security-checklist
+    /lidr-advance-gate 5          → Valida Gate 5 (QA sign-off)
+                              → AUTO: invoca skill lidr-security-checklist
                               → AUTO: notifica Security team
 
-FASE 7: SEGURIDAD
+PHASE 4 — IMPLEMENTATION · stage security (ex-Fase 7)
   Sec ejecuta:
-    skills/vuln-assessment     → Interpreta SAST/SCA
-    skills/dast-interpretation → Interpreta DAST
-    skills/pentest-report      → Pen test report
-    skills/security-checklist  → OWASP Top 10
+    lidr-vuln-assessment     → Interpreta SAST/SCA
+    lidr-dast-interpretation → Interpreta DAST
+    lidr-pentest-report      → Pen test report
+    lidr-security-checklist  → OWASP Top 10
   Sec ejecuta:
-    /advance-gate 6          → Valida Gate 6 (Security sign-off)
-                              → AUTO: invoca skill change-request + rollback-plan
+    /lidr-advance-gate 6          → Valida Gate 6 (Security sign-off)
+                              → AUTO: invoca skill lidr-change-request + lidr-rollback-plan
                               → AUTO: notifica DevOps + PME
 
-FASE 8: DESPLIEGUE
+PHASE 4 — IMPLEMENTATION · stage release (ex-Fase 8)
   DevOps ejecuta:
-    /create-release-notes    → Genera changelog
-    /update-changelog [ver]  → Actualiza CHANGELOG.md
+    /lidr-create-release-notes    → Genera changelog
+    /lidr-update-changelog [ver]  → Actualiza CHANGELOG.md
   PME ejecuta:
-    /advance-gate 7          → Valida Gate Final (CR aprobado, rollback, release notes)
+    /lidr-advance-gate 7          → Valida Gate Final (CR aprobado, rollback, release notes)
                               → AUTO: deploy pipeline
-                              → AUTO: hook notify-desktop alerta al equipo
+                              → AUTO: hook notify alerta al equipo
                               → AUTO: notifica #releases
 
 POST-DEPLOY
   TL ejecuta:
-    /sync-docs               → Actualiza docs con cambios del release
-    /validate-project-docs   → Verifica que docs reflejan realidad
+    /lidr-sync-docs               → Actualiza docs con cambios del release
+    /lidr-validate-project-docs   → Verifica que docs reflejan realidad
   PME + TL ejecutan:
     bmad-retrospective       → Review de épica + retro data-driven (cubre lo que era epic-review + retrospective)
   PME ejecuta:
-    skills/postmortem        → 🔴 Postmortem solo si hubo incidente (Five Whys blameless)
+    lidr-postmortem        → 🔴 Postmortem solo si hubo incidente (Five Whys blameless)
 ```
 
 ---
@@ -274,13 +288,13 @@ POST-DEPLOY
 ### Cadena típica: Nuevo Proyecto
 
 ```
-/init-project-docs my-project           → PME/TL crea docs
+/lidr-init-project-docs my-project           → PME/TL crea docs
   ↓
 (equipo trabaja en docs)
   ↓
-/validate-project-docs my-project       → TL valida completitud
+/lidr-validate-project-docs my-project       → TL valida completitud
   ↓
-/advance-gate 0                         → PME abre Discovery
+/lidr-advance-gate 0                         → PME abre Discovery
   ↓
 ...ciclo SDLC continúa...
 ```
@@ -288,25 +302,25 @@ POST-DEPLOY
 ### Cadena típica: Sprint Completo
 
 ```
-/advance-gate 3                         → PO confirma sprint
+/lidr-advance-gate 3                         → PO confirma sprint
   ↓
-/create-branch PROJ-123                 → Dev crea branch
-/implement-ticket PROJ-123              → Dev implementa
-/create-pr PROJ-123                     → Dev crea PR (o auto desde implement)
+/lidr-create-branch PROJ-123                 → Dev crea branch
+/lidr-implement-ticket PROJ-123              → Dev implementa
+/lidr-create-pr PROJ-123                     → Dev crea PR (o auto desde implement)
   ↓
-/advance-gate 4                         → TL confirma sprint dev completo
+/lidr-advance-gate 4                         → TL confirma sprint dev completo
   ↓
-/prepare-testing PROJ-123               → QA prepara testing
-/advance-gate 5                         → QA sign-off
+/lidr-prepare-testing PROJ-123               → QA prepara testing
+/lidr-advance-gate 5                         → QA sign-off
   ↓
-/advance-gate 6                         → Security sign-off
+/lidr-advance-gate 6                         → Security sign-off
   ↓
-/create-release-notes                   → DevOps genera release notes
-/update-changelog v1.2.0               → DevOps actualiza CHANGELOG
-/advance-gate 7                         → PME deploy a PROD
+/lidr-create-release-notes                   → DevOps genera release notes
+/lidr-update-changelog v1.2.0               → DevOps actualiza CHANGELOG
+/lidr-advance-gate 7                         → PME deploy a PROD
   ↓
-/sync-docs architecture                 → TL actualiza docs
-/validate-project-docs my-project       → TL verifica docs
+/lidr-sync-docs architecture                 → TL actualiza docs
+/lidr-validate-project-docs my-project       → TL verifica docs
 ```
 
 ### Cadena típica: LIDR Spec Lifecycle (per-change granular)
@@ -327,7 +341,7 @@ ENRICHED USER STORY (de Jira o inline)
   ↓ (si PASSED)
 /lidr-spec-archive add-item-soft-delete   → Mueve a changes/archive/YYYY-MM-DD-<name>/
   ↓
-/create-pr PROJ-123                        → PR referencia ticket + change archivado
+/lidr-create-pr PROJ-123                        → PR referencia ticket + change archivado
 ```
 
 End-to-end equivalente vía subagent:
@@ -354,74 +368,107 @@ TL inspecciona cada worktree, decide archive/PR manual
 ### Cadena típica: Hotfix
 
 ```
-/create-branch PROJ-999                 → Dev crea branch desde hotfix
-/implement-ticket PROJ-999              → Dev implementa fix
-/create-pr PROJ-999                     → Dev crea PR a main
+/lidr-create-branch PROJ-999                 → Dev crea branch desde hotfix
+/lidr-implement-ticket PROJ-999              → Dev implementa fix
+/lidr-create-pr PROJ-999                     → Dev crea PR a main
 (QA fast-track testing)
-/create-release-notes                   → DevOps genera patch notes
-/update-changelog v1.2.1               → DevOps actualiza CHANGELOG
-/advance-gate 7                         → PME fast-track deploy
-/sync-docs                              → TL actualiza docs si aplica
+/lidr-create-release-notes                   → DevOps genera patch notes
+/lidr-update-changelog v1.2.1               → DevOps actualiza CHANGELOG
+/lidr-advance-gate 7                         → PME fast-track deploy
+/lidr-sync-docs                              → TL actualiza docs si aplica
 ```
 
 ### Cadena típica: Especificación Completa (Fase 3)
 
 ```
-/advance-gate 1                         → PO confirma Discovery
+/lidr-advance-gate 1                         → PO confirma Discovery
   ↓
-/validate-requirements my-project       → Orquesta Fase 3 completa:
-  ├── skill: generate-rf                → RFs con BDD desde PRDs
-  ├── skill: generate-nfr               → NFRs medibles desde PRD-T §5
-  ├── skill: validate-requirements      → RTM + gap detection
+/lidr-validate-requirements my-project       → Orquesta Fase 3 completa:
+  ├── skill: lidr-generate-rf                → RFs con BDD desde PRDs
+  ├── skill: lidr-generate-nfr               → NFRs medibles desde PRD-T §5
+  ├── skill: lidr-validate-requirements      → RTM + gap detection
   └── skill: bmad-create-epics-and-stories → Sub-épicas (rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
   ↓
-/advance-gate 2                         → PO + TL validan Gate 2
+/lidr-advance-gate 2                         → PO + TL validan Gate 2
   ↓
 ...Sprint Planning continúa...
 ```
+
+### Cadena típica: Brownfield primera vez (Phase 0 Context primero)
+
+```
+bmad-document-project                   → Inventario docs + clasificación del proyecto
+bmad-generate-project-context           → project-context.md (contexto LLM persistente)
+/lidr-init-project-docs my-project           → Scaffold docs/projects/{cliente}/
+(rules org/project/tech-stack configuradas para el cliente)
+  ↓ Checklist "Context Ready" (evidencia brownfield de Gate 0)
+lidr-business-case                    → BC de la iniciativa (no del producto entero)
+/lidr-advance-gate 0                         → G0 con checklist Context Ready
+  ↓
+bmad-prd (update intent)                → PRD delta sobre docs existentes
+  ↓ ...ciclo normal Phase 2 → 4 (regresión obligatoria en stage qa)...
+```
+
+### Cadena típica: Feature sobre producto en marcha (PRD desde funcionalidad extra)
+
+```
+PRE: Context Ready (Phase 0 viva) + producto con ≥1 ciclo completo
+/lidr-enrich-ticket FEAT-123                 → Ticket enriquecido (completitud validada)
+  ↓ bifurcación por tamaño
+≤40h: /lidr-quick-spec feature               → Spec ligera → /lidr-spec-new → ff → apply →
+                                          verify → archive → /lidr-create-pr (G4–G7 por ticket)
+>40h: bmad-prd (feature PRD)            → Hereda project-context + PRD maestro
+      /lidr-validate-requirements            → RFs del feature + epics delta + RTM incremental
+      /lidr-advance-gate 2 → 3               → Specs + readiness del feature
+      ...pipeline normal Phase 4...     → G4–G7
+POST: PRD maestro actualizado en el mismo PR (DTC)
+```
+
+Ver `.agents/_shared/lidr/UNIFIED-PHASES.md` §3 para los flow audits completos
+(greenfield/brownfield/feature/hotfix) con la cadena input/output de cada skill.
 
 ### Cadena típica: Catch-up (proyecto en marcha sin docs formales)
 
 ```
 bmad-prd                                → PRD retroactivo (unificado F+T)
-skills/review-cruzado                   → Validación F+T sections
-skills/risk-log                         → Riesgos no documentados
-/advance-gate 1                         → Gate 1 retroactivo (probablemente CONDITIONAL)
+lidr-review-cruzado                   → Validación F+T sections
+lidr-risk-log                         → Riesgos no documentados
+/lidr-advance-gate 1                         → Gate 1 retroactivo (probablemente CONDITIONAL)
   ↓
-/validate-requirements my-project       → RFs + NFRs + RTM + epic breakdown
-/advance-gate 2                         → Gate 2 retroactivo
+/lidr-validate-requirements my-project       → RFs + NFRs + RTM + epic breakdown
+/lidr-advance-gate 2                         → Gate 2 retroactivo
   ↓
-skills/user-stories                     → US con BDD desde RFs retroactivos
-skills/sprint-capacity                  → Capacidad real
-/advance-gate 3                         → Sprint committed con DoR
+lidr-user-stories                     → US con BDD desde RFs retroactivos
+lidr-sprint-capacity                  → Capacidad real
+/lidr-advance-gate 3                         → Sprint committed con DoR
   ↓
-skills/tech-debt                        → Cataloga deuda acumulada
-skills/adr                              → ADRs retroactivos
-/validate-project-docs my-project       → Valida completitud final
+lidr-tech-debt                        → Cataloga deuda acumulada
+lidr-adr                              → ADRs retroactivos
+/lidr-validate-project-docs my-project       → Valida completitud final
 ```
 
 ### Cadena típica: Gestión de deuda técnica
 
 ```
-skills/tech-debt                        → Cataloga deuda del codebase (TL)
-skills/adr                              → ADR: estrategia refactor vs rewrite
-skills/user-stories                     → US técnicas con BDD
-skills/sprint-capacity                  → Reserva 20% capacity para debt
-/implement-ticket PROJ-456              → Implementa refactoring
-/create-pr PROJ-456                     → PR con descripción del debt payoff
-/sync-docs                              → Actualiza docs afectados
+lidr-tech-debt                        → Cataloga deuda del codebase (TL)
+lidr-adr                              → ADR: estrategia refactor vs rewrite
+lidr-user-stories                     → US técnicas con BDD
+lidr-sprint-capacity                  → Reserva 20% capacity para debt
+/lidr-implement-ticket PROJ-456              → Implementa refactoring
+/lidr-create-pr PROJ-456                     → PR con descripción del debt payoff
+/lidr-sync-docs                              → Actualiza docs afectados
 ```
 
 ### Cadena típica: Postmortem de incidente
 
 ```
-skills/bug-report                       → Documenta incidente
-skills/postmortem                       → Five Whys + root cause (blameless)
-skills/tech-debt                        → Registra deuda que causó incidente
-skills/adr                              → Decisión correctiva arquitectónica
+lidr-bug-report                       → Documenta incidente
+lidr-postmortem                       → Five Whys + root cause (blameless)
+lidr-tech-debt                        → Registra deuda que causó incidente
+lidr-adr                              → Decisión correctiva arquitectónica
 bmad-testarch-automate                 → Amplía suite con caso del incidente
 bmad-retrospective                    → Lecciones + action items
-/sync-docs                              → Actualiza runbooks afectados
+/lidr-sync-docs                              → Actualiza runbooks afectados
 ```
 
 ### Cadena típica: Onboarding de nuevo miembro
@@ -433,26 +480,26 @@ rules/org.md                            → Estándares organizacionales
 rules/tech-stack.md                     → Convenciones de código
 rules/workflows.md                      → Quién ejecuta qué y cuándo
 bmad-create-architecture                 → Revisar doc de arquitectura
-/validate-project-docs my-project       → Estado actual de documentación
+/lidr-validate-project-docs my-project       → Estado actual de documentación
 ```
 
 ### Cadena típica: Scaffolding de repositorio
 
 ```
-/init-project-docs my-project           → Scaffold desde templates (TL)
+/lidr-init-project-docs my-project           → Scaffold desde templates (TL)
 bmad-create-architecture                 → Doc arquitectura (Arc42/C4)
-skills/adr                              → ADR inicial: stack + patrón
-/validate-project-docs my-project       → Audita repo vs cl-repo-structure
-/advance-gate 0                         → Gate 0 con repo-structure checklist
+lidr-adr                              → ADR inicial: stack + patrón
+/lidr-validate-project-docs my-project       → Audita repo vs cl-repo-structure
+/lidr-advance-gate 0                         → Gate 0 con repo-structure checklist
 ```
 
 ### Cadena típica: Cerrar una épica (Epic Review)
 
 ```
 bmad-retrospective                      → Plan vs actual + lecciones + retro data-driven
-skills/tech-debt                        → Consolida deuda acumulada
-/sync-docs                              → Sincroniza docs final
-/validate-project-docs my-project       → Valida completitud
+lidr-tech-debt                        → Consolida deuda acumulada
+/lidr-sync-docs                              → Sincroniza docs final
+/lidr-validate-project-docs my-project       → Valida completitud
 ```
 
 ---
@@ -472,12 +519,14 @@ Los siguientes skills se usan transversalmente y no aparecen en una fase especí
 
 ## 6. Hooks — Guardias automáticos activos
 
-| Hook                | Evento Claude Code      | Cuándo se dispara                                   | Acción                                         |
-| ------------------- | ----------------------- | --------------------------------------------------- | ---------------------------------------------- |
-| `dtc-write-guard`   | PreToolUse: Write\|Edit | Cada vez que la IA intenta escribir/editar archivos | Valida DTC + DoD + detecta secrets             |
-| `dtc-session-check` | Stop                    | Al finalizar sesión                                 | Verifica sincronización de 8 fuentes de verdad |
-| `notify-desktop`    | Notification            | Eventos relevantes (build roto, vuln crítica)       | Alerta desktop macOS/Linux                     |
-| `context-loader`    | SessionStart            | Al iniciar sesión                                   | Carga contexto proyecto + DTC status           |
+| Hook                             | Evento Claude Code       | Cuándo se dispara                               | Acción                                                                 |
+| -------------------------------- | ------------------------ | ----------------------------------------------- | ---------------------------------------------------------------------- |
+| `lidr-frontmatter-guard`         | PreToolUse: Write\|Edit  | Al escribir/editar .md en docs/ o .agents/      | Bloquea .md sin frontmatter YAML; warn por `last_updated` stale        |
+| `lidr-load-context`              | SessionStart             | Al iniciar sesión                               | Carga docs de `context-manifest.yaml` (PROJECT_TYPE, DTC, counters)    |
+| `lidr-validate-ecosystem-counts` | Stop                     | Al finalizar sesión                             | Sincroniza las 8 fuentes de verdad de counts; bloquea si detecta drift |
+| `protect-secrets`                | PreToolUse: Write\|Edit  | Antes de tocar archivos sensibles               | Bloquea edición de `.env`, `.key`, `.pem`, secrets/                    |
+| `auto-format`                    | PostToolUse: Edit\|Write | Tras cada Edit/Write                            | Ejecuta prettier sobre el archivo editado                              |
+| `notify`                         | Notification             | Cuando la IA necesita input o termina una tarea | Notificación desktop macOS/Linux                                       |
 
 ---
 
@@ -490,8 +539,8 @@ Los siguientes skills se usan transversalmente y no aparecen en una fase especí
    → Si NO: "Este comando requiere rol {X}. Tu rol actual: {Y}."
 
 2. VERIFICAR PRECONDICIONES: ¿Gates anteriores PASS?
-   → Si NO: "Gate {N-1} no pasado. Ejecutar /advance-gate {N-1} primero."
-   → EXCEPCIÓN: Dev puede ejecutar /create-branch sin gate previo si tiene ticket asignado
+   → Si NO: "Gate {N-1} no pasado. Ejecutar /lidr-advance-gate {N-1} primero."
+   → EXCEPCIÓN: Dev puede ejecutar /lidr-create-branch sin gate previo si tiene ticket asignado
 
 3. VERIFICAR HERRAMIENTAS: ¿Herramientas necesarias disponibles?
    → Si acceso a Jira falta: DEGRADE (operar con contexto manual)
@@ -510,7 +559,7 @@ Los siguientes skills se usan transversalmente y no aparecen en una fase especí
 ```
 La IA infiere el rol del humano por:
 1. Contexto explícito: "Soy el QA Lead" → QA
-2. Comando ejecutado: /prepare-testing → probablemente QA
+2. Comando ejecutado: /lidr-prepare-testing → probablemente QA
 3. Contexto del proyecto: rules/project.md define equipo y roles
 4. Pregunta directa: "¿Cuál es tu rol en el equipo?"
 
@@ -521,14 +570,14 @@ Si el rol no está claro → PREGUNTAR antes de ejecutar commands restringidos
 
 ## 8. Evolución: De Commands a Agents
 
-| Command                  | Cuándo evoluciona a Agent         | Señal de activación                                |
-| ------------------------ | --------------------------------- | -------------------------------------------------- |
-| `/advance-gate`          | Tras ≥24 ejecuciones (3 por gate) | Artefactos completos detectados en Jira/Confluence |
-| `/implement-ticket`      | Tras ≥30 tickets implementados    | Ticket asignado al dev + status "In Progress"      |
-| `/prepare-testing`       | Tras ≥20 suites generadas         | Ticket con status "Ready for QA"                   |
-| `/create-release-notes`  | Tras ≥10 releases                 | Tag creado en GitHub                               |
-| `/sync-docs`             | Tras ≥10 syncs manuales           | PR mergeado con cambios en src/                    |
-| `/validate-project-docs` | Tras ≥10 validaciones             | Commit en docs/projects/                           |
+| Command                       | Cuándo evoluciona a Agent         | Señal de activación                                |
+| ----------------------------- | --------------------------------- | -------------------------------------------------- |
+| `/lidr-advance-gate`          | Tras ≥24 ejecuciones (3 por gate) | Artefactos completos detectados en Jira/Confluence |
+| `/lidr-implement-ticket`      | Tras ≥30 tickets implementados    | Ticket asignado al dev + status "In Progress"      |
+| `/lidr-prepare-testing`       | Tras ≥20 suites generadas         | Ticket con status "Ready for QA"                   |
+| `/lidr-create-release-notes`  | Tras ≥10 releases                 | Tag creado en GitHub                               |
+| `/lidr-sync-docs`             | Tras ≥10 syncs manuales           | PR mergeado con cambios en src/                    |
+| `/lidr-validate-project-docs` | Tras ≥10 validaciones             | Commit en docs/projects/                           |
 
 **Un command se promueve a agent cuando:**
 
@@ -536,6 +585,15 @@ Si el rol no está claro → PREGUNTAR antes de ejecutar commands restringidos
 2. 0 falsos positivos o acciones incorrectas
 3. El responsable del proceso confirma confianza
 4. Se documenta en `.claude/agents/` con criterios de activación
+
+---
+
+## Changelog
+
+| Versión | Fecha      | Autor                   | Cambios                                                                                                      |
+| ------- | ---------- | ----------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 1.1.0   | 2026-06-10 | TL: ecosystem coherence | Commands/skills normalizados a nombres reales (`lidr-*`); §6 reescrita con los 6 hooks reales del ecosistema |
+| 1.0.0   | 2026-03-25 | IA: sync-docs           | Versión base                                                                                                 |
 
 ---
 

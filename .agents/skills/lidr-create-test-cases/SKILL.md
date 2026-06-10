@@ -5,7 +5,8 @@ version: "2.5.0"
 last_updated: "2026-06-09"
 updated_by: "TL: lang+tool agnostic"
 status: active
-phase: 6
+phase: 4
+stage: qa
 owner_role: "QA Lead"
 automation: false
 domain_agnostic: true

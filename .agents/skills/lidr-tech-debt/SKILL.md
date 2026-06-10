@@ -5,7 +5,8 @@ version: "2.3.0"
 last_updated: "2026-06-09"
 updated_by: "TL: lang+tool agnostic"
 status: active
-phase: 5
+phase: 4
+stage: development
 owner_role: "TL + Dev Team"
 automation: true
 domain_agnostic: true
