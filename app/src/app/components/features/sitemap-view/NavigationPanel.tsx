@@ -15,16 +15,13 @@ interface FilterState {
 }
 
 const FILE_TYPES = ['skill', 'command', 'rule', 'hook', 'template', 'doc'];
+// Unified phase model (BMad × LIDR): 5 phases; legacy phases 0-8 survive as stages inside them
 const PHASES = [
-  'Fase 0',
-  'Fase 1',
-  'Fase 2',
-  'Fase 3',
-  'Fase 4',
-  'Fase 5',
-  'Fase 6',
-  'Fase 7',
-  'Fase 8',
+  'Fase 0 — Context & Anytime',
+  'Fase 1 — Analysis',
+  'Fase 2 — Planning',
+  'Fase 3 — Solutioning',
+  'Fase 4 — Implementation',
 ];
 
 export function NavigationPanel({ tree, onSearchChange }: NavigationPanelProps) {

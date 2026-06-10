@@ -307,6 +307,27 @@ export const skills: Skill[] = [
     automated: true,
   },
   {
+    id: 'impact-analysis',
+    name: 'impact-analysis',
+    phase: 'Fase 5 — Desarrollo',
+    phaseNum: 5,
+    source: 'lidr',
+    criticality: 'recommended',
+    description:
+      'Analyze the impact of a proposed change (RF, diff, PRD delta) against client-maintained registries: contract catalogs (contract-impact mode, Gate 4) and variant/configuration matrices (variant-compatibility mode, Gate 2). Emits impact report with severity and SAFE/REVIEW REQUIRED/BLOCKING verdict; degrades to a guided manual checklist without registries.',
+    triggers: [
+      'analyze change impact',
+      'check contract impact',
+      'validate variant compatibility',
+      'what does this change break',
+    ],
+    roles: ['TL', 'Dev'],
+    gateContribution: 'Gate 4',
+    docPath: '.agents/skills/lidr-impact-analysis/SKILL.md',
+    relatedSkills: ['lidr-generate-rf', 'lidr-risk-log'],
+    relatedCommands: ['lidr-spec-verify', 'lidr-advance-gate'],
+  },
+  {
     id: 'dev-handoff-qa',
     name: 'dev-handoff-qa',
     phase: 'Fase 5 — Desarrollo',

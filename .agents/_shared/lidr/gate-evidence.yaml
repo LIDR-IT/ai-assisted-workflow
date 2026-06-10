@@ -47,9 +47,15 @@
 #           artifact: <path>            # the file that records the human approval
 # ─────────────────────────────────────────────────────────────────────────────
 
-version: "1.0.0"
-last_updated: "2026-06-09"
+version: "2.0.0"
+last_updated: "2026-06-10"
 maintained_by: "TL: LIDR Gate-over-BMad"
+
+# Unified phase model (see .agents/_shared/lidr/UNIFIED-PHASES.md):
+#   Phase 1 Analysis → G0 | Phase 2 Planning → G1
+#   Phase 3 Solutioning → G2 (specs) + G3 (ready to implement)
+#   Phase 4 Implementation → G4 (dev) + G5 (qa) + G6 (security) + G7 (release)
+# Gate IDs are stable (G0–G7); only the phase taxonomy grouping them changed.
 
 # Path variables. Mirror the values in _bmad/*/config.yaml so the gate reads
 # BMad's real output locations. {client} resolves to the active CLIENT_CODE
@@ -81,12 +87,15 @@ matching:
 gates:
   # ───────────────────────────────────────────────────────────────────────────
   G0:
-    transition: "Originación → Discovery (Intake)"
+    transition: "Phase 1 Analysis → Phase 2 Planning (Intake)"
     owner: [PME, Sponsor]
     bmad_evidence:
-      # Brownfield intake: BMad documents the existing project.
+      # Brownfield intake: BMad documents the existing project (Phase 0 Context).
       - skill: bmad-document-project
         artifact: "{project_knowledge}/index.md"
+        required: false
+      - skill: bmad-generate-project-context
+        artifact: "{project_knowledge}/project-context.md"
         required: false
       - skill: bmad-product-brief
         artifact: "{bmad_planning}/product-brief*.md"
@@ -101,21 +110,24 @@ gates:
     checklist:
       - "Sponsor identified and budget/strategic alignment confirmed"
       - "At least one of: product brief (BMad) OR business case (LIDR) is populated"
+      - "Brownfield only — Context Ready: project-context.md reflects the real stack, docs/index.md inventories existing docs, rules/project.md points to the active client"
     signoffs:
       - role: PME
         artifact: "{handoffs}/gate-0-handoff.md"
 
   # ───────────────────────────────────────────────────────────────────────────
   G1:
-    transition: "Discovery → Especificación (PRD approved)"
+    transition: "Phase 2 Planning → Phase 3 Solutioning (PRD approved)"
     owner: [PO, TL]
     bmad_evidence:
       - skill: bmad-prd
         artifact: "{bmad_planning}/PRD*.md"
         required: true
-      - skill: bmad-create-architecture
-        artifact: "{bmad_planning}/*architecture*.md"
-        required: true
+      # Architecture moved to G2: bmad-create-architecture is 3-Solutioning in
+      # BMad's own phase model, not Planning (unified-phases audit 2026-06-10).
+      - skill: bmad-ux
+        artifact: "{bmad_planning}/*ux*.md"
+        required: false
     lidr_evidence:
       - skill: lidr-risk-log
         artifact: "{client_root}/risk-log.md"
@@ -125,7 +137,7 @@ gates:
         required: false
     checklist:
       - "PRD covers functional AND technical scope (review-cruzado passed)"
-      - "Architecture documents the major components and data model"
+      - "UX spec exists when the feature has a primary UI surface"
       - "Top risks logged with mitigation owners"
     signoffs:
       - role: PO
@@ -133,12 +145,18 @@ gates:
 
   # ───────────────────────────────────────────────────────────────────────────
   G2:
-    transition: "Especificación → Sprint Planning (RFs complete)"
+    transition: "Phase 3 Solutioning: specification → sprint-planning (Specs complete)"
     owner: [PO, QA]
     bmad_evidence:
+      - skill: bmad-create-architecture
+        artifact: "{bmad_planning}/*architecture*.md"
+        required: true
       - skill: bmad-create-epics-and-stories
         artifact: "{bmad_planning}/epics*.md"
         required: true
+      - skill: bmad-testarch-test-design
+        artifact: "{bmad_planning}/*test-design*.md"
+        required: false
     lidr_evidence:
       - skill: lidr-generate-rf
         artifact: "{client_root}/requirements/RF-*.md"
@@ -149,7 +167,13 @@ gates:
       - skill: lidr-validate-requirements
         artifact: "{client_root}/rtm.md"
         required: true
+      # Variant-compatibility analysis of new/modified RFs against the
+      # client-maintained variant matrix (docs/projects/{client}/registries/).
+      - skill: lidr-impact-analysis
+        artifact: "{client_root}/impact/variant-compatibility-*.md"
+        required: false
     checklist:
+      - "Architecture documents the major components and data model"
       - "Every RF has BDD acceptance criteria (Given/When/Then)"
       - "RTM maps RF ↔ epic/story ↔ test with no orphan requirements"
       - "Epics decomposed into stories sized 2–40h"
@@ -163,7 +187,7 @@ gates:
   # team/skill-gap/infra readiness from the checklist below; go/no-go is the
   # gate verdict + the role-auth /advance-gate already performs.
   G3:
-    transition: "Sprint Planning → Desarrollo (Sprint committed)"
+    transition: "Phase 3 Solutioning → Phase 4 Implementation (Ready to implement)"
     owner: [PO, TL]
     bmad_evidence:
       - skill: bmad-sprint-planning
@@ -190,11 +214,14 @@ gates:
 
   # ───────────────────────────────────────────────────────────────────────────
   G4:
-    transition: "Desarrollo → QA (DoD met)"
+    transition: "Phase 4 Implementation: development → qa (DoD met)"
     owner: [Dev, Sec]
     bmad_evidence:
       - skill: bmad-dev-story
         artifact: "{bmad_impl}/**/*.md"
+        required: false
+      - skill: bmad-code-review
+        artifact: "{bmad_impl}/**/*review*.md"
         required: false
     lidr_evidence:
       - skill: lidr-spec-verify
@@ -205,6 +232,11 @@ gates:
         required: true
       - skill: lidr-playwright-cli
         artifact: "{client_root}/reviews/runtime-review-*.md"
+        required: false
+      # Contract-impact analysis of the diff against the client-maintained
+      # contract registry (docs/projects/{client}/registries/).
+      - skill: lidr-impact-analysis
+        artifact: "{client_root}/impact/contract-impact-*.md"
         required: false
     checklist:
       - "DoD met: code review approved, unit tests pass, SAST/SCA clean (0 crit/high)"
@@ -217,11 +249,14 @@ gates:
 
   # ───────────────────────────────────────────────────────────────────────────
   G5:
-    transition: "QA → Seguridad (QA sign-off)"
+    transition: "Phase 4 Implementation: qa → security (QA sign-off)"
     owner: [QA Lead]
     bmad_evidence:
       - skill: bmad-testarch-automate
         artifact: "{bmad_output}/**/*test*"
+        required: false
+      - skill: bmad-testarch-trace
+        artifact: "{bmad_output}/**/*trace*"
         required: false
     lidr_evidence:
       - skill: lidr-test-execution-report
@@ -240,7 +275,7 @@ gates:
 
   # ───────────────────────────────────────────────────────────────────────────
   G6:
-    transition: "Seguridad → Despliegue (Security sign-off)"
+    transition: "Phase 4 Implementation: security → release (Security sign-off)"
     owner: [CISO]
     bmad_evidence: []
     lidr_evidence:
@@ -267,7 +302,7 @@ gates:
 
   # ───────────────────────────────────────────────────────────────────────────
   G7:
-    transition: "Despliegue → Producción (CR approved — Gate Final)"
+    transition: "Phase 4 Implementation: release → Producción (CR approved — Gate Final)"
     owner: [Change Committee]
     bmad_evidence: []
     lidr_evidence:
@@ -284,6 +319,7 @@ gates:
       - "Change Request approved by the Change Committee"
       - "Rollback plan documented and tested"
       - "Post-deploy checklist ready; release notes published"
+      - "Post-deploy: bmad-retrospective scheduled (lidr-postmortem only if incident)"
     signoffs:
       - role: PME
         artifact: "{handoffs}/gate-7-handoff.md"

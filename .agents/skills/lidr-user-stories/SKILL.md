@@ -5,7 +5,8 @@ version: "2.4.0"
 last_updated: "2026-06-09"
 updated_by: "TL: lang+tool agnostic"
 status: active
-phase: 4
+phase: 3
+stage: sprint-planning
 owner_role: "PO"
 automation: true
 domain_agnostic: true

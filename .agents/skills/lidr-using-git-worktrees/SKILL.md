@@ -5,7 +5,8 @@ version: "1.0.0"
 last_updated: "2026-05-20"
 updated_by: "TL: LIDR Spec Native"
 status: active
-phase: 5
+phase: 4
+stage: development
 owner_role: "Dev"
 automation: false
 domain_agnostic: true

@@ -6,6 +6,7 @@ last_updated: "2026-03-25"
 updated_by: "TL: remediation-tier1"
 status: active
 phase: 0
+stage: anytime
 owner_role: "QA"
 automation: false
 domain_agnostic: true

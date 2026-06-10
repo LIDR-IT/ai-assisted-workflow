@@ -30,7 +30,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 
 - Edit once in `.agents/` → automatically synced to all 5 platforms
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic) — new in this version: `spec-execution.md` and `model-selection.md` for the LIDR Spec Lifecycle
-- **112 skills** (43 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-help` (ecosystem-guide skill, ex-command; mirrors `bmad-help` with the LIDR SDLC governance layer on top), `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
+- **113 skills** (44 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-impact-analysis` (contract impact + variant compatibility against client-maintained registries; closes the PP-05/PP-06-class capability gaps), `lidr-help` (ecosystem-guide skill, ex-command; mirrors `bmad-help` with the LIDR SDLC governance layer on top), `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
 - **30 commands** (17 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic) — the 7 `lidr-spec-*` change-lifecycle commands (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`); `lidr-help` converted to a skill (still invocable as `/lidr-help`), `lidr-product-brief` removed (BMAD `bmad-product-brief` covers it); `document-project` and `check-readiness` removed (BMAD `bmad-document-project` + `bmad-check-implementation-readiness` cover them; readiness now lives in Gate 3)
 - **23 subagents** (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`) — new: `lidr-spec-orchestrator` for end-to-end change execution
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
@@ -151,16 +151,17 @@ ls .github/agents/*.agent.md
 │   ├── process/              # git-workflow.md, documentation.md
 │   ├── product/, quality/, team/, tools/
 │
-├── skills/                   # 112 skills (43 lidr-* + 69 bmad-*) — Agent Skills open standard
-│   ├── lidr-business-case/   # ← LIDR Phase 1: Originación
-│   ├── lidr-generate-rf/     # ← LIDR Phase 3: Specification
-│   ├── lidr-user-stories/    # ← LIDR Phase 4: Sprint Planning
-│   ├── lidr-adr/             # ← LIDR Phase 5: Development
-│   ├── lidr-using-git-worktrees/   # ← LIDR Phase 5: parallel work
-│   ├── lidr-run-parallel-tasks/    # ← LIDR Phase 5: orchestrated parallelism
-│   ├── lidr-test-execution-report/ # ← LIDR Phase 6: QA
-│   ├── lidr-security-checklist/    # ← LIDR Phase 7: Security
-│   ├── lidr-release-notes/   # ← LIDR Phase 8: Deployment
+├── skills/                   # 113 skills (44 lidr-* + 69 bmad-*) — Agent Skills open standard
+│   ├── lidr-business-case/   # ← Unified Phase 1: Analysis
+│   ├── lidr-generate-rf/     # ← Unified Phase 3: Solutioning/specification
+│   ├── lidr-user-stories/    # ← Unified Phase 3: Solutioning/sprint-planning
+│   ├── lidr-adr/             # ← Unified Phase 4: Implementation/development
+│   ├── lidr-impact-analysis/ # ← Unified Phase 4: contract/variant impact vs client registries (G2/G4)
+│   ├── lidr-using-git-worktrees/   # ← Unified Phase 4: dev parallel work
+│   ├── lidr-run-parallel-tasks/    # ← Unified Phase 4: orchestrated parallelism
+│   ├── lidr-test-execution-report/ # ← Unified Phase 4: Implementation/qa
+│   ├── lidr-security-checklist/    # ← Unified Phase 4: Implementation/security
+│   ├── lidr-release-notes/   # ← Unified Phase 4: Implementation/release
 │   ├── lidr-agents-architecture/   # LIDR meta-skill (skill+command+agent scaffolding)
 │   ├── lidr-command-development/   # LIDR meta-skill (command authoring)
 │   ├── lidr-hook-development/      # LIDR meta-skill (hook authoring)
@@ -600,7 +601,7 @@ arguments: [issue, branch] # Named positional args for $name substitution
 - `commit-management` — Git commit message workflows and conventions
 - `ticket-validation` — Ticket structure validation
 
-**LIDR skills (44):** Phase 0–8 of the methodology plus spec-lifecycle and meta-tooling, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-user-stories`, `lidr-adr`, `lidr-create-test-cases`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-gate-evaluation`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping. PRD/design/epics/test-plan are owned by BMad (`bmad-prd`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-testarch-test-design`) — LIDR wraps those outputs, see `.agents/_shared/lidr/MIGRATION.md`.
+**LIDR skills (44):** unified phases 0–4 (BMad-aligned; stages context→release, see `.agents/_shared/lidr/UNIFIED-PHASES.md`) plus spec-lifecycle and meta-tooling, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-user-stories`, `lidr-adr`, `lidr-create-test-cases`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-gate-evaluation`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping. PRD/design/epics/test-plan are owned by BMad (`bmad-prd`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-testarch-test-design`) — LIDR wraps those outputs, see `.agents/_shared/lidr/MIGRATION.md`.
 
 ---
 
@@ -1064,7 +1065,7 @@ Documentation lives in the **React app at `app/`** (Vite + React Router v7 + Rea
 
 ---
 
-## LIDR Spec Lifecycle — change container model (Fase 5, granular)
+## LIDR Spec Lifecycle — change container model (Phase 4 Implementation · development, granular)
 
 The LIDR ecosystem implements a **native change-lifecycle layer** (paridad con el patrón specboot, sin dependencias externas). Each feature lives in `docs/projects/<CLIENT_CODE>/changes/<change-name>/` as a versionable directory with auditable artifacts.
 
@@ -1125,39 +1126,39 @@ The hook `lidr-load-context` reads `.agents/context-manifest.yaml` at SessionSta
 
 ## LIDR SDLC Methodology — quick context for the AI
 
-The LIDR SDLC defines a phase-gate workflow that the `lidr-*` skills, commands,
-and subagents collectively implement. When the user references "fase X",
-"gate Y", or any LIDR artifact, use this map.
+The LIDR SDLC and BMad share ONE unified phase taxonomy (BMad numbering) since
+2026-06-10. BMad is the ENGINE (produces artifacts); LIDR is the GOVERNANCE
+(gates, roles, compliance). Canonical source: `.agents/_shared/lidr/UNIFIED-PHASES.md`
+(includes old-phase mapping and greenfield/brownfield/feature flow audits).
+When the user references "fase X", "gate Y", or any LIDR artifact, use this map.
 
-### The 9 phases (0-8)
+### The 5 unified phases (0-4) and their stages
 
-| Phase | Name            | Primary skills                                                                                                                                            |
-| ----- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0     | Preparación     | `bmad-document-project` (brownfield scan + project-type classification + doc requirements)                                                                |
-| 1     | Originación     | `lidr-business-case`, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`, `lidr-risk-log` (business model → `bmad-prfaq`)                |
-| 2     | Discovery & PRD | `bmad-prd` + `lidr-review-cruzado` (Gate-1 F+T), `bmad-create-architecture`, `bmad-technical-research` (PoC); use-cases live inside `bmad-prd`            |
-| 3     | Especificación  | `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements`, `bmad-create-epics-and-stories` (epics; BDD via `bmad-testarch-atdd`)              |
-| 4     | Sprint Planning | `lidr-user-stories`, `lidr-sprint-capacity`, `lidr-refinement-notes`                                                                                      |
-| 5     | Desarrollo      | `lidr-pr-description`, `lidr-adr`, `lidr-tech-debt`, `lidr-dev-handoff-qa`                                                                                |
-| 6     | QA & Testing    | `bmad-testarch-test-design` (test plan), `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report`, `bmad-testarch-automate` (regression) |
-| 7     | Seguridad       | `lidr-vuln-assessment`, `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-security-checklist`                                                      |
-| 8     | Despliegue      | `lidr-change-request`, `lidr-rollback-plan`, `lidr-release-notes`, `bmad-retrospective`, `lidr-postmortem`                                                |
+| Phase | Name              | Stages (ex-LIDR phases)                                                    | Primary skills (BMad engine + LIDR governance)                                                                                                                                                                                                                                                                                                                                                                                            |
+| ----- | ----------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0     | Context & Anytime | `context` (ex-F0 Preparación), `anytime` (cross-cutting)                   | `bmad-document-project`, `bmad-generate-project-context` (brownfield entry); `lidr-gate-evaluation`, `lidr-audit-standards`, `lidr-sdlc-tracking`, meta-tooling                                                                                                                                                                                                                                                                           |
+| 1     | Analysis          | `analysis` (ex-F1 Originación)                                             | `bmad-brainstorming`/`*-research`, `bmad-product-brief` \| `bmad-prfaq`; `lidr-business-case`, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`                                                                                                                                                                                                                                                                        |
+| 2     | Planning          | `planning` (ex-F2 Discovery & PRD)                                         | `bmad-prd`, `bmad-ux`, `bmad-technical-research` (PoC); `lidr-review-cruzado` (Gate-1 F+T), `lidr-risk-log`, `/lidr-validate-prd`                                                                                                                                                                                                                                                                                                         |
+| 3     | Solutioning       | `specification` (ex-F3), `sprint-planning` (ex-F4)                         | `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-testarch-test-design`; `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements` (RTM) · then `lidr-user-stories`, `lidr-sprint-capacity`, `bmad-check-implementation-readiness`, `bmad-sprint-planning`                                                                                                                                                   |
+| 4     | Implementation    | `development` (ex-F5), `qa` (ex-F6), `security` (ex-F7), `release` (ex-F8) | dev: `bmad-create-story`/`bmad-dev-story` or `/lidr-spec-*`, `lidr-adr`, `lidr-impact-analysis` (contract impact G4; variant compatibility consumed at G2), `lidr-dev-handoff-qa` · qa: `lidr-create-test-cases`, `lidr-test-execution-report`, `bmad-testarch-automate` · security: `lidr-vuln-assessment`, `lidr-security-checklist` · release: `lidr-change-request`, `lidr-rollback-plan`, `lidr-release-notes`, `bmad-retrospective` |
 
-### The 8 gates (G0 → G7)
+### The 8 gates (G0 → G7) — IDs unchanged, re-anchored to unified phases
 
-Each phase ends with a formal gate. **Never advance without evaluating the
-gate.** Use `lidr-advance-gate.md` command to transition formally.
+Gates are stage-exit checkpoints. **Never advance without evaluating the
+gate.** Use `lidr-advance-gate.md` command to transition formally. Mnemonic:
+G0-G1 close phases 1-2; G2-G3 live inside Solutioning; G4-G7 are stage-gates
+inside Implementation.
 
-| Gate | Transition                                      | Owner            |
-| ---- | ----------------------------------------------- | ---------------- |
-| G0   | Intake → Discovery                              | PME + Sponsor    |
-| G1   | Discovery → Especificación (PRDs approved)      | Product + R&D    |
-| G2   | Especificación → Sprint Planning (RFs complete) | Product + QA     |
-| G3   | Sprint Planning → Desarrollo (Sprint committed) | PO + TL          |
-| G4   | Desarrollo → QA (DoD met)                       | Dev + Security   |
-| G5   | QA → Seguridad (QA sign-off)                    | QA Lead          |
-| G6   | Seguridad → Despliegue (Security sign-off)      | CISO             |
-| G7   | Despliegue → Producción (CR approved)           | Change Committee |
+| Gate | Transition                                                        | Owner            |
+| ---- | ----------------------------------------------------------------- | ---------------- |
+| G0   | Phase 1 Analysis → Phase 2 Planning (Intake)                      | PME + Sponsor    |
+| G1   | Phase 2 Planning → Phase 3 Solutioning (PRD approved)             | Product + R&D    |
+| G2   | Solutioning: specification → sprint-planning (Specs complete)     | Product + QA     |
+| G3   | Phase 3 Solutioning → Phase 4 Implementation (Ready to implement) | PO + TL          |
+| G4   | Implementation: development → qa (DoD met)                        | Dev + Security   |
+| G5   | Implementation: qa → security (QA sign-off)                       | QA Lead          |
+| G6   | Implementation: security → release (Security sign-off)            | CISO             |
+| G7   | Implementation: release → Producción (CR approved — Gate Final)   | Change Committee |
 
 ### Roles + permissions
 

@@ -2,106 +2,133 @@
   "metadata": {
     "id": "placeholder-mejoras",
     "title": "Mejoras por Fase — {{CLIENT_NAME}}",
-    "description": "TODO 1 línea: qué extensiones específicas del cliente añaden al patrón LIDR (Bridge Impact, Cross-Country, etc.). Si el cliente no tiene extensiones, NO EMITAS este archivo — heredará de base/propuesta/mejoras.json.",
-    "version": "1.0.0",
+    "description": "TODO 1 línea: qué extensiones específicas del cliente añaden al patrón LIDR (Bridge Impact, Cross-Country, etc.). Si el cliente no tiene extensiones, NO EMITAS este archivo — heredará de base/propuesta/mejoras.json. Taxonomía: modelo de fases unificado BMad × LIDR (Phase 0 Context → 1 Analysis → 2 Planning → 3 Solutioning → 4 Implementation; gates G0-G7 — ver .agents/_shared/lidr/UNIFIED-PHASES.md). phaseNumber conserva la numeración granular 0-8 (stage) para ordenar; el title lleva la fase unificada.",
+    "version": "2.0.0",
     "client": "{{CLIENT_NAME}}",
     "industry": "{{INDUSTRY_FULL}}",
-    "tags": ["placeholder", "mejoras", "to-be", "8-fases"],
+    "tags": ["placeholder", "mejoras", "to-be", "unified-phases"],
     "lastUpdated": "{{YYYY-MM-DD}}",
     "author": "{{PME_NAME}}",
     "sourceReport": "docs/guides/lidr-core/placeholder-discovery-report.md@{{REPORT_VERSION}}"
   },
   "fases": [
     {
-      "id": "fase-1-originacion",
-      "phaseNumber": 1,
-      "gateNumber": 0,
-      "title": "1. Originación & Intake (Gate 0)",
-      "border": "border-purple-200",
-      "bg": "bg-purple-50",
+      "id": "fase-0-context",
+      "phaseNumber": 0,
+      "title": "0. Phase 0 — Context (brownfield; omitir si greenfield)",
+      "border": "border-slate-200",
+      "bg": "bg-slate-50",
       "icon": null,
-      "actual": "TODO AS-IS específico del cliente para Fase 1.",
+      "actual": "TODO AS-IS: estado del contexto del proyecto existente (docs, CLAUDE.md por repo, conocimiento tribal).",
       "propuesta": [
-        "TODO propuesta TO-BE 1",
-        "TODO propuesta TO-BE 2 (con LIDR skill o agent específico)"
+        "TODO TO-BE con bmad-document-project + bmad-generate-project-context + lidr-generate-rule (CLAUDE.md por repo)",
+        "TODO checklist Context Ready como evidencia brownfield de Gate 0"
       ]
     },
     {
-      "id": "fase-2-discovery-prd",
+      "id": "fase-1-analysis",
+      "phaseNumber": 1,
+      "gateNumber": 0,
+      "title": "1. Phase 1 — Analysis (ex-Originación · Gate 0)",
+      "border": "border-purple-200",
+      "bg": "bg-purple-50",
+      "icon": null,
+      "actual": "TODO AS-IS específico del cliente para Phase 1 Analysis.",
+      "propuesta": [
+        "TODO propuesta TO-BE 1 (skills lidr-business-case, lidr-stakeholder-map, lidr-kickoff, bmad-product-brief | bmad-prfaq, lidr-tracking-integration)",
+        "TODO propuesta TO-BE 2"
+      ]
+    },
+    {
+      "id": "fase-2-planning",
       "phaseNumber": 2,
       "gateNumber": 1,
-      "title": "2. Discovery & PRD (Gate 1)",
+      "title": "2. Phase 2 — Planning (ex-Discovery & PRD · Gate 1)",
       "border": "border-blue-200",
       "bg": "bg-blue-50",
       "icon": null,
-      "actual": "TODO AS-IS Fase 2",
-      "propuesta": ["TODO TO-BE"]
+      "actual": "TODO AS-IS Phase 2",
+      "propuesta": [
+        "TODO TO-BE (bmad-prd unificado F+T, lidr-review-cruzado, lidr-risk-log, bmad-ux; la arquitectura va en Gate 2, no aquí)"
+      ]
     },
     {
-      "id": "fase-3-especificacion",
+      "id": "fase-3-solutioning-spec",
       "phaseNumber": 3,
       "gateNumber": 2,
-      "title": "3. Especificación RF/NFR (Gate 2)",
+      "title": "3. Phase 3 — Solutioning · specification (ex-Especificación · Gate 2)",
       "border": "border-cyan-200",
       "bg": "bg-cyan-50",
       "icon": null,
-      "actual": "TODO AS-IS Fase 3",
-      "propuesta": ["TODO TO-BE"]
+      "actual": "TODO AS-IS Phase 3 specification",
+      "propuesta": [
+        "TODO TO-BE (bmad-create-architecture + lidr-adr, lidr-generate-rf, lidr-generate-nfr, lidr-validate-requirements, bmad-create-epics-and-stories, bmad-testarch-test-design + bmad-testarch-atdd)"
+      ]
     },
     {
-      "id": "fase-4-planning",
+      "id": "fase-3-solutioning-sprint",
       "phaseNumber": 4,
       "gateNumber": 3,
-      "title": "4. Sprint Planning (Gate 3)",
+      "title": "4. Phase 3 — Solutioning · sprint-planning (ex-Sprint Planning · Gate 3)",
       "border": "border-violet-200",
       "bg": "bg-violet-50",
       "icon": null,
-      "actual": "TODO AS-IS Fase 4",
-      "propuesta": ["TODO TO-BE"]
+      "actual": "TODO AS-IS Phase 3 sprint-planning",
+      "propuesta": [
+        "TODO TO-BE (lidr-user-stories, lidr-sprint-capacity, lidr-refinement-notes, bmad-check-implementation-readiness, bmad-sprint-planning)"
+      ]
     },
     {
-      "id": "fase-5-desarrollo",
+      "id": "fase-4-impl-development",
       "phaseNumber": 5,
       "gateNumber": 4,
-      "title": "5. Desarrollo (Gate 4)",
+      "title": "5. Phase 4 — Implementation · development (ex-Desarrollo · Gate 4)",
       "border": "border-orange-200",
       "bg": "bg-orange-50",
       "icon": null,
-      "actual": "TODO AS-IS Fase 5",
-      "propuesta": ["TODO TO-BE"]
+      "actual": "TODO AS-IS Phase 4 development",
+      "propuesta": [
+        "TODO TO-BE (spec lifecycle /lidr-spec-*, bmad-create-story + bmad-dev-story, bmad-code-review, lidr-pr-description, lidr-dev-handoff-qa, lidr-adr, lidr-tech-debt, lidr-playwright-cli)"
+      ]
     },
     {
-      "id": "fase-6-qa",
+      "id": "fase-4-impl-qa",
       "phaseNumber": 6,
       "gateNumber": 5,
-      "title": "6. QA & Testing (Gate 5)",
+      "title": "6. Phase 4 — Implementation · qa (ex-QA & Testing · Gate 5)",
       "border": "border-sky-200",
       "bg": "bg-sky-50",
       "icon": null,
-      "actual": "TODO AS-IS Fase 6",
-      "propuesta": ["TODO TO-BE"]
+      "actual": "TODO AS-IS Phase 4 qa",
+      "propuesta": [
+        "TODO TO-BE (bmad-testarch-test-design, lidr-create-test-cases, bmad-testarch-automate, bmad-testarch-trace, bmad-qa-generate-e2e-tests, lidr-bug-report, lidr-test-execution-report)"
+      ]
     },
     {
-      "id": "fase-7-seguridad",
+      "id": "fase-4-impl-security",
       "phaseNumber": 7,
       "gateNumber": 6,
-      "title": "7. Seguridad (Gate 6)",
+      "title": "7. Phase 4 — Implementation · security (ex-Seguridad · Gate 6)",
       "border": "border-red-200",
       "bg": "bg-red-50",
       "icon": null,
-      "actual": "TODO AS-IS Fase 7",
-      "propuesta": ["TODO TO-BE"]
+      "actual": "TODO AS-IS Phase 4 security",
+      "propuesta": [
+        "TODO TO-BE (lidr-vuln-assessment, lidr-dast-interpretation, lidr-pentest-report, lidr-security-checklist)"
+      ]
     },
     {
-      "id": "fase-8-despliegue",
+      "id": "fase-4-impl-release",
       "phaseNumber": 8,
       "gateNumber": 7,
-      "title": "8. Despliegue & Post-deploy (Gate 7)",
+      "title": "8. Phase 4 — Implementation · release (ex-Despliegue · Gate 7)",
       "border": "border-emerald-200",
       "bg": "bg-emerald-50",
       "icon": null,
-      "actual": "TODO AS-IS Fase 8",
-      "propuesta": ["TODO TO-BE"]
+      "actual": "TODO AS-IS Phase 4 release",
+      "propuesta": [
+        "TODO TO-BE (lidr-change-request, lidr-rollback-plan, lidr-release-notes, bmad-retrospective, lidr-postmortem si incidente)"
+      ]
     }
   ]
 }

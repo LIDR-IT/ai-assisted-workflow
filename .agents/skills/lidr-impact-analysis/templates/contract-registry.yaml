@@ -1,0 +1,95 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Contract Registry — CLIENT-OWNED data artifact (format owned by the framework)
+#
+# Copy this template to: docs/projects/{client}/registries/contract-registry.yaml
+# and populate it with the contracts YOUR systems share with other systems.
+#
+# Maintained by: the client team (suggested owner: Tech Lead / R&D).
+# DTC duty: update this file IN THE SAME PR that changes a registered contract.
+# Consumed by: skill `lidr-impact-analysis` (mode: contract-impact, Gate 4).
+#
+# Domain-agnostic: entries below are illustrative placeholders — replace them.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "1.0.0" # bump on every registry change (semver)
+last_updated: "YYYY-MM-DD" # date of the last entry change
+maintained_by: "TL: {Name}" # who keeps this registry honest
+
+# ── Entry schema ─────────────────────────────────────────────────────────────
+# id:                      unique kebab-case identifier for the contract
+# type:                    enum | api-endpoint | schema | event | message-contract
+# description:             one line — what this contract carries
+# owner_system:            the system that DEFINES the contract (source of truth)
+# consumer_systems:        every system that DEPENDS on it (drives severity)
+# source_path:             where the contract lives in code/spec (match key for
+#                          the analysis: file path, endpoint path, table name…)
+# breaking_change_examples: concrete changes that would break consumers —
+#                          used by the analyzer to classify severity
+# notes:                   versioning policy, deprecation windows, contacts…
+# ─────────────────────────────────────────────────────────────────────────────
+
+entries:
+  - id: order-status-enum
+    type: enum
+    description: "Order lifecycle states shared between the core system and the sync layer"
+    owner_system: core-platform
+    consumer_systems:
+      - sync-service
+      - reporting-pipeline
+    source_path: "src/domain/order/OrderStatus.*"
+    breaking_change_examples:
+      - "Removing or renaming an enum value consumed downstream"
+      - "Reusing an existing value with different semantics"
+    notes: "Additive values require consumer mapping tables to be extended first"
+
+  - id: customer-api-v1
+    type: api-endpoint
+    description: "Public customer CRUD endpoints consumed by external integrations"
+    owner_system: core-platform
+    consumer_systems:
+      - mobile-app
+      - partner-integration
+    source_path: "/api/v1/customers"
+    breaking_change_examples:
+      - "Removing an endpoint or changing its path/method"
+      - "Making an optional request field required"
+      - "Changing a response field type or removing a field"
+    notes: "Versioned per tech-stack §4.4 — max 2 active versions, Sunset header + deprecation window"
+
+  - id: customer-table-schema
+    type: schema
+    description: "Customer table read directly by the analytics exporter"
+    owner_system: core-platform
+    consumer_systems:
+      - analytics-exporter
+    source_path: "database/migrations/*customers*"
+    breaking_change_examples:
+      - "Dropping or renaming a column read by the exporter"
+      - "Changing a column type or nullability"
+    notes: "Prefer views as contract surface to decouple internal schema"
+
+  - id: order-created-event
+    type: event
+    description: "Domain event published on order creation"
+    owner_system: core-platform
+    consumer_systems:
+      - notification-service
+      - sync-service
+    source_path: "src/events/OrderCreated.*"
+    breaking_change_examples:
+      - "Removing a payload field consumers deserialize"
+      - "Changing the event name or routing key"
+    notes: "Schema-registry compatibility mode: BACKWARD"
+
+  - id: inventory-sync-message
+    type: message-contract
+    description: "Queue message format for inventory synchronization between systems"
+    owner_system: sync-service
+    consumer_systems:
+      - core-platform
+      - warehouse-system
+    source_path: "contracts/inventory-sync.schema.json"
+    breaking_change_examples:
+      - "Changing field names or types in the serialized payload"
+      - "Altering message ordering or idempotency-key semantics"
+    notes: "Contract tests live next to the schema; run them on every change"

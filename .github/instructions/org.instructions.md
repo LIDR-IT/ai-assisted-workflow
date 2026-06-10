@@ -74,16 +74,16 @@ Cada eslabón referencia al anterior. La IA debe **mantener esta trazabilidad** 
 
 Para tareas repetitivas con alto volumen (> 2h/sprint), priorizamos **automatización completa**:
 
-| Skill Automatizado         | Antes            | Ahora              | Ahorro/Ciclo | ROI Anual  |
-| -------------------------- | ---------------- | ------------------ | ------------ | ---------- |
-| 🤖 `validate-requirements` | 6h manual        | 5min script        | 5.9h         | 150+ horas |
-| 🤖 `tech-debt`             | 6h análisis      | 5min SonarQube     | 5.9h         | 120+ horas |
-| 🤖 `user-stories`          | 3h escritura     | 15min slicing      | 2.75h        | 80+ horas  |
-| 🤖 `regression-suite`      | 8h selección     | 30min impact       | 7.5h         | 120+ horas |
-| 🤖 `security-checklist`    | 4h compliance    | 5min analysis      | 3.9h         | 80+ horas  |
-| 🤖 `test-plan`             | 3h planning      | 5min risk analysis | 2.9h         | 60+ horas  |
-| 🤖 `release-notes`         | 2h manual        | 5min git analysis  | 1.9h         | 50+ horas  |
-| 🤖 `rollback-plan`         | 4h risk analysis | 5min automation    | 3.9h         | 45+ horas  |
+| Skill Automatizado              | Antes            | Ahora              | Ahorro/Ciclo | ROI Anual  |
+| ------------------------------- | ---------------- | ------------------ | ------------ | ---------- |
+| 🤖 `lidr-validate-requirements` | 6h manual        | 5min script        | 5.9h         | 150+ horas |
+| 🤖 `lidr-tech-debt`             | 6h análisis      | 5min SonarQube     | 5.9h         | 120+ horas |
+| 🤖 `lidr-user-stories`          | 3h escritura     | 15min slicing      | 2.75h        | 80+ horas  |
+| 🤖 `bmad-testarch-automate`     | 8h selección     | 30min impact       | 7.5h         | 120+ horas |
+| 🤖 `lidr-security-checklist`    | 4h compliance    | 5min analysis      | 3.9h         | 80+ horas  |
+| 🤖 `bmad-testarch-test-design`  | 3h planning      | 5min risk analysis | 2.9h         | 60+ horas  |
+| 🤖 `lidr-release-notes`         | 2h manual        | 5min git analysis  | 1.9h         | 50+ horas  |
+| 🤖 `lidr-rollback-plan`         | 4h risk analysis | 5min automation    | 3.9h         | 45+ horas  |
 
 **Total ROI**: 775+ horas/año liberadas para trabajo de valor estratégico.
 
@@ -117,7 +117,7 @@ Para tareas repetitivas con alto volumen (> 2h/sprint), priorizamos **automatiza
 
 #### Definition of Ready (DoR)
 
-Una US entra al sprint SOLO si cumple DoR: skills/refinement-notes/checklists/dor.md
+Una US entra al sprint SOLO si cumple DoR: lidr-refinement-notes/checklists/dor.md
 
 - Formato Actor/Acción/Valor correcto
 - Criterios de aceptación BDD (Given/When/Then)
@@ -127,7 +127,7 @@ Una US entra al sprint SOLO si cumple DoR: skills/refinement-notes/checklists/do
 
 #### Definition of Done (DoD)
 
-Una US se cierra SOLO si cumple DoD: skills/pr-description/checklists/dod.md
+Una US se cierra SOLO si cumple DoD: lidr-pr-description/checklists/dod.md
 
 - Code review aprobado (mínimo 1 peer + TL)
 - Tests unitarios pasan (cobertura ≥ 80% en lógica de negocio)
@@ -138,18 +138,20 @@ Una US se cierra SOLO si cumple DoD: skills/pr-description/checklists/dod.md
 
 ## 4. Flujo SDLC con Gates Formales
 
-### 4.1 Las 8 Fases
+### 4.1 Las Fases Unificadas (modelo BMad × gates LIDR)
 
-| #   | Fase                | Gate de Salida            | Criterios de Salida                                            | Aprueba           |
-| --- | ------------------- | ------------------------- | -------------------------------------------------------------- | ----------------- |
-| 1   | **Originación**     | Gate 0: Intake            | BC aprobado, sponsor, presupuesto, alineación estratégica      | PME + Sponsor     |
-| 2   | **Discovery & PRD** | Gate 1: PRD Aprobado      | PRD-T + PRD-F completos, review cruzado, riesgos identificados | Producto + R&D    |
-| 3   | **Especificación**  | Gate 2: RF Completos      | RFs con BDD, dependencias mapeadas, coherencia validada        | Producto + QA     |
-| 4   | **Sprint Planning** | Gate 3: Sprint Committed  | DoR cumplida, capacidad confirmada, commitment firmado         | PO + TL           |
-| 5   | **Desarrollo**      | Gate 4: Code Quality      | 0 vuln Críticas/Altas, code review, tests pasan                | Dev + Seguridad   |
-| 6   | **QA & Testing**    | Gate 5: QA Sign-off       | All test cases PASS, 0 bugs bloqueantes, regresión limpia      | QA Lead           |
-| 7   | **Seguridad**       | Gate 6: Security Sign-off | DAST limpio, pen test completado, vulnerabilidades remediadas  | CISO              |
-| 8   | **Despliegue**      | Gate Final: Release       | CR aprobado, rollback plan, post-deploy checklist              | Comité de Cambios |
+> Taxonomía única alineada con las fases BMad (1-Analysis → 4-Implementation).
+> Las antiguas fases LIDR 0-8 sobreviven como **stages** dentro de las fases
+> unificadas. Los gates G0-G7 conservan sus IDs. Fuente de verdad del mapping
+> y de los flow audits (greenfield/brownfield/feature): `.agents/_shared/lidr/UNIFIED-PHASES.md`
+
+| Fase | Nombre                | Stages (ex-fases LIDR)                                             | Gate de Salida                                      | Criterios de Salida                                                                                | Aprueba                                                 |
+| ---- | --------------------- | ------------------------------------------------------------------ | --------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| 0    | **Context & Anytime** | context (ex-F0 Preparación), anytime (cross-cutting)               | — (checklist "Context Ready", evidencia en G0)      | Brownfield: project-context + docs inventariadas + rules del cliente activas                       | TL                                                      |
+| 1    | **Analysis**          | analysis (ex-F1 Originación)                                       | Gate 0: Intake                                      | BC aprobado, sponsor, presupuesto, brief/prfaq poblado                                             | PME + Sponsor                                           |
+| 2    | **Planning**          | planning (ex-F2 Discovery & PRD)                                   | Gate 1: PRD Aprobado                                | PRD F+T completo, review cruzado, UX si hay UI, riesgos identificados                              | Producto + R&D                                          |
+| 3    | **Solutioning**       | specification (ex-F3), sprint-planning (ex-F4)                     | Gate 2: Specs Complete → Gate 3: Ready to Implement | G2: architecture + RFs BDD + NFRs + RTM + epics · G3: readiness + capacity + DoR + commitment      | G2: Producto + QA · G3: PO + TL                         |
+| 4    | **Implementation**    | development (ex-F5), qa (ex-F6), security (ex-F7), release (ex-F8) | Gates 4-7 (stage-gates)                             | G4: DoD/code quality · G5: QA sign-off · G6: Security sign-off · G7: CR + rollback + release notes | G4: TL · G5: QA Lead · G6: CISO · G7: Comité de Cambios |
 
 ### 4.2 Regla de Gates
 
@@ -303,32 +305,32 @@ Excepciones de emergencia (hotfix):
 
 La IA DEBE verificar estos checklists en los puntos indicados:
 
-| Checklist           | Cuándo evaluar                                                                                                                                | Referencia                                            |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Definition of Ready | Antes de aceptar US en sprint                                                                                                                 | skills/refinement-notes/checklists/dor.md             |
-| Definition of Done  | Al escribir/editar archivos (hook dtc-write-guard, PreToolUse: Write\|Edit)                                                                   | skills/pr-description/checklists/dod.md               |
-| Coherencia RF       | Al generar o validar RFs                                                                                                                      | skills/{skill-name}/checklists/rf-coherence.md        |
-| Review Cruzado PRD  | Al revisar PRD-T vs PRD-F                                                                                                                     | skills/{skill-name}/checklists/review-cruzado.md      |
-| Security Compliance | Pre-deploy (skill security-checklist, manual)                                                                                                 | skills/{skill-name}/checklists/security-compliance.md |
-| Post-Deploy         | Post-deploy a producción (DevOps manual + /advance-gate 7)                                                                                    | skills/{skill-name}/checklists/post-deploy.md         |
-| NFR Compliance      | Pre-deploy: verificación de NFRs (performance, scalability, availability, security)                                                           | skills/{skill-name}/checklists/nfr-compliance.md      |
-| Repo Structure      | Al crear repositorio: governance, CI/CD, API contracts, architecture, tooling                                                                 | skills/{skill-name}/checklists/repo-structure.md      |
-| Spec Execution      | Al ejecutar `/lidr-spec-apply` o `/lidr-spec-verify`: Step 0 branch + unit + curl + Playwright + docs + reports por step (AGENT MUST EXECUTE) | `.agents/rules/lidr-sdlc/spec-execution.md` §5        |
-| Model Selection     | Al iniciar workflows planning (Opus high) vs implementación (Sonnet medium); self-correct sin pedir confirmación                              | `.agents/rules/lidr-sdlc/model-selection.md`          |
+| Checklist           | Cuándo evaluar                                                                                                                                | Referencia                                                |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Definition of Ready | Antes de aceptar US en sprint                                                                                                                 | lidr-refinement-notes/checklists/dor.md                   |
+| Definition of Done  | Al escribir/editar archivos (hook lidr-frontmatter-guard, PreToolUse: Write\|Edit) + TL review                                                | lidr-pr-description/checklists/dod.md                     |
+| Coherencia RF       | Al generar o validar RFs                                                                                                                      | lidr-generate-rf/checklists/rf-coherence.md               |
+| Review Cruzado PRD  | Al revisar PRD-T vs PRD-F                                                                                                                     | lidr-review-cruzado/checklists/review-cruzado.md          |
+| Security Compliance | Pre-deploy (skill lidr-security-checklist, manual)                                                                                            | lidr-security-checklist/checklists/security-compliance.md |
+| Post-Deploy         | Post-deploy a producción (DevOps manual + /lidr-advance-gate 7)                                                                               | lidr-change-request/checklists/post-deploy.md             |
+| NFR Compliance      | Pre-deploy: verificación de NFRs (performance, scalability, availability, security)                                                           | lidr-generate-nfr/checklists/nfr-compliance.md            |
+| Repo Structure      | Al crear repositorio: governance, CI/CD, API contracts, architecture, tooling                                                                 | lidr-kickoff/checklists/repo-structure.md                 |
+| Spec Execution      | Al ejecutar `/lidr-spec-apply` o `/lidr-spec-verify`: Step 0 branch + unit + curl + Playwright + docs + reports por step (AGENT MUST EXECUTE) | `.agents/rules/lidr-sdlc/spec-execution.md` §5            |
+| Model Selection     | Al iniciar workflows planning (Opus high) vs implementación (Sonnet medium); self-correct sin pedir confirmación                              | `.agents/rules/lidr-sdlc/model-selection.md`              |
 
 ### 10.2 Sign-offs (requieren firma humana)
 
-| Sign-off          | Gate   | Firmante | Formato                                                |
-| ----------------- | ------ | -------- | ------------------------------------------------------ |
-| QA Sign-off       | Gate 5 | QA Lead  | skills/test-execution-report/signoffs/qa-signoff.md    |
-| Security Sign-off | Gate 6 | CISO     | skills/security-checklist/signoffs/security-signoff.md |
+| Sign-off          | Gate   | Firmante | Formato                                              |
+| ----------------- | ------ | -------- | ---------------------------------------------------- |
+| QA Sign-off       | Gate 5 | QA Lead  | lidr-test-execution-report/signoffs/qa-signoff.md    |
+| Security Sign-off | Gate 6 | CISO     | lidr-security-checklist/signoffs/security-signoff.md |
 
 ### 10.3 Templates Estándar
 
-| Template          | Uso                                  | Formato                                   |
-| ----------------- | ------------------------------------ | ----------------------------------------- |
-| Formato RF        | Generación de requisitos funcionales | skills/generate-rf/templates/rf-format.md |
-| Sprint Commitment | Compromiso formal de sprint          | docs/standards/sprint-commitment.md       |
+| Template          | Uso                                  | Formato                                 |
+| ----------------- | ------------------------------------ | --------------------------------------- |
+| Formato RF        | Generación de requisitos funcionales | lidr-generate-rf/templates/rf-format.md |
+| Sprint Commitment | Compromiso formal de sprint          | docs/standards/sprint-commitment.md     |
 
 
 ## 11. Métricas y Governance

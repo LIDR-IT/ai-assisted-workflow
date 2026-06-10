@@ -6,6 +6,7 @@ last_updated: "2026-04-06"
 updated_by: "TL: adaptive-skills-architecture"
 status: active
 phase: 1
+stage: analysis
 owner_role: "PME"
 automation: false
 domain_agnostic: true

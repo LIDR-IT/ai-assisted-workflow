@@ -1,7 +1,25 @@
 /**
  * SINGLE SOURCE OF TRUTH - SDLC Phases & Gates
- * Centralizes phase definitions, colors, gates, and transitions
+ *
+ * Unified phase model (BMad numbering × LIDR gates) per
+ * `.agents/_shared/lidr/UNIFIED-PHASES.md`:
+ * - 5 unified phases (0-4) exported as `unifiedPhases`
+ * - The legacy LIDR phases 0-8 survive as STAGES (granular `phases` entries
+ *   keep their ids and gain `stage` + `unifiedPhase` fields)
+ * - Gates G0-G7 keep their IDs; only transition labels changed
  */
+
+export type StageSlug =
+  | 'context'
+  | 'anytime'
+  | 'analysis'
+  | 'planning'
+  | 'specification'
+  | 'sprint-planning'
+  | 'development'
+  | 'qa'
+  | 'security'
+  | 'release';
 
 export interface Gate {
   id: number;
@@ -21,6 +39,10 @@ export interface Phase {
   bgColor: string;
   borderColor: string;
   duration: string; // typical duration
+  /** Stage slug inside the unified phase model (UNIFIED-PHASES.md §1) */
+  stage: StageSlug;
+  /** Unified phase id (0-4, BMad numbering) this granular phase belongs to */
+  unifiedPhase: number;
   entryGate?: Gate;
   exitGate?: Gate;
   keyRoles: string[];
@@ -29,12 +51,25 @@ export interface Phase {
   dodCriteria: string[];
 }
 
+export interface UnifiedPhase {
+  id: number;
+  /** Display name, e.g. 'Fase 2 — Planning' */
+  name: string;
+  englishName: string;
+  description: string;
+  color: string;
+  /** Granular phase ids (legacy LIDR phases, now stages) grouped here */
+  stages: number[];
+  /** Gate ids that close this phase (or its stages) */
+  gates: number[];
+}
+
 // Gates Definition (8 gates: 0-7)
 export const gates: Gate[] = [
   {
     id: 0,
     name: 'gate-0',
-    title: 'Gate 0: Intake',
+    title: 'Gate 0: Analysis → Planning (Intake)',
     criteria:
       'Business Case aprobado, sponsor identificado, presupuesto confirmado, alineación estratégica',
     approver: ['PME', 'Sponsor'],
@@ -43,7 +78,7 @@ export const gates: Gate[] = [
   {
     id: 1,
     name: 'gate-1',
-    title: 'Gate 1: PRD Aprobado',
+    title: 'Gate 1: Planning → Solutioning (PRD Approved)',
     criteria: 'PRD-T + PRD-F completos, review cruzado ejecutado, riesgos identificados',
     approver: ['Producto', 'R&D'],
     blocker: true,
@@ -51,7 +86,7 @@ export const gates: Gate[] = [
   {
     id: 2,
     name: 'gate-2',
-    title: 'Gate 2: Requisitos Completos',
+    title: 'Gate 2: Solutioning — Specs Complete',
     criteria: 'RFs con BDD, NFRs medibles, RTM completo, epic breakdown ejecutado',
     approver: ['Producto', 'QA'],
     blocker: true,
@@ -59,7 +94,7 @@ export const gates: Gate[] = [
   {
     id: 3,
     name: 'gate-3',
-    title: 'Gate 3: Sprint Committed',
+    title: 'Gate 3: Solutioning → Implementation (Ready to Implement)',
     criteria: 'DoR cumplida, capacidad confirmada, commitment firmado',
     approver: ['PO', 'Tech Lead'],
     blocker: true,
@@ -67,7 +102,7 @@ export const gates: Gate[] = [
   {
     id: 4,
     name: 'gate-4',
-    title: 'Gate 4: Code Quality',
+    title: 'Gate 4: Implementation — Dev → QA (DoD)',
     criteria: '0 vulnerabilidades Críticas/Altas, code review aprobado, tests pasan',
     approver: ['Dev', 'Seguridad'],
     blocker: true,
@@ -75,7 +110,7 @@ export const gates: Gate[] = [
   {
     id: 5,
     name: 'gate-5',
-    title: 'Gate 5: QA Sign-off',
+    title: 'Gate 5: Implementation — QA → Security (QA Sign-off)',
     criteria: 'Todos los test cases PASS, 0 bugs bloqueantes, regresión limpia',
     approver: ['QA Lead'],
     blocker: true,
@@ -83,7 +118,7 @@ export const gates: Gate[] = [
   {
     id: 6,
     name: 'gate-6',
-    title: 'Gate 6: Security Sign-off',
+    title: 'Gate 6: Implementation — Security → Release (Security Sign-off)',
     criteria: 'DAST limpio, pen test completado, vulnerabilidades remediadas',
     approver: ['CISO'],
     blocker: true,
@@ -91,7 +126,7 @@ export const gates: Gate[] = [
   {
     id: 7,
     name: 'gate-7',
-    title: 'Gate Final: Release',
+    title: 'Gate 7: Implementation — Release → Producción (Gate Final)',
     criteria: 'CR aprobado, rollback plan validado, post-deploy checklist ready',
     approver: ['Comité de Cambios'],
     blocker: true,
@@ -109,6 +144,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-gray-50',
     borderColor: 'border-gray-300',
     duration: '1-2 días',
+    stage: 'context',
+    unifiedPhase: 0,
     exitGate: gates[0],
     keyRoles: ['TL', 'PME'],
     keyArtifacts: ['Project Classification', 'Document Inventory'],
@@ -124,6 +161,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-purple-50',
     borderColor: 'border-purple-300',
     duration: '1-2 semanas',
+    stage: 'analysis',
+    unifiedPhase: 1,
     entryGate: gates[0],
     exitGate: gates[0],
     keyRoles: ['PME', 'PO', 'Sponsor'],
@@ -140,6 +179,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-300',
     duration: '2-4 semanas',
+    stage: 'planning',
+    unifiedPhase: 2,
     entryGate: gates[0],
     exitGate: gates[1],
     keyRoles: ['PO', 'R&D', 'TL'],
@@ -161,6 +202,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-cyan-50',
     borderColor: 'border-cyan-300',
     duration: '1-2 semanas',
+    stage: 'specification',
+    unifiedPhase: 3,
     entryGate: gates[1],
     exitGate: gates[2],
     keyRoles: ['PO', 'TL', 'QA'],
@@ -177,6 +220,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-teal-50',
     borderColor: 'border-teal-300',
     duration: '2-3 días',
+    stage: 'sprint-planning',
+    unifiedPhase: 3,
     entryGate: gates[2],
     exitGate: gates[3],
     keyRoles: ['PO', 'SM', 'TL', 'Dev'],
@@ -193,6 +238,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-orange-50',
     borderColor: 'border-orange-300',
     duration: '1-3 semanas',
+    stage: 'development',
+    unifiedPhase: 4,
     entryGate: gates[3],
     exitGate: gates[4],
     keyRoles: ['Dev', 'TL'],
@@ -209,6 +256,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-sky-50',
     borderColor: 'border-sky-300',
     duration: '1-2 semanas',
+    stage: 'qa',
+    unifiedPhase: 4,
     entryGate: gates[4],
     exitGate: gates[5],
     keyRoles: ['QA', 'QA Lead'],
@@ -225,6 +274,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-red-50',
     borderColor: 'border-red-300',
     duration: '3-5 días',
+    stage: 'security',
+    unifiedPhase: 4,
     entryGate: gates[5],
     exitGate: gates[6],
     keyRoles: ['Security', 'CISO'],
@@ -241,6 +292,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-emerald-50',
     borderColor: 'border-emerald-300',
     duration: '1-2 días',
+    stage: 'release',
+    unifiedPhase: 4,
     entryGate: gates[6],
     exitGate: gates[7],
     keyRoles: ['DevOps', 'PME'],
@@ -258,6 +311,8 @@ export const phases: Phase[] = [
     bgColor: 'bg-violet-50',
     borderColor: 'border-violet-300',
     duration: 'Variable',
+    stage: 'anytime',
+    unifiedPhase: 0,
     keyRoles: ['TL', 'Architect', 'UX'],
     keyArtifacts: ['Architecture Doc', 'UX Design Spec', 'Rules', 'Implementation Phases'],
     dorCriteria: ['Contexto de proyecto disponible'],
@@ -272,12 +327,16 @@ export const phases: Phase[] = [
     bgColor: 'bg-indigo-50',
     borderColor: 'border-indigo-300',
     duration: 'Variable',
+    stage: 'anytime',
+    unifiedPhase: 0,
     keyRoles: ['TL', 'DevOps', 'Architect'],
     keyArtifacts: ['Skills', 'Commands', 'Hooks', 'Agents', 'MCPs'],
     dorCriteria: ['Ecosistema SDLC activo'],
     dodCriteria: ['Nuevo skill/command/hook funcionando'],
   },
   {
+    // DEPRECATED: kept for backward compat only. BMad skills now resolve
+    // through the unified phases (0-4) — do not assign new artifacts here.
     id: 200,
     name: 'BMad Library',
     shortName: 'BMad',
@@ -287,10 +346,66 @@ export const phases: Phase[] = [
     bgColor: 'bg-amber-50',
     borderColor: 'border-amber-300',
     duration: 'On-demand',
+    stage: 'anytime',
+    unifiedPhase: 0,
     keyRoles: ['PO', 'TL', 'Dev', 'QA', 'PME', 'SM'],
     keyArtifacts: ['Agents', 'PRDs', 'Stories', 'Test Plans', 'Architecture'],
     dorCriteria: ['BMad framework installed in _bmad/'],
     dodCriteria: ['BMad skill invoked successfully'],
+  },
+];
+
+// Unified Phases Definition (5 phases, BMad numbering — UNIFIED-PHASES.md §1)
+export const unifiedPhases: UnifiedPhase[] = [
+  {
+    id: 0,
+    name: 'Fase 0 — Context & Anytime',
+    englishName: 'Context & Anytime',
+    description:
+      'Contexto de proyecto (brownfield) y skills transversales invocables en cualquier momento. Stages: context, anytime.',
+    color: 'gray',
+    stages: [0, 99, 100],
+    gates: [], // checklist "Context Ready" se evalúa como evidencia en G0
+  },
+  {
+    id: 1,
+    name: 'Fase 1 — Analysis',
+    englishName: 'Analysis',
+    description:
+      'Análisis y originación: business case, research, brief. Stage: analysis (ex-Fase 1 Originación). Cierra con Gate 0 (Intake).',
+    color: 'purple',
+    stages: [1],
+    gates: [0],
+  },
+  {
+    id: 2,
+    name: 'Fase 2 — Planning',
+    englishName: 'Planning',
+    description:
+      'PRD unificado, UX y riesgos. Stage: planning (ex-Fase 2 Discovery & PRD). Cierra con Gate 1 (PRD Approved).',
+    color: 'blue',
+    stages: [2],
+    gates: [1],
+  },
+  {
+    id: 3,
+    name: 'Fase 3 — Solutioning',
+    englishName: 'Solutioning',
+    description:
+      'Arquitectura, RFs/NFRs, epics y sprint planning. Stages: specification (ex-Fase 3) → Gate 2 (Specs Complete), sprint-planning (ex-Fase 4) → Gate 3 (Ready to Implement).',
+    color: 'cyan',
+    stages: [3, 4],
+    gates: [2, 3],
+  },
+  {
+    id: 4,
+    name: 'Fase 4 — Implementation',
+    englishName: 'Implementation',
+    description:
+      'Stage-gates: development (ex-Fase 5) → G4, qa (ex-Fase 6) → G5, security (ex-Fase 7) → G6, release (ex-Fase 8) → G7.',
+    color: 'orange',
+    stages: [5, 6, 7, 8],
+    gates: [4, 5, 6, 7],
   },
 ];
 
@@ -339,6 +454,16 @@ export const phaseColorClasses = {
 // Export utilities
 export const getPhaseById = (id: number) => phases.find((p) => p.id === id);
 export const getGateById = (id: number) => gates.find((g) => g.id === id);
+/** Resolve the unified phase (0-4) that a granular phase / stage id (0-8, 99, 100, 200) belongs to */
+export const getUnifiedPhase = (granularPhaseId: number): UnifiedPhase | undefined => {
+  const granular = getPhaseById(granularPhaseId);
+  if (!granular) {
+    return undefined;
+  }
+  return unifiedPhases.find((u) => u.id === granular.unifiedPhase);
+};
+export const getUnifiedPhaseById = (id: number): UnifiedPhase | undefined =>
+  unifiedPhases.find((u) => u.id === id);
 export const getPhaseColor = (phaseId: number) =>
   phaseColors[phaseId as keyof typeof phaseColors] || 'gray';
 export const getPhaseColorClass = (phaseId: number) =>

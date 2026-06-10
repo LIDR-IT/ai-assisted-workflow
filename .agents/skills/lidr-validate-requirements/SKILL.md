@@ -7,6 +7,7 @@ updated_by: "TL: lang+tool agnostic"
 status: active
 user-invocable: false # The /lidr-validate-requirements command owns the slash; this skill is the delegated RTM / 5-pass validation engine (reached via the command or model auto-load, not the / menu). Resolves the command↔skill name collision.
 phase: 3
+stage: specification
 owner_role: "PO + TL"
 automation: true
 domain_agnostic: true

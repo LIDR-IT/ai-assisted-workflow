@@ -9,153 +9,153 @@ import type { PhaseInfo } from '../types';
 const phaseMap: Record<string, PhaseInfo> = {
   // Phase 1 - Originación
   'business-case': {
-    label: 'Fase 1 — Originación',
+    label: 'Fase 1 — Analysis',
     color: 'bg-purple-100 text-purple-700',
   },
   kickoff: {
-    label: 'Fase 1 — Originación',
+    label: 'Fase 1 — Analysis',
     color: 'bg-purple-100 text-purple-700',
   },
   'stakeholder-map': {
-    label: 'Fase 1 — Originación',
+    label: 'Fase 1 — Analysis',
     color: 'bg-purple-100 text-purple-700',
   },
   'tracking-integration': {
-    label: 'Fase 1 — Originación',
+    label: 'Fase 1 — Analysis',
     color: 'bg-purple-100 text-purple-700',
   },
 
   // Phase 2 - Discovery
   'prd-tecnico': {
-    label: 'Fase 2 — Discovery',
+    label: 'Fase 2 — Planning',
     color: 'bg-blue-100 text-blue-700',
   },
   'prd-funcional': {
-    label: 'Fase 2 — Discovery',
+    label: 'Fase 2 — Planning',
     color: 'bg-blue-100 text-blue-700',
   },
   'review-cruzado': {
-    label: 'Fase 2 — Discovery',
+    label: 'Fase 2 — Planning',
     color: 'bg-blue-100 text-blue-700',
   },
   'risk-log': {
-    label: 'Fase 2 — Discovery',
+    label: 'Fase 2 — Planning',
     color: 'bg-blue-100 text-blue-700',
   },
   'poc-report': {
-    label: 'Fase 2 — Discovery',
+    label: 'Fase 2 — Planning',
     color: 'bg-blue-100 text-blue-700',
   },
 
   // Phase 3 - Especificación
   'generate-rf': {
-    label: 'Fase 3 — Especificación',
+    label: 'Fase 3 — Solutioning (specification)',
     color: 'bg-cyan-100 text-cyan-700',
   },
   'generate-nfr': {
-    label: 'Fase 3 — Especificación',
+    label: 'Fase 3 — Solutioning (specification)',
     color: 'bg-cyan-100 text-cyan-700',
   },
   'validate-requirements': {
-    label: 'Fase 3 — Especificación',
+    label: 'Fase 3 — Solutioning (specification)',
     color: 'bg-cyan-100 text-cyan-700',
   },
   'epic-breakdown': {
-    label: 'Fase 3 — Especificación',
+    label: 'Fase 3 — Solutioning (specification)',
     color: 'bg-cyan-100 text-cyan-700',
   },
 
   // Phase 4 - Sprint Planning
   'user-stories': {
-    label: 'Fase 4 — Sprint Planning',
+    label: 'Fase 3 — Solutioning (sprint planning)',
     color: 'bg-violet-100 text-violet-700',
   },
   'sprint-capacity': {
-    label: 'Fase 4 — Sprint Planning',
+    label: 'Fase 3 — Solutioning (sprint planning)',
     color: 'bg-violet-100 text-violet-700',
   },
   'refinement-notes': {
-    label: 'Fase 4 — Sprint Planning',
+    label: 'Fase 3 — Solutioning (sprint planning)',
     color: 'bg-violet-100 text-violet-700',
   },
 
   // Phase 5 - Desarrollo
   'pr-description': {
-    label: 'Fase 5 — Desarrollo',
+    label: 'Fase 4 — Implementation (development)',
     color: 'bg-green-100 text-green-700',
   },
   adr: {
-    label: 'Fase 5 — Desarrollo',
+    label: 'Fase 4 — Implementation (development)',
     color: 'bg-green-100 text-green-700',
   },
   'tech-debt': {
-    label: 'Fase 5 — Desarrollo',
+    label: 'Fase 4 — Implementation (development)',
     color: 'bg-green-100 text-green-700',
   },
   'dev-handoff-qa': {
-    label: 'Fase 5 — Desarrollo',
+    label: 'Fase 4 — Implementation (development)',
     color: 'bg-green-100 text-green-700',
   },
 
   // Phase 6 - QA & Testing
   'test-plan': {
-    label: 'Fase 6 — QA & Testing',
+    label: 'Fase 4 — Implementation (qa)',
     color: 'bg-yellow-100 text-yellow-700',
   },
   'create-test-cases': {
-    label: 'Fase 6 — QA & Testing',
+    label: 'Fase 4 — Implementation (qa)',
     color: 'bg-yellow-100 text-yellow-700',
   },
   'bug-report': {
-    label: 'Fase 6 — QA & Testing',
+    label: 'Fase 4 — Implementation (qa)',
     color: 'bg-yellow-100 text-yellow-700',
   },
   'test-execution-report': {
-    label: 'Fase 6 — QA & Testing',
+    label: 'Fase 4 — Implementation (qa)',
     color: 'bg-yellow-100 text-yellow-700',
   },
   'regression-suite': {
-    label: 'Fase 6 — QA & Testing',
+    label: 'Fase 4 — Implementation (qa)',
     color: 'bg-yellow-100 text-yellow-700',
   },
 
   // Phase 7 - Seguridad
   'vuln-assessment': {
-    label: 'Fase 7 — Seguridad',
+    label: 'Fase 4 — Implementation (security)',
     color: 'bg-orange-100 text-orange-700',
   },
   'dast-interpretation': {
-    label: 'Fase 7 — Seguridad',
+    label: 'Fase 4 — Implementation (security)',
     color: 'bg-orange-100 text-orange-700',
   },
   'pentest-report': {
-    label: 'Fase 7 — Seguridad',
+    label: 'Fase 4 — Implementation (security)',
     color: 'bg-orange-100 text-orange-700',
   },
   'security-checklist': {
-    label: 'Fase 7 — Seguridad',
+    label: 'Fase 4 — Implementation (security)',
     color: 'bg-orange-100 text-orange-700',
   },
 
   // Phase 8 - Despliegue
   'change-request': {
-    label: 'Fase 8 — Despliegue',
+    label: 'Fase 4 — Implementation (release)',
     color: 'bg-red-100 text-red-700',
   },
   'rollback-plan': {
-    label: 'Fase 8 — Despliegue',
+    label: 'Fase 4 — Implementation (release)',
     color: 'bg-red-100 text-red-700',
   },
   'release-notes': {
-    label: 'Fase 8 — Despliegue',
+    label: 'Fase 4 — Implementation (release)',
     color: 'bg-red-100 text-red-700',
   },
   retrospective: {
-    label: 'Fase 8 — Despliegue',
+    label: 'Fase 4 — Implementation (release)',
     color: 'bg-red-100 text-red-700',
   },
   postmortem: {
-    label: 'Fase 8 — Despliegue',
+    label: 'Fase 4 — Implementation (release)',
     color: 'bg-red-100 text-red-700',
   },
 
@@ -241,13 +241,13 @@ export function getPhaseFromPath(path: string): PhaseInfo | null {
 
 export function getAllPhases(): PhaseInfo[] {
   return [
-    { label: 'Fase 1 — Originación', color: 'bg-purple-100 text-purple-700' },
-    { label: 'Fase 2 — Discovery', color: 'bg-blue-100 text-blue-700' },
-    { label: 'Fase 3 — Especificación', color: 'bg-cyan-100 text-cyan-700' },
-    { label: 'Fase 4 — Sprint Planning', color: 'bg-violet-100 text-violet-700' },
-    { label: 'Fase 5 — Desarrollo', color: 'bg-green-100 text-green-700' },
-    { label: 'Fase 6 — QA & Testing', color: 'bg-yellow-100 text-yellow-700' },
-    { label: 'Fase 7 — Seguridad', color: 'bg-orange-100 text-orange-700' },
-    { label: 'Fase 8 — Despliegue', color: 'bg-red-100 text-red-700' },
+    { label: 'Fase 1 — Analysis', color: 'bg-purple-100 text-purple-700' },
+    { label: 'Fase 2 — Planning', color: 'bg-blue-100 text-blue-700' },
+    { label: 'Fase 3 — Solutioning (specification)', color: 'bg-cyan-100 text-cyan-700' },
+    { label: 'Fase 3 — Solutioning (sprint planning)', color: 'bg-violet-100 text-violet-700' },
+    { label: 'Fase 4 — Implementation (development)', color: 'bg-green-100 text-green-700' },
+    { label: 'Fase 4 — Implementation (qa)', color: 'bg-yellow-100 text-yellow-700' },
+    { label: 'Fase 4 — Implementation (security)', color: 'bg-orange-100 text-orange-700' },
+    { label: 'Fase 4 — Implementation (release)', color: 'bg-red-100 text-red-700' },
   ];
 }

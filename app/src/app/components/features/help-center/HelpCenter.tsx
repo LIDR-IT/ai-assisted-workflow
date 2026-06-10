@@ -6,6 +6,7 @@ import { WorkflowSuggestions } from './WorkflowSuggestions';
 import { useArtifactSearch, useAllArtifacts } from './useArtifactSearch';
 import { useCurrentClient } from '@/hooks';
 import { getStatsForClient, popularSearchTerms } from '@/fixtures';
+import { unifiedPhases } from '@/data/phases';
 
 /**
  * HelpCenter - Refactored to feature-based architecture
@@ -31,31 +32,55 @@ function HelpCenterComponent() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { client } = useCurrentClient();
   const initialQuery = searchParams.get('q') || '';
+  const initialPhaseParam = searchParams.get('phase');
 
   const [query, setQuery] = useState(initialQuery);
+  const [phaseFilter, setPhaseFilter] = useState<number | null>(
+    initialPhaseParam !== null && !Number.isNaN(Number(initialPhaseParam))
+      ? Number(initialPhaseParam)
+      : null
+  );
   const allArtifacts = useAllArtifacts();
   const { artifacts: searchResults, workflows } = useArtifactSearch(query);
 
   // Memoize client-specific statistics to prevent recalculation
   const clientStats = useMemo(() => getStatsForClient(client?.name || 'facephi'), [client?.name]);
 
-  // Sync URL params with search query
+  // Sync URL params with search query + unified phase filter
   useEffect(() => {
+    const params: Record<string, string> = {};
     if (query.trim()) {
-      setSearchParams({ q: query });
-    } else {
-      setSearchParams({});
+      params.q = query;
     }
-  }, [query, setSearchParams]);
+    if (phaseFilter !== null) {
+      params.phase = String(phaseFilter);
+    }
+    setSearchParams(params);
+  }, [query, phaseFilter, setSearchParams]);
 
   // Memoize query change handler to prevent unnecessary re-renders of SearchInterface
   const handleQueryChange = useCallback((newQuery: string) => {
     setQuery(newQuery);
   }, []);
 
-  const hasResults = searchResults.length > 0 || workflows.length > 0;
-  const showEmptyState = query.trim() && !hasResults;
-  const showInitialState = !query.trim();
+  const handlePhaseFilterChange = useCallback((phaseId: number | null) => {
+    setPhaseFilter((prev) => (prev === phaseId ? null : phaseId));
+  }, []);
+
+  // Apply the unified-phase filter (0-4) on top of the search results.
+  // Without a query, an active phase filter browses all artifacts of that phase.
+  const filteredArtifacts = useMemo(() => {
+    const base = query.trim() ? searchResults : phaseFilter !== null ? allArtifacts : [];
+    if (phaseFilter === null) {
+      return base;
+    }
+    return base.filter((a) => a.phaseNum === phaseFilter);
+  }, [query, searchResults, allArtifacts, phaseFilter]);
+
+  const filteredWorkflows = query.trim() ? workflows : [];
+  const hasResults = filteredArtifacts.length > 0 || filteredWorkflows.length > 0;
+  const showEmptyState = (query.trim() || phaseFilter !== null) && !hasResults;
+  const showInitialState = !query.trim() && phaseFilter === null;
 
   return (
     <div className="h-full w-full bg-gradient-to-br from-blue-50 to-purple-50 p-8 overflow-auto">
@@ -76,16 +101,46 @@ function HelpCenterComponent() {
           placeholder="Buscar skills, commands, rules, templates..."
         />
 
+        {/* Unified phase filter (5 fases BMad × LIDR) */}
+        <div className="flex flex-wrap gap-2 justify-center mb-8" aria-label="Filtro por fase">
+          <button
+            onClick={() => handlePhaseFilterChange(null)}
+            className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+              phaseFilter === null
+                ? 'bg-slate-800 text-white border-slate-800'
+                : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
+            }`}
+            aria-pressed={phaseFilter === null}
+          >
+            Todas las fases
+          </button>
+          {unifiedPhases.map((phase) => (
+            <button
+              key={phase.id}
+              onClick={() => handlePhaseFilterChange(phase.id)}
+              title={phase.description}
+              className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+                phaseFilter === phase.id
+                  ? 'bg-slate-800 text-white border-slate-800'
+                  : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
+              }`}
+              aria-pressed={phaseFilter === phase.id}
+            >
+              {phase.name}
+            </button>
+          ))}
+        </div>
+
         {/* Results */}
         {hasResults && (
           <div className="space-y-8">
             <ArtifactList
-              artifacts={searchResults}
+              artifacts={filteredArtifacts}
               totalCount={allArtifacts.length}
               itemsPerPage={20}
             />
 
-            <WorkflowSuggestions workflows={workflows} />
+            <WorkflowSuggestions workflows={filteredWorkflows} />
           </div>
         )}
 

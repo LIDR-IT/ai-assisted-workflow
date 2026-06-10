@@ -6,6 +6,7 @@ last_updated: "2026-06-09"
 updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 1
+stage: analysis
 owner_role: "PME"
 automation: false
 domain_agnostic: true
