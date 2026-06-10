@@ -30,6 +30,10 @@ jobs:
         run: npm ci
         working-directory: ./app
 
+      - name: Ecosystem coherence guard (codifies the A/B/C audit — blocking)
+        run: npm run test:ecosystem
+        working-directory: ./app
+
       - name: Run unit tests with coverage
         run: npm run test:coverage
         working-directory: ./app

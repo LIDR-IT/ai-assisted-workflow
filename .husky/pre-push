@@ -2,8 +2,10 @@
 # =============================================================================
 # pre-push Hook (root)
 # =============================================================================
-# Validate branch naming convention before pushing.
-# Pattern follows LIDR Guidelines.md §2.4 Naming.
+# 1. Validate branch naming convention (LIDR Guidelines §2.4).
+# 2. Fast ecosystem-counts guard: catches the most common drift (adding an
+#    artifact without updating CLAUDE.md). The deep coherence checks run in CI
+#    via `app: npm run test:ecosystem` (test-coverage.yml). Keep this fast.
 # =============================================================================
 
 BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null)
@@ -20,4 +22,13 @@ if ! echo "$BRANCH" | grep -qE "$VALID_PATTERN"; then
   exit 1
 fi
 
-echo "✅ Pre-push checks passed (branch: $BRANCH)"
+COUNTS_HOOK=".agents/hooks/scripts/validate-ecosystem-counts.sh"
+if [ -f "$COUNTS_HOOK" ]; then
+  if ! sh "$COUNTS_HOOK" >/dev/null 2>&1; then
+    echo "❌ Ecosystem counts drifted (skills/commands/rules/agents/hooks vs CLAUDE.md)."
+    echo "   Run: bash $COUNTS_HOOK   to see the mismatch, then update CLAUDE.md."
+    exit 1
+  fi
+fi
+
+echo "✅ Pre-push checks passed (branch: $BRANCH, ecosystem counts OK)"
