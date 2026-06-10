@@ -1,9 +1,9 @@
 # Template: Routes Specification
 
 > **Propósito**: Documentación de rutas de la aplicación — páginas (frontend) y endpoints (API).
-> **Quién lo llena**: Tech Lead + Frontend/Backend Lead con skill `architecture-doc`
+> **Quién lo llena**: Tech Lead + Frontend/Backend Lead con skill `bmad-create-architecture`
 > **Instancias**: `docs/projects/{proyecto}/specs/routes.md`
-> **Complementa**: `architecture.md`, `components.md`
+> **Complementa**: el doc de arquitectura del proyecto (`bmad-create-architecture`), `components.md`
 
 ---
 

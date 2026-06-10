@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """
 {{CLIENT_NAME}} PRD Parser and Requirements Extractor
-Systematically parses the Functional PRD and Technical PRD to extract functionalities and NFR categories.
+Parses a PRD to extract functionalities and NFR categories.
+
+Primary input is a single UNIFIED PRD (produced by `bmad-prd`), which contains
+both the functional (F) and technical (T) sections in one document. Pass it via
+`--prd`.
+
+For backward compatibility with the old split-PRD layout, `--prd-funcional` and
+`--prd-tecnico` are still accepted as optional fallbacks.
 """
 
 import re
@@ -121,6 +128,44 @@ class PRDParser:
         except Exception as e:
             print(f"❌ Error parsing Technical PRD {file_path}: {e}")
             return {}
+
+    def parse_unified_prd(self, file_path: Path):
+        """Parse a single UNIFIED PRD (bmad-prd) containing both F and T sections.
+
+        The unified PRD includes the functional sections (features, journeys,
+        use cases) and the technical sections (NFRs, architecture, technical
+        considerations) in one document, so both extraction passes run against
+        the same content.
+        """
+        try:
+            content = file_path.read_text(encoding='utf-8')
+            print(f"📖 Parsing Unified PRD (bmad-prd): {file_path.name}")
+
+            # Metadata once
+            self._extract_metadata(content, "unified")
+
+            # Functional extraction passes
+            self._parse_functionalities_section(content)
+            self._parse_user_journeys(content)
+            self._parse_use_cases(content)
+
+            # Technical extraction passes
+            self._parse_nfr_section(content)
+            self._parse_architecture_nfrs(content)
+            self._parse_technical_considerations(content)
+
+            # Validate mandatory NFR categories
+            self._validate_mandatory_nfrs()
+
+            print(
+                f"✅ Extracted {len(self.functionalities)} functionalities and "
+                f"{len(self.nfr_categories)} NFR categories from the Unified PRD"
+            )
+            return self.functionalities, self.nfr_categories
+
+        except Exception as e:
+            print(f"❌ Error parsing Unified PRD {file_path}: {e}")
+            return {}, {}
 
     def _extract_metadata(self, content: str, doc_type: str):
         """Extract document metadata from frontmatter or header"""
@@ -584,8 +629,9 @@ class PRDParser:
 
 def main():
     parser = argparse.ArgumentParser(description="{{CLIENT_NAME}} PRD Parser and Requirements Extractor")
-    parser.add_argument("--prd-funcional", help="Path to the Functional PRD file")
-    parser.add_argument("--prd-tecnico", help="Path to the Technical PRD file")
+    parser.add_argument("--prd", help="Path to the UNIFIED PRD file (bmad-prd output, F+T in one doc) — preferred")
+    parser.add_argument("--prd-funcional", help="[Backward-compat] Path to the Functional PRD file (split layout)")
+    parser.add_argument("--prd-tecnico", help="[Backward-compat] Path to the Technical PRD file (split layout)")
     parser.add_argument("--output-dir", default=".", help="Output directory")
     parser.add_argument("--json-output", default="prd-analysis.json", help="JSON output filename")
     parser.add_argument("--summary-output", default="prd-summary.md", help="Summary report filename")
@@ -598,39 +644,62 @@ def main():
 
     parser_instance = PRDParser()
 
-    # Parse Functional PRD
-    if args.prd_funcional:
-        prd_f_path = Path(args.prd_funcional)
-        if prd_f_path.exists():
-            parser_instance.parse_prd_funcional(prd_f_path)
+    # Resolution order:
+    #   1. --prd (unified bmad-prd output) — preferred
+    #   2. --prd-funcional / --prd-tecnico (backward-compat split layout)
+    #   3. Auto-discover: try a unified PRD first, then fall back to split files
+    if args.prd:
+        prd_path = Path(args.prd)
+        if prd_path.exists():
+            parser_instance.parse_unified_prd(prd_path)
         else:
-            print(f"❌ Functional PRD not found: {prd_f_path}")
+            print(f"❌ Unified PRD not found: {prd_path}")
+    elif args.prd_funcional or args.prd_tecnico:
+        # Backward-compat: split-PRD layout
+        if args.prd_funcional:
+            prd_f_path = Path(args.prd_funcional)
+            if prd_f_path.exists():
+                parser_instance.parse_prd_funcional(prd_f_path)
+            else:
+                print(f"❌ Functional PRD not found: {prd_f_path}")
+        if args.prd_tecnico:
+            prd_t_path = Path(args.prd_tecnico)
+            if prd_t_path.exists():
+                parser_instance.parse_prd_tecnico(prd_t_path)
+            else:
+                print(f"❌ Technical PRD not found: {prd_t_path}")
     else:
-        # Auto-discover Functional PRD
+        # Auto-discover. Prefer a single unified PRD (bmad-prd output).
         search_paths = [Path("."), Path("docs"), Path("docs/projects")]
+        unified_found = False
         for search_path in search_paths:
             if search_path.exists():
-                for prd_file in search_path.glob("*funcional*.md"):
-                    print(f"📁 Auto-discovered Functional PRD: {prd_file}")
-                    parser_instance.parse_prd_funcional(prd_file)
+                # Match common unified PRD filenames, excluding the split-layout ones
+                for prd_file in sorted(search_path.glob("*prd*.md")):
+                    name_lower = prd_file.name.lower()
+                    if "funcional" in name_lower or "tecnico" in name_lower:
+                        continue
+                    print(f"📁 Auto-discovered Unified PRD: {prd_file}")
+                    parser_instance.parse_unified_prd(prd_file)
+                    unified_found = True
                     break
+            if unified_found:
+                break
 
-    # Parse Technical PRD
-    if args.prd_tecnico:
-        prd_t_path = Path(args.prd_tecnico)
-        if prd_t_path.exists():
-            parser_instance.parse_prd_tecnico(prd_t_path)
-        else:
-            print(f"❌ Technical PRD not found: {prd_t_path}")
-    else:
-        # Auto-discover Technical PRD
-        search_paths = [Path("."), Path("docs"), Path("docs/projects")]
-        for search_path in search_paths:
-            if search_path.exists():
-                for prd_file in search_path.glob("*tecnico*.md"):
-                    print(f"📁 Auto-discovered Technical PRD: {prd_file}")
-                    parser_instance.parse_prd_tecnico(prd_file)
-                    break
+        if not unified_found:
+            # Fall back to legacy split-PRD auto-discovery
+            for search_path in search_paths:
+                if search_path.exists():
+                    for prd_file in search_path.glob("*funcional*.md"):
+                        print(f"📁 Auto-discovered Functional PRD: {prd_file}")
+                        parser_instance.parse_prd_funcional(prd_file)
+                        break
+            for search_path in search_paths:
+                if search_path.exists():
+                    for prd_file in search_path.glob("*tecnico*.md"):
+                        print(f"📁 Auto-discovered Technical PRD: {prd_file}")
+                        parser_instance.parse_prd_tecnico(prd_file)
+                        break
 
     # Export results
     output_dir = Path(args.output_dir)

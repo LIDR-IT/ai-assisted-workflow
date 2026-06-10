@@ -1,9 +1,9 @@
 # Template: UI Components Specification
 
 > **Propósito**: Catálogo de componentes de UI — diseño, props, estados, y comportamiento.
-> **Quién lo llena**: Frontend Lead / UX con skill `architecture-doc`
+> **Quién lo llena**: Frontend Lead / UX con skill `bmad-create-architecture`
 > **Instancias**: `docs/projects/{proyecto}/specs/components.md`
-> **Complementa**: `ux-design-spec.md`, `specs/routes.md`
+> **Complementa**: UX spec (`bmad-ux`), `specs/routes.md`
 
 ---
 

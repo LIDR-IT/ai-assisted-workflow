@@ -138,12 +138,16 @@ class RTMGenerator:
         print(f"✅ Loaded {len(self.nfrs)} non-functional requirements")
 
     def load_prd_context(self):
-        """Load PRD Funcional and PRD Técnico for validation context"""
+        """Load PRD context for validation.
+
+        Prefers a single UNIFIED PRD (bmad-prd output, F+T in one document):
+        both the functional and technical parsing passes run against it.
+        Falls back to the legacy split layout (PRD Funcional + PRD Técnico)
+        when a unified PRD is not present.
+        """
         # Try multiple possible locations for PRD files
         prd_locations = [
             self.project_dir / "docs" / "projects",
-            self.project_dir / ".claude" / "skills" / "prd-funcional" / "outputs",
-            self.project_dir / ".claude" / "skills" / "prd-tecnico" / "outputs",
             self.project_dir / "docs",
         ]
 
@@ -154,19 +158,30 @@ class RTMGenerator:
             if not location.exists():
                 continue
 
-            for prd_file in location.glob("*PRD*.md"):
+            for prd_file in location.glob("*[Pp][Rr][Dd]*.md"):
                 prd_name = prd_file.name.lower()
-                if "funcional" in prd_name or "functional" in prd_name:
+                is_funcional = "funcional" in prd_name or "functional" in prd_name
+                is_tecnico = (
+                    "tecnico" in prd_name or "técnico" in prd_name or "technical" in prd_name
+                )
+
+                if is_funcional:
                     self._parse_prd_funcional(prd_file)
                     prd_f_found = True
-                elif "tecnico" in prd_name or "técnico" in prd_name or "technical" in prd_name:
+                elif is_tecnico:
                     self._parse_prd_tecnico(prd_file)
+                    prd_t_found = True
+                else:
+                    # Unified PRD (bmad-prd): contains both F and T sections.
+                    self._parse_prd_funcional(prd_file)
+                    self._parse_prd_tecnico(prd_file)
+                    prd_f_found = True
                     prd_t_found = True
 
         if not prd_f_found:
-            print("⚠️  PRD Funcional not found. Some validations will be limited.")
+            print("⚠️  PRD functional content not found. Some validations will be limited.")
         if not prd_t_found:
-            print("⚠️  PRD Técnico not found. Some validations will be limited.")
+            print("⚠️  PRD technical content not found. Some validations will be limited.")
 
         print(f"✅ Loaded {len(self.prd_functionalities)} PRD functionalities")
         print(f"✅ Loaded {len(self.prd_nfr_categories)} PRD NFR categories")

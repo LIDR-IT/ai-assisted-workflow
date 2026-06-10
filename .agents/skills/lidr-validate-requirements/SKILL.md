@@ -71,14 +71,13 @@ Companion reports are published alongside under the per-client root:
 
 ## Input
 
-| Input                     | Required  | Source                                       | Automated Processing                           |
-| ------------------------- | --------- | -------------------------------------------- | ---------------------------------------------- |
-| All RFs                   | ✅        | skill `generate-rf/`                         | ✅ `rtm-generator.py` auto-loads from outputs/ |
-| All NFRs                  | ✅        | skill `generate-nfr/`                        | ✅ `rtm-generator.py` auto-loads from outputs/ |
-| Functional PRD (approved) | ✅        | skill `bmad-prd/`                            | ✅ `prd-parser.py` auto-discovers and parses   |
-| Technical PRD (approved)  | ✅        | skill `bmad-prd/`                            | ✅ `prd-parser.py` auto-discovers and parses   |
-| RF Coherence checklist    | ✅        | `@../generate-rf/checklists/rf-coherence.md` | ✅ Automated coherence validation              |
-| Risk Log                  | Desirable | skill `risk-log/`                            | ⚠️ Manual integration                          |
+| Input                  | Required  | Source                                       | Automated Processing                                                       |
+| ---------------------- | --------- | -------------------------------------------- | -------------------------------------------------------------------------- |
+| All RFs                | ✅        | skill `generate-rf/`                         | ✅ `rtm-generator.py` auto-loads from outputs/                             |
+| All NFRs               | ✅        | skill `generate-nfr/`                        | ✅ `rtm-generator.py` auto-loads from outputs/                             |
+| Unified PRD (approved) | ✅        | skill `bmad-prd/`                            | ✅ `prd-parser.py --prd` parses F+T sections from one doc (auto-discovers) |
+| RF Coherence checklist | ✅        | `@../generate-rf/checklists/rf-coherence.md` | ✅ Automated coherence validation                                          |
+| Risk Log               | Desirable | skill `risk-log/`                            | ⚠️ Manual integration                                                      |
 
 ## Automation Scripts
 
@@ -88,7 +87,7 @@ Companion reports are published alongside under the per-client root:
 
 **Key Features**:
 
-- Auto-discovers PRD files in multiple locations (`docs/`, `docs/projects/`, skill outputs)
+- Auto-discovers the unified PRD (`bmad-prd` output) in `docs/` and `docs/projects/`; falls back to legacy split PRD files
 - Extracts functionalities from §2.4 with IDs, titles, priorities, acceptance criteria
 - Identifies NFR categories from §5 and architecture decisions
 - Validates mandatory NFR categories for software projects
@@ -97,13 +96,18 @@ Companion reports are published alongside under the per-client root:
 **Usage**:
 
 ```bash
-# Auto-discovery mode (recommended)
+# Auto-discovery mode (recommended) — finds the unified bmad-prd output
 python scripts/prd-parser.py --output-dir validation-results
 
-# Explicit paths
+# Explicit unified PRD (bmad-prd output, F+T in one document)
 python scripts/prd-parser.py \
-  --bmad-prd docs/projects/PRD-Functional.md \
-  --bmad-prd docs/projects/PRD-Technical.md \
+  --prd docs/projects/prd.md \
+  --output-dir validation-results
+
+# Backward-compat: legacy split-PRD layout (optional)
+python scripts/prd-parser.py \
+  --prd-funcional docs/projects/PRD-Functional.md \
+  --prd-tecnico docs/projects/PRD-Technical.md \
   --output-dir validation-results
 ```
 

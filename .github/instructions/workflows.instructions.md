@@ -497,12 +497,12 @@ lidr-tech-debt                        → Consolida deuda acumulada
 
 Los siguientes skills se usan transversalmente y no aparecen en una fase específica del flujo:
 
-| Skill                      | Fases donde aplica                  | Descripción                                                                                             |
-| -------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `bmad-create-architecture` | F2 Discovery → F5 Dev → POST-DEPLOY | Genera/actualiza doc de arquitectura (templates LIDR en `.agents/_shared/lidr/templates/architecture/`) |
-| `bmad-ux`                  | F2 Discovery → F4 Planning          | Spec UX/UI desde PRD + wireframes (template LIDR en `.agents/_shared/lidr/templates/ux-design-spec.md`) |
-| `bmad-sprint-planning`     | F4 Planning → F5 Dev                | Descompone proyecto en fases incrementales                                                              |
-| `bmad-retrospective`       | POST-DEPLOY                         | Post-epic retro: plan vs actual, lecciones, follow-up (cubre lo que era epic-review)                    |
+| Skill                      | Fases donde aplica                  | Descripción                                                                                                                                                               |
+| -------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bmad-create-architecture` | F2 Discovery → F5 Dev → POST-DEPLOY | Genera/actualiza el doc de arquitectura (BMad-owned). Las DTC specs LIDR (`routes`/`components`/`storage`) viven en `.agents/_shared/lidr/templates/architecture/specs/`. |
+| `bmad-ux`                  | F2 Discovery → F4 Planning          | Spec UX/UI desde PRD + wireframes (BMad-owned; LIDR envuelve su output, sin template propio)                                                                              |
+| `bmad-sprint-planning`     | F4 Planning → F5 Dev                | Descompone proyecto en fases incrementales                                                                                                                                |
+| `bmad-retrospective`       | POST-DEPLOY                         | Post-epic retro: plan vs actual, lecciones, follow-up (cubre lo que era epic-review)                                                                                      |
 
 
 ## 6. Hooks — Guardias automáticos activos

@@ -34,14 +34,13 @@ These had real assets (templates, Python scripts) worth preserving even though B
 
 ### `lidr-architecture-doc` → `bmad-create-architecture`
 
-Templates moved to `.agents/_shared/lidr/templates/architecture/`:
+The top-level architecture/data-model templates (`architecture.md`, `db-schema.md`, `data-model.md`) were **removed** (2026-06-10): `bmad-create-architecture` now fully owns the architecture doc and data model, so LIDR wraps its output instead of duplicating templates.
 
-- `architecture.md` — top-level architecture doc
-- `db-schema.md` — DB schema template
-- `data-model.md` — data model template
-- `specs/routes.md`, `specs/components.md`, `specs/storage.md` — 5-level spec templates
+Only the LIDR-genuine DTC spec templates remain in `.agents/_shared/lidr/templates/architecture/specs/`:
 
-**How to use:** When `bmad-create-architecture` finishes, copy templates to `docs/projects/<name>/` as starting structure.
+- `specs/routes.md`, `specs/components.md`, `specs/storage.md` — per-change technical specs (DTC)
+
+**How to use:** Run `bmad-create-architecture` for the architecture doc and data model. Copy the surviving `specs/*` templates to `docs/projects/<name>/specs/` for per-change DTC documentation.
 
 ### `lidr-epic-breakdown` → `bmad-create-epics-and-stories`
 
@@ -52,8 +51,8 @@ Templates moved to `.agents/_shared/lidr/templates/architecture/`:
 
 ### `lidr-ux-design-spec` → `bmad-ux`
 
-- Template: `.agents/_shared/lidr/templates/ux-design-spec.md`
-- Custom rule: "Every screen has 4+ states (default/loading/empty/error)"
+- The `ux-design-spec.md` template was **removed** (2026-06-10): `bmad-ux` now owns the UX spec; LIDR wraps its output.
+- Custom rule to carry into `bmad-ux` usage: "Every screen has 4+ states (default/loading/empty/error)"
 
 ### `lidr-skill-creator` → `bmad-agent-builder` + `bmad-eval-runner`
 
@@ -99,15 +98,17 @@ No asset migration needed. BMad's retro is 1513 lines (vs LIDR's 149) with Party
 
 ### Additional deletions (7 skills)
 
-| Deleted LIDR               | BMad substitute / outcome                                                                           | Template migrated to `_shared/lidr/templates/` |
-| -------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| `lidr-prd-funcional`       | `bmad-prd` (intent: create) becomes Gate 1 input. `lidr-review-cruzado` validates F-section.        | `prd-funcional.md`                             |
-| `lidr-prd-tecnico`         | `bmad-prd` becomes Gate 1 input. `lidr-review-cruzado` validates T-section.                         | `prd-tecnico.md`, `prd-system-design.md`       |
-| `lidr-epic-review`         | `bmad-retrospective` (10× larger, covers post-epic review with lessons learned).                    | `epic-review.md`                               |
-| `lidr-poc-report`          | `bmad-technical-research` covers technical validation. GO/NO-GO documented as invocation guideline. | (no template)                                  |
-| `lidr-use-cases`           | Embedded inside `bmad-prd` output (BMad PRD already includes use cases section).                    | `use-cases.md`                                 |
-| `lidr-business-model`      | `bmad-prfaq` (Working Backwards) covers business positioning.                                       | `business-model.md`                            |
-| `lidr-changelog-generator` | Consolidated into `lidr-release-notes` (3-level: exec + technical + customer in one skill).         | (no template)                                  |
+> **Update (2026-06-10):** the migrated templates listed in the last column below were **subsequently removed** — `bmad-prd` / `bmad-retrospective` / `bmad-prfaq` fully own these artifacts now (LIDR wraps, does not duplicate). The filenames are kept here only as a historical record of what was migrated.
+
+| Deleted LIDR               | BMad substitute / outcome                                                                           | Template (removed 2026-06-10)            |
+| -------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `lidr-prd-funcional`       | `bmad-prd` (intent: create) becomes Gate 1 input. `lidr-review-cruzado` validates F-section.        | `prd-funcional.md`                       |
+| `lidr-prd-tecnico`         | `bmad-prd` becomes Gate 1 input. `lidr-review-cruzado` validates T-section.                         | `prd-tecnico.md`, `prd-system-design.md` |
+| `lidr-epic-review`         | `bmad-retrospective` (10× larger, covers post-epic review with lessons learned).                    | `epic-review.md`                         |
+| `lidr-poc-report`          | `bmad-technical-research` covers technical validation. GO/NO-GO documented as invocation guideline. | (no template)                            |
+| `lidr-use-cases`           | Embedded inside `bmad-prd` output (BMad PRD already includes use cases section).                    | `use-cases.md`                           |
+| `lidr-business-model`      | `bmad-prfaq` (Working Backwards) covers business positioning.                                       | `business-model.md`                      |
+| `lidr-changelog-generator` | Consolidated into `lidr-release-notes` (3-level: exec + technical + customer in one skill).         | (no template)                            |
 
 ### SKILL.md reframe (no deletion, reposition as wrapper)
 
