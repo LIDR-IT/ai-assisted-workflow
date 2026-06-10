@@ -2,17 +2,17 @@
   "metadata": {
     "id": "docline-diagnostico",
     "title": "Diagnóstico AS-IS — Docline (Healthcare Technology)",
-    "description": "9 pain points identificados en auditoría 2026-04-06. Estado actual: 4 procesos funcionando (Sprint Planning, Desarrollo, Linear, Estimación), 5 procesos rotos/ausentes (PRDs inconsistentes, RFs informales, QA reactivo, falta estandarización, gaps seguridad/deploy).",
-    "version": "1.0.0",
+    "description": "9 pain points identificados en auditoría 2026-04-06. Estado actual: 4 procesos funcionando (Sprint Planning, Desarrollo, Linear, Estimación), 5 procesos rotos/ausentes (PRDs inconsistentes, RFs informales, QA reactivo, falta estandarización, gaps seguridad/deploy). v2.1.0: nomenclatura migrada al modelo de fases unificado BMad × LIDR (Phase 0 Context → 1 Analysis → 2 Planning → 3 Solutioning → 4 Implementation; gates G0-G7 — ver .agents/_shared/lidr/UNIFIED-PHASES.md). Los hallazgos verbatim de la auditoría se conservan.",
+    "version": "2.1.0",
     "client": "Docline",
     "industry": "Healthcare Technology",
-    "tags": ["docline", "healthcare", "telemedicine", "diagnostico", "as-is"],
-    "lastUpdated": "2026-05-14",
+    "tags": ["docline", "healthcare", "telemedicine", "diagnostico", "as-is", "unified-phases"],
+    "lastUpdated": "2026-06-10",
     "author": "LIDR Framework",
-    "sourceReport": "src/data/features/propuestaMejora.tsx (legacy Docline defaults)"
+    "sourceReport": "Auditoría Docline 2026-04-06 (citas verbatim del equipo)"
   },
   "summary": {
-    "executiveSummary": "Auditoría Docline (2026-04-06): Se identificaron 9 pain points críticos. Estado actual: 4 procesos FUNCIONANDO (Sprint Planning, Desarrollo, Linear, Estimación), 5 procesos ROTOS/AUSENTES (PRDs inconsistentes, RFs informales, QA reactivo, falta estandarización, gaps seguridad/deploy). Overall Maturity Score: 23/100. Quick wins: prd-funcional + generate-rf + test-plan skills en Sprint 1-2.",
+    "executiveSummary": "Auditoría Docline (2026-04-06): Se identificaron 9 pain points críticos. Estado actual: 4 procesos FUNCIONANDO (Sprint Planning, Desarrollo, Linear, Estimación), 5 procesos ROTOS/AUSENTES (PRDs inconsistentes, RFs informales, QA reactivo, falta estandarización, gaps seguridad/deploy). Overall Maturity Score: 23/100. Quick wins LIDR: bmad-prd + lidr-generate-rf + bmad-testarch-test-design en Sprint 1-2.",
     "fortalezas": [
       "• Sprint Planning establecido (2 semanas, refinamiento martes)",
       "• Teams front/back organizados con Tech Leads (Héctor/David)",
@@ -20,9 +20,10 @@
       "• PO definido (Danny) y estructura horizontal funcional"
     ],
     "oportunidades": [
-      "• Formalizar PRDs con skills prd-funcional/prd-tecnico",
-      "• Extraer RFs desde PRDs con skill generate-rf",
-      "• QA proactivo con test-plan + create-test-cases",
+      "• Levantar el contexto brownfield con Phase 0: bmad-document-project + bmad-generate-project-context",
+      "• Formalizar PRDs con bmad-prd (un solo PRD unificado F+T) + lidr-review-cruzado",
+      "• Extraer RFs desde PRDs con lidr-generate-rf + RTM (lidr-validate-requirements)",
+      "• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases",
       "• Adaptar Linear integration para commands LIDR"
     ],
     "gapsCriticos": [
@@ -34,76 +35,76 @@
   },
   "painPoints": [
     {
-      "fase": "Phase 1: Originación",
+      "fase": "Phase 1 — Analysis (ex-Originación)",
       "problema": "NO FORMALIZADA - No se menciona proceso de Business Case o stakeholder mapping en la reunión",
       "impacto": "Crítico",
-      "mejora": "business-case + stakeholder-map + kickoff skills. Gate 0 obligatorio para formalizar proyectos antes de development"
+      "mejora": "lidr-business-case + lidr-stakeholder-map + lidr-kickoff skills. Gate 0 obligatorio para formalizar proyectos antes de development"
     },
     {
-      "fase": "Phase 2: PRDs",
+      "fase": "Phase 2 — Planning (ex-Discovery & PRD)",
       "problema": "\"No siempre lo conseguimos más o menos detallado\" - PRDs inconsistentes (~40% fallos confirmados)",
       "impacto": "Alto",
-      "mejora": "prd-funcional + prd-tecnico skills estandarizados. Template obligatorio, review cruzado Danny (PO) ↔ Héctor/David (Tech Leads)"
+      "mejora": "bmad-prd skill estandarizado: un solo PRD unificado F+T (reemplaza los antiguos prd-funcional/prd-tecnico separados). Template obligatorio, review cruzado Danny (PO) ↔ Héctor/David (Tech Leads) con lidr-review-cruzado"
     },
     {
-      "fase": "Phase 3: Requisitos",
+      "fase": "Phase 3 — Solutioning · specification (ex-Especificación)",
       "problema": "\"Los requisitos funcionales son partes del prd\" - RFs mezclados, sin separación formal, no hay NFRs documentados",
       "impacto": "Crítico",
-      "mejora": "generate-rf + generate-nfr skills. Extraer RFs desde PRDs existentes, crear NFRs medibles, trazabilidad RF→US→Tasks"
+      "mejora": "lidr-generate-rf + lidr-generate-nfr skills. Extraer RFs desde PRDs existentes, crear NFRs medibles, trazabilidad RF→US→Tasks con lidr-validate-requirements (RTM). bmad-create-architecture como evidencia required del Gate 2"
     },
     {
-      "fase": "Phase 4: Sprint Planning",
+      "fase": "Phase 3 — Solutioning · sprint-planning (ex-Sprint Planning)",
       "problema": "User Stories irregulares: \"No siempre lo conseguimos user story más o menos detallada\"",
       "impacto": "Medio",
-      "mejora": "user-stories + sprint-capacity skills. Formalizar DoR, estandarizar formato US con trazabilidad a RFs"
+      "mejora": "lidr-user-stories + lidr-sprint-capacity skills. Formalizar DoR, readiness con bmad-check-implementation-readiness + bmad-sprint-planning en Gate 3, estandarizar formato US con trazabilidad a RFs"
     },
     {
-      "fase": "Desarrollo",
+      "fase": "Phase 4 — Implementation · development (ex-Desarrollo)",
       "problema": "Sin Definition of Done formal hasta ahora",
       "impacto": "Alto",
-      "mejora": "cl-dod checklist + hook dtc-write-guard (PreToolUse) evalúa DTC + DoD. Gate 4 con pr-description + dev-handoff-qa + /advance-gate"
+      "mejora": "cl-dod checklist + hook dtc-write-guard (PreToolUse) evalúa DTC + DoD. Code review adversarial bmad-code-review. Gate 4 con lidr-pr-description + lidr-dev-handoff-qa + /lidr-advance-gate"
     },
     {
-      "fase": "Phase 6: QA",
+      "fase": "Phase 4 — Implementation · qa (ex-QA & Testing)",
       "problema": "\"A veces saltan problemas\" - Testing reactivo, ad-hoc, \"no siempre caemos en la cuenta de ello\"",
       "impacto": "Alto",
-      "mejora": "test-plan + create-test-cases + bug-report skills. QA Lead proactivo, test strategy formal, shift-left testing"
+      "mejora": "bmad-testarch-test-design + lidr-create-test-cases + lidr-bug-report skills. QA Lead proactivo, test strategy formal, shift-left testing"
     },
     {
-      "fase": "Seguridad",
+      "fase": "Phase 4 — Implementation · security (ex-Seguridad)",
       "problema": "Primera implementación de SDLC — proceso inmaduro",
       "impacto": "Medio",
-      "mejora": "4 skills (vuln-assessment, dast-interpretation, pentest-report, security-checklist) + cl-security + cl-nfr + so-security signoff. Gate 6 bloqueante"
+      "mejora": "4 skills (lidr-vuln-assessment, lidr-dast-interpretation, lidr-pentest-report, lidr-security-checklist) + cl-security + cl-nfr + so-security signoff. Gate 6 bloqueante"
     },
     {
-      "fase": "Despliegue",
+      "fase": "Phase 4 — Implementation · release (ex-Despliegue)",
       "problema": "Sin entornos formales previos — proceso nuevo",
       "impacto": "Alto",
-      "mejora": "change-request + rollback-plan + release-notes skills. cl-postdeploy + cl-nfr checklists. /create-release-notes + /update-changelog commands. Gate 7 completo"
+      "mejora": "lidr-change-request + lidr-rollback-plan + lidr-release-notes skills. cl-postdeploy + cl-nfr checklists. /lidr-create-release-notes + /lidr-update-changelog commands. Gate 7 completo"
     },
     {
       "fase": "Procesos Generales",
       "problema": "\"No está estandarizado\" (mencionado 6+ veces), \"usamos de manera un poco artesanal\"",
       "impacto": "Alto",
-      "mejora": "Implementar gates formales /advance-gate, DoD documentado, hooks automáticos dtc-write-guard"
+      "mejora": "Implementar gates formales /lidr-advance-gate, DoD documentado, hooks automáticos dtc-write-guard"
     },
     {
       "fase": "Herramientas",
       "problema": "Linear vs Framework default - Framework LIDR SDLC necesita adaptación a herramientas del cliente (Linear, no Jira)",
       "impacto": "Medio",
-      "mejora": "Adaptar commands /create-branch, /create-pr a Linear API. Mantener CSV export/import workflows"
+      "mejora": "Adaptar commands /lidr-create-branch, /lidr-create-pr a Linear API (patrón lidr-tracking-integration/adapters/). Mantener CSV export/import workflows"
     },
     {
-      "fase": "Phases 7-8: Seguridad/Deploy",
+      "fase": "Gates 6-7: Security/Release",
       "problema": "NO MENCIONADAS - Sin proceso seguridad, DAST, pen testing, change requests",
       "impacto": "Crítico",
-      "mejora": "security-checklist + vuln-assessment + change-request + rollback-plan skills. Gates 6-7 implementación"
+      "mejora": "lidr-security-checklist + lidr-vuln-assessment + lidr-change-request + lidr-rollback-plan skills. Gates 6-7 implementación"
     },
     {
       "fase": "Issues No Resueltas",
       "problema": "\"Tenemos ahí varias, varias issues que queremos resolver\" - Backlog de problemas sin abordar",
       "impacto": "Medio",
-      "mejora": "tech-debt skill para catalogar issues, epic-review para priorización, postmortem para root cause analysis"
+      "mejora": "lidr-tech-debt skill para catalogar issues, bmad-retrospective para priorización, lidr-postmortem para root cause analysis"
     }
   ]
 }

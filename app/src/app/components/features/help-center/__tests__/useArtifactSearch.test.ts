@@ -71,17 +71,17 @@ vi.mock('@/data/features/helpCenter', () => ({
       gateContribution: '',
     },
     {
-      id: 'prd-tecnico',
-      name: 'prd-tecnico',
+      id: 'bmad-prd',
+      name: 'bmad-prd',
       type: 'skill',
-      description: 'Generate technical product requirements document',
-      phase: 'Fase 2 — Discovery & PRD',
+      description: 'Generate unified product requirements document',
+      phase: 'Fase 2 — Planning',
       phaseNum: 2,
       tier: 'assisted',
       roles: ['TL', 'R&D'],
       automation: 'assisted',
       category: 'planning',
-      triggers: ['technical prd', 'technical requirements'],
+      triggers: ['unified prd', 'product requirements'],
       precondition: '',
       mcpsUsed: [],
       relatedSkills: [],
@@ -151,10 +151,10 @@ describe('useArtifactSearch', () => {
 
   describe('Multi-term Search', () => {
     it('finds artifacts matching multiple terms', () => {
-      const { result } = renderHook(() => useArtifactSearch('technical requirements'));
+      const { result } = renderHook(() => useArtifactSearch('product requirements'));
 
       expect(result.current.artifacts).toHaveLength(1);
-      expect(result.current.artifacts[0]?.id).toBe('prd-tecnico');
+      expect(result.current.artifacts[0]?.id).toBe('bmad-prd');
     });
 
     it('filters out results with insufficient score', () => {
@@ -250,10 +250,10 @@ describe('useArtifactSearch', () => {
     });
 
     it('handles unicode characters', () => {
-      const { result } = renderHook(() => useArtifactSearch('tecnico'));
+      const { result } = renderHook(() => useArtifactSearch('unified'));
 
       expect(result.current.artifacts).toHaveLength(1);
-      expect(result.current.artifacts[0]?.id).toBe('prd-tecnico');
+      expect(result.current.artifacts[0]?.id).toBe('bmad-prd');
     });
   });
 });
@@ -267,7 +267,7 @@ describe('useAllArtifacts', () => {
       'business-case',
       'test-plan',
       'create-pr',
-      'prd-tecnico',
+      'bmad-prd',
     ]);
   });
 

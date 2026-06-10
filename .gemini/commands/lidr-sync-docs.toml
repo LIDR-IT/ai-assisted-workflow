@@ -86,7 +86,7 @@ Compare code state vs documented state:
 
 **DB drift:**
 
-- Tables/models in code NOT in db-schema.md
+- Tables/models in code NOT in specs/storage.md (or the project's architecture doc)
 - Column changes not reflected
 - New indexes not documented
 

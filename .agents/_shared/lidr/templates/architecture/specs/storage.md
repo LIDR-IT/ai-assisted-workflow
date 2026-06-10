@@ -1,9 +1,9 @@
 # Template: Storage Specification
 
 > **Propósito**: Documentación de estrategia de almacenamiento — archivos, cache, state management, y persistencia.
-> **Quién lo llena**: Tech Lead / Backend Lead con skill `architecture-doc`
+> **Quién lo llena**: Tech Lead / Backend Lead con skill `bmad-create-architecture`
 > **Instancias**: `docs/projects/{proyecto}/specs/storage.md`
-> **Complementa**: `db-schema.md` (datos relacionales), `architecture.md` (visión general)
+> **Complementa**: el doc de arquitectura del proyecto (`bmad-create-architecture`) — sección de modelo de datos / persistencia relacional
 
 ---
 

@@ -225,8 +225,9 @@ function extractPhaseFromPath(skillPath: string): number {
   const phaseMap: Record<string, number> = {
     "business-case": 1,
     kickoff: 1,
-    "prd-funcional": 2,
-    "prd-tecnico": 2,
+    // PRD is BMad-owned now (unified F+T via bmad-prd) — Phase 2.
+    prd: 2,
+    "bmad-prd": 2,
     "generate-rf": 3,
     "generate-nfr": 3,
     "epic-breakdown": 3,

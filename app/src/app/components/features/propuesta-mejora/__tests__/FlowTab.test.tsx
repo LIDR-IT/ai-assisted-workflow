@@ -100,9 +100,9 @@ const mockFlujoContent = {
     ],
     edges: [{ id: 'e-ab', source: 'a', target: 'b', label: 'next' }],
     legend: [
-      { color: 'bg-purple-200', label: 'Originación (Negocio / CTO)' },
-      { color: 'bg-blue-200', label: 'Discovery & PRD' },
-      { color: 'bg-cyan-200', label: 'Especificación (RF + NFR)' },
+      { color: 'bg-purple-200', label: 'Phase 1 — Analysis (Negocio / CTO)' },
+      { color: 'bg-blue-200', label: 'Phase 2 — Planning' },
+      { color: 'bg-cyan-200', label: 'Phase 3 — Solutioning (RF + NFR)' },
       { color: 'bg-green-200', label: 'User Stories' },
       { color: 'bg-yellow-200', label: 'Sprint Planning' },
       { color: 'bg-orange-200', label: 'Desarrollo' },
@@ -249,9 +249,9 @@ describe('FlowTab', () => {
       render(<FlowTab />);
 
       // Check for key legend items
-      expect(screen.getByText('Originación (Negocio / CTO)')).toBeInTheDocument();
-      expect(screen.getByText('Discovery & PRD')).toBeInTheDocument();
-      expect(screen.getByText('Especificación (RF + NFR)')).toBeInTheDocument();
+      expect(screen.getByText('Phase 1 — Analysis (Negocio / CTO)')).toBeInTheDocument();
+      expect(screen.getByText('Phase 2 — Planning')).toBeInTheDocument();
+      expect(screen.getByText('Phase 3 — Solutioning (RF + NFR)')).toBeInTheDocument();
       expect(screen.getByText('User Stories')).toBeInTheDocument();
       expect(screen.getByText('Sprint Planning')).toBeInTheDocument();
       expect(screen.getByText('Desarrollo')).toBeInTheDocument();

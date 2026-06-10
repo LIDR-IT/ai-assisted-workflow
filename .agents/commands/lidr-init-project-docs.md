@@ -34,6 +34,11 @@ SKILLS USED:
   lidr-generate-rule     - Generates rule files for .claude/rules/lidr-sdlc/
 
 CHANGELOG:
+  v5.0.0 (2026-06-10): "Wrap BMad, don't duplicate" — stopped scaffolding
+                        PRD/UX/architecture from removed LIDR templates; those
+                        artifacts now DEFER to bmad-prd, bmad-ux, and
+                        bmad-create-architecture. Scaffolds only LIDR-genuine
+                        docs (business-case, RF/NFR, ADR, DTC specs).
   v4.0.1 (2026-06-10): Repointed skill template paths (lidr-* prefixes, correct
                         filenames product-brief.md/deployment.md); rules generated
                         under lidr-sdlc/; lidr-generate-rule skill name.
@@ -94,14 +99,20 @@ Question 2:
 
 Question 3:
 
-- question: "¿Qué documentos necesitas?"
+- question: "¿Qué documentos LIDR-genuine necesitas scaffoldear?"
 - header: "Docs"
 - multiSelect: true
 - options:
-  - Product Brief (Visión y alcance)
-  - PRD (Requisitos detallados)
-  - Architecture (Arquitectura técnica)
-  - UX Spec (Diseño UX/UI)
+  - Business Case (Justificación e inversión)
+  - RF / NFR (Requisitos funcionales y no funcionales)
+  - DTC Specs (routes / components / storage)
+  - ADR (Decisiones arquitectónicas)
+
+> **Nota — PRD, UX y Architecture NO se scaffoldean aquí.** Tras la
+> unificación de fases, LIDR envuelve a BMad en lugar de duplicarlo: el PRD
+> del proyecto lo produce `bmad-prd`, la spec UX `bmad-ux`, y el documento de
+> arquitectura `bmad-create-architecture`. Este comando solo crea los docs
+> LIDR-genuine (business-case, RF/NFR, ADR, DTC specs).
 
 ## Create Directory Structure
 
@@ -133,19 +144,27 @@ Generate project-specific version:
 - Mark all sections as ⚠️ TODO where project-specific content needed
 - Pre-fill what can be inferred from project context
 
-Files to create (using self-contained templates):
+Files to create (LIDR-genuine docs, using self-contained templates):
 
 - docs/projects/$1/business-case.md (from .claude/skills/lidr-business-case/templates/product-brief.md)
-- docs/projects/$1/prd-funcional.md (from .agents/\_shared/lidr/templates/prd-funcional.md — reference format for bmad-prd F-section)
-- docs/projects/$1/prd-tecnico.md (from .agents/\_shared/lidr/templates/prd-tecnico.md — reference format for bmad-prd T-section)
-- docs/projects/$1/architecture.md (from .agents/\_shared/lidr/templates/architecture/architecture.md)
+- docs/projects/$1/requirements/rf.md (from .claude/skills/lidr-generate-rf/templates/rf-format.md)
+- docs/projects/$1/requirements/nfr.md (from .claude/skills/lidr-generate-nfr/templates/nfr-format.md)
 - docs/projects/$1/user-stories.md (from .claude/skills/lidr-user-stories/templates/user-story.md)
-- docs/projects/$1/ux-design-spec.md (from .agents/\_shared/lidr/templates/ux-design-spec.md)
+- docs/projects/$1/adr/ADR-0001.md (from .claude/skills/lidr-adr/templates/adr.md)
 - docs/projects/$1/risk-log.md (from .claude/skills/lidr-risk-log/templates/risk-log.md)
 - docs/projects/$1/change-request.md (from .claude/skills/lidr-change-request/templates/deployment.md)
 - docs/projects/$1/specs/routes.md (from .agents/\_shared/lidr/templates/architecture/specs/routes.md)
 - docs/projects/$1/specs/components.md (from .agents/\_shared/lidr/templates/architecture/specs/components.md)
 - docs/projects/$1/specs/storage.md (from .agents/\_shared/lidr/templates/architecture/specs/storage.md)
+
+**Deferred to BMad (do NOT scaffold from LIDR templates):**
+
+- PRD → run `bmad-prd` (produces one unified F+T PRD → `docs/projects/$1/prd.md`)
+- UX spec → run `bmad-ux`
+- Architecture doc → run `bmad-create-architecture`
+
+These artifacts are BMad-owned; LIDR wraps their output rather than
+duplicating their templates.
 
 ## Update Project Rule
 
@@ -188,7 +207,9 @@ TODOs:   {N} sections need project-specific content
          Run /lidr-validate-project-docs $1 to check completeness
 
 Next steps:
-1. Fill in product-brief.md first (drives everything else)
-2. Then architecture.md (technical foundation)
-3. Run /lidr-validate-project-docs $1 when ready
+1. Fill in business-case.md first (drives everything else)
+2. Run bmad-prd for the PRD, bmad-create-architecture for the
+   architecture doc, and bmad-ux for the UX spec (BMad-owned artifacts)
+3. Fill in requirements/rf.md + requirements/nfr.md and the DTC specs
+4. Run /lidr-validate-project-docs $1 when ready
 ```

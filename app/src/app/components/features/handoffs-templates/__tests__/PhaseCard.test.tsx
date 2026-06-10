@@ -16,9 +16,10 @@ vi.mock('../TemplateTable', () => ({
 }));
 
 // Mock handoffs data
-vi.mock('@/data/features/handoffsTemplates', () => ({
-  handoffs: [
+vi.mock('@/data/features/handoffsTemplates', () => {
+  const handoffs = [
     {
+      gateNum: 0,
       producer: [
         { role: 'PME', action: 'Define business case' },
         { role: 'PO', action: 'Approve stakeholder map' },
@@ -30,16 +31,25 @@ vi.mock('@/data/features/handoffsTemplates', () => ({
       aiAutomation: 'Automated business case generation with LIDR SDLC framework',
     },
     {
+      gateNum: 1,
       producer: [{ role: 'PO', action: 'Complete PRD functional' }],
       receiver: [{ role: 'Dev', action: 'Review requirements' }],
     },
-  ],
-}));
+  ];
+  return {
+    handoffs,
+    getHandoffByGateNumber: (gateNum: number) =>
+      handoffs.find((handoff) => handoff.gateNum === gateNum),
+  };
+});
 
 describe('PhaseCard', () => {
   const mockPhaseData: PhaseTemplates = {
-    fase: 'FASE 1: Originación',
+    fase: 'Fase 1 — Analysis (analysis)',
     faseNum: 1,
+    unifiedPhase: 1,
+    stage: 'analysis',
+    gateNum: 0,
     color: 'bg-purple-50',
     borderColor: 'border-purple-200',
     gate: 'Gate 0: Intake → Discovery',
@@ -191,7 +201,7 @@ describe('PhaseCard', () => {
     it('handles phase without handoff data gracefully', () => {
       const phaseWithoutHandoff: PhaseTemplates = {
         ...mockPhaseData,
-        faseNum: 999, // Non-existent phase
+        gateNum: undefined, // Phase without gate (e.g. Fase 0 Context & Anytime)
       };
 
       render(<PhaseCard phase={phaseWithoutHandoff} />);
@@ -221,7 +231,7 @@ describe('PhaseCard', () => {
     it('handles phase without AI automation', () => {
       const phaseData: PhaseTemplates = {
         ...mockPhaseData,
-        faseNum: 2, // Points to handoff without aiAutomation
+        gateNum: 1, // Points to handoff without aiAutomation
       };
 
       render(<PhaseCard phase={phaseData} />);

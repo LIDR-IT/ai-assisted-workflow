@@ -94,9 +94,12 @@ function searchWorkflows(query: string): WorkflowSuggestionForSearch[] {
       steps: [
         { artifact: 'business-case', type: 'skill', action: 'Create Business Case document' },
         { artifact: 'stakeholder-map', type: 'skill', action: 'Map project stakeholders' },
-        { artifact: 'prd-funcional', type: 'skill', action: 'Create Functional PRD' },
-        { artifact: 'prd-tecnico', type: 'skill', action: 'Create Technical PRD' },
-        { artifact: 'review-cruzado', type: 'skill', action: 'Cross-review PRDs' },
+        {
+          artifact: 'bmad-prd',
+          type: 'skill',
+          action: 'Create unified PRD (Functional + Technical)',
+        },
+        { artifact: 'review-cruzado', type: 'skill', action: 'Cross-review PRD sections' },
         {
           artifact: 'validate-requirements',
           type: 'skill',

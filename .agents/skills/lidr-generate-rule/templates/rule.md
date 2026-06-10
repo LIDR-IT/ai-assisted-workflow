@@ -191,7 +191,7 @@ status: active
 ## 3. Arquitectura
 
 {Patron: microservicios, monolito, serverless, etc.}
-{Diagrama o referencia a @../templates/architecture.md}
+{Diagrama o referencia al doc de arquitectura del proyecto (generado por `bmad-create-architecture`)}
 
 ---
 

@@ -499,7 +499,9 @@ function validateEcosystemCompleteness(
   // Check for missing essential artifacts
   const essentialArtifacts = {
     rules: ["org", "project", "tech-stack", "documentation"],
-    templates: ["architecture", "prd-funcional", "prd-tecnico"],
+    // PRD/UX/architecture templates are BMad-owned now (LIDR wraps, not duplicates).
+    // Only LIDR-genuine templates remain essential.
+    templates: ["epic"],
     checklists: ["dor", "dod"],
     signoffs: ["qa-signoff", "security-signoff"],
   };

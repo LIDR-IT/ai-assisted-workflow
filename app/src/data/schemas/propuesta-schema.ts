@@ -3,7 +3,7 @@
  *
  * Three tabs, three JSONs per client:
  *   - diagnostico.json → executive summary + fortalezas/oportunidades/gaps + pain points
- *   - mejoras.json     → 8 SDLC phases with AS-IS vs TO-BE bullet lists
+ *   - mejoras.json     → 9 SDLC stages (phaseNumber 0-8, unified model Phase 0-4 / gates G0-G7) with AS-IS vs TO-BE bullet lists
  *   - flujo.json       → React Flow diagram + Quality Gates summary
  *
  * Reuses DiagramDataSchema from diagram-schema.ts for the flujo diagram payload,
