@@ -12,8 +12,6 @@
    - DO NOT modify original component yet
    ═══════════════════════════════════════════ */
 
-import { ecosystemStats, summaryStrings } from '@/data/computed/stats';
-
 /* ─── TYPE DEFINITIONS ─────────────────────────────── */
 
 export type ArtifactType =
@@ -508,30 +506,6 @@ export const commands: Artifact[] = [
     docPath: '.claude/commands/lidr-validate-project-docs.md',
   },
   {
-    id: 'validate-requirements-cmd',
-    name: '/validate-requirements',
-    type: 'command',
-    tier: 'Tier 1 — Orchestrator',
-    description:
-      'Orquesta Fase 3 completa: genera RFs con BDD, genera NFRs medibles, valida trazabilidad (RTM), detecta gaps, y opcionalmente descompone epica en sub-epicas.',
-    argument: '[project-name]',
-    model: 'sonnet',
-    roles: ['PO', 'TL'],
-    precondition: 'Gate 1 PASS (PRDs aprobados)',
-    mcpsUsed: ['jira', 'confluence'],
-    relatedSkills: ['generate-rf', 'generate-nfr', 'validate-requirements', 'epic-breakdown'],
-    triggers: [
-      'validate requirements',
-      'generate requirements',
-      'phase 3',
-      'specification phase',
-      'create RFs and NFRs',
-      'RTM',
-      'traceability',
-    ],
-    docPath: '.claude/commands/validate-requirements.md',
-  },
-  {
     id: 'lidr-validate-prd',
     name: '/lidr-validate-prd',
     type: 'command',
@@ -687,26 +661,6 @@ export const commands: Artifact[] = [
     docPath: '.claude/commands/lidr-quick-dev.md',
   },
   {
-    id: 'product-brief',
-    name: '/product-brief',
-    type: 'command',
-    tier: 'Tier 2 — Tactical',
-    description:
-      'Create lightweight product brief for rapid product definition. LIDR SDLC-inspired product brief pattern for quick product conceptualization.',
-    argument: '[product-name]',
-    model: 'sonnet',
-    roles: ['PME', 'PO', 'TL'],
-    precondition: 'Product concept identified',
-    triggers: [
-      'product brief',
-      'lightweight brief',
-      'rapid product',
-      'product concept',
-      'quick product definition',
-    ],
-    docPath: '.claude/commands/product-brief.md',
-  },
-  {
     id: 'lidr-sprint-health',
     name: '/lidr-sprint-health',
     type: 'command',
@@ -725,61 +679,6 @@ export const commands: Artifact[] = [
       'sprint metrics',
     ],
     docPath: '.claude/commands/lidr-sprint-health.md',
-  },
-
-  // Tier 3 - Utility
-  {
-    id: 'help',
-    name: '/help',
-    type: 'command',
-    tier: 'Tier 3 — Utility',
-    description: `Sistema de ayuda interactivo del ecosistema SDLC. Recibe consulta en lenguaje natural y busca entre ${ecosystemStats.totalArtifacts} artefactos de 7 tipos (${ecosystemStats.skills} skills, ${ecosystemStats.commands} commands, ${ecosystemStats.rules} rules, ${ecosystemStats.hooks} hooks, ${ecosystemStats.mcps} MCPs, ${ecosystemStats.agents} agents, ${ecosystemStats.validationScripts} validation scripts, ${ecosystemStats.docsSupport} docs). Sugiere workflows paso a paso (${summaryStrings.workflowsWithSteps} enriquecidos). Filtrable por tipo de artefacto y por rol (PME, PO, TL, Dev, QA, Sec, DevOps, SM). Incluye 12 quick suggestions para escenarios comunes (nuevo proyecto, implementar ticket, testing, seguridad, hotfix, onboarding, deuda tecnica, etc.). Cada artefacto muestra: tier, fase SDLC, gate contribution, modelo IA, descripcion, roles autorizados, triggers de activacion, MCPs utilizados, skills/commands relacionados, precondicion y docPath. Cada workflow muestra secuencia ordenada de artefactos con tipo y accion. Registro de stats con conteos por tipo y totales.`,
-    argument: '[query]',
-    model: 'haiku',
-    roles: ['PME', 'PO', 'TL', 'Dev', 'QA', 'Sec', 'DevOps', 'SM'],
-    triggers: [
-      'help',
-      'what can you do',
-      'how do I',
-      'which command',
-      'which skill',
-      'where is',
-      'explain the process',
-      'que puedo hacer',
-      'ayuda',
-      'need help',
-      'guide me',
-      'show me',
-      'find artifact',
-      'buscar',
-      'como hago',
-      'que artefacto',
-      'workflow for',
-      'flujo para',
-      'quien puede',
-      'role filter',
-      'list skills',
-      'list commands',
-      'all artifacts',
-      'browse ecosystem',
-      'explorar ecosistema',
-      'quick start',
-      'getting started',
-      'nuevo proyecto',
-      'testing',
-      'deploy',
-      'seguridad',
-      'hotfix',
-      'onboarding',
-      'deuda tecnica',
-      'rules',
-      'templates',
-      'checklists',
-      'agents',
-      'hooks',
-      'MCPs',
-    ],
-    docPath: '.claude/commands/lidr-help.md',
   },
 
   // SDLC tracking (Phase 5) — branch/PR SDLC-tracking now lives in the base create-branch / create-pr commands

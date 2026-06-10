@@ -13,7 +13,7 @@ import {
   FolderTree,
   FileText,
 } from 'lucide-react';
-import { ecosystemStats, summaryStrings } from '@/data/computed/stats';
+import { ecosystemStats } from '@/data/computed/stats';
 
 // Inline color helpers
 export const getPhaseColorClass = (phaseId: number) => {
@@ -1136,12 +1136,6 @@ export const projectTree: TreeNode[] = [
             docPath: '.claude/commands/lidr-course-correct.md',
           },
           {
-            name: 'product-brief.md',
-            type: 'file',
-            desc: 'Producto brief ligero LIDR SDLC Methodology para definición rápida de productos',
-            docPath: '.claude/commands/lidr-product-brief.md',
-          },
-          {
             name: 'quick-dev.md',
             type: 'file',
             desc: 'Quick development workflow for small features and fixes',
@@ -1164,12 +1158,6 @@ export const projectTree: TreeNode[] = [
             type: 'file',
             desc: 'Sincroniza docs vs código',
             docPath: '.claude/commands/lidr-sync-docs.md',
-          },
-          {
-            name: 'lidr-help.md',
-            type: 'file',
-            desc: `Busca en ${ecosystemStats.totalWorkflowArtifacts} artefactos, sugiere ${summaryStrings.workflowsAvailable}`,
-            docPath: '.claude/commands/lidr-help.md',
           },
           {
             name: 'lidr-spec-new.md',

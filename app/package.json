@@ -32,7 +32,7 @@
     "validate:acceptance-criteria": "tsx ../.agents/_shared/lidr/validators/validate-acceptance-criteria.ts",
     "validate:skill-completeness": "tsx ../.agents/_shared/lidr/validators/validate-skill-completeness.ts",
     "validate:domain-agnostic": "tsx ../.agents/_shared/lidr/validators/validate-domain-agnostic.ts",
-    "validate:ecosystem-coherence": "tsx ../.agents/_shared/lidr/validators/validate-ecosystem-coherence.ts",
+    "validate:ecosystem-coherence": "npm run test:ecosystem",
     "lidr:init": "tsx scripts/lidr-init.ts",
     "lidr:init:apply": "tsx scripts/lidr-init.ts --apply",
     "lidr:init:dry-run": "tsx scripts/lidr-init.ts --dry-run",

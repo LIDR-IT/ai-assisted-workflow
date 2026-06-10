@@ -15,6 +15,8 @@ import { parse as parseYaml } from 'yaml';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { commands as appCommands } from '@/data/artifacts/commands';
+import { skills as appSkills } from '@/data/artifacts/skills';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url)); // app/src/__tests__
 const REPO = path.resolve(HERE, '../../..'); // repo root
@@ -34,7 +36,7 @@ const lsMd = (p: string) => (exists(p) ? fs.readdirSync(p).filter((f) => f.endsW
 
 function frontmatter(content: string): string | null {
   const m = content.match(/^---\n([\s\S]*?)\n---/);
-  return m ? m[1] : null;
+  return m ? (m[1] ?? null) : null;
 }
 function walk(dir: string, filter: (f: string) => boolean): string[] {
   if (!exists(dir)) {
@@ -78,7 +80,7 @@ describe('ecosystem counts are internally consistent (filesystem ↔ CLAUDE.md)'
   const claude = read(path.join(REPO, 'CLAUDE.md'));
   const claimed = (re: RegExp) => {
     const m = claude.match(re);
-    return m ? parseInt(m[1], 10) : null;
+    return m && m[1] ? parseInt(m[1], 10) : null;
   };
   it('skills: filesystem count matches the number CLAUDE.md advertises', () => {
     expect(skillDirs.length).toBe(claimed(/\*\*(\d+)\s+skills?\*\*/i));
@@ -297,4 +299,41 @@ describe('no fictional hooks are claimed anywhere in rules', () => {
       `${path.relative(AGENTS, file)} names fictional hooks as current: ${hits.join(', ')}`
     ).toEqual([]);
   });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// App registries must not advertise artifacts that don't exist on disk ("UI lies").
+// The audit found phantom commands (product-brief, help-as-command, validate-
+// requirements-cmd) and an under-count (26-vs-30) here that no test caught.
+describe('app artifact registries match the .agents/ filesystem', () => {
+  it('every command in artifacts/commands.ts exists on disk', () => {
+    const phantom = appCommands.filter((c) => !exists(path.join(AGENTS, 'commands', `${c.id}.md`)));
+    expect(
+      phantom.map((c) => c.id),
+      `commands.ts advertises non-existent commands: ${phantom.map((c) => c.id).join(', ')}`
+    ).toEqual([]);
+  });
+
+  it('commands.ts count matches the filesystem (no silent under-report)', () => {
+    expect(
+      appCommands.length,
+      `commands.ts lists ${appCommands.length} but .agents/commands has ${commandFiles.length}`
+    ).toBe(commandFiles.length);
+  });
+
+  it('every skill in artifacts/skills.ts exists on disk', () => {
+    const phantom = appSkills.filter((s) => !realSkillSet.has(s.id));
+    expect(
+      phantom.map((s) => s.id),
+      `skills.ts advertises non-existent skills: ${phantom.map((s) => s.id).join(', ')}`
+    ).toEqual([]);
+  });
+
+  it('skills.ts count matches the filesystem', () => {
+    expect(
+      appSkills.length,
+      `skills.ts lists ${appSkills.length} but .agents/skills has ${skillDirs.length}`
+    ).toBe(skillDirs.length);
+  });
+  // Note: docPath resolution (dead links) is covered by the integrity suite (t1/t2).
 });
