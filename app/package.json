@@ -10,6 +10,7 @@
     "test": "vitest --config ./vite.config.test.ts",
     "test:ui": "vitest --config ./vite.config.test.ts --ui",
     "test:run": "vitest run --config ./vite.config.test.ts",
+    "test:ecosystem": "vitest run --config ./vite.config.test.ts src/__tests__/ecosystem-coherence.test.ts",
     "test:coverage": "vitest run --config ./vite.config.test.ts --coverage",
     "validate:coherence": "tsx scripts/validate-coherence.ts",
     "validate:coherence:watch": "tsx watch scripts/validate-coherence.ts",

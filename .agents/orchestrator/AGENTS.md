@@ -1044,6 +1044,26 @@ ln -s ../.agents/skills .cursor/skills
 - VSCode: Open `.vscode/mcp.json` → Verify servers
 - Verify symlinks: `ls -la .cursor/skills .claude/skills`
 
+### 5. Ecosystem Regression Guard (codifies the coherence audit)
+
+`app/src/__tests__/ecosystem-coherence.test.ts` is a Vitest suite that reads the
+`.agents/` filesystem directly and **fails** if anyone reintroduces the classes of
+drift the 2026-06-11 A/B/C audit fixed:
+
+- counts (skills/commands/rules/subagents) drift from what `CLAUDE.md` advertises
+- a **dead skill/command name** or **fictional hook** survives in a command/subagent body
+- an **unprefixed legacy slash command** (`/advance-gate` …) appears in a body
+- a broken `@../rules|skills/*.md` reference
+- invalid skill/command **frontmatter YAML**, or a `lidr-*` skill with phase ∉ 0-4 / bad stage
+- `gate-evidence.yaml` references a producer that doesn't exist, or a gate with no required evidence
+
+It runs in CI (`test-coverage.yml` → blocking) and locally via `cd app && npm run test:ecosystem`.
+A fast counts guard also runs on `git push` (husky `pre-push`).
+
+**How to expand safely:** add the artifact in `.agents/`, run `./.agents/sync.sh`,
+then `cd app && npm run test:ecosystem` — a red test names the exact reference,
+count, or gate-evidence entry you still need to update. Green = coherent.
+
 ---
 
 ## Documentation System
