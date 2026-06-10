@@ -364,6 +364,57 @@ export const commands: Command[] = [
     docPath: '.claude/commands/lidr-spec-bulk-archive.md',
   },
 
+  // Tier 2 — Tactical (4, generic ticket/dev workflow)
+  {
+    id: 'lidr-create-ticket',
+    name: 'lidr-create-ticket',
+    tier: 'tactical',
+    description: 'Create a new ticket with full folder structure (ticket.md, plan.md, resources/)',
+    authorizedRoles: ['Dev', 'TL', 'PO'],
+    precondition: 'Ninguna',
+    argument: '[type]',
+    model: 'sonnet',
+    docPath: '.claude/commands/lidr-create-ticket.md',
+    relatedSkills: ['lidr-ticket-validation'],
+  },
+  {
+    id: 'lidr-enrich-ticket',
+    name: 'lidr-enrich-ticket',
+    tier: 'tactical',
+    description:
+      'Validate ticket completeness and structure using the lidr-ticket-validation skill',
+    authorizedRoles: ['Dev', 'TL', 'PO'],
+    precondition: 'Ticket existente en backlog/active/archived',
+    argument: '[ticket-id]',
+    model: 'sonnet',
+    docPath: '.claude/commands/lidr-enrich-ticket.md',
+    relatedSkills: ['lidr-ticket-validation'],
+  },
+  {
+    id: 'lidr-commit',
+    name: 'lidr-commit',
+    tier: 'tactical',
+    description: 'Create a conventional commit from staged changes following project standards',
+    authorizedRoles: ['Dev', 'TL'],
+    precondition: 'Cambios staged en git',
+    argument: '[commit-message]',
+    model: 'sonnet',
+    docPath: '.claude/commands/lidr-commit.md',
+    relatedSkills: ['lidr-commit-management'],
+  },
+  {
+    id: 'lidr-improve-docs',
+    name: 'lidr-improve-docs',
+    tier: 'tactical',
+    description: 'Audit and improve project documentation via the doc-improver agent',
+    authorizedRoles: ['TL', 'Dev', 'QA'],
+    precondition: 'Ninguna',
+    argument: '[path]',
+    model: 'sonnet',
+    docPath: '.claude/commands/lidr-improve-docs.md',
+    relatedSkills: ['lidr-audit-standards'],
+  },
+
   // Tier 3 — Utility (2, generic)
   {
     id: 'sync-setup',

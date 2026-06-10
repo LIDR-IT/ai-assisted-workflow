@@ -162,13 +162,15 @@ describe('IntegrityTests Data Layer', () => {
       // - 113 skills = 44 lidr-* + 69 bmad-*, matching `.agents/skills/` exactly
       //   (lidr-help added 2026-06-10 to complete the registry; it was on the
       //   filesystem but missing from the data registry).
-      // - 26 commands modelled in the registry (curated lidr-* + generic
-      //   sync-setup/test-hooks); lidr-help is a skill not a command, and
-      //   lidr-product-brief was removed from the ecosystem.
+      // - 30 commands modelled in the registry, matching `.agents/commands/`
+      //   exactly (curated lidr-* SDLC + spec-lifecycle + generic sync-setup/
+      //   test-hooks + lidr-commit/create-ticket/enrich-ticket/improve-docs added
+      //   2026-06-10 to close the silent under-report); lidr-help is a skill not
+      //   a command, and lidr-product-brief was removed from the ecosystem.
       // - 22 rules pre-spec-lifecycle + 2 new (spec-execution, model-selection) = 24 (Node-side scans .claude/rules)
       // - validationScripts: 31 - 1 = 30 (lidr-project-classifier's validate-examples.ts removed with the skill)
       expect(EXPECTED_COUNTS.skills).toBe(113);
-      expect(EXPECTED_COUNTS.commands).toBe(26);
+      expect(EXPECTED_COUNTS.commands).toBe(30);
       expect(EXPECTED_COUNTS.rules).toBe(24);
       expect(EXPECTED_COUNTS.validationScripts).toBe(30);
     });

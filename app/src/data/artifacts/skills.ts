@@ -350,7 +350,7 @@ export const skills: Skill[] = [
     id: 'lidr-impact-analysis',
     name: 'lidr-impact-analysis',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 5,
+    phaseNum: 4,
     stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
@@ -993,9 +993,9 @@ export const skills: Skill[] = [
   {
     id: 'bmad-tea',
     name: 'bmad-tea',
-    phase: 'BMad — Test Architect',
-    phaseNum: 200,
-    stage: 'qa',
+    phase: 'Anytime · anytime',
+    phaseNum: 0,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Master Test Architect and Quality Advisor. Use when the user asks to talk to Murat or requests the Test Architect.',
@@ -1019,9 +1019,9 @@ export const skills: Skill[] = [
   {
     id: 'bmad-teach-me-testing',
     name: 'bmad-teach-me-testing',
-    phase: 'BMad — Test Architect',
-    phaseNum: 200,
-    stage: 'qa',
+    phase: 'Anytime · anytime',
+    phaseNum: 0,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Teach testing progressively through structured sessions. Use when user says "lets learn testing" or "I want to study test practices".',
@@ -1218,9 +1218,9 @@ export const skills: Skill[] = [
   {
     id: 'bmad-create-architecture',
     name: 'bmad-create-architecture',
-    phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
-    stage: 'planning',
+    phase: 'Phase 3 — Solutioning · specification',
+    phaseNum: 3,
+    stage: 'specification',
     source: 'bmad',
     description:
       'Create architecture solution design decisions for AI agent consistency. Use when the user says "lets create architecture" or "create technical architecture".',
@@ -1681,9 +1681,9 @@ export const skills: Skill[] = [
   {
     id: 'bmad-technical-research',
     name: 'bmad-technical-research',
-    phase: 'BMad — Utilities',
-    phaseNum: 200,
-    stage: 'planning',
+    phase: 'Phase 1 — Analysis · analysis',
+    phaseNum: 1,
+    stage: 'analysis',
     source: 'bmad',
     description:
       'Conduct technical research on technologies and architecture. Use when the user wants to produce a technical research report.',
