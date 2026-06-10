@@ -111,10 +111,15 @@ export function ArtifactList({ artifacts, itemsPerPage = 20 }: ArtifactListProps
                 <p className="text-sm text-slate-600 mb-2">{artifact.description}</p>
 
                 {artifact.phase && (
-                  <div className="mb-2">
+                  <div className="mb-2 flex flex-wrap gap-1">
                     <span className="inline-block px-2 py-0.5 text-xs rounded-md bg-purple-100 text-purple-700">
                       {artifact.phase}
                     </span>
+                    {artifact.stage && (
+                      <span className="inline-block px-2 py-0.5 text-xs rounded-md bg-slate-100 text-slate-600">
+                        stage: {artifact.stage}
+                      </span>
+                    )}
                   </div>
                 )}
 

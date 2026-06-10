@@ -2,12 +2,12 @@
   "metadata": {
     "id": "aramis-flujo",
     "title": "Flujo E2E SDD — Grupo Aramis (Polaris + Bridge)",
-    "description": "Flujo TO-BE de la metodología SDD que LIDR entrega. v1.6.0: alineada al scope de consultoría. LIDR entrega el framework y forma al equipo; no desarrolla a medida. Convenciones de los nodos: sin marcador = skill/command del framework ya disponible; [GAP] = capacidad no cubierta por el framework (informativo, Aramis puede crearla internamente o esperar versión futura, fuera de scope LIDR); [CLIENTE] = artefacto, herramienta o proceso propio del cliente que encaja en este punto del flujo. Preserva el Pre-Code-Review CI Gate existente y el flujo de soporte paralelo (hotfix main→main).",
-    "version": "1.6.0",
+    "description": "Flujo TO-BE de la metodología SDD que LIDR entrega. v2.1.0: lidr-impact-analysis cierra los ex-[GAP] de contratos (Gate 4) y multi-variante (Gate 2) — el framework aporta procedimiento + formatos de registry + report; Aramis pobla los registries. Alineada al modelo de fases unificado BMad × LIDR (Phase 0 Context → 1 Analysis → 2 Planning → 3 Solutioning → 4 Implementation; gates G0-G7 sin renumerar — ver .agents/_shared/lidr/UNIFIED-PHASES.md). Aramis es brownfield (Polaris + Bridge existentes): el flujo arranca en Phase 0 Context. Convenciones de los nodos: sin marcador = skill/command del framework ya disponible (prefijos lidr-/bmad-); [CLIENTE] = artefacto, herramienta, dato o proceso propio del cliente que encaja en este punto del flujo. Preserva el Pre-Code-Review CI Gate existente y el flujo de soporte paralelo (hotfix main→main).",
+    "version": "2.1.0",
     "client": "Aramis",
     "industry": "Automotive Multi-country Retail",
-    "tags": ["aramis", "polaris", "bridge", "flujo", "gates", "to-be"],
-    "lastUpdated": "2026-05-15",
+    "tags": ["aramis", "polaris", "bridge", "flujo", "gates", "to-be", "unified-phases"],
+    "lastUpdated": "2026-06-10",
     "author": "PME: Luis Urdaneta",
     "sourceReport": "docs/guides/lidr-core/aramis-discovery-report.md@1.4.0"
   },
@@ -15,15 +15,15 @@
     "metadata": {
       "id": "aramis-flujo-diagram",
       "title": "Flujo E2E Aramis con Quality Gates",
-      "description": "Diagrama React Flow del flujo SDLC LIDR adaptado a Aramis con 8 gates (0-7), Pre-Code-Review CI Gate existente preservado, Bridge Impact Analyzer y flujo de soporte paralelo (hotfix).",
-      "version": "1.4.0",
+      "description": "Diagrama React Flow del flujo SDLC unificado BMad × LIDR adaptado a Aramis: Phase 0 Context (brownfield) + 8 gates (0-7), Pre-Code-Review CI Gate existente preservado, lidr-impact-analysis (contratos Bridge + multi-variante) y flujo de soporte paralelo (hotfix).",
+      "version": "2.1.0",
       "client": "Aramis",
       "industry": "Automotive Multi-country Retail",
-      "tags": ["aramis", "flujo", "gates", "react-flow"]
+      "tags": ["aramis", "flujo", "gates", "react-flow", "unified-phases"]
     },
     "configuration": {
-      "height": 2600,
-      "exportName": "Aramis_Flujo_SDD_Gates_v1_6_0",
+      "height": 2700,
+      "exportName": "Aramis_Flujo_SDD_Gates_v2_1_0",
       "layout": "TB"
     },
     "nodes": [
@@ -41,7 +41,7 @@
         "y": 0,
         "label": "CTO / R&D",
         "variant": "purple",
-        "subtitle": "Solicitudes técnicas · Investigación"
+        "subtitle": "Solicitudes técnicas · bmad-technical-research"
       },
       {
         "id": "hotfix-in",
@@ -49,84 +49,100 @@
         "y": 0,
         "label": "Hotfix Producción",
         "variant": "amber",
-        "subtitle": "Incidente Polaris/Bridge — flujo paralelo"
+        "subtitle": "Incidente Polaris/Bridge — flujo paralelo · bmad-investigate"
       },
 
+      {
+        "id": "ctx",
+        "x": 100,
+        "y": 110,
+        "label": "PHASE 0: Context (brownfield)",
+        "variant": "slate",
+        "subtitle": "bmad-document-project + bmad-generate-project-context · CLAUDE.md por repo (lidr-generate-rule) · checklist Context Ready"
+      },
       {
         "id": "gate0",
         "x": 400,
         "y": 110,
-        "label": "🚦 GATE 0: Intake",
+        "label": "🚦 GATE 0: Intake (cierra Phase 1 Analysis)",
         "variant": "amber",
-        "subtitle": "BC aprobado · Brand/país declarado · Sponsor identificado"
+        "subtitle": "BC aprobado (lidr-business-case) · Brand/país declarado · Sponsor identificado · Context Ready (brownfield)"
       },
 
       {
         "id": "disc",
         "x": 400,
         "y": 220,
-        "label": "Discovery & Análisis",
+        "label": "PHASE 2: Planning — Discovery & Análisis",
         "variant": "blue",
-        "subtitle": "Viabilidad técnica + funcional · challenge sessions formalizadas"
+        "subtitle": "bmad-brainstorming / bmad-*-research · challenge sessions formalizadas"
       },
       {
         "id": "prd-t",
         "x": 200,
         "y": 330,
-        "label": "PRD Técnico",
+        "label": "PRD Unificado (F+T)",
         "variant": "blue",
-        "subtitle": "skill prd-tecnico · MCP Polaris Knowledge Agent opcional [CLIENTE]"
+        "subtitle": "bmad-prd (un solo PRD funcional + técnico) · review cruzado lidr-review-cruzado · MCP Polaris Knowledge Agent opcional [CLIENTE]"
       },
       {
         "id": "prd-f",
         "x": 600,
         "y": 330,
-        "label": "PRD Funcional",
+        "label": "UX Design Spec",
         "variant": "blue",
-        "subtitle": "skill prd-funcional · convención global vs variant-specific (uso del equipo)"
+        "subtitle": "bmad-ux (si hay UI) · convención global vs variant-specific (uso del equipo)"
       },
 
       {
         "id": "gate1",
         "x": 400,
         "y": 440,
-        "label": "🚦 GATE 1: PRD Aprobado",
+        "label": "🚦 GATE 1: PRD Aprobado (Planning → Solutioning)",
         "variant": "amber",
-        "subtitle": "Review cruzado Producto ↔ Tech Lead · Riesgos identificados"
+        "subtitle": "Review cruzado Producto ↔ Tech Lead · Riesgos identificados (lidr-risk-log)"
       },
 
+      {
+        "id": "arch",
+        "x": 130,
+        "y": 550,
+        "label": "Arquitectura + ADRs",
+        "variant": "cyan",
+        "subtitle": "bmad-create-architecture + lidr-adr · documenta Polaris (PHP hexagonal) + Bridge + contratos · evidencia Gate 2"
+      },
       {
         "id": "rf",
         "x": 400,
         "y": 550,
         "label": "RFs + NFRs con BDD",
         "variant": "cyan",
-        "subtitle": "Hereda Gherkin existente · NFRs medibles (incl. CI rápido)"
+        "subtitle": "lidr-generate-rf + lidr-generate-nfr · hereda Gherkin existente · NFRs medibles (incl. CI rápido)"
       },
       {
         "id": "cross-country",
         "x": 700,
         "y": 550,
-        "label": "Compatibilidad multi-variante [GAP]",
+        "label": "Compatibilidad multi-variante — ✅ lidr-impact-analysis",
         "variant": "cyan",
-        "subtitle": "Capacidad no cubierta por el framework · requiere matriz interna del cliente"
+        "subtitle": "Modo variant-compatibility: RFs vs matriz de variantes · evidencia opcional Gate 2 · [CLIENTE: registro de datos — poblar variant-matrix.yaml]"
       },
       {
         "id": "rtm",
         "x": 400,
         "y": 660,
-        "label": "Trazabilidad + Epic Breakdown",
+        "label": "RTM + Epic Breakdown",
         "variant": "cyan",
-        "subtitle": "Necesidad→PRD→RF→código · Dependencias Bridge"
+        "subtitle": "lidr-validate-requirements (RTM) + bmad-create-epics-and-stories · dependencias Bridge"
       },
 
       {
         "id": "gate2",
         "x": 400,
         "y": 770,
-        "label": "🚦 GATE 2: Especificación + ATDD",
+        "label": "🚦 GATE 2: Specs Complete + ATDD",
         "variant": "amber",
-        "subtitle": "RFs+NFRs+trazabilidad · BDD validado por QA pre-dev (PP-03)"
+        "subtitle": "Arquitectura + RFs + NFRs + RTM · test design (bmad-testarch-test-design) · BDD validado por QA pre-dev (PP-03)"
       },
 
       {
@@ -135,7 +151,7 @@
         "y": 880,
         "label": "User Stories",
         "variant": "teal",
-        "subtitle": "Hereda BDD del RF · Brand-specific declarado"
+        "subtitle": "lidr-user-stories · hereda BDD del RF · brand-specific declarado"
       },
       {
         "id": "refine",
@@ -143,16 +159,16 @@
         "y": 990,
         "label": "Refinement + Sprint Planning",
         "variant": "teal",
-        "subtitle": "Scrumban 2 sem · Capacidad con buffer 15-20% · Sprint Review formal"
+        "subtitle": "lidr-sprint-capacity (buffer 15-20%) + lidr-refinement-notes + bmad-sprint-planning · readiness: bmad-check-implementation-readiness"
       },
 
       {
         "id": "gate3",
         "x": 400,
         "y": 1100,
-        "label": "🚦 GATE 3: Sprint Committed",
+        "label": "🚦 GATE 3: Ready to Implement (Solutioning → Implementation)",
         "variant": "amber",
-        "subtitle": "DoR por US · Contratos Bridge referenciados"
+        "subtitle": "DoR por US · readiness report · capacity confirmada · Contratos Bridge referenciados"
       },
 
       {
@@ -161,7 +177,7 @@
         "y": 1210,
         "label": "Desarrollo",
         "variant": "orange",
-        "subtitle": "CLAUDE.md (skill generate-rule) · MCP Redmine+GitLab del cliente [CLIENTE]"
+        "subtitle": "CLAUDE.md (lidr-generate-rule) · /lidr-spec-new → ff → apply → verify (AGENT MUST EXECUTE tests) o bmad-dev-story · MCP Redmine+GitLab del cliente [CLIENTE]"
       },
       {
         "id": "ci-existing",
@@ -169,15 +185,15 @@
         "y": 1320,
         "label": "✅ Pre-Code-Review CI Gate",
         "variant": "emerald",
-        "subtitle": "PHPStan + hex-validators + acceptance tests EXISTENTES (preserved + extended)"
+        "subtitle": "PHPStan + hex-validators + acceptance tests EXISTENTES (preserved + extended) · scaffold extra: bmad-testarch-ci"
       },
       {
         "id": "bridge-impact",
         "x": 700,
         "y": 1320,
-        "label": "Análisis de impacto sobre contratos [GAP]",
+        "label": "Análisis de impacto sobre contratos — ✅ lidr-impact-analysis",
         "variant": "red",
-        "subtitle": "Capacidad no cubierta por el framework · requiere catálogo de contratos del cliente"
+        "subtitle": "Modo contract-impact: diff vs catálogo de contratos Bridge · verdicto SAFE/REVIEW/BLOCKING, evidencia opcional Gate 4 · [CLIENTE: registro de datos — poblar contract-registry.yaml] · forense post-rotura: bmad-investigate"
       },
       {
         "id": "sast",
@@ -185,7 +201,7 @@
         "y": 1430,
         "label": "SAST + SCA",
         "variant": "red",
-        "subtitle": "skill vuln-assessment · Hook GDPR [CLIENTE: implementa Ciberseguridad Aramis]"
+        "subtitle": "lidr-vuln-assessment · Hook GDPR [CLIENTE: implementa Ciberseguridad Aramis]"
       },
       {
         "id": "sast-blk",
@@ -199,9 +215,9 @@
         "id": "review",
         "x": 400,
         "y": 1540,
-        "label": "Code Review Dual [GAP]",
+        "label": "Code Review Adversarial ✅",
         "variant": "orange",
-        "subtitle": "Capacidad no cubierta por el framework · cliente puede crearla con skill-development"
+        "subtitle": "bmad-code-review (3 capas paralelas: técnica + edge cases + acceptance criteria) — cubre PP-02 · runtime/UI review: lidr-playwright-cli"
       },
 
       {
@@ -210,7 +226,7 @@
         "y": 1650,
         "label": "🚦 GATE 4: DoD + Code Quality",
         "variant": "amber",
-        "subtitle": "cl-dod · SAST limpio · Bridge OK · Review dual aprobado"
+        "subtitle": "Checklist DoD · test-report PASSED (/lidr-spec-verify) · SAST limpio · Bridge OK · handoff lidr-dev-handoff-qa"
       },
 
       {
@@ -219,7 +235,7 @@
         "y": 1760,
         "label": "QA + Testing",
         "variant": "sky",
-        "subtitle": "skills test-plan + create-test-cases · Cypress en pipeline [CLIENTE: decide repo vs job]"
+        "subtitle": "bmad-testarch-test-design + lidr-create-test-cases · regresión bmad-testarch-automate · E2E bmad-qa-generate-e2e-tests · Cypress en pipeline [CLIENTE: decide repo vs job]"
       },
       {
         "id": "bugs",
@@ -227,7 +243,7 @@
         "y": 1760,
         "label": "Bug Fix Cycle",
         "variant": "orange",
-        "subtitle": "Reporta al Dev · Re-pipeline completo"
+        "subtitle": "lidr-bug-report → Dev · Re-pipeline completo"
       },
 
       {
@@ -236,7 +252,7 @@
         "y": 1870,
         "label": "🚦 GATE 5: QA Sign-off",
         "variant": "amber",
-        "subtitle": "All tests PASS · so-qa firmado (Sheila) · 0 bugs bloqueantes"
+        "subtitle": "All tests PASS · trazabilidad bmad-testarch-trace · qa-signoff firmado (Sheila) · 0 bugs bloqueantes"
       },
 
       {
@@ -245,7 +261,7 @@
         "y": 1980,
         "label": "DAST + Pen Testing",
         "variant": "red",
-        "subtitle": "Coordinado con Ciberseguridad Aramis Group (VP)"
+        "subtitle": "lidr-dast-interpretation + lidr-pentest-report · Coordinado con Ciberseguridad Aramis Group (VP)"
       },
       {
         "id": "dast-blk",
@@ -262,7 +278,7 @@
         "y": 2090,
         "label": "🚦 GATE 6: Security Sign-off",
         "variant": "amber",
-        "subtitle": "OWASP · so-security firmado por VP Seguridad Aramis"
+        "subtitle": "OWASP (lidr-security-checklist) · security-signoff firmado por VP Seguridad Aramis"
       },
 
       {
@@ -271,7 +287,7 @@
         "y": 2200,
         "label": "Comité de Cambios (CR)",
         "variant": "emerald",
-        "subtitle": "Gate 7: aprobación deploy · Análisis cross-country"
+        "subtitle": "Gate 7: lidr-change-request + lidr-rollback-plan · Análisis cross-country"
       },
       {
         "id": "deploy",
@@ -295,22 +311,25 @@
         "y": 2530,
         "label": "Retrospectiva + Sprint Review",
         "variant": "violet",
-        "subtitle": "KPIs: lead time, bugs AI vs humanos · Recupera Sprint Review"
+        "subtitle": "bmad-retrospective (data-driven) · lidr-postmortem solo si hubo incidente · KPIs: lead time, bugs AI vs humanos"
       }
     ],
     "edges": [
       { "id": "e-biz-g0", "source": "biz", "target": "gate0", "label": "Presenta caso" },
       { "id": "e-cto-g0", "source": "cto", "target": "gate0", "label": "Presenta solicitud" },
+      { "id": "e-ctx-g0", "source": "ctx", "target": "gate0", "label": "Context Ready" },
 
       { "id": "e-g0-disc", "source": "gate0", "target": "disc", "label": "Aprobado" },
-      { "id": "e-disc-prdt", "source": "disc", "target": "prd-t", "label": "Análisis técnico" },
-      { "id": "e-disc-prdf", "source": "disc", "target": "prd-f", "label": "Análisis funcional" },
-      { "id": "e-prdt-g1", "source": "prd-t", "target": "gate1", "label": "PRD-T" },
-      { "id": "e-prdf-g1", "source": "prd-f", "target": "gate1", "label": "PRD-F" },
+      { "id": "e-disc-prdt", "source": "disc", "target": "prd-t", "label": "PRD unificado" },
+      { "id": "e-disc-prdf", "source": "disc", "target": "prd-f", "label": "Si hay UI" },
+      { "id": "e-prdt-g1", "source": "prd-t", "target": "gate1", "label": "PRD F+T" },
+      { "id": "e-prdf-g1", "source": "prd-f", "target": "gate1", "label": "UX spec" },
 
+      { "id": "e-g1-arch", "source": "gate1", "target": "arch", "label": "Diseño técnico" },
       { "id": "e-g1-rf", "source": "gate1", "target": "rf", "label": "Aprobado" },
       { "id": "e-rf-cc", "source": "rf", "target": "cross-country", "label": "Análisis impacto" },
       { "id": "e-cc-rtm", "source": "cross-country", "target": "rtm", "label": "OK" },
+      { "id": "e-arch-rtm", "source": "arch", "target": "rtm", "label": "Epics desde arq." },
       { "id": "e-rf-rtm", "source": "rf", "target": "rtm", "label": "Mapea" },
       { "id": "e-rtm-g2", "source": "rtm", "target": "gate2", "label": "Completo" },
 
@@ -318,7 +337,7 @@
       { "id": "e-us-refine", "source": "us", "target": "refine", "label": "Refina" },
       { "id": "e-refine-g3", "source": "refine", "target": "gate3", "label": "Compromete" },
 
-      { "id": "e-g3-dev", "source": "gate3", "target": "dev", "label": "Committed" },
+      { "id": "e-g3-dev", "source": "gate3", "target": "dev", "label": "Ready" },
       { "id": "e-dev-ci", "source": "dev", "target": "ci-existing", "label": "PR abierto" },
       {
         "id": "e-dev-bridge",
@@ -360,7 +379,7 @@
         "label": "Corregir + re-scan",
         "style": "dashed"
       },
-      { "id": "e-review-g4", "source": "review", "target": "gate4", "label": "Dual aprobado" },
+      { "id": "e-review-g4", "source": "review", "target": "gate4", "label": "Review aprobado" },
 
       { "id": "e-g4-qa", "source": "gate4", "target": "qa", "label": "Merge" },
       { "id": "e-qa-bugs", "source": "qa", "target": "bugs", "label": "Reporta bugs" },
@@ -411,72 +430,79 @@
       }
     ],
     "legend": [
-      { "color": "bg-purple-200", "label": "Originación (Negocio / CTO / Hotfix)" },
-      { "color": "bg-blue-200", "label": "Discovery & PRD" },
+      { "color": "bg-slate-200", "label": "Phase 0 — Context (brownfield: Polaris + Bridge)" },
+      { "color": "bg-purple-200", "label": "Phase 1 — Analysis (Negocio / CTO / Hotfix)" },
+      { "color": "bg-blue-200", "label": "Phase 2 — Planning (PRD unificado bmad-prd + UX)" },
       {
         "color": "bg-cyan-200",
-        "label": "Especificación (RF + NFR · [GAP] compatibilidad multi-variante)"
+        "label": "Phase 3 — Solutioning · specification (arquitectura + RF/NFR + RTM · ✅ lidr-impact-analysis multi-variante [CLIENTE: matriz])"
       },
-      { "color": "bg-teal-200", "label": "User Stories + Sprint Planning" },
-      { "color": "bg-orange-200", "label": "Desarrollo · [GAP] Code Review Dual" },
+      {
+        "color": "bg-teal-200",
+        "label": "Phase 3 — Solutioning · sprint-planning (US + readiness)"
+      },
+      {
+        "color": "bg-orange-200",
+        "label": "Phase 4 — Implementation · development (spec lifecycle + bmad-code-review)"
+      },
       { "color": "bg-emerald-200", "label": "Pre-Code-Review CI Gate existente (cliente)" },
       {
         "color": "bg-red-200",
-        "label": "Seguridad · [GAP] análisis de contratos · Hook GDPR [CLIENTE]"
+        "label": "Implementation · security · ✅ lidr-impact-analysis contratos [CLIENTE: catálogo] · Hook GDPR [CLIENTE]"
       },
-      { "color": "bg-sky-200", "label": "QA / Testing" },
-      { "color": "bg-emerald-200", "label": "Despliegue" },
-      { "color": "bg-amber-200", "label": "🚦 Quality Gate (obligatorio)" },
-      { "color": "bg-violet-200", "label": "Retrospectiva / Sprint Review" }
+      { "color": "bg-sky-200", "label": "Implementation · qa (testarch + test cases BDD)" },
+      { "color": "bg-emerald-200", "label": "Implementation · release (CR + deploy)" },
+      { "color": "bg-amber-200", "label": "🚦 Quality Gate (obligatorio, G0-G7)" },
+      { "color": "bg-violet-200", "label": "Retrospectiva / Sprint Review (bmad-retrospective)" }
     ]
   },
   "gatesSummary": [
     {
       "gate": "Gate 0",
-      "name": "Intake",
-      "criteria": "Business Case aprobado (skill business-case) · Brand/país originador declarado (convención del equipo, mitiga PP-06) · Sponsor identificado · Proyecto creado vía tracking-integration (adapters Jira/Linear; otros trackers son responsabilidad del cliente)",
+      "name": "Intake (cierra Phase 1 Analysis)",
+      "criteria": "Business Case aprobado (lidr-business-case) · Brand/país originador declarado (convención del equipo, mitiga PP-06) · Sponsor identificado · Proyecto creado vía lidr-tracking-integration (adapters Jira/Linear; otros trackers son responsabilidad del cliente) · Brownfield: checklist Context Ready cumplido (bmad-document-project + bmad-generate-project-context ejecutados, CLAUDE.md por repo)",
       "owner": "PME + Liderazgo (Álvaro, David)"
     },
     {
       "gate": "Gate 1",
-      "name": "PRD Aprobado",
-      "criteria": "PRD-T + PRD-F completos (skills prd-tecnico + prd-funcional) · Review cruzado formalizado (skill review-cruzado) · Riesgos registrados (skill risk-log) · Si Aramis decide conectar su Polaris Knowledge Agent vía mcp-integration, queda como contexto adicional [CLIENTE]",
+      "name": "PRD Aprobado (Planning → Solutioning)",
+      "criteria": "PRD unificado F+T completo (bmad-prd — reemplaza los antiguos PRD-T/PRD-F separados) · Review cruzado formalizado (lidr-review-cruzado) · UX spec si hay UI (bmad-ux) · Riesgos registrados (lidr-risk-log) · Si Aramis decide conectar su Polaris Knowledge Agent vía lidr-mcp-integration, queda como contexto adicional [CLIENTE]",
       "owner": "Producto + Tech Lead (Tribu correspondiente)"
     },
     {
       "gate": "Gate 2",
-      "name": "Especificación + ATDD",
-      "criteria": "RFs+NFRs+trazabilidad completos (skills generate-rf + generate-nfr + validate-requirements) · BDD validado con bdd-patterns · QA valida criterios Gherkin pre-'Ready for Dev' (la transición en el tracker la cablea Aramis) · Compatibilidad multi-variante: análisis manual sobre la matriz interna del cliente [GAP framework + CLIENTE]",
+      "name": "Specs Complete + ATDD (Solutioning: specification → sprint-planning)",
+      "criteria": "Arquitectura documentada (bmad-create-architecture + lidr-adr — evidencia movida de G1 a G2 en el modelo unificado) · RFs+NFRs+RTM completos (lidr-generate-rf + lidr-generate-nfr + lidr-validate-requirements) · Epics descompuestas (bmad-create-epics-and-stories) · Test design (bmad-testarch-test-design) · QA valida criterios Gherkin pre-'Ready for Dev' (ATDD via bmad-testarch-atdd; la transición en el tracker la cablea Aramis) · Compatibilidad multi-variante: lidr-impact-analysis (modo variant-compatibility) sobre la matriz de variantes — evidencia opcional ✅ [CLIENTE: poblar variant-matrix.yaml; sin matriz, checklist manual guiado]",
       "owner": "PO + Tech Lead + QA Lead"
     },
     {
       "gate": "Gate 3",
-      "name": "Sprint Committed",
-      "criteria": "DoR cumplida por cada US individual (checklist en skills/refinement-notes) · Capacidad confirmada con buffer 15-20% (skill sprint-capacity) · Refinement formalizado (skill refinement-notes)",
+      "name": "Ready to Implement (Solutioning → Implementation)",
+      "criteria": "DoR cumplida por cada US individual (checklist en lidr-refinement-notes) · Readiness report (bmad-check-implementation-readiness: PRD/UX/Arch/Epics completos) · Sprint plan generado (bmad-sprint-planning) · Capacidad confirmada con buffer 15-20% (lidr-sprint-capacity)",
       "owner": "PO + Tech Lead + Scrum"
     },
     {
       "gate": "Gate 4",
-      "name": "DoD + Code Quality",
-      "criteria": "Pre-Code-Review CI Gate del cliente preservado tal cual ✅ (PHPStan + hex-validators + acceptance — propiedad de Aramis) · checklist DoD cumplida (incluido en skill pr-description) · Handoff QA generado (skill dev-handoff-qa) · Code Review Dual: capacidad no cubierta por el framework hoy [GAP, Aramis decide si crear skill propia] · Análisis de impacto sobre contratos: idem [GAP + requiere catálogo del cliente]",
+      "name": "DoD + Code Quality (Implementation: development → qa)",
+      "criteria": "Pre-Code-Review CI Gate del cliente preservado tal cual ✅ (PHPStan + hex-validators + acceptance — propiedad de Aramis) · Checklist DoD cumplida (lidr-pr-description) · test-report PASSED si el ticket usó el spec lifecycle (/lidr-spec-verify — la IA ejecuta unit + curl + Playwright, rule spec-execution) · Code review adversarial (bmad-code-review: 3 capas técnico + edge cases + acceptance — cubre PP-02 ✅) · Runtime/UI review (lidr-playwright-cli) · Handoff QA generado (lidr-dev-handoff-qa) · Análisis de impacto sobre contratos: lidr-impact-analysis (modo contract-impact) con verdicto SAFE/REVIEW/BLOCKING — evidencia opcional ✅ [CLIENTE: poblar contract-registry.yaml; forense post-rotura con bmad-investigate]",
       "owner": "TL + Dev (driver: Dídac inicial)"
     },
     {
       "gate": "Gate 5",
-      "name": "QA Sign-off",
-      "criteria": "Todos los test cases PASS (skills test-plan + create-test-cases + regression-suite) · so-qa firmado por QA Lead · 0 bugs bloqueantes · Cypress en pipeline: decisión del cliente sobre repo vs job [CLIENTE]",
+      "name": "QA Sign-off (Implementation: qa → security)",
+      "criteria": "Todos los test cases PASS (bmad-testarch-test-design + lidr-create-test-cases + bmad-testarch-automate) · Trazabilidad RF↔test verificada (bmad-testarch-trace) · qa-signoff firmado por QA Lead · 0 bugs bloqueantes · E2E coverage ampliable con bmad-qa-generate-e2e-tests · Cypress en pipeline: decisión del cliente sobre repo vs job [CLIENTE]",
       "owner": "QA Lead (Sheila)"
     },
     {
       "gate": "Gate 6",
-      "name": "Security Sign-off",
-      "criteria": "OWASP Top 10 OK (skill security-checklist) · SAST/SCA interpretado (skill vuln-assessment) · DAST si aplica (skill dast-interpretation) · so-security firmado por VP Seguridad del cliente · Hook GDPR: lo implementa Ciberseguridad Aramis usando el patrón hook-development que LIDR enseña [CLIENTE]",
+      "name": "Security Sign-off (Implementation: security → release)",
+      "criteria": "OWASP Top 10 OK (lidr-security-checklist) · SAST/SCA interpretado (lidr-vuln-assessment) · DAST si aplica (lidr-dast-interpretation) · security-signoff firmado por VP Seguridad del cliente · Hook GDPR: lo implementa Ciberseguridad Aramis usando el patrón lidr-hook-development que LIDR enseña [CLIENTE]",
       "owner": "VP Seguridad Aramis Group + Sec Lead"
     },
     {
       "gate": "Gate 7",
-      "name": "Deploy to Production",
-      "criteria": "CR aprobado (skill change-request) · Rollback plan documentado (skill rollback-plan) · Release notes publicadas (skill release-notes + ▸ /create-release-notes; ejecución asistida en el primer ciclo) · cl-postdeploy · Hotfix paralelo permitido con CR abreviado · Pipeline y monitoring son responsabilidad del cliente [CLIENTE]",
+      "name": "Release (Implementation: release → Producción)",
+      "criteria": "CR aprobado (lidr-change-request) · Rollback plan documentado (lidr-rollback-plan) · Release notes publicadas (lidr-release-notes + ▸ /lidr-create-release-notes; ejecución asistida en el primer ciclo) · Checklist post-deploy · Retro post-deploy programada (bmad-retrospective; lidr-postmortem solo si incidente) · Hotfix paralelo permitido con CR abreviado · Pipeline y monitoring son responsabilidad del cliente [CLIENTE]",
       "owner": "PME + DevOps + Plataforma"
     }
   ]
