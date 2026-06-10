@@ -4,17 +4,17 @@ import { ecosystemStats, automationStats, summaryStrings } from '../simple-stats
 describe('simple-stats', () => {
   describe('ecosystemStats', () => {
     it('has correct base counts', () => {
-      // Post-merge BMAD + LIDR Spec Lifecycle, after removal of 3 deleted artifacts
-      // (skill lidr-project-classifier + commands lidr-document-project, lidr-check-readiness):
-      // - skills: 42 LIDR + 69 BMAD = 111
-      // - commands: 21 LIDR SDLC + 7 lidr-spec-* + 4 generic = 32
+      // Post-merge BMAD + LIDR Spec Lifecycle, synced to filesystem reality
+      // (.agents/skills, .agents/commands, .agents/rules, .agents/subagents):
+      // - skills: 44 LIDR + 69 BMAD = 113 (matches `.agents/skills/`)
+      // - commands: 24 LIDR + 6 generic = 30 (matches `.agents/commands/`)
       // - rules: 7 LIDR SDLC + 17 generic = 24
       // - mcps: context7, playwright, chrome-devtools = 3
       // - hooks: 3 LIDR + 3 generic = 6
       // - agents: 10 LIDR + 13 BMAD = 23
-      expect(ecosystemStats.skills).toBe(111);
+      expect(ecosystemStats.skills).toBe(113);
       expect(ecosystemStats.automatedSkills).toBe(8);
-      expect(ecosystemStats.commands).toBe(32);
+      expect(ecosystemStats.commands).toBe(30);
       expect(ecosystemStats.rules).toBe(24);
       expect(ecosystemStats.mcps).toBe(3);
       expect(ecosystemStats.hooks).toBe(6);
@@ -30,16 +30,16 @@ describe('simple-stats', () => {
     });
 
     it('has correct SDLC structure counts', () => {
-      expect(ecosystemStats.gates).toBe(8); // Gates 0-7
-      expect(ecosystemStats.phases).toBe(9); // Phases 0-8
+      expect(ecosystemStats.gates).toBe(8); // Gates G0-G7
+      expect(ecosystemStats.phases).toBe(5); // Unified Phases 0-4 (legacy 0-8 survive as stages)
     });
 
     it('has correct command tier breakdown', () => {
-      expect(ecosystemStats.orchestratorCommands).toBe(10);
+      expect(ecosystemStats.orchestratorCommands).toBe(9);
       expect(ecosystemStats.tacticalCommands).toBe(19);
-      expect(ecosystemStats.utilityCommands).toBe(1);
+      expect(ecosystemStats.utilityCommands).toBe(2);
 
-      // 10 + 19 + 1 = 30 (LIDR tactical now includes 7 lidr-spec-* + 6 base + 6 enhanced/quick)
+      // 9 + 19 + 2 = 30 (matches `.agents/commands/`)
       const totalBasicCommands =
         ecosystemStats.orchestratorCommands +
         ecosystemStats.tacticalCommands +
@@ -201,8 +201,11 @@ describe('simple-stats', () => {
     });
 
     it('phases and gates have correct relationship', () => {
-      // Should have 9 phases (0-8) and 8 gates (0-7)
-      expect(ecosystemStats.phases).toBe(ecosystemStats.gates + 1);
+      // Unified model: 5 phases (0-4, BMad numbering) and 8 gates (G0-G7).
+      // The legacy LIDR phases (0-8) survive as stages, so the old
+      // phases === gates + 1 relationship no longer holds.
+      expect(ecosystemStats.phases).toBe(5);
+      expect(ecosystemStats.gates).toBe(8);
     });
 
     it('total workflow artifacts is subset of total artifacts', () => {

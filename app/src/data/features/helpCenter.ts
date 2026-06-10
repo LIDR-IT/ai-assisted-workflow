@@ -94,8 +94,8 @@ export const skills: Artifact[] = [
 
   // Fase 1 — Originacion (4)
   {
-    id: 'business-case',
-    name: 'business-case',
+    id: 'lidr-business-case',
+    name: 'lidr-business-case',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 1 — Analysis',
@@ -112,11 +112,11 @@ export const skills: Artifact[] = [
     ],
     roles: ['PME', 'PO'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/business-case/SKILL.md',
+    docPath: '.claude/skills/lidr-business-case/SKILL.md',
   },
   {
-    id: 'kickoff',
-    name: 'kickoff',
+    id: 'lidr-kickoff',
+    name: 'lidr-kickoff',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 1 — Analysis',
@@ -127,11 +127,11 @@ export const skills: Artifact[] = [
     triggers: ['create kickoff', 'start project', 'kick-off meeting', 'project kickoff'],
     roles: ['PME'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/kickoff/SKILL.md',
+    docPath: '.claude/skills/lidr-kickoff/SKILL.md',
   },
   {
-    id: 'stakeholder-map',
-    name: 'stakeholder-map',
+    id: 'lidr-stakeholder-map',
+    name: 'lidr-stakeholder-map',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 1 — Analysis',
@@ -146,11 +146,11 @@ export const skills: Artifact[] = [
     ],
     roles: ['PME', 'PO'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/stakeholder-map/SKILL.md',
+    docPath: '.claude/skills/lidr-stakeholder-map/SKILL.md',
   },
   {
-    id: 'tracking-integration',
-    name: 'tracking-integration',
+    id: 'lidr-tracking-integration',
+    name: 'lidr-tracking-integration',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 1 — Analysis',
@@ -162,13 +162,13 @@ export const skills: Artifact[] = [
     roles: ['PME', 'PO'],
     mcpsUsed: ['jira'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/tracking-integration/SKILL.md',
+    docPath: '.claude/skills/lidr-tracking-integration/SKILL.md',
   },
 
   // Fase 2 — Discovery (3)
   {
-    id: 'review-cruzado',
-    name: 'review-cruzado',
+    id: 'lidr-review-cruzado',
+    name: 'lidr-review-cruzado',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 2 — Planning',
@@ -178,11 +178,11 @@ export const skills: Artifact[] = [
     triggers: ['cross review', 'review cruzado', 'compare PRDs', 'PRD alignment check'],
     roles: ['PO', 'TL'],
     gateContribution: 'Gate 1',
-    docPath: '.claude/skills/review-cruzado/SKILL.md',
+    docPath: '.claude/skills/lidr-review-cruzado/SKILL.md',
   },
   {
-    id: 'risk-log',
-    name: 'risk-log',
+    id: 'lidr-risk-log',
+    name: 'lidr-risk-log',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 2 — Planning',
@@ -192,13 +192,13 @@ export const skills: Artifact[] = [
     triggers: ['identify risks', 'risk assessment', 'risk log', 'project risks', 'risk analysis'],
     roles: ['PME', 'TL'],
     gateContribution: 'Gate 1',
-    docPath: '.claude/skills/risk-log/SKILL.md',
+    docPath: '.claude/skills/lidr-risk-log/SKILL.md',
   },
 
   // Fase 3 — Especificacion (4)
   {
-    id: 'generate-rf',
-    name: 'generate-rf',
+    id: 'lidr-generate-rf',
+    name: 'lidr-generate-rf',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 3 — Solutioning',
@@ -216,11 +216,11 @@ export const skills: Artifact[] = [
     roles: ['PO'],
     mcpsUsed: ['confluence'],
     gateContribution: 'Gate 2',
-    docPath: '.claude/skills/generate-rf/SKILL.md',
+    docPath: '.claude/skills/lidr-generate-rf/SKILL.md',
   },
   {
-    id: 'generate-nfr',
-    name: 'generate-nfr',
+    id: 'lidr-generate-nfr',
+    name: 'lidr-generate-nfr',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 3 — Solutioning',
@@ -239,11 +239,11 @@ export const skills: Artifact[] = [
     ],
     roles: ['TL'],
     gateContribution: 'Gate 2',
-    docPath: '.claude/skills/generate-nfr/SKILL.md',
+    docPath: '.claude/skills/lidr-generate-nfr/SKILL.md',
   },
   {
-    id: 'validate-requirements',
-    name: 'validate-requirements',
+    id: 'lidr-validate-requirements',
+    name: 'lidr-validate-requirements',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 3 — Solutioning',
@@ -261,13 +261,13 @@ export const skills: Artifact[] = [
     ],
     roles: ['PO', 'TL'],
     gateContribution: 'Gate 2',
-    docPath: '.claude/skills/validate-requirements/SKILL.md',
+    docPath: '.claude/skills/lidr-validate-requirements/SKILL.md',
   },
 
   // Fase 4 — Sprint Planning (3)
   {
-    id: 'user-stories',
-    name: 'user-stories',
+    id: 'lidr-user-stories',
+    name: 'lidr-user-stories',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 3 — Solutioning',
@@ -284,11 +284,11 @@ export const skills: Artifact[] = [
     ],
     roles: ['PO'],
     gateContribution: 'Gate 3',
-    docPath: '.claude/skills/user-stories/SKILL.md',
+    docPath: '.claude/skills/lidr-user-stories/SKILL.md',
   },
   {
-    id: 'sprint-capacity',
-    name: 'sprint-capacity',
+    id: 'lidr-sprint-capacity',
+    name: 'lidr-sprint-capacity',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 3 — Solutioning',
@@ -299,11 +299,11 @@ export const skills: Artifact[] = [
     triggers: ['sprint capacity', 'calculate capacity', 'team velocity', 'how much can we do'],
     roles: ['SM'],
     gateContribution: 'Gate 3',
-    docPath: '.claude/skills/sprint-capacity/SKILL.md',
+    docPath: '.claude/skills/lidr-sprint-capacity/SKILL.md',
   },
   {
-    id: 'refinement-notes',
-    name: 'refinement-notes',
+    id: 'lidr-refinement-notes',
+    name: 'lidr-refinement-notes',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 3 — Solutioning',
@@ -313,13 +313,13 @@ export const skills: Artifact[] = [
     triggers: ['refinement notes', 'backlog refinement', 'grooming session', 'refinement meeting'],
     roles: ['SM', 'PO'],
     gateContribution: 'Gate 3',
-    docPath: '.claude/skills/refinement-notes/SKILL.md',
+    docPath: '.claude/skills/lidr-refinement-notes/SKILL.md',
   },
 
   // Fase 5 — Desarrollo (4)
   {
-    id: 'pr-description',
-    name: 'pr-description',
+    id: 'lidr-pr-description',
+    name: 'lidr-pr-description',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 4 — Implementation',
@@ -330,11 +330,11 @@ export const skills: Artifact[] = [
     roles: ['Dev', 'TL'],
     mcpsUsed: ['github', 'jira'],
     gateContribution: 'Gate 4',
-    docPath: '.claude/skills/pr-description/SKILL.md',
+    docPath: '.claude/skills/lidr-pr-description/SKILL.md',
   },
   {
-    id: 'adr',
-    name: 'adr',
+    id: 'lidr-adr',
+    name: 'lidr-adr',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 4 — Implementation',
@@ -350,11 +350,11 @@ export const skills: Artifact[] = [
       'buy vs build',
     ],
     roles: ['TL', 'Dev'],
-    docPath: '.claude/skills/adr/SKILL.md',
+    docPath: '.claude/skills/lidr-adr/SKILL.md',
   },
   {
-    id: 'tech-debt',
-    name: 'tech-debt',
+    id: 'lidr-tech-debt',
+    name: 'lidr-tech-debt',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 4 — Implementation',
@@ -364,11 +364,11 @@ export const skills: Artifact[] = [
       '🤖 AUTOMATED Technical Debt Identifier - Identifica y registra deuda tecnica con clasificacion e impacto usando automation scripts.',
     triggers: ['tech debt', 'technical debt', 'code smell', 'register debt', 'refactoring needed'],
     roles: ['Dev', 'TL'],
-    docPath: '.claude/skills/tech-debt/SKILL.md',
+    docPath: '.claude/skills/lidr-tech-debt/SKILL.md',
   },
   {
-    id: 'impact-analysis',
-    name: 'impact-analysis',
+    id: 'lidr-impact-analysis',
+    name: 'lidr-impact-analysis',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 4 — Implementation',
@@ -390,8 +390,8 @@ export const skills: Artifact[] = [
     docPath: '.agents/skills/lidr-impact-analysis/SKILL.md',
   },
   {
-    id: 'dev-handoff-qa',
-    name: 'dev-handoff-qa',
+    id: 'lidr-dev-handoff-qa',
+    name: 'lidr-dev-handoff-qa',
     type: 'skill',
     source: 'lidr',
     phase: 'Fase 4 — Implementation',
@@ -402,7 +402,7 @@ export const skills: Artifact[] = [
     triggers: ['handoff to QA', 'dev handoff', 'ready for QA', 'testing instructions'],
     roles: ['Dev'],
     gateContribution: 'Gate 4',
-    docPath: '.claude/skills/dev-handoff-qa/SKILL.md',
+    docPath: '.claude/skills/lidr-dev-handoff-qa/SKILL.md',
   },
 
   // Continue with remaining phases and skills...
@@ -414,8 +414,8 @@ export const skills: Artifact[] = [
 export const commands: Artifact[] = [
   // Tier 1 - Orchestrators
   {
-    id: 'advance-gate',
-    name: '/advance-gate',
+    id: 'lidr-advance-gate',
+    name: '/lidr-advance-gate',
     type: 'command',
     tier: 'Tier 1 — Orchestrator',
     description:
@@ -426,11 +426,11 @@ export const commands: Artifact[] = [
     precondition: 'Gate N-1 PASS',
     mcpsUsed: ['jira', 'github', 'confluence', 'slack'],
     triggers: ['advance gate', 'evaluate gate', 'pass gate', 'gate evaluation', 'handoff package'],
-    docPath: '.claude/commands/advance-gate.md',
+    docPath: '.claude/commands/lidr-advance-gate.md',
   },
   {
-    id: 'implement-ticket',
-    name: '/implement-ticket',
+    id: 'lidr-implement-ticket',
+    name: '/lidr-implement-ticket',
     type: 'command',
     tier: 'Tier 1 — Orchestrator',
     description:
@@ -442,11 +442,11 @@ export const commands: Artifact[] = [
     mcpsUsed: ['jira', 'github', 'slack'],
     relatedSkills: ['pr-description', 'dev-handoff-qa', 'tech-debt', 'adr'],
     triggers: ['implement ticket', 'work on ticket', 'start development', 'pick up ticket'],
-    docPath: '.claude/commands/implement-ticket.md',
+    docPath: '.claude/commands/lidr-implement-ticket.md',
   },
   {
-    id: 'prepare-testing',
-    name: '/prepare-testing',
+    id: 'lidr-prepare-testing',
+    name: '/lidr-prepare-testing',
     type: 'command',
     tier: 'Tier 1 — Orchestrator',
     description:
@@ -463,11 +463,11 @@ export const commands: Artifact[] = [
       'regression-suite',
     ],
     triggers: ['prepare testing', 'QA this ticket', 'test this', 'create test suite'],
-    docPath: '.claude/commands/prepare-testing.md',
+    docPath: '.claude/commands/lidr-prepare-testing.md',
   },
   {
-    id: 'init-project-docs',
-    name: '/init-project-docs',
+    id: 'lidr-init-project-docs',
+    name: '/lidr-init-project-docs',
     type: 'command',
     tier: 'Tier 1 — Orchestrator',
     description:
@@ -484,11 +484,11 @@ export const commands: Artifact[] = [
       'new project setup',
       'init rules',
     ],
-    docPath: '.claude/commands/init-project-docs.md',
+    docPath: '.claude/commands/lidr-init-project-docs.md',
   },
   {
-    id: 'validate-project-docs',
-    name: '/validate-project-docs',
+    id: 'lidr-validate-project-docs',
+    name: '/lidr-validate-project-docs',
     type: 'command',
     tier: 'Tier 1 — Orchestrator',
     description:
@@ -505,7 +505,7 @@ export const commands: Artifact[] = [
       'documentation review',
       'validate rules',
     ],
-    docPath: '.claude/commands/validate-project-docs.md',
+    docPath: '.claude/commands/lidr-validate-project-docs.md',
   },
   {
     id: 'validate-requirements-cmd',
@@ -532,8 +532,8 @@ export const commands: Artifact[] = [
     docPath: '.claude/commands/validate-requirements.md',
   },
   {
-    id: 'validate-prd',
-    name: '/validate-prd',
+    id: 'lidr-validate-prd',
+    name: '/lidr-validate-prd',
     type: 'command',
     tier: 'Tier 1 — Orchestrator',
     description:
@@ -549,11 +549,11 @@ export const commands: Artifact[] = [
       'prd quality gate',
       'prd assessment',
     ],
-    docPath: '.claude/commands/validate-prd.md',
+    docPath: '.claude/commands/lidr-validate-prd.md',
   },
   {
-    id: 'course-correct',
-    name: '/course-correct',
+    id: 'lidr-course-correct',
+    name: '/lidr-course-correct',
     type: 'command',
     tier: 'Tier 1 — Orchestrator',
     description:
@@ -569,13 +569,13 @@ export const commands: Artifact[] = [
       'scope adjustment',
       'project correction',
     ],
-    docPath: '.claude/commands/course-correct.md',
+    docPath: '.claude/commands/lidr-course-correct.md',
   },
 
   // Tier 2 - Tactical
   {
-    id: 'create-branch',
-    name: '/create-branch',
+    id: 'lidr-create-branch',
+    name: '/lidr-create-branch',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description: 'Crea feature branch desde ticket Jira con naming convention automatica.',
@@ -585,11 +585,11 @@ export const commands: Artifact[] = [
     precondition: 'Ticket asignado al dev',
     mcpsUsed: ['jira'],
     triggers: ['create branch', 'new branch', 'feature branch', 'start coding'],
-    docPath: '.claude/commands/create-branch.md',
+    docPath: '.claude/commands/lidr-create-branch.md',
   },
   {
-    id: 'create-pr',
-    name: '/create-pr',
+    id: 'lidr-create-pr',
+    name: '/lidr-create-pr',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description:
@@ -601,11 +601,11 @@ export const commands: Artifact[] = [
     mcpsUsed: ['github', 'jira', 'slack'],
     relatedSkills: ['pr-description'],
     triggers: ['create PR', 'pull request', 'open PR', 'submit code'],
-    docPath: '.claude/commands/create-pr.md',
+    docPath: '.claude/commands/lidr-create-pr.md',
   },
   {
-    id: 'create-release-notes',
-    name: '/create-release-notes',
+    id: 'lidr-create-release-notes',
+    name: '/lidr-create-release-notes',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description:
@@ -617,11 +617,11 @@ export const commands: Artifact[] = [
     mcpsUsed: ['github', 'jira', 'confluence', 'slack'],
     relatedSkills: ['release-notes'],
     triggers: ['release notes', 'generate changelog', 'what shipped', 'prepare release'],
-    docPath: '.claude/commands/create-release-notes.md',
+    docPath: '.claude/commands/lidr-create-release-notes.md',
   },
   {
-    id: 'update-changelog',
-    name: '/update-changelog',
+    id: 'lidr-update-changelog',
+    name: '/lidr-update-changelog',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description: 'Actualiza CHANGELOG.md siguiendo Keep a Changelog + Conventional Commits.',
@@ -631,11 +631,11 @@ export const commands: Artifact[] = [
     precondition: 'Release notes generadas',
     mcpsUsed: ['github'],
     triggers: ['update changelog', 'new version', 'bump version', 'changelog entry'],
-    docPath: '.claude/commands/update-changelog.md',
+    docPath: '.claude/commands/lidr-update-changelog.md',
   },
   {
-    id: 'sync-docs',
-    name: '/sync-docs',
+    id: 'lidr-sync-docs',
+    name: '/lidr-sync-docs',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description: 'Analiza codigo, detecta drift vs documentacion, auto-actualiza docs.',
@@ -644,11 +644,11 @@ export const commands: Artifact[] = [
     roles: ['Dev', 'TL', 'QA'],
     precondition: 'Cambios mergeados',
     triggers: ['sync docs', 'update documentation', 'docs out of date', 'documentation drift'],
-    docPath: '.claude/commands/sync-docs.md',
+    docPath: '.claude/commands/lidr-sync-docs.md',
   },
   {
-    id: 'quick-spec',
-    name: '/quick-spec',
+    id: 'lidr-quick-spec',
+    name: '/lidr-quick-spec',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description:
@@ -664,11 +664,11 @@ export const commands: Artifact[] = [
       'rapid specification',
       'quick documentation',
     ],
-    docPath: '.claude/commands/quick-spec.md',
+    docPath: '.claude/commands/lidr-quick-spec.md',
   },
   {
-    id: 'quick-dev',
-    name: '/quick-dev',
+    id: 'lidr-quick-dev',
+    name: '/lidr-quick-dev',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description:
@@ -684,7 +684,7 @@ export const commands: Artifact[] = [
       'small feature dev',
       'streamlined dev',
     ],
-    docPath: '.claude/commands/quick-dev.md',
+    docPath: '.claude/commands/lidr-quick-dev.md',
   },
   {
     id: 'product-brief',
@@ -707,8 +707,8 @@ export const commands: Artifact[] = [
     docPath: '.claude/commands/product-brief.md',
   },
   {
-    id: 'sprint-health',
-    name: '/sprint-health',
+    id: 'lidr-sprint-health',
+    name: '/lidr-sprint-health',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description:
@@ -724,7 +724,7 @@ export const commands: Artifact[] = [
       'health check',
       'sprint metrics',
     ],
-    docPath: '.claude/commands/sprint-health.md',
+    docPath: '.claude/commands/lidr-sprint-health.md',
   },
 
   // Tier 3 - Utility
@@ -784,8 +784,8 @@ export const commands: Artifact[] = [
 
   // SDLC tracking (Phase 5) — branch/PR SDLC-tracking now lives in the base create-branch / create-pr commands
   {
-    id: 'track-sdlc',
-    name: '/track-sdlc',
+    id: 'lidr-track-sdlc',
+    name: '/lidr-track-sdlc',
     type: 'command',
     tier: 'Tier 2 — Tactical',
     description:
@@ -794,7 +794,7 @@ export const commands: Artifact[] = [
     model: 'sonnet',
     roles: ['PME', 'SM', 'TL'],
     triggers: ['track sdlc', 'sdlc tracking', 'project tracking', 'phase progression'],
-    docPath: '.claude/commands/track-sdlc.md',
+    docPath: '.claude/commands/lidr-track-sdlc.md',
   },
 ];
 

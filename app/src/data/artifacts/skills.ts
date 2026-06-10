@@ -1,9 +1,30 @@
 /**
  * SINGLE SOURCE OF TRUTH - Skills Registry
  * Centralizes all skills data to eliminate duplication across components
+ *
+ * Naming + taxonomy: every entry uses the real prefixed skill name (`lidr-*` /
+ * `bmad-*`) matching `.agents/skills/` on the filesystem. Phases follow the
+ * unified BMad × LIDR model — Phase 0 (Context & Anytime), 1 (Analysis),
+ * 2 (Planning), 3 (Solutioning), 4 (Implementation) — with a `stage` slug for
+ * the granular ex-LIDR phase.
  */
 
 export type SkillSource = 'lidr' | 'bmad' | 'anytime';
+
+/**
+ * Unified stage slug (granular ex-LIDR phase) within a unified phase.
+ */
+export type SkillStage =
+  | 'context'
+  | 'anytime'
+  | 'analysis'
+  | 'planning'
+  | 'specification'
+  | 'sprint-planning'
+  | 'development'
+  | 'qa'
+  | 'security'
+  | 'release';
 
 /**
  * Criticality of a LIDR skill relative to BMad base flow:
@@ -18,6 +39,7 @@ export interface Skill {
   name: string;
   phase: string;
   phaseNum: number;
+  stage?: SkillStage;
   source: SkillSource;
   criticality?: SkillCriticality;
   description: string;
@@ -33,12 +55,13 @@ export interface Skill {
 }
 
 export const skills: Skill[] = [
-  // Fase 1 — Originación (6)
+  // Phase 1 — Analysis · analysis (ex-Fase 1 Originación) (4)
   {
-    id: 'business-case',
-    name: 'business-case',
-    phase: 'Fase 1 — Originación',
+    id: 'lidr-business-case',
+    name: 'lidr-business-case',
+    phase: 'Phase 1 — Analysis · analysis',
     phaseNum: 1,
+    stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -51,13 +74,14 @@ export const skills: Skill[] = [
     ],
     roles: ['PME', 'PO'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/business-case/SKILL.md',
+    docPath: '.claude/skills/lidr-business-case/SKILL.md',
   },
   {
-    id: 'kickoff',
-    name: 'kickoff',
-    phase: 'Fase 1 — Originación',
+    id: 'lidr-kickoff',
+    name: 'lidr-kickoff',
+    phase: 'Phase 1 — Analysis · analysis',
     phaseNum: 1,
+    stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -65,26 +89,28 @@ export const skills: Skill[] = [
     triggers: ['project kickoff', 'start project', 'initial meeting'],
     roles: ['PME', 'PO'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/kickoff/SKILL.md',
+    docPath: '.claude/skills/lidr-kickoff/SKILL.md',
   },
   {
-    id: 'stakeholder-map',
-    name: 'stakeholder-map',
-    phase: 'Fase 1 — Originación',
+    id: 'lidr-stakeholder-map',
+    name: 'lidr-stakeholder-map',
+    phase: 'Phase 1 — Analysis · analysis',
     phaseNum: 1,
+    stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
     description: 'Generate stakeholder map with power/interest matrix and communication plan',
     triggers: ['map stakeholders', 'identify stakeholders', 'communication plan'],
     roles: ['PME', 'PO'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/stakeholder-map/SKILL.md',
+    docPath: '.claude/skills/lidr-stakeholder-map/SKILL.md',
   },
   {
-    id: 'tracking-integration',
-    name: 'tracking-integration',
-    phase: 'Fase 1 — Originación',
+    id: 'lidr-tracking-integration',
+    name: 'lidr-tracking-integration',
+    phase: 'Phase 1 — Analysis · analysis',
     phaseNum: 1,
+    stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -92,15 +118,16 @@ export const skills: Skill[] = [
     triggers: ['create epic', 'tracking setup', 'project tracking', 'initialize tracking'],
     roles: ['PME', 'PO'],
     gateContribution: 'Gate 0',
-    docPath: '.claude/skills/tracking-integration/SKILL.md',
+    docPath: '.claude/skills/lidr-tracking-integration/SKILL.md',
   },
 
-  // Fase 2 — Discovery (4)
+  // Phase 2 — Planning · planning (ex-Fase 2 Discovery) (3)
   {
-    id: 'review-cruzado',
-    name: 'review-cruzado',
-    phase: 'Fase 2 — Discovery',
+    id: 'lidr-review-cruzado',
+    name: 'lidr-review-cruzado',
+    phase: 'Phase 2 — Planning · planning',
     phaseNum: 2,
+    stage: 'planning',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -108,13 +135,14 @@ export const skills: Skill[] = [
     triggers: ['cross review', 'PRD review', 'validate alignment'],
     roles: ['PO', 'TL'],
     gateContribution: 'Gate 1',
-    docPath: '.claude/skills/review-cruzado/SKILL.md',
+    docPath: '.claude/skills/lidr-review-cruzado/SKILL.md',
   },
   {
-    id: 'risk-log',
-    name: 'risk-log',
-    phase: 'Fase 2 — Discovery',
+    id: 'lidr-risk-log',
+    name: 'lidr-risk-log',
+    phase: 'Phase 2 — Planning · planning',
     phaseNum: 2,
+    stage: 'planning',
     source: 'lidr',
     criticality: 'recommended',
     description:
@@ -122,13 +150,14 @@ export const skills: Skill[] = [
     triggers: ['risk management', 'identify risks', 'risk log'],
     roles: ['PO', 'TL', 'PME'],
     gateContribution: 'Gate 1',
-    docPath: '.claude/skills/risk-log/SKILL.md',
+    docPath: '.claude/skills/lidr-risk-log/SKILL.md',
   },
   {
-    id: 'propuesta-builder',
-    name: 'propuesta-builder',
-    phase: 'Fase 2 — Discovery',
+    id: 'lidr-propuesta-builder',
+    name: 'lidr-propuesta-builder',
+    phase: 'Phase 2 — Planning · planning',
     phaseNum: 2,
+    stage: 'planning',
     source: 'lidr',
     criticality: 'optional',
     description:
@@ -144,38 +173,41 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/lidr-propuesta-builder/SKILL.md',
   },
 
-  // Fase 3 — Especificación (3)
+  // Phase 3 — Solutioning · specification (ex-Fase 3 Especificación) (3)
   {
-    id: 'generate-rf',
-    name: 'generate-rf',
-    phase: 'Fase 3 — Especificación',
+    id: 'lidr-generate-rf',
+    name: 'lidr-generate-rf',
+    phase: 'Phase 3 — Solutioning · specification',
     phaseNum: 3,
+    stage: 'specification',
     source: 'lidr',
     criticality: 'required',
     description: 'Functional Requirements Generator with BDD criteria from PRDs',
     triggers: ['generate requirements', 'create RFs', 'functional requirements'],
     roles: ['PO'],
     gateContribution: 'Gate 2',
-    docPath: '.claude/skills/generate-rf/SKILL.md',
+    docPath: '.claude/skills/lidr-generate-rf/SKILL.md',
   },
   {
-    id: 'generate-nfr',
-    name: 'generate-nfr',
-    phase: 'Fase 3 — Especificación',
+    id: 'lidr-generate-nfr',
+    name: 'lidr-generate-nfr',
+    phase: 'Phase 3 — Solutioning · specification',
     phaseNum: 3,
+    stage: 'specification',
     source: 'lidr',
     criticality: 'required',
     description: 'Non-Functional Requirements Generator with measurable metrics',
     triggers: ['generate NFRs', 'non-functional requirements', 'performance requirements'],
     roles: ['TL', 'Tech Lead'],
     gateContribution: 'Gate 2',
-    docPath: '.claude/skills/generate-nfr/SKILL.md',
+    docPath: '.claude/skills/lidr-generate-nfr/SKILL.md',
   },
   {
-    id: 'validate-requirements',
-    name: 'validate-requirements',
-    phase: 'Fase 3 — Especificación',
+    id: 'lidr-validate-requirements',
+    name: 'lidr-validate-requirements',
+    phase: 'Phase 3 — Solutioning · specification',
     phaseNum: 3,
+    stage: 'specification',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -183,16 +215,17 @@ export const skills: Skill[] = [
     triggers: ['validate requirements', 'check traceability', 'RTM validation'],
     roles: ['PO', 'TL', 'QA'],
     gateContribution: 'Gate 2',
-    docPath: '.claude/skills/validate-requirements/SKILL.md',
+    docPath: '.claude/skills/lidr-validate-requirements/SKILL.md',
     automated: true,
   },
 
-  // Fase 4 — Planning (3)
+  // Phase 3 — Solutioning · sprint-planning (ex-Fase 4 Sprint Planning) (3)
   {
-    id: 'user-stories',
-    name: 'user-stories',
-    phase: 'Fase 4 — Planning',
+    id: 'lidr-user-stories',
+    name: 'lidr-user-stories',
+    phase: 'Phase 3 — Solutioning · sprint-planning',
     phaseNum: 4,
+    stage: 'sprint-planning',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -200,14 +233,15 @@ export const skills: Skill[] = [
     triggers: ['generate user stories', 'create stories', 'story slicing'],
     roles: ['PO'],
     gateContribution: 'Gate 3',
-    docPath: '.claude/skills/user-stories/SKILL.md',
+    docPath: '.claude/skills/lidr-user-stories/SKILL.md',
     automated: true,
   },
   {
-    id: 'sprint-capacity',
-    name: 'sprint-capacity',
-    phase: 'Fase 4 — Planning',
+    id: 'lidr-sprint-capacity',
+    name: 'lidr-sprint-capacity',
+    phase: 'Phase 3 — Solutioning · sprint-planning',
     phaseNum: 4,
+    stage: 'sprint-planning',
     source: 'lidr',
     criticality: 'recommended',
     description:
@@ -215,28 +249,30 @@ export const skills: Skill[] = [
     triggers: ['sprint planning', 'capacity planning', 'team velocity'],
     roles: ['SM', 'TL'],
     gateContribution: 'Gate 3',
-    docPath: '.claude/skills/sprint-capacity/SKILL.md',
+    docPath: '.claude/skills/lidr-sprint-capacity/SKILL.md',
   },
   {
-    id: 'refinement-notes',
-    name: 'refinement-notes',
-    phase: 'Fase 4 — Planning',
+    id: 'lidr-refinement-notes',
+    name: 'lidr-refinement-notes',
+    phase: 'Phase 3 — Solutioning · sprint-planning',
     phaseNum: 4,
+    stage: 'sprint-planning',
     source: 'lidr',
     criticality: 'recommended',
     description: 'Essential for user story refinement during backlog grooming sessions',
     triggers: ['refinement session', 'backlog grooming', 'story refinement'],
     roles: ['SM', 'PO', 'TL'],
     gateContribution: 'Gate 3',
-    docPath: '.claude/skills/refinement-notes/SKILL.md',
+    docPath: '.claude/skills/lidr-refinement-notes/SKILL.md',
   },
 
-  // Fase 5 — Desarrollo (6)
+  // Phase 4 — Implementation · development (ex-Fase 5 Desarrollo) (7)
   {
     id: 'lidr-using-git-worktrees',
     name: 'lidr-using-git-worktrees',
-    phase: 'Fase 5 — Desarrollo',
+    phase: 'Phase 4 — Implementation · development',
     phaseNum: 5,
+    stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
     description:
@@ -244,14 +280,15 @@ export const skills: Skill[] = [
     triggers: ['use a worktree', 'isolate this work', 'run the change in a worktree'],
     roles: ['Dev', 'TL'],
     gateContribution: 'Gate 4',
-    docPath: '.agents/skills/lidr-using-git-worktrees/SKILL.md',
+    docPath: '.claude/skills/lidr-using-git-worktrees/SKILL.md',
     relatedSkills: ['lidr-run-parallel-tasks'],
   },
   {
     id: 'lidr-run-parallel-tasks',
     name: 'lidr-run-parallel-tasks',
-    phase: 'Fase 5 — Desarrollo',
+    phase: 'Phase 4 — Implementation · development',
     phaseNum: 5,
+    stage: 'development',
     source: 'lidr',
     criticality: 'optional',
     description:
@@ -259,16 +296,17 @@ export const skills: Skill[] = [
     triggers: ['run parallel-tasks.md', 'run the parallel changes', 'lanza los tasks en paralelo'],
     roles: ['TL'],
     gateContribution: 'Gate 4',
-    docPath: '.agents/skills/lidr-run-parallel-tasks/SKILL.md',
+    docPath: '.claude/skills/lidr-run-parallel-tasks/SKILL.md',
     automated: true,
     relatedSkills: ['lidr-using-git-worktrees'],
     relatedCommands: ['lidr-spec-new', 'lidr-spec-ff', 'lidr-spec-apply', 'lidr-spec-verify'],
   },
   {
-    id: 'pr-description',
-    name: 'pr-description',
-    phase: 'Fase 5 — Desarrollo',
+    id: 'lidr-pr-description',
+    name: 'lidr-pr-description',
+    phase: 'Phase 4 — Implementation · development',
     phaseNum: 5,
+    stage: 'development',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -276,26 +314,28 @@ export const skills: Skill[] = [
     triggers: ['PR description', 'pull request', 'code review prep'],
     roles: ['Dev', 'TL'],
     gateContribution: 'Gate 4',
-    docPath: '.claude/skills/pr-description/SKILL.md',
+    docPath: '.claude/skills/lidr-pr-description/SKILL.md',
   },
   {
-    id: 'adr',
-    name: 'adr',
-    phase: 'Fase 5 — Desarrollo',
+    id: 'lidr-adr',
+    name: 'lidr-adr',
+    phase: 'Phase 4 — Implementation · development',
     phaseNum: 5,
+    stage: 'development',
     source: 'lidr',
     criticality: 'required',
     description: 'Generate Architecture Decision Record in MADR format for technical choices',
     triggers: ['architecture decision', 'technical decision', 'ADR'],
     roles: ['TL', 'Tech Lead'],
     gateContribution: 'Gate 4',
-    docPath: '.claude/skills/adr/SKILL.md',
+    docPath: '.claude/skills/lidr-adr/SKILL.md',
   },
   {
-    id: 'tech-debt',
-    name: 'tech-debt',
-    phase: 'Fase 5 — Desarrollo',
+    id: 'lidr-tech-debt',
+    name: 'lidr-tech-debt',
+    phase: 'Phase 4 — Implementation · development',
     phaseNum: 5,
+    stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
     description:
@@ -303,14 +343,15 @@ export const skills: Skill[] = [
     triggers: ['tech debt', 'code quality', 'sonar analysis'],
     roles: ['TL', 'Dev'],
     gateContribution: 'Gate 4',
-    docPath: '.claude/skills/tech-debt/SKILL.md',
+    docPath: '.claude/skills/lidr-tech-debt/SKILL.md',
     automated: true,
   },
   {
-    id: 'impact-analysis',
-    name: 'impact-analysis',
-    phase: 'Fase 5 — Desarrollo',
+    id: 'lidr-impact-analysis',
+    name: 'lidr-impact-analysis',
+    phase: 'Phase 4 — Implementation · development',
     phaseNum: 5,
+    stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
     description:
@@ -323,30 +364,32 @@ export const skills: Skill[] = [
     ],
     roles: ['TL', 'Dev'],
     gateContribution: 'Gate 4',
-    docPath: '.agents/skills/lidr-impact-analysis/SKILL.md',
+    docPath: '.claude/skills/lidr-impact-analysis/SKILL.md',
     relatedSkills: ['lidr-generate-rf', 'lidr-risk-log'],
     relatedCommands: ['lidr-spec-verify', 'lidr-advance-gate'],
   },
   {
-    id: 'dev-handoff-qa',
-    name: 'dev-handoff-qa',
-    phase: 'Fase 5 — Desarrollo',
+    id: 'lidr-dev-handoff-qa',
+    name: 'lidr-dev-handoff-qa',
+    phase: 'Phase 4 — Implementation · development',
     phaseNum: 5,
+    stage: 'development',
     source: 'lidr',
     criticality: 'required',
     description: 'Generate Dev-to-QA handoff document for Ready for QA transitions',
     triggers: ['handoff to QA', 'development complete', 'QA transition'],
     roles: ['Dev', 'TL'],
     gateContribution: 'Gate 4',
-    docPath: '.claude/skills/dev-handoff-qa/SKILL.md',
+    docPath: '.claude/skills/lidr-dev-handoff-qa/SKILL.md',
   },
 
-  // Fase 6 — QA (3)
+  // Phase 4 — Implementation · qa (ex-Fase 6 QA) (3)
   {
-    id: 'create-test-cases',
-    name: 'create-test-cases',
-    phase: 'Fase 6 — QA',
+    id: 'lidr-create-test-cases',
+    name: 'lidr-create-test-cases',
+    phase: 'Phase 4 — Implementation · qa',
     phaseNum: 6,
+    stage: 'qa',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -354,13 +397,14 @@ export const skills: Skill[] = [
     triggers: ['create test cases', 'generate TCs', 'BDD scenarios'],
     roles: ['QA'],
     gateContribution: 'Gate 5',
-    docPath: '.claude/skills/create-test-cases/SKILL.md',
+    docPath: '.claude/skills/lidr-create-test-cases/SKILL.md',
   },
   {
-    id: 'bug-report',
-    name: 'bug-report',
-    phase: 'Fase 6 — QA',
+    id: 'lidr-bug-report',
+    name: 'lidr-bug-report',
+    phase: 'Phase 4 — Implementation · qa',
     phaseNum: 6,
+    stage: 'qa',
     source: 'lidr',
     criticality: 'recommended',
     description:
@@ -368,41 +412,44 @@ export const skills: Skill[] = [
     triggers: ['report bug', 'create bug report', 'file issue'],
     roles: ['QA'],
     gateContribution: 'Gate 5',
-    docPath: '.claude/skills/bug-report/SKILL.md',
+    docPath: '.claude/skills/lidr-bug-report/SKILL.md',
   },
   {
-    id: 'test-execution-report',
-    name: 'test-execution-report',
-    phase: 'Fase 6 — QA',
+    id: 'lidr-test-execution-report',
+    name: 'lidr-test-execution-report',
+    phase: 'Phase 4 — Implementation · qa',
     phaseNum: 6,
+    stage: 'qa',
     source: 'lidr',
     criticality: 'required',
     description: 'Essential for QA sign-off - consolidates test execution results',
     triggers: ['test execution', 'QA report', 'test results'],
     roles: ['QA Lead'],
     gateContribution: 'Gate 5',
-    docPath: '.claude/skills/test-execution-report/SKILL.md',
+    docPath: '.claude/skills/lidr-test-execution-report/SKILL.md',
   },
 
-  // Fase 7 — Seguridad (4)
+  // Phase 4 — Implementation · security (ex-Fase 7 Seguridad) (4)
   {
-    id: 'vuln-assessment',
-    name: 'vuln-assessment',
-    phase: 'Fase 7 — Seguridad',
+    id: 'lidr-vuln-assessment',
+    name: 'lidr-vuln-assessment',
+    phase: 'Phase 4 — Implementation · security',
     phaseNum: 7,
+    stage: 'security',
     source: 'lidr',
     criticality: 'required',
     description: 'Essential for platform security assessment - interpret SAST/SCA scanner results',
     triggers: ['security scan', 'vulnerability assessment', 'SAST results'],
     roles: ['Security'],
     gateContribution: 'Gate 6',
-    docPath: '.claude/skills/vuln-assessment/SKILL.md',
+    docPath: '.claude/skills/lidr-vuln-assessment/SKILL.md',
   },
   {
-    id: 'dast-interpretation',
-    name: 'dast-interpretation',
-    phase: 'Fase 7 — Seguridad',
+    id: 'lidr-dast-interpretation',
+    name: 'lidr-dast-interpretation',
+    phase: 'Phase 4 — Implementation · security',
     phaseNum: 7,
+    stage: 'security',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -410,13 +457,14 @@ export const skills: Skill[] = [
     triggers: ['DAST results', 'ZAP scan', 'runtime security'],
     roles: ['Security'],
     gateContribution: 'Gate 6',
-    docPath: '.claude/skills/dast-interpretation/SKILL.md',
+    docPath: '.claude/skills/lidr-dast-interpretation/SKILL.md',
   },
   {
-    id: 'pentest-report',
-    name: 'pentest-report',
-    phase: 'Fase 7 — Seguridad',
+    id: 'lidr-pentest-report',
+    name: 'lidr-pentest-report',
+    phase: 'Phase 4 — Implementation · security',
     phaseNum: 7,
+    stage: 'security',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -424,29 +472,31 @@ export const skills: Skill[] = [
     triggers: ['pen test', 'penetration testing', 'security report'],
     roles: ['Security'],
     gateContribution: 'Gate 6',
-    docPath: '.claude/skills/pentest-report/SKILL.md',
+    docPath: '.claude/skills/lidr-pentest-report/SKILL.md',
   },
   {
-    id: 'security-checklist',
-    name: 'security-checklist',
-    phase: 'Fase 7 — Seguridad',
+    id: 'lidr-security-checklist',
+    name: 'lidr-security-checklist',
+    phase: 'Phase 4 — Implementation · security',
     phaseNum: 7,
+    stage: 'security',
     source: 'lidr',
     criticality: 'required',
     description: 'Essential for platform security validation - OWASP Top 10 and compliance checks',
     triggers: ['security checklist', 'OWASP validation', 'security review'],
     roles: ['Security'],
     gateContribution: 'Gate 6',
-    docPath: '.claude/skills/security-checklist/SKILL.md',
+    docPath: '.claude/skills/lidr-security-checklist/SKILL.md',
     automated: true,
   },
 
-  // Fase 8 — Despliegue (5)
+  // Phase 4 — Implementation · release (ex-Fase 8 Despliegue) (4)
   {
-    id: 'change-request',
-    name: 'change-request',
-    phase: 'Fase 8 — Despliegue',
+    id: 'lidr-change-request',
+    name: 'lidr-change-request',
+    phase: 'Phase 4 — Implementation · release',
     phaseNum: 8,
+    stage: 'release',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -454,13 +504,14 @@ export const skills: Skill[] = [
     triggers: ['change request', 'deploy request', 'CAB approval'],
     roles: ['DevOps'],
     gateContribution: 'Gate 7',
-    docPath: '.claude/skills/change-request/SKILL.md',
+    docPath: '.claude/skills/lidr-change-request/SKILL.md',
   },
   {
-    id: 'rollback-plan',
-    name: 'rollback-plan',
-    phase: 'Fase 8 — Despliegue',
+    id: 'lidr-rollback-plan',
+    name: 'lidr-rollback-plan',
+    phase: 'Phase 4 — Implementation · release',
     phaseNum: 8,
+    stage: 'release',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -468,14 +519,15 @@ export const skills: Skill[] = [
     triggers: ['rollback plan', 'deployment risk', 'recovery plan'],
     roles: ['DevOps'],
     gateContribution: 'Gate 7',
-    docPath: '.claude/skills/rollback-plan/SKILL.md',
+    docPath: '.claude/skills/lidr-rollback-plan/SKILL.md',
     automated: true,
   },
   {
-    id: 'release-notes',
-    name: 'release-notes',
-    phase: 'Fase 8 — Despliegue',
+    id: 'lidr-release-notes',
+    name: 'lidr-release-notes',
+    phase: 'Phase 4 — Implementation · release',
     phaseNum: 8,
+    stage: 'release',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -483,29 +535,74 @@ export const skills: Skill[] = [
     triggers: ['release notes', 'changelog', 'release communication'],
     roles: ['DevOps'],
     gateContribution: 'Gate 7',
-    docPath: '.claude/skills/release-notes/SKILL.md',
+    docPath: '.claude/skills/lidr-release-notes/SKILL.md',
     automated: true,
   },
   {
-    id: 'postmortem',
-    name: 'postmortem',
-    phase: 'Fase 8 — Despliegue',
+    id: 'lidr-postmortem',
+    name: 'lidr-postmortem',
+    phase: 'Phase 4 — Implementation · release',
     phaseNum: 8,
+    stage: 'release',
     source: 'lidr',
     criticality: 'required',
     description: 'Structure blameless incident postmortem using Five Whys root cause analysis',
     triggers: ['postmortem', 'incident analysis', 'root cause'],
     roles: ['TL', 'DevOps'],
     gateContribution: 'Post-incident',
-    docPath: '.claude/skills/postmortem/SKILL.md',
+    docPath: '.claude/skills/lidr-postmortem/SKILL.md',
   },
 
-  // Cross-cutting (5 in this section; total Cross-cutting incl. additional below = 9)
+  // Phase 0 — Context · context (ex-Fase 0 Preparación) (1)
+  {
+    id: 'lidr-audit-standards',
+    name: 'lidr-audit-standards',
+    phase: 'Phase 0 — Context · context',
+    phaseNum: 0,
+    stage: 'context',
+    source: 'lidr',
+    criticality: 'recommended',
+    description:
+      'Comprehensive audit skill for validating that all skills comply with established SDLC ecosystem standards. CRITICAL for ensuring frontmatter consistency, domain-agnostic content, methodology uniformity, and structural integrity across the ecosystem.',
+    triggers: [
+      'audit skills',
+      'validate standards',
+      'compliance check',
+      'skill quality review',
+      'ecosystem health assessment',
+    ],
+    roles: ['TL'],
+    gateContribution: 'Pre-Gate 0',
+    docPath: '.claude/skills/lidr-audit-standards/SKILL.md',
+  },
+
+  // Phase 0 — Context & Anytime · anytime (cross-cutting + meta-tooling) (10)
+  {
+    id: 'lidr-help',
+    name: 'lidr-help',
+    phase: 'Anytime · anytime',
+    phaseNum: 99,
+    stage: 'anytime',
+    source: 'lidr',
+    criticality: 'recommended',
+    description:
+      'Answer questions about the LIDR SDLC ecosystem and recommend the next skill, command, workflow, or doc. Wraps the BMad help layer with the LIDR SDLC governance layer (phases, gates, RACI).',
+    triggers: [
+      'what can you do',
+      'how do I',
+      'which command should I use',
+      'which gate',
+      'lidr help',
+    ],
+    roles: ['PME', 'PO', 'TL', 'Dev', 'QA', 'Sec', 'DevOps', 'SM'],
+    docPath: '.claude/skills/lidr-help/SKILL.md',
+  },
   {
     id: 'lidr-generate-rule',
     name: 'lidr-generate-rule',
-    phase: 'Cross-cutting',
+    phase: 'Anytime · anytime',
     phaseNum: 99,
+    stage: 'anytime',
     source: 'anytime',
     criticality: 'optional',
     description: 'Generate Claude Code rule files with correct frontmatter and content structure',
@@ -514,10 +611,11 @@ export const skills: Skill[] = [
     docPath: '.claude/skills/lidr-generate-rule/SKILL.md',
   },
   {
-    id: 'gate-evaluation',
-    name: 'gate-evaluation',
-    phase: 'Cross-cutting',
+    id: 'lidr-gate-evaluation',
+    name: 'lidr-gate-evaluation',
+    phase: 'Anytime · anytime',
     phaseNum: 99,
+    stage: 'anytime',
     source: 'lidr',
     criticality: 'required',
     description:
@@ -525,13 +623,14 @@ export const skills: Skill[] = [
     triggers: ['gate evaluation', 'phase transition', 'gate assessment', 'handoff package'],
     roles: ['PME', 'PO', 'TL', 'QA', 'Security'],
     gateContribution: 'All Gates',
-    docPath: '.claude/skills/gate-evaluation/SKILL.md',
+    docPath: '.claude/skills/lidr-gate-evaluation/SKILL.md',
   },
   {
     id: 'lidr-commit-management',
     name: 'lidr-commit-management',
-    phase: 'Cross-cutting',
+    phase: 'Anytime · anytime',
     phaseNum: 99,
+    stage: 'anytime',
     source: 'lidr',
     criticality: 'optional',
     description:
@@ -549,8 +648,9 @@ export const skills: Skill[] = [
   {
     id: 'lidr-ticket-validation',
     name: 'lidr-ticket-validation',
-    phase: 'Cross-cutting',
+    phase: 'Anytime · anytime',
     phaseNum: 99,
+    stage: 'anytime',
     source: 'lidr',
     criticality: 'recommended',
     description:
@@ -565,13 +665,12 @@ export const skills: Skill[] = [
     roles: ['PO', 'QA', 'Dev'],
     docPath: '.claude/skills/lidr-ticket-validation/SKILL.md',
   },
-
-  // Development (4)
   {
     id: 'lidr-agents-architecture',
     name: 'lidr-agents-architecture',
-    phase: 'Development',
+    phase: 'Anytime · anytime',
     phaseNum: 100,
+    stage: 'anytime',
     source: 'anytime',
     criticality: 'optional',
     description:
@@ -588,8 +687,9 @@ export const skills: Skill[] = [
   {
     id: 'lidr-command-development',
     name: 'lidr-command-development',
-    phase: 'Development',
+    phase: 'Anytime · anytime',
     phaseNum: 100,
+    stage: 'anytime',
     source: 'anytime',
     criticality: 'optional',
     description:
@@ -601,8 +701,9 @@ export const skills: Skill[] = [
   {
     id: 'lidr-hook-development',
     name: 'lidr-hook-development',
-    phase: 'Development',
+    phase: 'Anytime · anytime',
     phaseNum: 100,
+    stage: 'anytime',
     source: 'anytime',
     criticality: 'optional',
     description: 'Design Claude Code hooks for event-driven workflow automation and quality gates',
@@ -613,8 +714,9 @@ export const skills: Skill[] = [
   {
     id: 'lidr-mcp-integration',
     name: 'lidr-mcp-integration',
-    phase: 'Development',
+    phase: 'Anytime · anytime',
     phaseNum: 100,
+    stage: 'anytime',
     source: 'anytime',
     criticality: 'optional',
     description: 'Configure Model Context Protocol servers for external service integration',
@@ -622,72 +724,53 @@ export const skills: Skill[] = [
     roles: ['TL'],
     docPath: '.claude/skills/lidr-mcp-integration/SKILL.md',
   },
-
-  // Additional skills found in filesystem but missing in data (SDLC-360 remediation)
   {
-    id: 'audit-standards',
-    name: 'audit-standards',
-    phase: 'Fase 0 — Preparación',
-    phaseNum: 0,
-    source: 'lidr',
-    criticality: 'recommended',
-    description:
-      'Comprehensive audit skill for validating that all skills comply with established SDLC ecosystem standards. CRITICAL for ensuring frontmatter consistency, domain-agnostic content, methodology uniformity, and structural integrity across the ecosystem.',
-    triggers: [
-      'audit skills',
-      'validate standards',
-      'compliance check',
-      'skill quality review',
-      'ecosystem health assessment',
-    ],
-    roles: ['TL'],
-    gateContribution: 'Pre-Gate 0',
-    docPath: '.claude/skills/audit-standards/SKILL.md',
-  },
-  {
-    id: 'playwright-cli',
-    name: 'playwright-cli',
-    phase: 'Cross-cutting',
+    id: 'lidr-playwright-cli',
+    name: 'lidr-playwright-cli',
+    phase: 'Anytime · anytime',
     phaseNum: 99,
+    stage: 'anytime',
     source: 'lidr',
     criticality: 'optional',
     description:
       'Browser automation with Playwright CLI for web testing, form filling, screenshots, and data extraction. Use when needing to navigate websites, interact with web pages, fill forms, take screenshots, test web applications.',
     triggers: ['playwright', 'browser automation', 'web testing', 'screenshot', 'form filling'],
     roles: ['QA', 'Dev'],
-    docPath: '.claude/skills/playwright-cli/SKILL.md',
+    docPath: '.claude/skills/lidr-playwright-cli/SKILL.md',
   },
   {
-    id: 'external-sync',
-    name: 'external-sync',
-    phase: 'Cross-cutting',
+    id: 'lidr-external-sync',
+    name: 'lidr-external-sync',
+    phase: 'Anytime · anytime',
     phaseNum: 0,
+    stage: 'anytime',
     source: 'lidr',
     criticality: 'optional',
     description: 'Bidirectional synchronization between SDLC tracking and external tools',
     triggers: ['external sync', 'tool integration', 'portfolio sync'],
     roles: ['PME', 'TL', 'DevOps'],
     gateContribution: 'All Gates',
-    docPath: '.claude/skills/external-sync/SKILL.md',
+    docPath: '.claude/skills/lidr-external-sync/SKILL.md',
     tier: 'Cross-cutting',
-    relatedSkills: ['sdlc-tracking'],
-    relatedCommands: ['track-sdlc'],
+    relatedSkills: ['lidr-sdlc-tracking'],
+    relatedCommands: ['lidr-track-sdlc'],
   },
   {
-    id: 'sdlc-tracking',
-    name: 'sdlc-tracking',
-    phase: 'Cross-cutting',
+    id: 'lidr-sdlc-tracking',
+    name: 'lidr-sdlc-tracking',
+    phase: 'Anytime · anytime',
     phaseNum: 0,
+    stage: 'anytime',
     source: 'lidr',
     criticality: 'recommended',
     description: 'Centralized SDLC tracking system with sdlc-tracking.yaml management',
     triggers: ['sdlc tracking', 'project tracking', 'phase tracking', 'portfolio dashboard'],
     roles: ['PME', 'SM', 'TL'],
     gateContribution: 'All Gates',
-    docPath: '.claude/skills/sdlc-tracking/SKILL.md',
+    docPath: '.claude/skills/lidr-sdlc-tracking/SKILL.md',
     tier: 'Cross-cutting',
-    relatedSkills: ['external-sync'],
-    relatedCommands: ['track-sdlc'],
+    relatedSkills: ['lidr-external-sync'],
+    relatedCommands: ['lidr-track-sdlc'],
   },
 
   // ═══════════════════════════════════════════════════════════════════
@@ -700,6 +783,7 @@ export const skills: Skill[] = [
     name: 'bmad-agent-analyst',
     phase: 'BMad — Agents',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Strategic business analyst and requirements expert. Use when the user asks to talk to Mary or requests the business analyst.',
@@ -712,6 +796,7 @@ export const skills: Skill[] = [
     name: 'bmad-agent-architect',
     phase: 'BMad — Agents',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'System architect and technical design leader. Use when the user asks to talk to Winston or requests the architect.',
@@ -724,6 +809,7 @@ export const skills: Skill[] = [
     name: 'bmad-agent-dev',
     phase: 'BMad — Agents',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Senior software engineer for story execution and code implementation. Use when the user asks to talk to Amelia or requests the developer agent.',
@@ -736,6 +822,7 @@ export const skills: Skill[] = [
     name: 'bmad-agent-pm',
     phase: 'BMad — Agents',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Product manager for PRD creation and requirements discovery. Use when the user asks to talk to John or requests the product manager.',
@@ -748,6 +835,7 @@ export const skills: Skill[] = [
     name: 'bmad-agent-tech-writer',
     phase: 'BMad — Agents',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Technical documentation specialist and knowledge curator. Use when the user asks to talk to Paige or requests the tech writer.',
@@ -760,6 +848,7 @@ export const skills: Skill[] = [
     name: 'bmad-agent-ux-designer',
     phase: 'BMad — Agents',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'UX designer and UI specialist. Use when the user asks to talk to Sally or requests the UX designer.',
@@ -774,6 +863,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-agent-brainstorming-coach',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Elite brainstorming specialist for facilitated ideation sessions. Use when the user asks to talk to Carson or requests the Brainstorming Specialist.',
@@ -786,6 +876,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-agent-creative-problem-solver',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Master problem solver for systematic problem-solving methodologies. Use when the user asks to talk to Dr. Quinn or requests the Master Problem Solver.',
@@ -798,6 +889,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-agent-design-thinking-coach',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Design thinking maestro for human-centered design processes. Use when the user asks to talk to Maya or requests the Design Thinking Maestro.',
@@ -810,6 +902,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-agent-innovation-strategist',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Disruptive innovation oracle for business model innovation and strategic disruption. Use when the user asks to talk to Victor or requests the Disruptive Innovation Oracle.',
@@ -822,6 +915,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-agent-presentation-master',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Visual communication and presentation expert for slide decks, pitch decks, and visual storytelling. Use when the user asks to talk to Caravaggio.',
@@ -834,6 +928,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-agent-storyteller',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Master storyteller for compelling narratives using proven frameworks. Use when the user asks to talk to Sophia or requests the Master Storyteller.',
@@ -846,6 +941,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-design-thinking',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Guide human-centered design processes using empathy-driven methodologies. Use when the user says "lets run design thinking".',
@@ -858,6 +954,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-innovation-strategy',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Identify disruption opportunities and architect business model innovation. Use when the user says "lets create an innovation strategy".',
@@ -870,6 +967,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-problem-solving',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Apply systematic problem-solving methodologies to complex challenges. Use when the user says "guide me through structured problem solving".',
@@ -882,6 +980,7 @@ export const skills: Skill[] = [
     name: 'bmad-cis-storytelling',
     phase: 'BMad — CIS (Innovation)',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Craft compelling narratives using story frameworks. Use when the user says "help me with storytelling".',
@@ -896,6 +995,7 @@ export const skills: Skill[] = [
     name: 'bmad-tea',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Master Test Architect and Quality Advisor. Use when the user asks to talk to Murat or requests the Test Architect.',
@@ -908,6 +1008,7 @@ export const skills: Skill[] = [
     name: 'bmad-qa-generate-e2e-tests',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Generate end to end automated tests for existing features. Use when the user says "create qa automated tests for [feature]".',
@@ -920,6 +1021,7 @@ export const skills: Skill[] = [
     name: 'bmad-teach-me-testing',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Teach testing progressively through structured sessions. Use when user says "lets learn testing" or "I want to study test practices".',
@@ -932,6 +1034,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-atdd',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Generate red-phase acceptance test scaffolds using the TDD cycle. Use when the user says "lets write acceptance tests" or "I want to do ATDD".',
@@ -944,6 +1047,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-automate',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Expand test automation coverage for codebase. Use when user says "lets expand test coverage" or "I want to automate tests".',
@@ -956,6 +1060,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-ci',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Scaffold CI/CD quality pipeline with test execution. Use when the user says "lets setup CI pipeline" or "I want to create quality gates".',
@@ -968,6 +1073,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-framework',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Initialize test framework with Playwright or Cypress. Use when the user says "lets setup test framework" or "I want to initialize testing framework".',
@@ -980,6 +1086,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-nfr',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Audit NFR evidence for performance, security, reliability, and scalability (post-implementation). Use when implementation evidence exists and the user says "audit NFR evidence" or "audit NFRs".',
@@ -992,6 +1099,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-test-design',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Create system-level or epic-level test plans. Use when the user says "lets design test plan" or "I want to create test strategy".',
@@ -1004,6 +1112,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-test-review',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Review test quality using best practices validation. Use when user says "lets review tests" or "I want to evaluate test quality".',
@@ -1016,6 +1125,7 @@ export const skills: Skill[] = [
     name: 'bmad-testarch-trace',
     phase: 'BMad — Test Architect',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Generate traceability matrix and quality gate decision. Use when the user says "lets create traceability matrix" or "I want to analyze test coverage".',
@@ -1030,6 +1140,7 @@ export const skills: Skill[] = [
     name: 'bmad-create-prd',
     phase: 'BMad — PRD & Product',
     phaseNum: 200,
+    stage: 'planning',
     source: 'bmad',
     description:
       'DEPRECATED — consolidated into bmad-prd create intent. Will be removed in v7 in favor of bmad-prd.',
@@ -1042,6 +1153,7 @@ export const skills: Skill[] = [
     name: 'bmad-edit-prd',
     phase: 'BMad — PRD & Product',
     phaseNum: 200,
+    stage: 'planning',
     source: 'bmad',
     description:
       'DEPRECATED — consolidated into bmad-prd update intent. Will be removed in v7 in favor of bmad-prd.',
@@ -1054,6 +1166,7 @@ export const skills: Skill[] = [
     name: 'bmad-prd',
     phase: 'BMad — PRD & Product',
     phaseNum: 200,
+    stage: 'planning',
     source: 'bmad',
     description:
       'Create, update, or validate a PRD. Use when the user wants help producing, editing, or validating a PRD.',
@@ -1066,6 +1179,7 @@ export const skills: Skill[] = [
     name: 'bmad-prfaq',
     phase: 'BMad — PRD & Product',
     phaseNum: 200,
+    stage: 'analysis',
     source: 'bmad',
     description:
       'Working Backwards PRFAQ challenge to forge product concepts. Use when the user requests to create a PRFAQ or run the PRFAQ challenge.',
@@ -1078,6 +1192,7 @@ export const skills: Skill[] = [
     name: 'bmad-product-brief',
     phase: 'BMad — PRD & Product',
     phaseNum: 200,
+    stage: 'analysis',
     source: 'bmad',
     description:
       'Create, update, or validate a product brief. Use when the user wants help producing, editing, or validating a brief.',
@@ -1090,6 +1205,7 @@ export const skills: Skill[] = [
     name: 'bmad-validate-prd',
     phase: 'BMad — PRD & Product',
     phaseNum: 200,
+    stage: 'planning',
     source: 'bmad',
     description:
       'DEPRECATED — consolidated into bmad-prd validate intent. Will be removed in v7 in favor of bmad-prd.',
@@ -1104,6 +1220,7 @@ export const skills: Skill[] = [
     name: 'bmad-create-architecture',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'planning',
     source: 'bmad',
     description:
       'Create architecture solution design decisions for AI agent consistency. Use when the user says "lets create architecture" or "create technical architecture".',
@@ -1116,6 +1233,7 @@ export const skills: Skill[] = [
     name: 'bmad-create-epics-and-stories',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'specification',
     source: 'bmad',
     description:
       'Break requirements into epics and user stories. Use when the user says "create the epics and stories list".',
@@ -1128,6 +1246,7 @@ export const skills: Skill[] = [
     name: 'bmad-create-story',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'sprint-planning',
     source: 'bmad',
     description:
       'Creates a dedicated story file with all the context the agent will need to implement it later. Use when the user says "create the next story" or "create story [id]".',
@@ -1140,6 +1259,7 @@ export const skills: Skill[] = [
     name: 'bmad-ux',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'planning',
     source: 'bmad',
     description:
       'Plan UX patterns and design specifications. Use when the user says "lets create UX design" or "create UX specifications".',
@@ -1152,6 +1272,7 @@ export const skills: Skill[] = [
     name: 'bmad-dev-story',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'development',
     source: 'bmad',
     description:
       'Execute story implementation following a context filled story spec file. Use when the user says "dev this story [story file]".',
@@ -1164,6 +1285,7 @@ export const skills: Skill[] = [
     name: 'bmad-document-project',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'context',
     source: 'bmad',
     description:
       'Document brownfield projects for AI context. Use when the user says "document this project" or "generate project docs".',
@@ -1176,6 +1298,7 @@ export const skills: Skill[] = [
     name: 'bmad-generate-project-context',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'context',
     source: 'bmad',
     description:
       'Create project-context.md with AI rules. Use when the user says "generate project context" or "create project context".',
@@ -1188,6 +1311,7 @@ export const skills: Skill[] = [
     name: 'bmad-quick-dev',
     phase: 'BMad — Architecture & Stories',
     phaseNum: 200,
+    stage: 'development',
     source: 'bmad',
     description:
       'Implements any user intent, requirement, story, bug fix or change request by producing clean working code artifacts following project conventions.',
@@ -1202,6 +1326,7 @@ export const skills: Skill[] = [
     name: 'bmad-check-implementation-readiness',
     phase: 'BMad — Sprint & Process',
     phaseNum: 200,
+    stage: 'sprint-planning',
     source: 'bmad',
     description:
       'Validate PRD, UX, Architecture and Epics specs are complete. Use when the user says "check implementation readiness".',
@@ -1214,6 +1339,7 @@ export const skills: Skill[] = [
     name: 'bmad-correct-course',
     phase: 'BMad — Sprint & Process',
     phaseNum: 200,
+    stage: 'development',
     source: 'bmad',
     description:
       'Manage significant changes during sprint execution. Use when the user says "correct course" or "propose sprint change".',
@@ -1226,6 +1352,7 @@ export const skills: Skill[] = [
     name: 'bmad-retrospective',
     phase: 'BMad — Sprint & Process',
     phaseNum: 200,
+    stage: 'release',
     source: 'bmad',
     description:
       'Post-epic review to extract lessons and assess success. Use when the user says "run a retrospective" or "lets retro the epic".',
@@ -1238,6 +1365,7 @@ export const skills: Skill[] = [
     name: 'bmad-sprint-planning',
     phase: 'BMad — Sprint & Process',
     phaseNum: 200,
+    stage: 'sprint-planning',
     source: 'bmad',
     description:
       'Generate sprint status tracking from epics. Use when the user says "run sprint planning" or "generate sprint plan".',
@@ -1250,6 +1378,7 @@ export const skills: Skill[] = [
     name: 'bmad-sprint-status',
     phase: 'BMad — Sprint & Process',
     phaseNum: 200,
+    stage: 'development',
     source: 'bmad',
     description:
       'Summarize sprint status and surface risks. Use when the user says "check sprint status" or "show sprint status".',
@@ -1264,6 +1393,7 @@ export const skills: Skill[] = [
     name: 'bmad-code-review',
     phase: 'BMad — Review',
     phaseNum: 200,
+    stage: 'development',
     source: 'bmad',
     description:
       'Review code changes adversarially using parallel review layers (Blind Hunter, Edge Case Hunter, Acceptance Auditor) with structured triage. Use when the user says "run code review".',
@@ -1276,6 +1406,7 @@ export const skills: Skill[] = [
     name: 'bmad-editorial-review-prose',
     phase: 'BMad — Review',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Clinical copy-editor that reviews text for communication issues. Use when user says review for prose or improve the prose.',
@@ -1288,6 +1419,7 @@ export const skills: Skill[] = [
     name: 'bmad-editorial-review-structure',
     phase: 'BMad — Review',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Structural editor that proposes cuts, reorganization, and simplification while preserving comprehension. Use when user requests structural review.',
@@ -1300,6 +1432,7 @@ export const skills: Skill[] = [
     name: 'bmad-review-adversarial-general',
     phase: 'BMad — Review',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Perform a Cynical Review and produce a findings report. Use when the user requests a critical review of something.',
@@ -1312,6 +1445,7 @@ export const skills: Skill[] = [
     name: 'bmad-review-edge-case-hunter',
     phase: 'BMad — Review',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'Walk every branching path and boundary condition in content, report only unhandled edge cases. Use when you need exhaustive edge-case analysis.',
@@ -1326,6 +1460,7 @@ export const skills: Skill[] = [
     name: 'bmad-agent-builder',
     phase: 'BMad — Meta',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Builds, edits or analyzes Agent Skills through conversational discovery. Use when the user requests to "Create an Agent" or "Analyze an Agent".',
@@ -1338,6 +1473,7 @@ export const skills: Skill[] = [
     name: 'bmad-bmb-setup',
     phase: 'BMad — Meta',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Sets up BMad Builder module in a project. Use when the user requests to install bmb module or setup BMad Builder.',
@@ -1350,6 +1486,7 @@ export const skills: Skill[] = [
     name: 'bmad-customize',
     phase: 'BMad — Meta',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Authors and updates customization overrides for installed BMad skills. Use when the user says customize bmad or override a skill.',
@@ -1362,6 +1499,7 @@ export const skills: Skill[] = [
     name: 'bmad-eval-runner',
     phase: 'BMad — Meta',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Run a skill evals in a clean, isolated environment (Docker) and report results with parallel grader subagents. Use when evaluating a skill or running evals.',
@@ -1374,6 +1512,7 @@ export const skills: Skill[] = [
     name: 'bmad-module-builder',
     phase: 'BMad — Meta',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Plans, creates, and validates BMad modules. Use when the user requests to create module, build a module, or validate module.',
@@ -1386,6 +1525,7 @@ export const skills: Skill[] = [
     name: 'bmad-workflow-builder',
     phase: 'BMad — Meta',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Builds, edits, and analyzes workflows and skills. Use when the user requests to build a workflow, modify a workflow, or analyze skill.',
@@ -1400,6 +1540,7 @@ export const skills: Skill[] = [
     name: 'bmad-advanced-elicitation',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Push the LLM to reconsider, refine, and improve its recent output. Use for deeper critique (socratic, first principles, pre-mortem, red team).',
@@ -1412,6 +1553,7 @@ export const skills: Skill[] = [
     name: 'bmad-brainstorming',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Facilitate interactive brainstorming sessions using diverse creative techniques and ideation methods. Use when the user says help me brainstorm.',
@@ -1424,6 +1566,7 @@ export const skills: Skill[] = [
     name: 'bmad-checkpoint-preview',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'qa',
     source: 'bmad',
     description:
       'LLM-assisted human-in-the-loop review. Make sense of a change, focus attention where it matters, test. Use when the user says "checkpoint".',
@@ -1436,6 +1579,7 @@ export const skills: Skill[] = [
     name: 'bmad-spec',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'specification',
     source: 'bmad',
     description:
       'Distill any intent input into a SPEC.md kernel + companions — the canonical, preservation-validated contract downstream work derives from. Locks the WHAT before the HOW.',
@@ -1448,6 +1592,7 @@ export const skills: Skill[] = [
     name: 'bmad-domain-research',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'analysis',
     source: 'bmad',
     description:
       'Conduct domain and industry research. Use when the user wants to do domain research for a topic or industry.',
@@ -1460,6 +1605,7 @@ export const skills: Skill[] = [
     name: 'bmad-help',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Analyzes current state and user query to answer BMad questions or recommend the next skill(s) to use. Use when user asks for bmad help.',
@@ -1472,6 +1618,7 @@ export const skills: Skill[] = [
     name: 'bmad-index-docs',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Generates or updates an index.md to reference all docs in the folder. Use if user requests to create or update an index of all files.',
@@ -1484,6 +1631,7 @@ export const skills: Skill[] = [
     name: 'bmad-investigate',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'development',
     source: 'bmad',
     description:
       'Forensic case investigation with evidence-graded findings. Use to investigate a bug, trace what caused an incident, or build mental model of a code area.',
@@ -1496,6 +1644,7 @@ export const skills: Skill[] = [
     name: 'bmad-market-research',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'analysis',
     source: 'bmad',
     description:
       'Conduct market research on competition and customers. Use when the user says they need market research.',
@@ -1508,6 +1657,7 @@ export const skills: Skill[] = [
     name: 'bmad-party-mode',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Orchestrates group discussions between installed BMAD agents, enabling multi-agent conversations where each agent has independent thinking. Use for roundtable.',
@@ -1520,6 +1670,7 @@ export const skills: Skill[] = [
     name: 'bmad-shard-doc',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'anytime',
     source: 'bmad',
     description:
       'Splits large markdown documents into smaller, organized files based on level 2 (default) sections. Use if the user says perform shard document.',
@@ -1532,6 +1683,7 @@ export const skills: Skill[] = [
     name: 'bmad-technical-research',
     phase: 'BMad — Utilities',
     phaseNum: 200,
+    stage: 'planning',
     source: 'bmad',
     description:
       'Conduct technical research on technologies and architecture. Use when the user wants to produce a technical research report.',

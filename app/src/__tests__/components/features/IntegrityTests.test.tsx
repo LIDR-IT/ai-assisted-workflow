@@ -35,7 +35,7 @@ const defaultMockValue = {
     createMockTestDefinition({ id: 'T2', category: 'advanced' }),
   ],
   config: {
-    PLACEHOLDER_COUNT: 32,
+    PLACEHOLDER_COUNT: 36,
     TESTS_PER_PAGE: 10,
     ASYNC_TEST_TIMEOUT: 5000,
     REAL_TIME_CATEGORIES: ['data-integrity', 'counters', 'coverage'],

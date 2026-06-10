@@ -108,15 +108,17 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/settings.json',
   '.mcp.json',
 
-  // Rules (22)
+  // Rules (24)
   '.claude/rules/code/principles.md',
   '.claude/rules/code/style.md',
   '.claude/rules/content/copywriting.md',
   '.claude/rules/design/web-design.md',
   '.claude/rules/frameworks/react-native.md',
   '.claude/rules/lidr-sdlc/documentation.md',
+  '.claude/rules/lidr-sdlc/model-selection.md',
   '.claude/rules/lidr-sdlc/org.md',
   '.claude/rules/lidr-sdlc/project.md',
+  '.claude/rules/lidr-sdlc/spec-execution.md',
   '.claude/rules/lidr-sdlc/tech-stack.md',
   '.claude/rules/lidr-sdlc/workflows.md',
   '.claude/rules/process/ai-workflow-system.md',
@@ -132,7 +134,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/rules/tools/claude-code-extensions.md',
   '.claude/rules/tools/use-context7.md',
 
-  // Agents (22)
+  // Agents (23)
   '.claude/agents/bmad-agent-analyst.agent.md',
   '.claude/agents/bmad-agent-architect.agent.md',
   '.claude/agents/bmad-agent-dev.agent.md',
@@ -154,6 +156,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/agents/lidr-qa-agent.md',
   '.claude/agents/lidr-release-agent.md',
   '.claude/agents/lidr-security-agent.md',
+  '.claude/agents/lidr-spec-orchestrator.md',
   '.claude/agents/lidr-ticket-enricher.md',
 
   // Hooks (6)
@@ -164,7 +167,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/hooks/scripts/protect-secrets.sh',
   '.claude/hooks/scripts/validate-ecosystem-counts.sh',
 
-  // Skills (111)
+  // Skills (114)
   '.claude/skills/bmad-advanced-elicitation/SKILL.md',
   '.claude/skills/bmad-agent-analyst/SKILL.md',
   '.claude/skills/bmad-agent-architect/SKILL.md',
@@ -253,6 +256,8 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/skills/lidr-gate-evaluation/SKILL.md',
   '.claude/skills/lidr-generate-nfr/SKILL.md',
   '.claude/skills/lidr-generate-rf/SKILL.md',
+  '.claude/skills/lidr-help/SKILL.md',
+  '.claude/skills/lidr-impact-analysis/SKILL.md',
   '.claude/skills/lidr-kickoff/SKILL.md',
   '.claude/skills/lidr-pentest-report/SKILL.md',
   '.claude/skills/lidr-playwright-cli/SKILL.md',
@@ -264,6 +269,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/skills/lidr-review-cruzado/SKILL.md',
   '.claude/skills/lidr-risk-log/SKILL.md',
   '.claude/skills/lidr-rollback-plan/SKILL.md',
+  '.claude/skills/lidr-run-parallel-tasks/SKILL.md',
   '.claude/skills/lidr-sdlc-tracking/SKILL.md',
   '.claude/skills/lidr-security-checklist/SKILL.md',
   '.claude/skills/lidr-sprint-capacity/SKILL.md',
@@ -273,6 +279,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/skills/lidr-ticket-validation/SKILL.md',
   '.claude/skills/lidr-tracking-integration/SKILL.md',
   '.claude/skills/lidr-user-stories/SKILL.md',
+  '.claude/skills/lidr-using-git-worktrees/SKILL.md',
   '.claude/skills/lidr-validate-requirements/SKILL.md',
   '.claude/skills/lidr-vuln-assessment/SKILL.md',
 
@@ -285,14 +292,19 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/commands/lidr-create-release-notes.md',
   '.claude/commands/lidr-create-ticket.md',
   '.claude/commands/lidr-enrich-ticket.md',
-  '.claude/commands/lidr-help.md',
   '.claude/commands/lidr-implement-ticket.md',
   '.claude/commands/lidr-improve-docs.md',
   '.claude/commands/lidr-init-project-docs.md',
   '.claude/commands/lidr-prepare-testing.md',
-  '.claude/commands/lidr-product-brief.md',
   '.claude/commands/lidr-quick-dev.md',
   '.claude/commands/lidr-quick-spec.md',
+  '.claude/commands/lidr-spec-apply.md',
+  '.claude/commands/lidr-spec-archive.md',
+  '.claude/commands/lidr-spec-bulk-archive.md',
+  '.claude/commands/lidr-spec-continue.md',
+  '.claude/commands/lidr-spec-ff.md',
+  '.claude/commands/lidr-spec-new.md',
+  '.claude/commands/lidr-spec-verify.md',
   '.claude/commands/lidr-sprint-health.md',
   '.claude/commands/lidr-sync-docs.md',
   '.claude/commands/lidr-track-sdlc.md',
@@ -302,7 +314,6 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/commands/lidr-validate-requirements.md',
   '.claude/commands/sync-setup.md',
   '.claude/commands/test-hooks.md',
-  '.claude/commands/validate-project-docs.md',
 
   // Docs (35)
   'docs/README.md',
@@ -354,15 +365,17 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/settings.json',
   '.mcp.json',
 
-  // Rules (22)
+  // Rules (24)
   '.claude/rules/code/principles.md',
   '.claude/rules/code/style.md',
   '.claude/rules/content/copywriting.md',
   '.claude/rules/design/web-design.md',
   '.claude/rules/frameworks/react-native.md',
   '.claude/rules/lidr-sdlc/documentation.md',
+  '.claude/rules/lidr-sdlc/model-selection.md',
   '.claude/rules/lidr-sdlc/org.md',
   '.claude/rules/lidr-sdlc/project.md',
+  '.claude/rules/lidr-sdlc/spec-execution.md',
   '.claude/rules/lidr-sdlc/tech-stack.md',
   '.claude/rules/lidr-sdlc/workflows.md',
   '.claude/rules/process/ai-workflow-system.md',
@@ -378,7 +391,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/rules/tools/claude-code-extensions.md',
   '.claude/rules/tools/use-context7.md',
 
-  // Agents (22)
+  // Agents (23)
   '.claude/agents/bmad-agent-analyst.agent.md',
   '.claude/agents/bmad-agent-architect.agent.md',
   '.claude/agents/bmad-agent-dev.agent.md',
@@ -400,6 +413,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/agents/lidr-qa-agent.md',
   '.claude/agents/lidr-release-agent.md',
   '.claude/agents/lidr-security-agent.md',
+  '.claude/agents/lidr-spec-orchestrator.md',
   '.claude/agents/lidr-ticket-enricher.md',
 
   // Hooks (6)
@@ -410,7 +424,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/hooks/scripts/protect-secrets.sh',
   '.claude/hooks/scripts/validate-ecosystem-counts.sh',
 
-  // Skills (111)
+  // Skills (114)
   '.claude/skills/bmad-advanced-elicitation/SKILL.md',
   '.claude/skills/bmad-agent-analyst/SKILL.md',
   '.claude/skills/bmad-agent-architect/SKILL.md',
@@ -499,6 +513,8 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/skills/lidr-gate-evaluation/SKILL.md',
   '.claude/skills/lidr-generate-nfr/SKILL.md',
   '.claude/skills/lidr-generate-rf/SKILL.md',
+  '.claude/skills/lidr-help/SKILL.md',
+  '.claude/skills/lidr-impact-analysis/SKILL.md',
   '.claude/skills/lidr-kickoff/SKILL.md',
   '.claude/skills/lidr-pentest-report/SKILL.md',
   '.claude/skills/lidr-playwright-cli/SKILL.md',
@@ -510,6 +526,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/skills/lidr-review-cruzado/SKILL.md',
   '.claude/skills/lidr-risk-log/SKILL.md',
   '.claude/skills/lidr-rollback-plan/SKILL.md',
+  '.claude/skills/lidr-run-parallel-tasks/SKILL.md',
   '.claude/skills/lidr-sdlc-tracking/SKILL.md',
   '.claude/skills/lidr-security-checklist/SKILL.md',
   '.claude/skills/lidr-sprint-capacity/SKILL.md',
@@ -519,6 +536,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/skills/lidr-ticket-validation/SKILL.md',
   '.claude/skills/lidr-tracking-integration/SKILL.md',
   '.claude/skills/lidr-user-stories/SKILL.md',
+  '.claude/skills/lidr-using-git-worktrees/SKILL.md',
   '.claude/skills/lidr-validate-requirements/SKILL.md',
   '.claude/skills/lidr-vuln-assessment/SKILL.md',
 
@@ -531,14 +549,19 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/commands/lidr-create-release-notes.md',
   '.claude/commands/lidr-create-ticket.md',
   '.claude/commands/lidr-enrich-ticket.md',
-  '.claude/commands/lidr-help.md',
   '.claude/commands/lidr-implement-ticket.md',
   '.claude/commands/lidr-improve-docs.md',
   '.claude/commands/lidr-init-project-docs.md',
   '.claude/commands/lidr-prepare-testing.md',
-  '.claude/commands/lidr-product-brief.md',
   '.claude/commands/lidr-quick-dev.md',
   '.claude/commands/lidr-quick-spec.md',
+  '.claude/commands/lidr-spec-apply.md',
+  '.claude/commands/lidr-spec-archive.md',
+  '.claude/commands/lidr-spec-bulk-archive.md',
+  '.claude/commands/lidr-spec-continue.md',
+  '.claude/commands/lidr-spec-ff.md',
+  '.claude/commands/lidr-spec-new.md',
+  '.claude/commands/lidr-spec-verify.md',
   '.claude/commands/lidr-sprint-health.md',
   '.claude/commands/lidr-sync-docs.md',
   '.claude/commands/lidr-track-sdlc.md',
@@ -548,7 +571,6 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/commands/lidr-validate-requirements.md',
   '.claude/commands/sync-setup.md',
   '.claude/commands/test-hooks.md',
-  '.claude/commands/validate-project-docs.md',
 
   // Docs (35)
   'docs/README.md',
@@ -690,11 +712,11 @@ export const TEST_CATEGORIES: TestCategory[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// TEST DEFINITIONS - 32 tests total (T1-T32)
+// TEST DEFINITIONS - 36 tests total (T1-T36)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const TEST_DEFINITIONS: TestDefinition[] = [
-  // Sync Tests (T1-T32)
+  // Sync Tests (T1-T36)
   {
     id: 't1',
     name: 'HelpCenter docPaths resuelven a archivos reales',
@@ -746,11 +768,11 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
   },
   {
     id: 't6',
-    name: 'Conteo de artefactos HelpCenter = esperado (10 tipos)',
+    name: 'Artifact counts coherent (registry = filesystem = EXPECTED_COUNTS)',
     category: 'counters',
     type: 'sync',
     description:
-      'Valida que los contadores de HelpCenter coinciden con los esperados del ecosistema',
+      'Valida que skills registry == filesystem SKILL.md == EXPECTED_COUNTS.skills, y que los tipos integrados (templates/checklists/signoffs) reportan 0',
     expectedData: {
       counts: EXPECTED_COUNTS,
     },
@@ -856,17 +878,19 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
   },
   {
     id: 't20',
-    name: 'Workflow coverage by SDLC phase (0-7)',
+    name: 'Workflow coverage by SDLC gate (G0-G7)',
     category: 'ecosystem-health',
     type: 'sync',
-    description: 'Verifica que cada fase SDLC (0-7) tiene workflows asociados',
+    description:
+      'Verifica que cada gate del modelo unificado (G0-G7) tiene al menos un skill que cubre su fase (vía gateContribution)',
   },
   {
     id: 't21',
-    name: 'Gate contribution coverage — every gate 0-7 has >= 1 skill',
+    name: 'Gate contribution coverage — every gate G0-G7 has >= 1 skill',
     category: 'ecosystem-health',
     type: 'sync',
-    description: 'Verifica que cada gate del SDLC tiene al menos un skill que contribuye',
+    description:
+      'Itera los 8 gates (G0-G7) y verifica que cada uno tiene >= 1 skill contribuyendo (gateContribution)',
   },
   {
     id: 't22',
@@ -877,18 +901,19 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
   },
   {
     id: 't23',
-    name: 'Repo-structure checklist covers all required categories',
+    name: 'Repo-structure checklist owner exists (informational — checklist not in bundle)',
     category: 'coverage',
     type: 'sync',
     description:
-      'Verifica que el checklist de repo-structure cubre todas las categorías necesarias',
+      'Verifica que el skill dueño del checklist repo-structure (lidr-kickoff) existe. La cobertura de categorías del checklist requiere un scan server-side (no está en el bundle del cliente).',
   },
   {
     id: 't24',
-    name: 'Governance templates (README, CONTRIBUTING, SECURITY, CHANGELOG) registered',
+    name: 'Governance scaffolding artifacts (init-project-docs, kickoff) registered',
     category: 'coverage',
     type: 'sync',
-    description: 'Verifica que todos los templates de governance están registrados',
+    description:
+      'Verifica que los artefactos que generan el scaffolding de governance (README/CONTRIBUTING/SECURITY/CHANGELOG) están registrados: lidr-init-project-docs + lidr-kickoff',
   },
   {
     id: 't25',
@@ -914,10 +939,11 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
   },
   {
     id: 't28',
-    name: 'Rule Ecosystem Completeness — validate rule tooling exists',
+    name: 'Rule Ecosystem Completeness — required LIDR SDLC rules exist',
     category: 'cross-cutting',
     type: 'sync',
-    description: 'Verifica que el ecosistema de rules está completo con herramientas necesarias',
+    description:
+      'Verifica que las 7 rules de gobernanza LIDR SDLC (org, project, tech-stack, workflows, documentation, spec-execution, model-selection) existen en el filesystem',
   },
   {
     id: 't29',
@@ -928,10 +954,11 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
   },
   {
     id: 't30',
-    name: 'Automation Scripts Existence',
+    name: 'Automation Scripts promised count (informational — scripts not in bundle)',
     category: 'cross-cutting',
     type: 'sync',
-    description: 'Verifica que todos los scripts de automatización prometidos existen',
+    description:
+      'Reporta el número de scripts de automatización/validación prometidos. Los scripts son Node-side y no están en el bundle del cliente; su existencia requiere un scan CLI.',
   },
   {
     id: 't31',
@@ -942,17 +969,19 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
   },
   {
     id: 't32',
-    name: 'Documentation Travel With Code (DTC) Compliance',
+    name: 'DTC governance rule present (informational — per-PR DTC is git-scoped)',
     category: 'dtc-traceability',
     type: 'sync',
-    description: 'Verifica compliance con reglas DTC del ecosistema',
+    description:
+      'Verifica que la rule de gobernanza DTC (documentation.md) existe. El compliance DTC por PR es una propiedad git/PR no observable desde el bundle del cliente.',
   },
   {
     id: 't33',
-    name: 'Coherence Validation Test',
+    name: 'Coherence Validation (informational — runs server-side via npm script)',
     category: 'ecosystem-health',
     type: 'async',
-    description: 'Ejecuta validate:coherence para detectar drift en datos hardcodeados',
+    description:
+      'Recuerda ejecutar `npm run validate:coherence` (CLI) para detectar drift en datos hardcodeados. El script corre server-side y no es ejecutable desde el bundle del cliente.',
   },
   {
     id: 't34',
@@ -1027,7 +1056,7 @@ export function getCategoryColor(categoryId: string): string {
 
 export const TEST_EXECUTION_CONFIG = {
   /** Number of tests shown in placeholder during loading */
-  PLACEHOLDER_COUNT: 32,
+  PLACEHOLDER_COUNT: 36,
   /** Page size for paginated test display */
   TESTS_PER_PAGE: 10,
   /** Default timeout for async tests in ms */

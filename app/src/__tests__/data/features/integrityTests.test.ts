@@ -158,14 +158,16 @@ describe('IntegrityTests Data Layer', () => {
     });
 
     it('has realistic count values', () => {
-      // Counts are derived from the data registries (skills.ts / commands.ts arrays),
-      // post-removal of the 3 deleted artifacts:
-      // - 113 skills - 1 (lidr-project-classifier) - 1 (lidr-automated-handoffs) = 111
-      //   + 1 (lidr-impact-analysis, added 2026-06-10: contract impact G4 + variant compatibility G2) = 112
-      // - 28 commands - 2 (lidr-document-project, lidr-check-readiness) = 26
+      // Counts are derived from the data registries (skills.ts / commands.ts arrays).
+      // - 113 skills = 44 lidr-* + 69 bmad-*, matching `.agents/skills/` exactly
+      //   (lidr-help added 2026-06-10 to complete the registry; it was on the
+      //   filesystem but missing from the data registry).
+      // - 26 commands modelled in the registry (curated lidr-* + generic
+      //   sync-setup/test-hooks); lidr-help is a skill not a command, and
+      //   lidr-product-brief was removed from the ecosystem.
       // - 22 rules pre-spec-lifecycle + 2 new (spec-execution, model-selection) = 24 (Node-side scans .claude/rules)
       // - validationScripts: 31 - 1 = 30 (lidr-project-classifier's validate-examples.ts removed with the skill)
-      expect(EXPECTED_COUNTS.skills).toBe(112);
+      expect(EXPECTED_COUNTS.skills).toBe(113);
       expect(EXPECTED_COUNTS.commands).toBe(26);
       expect(EXPECTED_COUNTS.rules).toBe(24);
       expect(EXPECTED_COUNTS.validationScripts).toBe(30);
@@ -214,12 +216,12 @@ describe('IntegrityTests Data Layer', () => {
         });
       });
 
-      it('has expected number of paths (225 artifacts)', () => {
-        // 225 = 231 − 4 deleted artifacts (skills lidr-project-classifier + lidr-automated-handoffs
-        // + commands lidr-document-project, lidr-check-readiness) − 2 consolidated command variants
-        // (lidr-create-branch-enhanced, lidr-create-pr-enhanced → merged into the base
-        // create-branch / create-pr). bmad-document-project SKILL.md is kept (real BMAD skill).
-        expect(HELPCENTER_DOCPATHS).toHaveLength(225);
+      it('has expected number of paths (236 artifacts)', () => {
+        // 236 = 225 − 3 deleted command entries (lidr-help is a skill not a command,
+        // lidr-product-brief removed, generic validate-project-docs removed) + 14 current
+        // artifacts (7 lidr-spec-* commands, 4 skills incl. lidr-impact-analysis,
+        // lidr-spec-orchestrator subagent, 2 rules spec-execution + model-selection).
+        expect(HELPCENTER_DOCPATHS).toHaveLength(236);
       });
 
       it('contains valid file paths', () => {

@@ -109,7 +109,7 @@
       "y": 570,
       "label": "docs-agent",
       "variant": "indigo",
-      "subtitle": "32 integrity tests + sync 8 fuentes + rule staleness"
+      "subtitle": "36 integrity tests + sync 8 fuentes + rule staleness"
     },
     {
       "id": "a-metrics",
