@@ -61,59 +61,33 @@ import { HelpCenter, PropuestaMejora, IntegrityTests } from '@/components/featur
 import { Card, Button, Tabs } from '@/components/shared/ui';
 ```
 
-## Feature Breakdown
+## Feature Breakdown (migration COMPLETE — 2026-06-10 cleanup)
+
+All five heavy pages live in `features/`. The old monolithic versions under
+`diagrams/` were deleted (dead code) except two thin wrappers that the route
+registry still imports.
 
 ### 1. Help Center (`features/help-center/`)
 
-**Current**: `diagrams/HelpCenter.tsx` (1,750+ lines)
-**Target Components**:
-
-- `HelpCenter.tsx` - Main container (< 500 lines)
-- `SearchBar.tsx` - Search functionality
-- `ArtefactGrid.tsx` - Artifact display grid
-- `WorkflowBrowser.tsx` - Workflow navigation
-- `FilterPanel.tsx` - Filtering controls
+Components: `HelpCenter.tsx` (container), `SearchInterface.tsx`, `ArtifactList.tsx`, `WorkflowSuggestions.tsx`, hooks `useArtifactSearch`/`usePagination`.
+Note: `diagrams/HelpCenter.tsx` survives as a ~77-line wrapper (routed via route-registry and mocked in `useTestExecution.test.ts`).
 
 ### 2. Propuesta Mejora (`features/propuesta-mejora/`)
 
-**Current**: `diagrams/PropuestaMejora.tsx` (3,070+ lines)
-**Target Components**:
-
-- `PropuestaMejora.tsx` - Main container (< 500 lines)
-- `FlowTab.tsx` - Flow diagram tab
-- `DiagnosisTab.tsx` - Diagnosis tab
-- `MejorasTab.tsx` - Improvements tab (includes AI value-prop + SDD principles intro)
-- `RoadmapTab.tsx` - Roadmap tab
-- `MetricsDashboard.tsx` - Embedded metrics
+Components: `PropuestaMejora.tsx` (container), `FlowTab.tsx`, `DiagnosisTab.tsx`, `MejorasTab.tsx`, `RoadmapTab.tsx`, `MetricsDashboard.tsx`. Routed directly from `features/`.
 
 ### 3. Integrity Tests (`features/integrity-tests/`)
 
-**Current**: `diagrams/IntegrityTests.tsx` (800+ lines)
-**Target Components**:
-
-- `IntegrityTests.tsx` - Main container (< 500 lines)
-- `TestGrid.tsx` - Test display grid
-- `TestDetail.tsx` - Individual test component
-- `TestResults.tsx` - Results display
+Components: `IntegrityTests.tsx` (container), `TestRunner.tsx`, `TestSuite.tsx`, `TestResults.tsx`, `useTestExecution.ts`. Routed directly from `features/`; the `diagrams/IntegrityTests.tsx` shim was deleted.
 
 ### 4. Handoffs Templates (`features/handoffs-templates/`)
 
-**Current**: `diagrams/HandoffsTemplates.tsx` (600+ lines)
-**Target Components**:
-
-- `HandoffsTemplates.tsx` - Main container (< 500 lines)
-- `PhaseCard.tsx` - Phase display cards
-- `TemplateCard.tsx` - Template cards
-- `HandoffCard.tsx` - Handoff documentation cards
+Routed directly from `features/`; data in `src/data/features/handoffsTemplates.ts` (unified phase labels). The dead `diagrams/HandoffsTemplates.tsx`, `diagrams/HandoffsTemplatesRefactored.tsx` and `diagrams/handoffs/*` were deleted.
 
 ### 5. Sitemap View (`features/sitemap-view/`)
 
-**Current**: `diagrams/SitemapView.tsx` (550+ lines)
-**Target Components**:
-
-- `SitemapView.tsx` - Main container (< 500 lines)
-- `SiteTree.tsx` - Sitemap tree visualization
-- `FileTree.tsx` - File structure tree
+Components: `SitemapView.tsx` (container), `FileTree.tsx`, `SitemapDiagram.tsx`, `NavigationPanel.tsx`.
+Note: `diagrams/SitemapView.tsx` survives as a 2-line re-export (routed via route-registry).
 
 ## Migration Guidelines
 

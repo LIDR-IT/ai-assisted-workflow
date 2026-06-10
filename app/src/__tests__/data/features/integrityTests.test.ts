@@ -161,10 +161,11 @@ describe('IntegrityTests Data Layer', () => {
       // Counts are derived from the data registries (skills.ts / commands.ts arrays),
       // post-removal of the 3 deleted artifacts:
       // - 113 skills - 1 (lidr-project-classifier) - 1 (lidr-automated-handoffs) = 111
+      //   + 1 (lidr-impact-analysis, added 2026-06-10: contract impact G4 + variant compatibility G2) = 112
       // - 28 commands - 2 (lidr-document-project, lidr-check-readiness) = 26
       // - 22 rules pre-spec-lifecycle + 2 new (spec-execution, model-selection) = 24 (Node-side scans .claude/rules)
       // - validationScripts: 31 - 1 = 30 (lidr-project-classifier's validate-examples.ts removed with the skill)
-      expect(EXPECTED_COUNTS.skills).toBe(111);
+      expect(EXPECTED_COUNTS.skills).toBe(112);
       expect(EXPECTED_COUNTS.commands).toBe(26);
       expect(EXPECTED_COUNTS.rules).toBe(24);
       expect(EXPECTED_COUNTS.validationScripts).toBe(30);
