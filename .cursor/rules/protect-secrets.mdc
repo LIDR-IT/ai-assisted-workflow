@@ -1,6 +1,10 @@
 ---
 name: protect-secrets
 description: Prevent AI from editing sensitive files (environment, keys, certificates)
+id: protect-secrets
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: true
 globs:
   [

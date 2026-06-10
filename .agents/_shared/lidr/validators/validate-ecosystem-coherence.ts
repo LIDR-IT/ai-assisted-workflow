@@ -424,12 +424,12 @@ function validatePhaseConsistency(artifacts: EcosystemArtifact[], issues: Valida
 
   // Check for invalid phases
   skills.forEach((skill) => {
-    if (skill.phase! < 0 || skill.phase! > 8) {
+    if (skill.phase! < 0 || skill.phase! > 4) {
       issues.push({
         severity: ValidationSeverity.ERROR,
         message: `Invalid phase: ${skill.phase}`,
-        context: `Skill "${skill.id}" phase should be 0-8`,
-        suggestion: "Correct phase to valid SDLC phase (0-8)",
+        context: `Skill "${skill.id}" phase should be 0-4`,
+        suggestion: "Correct phase to valid unified phase (0-4)",
         ruleId: "COHERENCE-PHASE-001",
       });
     }

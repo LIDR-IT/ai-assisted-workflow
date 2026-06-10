@@ -13,7 +13,7 @@ owner_role: "DevOps"
 # Post-Deploy Checklist
 
 > **Purpose**: Mandatory post-deployment verifications to production or pre-production.
-> **Evaluated by**: DevOps manual + /advance-gate 7
+> **Evaluated by**: DevOps manual + /lidr-advance-gate 7
 > **Associated Gate**: Final Gate — Release to PROD (post-validation)
 > **Trigger**: Automatically executed after each successful deploy
 > **Evaluation Window**: First 30 minutes (smoke) + 24 hours (stability)

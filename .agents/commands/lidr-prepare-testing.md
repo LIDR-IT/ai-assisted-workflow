@@ -16,7 +16,7 @@ QA workflow: reads ticket + dev handoff + code diff, generates test plan,
 test cases (BDD), regression candidates, and exports CSV for Xray import.
 
 USAGE:
-  /prepare-testing PROJ-123
+  /lidr-prepare-testing PROJ-123
 
 ARGUMENTS:
   ticket-id: Jira ticket ID (required)
@@ -28,8 +28,8 @@ REQUIREMENTS:
   - CSV export scripts for Xray integration
 
 RELATED COMMANDS:
-  /implement-ticket - Dev workflow that generates the handoff this command reads
-  /advance-gate 5   - QA sign-off after testing complete
+  /lidr-implement-ticket - Dev workflow that generates the handoff this command reads
+  /lidr-advance-gate 5   - QA sign-off after testing complete
 
 CHANGELOG:
   v2.0.0 (2025-03-05): Rewritten to official command format
@@ -38,12 +38,12 @@ CHANGELOG:
 
 # Prepare Testing for $1
 
-Load: @../rules/org.md and @../rules/project.md
+Load: @../rules/lidr-sdlc/org.md and @../rules/lidr-sdlc/project.md
 
 ## Validate
 
 If "$1" is empty:
-❌ Ticket ID required. Usage: /prepare-testing [TICKET-ID]
+❌ Ticket ID required. Usage: /lidr-prepare-testing [TICKET-ID]
 Exit.
 
 Read ticket from manual or script: ticket $1
@@ -80,7 +80,7 @@ From handoff document:
 
 ## Generate Test Plan
 
-Using test-plan skill, generate test plan:
+Using bmad-testarch-test-design skill, generate test plan:
 
 - Scope: what to test based on changes
 - Strategy: functional + BDD + regression + edge cases
@@ -90,7 +90,7 @@ Using test-plan skill, generate test plan:
 
 ## Generate Test Cases
 
-Using create-test-cases skill, generate test cases for each BDD criterion:
+Using lidr-create-test-cases skill, generate test cases for each BDD criterion:
 
 For each acceptance criterion:
 
@@ -114,7 +114,7 @@ Priority: Critical / High / Medium / Low
 
 ## Suggest Regression Suite
 
-Using regression-suite skill:
+Using bmad-testarch-automate skill:
 
 - Analyze changed files to determine impact radius
 - Suggest existing test cases that should be re-executed
@@ -138,7 +138,7 @@ Transition $1 to "In Testing" (manual or script)
 ## Report
 
 ```
-/prepare-testing $1 ✅
+/lidr-prepare-testing $1 ✅
 
 Test Plan: Generated ({N} test cases)
   - Happy path: {N}
@@ -149,5 +149,5 @@ Test Plan: Generated ({N} test cases)
 Written to: {CSV export + local file}
 Ticket: $1 → "In Testing"
 
-Next: Execute tests → /advance-gate 5 for QA sign-off
+Next: Execute tests → /lidr-advance-gate 5 for QA sign-off
 ```

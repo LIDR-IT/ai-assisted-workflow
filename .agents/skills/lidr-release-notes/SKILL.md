@@ -1,9 +1,9 @@
 ---
 name: lidr-release-notes
 id: release-notes
-version: "1.3.1"
-last_updated: "2026-06-09"
-updated_by: "TL: BMad-coherence batch-fix"
+version: "1.4.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
 stage: release
@@ -25,6 +25,18 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 LIDR-unique deployment artifact — no BMad equivalent. Canonical replacement for the deprecated `lidr-changelog-generator`; orchestrated by the `/lidr-create-release-notes` command.
+
+## Output Location
+
+The automation scripts write working artifacts to a transient `release-analysis/` directory, but the **canonical release notes MUST be published to the per-client path Gate 7 reads** (`gate-evidence.yaml` G7 `lidr-release-notes` glob `{client_root}/release-notes*.md`, `required: true`):
+
+**`docs/projects/{CLIENT_CODE}/release-notes.md`** (or `release-notes-{version}.md` per release)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`). Project-wide changelog updates (`CHANGELOG.md`) remain a separate concern handled by `/lidr-update-changelog`.
+
+Example: `docs/projects/docline/release-notes-v1.4.0.md`
+
+> **Gate 7 contract**: `release-notes*.md` at the per-client root is REQUIRED evidence for G7. The transient `release-analysis/` copy does NOT satisfy the gate — always publish the final notes to `docs/projects/{CLIENT_CODE}/release-notes*.md`.
 
 ## 🚀 Automation Workflow (RECOMMENDED)
 
@@ -299,7 +311,8 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                       | Changes                                                                                                                                                                       |
-| ------- | ---------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added Relationship to BMad note (LIDR-unique; canonical replacement for deprecated lidr-changelog-generator)                                                                  |
-| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted GitHub CLI / Jira / Confluence / Slack via tool-registry ({{VCS_TOOL}}, {{TRACKING_TOOL}}, {{DOCS_TOOL}}, {{CHAT_TOOL}}) |
+| Version | Date       | Author                         | Changes                                                                                                                                                                       |
+| ------- | ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": canonical release notes publish to `docs/projects/{CLIENT_CODE}/release-notes*.md` (required G7 gate-evidence path)                               |
+| 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix   | Added Relationship to BMad note (LIDR-unique; canonical replacement for deprecated lidr-changelog-generator)                                                                  |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted GitHub CLI / Jira / Confluence / Slack via tool-registry ({{VCS_TOOL}}, {{TRACKING_TOOL}}, {{DOCS_TOOL}}, {{CHAT_TOOL}}) |

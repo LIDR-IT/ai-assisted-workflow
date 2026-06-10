@@ -1,9 +1,9 @@
 ---
 name: lidr-sprint-capacity
 id: sprint-capacity
-version: "1.3.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "1.4.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 3
 stage: sprint-planning
@@ -24,6 +24,18 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 This skill is a **LIDR-native artifact** (no BMad equivalent). It produces the team capacity calculation (productive-hours, buffer, tech-debt reserve) that is a **required input to Gate 3 (Sprint committed)** and feeds `bmad-sprint-planning`, which consumes the committable-capacity figure when generating the sprint plan.
+
+## Output Location
+
+The capacity calculation MUST be published to the per-client path Gate 3 reads (`gate-evidence.yaml` G3 `lidr-sprint-capacity` glob `{client_root}/sprint-capacity*.md`, `required: true`):
+
+**`docs/projects/{CLIENT_CODE}/sprint-capacity.md`** (or `sprint-capacity-{sprint-id}.md` per sprint)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`).
+
+Example: `docs/projects/docline/sprint-capacity-sprint-12.md`
+
+> **Gate 3 contract**: `sprint-capacity*.md` at the per-client root is REQUIRED evidence for G3. Publish the final capacity figure here so `/lidr-advance-gate 3` and `lidr-gate-evaluation` resolve it.
 
 ## Workflow
 
@@ -186,6 +198,7 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                     |
-| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------- |
-| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Jira/Slack/SonarQube via tool-registry |
+| Version | Date       | Author                         | Changes                                                                                                                     |
+| ------- | ---------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/sprint-capacity*.md` (required G3 gate-evidence path) |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted Jira/Slack/SonarQube via tool-registry                                 |

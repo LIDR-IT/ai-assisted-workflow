@@ -1,6 +1,10 @@
 ---
 name: style
 description: Code style guidelines and conventions
+id: style
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 trigger: always_on
 ---

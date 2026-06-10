@@ -1,6 +1,10 @@
 ---
 name: product-roadmap
 description: LIDR Template Q1 2026 roadmap with phased delivery timeline
+id: product-roadmap
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: ["docs/**/*.md", "README.md"]
 argument-hint: <roadmap-doc>

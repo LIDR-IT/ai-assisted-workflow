@@ -11,8 +11,8 @@ tools:
   - Glob
   - Bash
 skills:
-  - architecture-doc
-  - implementation-phases
+  - bmad-create-architecture
+  - bmad-sprint-planning
 memory: project
 # ── Metadata ecosistema ──
 id: docs-agent
@@ -24,7 +24,7 @@ triggerType: event-driven
 mcps:
   - Confluence
   - GitHub
-evolvedFrom: /sync-docs + dtc-session-check hook
+evolvedFrom: /lidr-sync-docs + lidr-validate-ecosystem-counts hook
 ---
 
 Use this agent when documentation may be out of sync, after merging to develop, at end of session, or when integrity tests need to be run.
@@ -50,10 +50,10 @@ Bulk merge triggers comprehensive documentation sync via docs-agent.
 ## The 8 Sources of Truth
 
 1. CLAUDE.md (central index)
-2. rules/ (5 rules)
-3. skills/ (39 skills)
-4. commands/ (12 commands)
-5. hooks/ (4 hooks)
+2. rules/ (24 rules)
+3. skills/ (113 skills)
+4. commands/ (30 commands)
+5. hooks/ (6 hooks)
 6. docs/ (checklists, signoffs, templates, standards)
 7. mcp.json (MCP configuration)
 8. settings.json (team configuration)
@@ -62,7 +62,7 @@ Bulk merge triggers comprehensive documentation sync via docs-agent.
 
 1. **GUARD: Verify prerequisites before execution**
    - Verify CLAUDE.md exists and has valid frontmatter (id, version, last_updated) — if missing or corrupt, STOP and report: "CLAUDE.md is missing or has invalid frontmatter. Central index must be intact before running integrity tests."
-   - Verify rules/ directory contains all 5 expected rules (org.md, tech-stack.md, project.md, workflows.md, documentation.md) — if any missing, WARN with list
+   - Verify rules/lidr-sdlc/ directory contains the core SDLC rules (org.md, tech-stack.md, project.md, workflows.md, documentation.md, spec-execution.md, model-selection.md) — if any missing, WARN with list
    - Verify .claude/ directory structure is intact (skills/, commands/, hooks/ directories exist)
 2. Ejecuta los 32 integrity tests (T1-T32) para detectar drift
 3. Identifica documentos desincronizados entre las 8 fuentes de verdad

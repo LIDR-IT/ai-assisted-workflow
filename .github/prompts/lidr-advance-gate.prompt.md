@@ -4,54 +4,60 @@ agent: 'agent'
 ---
 
 <!--
-COMMAND: advance-gate
-VERSION: 2.0.0
+COMMAND: lidr-advance-gate
+VERSION: 2.1.1
 AUTHOR: SDLC Team
-LAST UPDATED: 2026-03-09
+LAST UPDATED: 2026-06-10
 
 PURPOSE:
 Universal handoff orchestrator — evaluates a gate's criteria with CONTENT
-validation, cross-coherence checks, weighted scoring, and Jira registration.
-Covers all 8 gates (0-7) of the SDLC.
+validation, cross-coherence checks, weighted scoring, and tracking registration.
+Covers all 8 gates (G0-G7) of the unified SDLC phase model
+(see _shared/lidr/UNIFIED-PHASES.md).
 
 USAGE:
-  /advance-gate 0        -> Originacion -> Discovery
-  /advance-gate 3        -> Sprint Planning -> Desarrollo
-  /advance-gate 7        -> Deploy -> Produccion (Gate Final)
+  /lidr-advance-gate 0   -> Phase 1 Analysis -> Phase 2 Planning (Intake)
+  /lidr-advance-gate 3   -> Phase 3 Solutioning -> Phase 4 Implementation
+  /lidr-advance-gate 7   -> release -> Producción (Gate Final)
 
 ARGUMENTS:
-  gate-number: 0-7 (required). Maps to:
-    0 = Originacion -> Discovery
-    1 = Discovery -> Especificacion
-    2 = Especificacion -> Sprint Planning
-    3 = Sprint Planning -> Desarrollo
-    4 = Desarrollo -> QA (sprint aggregator)
-    5 = QA -> Seguridad
-    6 = Seguridad -> Despliegue
-    7 = Despliegue -> Produccion (Gate Final)
+  gate-number: 0-7 (required). Maps to the unified phase model:
+    0 = Phase 1 Analysis -> Phase 2 Planning (Intake)
+    1 = Phase 2 Planning -> Phase 3 Solutioning (PRD approved)
+    2 = Phase 3 Solutioning: specification -> sprint-planning (Specs complete)
+    3 = Phase 3 Solutioning -> Phase 4 Implementation (Ready to implement)
+    4 = Phase 4 Implementation: development -> qa (DoD met)
+    5 = Phase 4 Implementation: qa -> security (QA sign-off)
+    6 = Phase 4 Implementation: security -> release (Security sign-off)
+    7 = Phase 4 Implementation: release -> Producción (CR approved — Gate Final)
 
 REQUIREMENTS:
-  - .claude/rules/ configured (org.md, tech-stack.md, project.md, workflows.md)
-  - Jira access for status transitions (degrades without)
+  - .claude/rules/lidr-sdlc/ configured (org.md, tech-stack.md, project.md, workflows.md)
+  - Tracking access for status transitions (degrades without)
   - Notification system for status updates (degrades without)
 
 RELATED COMMANDS:
-  /implement-ticket - Gate 4 per-ticket workflow
-  /prepare-testing  - Pre-Gate 5 QA preparation
-  /create-release-notes - Pre-Gate 7 changelog
+  /lidr-implement-ticket - Gate 4 per-ticket workflow
+  /lidr-prepare-testing  - Pre-Gate 5 QA preparation
+  /lidr-create-release-notes - Pre-Gate 7 changelog
 
 OUTPUT TEMPLATE:
-  skills/{skill-name}/templates/gate-evaluation.md (tpl-gate-evaluation)
+  skills/lidr-gate-evaluation/templates/gate-evaluation.md (tpl-gate-evaluation)
 
 CHANGELOG:
   v1.0.0 (2025-03-05): Initial release - all 8 gates
   v2.0.0 (2026-03-09): Content validation, cross-coherence, weighted scoring,
-                        Jira Gate Status registration, tpl-gate-evaluation output
+                        tracking Gate Status registration, tpl-gate-evaluation output
   v2.1.0 (2026-06-09): Step 4 is now manifest-driven — reads
                         _shared/lidr/gate-evidence.yaml (BMad artifacts as primary
                         evidence + LIDR gap-fillers). Gate verifies BMad outputs
                         instead of re-implementing them. LIDR quantitative guards
                         (RF-BDD, NFR, RTM, zero-tolerance) preserved on top.
+  v2.1.1 (2026-06-10): Repointed rule/template loads to real paths
+                        (rules/lidr-sdlc/, skills/lidr-gate-evaluation/); gate map
+                        rewritten to unified phase model (G0-G7); handoffs now
+                        written to AND read from docs/projects/{client}/handoffs/
+                        gate-N-handoff.md (aligns with gate-evidence.yaml contract).
 -->
 
 > **Model note** (per @../rules/lidr-sdlc/model-selection.md): gate evaluation is
@@ -62,23 +68,23 @@ CHANGELOG:
 
 Load context from rules FIRST:
 
-- @../rules/org.md -> organizational standards, roles, gate criteria
-- @../rules/tech-stack.md -> technical conventions
-- @../rules/project.md -> current project context
-- @../rules/workflows.md -> role permissions, command chains
-- @../rules/documentation.md -> doc governance standards
+- @../rules/lidr-sdlc/org.md -> organizational standards, roles, gate criteria
+- @../rules/lidr-sdlc/tech-stack.md -> technical conventions
+- @../rules/lidr-sdlc/project.md -> current project context
+- @../rules/lidr-sdlc/workflows.md -> role permissions, command chains
+- @../rules/lidr-sdlc/documentation.md -> doc governance standards
 
 ## Step 1: Validate Gate Number
 
 If "$1" is empty or not a number 0-7:
 ERROR: Gate number required (0-7).
-Usage: /advance-gate [0-7]
+Usage: /lidr-advance-gate [0-7]
 Show gate map and exit.
 
 ## Step 2: Verify Role Authorization
 
-Check @../rules/workflows.md for the role permissions matrix.
-Authorized roles for /advance-gate: PME, PO, Tech Lead, QA Lead, Security Lead, DevOps.
+Check @../rules/lidr-sdlc/workflows.md for the role permissions matrix.
+Authorized roles for /lidr-advance-gate: PME, PO, Tech Lead, QA Lead, Security Lead, DevOps.
 
 Use AskUserQuestion to confirm role:
 
@@ -92,12 +98,12 @@ Use AskUserQuestion to confirm role:
   - Security Lead
   - DevOps
 
-If role is "Dev" -> "Devs no ejecutan /advance-gate. Usa /implement-ticket para tu ticket." Exit.
+If role is "Dev" -> "Devs no ejecutan /lidr-advance-gate. Usa /lidr-implement-ticket para tu ticket." Exit.
 
 ## Step 3: Verify Previous Gate
 
 If $1 > 0, check that Gate ($1 - 1) has been passed.
-Look for previous handoff package: `docs/projects/{project}/handoffs/gate-{N-1}-handoff.md`
+Look for previous handoff package: `docs/projects/{client}/handoffs/gate-{N-1}-handoff.md`
 
 If not found:
 WARNING: Gate {N-1} handoff not found. Previous gate may not be passed.
@@ -142,7 +148,8 @@ compliance, change/rollback/release).
 
 Resolve `path_vars`: substitute `{client}` with the active CLIENT_CODE (from
 @../rules/lidr-sdlc/project.md); BMad artifacts resolve under `_bmad-output/`
-(see `_bmad/*/config.yaml`).
+(see `_bmad/*/config.yaml`). Handoffs and sign-offs resolve under
+`docs/projects/{client}/handoffs/`.
 
 ### 4b. Evaluate the evidence for Gate $1
 
@@ -174,42 +181,29 @@ zero-tolerance and traceability rules from @../rules/lidr-sdlc/org.md:
 
 For each criterion, report: PASS / WARN / FAIL with specific detail.
 
-## Step 5: Ecosystem Health Validation (NEW - Phase 1 Enhancement)
+## Step 5: Ecosystem Health Validation
 
-**CRITICAL**: Before evaluating gate criteria, validate ecosystem health using the new validation engine:
+**CRITICAL**: Before evaluating gate criteria, validate ecosystem health by
+running the count-drift guard:
 
 ```bash
-# Import ecosystem validation
-import { validateForGateAdvancement } from '../_shared/validators/ecosystem-validation.js';
-
-# Run ecosystem health check
-const ecosystemResult = await validateForGateAdvancement($1);
-
-if (!ecosystemResult.success) {
-  ERROR: Ecosystem health check failed for Gate $1
-
-  ecosystemResult.issues.forEach(issue => {
-    console.log(`${issue.severity}: ${issue.message}`);
-    console.log(`Suggestion: ${issue.suggestion}`);
-  });
-
-  EXIT with ecosystem health report and recommendations.
-}
-
-console.log(`✅ Ecosystem health: ${ecosystemResult.score.toFixed(1)}/5.0 for Gate $1`);
+bash .agents/hooks/scripts/validate-ecosystem-counts.sh
 ```
+
+A non-zero exit means the ecosystem sources of truth have drifted (skill/command/
+rule/agent/hook counts out of sync with CLAUDE.md). Treat drift as a blocking
+issue for critical gates.
 
 **Ecosystem requirements by gate:**
 
-- Gates 0,1,2,7 (critical): Require ≥90% ecosystem health
-- Gates 3,4,5,6 (operational): Require ≥70% ecosystem health
+- Gates 0,1,2,7 (critical): require the count guard to pass (exit 0)
+- Gates 3,4,5,6 (operational): warn on drift but allow with action items
 
-If ecosystem health fails, provide specific actions to fix:
+If the count guard fails, provide specific actions to fix:
 
-1. Run ecosystem synchronization script
-2. Fix count drift between filesystem and tracking
-3. Resolve validation script issues
-4. Update tracking files (HelpCenter.tsx, CLAUDE.md, stats.ts)
+1. Run `./.agents/sync.sh` to re-sync all platforms
+2. Fix count drift between filesystem and CLAUDE.md
+3. Re-run `bash .agents/hooks/scripts/validate-ecosystem-counts.sh`
 
 ## Step 6: Cross-Coherence Validation
 
@@ -246,7 +240,7 @@ If >20% broken references -> FAIL
 
 If overall result is PASS or CONDITIONAL:
 
-Generate handoff package using **tpl-gate-evaluation** template (@../skills/gate-evaluation/templates/gate-evaluation.md) and save to `.claude/handoffs/gate-$1-handoff.local.md`.
+Generate handoff package using **tpl-gate-evaluation** template (@../skills/lidr-gate-evaluation/templates/gate-evaluation.md) and save to `docs/projects/{client}/handoffs/gate-$1-handoff.md` (the same path Step 3 reads and that `_shared/lidr/gate-evidence.yaml` declares for sign-offs).
 
 The output MUST follow the tpl-gate-evaluation schema:
 
@@ -266,12 +260,12 @@ The output MUST follow the tpl-gate-evaluation schema:
 
 If PASS:
 
-- Jira: transition epic/tickets to next phase status (manual or script)
+- Tracking: transition epic/tickets to next phase status (manual or script)
 - Notification: notify next phase's team with handoff summary
-- If Gate 1 PASS -> suggest: "Run generate-rf skill to draft RFs from PRDs"
-- If Gate 2 PASS -> suggest: "Run user-stories skill to draft US from RFs"
-- If Gate 3 PASS -> suggest: "Devs can now run /create-branch [ID] for their tickets"
-- If Gate 6 PASS -> suggest: "Run /create-release-notes then /update-changelog"
+- If Gate 1 PASS -> suggest: "Run lidr-generate-rf skill to draft RFs from PRDs"
+- If Gate 2 PASS -> suggest: "Run lidr-user-stories skill to draft US from RFs"
+- If Gate 3 PASS -> suggest: "Devs can now run /lidr-create-branch [ID] for their tickets"
+- If Gate 6 PASS -> suggest: "Run /lidr-create-release-notes then /lidr-update-changelog"
 
 If CONDITIONAL:
 
@@ -282,9 +276,9 @@ If CONDITIONAL:
 If FAIL:
 
 - List ALL failed criteria with specific actions to fix each
-- Suggest who should fix each item (based on role from workflows.md)
-- Do NOT transition Jira status
-- Create Jira subtasks for each FAIL item (assigned to owner role)
+- Suggest who should fix each item (based on role from @../rules/lidr-sdlc/workflows.md)
+- Do NOT transition tracking status
+- Create tracking subtasks for each FAIL item (assigned to owner role)
 
 ## Step 9: Calculate Weighted Score
 
@@ -311,14 +305,14 @@ Apply the weighted scoring model:
 - Any signoff missing when required (Gates 5/6) -> automatic FAIL
 - RF BDD coverage <100% at Gate 2 -> automatic FAIL
 - RNF measurability <100% at Gate 2 -> automatic FAIL
-- RTM coverage <100% at Gate 5 -> automatic FAIL (blocks so-qa)
+- RTM coverage <100% at Gate 5 -> automatic FAIL (blocks QA sign-off)
 
 ## Step 10: Report
 
 Present final report:
 
 ```
-## /advance-gate $1 — Result
+## /lidr-advance-gate $1 — Result
 
 Gate $1: [Phase Name] -> [Next Phase Name]
 Status: PASS / CONDITIONAL / FAIL
@@ -332,7 +326,7 @@ Date: [today]
 [Handoff package link if PASS/CONDITIONAL]
 [Action items with owners and deadlines if CONDITIONAL/FAIL]
 
-Next command: /advance-gate [N+1] (when next phase completes)
+Next command: /lidr-advance-gate [N+1] (when next phase completes)
 ```
 
 ## Step 11: Register Result in Jira
@@ -356,9 +350,9 @@ Via Jira (manual or script), register the gate evaluation result:
    Gate {N} Evaluation — {verdict} ({score}%)
    Evaluator: {role}
    Date: {date}
-   Handoff: .claude/handoffs/gate-{N}-handoff.local.md
+   Handoff: docs/projects/{client}/handoffs/gate-{N}-handoff.md
    Action Items: {count}
-   Next: /advance-gate {N+1}
+   Next: /lidr-advance-gate {N+1}
    ```
 
 4. **Transition Epic**:

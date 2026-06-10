@@ -1,6 +1,10 @@
 ---
 name: use-context7
 description: Always use Context7 MCP for library/API documentation
+id: use-context7
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: true
 globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.md"]
 argument-hint: <library-or-api>

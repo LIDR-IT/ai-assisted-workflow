@@ -35,7 +35,7 @@ model: inherit
 ### Phase 1: Load Skills
 
 ```markdown
-Load ticket-validation skill for DoD checklist
+Load lidr-ticket-validation skill for DoD checklist
 ```
 
 ### Phase 2: Identify Ticket
@@ -161,7 +161,7 @@ Loading .agents/tickets/active/TICK-123.md...
 ## Rules to Follow
 
 - Read `.agents/rules/process/ai-workflow-system.md` first
-- Use ticket-validation skill for DoD patterns
+- Use lidr-ticket-validation skill for DoD patterns
 - Never approve PR with blocking issues
 - Be specific about what needs fixing
 - Reference exact files and line numbers

@@ -1,22 +1,23 @@
 ---
 name: lidr-skills-criticality
+version: "1.1.0"
+last_updated: "2026-06-11"
 description: Public reference of LIDR skills criticality (required/recommended/optional) relative to BMad base flow. Helps teams decide which LIDR skills can be skipped when using BMad standalone.
-last_updated: "2026-05-20"
 status: active
 type: reference
 ---
 
 # LIDR Skills Criticality (vs BMad Base Flow)
 
-> **Architecture principle:** BMad is the base flow. LIDR is a thin complement layer that adds Gate enforcement, pre/post wrappers, compliance, automation, and Spanish output. Each LIDR skill is classified by how much value it adds **beyond what BMad already provides**.
+> **Architecture principle:** BMad is the base flow. LIDR is a thin complement layer that adds Gate enforcement, pre/post wrappers, compliance, automation, and per-client output localization (output language follows the client `language` setting, default English). Each LIDR skill is classified by how much value it adds **beyond what BMad already provides**.
 
 ## Definitions
 
-| Level               | Meaning                                                                                                                    |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| 🔴 **OBLIGATORIO**  | BMad does NOT cover this. Skipping leaves a real gap in the workflow. MUST be invoked.                                     |
-| 🟡 **RECOMENDABLE** | BMad covers partially. LIDR adds automation/Spanish/Gate-binding/compliance. Skipping degrades quality but workflow works. |
-| 🟢 **OPCIONAL**     | Niche use case (consultancy multi-client, Claude Code meta-tooling, web QA). Only use if your team has that specific case. |
+| Level               | Meaning                                                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 🔴 **OBLIGATORIO**  | BMad does NOT cover this. Skipping leaves a real gap in the workflow. MUST be invoked.                                          |
+| 🟡 **RECOMENDABLE** | BMad covers partially. LIDR adds automation/localization/Gate-binding/compliance. Skipping degrades quality but workflow works. |
+| 🟢 **OPCIONAL**     | Niche use case (consultancy multi-client, meta-tooling, web QA, parallel work). Only use if your team has that specific case.   |
 
 ## 🔴 OBLIGATORIO (23 skills)
 
@@ -24,12 +25,12 @@ These fill gaps that BMad has zero coverage for. Cannot be skipped without losin
 
 ### Pre-Gate 0 (4)
 
-| Skill                       | Why required                                                           |
-| --------------------------- | ---------------------------------------------------------------------- |
-| `lidr-business-case`        | BMad prfaq is product positioning; BC is financial/ROI executive (ES). |
-| `lidr-kickoff`              | BMad has no kickoff acta format (agenda/RACI/decisions).               |
-| `lidr-stakeholder-map`      | BMad has no power/interest matrix.                                     |
-| `lidr-tracking-integration` | BMad doesn't integrate Jira/Linear/Notion.                             |
+| Skill                       | Why required                                                                            |
+| --------------------------- | --------------------------------------------------------------------------------------- |
+| `lidr-business-case`        | BMad prfaq is product positioning; BC is financial/ROI executive (per-client language). |
+| `lidr-kickoff`              | BMad has no kickoff acta format (agenda/RACI/decisions).                                |
+| `lidr-stakeholder-map`      | BMad has no power/interest matrix.                                                      |
+| `lidr-tracking-integration` | BMad doesn't integrate Jira/Linear/Notion.                                              |
 
 ### Gate 1 (1)
 
@@ -55,7 +56,7 @@ These fill gaps that BMad has zero coverage for. Cannot be skipped without losin
 
 | Skill                 | Why required                                                                         |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| `lidr-pr-description` | **BMad has nothing about PRs**. DoD checklist hook-wired (`dtc-write-guard`).        |
+| `lidr-pr-description` | **BMad has nothing about PRs**. DoD checklist enforced at `/lidr-advance-gate 4`.    |
 | `lidr-adr`            | BMad-create-architecture **designs**; ADR is the formal MADR record of the decision. |
 | `lidr-dev-handoff-qa` | BMad has no Dev→QA handoff doc. QA can't test without it.                            |
 
@@ -95,36 +96,41 @@ These fill gaps that BMad has zero coverage for. Cannot be skipped without losin
 | ---------------------- | ------------------------------------------------------ |
 | `lidr-gate-evaluation` | BMad has NO Gate G0-G7 methodology. Core of LIDR SDLC. |
 
-## 🟡 RECOMENDABLE (8 skills)
+## 🟡 RECOMENDABLE (9 skills)
 
-BMad covers partially. LIDR adds automation, Spanish, Gate-binding, or compliance.
+BMad covers partially. LIDR adds automation, per-client output localization, Gate-binding, or compliance.
 
-| Skill                    | What LIDR adds beyond BMad                                                                                                          |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `lidr-risk-log`          | Formal registry with industry patterns. BMad could embed risks in PRD.                                                              |
-| `lidr-sprint-capacity`   | Math with buffer 15-20% + velocity. BMad-sprint-planning doesn't compute capacity.                                                  |
-| `lidr-refinement-notes`  | **WRAPS `bmad-create-story`**: adds DoR-readiness grooming layer (domain decisions, compliance clarifications) post-story creation. |
-| `lidr-tech-debt`         | SonarQube auto-parse (120h/yr ROI). BMad-investigate is forensic.                                                                   |
-| `lidr-bug-report`        | **WRAPS `bmad-investigate`**: QA→Dev outbound template (audience), BMad investigate is Dev-internal forensic.                       |
-| `lidr-ticket-validation` | Validate LIDR/BMad ticket structure pre-refinement and pre-PR. Adds Gate-aware validation over BMad story output.                   |
-| `lidr-sdlc-tracking`     | Portfolio state centralized. BMad-sprint-status is per-sprint.                                                                      |
-| `lidr-audit-standards`   | **WRAPS `bmad-review-adversarial-general`**: ecosystem-scope audit (`.agents/` frontmatter, drift, paths) vs BMad content reviews.  |
+| Skill                    | What LIDR adds beyond BMad                                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `lidr-risk-log`          | Formal registry with industry patterns. BMad could embed risks in PRD.                                                                |
+| `lidr-sprint-capacity`   | Math with buffer 15-20% + velocity. BMad-sprint-planning doesn't compute capacity.                                                    |
+| `lidr-refinement-notes`  | **WRAPS `bmad-create-story`**: adds DoR-readiness grooming layer (domain decisions, compliance clarifications) post-story creation.   |
+| `lidr-tech-debt`         | SonarQube auto-parse (120h/yr ROI). BMad-investigate is forensic.                                                                     |
+| `lidr-bug-report`        | **WRAPS `bmad-investigate`**: QA→Dev outbound template (audience), BMad investigate is Dev-internal forensic.                         |
+| `lidr-ticket-validation` | Validate LIDR/BMad ticket structure pre-refinement and pre-PR. Adds Gate-aware validation over BMad story output.                     |
+| `lidr-sdlc-tracking`     | Portfolio state centralized. BMad-sprint-status is per-sprint.                                                                        |
+| `lidr-impact-analysis`   | Contract impact + variant compatibility against client registries (consumed at G2, enforced at G4). BMad has no contract-impact gate. |
+| `lidr-audit-standards`   | **WRAPS `bmad-review-adversarial-general`**: ecosystem-scope audit (`.agents/` frontmatter, drift, paths) vs BMad content reviews.    |
 
-## 🟢 OPCIONAL (9 skills — 4 LIDR + 5 anytime claude-\*)
+## 🟢 OPCIONAL (12 skills — all prefixed `lidr-*`)
 
-Only use if your team has the specific use case.
+Only use if your team has the specific use case. Includes the 5 meta-tooling
+skills (anytime; extend the agent platform itself, not the SDLC Gate model).
 
-| Skill (source)                       | When to activate                                                                      |
-| ------------------------------------ | ------------------------------------------------------------------------------------- |
-| `lidr-propuesta-builder` (LIDR)      | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora".                |
-| `lidr-external-sync` (LIDR)          | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.                          |
-| `lidr-playwright-cli` (LIDR)         | Web QA + runtime/visual review layer over `bmad-code-review` (drives Playwright MCP). |
-| `lidr-agents-architecture` (anytime) | Meta-skill: entry point for creating skills/commands/subagents.                       |
-| `lidr-command-development` (anytime) | Create Claude Code slash commands.                                                    |
-| `lidr-generate-rule` (anytime)       | Extending Claude Code: create behavioral rules.                                       |
-| `lidr-hook-development` (anytime)    | Extending Claude Code: PreToolUse/PostToolUse hooks.                                  |
-| `lidr-mcp-integration` (anytime)     | Connecting external services via MCP.                                                 |
-| `lidr-commit-management` (LIDR)      | Conventional commits, rebase/squash workflows with LIDR scope conventions.            |
+| Skill (kind)                           | When to activate                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------- |
+| `lidr-propuesta-builder` (consultancy) | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora".                |
+| `lidr-external-sync` (consultancy)     | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.                          |
+| `lidr-playwright-cli` (web QA)         | Web QA + runtime/visual review layer over `bmad-code-review` (drives Playwright MCP). |
+| `lidr-using-git-worktrees` (parallel)  | Create/use/clean up git worktrees safely; prerequisite for parallel work.             |
+| `lidr-run-parallel-tasks` (parallel)   | Launch N changes in parallel, each in its own isolated worktree.                      |
+| `lidr-help` (utility)                  | Ecosystem guide: recommend the next skill/command/workflow/doc.                       |
+| `lidr-agents-architecture` (meta)      | Meta-skill: entry point for creating skills/commands/subagents.                       |
+| `lidr-command-development` (meta)      | Create slash commands.                                                                |
+| `lidr-generate-rule` (meta)            | Create behavioral rules.                                                              |
+| `lidr-hook-development` (meta)         | Create PreToolUse/PostToolUse hooks.                                                  |
+| `lidr-mcp-integration` (meta)          | Connect external services via MCP.                                                    |
+| `lidr-commit-management` (utility)     | Conventional commits, rebase/squash workflows with LIDR scope conventions.            |
 
 ## How to use this classification
 
@@ -141,23 +147,30 @@ For the full BMad-base + LIDR-complement workflow, see:
 - `.agents/rules/lidr-sdlc/workflows.md` (orchestration map)
 - `.agents/_shared/lidr/MIGRATION.md` (consolidation history)
 
-## Inventory snapshot (as of 2026-05-20, post Phase F)
+## Inventory snapshot (as of 2026-06-11)
 
 ```
-LIDR:    35 skills (23 OBLIGATORIO + 8 RECOMENDABLE + 4 OPCIONAL)
-BMad:    69 skills (base flow, untouched)
-Anytime: 5 skills (all OPCIONAL — 5 claude-* meta-tooling)
-Total:   109 skills
+LIDR:  44 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 12 OPCIONAL) — all prefixed lidr-*
+BMad:  69 skills (base flow, untouched) — all prefixed bmad-*
+Total: 113 skills
 ```
 
-> **Phase F (2026-05-20):** Renamed last 2 unprefixed skills to `lidr-commit-management` and
-> `lidr-ticket-validation` (source: anytime → lidr). Refactored 4 LIDR SKILL.md descriptions
-> to explicitly frame them as thin wrappers over BMad outputs:
+The 5 meta-tooling skills (`lidr-agents-architecture`, `lidr-command-development`,
+`lidr-generate-rule`, `lidr-hook-development`, `lidr-mcp-integration`) are counted
+inside the LIDR 44 and classified OPCIONAL (anytime). The 4 newest skills
+(`lidr-help`, `lidr-impact-analysis`, `lidr-run-parallel-tasks`,
+`lidr-using-git-worktrees`) are now classified (impact-analysis → RECOMENDABLE; the
+other three → OPCIONAL).
+
+> **Prefix history:** Phase E (2026-05) temporarily moved the 5 meta-tooling skills to
+> a `claude-*` prefix; they were later renamed back to `lidr-*` (the `claude-*` prefix
+> no longer exists anywhere in the ecosystem). The `lidr-` prefix now covers every LIDR
+> artifact, including meta-tooling.
+>
+> **Phase F (2026-05-20):** Renamed the last 2 unprefixed skills to `lidr-commit-management`
+> and `lidr-ticket-validation`. Refactored 3 LIDR SKILL.md descriptions to frame them as
+> thin wrappers over BMad outputs:
 >
 > - `lidr-refinement-notes` wraps `bmad-create-story` + DoR layer
 > - `lidr-bug-report` wraps `bmad-investigate` (QA→Dev audience)
 > - `lidr-audit-standards` wraps `bmad-review-adversarial-general` (ecosystem scope)
->
-> **Phase E (prior):** Moved 5 Claude Code meta-tooling skills out of LIDR into `anytime` with
-> `claude-` prefix. They extend the Claude Code platform itself. The `lidr-` prefix is now
-> reserved for skills tied to the LIDR SDLC Gate model.

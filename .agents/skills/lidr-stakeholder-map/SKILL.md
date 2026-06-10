@@ -1,9 +1,9 @@
 ---
 name: lidr-stakeholder-map
 id: stakeholder-map
-version: "1.2.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "1.3.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 1
 stage: analysis
@@ -24,6 +24,18 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 This skill is a **LIDR-unique artifact** (no BMad equivalent). BMad has no concept of a power/interest stakeholder matrix or communication plan. This skill feeds Discovery — its stakeholder list informs who to interview and supplies the stakeholder context that `bmad-prd` references when capturing requirements.
+
+## Output Location
+
+The stakeholder map is published to the per-client path Gate 0 reads (`gate-evidence.yaml` G0 `lidr-stakeholder-map` glob `{client_root}/stakeholder-map.md`, `required: false`):
+
+**`docs/projects/{CLIENT_CODE}/stakeholder-map.md`**
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`).
+
+Example: `docs/projects/docline/stakeholder-map.md`
+
+> **Gate 0 contract**: `stakeholder-map.md` at the per-client root is optional evidence for G0. Publish it here so `/lidr-advance-gate 0` and `lidr-gate-evaluation` resolve it.
 
 ## Workflow
 
@@ -126,6 +138,7 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                             |
-| ------- | ---------- | ---------------------- | ----------------------------------------------------------------------------------- |
-| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted chat (Slack) via tool-registry |
+| Version | Date       | Author                         | Changes                                                                                                                    |
+| ------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| 1.3.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/stakeholder-map.md` (G0 optional gate-evidence path) |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted chat (Slack) via tool-registry                                        |

@@ -12,7 +12,7 @@ automation: true
 domain_agnostic: true
 language_default: en
 integrations: [code_quality, tracking]
-description: "🤖 AUTOMATED technical debt identification and management using the bound {{CODE_QUALITY_TOOL}}. Auto-parses hundreds of quality issues, classifies by category/severity, generates sprint-ready User Stories with BDD criteria. Transforms 6+ hour manual analysis into 5-minute automated workflow. Includes debt registry, lifecycle tracking, and {{TRACKING_TOOL}} export. Automation-first with manual fallback. Triggers on "tech debt analysis", "debt registry generation", "automated user stories", "sprint debt planning", "analyze technical debt". ROI: 120+ hours/year saved. Use every 2-3 sprints or after major releases. ALWAYS use when analyzing codebases to prioritize technical debt remediation."
+description: "🤖 AUTOMATED technical debt identification and management using the bound {{CODE_QUALITY_TOOL}}. Auto-parses hundreds of quality issues, classifies by category/severity, generates sprint-ready User Stories with BDD criteria. Transforms 6+ hour manual analysis into 5-minute automated workflow. Includes debt registry, lifecycle tracking, and {{TRACKING_TOOL}} export. Automation-first with manual fallback. Triggers on 'tech debt analysis', 'debt registry generation', 'automated user stories', 'sprint debt planning', 'analyze technical debt'. ROI: 120+ hours/year saved. Use every 2-3 sprints or after major releases. ALWAYS use when analyzing codebases to prioritize technical debt remediation."
 ---
 
 # Technical Debt Identifier

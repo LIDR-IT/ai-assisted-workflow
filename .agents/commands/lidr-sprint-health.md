@@ -24,14 +24,14 @@ Tracks velocity, burndown, blockers, team capacity utilization, scope changes,
 and provides early warning system for sprint risks based on data patterns.
 
 USAGE:
-  /sprint-health current         → Current active sprint
-  /sprint-health SP-24-05       → Specific sprint by ID
-  /sprint-health               → Auto-detect current sprint
+  /lidr-sprint-health current         → Current active sprint
+  /lidr-sprint-health SP-24-05       → Specific sprint by ID
+  /lidr-sprint-health               → Auto-detect current sprint
 
 INTEGRATION:
-  - Uses sprint-capacity skill for capacity analysis
+  - Uses lidr-sprint-capacity skill for capacity analysis
   - Feeds into bmad-retrospective skill for historical patterns
-  - Connects to advance-gate for sprint transition decisions
+  - Connects to /lidr-advance-gate for sprint transition decisions
 
 LIDR SDLC PATTERN:
 Based on LIDR SDLC sprint-status pattern for continuous sprint monitoring
@@ -45,9 +45,9 @@ CHANGELOG:
 
 > **Relationship (de-duplication):** Base sprint status + risk surfacing is owned by **`bmad-sprint-status`**; capacity analysis by the **`lidr-sprint-capacity`** skill. This command is the **LIDR monitoring layer**: it consumes those, computes the multi-dimensional health/risk score (velocity/capacity/quality/scope/dependency), renders the dashboard, and fires escalation/follow-up. Delegate status collection — don't re-implement it.
 
-Load: @../skills/sprint-capacity/SKILL.md
+Load: @../skills/lidr-sprint-capacity/SKILL.md
 Load: bmad-retrospective skill (post-epic retro reference)
-Load: @../rules/org.md
+Load: @../rules/lidr-sdlc/org.md
 
 ## Detect Sprint Context
 
@@ -100,7 +100,7 @@ Story points remaining: {tickets in To Do status}
 - Projected completion: {if current rate continues}
 
 **Historical velocity (last 3 sprints for comparison):**
-Use skill `sprint-capacity` pattern to load historical data if available.
+Use skill `lidr-sprint-capacity` pattern to load historical data if available.
 
 ### Team Capacity Analysis
 
@@ -272,10 +272,10 @@ Store current metrics for future `bmad-retrospective` skill usage:
 
 Based on detected issues:
 
-- If scope issues: `/quick-spec` for new requirements
-- If quality issues: `/prepare-testing` for additional test coverage
-- If capacity issues: Skill `sprint-capacity` for rebalancing
-- If sprint failing: `/advance-gate` analysis for sprint closure options
+- If scope issues: `/lidr-quick-spec` for new requirements
+- If quality issues: `/lidr-prepare-testing` for additional test coverage
+- If capacity issues: Skill `lidr-sprint-capacity` for rebalancing
+- If sprint failing: `/lidr-advance-gate` analysis for sprint closure options
 
 ## Manual Overrides
 

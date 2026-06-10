@@ -14,19 +14,19 @@ Analyzes code, detects drift vs documentation, auto-updates docs for safe
 changes, flags risky changes for human review, generates health report.
 
 USAGE:
-  /sync-docs all              → Full sync
-  /sync-docs architecture     → Architecture + specs
-  /sync-docs routes           → Routes only
-  /sync-docs db               → DB schema only
-  /sync-docs staleness        → Only check freshness
-  /sync-docs frontmatter      → Only check/fix metadata
+  /lidr-sync-docs all              → Full sync
+  /lidr-sync-docs architecture     → Architecture + specs
+  /lidr-sync-docs routes           → Routes only
+  /lidr-sync-docs db               → DB schema only
+  /lidr-sync-docs staleness        → Only check freshness
+  /lidr-sync-docs frontmatter      → Only check/fix metadata
 
 ARGUMENTS:
   scope: all|architecture|routes|components|db|deployment|staleness|frontmatter
 
 RELATED COMMANDS:
-  /validate-project-docs - Validates completeness (this command fixes drift)
-  /init-project-docs     - Creates docs this command syncs
+  /lidr-validate-project-docs - Validates completeness (this command fixes drift)
+  /lidr-init-project-docs     - Creates docs this command syncs
 
 CHANGELOG:
   v1.0.0 (2025-03-05): Initial release
@@ -34,8 +34,8 @@ CHANGELOG:
 
 # Sync Docs — Scope: $1
 
-Load: @../rules/documentation.md
-Load: @../rules/project.md
+Load: @../rules/lidr-sdlc/documentation.md
+Load: @../rules/lidr-sdlc/project.md
 
 ## Validate
 
@@ -129,7 +129,7 @@ Use AskUserQuestion:
 
 ## Check Staleness
 
-Per @../rules/documentation.md, for ALL .md files in ecosystem:
+Per @../rules/lidr-sdlc/documentation.md, for ALL .md files in ecosystem:
 
 - Calculate freshness indicator (🟢🟡🔴⚫)
 - Flag stale documents

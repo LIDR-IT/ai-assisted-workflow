@@ -1,8 +1,8 @@
 ---
 id: unified-phases
-version: "1.1.0"
+version: "1.1.1"
 last_updated: "2026-06-10"
-updated_by: "TL: Phase Unification BMad-LIDR"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 type: standard
 review_cycle: 90
@@ -67,22 +67,47 @@ Los skills `bmad-*` no se tocan (BMad is NEVER modified); su fase viene de
 `_bmad/_config/bmad-help.csv` (`1-analysis`…`4-implementation`, `anytime`) y mapea
 1:1 al modelo unificado. `anytime` ≡ Phase 0.
 
+### Excepciones deliberadas al mapeo CSV→fase unificada
+
+El mapeo CSV→fase unificada es 1:1 **salvo dos casos donde LIDR ancla el GATE en una
+fase distinta de la que BMad usa para archivar el skill**. No se modifica el CSV de BMad;
+LIDR simplemente sitúa el gate donde corresponde en su modelo de gobernanza:
+
+- **`bmad-sprint-planning`** — CSV lo cataloga `4-implementation` (genera `sprint-status.yaml`
+  en `implementation_artifacts`), pero LIDR ancla su **gate en G3 (final de Phase 3 Solutioning
+  / stage sprint-planning)**: el sprint debe comprometerse ANTES de cruzar a Implementation.
+  Es evidencia `required: true` de G3 en `gate-evidence.yaml`. La salida BMad sí vive en
+  `implementation-artifacts` (de ahí el glob `{bmad_impl}/sprint-status*.yaml`).
+- **`bmad-testarch-test-design`** — CSV lo cataloga `3-solutioning` y LIDR lo usa como evidencia
+  **opcional de G2**; su salida vive en `test_artifacts` (módulo TEA), no en `planning_artifacts`.
+  Coherente, pero se documenta para que el glob `{bmad_test}/test-design/**` no sorprenda.
+
 ## 2. Skills por fase unificada (LIDR + BMad fusionados)
 
-| Fase / Stage            | BMad (motor)                                                                                                                          | LIDR (gobernanza + gap-fillers)                                                                                                                                                                                                                                                        |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0 / context**         | `bmad-document-project`, `bmad-generate-project-context`                                                                              | `/lidr-init-project-docs`, rules (org/project/tech-stack), `context-manifest.yaml`                                                                                                                                                                                                     |
-| **0 / anytime**         | `bmad-quick-dev`, `bmad-correct-course`, `bmad-spec`, tech-writer, reviews, CIS                                                       | `lidr-gate-evaluation`, `lidr-audit-standards`, `lidr-sdlc-tracking`, `lidr-external-sync`, `lidr-playwright-cli`, meta-tooling (`lidr-mcp-integration`, `lidr-hook-development`, `lidr-generate-rule`), `lidr-ticket-validation`, `lidr-commit-management`                            |
-| **1 / analysis**        | `bmad-brainstorming`, `bmad-market-research`, `bmad-domain-research`, `bmad-technical-research`, `bmad-product-brief` \| `bmad-prfaq` | `lidr-business-case` ⭐G0, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`                                                                                                                                                                                         |
-| **2 / planning**        | `bmad-prd` ⭐G1, `bmad-ux`                                                                                                            | `lidr-review-cruzado` (F+T enforcer), `lidr-risk-log`, `/lidr-validate-prd`, `lidr-propuesta-builder`                                                                                                                                                                                  |
-| **3 / specification**   | `bmad-create-architecture` ⭐G2, `bmad-create-epics-and-stories` ⭐G2, `bmad-testarch-test-design`                                    | `lidr-generate-rf` ⭐G2, `lidr-generate-nfr`, `lidr-validate-requirements` (RTM) ⭐G2, `lidr-adr`                                                                                                                                                                                      |
-| **3 / sprint-planning** | `bmad-check-implementation-readiness` ⭐G3, `bmad-sprint-planning` ⭐G3                                                               | `lidr-user-stories`, `lidr-sprint-capacity` ⭐G3, `lidr-refinement-notes`                                                                                                                                                                                                              |
-| **4 / development**     | `bmad-create-story`, `bmad-dev-story`, `bmad-code-review`, `bmad-testarch-atdd`, `bmad-investigate`, `bmad-checkpoint-preview`        | `/lidr-spec-*` lifecycle, `lidr-adr`, `lidr-tech-debt`, `lidr-pr-description`, `lidr-impact-analysis` (contract impact G4 · variant compatibility consumida en G2; requiere registries del cliente), `lidr-dev-handoff-qa` ⭐G4, `lidr-using-git-worktrees`, `lidr-run-parallel-tasks` |
-| **4 / qa**              | `bmad-testarch-automate`, `bmad-testarch-trace`, `bmad-testarch-test-review`, `bmad-qa-generate-e2e-tests`, `bmad-testarch-nfr`       | `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report` ⭐G5                                                                                                                                                                                                         |
-| **4 / security**        | —                                                                                                                                     | `lidr-vuln-assessment` ⭐G6, `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-security-checklist` ⭐G6                                                                                                                                                                         |
-| **4 / release**         | `bmad-retrospective` (post-deploy)                                                                                                    | `lidr-change-request` ⭐G7, `lidr-rollback-plan` ⭐G7, `lidr-release-notes` ⭐G7, `lidr-postmortem` (si incidente)                                                                                                                                                                     |
+| Fase / Stage            | BMad (motor)                                                                                                                                         | LIDR (gobernanza + gap-fillers)                                                                                                                                                                                                                                                                                                              |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0 / context**         | `bmad-document-project`, `bmad-generate-project-context`                                                                                             | `/lidr-init-project-docs`, rules (org/project/tech-stack), `context-manifest.yaml`                                                                                                                                                                                                                                                           |
+| **0 / anytime**         | `bmad-quick-dev`, `bmad-correct-course`, `bmad-spec`, tech-writer, reviews, CIS                                                                      | `lidr-gate-evaluation`, `lidr-audit-standards`, `lidr-sdlc-tracking`, `lidr-external-sync`, `lidr-playwright-cli`, meta-tooling (`lidr-mcp-integration`, `lidr-hook-development`, `lidr-generate-rule`), `lidr-ticket-validation`, `lidr-commit-management`                                                                                  |
+| **1 / analysis**        | `bmad-brainstorming`, `bmad-market-research`, `bmad-domain-research`, `bmad-technical-research`, `bmad-product-brief` \| `bmad-prfaq`                | `lidr-business-case` ⭐G0, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`                                                                                                                                                                                                                                               |
+| **2 / planning**        | `bmad-prd` ⭐G1, `bmad-ux`                                                                                                                           | `lidr-review-cruzado` (F+T enforcer), `lidr-risk-log`, `/lidr-validate-prd`, `lidr-propuesta-builder`                                                                                                                                                                                                                                        |
+| **3 / specification**   | `bmad-create-architecture` ⭐G2, `bmad-create-epics-and-stories` ⭐G2, `bmad-testarch-test-design`, `bmad-testarch-framework`, `bmad-testarch-ci`    | `lidr-generate-rf` ⭐G2, `lidr-generate-nfr`, `lidr-validate-requirements` (RTM) ⭐G2, `lidr-adr`                                                                                                                                                                                                                                            |
+| **3 / sprint-planning** | `bmad-check-implementation-readiness` ⭐G3, `bmad-sprint-planning` ⭐G3                                                                              | `lidr-user-stories`, `lidr-sprint-capacity` ⭐G3, `lidr-refinement-notes`                                                                                                                                                                                                                                                                    |
+| **4 / development**     | `bmad-create-story`, `bmad-dev-story`, `bmad-sprint-status`, `bmad-code-review`, `bmad-testarch-atdd`, `bmad-investigate`, `bmad-checkpoint-preview` | `/lidr-spec-*` lifecycle (→ `test-report.md`, G4 evidence opcional vía RUTA B), `lidr-adr`, `lidr-tech-debt`, `lidr-pr-description`, `lidr-impact-analysis` (contract impact G4 · variant compatibility consumida en G2; requiere registries del cliente), `lidr-dev-handoff-qa` ⭐G4, `lidr-using-git-worktrees`, `lidr-run-parallel-tasks` |
+| **4 / qa**              | `bmad-testarch-automate`, `bmad-testarch-trace`, `bmad-testarch-test-review`, `bmad-qa-generate-e2e-tests`, `bmad-testarch-nfr`                      | `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report` ⭐G5                                                                                                                                                                                                                                                               |
+| **4 / security**        | —                                                                                                                                                    | `lidr-vuln-assessment` ⭐G6, `lidr-dast-interpretation`, `lidr-pentest-report`, `lidr-security-checklist` ⭐G6                                                                                                                                                                                                                               |
+| **4 / release**         | `bmad-retrospective` (post-deploy)                                                                                                                   | `lidr-change-request` ⭐G7, `lidr-rollback-plan` ⭐G7, `lidr-release-notes` ⭐G7, `lidr-postmortem` (si incidente)                                                                                                                                                                                                                           |
 
 ⭐GN = evidencia required del gate N en `gate-evidence.yaml`.
+
+> **`bmad-teach-me-testing` (CSV phase `0-learning`)** — módulo TEA Academy (formación
+> progresiva en testing). No produce artefacto de gate; es un skill de aprendizaje
+> transversal → mapea a **Phase 0 / anytime** en el modelo unificado. No aparece en una
+> fila de flujo porque no participa en la cadena input/output de ningún gate.
+>
+> Skills BMad meta/builder/utility (`bmad-agent-*`, `bmad-module-builder`, `bmad-workflow-builder`,
+> `bmad-bmb-setup`, `bmad-customize`, `bmad-index-docs`, `bmad-shard-doc`, `bmad-party-mode`,
+> `bmad-help`, CIS `bmad-cis-*`) son todos `anytime` ≡ Phase 0; no se listan fila-a-fila por
+> ser herramientas de autoría/exploración fuera de la cadena de gates.
 
 ## 3. Flow audit — escenarios end-to-end con cadena input/output
 
@@ -127,13 +152,13 @@ PHASE 3 — SOLUTIONING / sprint-planning
 ─────────────────────────────────────────────────────────────────────
 PHASE 4 — IMPLEMENTATION / development  (por ticket/story)
   bmad-create-story (sprint plan+US) → story.md contextualizada     [→ dev-story / spec lifecycle]
-  RUTA A: bmad-dev-story (story) → código+tests
-  RUTA B: /lidr-spec-new → ff → apply → verify (story enriquecida) → change container + test-report.md ⭐G4
+  RUTA A: bmad-dev-story (story) → código+tests  [G4 vía DoD checklist + bmad-code-review]
+  RUTA B: /lidr-spec-new → ff → apply → verify (story enriquecida) → change container + test-report.md (G4 evidence, required:false)
   bmad-code-review (diff) → findings                                 [→ fix antes de PR]
   lidr-pr-description (commits) → PR description
   lidr-adr / lidr-tech-debt (si aplica) → ADR / debt registry
   lidr-dev-handoff-qa (PR+tests) → dev-qa-handoff.md ⭐G4           [→ INPUT de create-test-cases]
-  ▸ G4 Code Quality (TL): DoD + test-report PASSED + DTC docs
+  ▸ G4 Code Quality (TL): DoD (gate duro) + RUTA B también test-report PASSED + DTC docs
 PHASE 4 — IMPLEMENTATION / qa
   lidr-create-test-cases (handoff+RFs+test-design) → test-cases/*.md [→ ejecución]
   bmad-testarch-automate (test-design) → suite regresión
@@ -250,7 +275,8 @@ Incidente P1 → aprobación verbal CTO → /lidr-create-branch → fix → /lid
 
 ## Changelog
 
-| Versión | Fecha      | Autor                           | Cambios                                                                                                                  |
-| ------- | ---------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| 1.1.0   | 2026-06-10 | TL: Capability gap closure      | `lidr-impact-analysis` closes PP-05/PP-06-class gaps (contract impact + variant compatibility; evidencia opcional G2/G4) |
-| 1.0.0   | 2026-06-10 | TL: Phase Unification BMad-LIDR | Creación: modelo unificado 5 fases × 8 gates + flow audit                                                                |
+| Versión | Fecha      | Autor                           | Cambios                                                                                                                                                                                                                                                                              |
+| ------- | ---------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.1.1   | 2026-06-10 | TL: Gate-evidence contract fix  | §1 nota de excepciones deliberadas (sprint-planning gate@G3 vs CSV 4-implementation; test-design test_artifacts); §2 +`bmad-testarch-framework`/`-ci`/`-sprint-status` y nota `0-learning`/meta-builder; §3.1 RUTA A pasa G4 vía DoD (test-report RUTA B opcional, `required:false`) |
+| 1.1.0   | 2026-06-10 | TL: Capability gap closure      | `lidr-impact-analysis` closes PP-05/PP-06-class gaps (contract impact + variant compatibility; evidencia opcional G2/G4)                                                                                                                                                             |
+| 1.0.0   | 2026-06-10 | TL: Phase Unification BMad-LIDR | Creación: modelo unificado 5 fases × 8 gates + flow audit                                                                                                                                                                                                                            |

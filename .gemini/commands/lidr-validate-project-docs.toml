@@ -13,16 +13,16 @@ Validates project documentation against template criteria: checks completeness,
 frontmatter compliance, required sections, cross-references, and staleness.
 
 USAGE:
-  /validate-project-docs my-project
-  /validate-project-docs my-project --fix-frontmatter
+  /lidr-validate-project-docs my-project
+  /lidr-validate-project-docs my-project --fix-frontmatter
 
 ARGUMENTS:
   project-name: Project folder name (required)
   Flags: --fix-frontmatter (auto-fix missing frontmatter)
 
 RELATED COMMANDS:
-  /init-project-docs - Creates docs this command validates
-  /sync-docs         - Updates docs to match code
+  /lidr-init-project-docs - Creates docs this command validates
+  /lidr-sync-docs         - Updates docs to match code
 
 SKILLS USED:
   generate-rule      - Referenced for rule validation criteria
@@ -35,20 +35,20 @@ CHANGELOG:
 
 # Validate Project Docs: $1
 
-Load: @../rules/documentation.md for validation standards.
+Load: @../rules/lidr-sdlc/documentation.md for validation standards.
 
 ## Validate Input
 
 If "$1" is empty:
 ❌ Project name required.
-Usage: /validate-project-docs [project-name]
+Usage: /lidr-validate-project-docs [project-name]
 Exit.
 
 Check project exists: !`test -d docs/projects/$1 && echo "EXISTS" || echo "MISSING"`
 
 If MISSING:
 ❌ No docs found at docs/projects/$1/
-Run /init-project-docs $1 first.
+Run /lidr-init-project-docs $1 first.
 Exit.
 
 ## Inventory Documents
@@ -59,7 +59,7 @@ For each document, check:
 
 ### 1. Frontmatter Compliance
 
-Per @../rules/documentation.md, verify YAML frontmatter has:
+Per @../rules/lidr-sdlc/documentation.md, verify YAML frontmatter has:
 
 - id: present and non-empty
 - version: valid semver
@@ -139,7 +139,7 @@ Expected rule types (5):
 - [ ] documentation.md — doc governance and DTC
 - [ ] workflows.md — command orchestration map
 
-Flag missing rule types as ⚠️ — suggest `/init-project-docs` or skill `generate-rule` to create them.
+Flag missing rule types as ⚠️ — suggest `/lidr-init-project-docs` or skill `lidr-generate-rule` to create them.
 
 Score: {existing rules}/{5 expected} + {valid references}/{total references}
 
@@ -196,7 +196,7 @@ markdown
 
 Present report and suggest:
 
-- "Run /sync-docs $1 to auto-update docs from code"
+- "Run /lidr-sync-docs $1 to auto-update docs from code"
 - "Fix TODOs manually for project-specific content"
-- "Run /validate-project-docs $1 --fix-frontmatter to auto-fix metadata"
+- "Run /lidr-validate-project-docs $1 --fix-frontmatter to auto-fix metadata"
 """

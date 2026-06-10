@@ -89,7 +89,7 @@ Show the user the created commit and current git status.
 **User input:**
 
 ```
-/commit feat(api): add user authentication endpoint
+/lidr-commit feat(api): add user authentication endpoint
 ```
 
 **Your response:**
@@ -123,7 +123,7 @@ Current status: working tree clean
 **User input:**
 
 ```
-/commit added new sync script
+/lidr-commit added new sync script
 ```
 
 **Your response:**
@@ -149,7 +149,7 @@ Which would you prefer, or would you like to provide a different message?
 **User input:**
 
 ```
-/commit
+/lidr-commit
 ```
 
 **Your response:**
@@ -158,7 +158,7 @@ Which would you prefer, or would you like to provide a different message?
 📋 Analyzing staged changes...
 
 Staged files:
-  .agents/commands/commit.md        | 156 ++++++++++++++++++++++++++
+  .agents/commands/lidr-commit.md        | 156 ++++++++++++++++++++++++++
   1 file changed, 156 insertions(+)
 
 Changes detected:
@@ -169,7 +169,7 @@ Changes detected:
 
 💡 Suggested commit message:
 
-feat(commands): add /commit command for git workflow
+feat(commands): add /lidr-commit command for git workflow
 
 Implement conventional commit command with validation and
 guided mode. Command analyzes staged changes and suggests

@@ -1,6 +1,10 @@
 ---
 name: claude-code-extensions
 description: Review Claude Code extension structure and usage
+id: claude-code-extensions
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: [".agents/**/*", ".claude/**/*"]
 argument-hint: <extension-path>

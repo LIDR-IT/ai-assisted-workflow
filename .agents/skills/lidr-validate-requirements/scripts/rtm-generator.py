@@ -828,7 +828,7 @@ owner_role: "PO + TL"
 
 ### Next Steps
 - [ ] Run `/epic-breakdown` after resolving critical gaps
-- [ ] Run `/advance-gate 2` for formal Gate 2 evaluation
+- [ ] Run `/lidr-advance-gate 2` for formal Gate 2 evaluation
 - [ ] Plan sprints using the implementation clusters
 """
 

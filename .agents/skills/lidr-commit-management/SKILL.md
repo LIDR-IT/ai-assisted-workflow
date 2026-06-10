@@ -1,8 +1,14 @@
 ---
 name: lidr-commit-management
+id: commit-management
 description: This skill should be used when the user asks about "commit best practices", "fix commit", "amend commit", "commit message guidelines", "conventional commits", "rewrite commits", "commit history", or needs help managing git commits following project standards.
-version: 1.1.0
-last_updated: "2026-06-09"
+version: "1.2.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
+status: active
+phase: 0 # meta/cross-cutting — applies anytime
+stage: anytime
+owner_role: "TL"
 integrations: [tracking]
 ---
 

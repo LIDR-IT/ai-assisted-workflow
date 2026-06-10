@@ -16,15 +16,15 @@ Generates changelog at 2 levels (executive for business + technical for team)
 from merged PRs since last release. Enriches with Jira context for traceability.
 
 USAGE:
-  /create-release-notes v1.2.0
-  /create-release-notes      (auto-detects version)
+  /lidr-create-release-notes v1.2.0
+  /lidr-create-release-notes      (auto-detects version)
 
 ARGUMENTS:
   version: Semver version string (optional, auto-detects from tags)
 
 RELATED COMMANDS:
-  /update-changelog  - Persists notes to CHANGELOG.md
-  /advance-gate 7    - Deploy gate that checks release notes exist
+  /lidr-update-changelog  - Persists notes to CHANGELOG.md
+  /lidr-advance-gate 7    - Deploy gate that checks release notes exist
 
 CHANGELOG:
   v2.0.0 (2025-03-05): Rewritten to official command format
@@ -35,7 +35,7 @@ CHANGELOG:
 
 > **Relationship (de-duplication):** Release-notes content generation is owned by the **`lidr-release-notes`** skill (the reusable engine that owns the note format). This command is the thin orchestrator: scan merged PRs since the last tag, enrich with tracking context, invoke `lidr-release-notes` for the document, then publish. Pairs with `/lidr-update-changelog` (which writes CHANGELOG.md + git tag).
 
-Load: @../rules/org.md and @../rules/project.md
+Load: @../rules/lidr-sdlc/org.md and @../rules/lidr-sdlc/project.md
 
 ## Identify Changes
 
@@ -168,7 +168,7 @@ Save locally: `.claude/releases/v{version}-release-notes.local.md`
 ## Report
 
 ```
-/create-release-notes v{version} ✅
+/lidr-create-release-notes v{version} ✅
 
 Version: v{version}
 Changes: {N} PRs, {N} tickets
@@ -179,5 +179,5 @@ Changes: {N} PRs, {N} tickets
 Published to: {Confluence / local file}
 Notified: {Slack channels / manual}
 
-Next: /update-changelog v{version}
+Next: /lidr-update-changelog v{version}
 ```

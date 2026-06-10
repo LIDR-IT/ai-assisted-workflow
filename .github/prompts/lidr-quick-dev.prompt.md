@@ -16,7 +16,7 @@ agent: 'agent'
 ## Synopsis
 
 ```bash
-/quick-dev [TICKET-ID] [--type TYPE] [--skip-tests]
+/lidr-quick-dev [TICKET-ID] [--type TYPE] [--skip-tests]
 ```
 
 Streamlines: branch creation → implementation → basic testing → PR creation para tareas pequeñas.
@@ -33,7 +33,7 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
 
 ## Criterios de Elegibilidad
 
-### ✅ Usa `/quick-dev` cuando
+### ✅ Usa `/lidr-quick-dev` cuando
 
 - **Estimación ≤ 8 horas**: Tareas pequeñas y bien definidas
 - **Scope limitado**: 1-3 archivos afectados máximo
@@ -45,9 +45,9 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
   - ⚡ **Micro-features**: Funcionalidad menor, bien acotada
   - 🧪 **Test additions**: Añadir tests faltantes
 
-### ❌ NO uses `/quick-dev` cuando
+### ❌ NO uses `/lidr-quick-dev` cuando
 
-- **Estimación > 8 horas**: Usar `/implement-ticket` estándar
+- **Estimación > 8 horas**: Usar `/lidr-implement-ticket` estándar
 - **Cambios de API**: Usar proceso completo con PRD + RFs
 - **Datos biométricos**: Requiere security review mandatory
 - **Múltiples componentes**: Usar epic breakdown
@@ -60,8 +60,8 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
 
 ```mermaid
 flowchart TD
-    Start([/quick-dev TICKET-ID]) --> Validate{Ticket Elegible?}
-    Validate -->|No| Stop[❌ Usar /implement-ticket]
+    Start([/lidr-quick-dev TICKET-ID]) --> Validate{Ticket Elegible?}
+    Validate -->|No| Stop[❌ Usar /lidr-implement-ticket]
     Validate -->|Yes| Branch[🔀 Create feature branch]
     Branch --> Context[📋 Load ticket context]
     Context --> Plan[📝 Generate micro-plan]
@@ -124,9 +124,9 @@ flowchart TD
 - **Quick checklist**: DoD simplificado (3-4 items)
 
 
-## Diferencias vs `/implement-ticket`
+## Diferencias vs `/lidr-implement-ticket`
 
-| Aspecto             | `/quick-dev`           | `/implement-ticket`      |
+| Aspecto             | `/lidr-quick-dev`      | `/lidr-implement-ticket` |
 | ------------------- | ---------------------- | ------------------------ |
 | **Duración target** | 1-3 horas end-to-end   | 4-40 horas               |
 | **Planning**        | Micro-plan (3-5 pasos) | Full breakdown + handoff |
@@ -233,13 +233,13 @@ tools_sequence:
 
 ### Error Handling
 
-| Error                     | Action                                     |
-| ------------------------- | ------------------------------------------ |
-| Ticket no elegible        | Suggest `/implement-ticket` with reasoning |
-| Estimación > 8h           | Force escalation to full process           |
-| Security flags            | Block + require security review            |
-| Breaking changes detected | Block + require ADR                        |
-| CI failures               | Guide to fix + re-run                      |
+| Error                     | Action                                          |
+| ------------------------- | ----------------------------------------------- |
+| Ticket no elegible        | Suggest `/lidr-implement-ticket` with reasoning |
+| Estimación > 8h           | Force escalation to full process                |
+| Security flags            | Block + require security review                 |
+| Breaking changes detected | Block + require ADR                             |
+| CI failures               | Guide to fix + re-run                           |
 
 
 ## Metrics y Monitoring
@@ -274,39 +274,39 @@ tools_sequence:
 
 ### Con Commands existentes
 
-- **Input**: Tickets de `/create-branch` si elegibles
+- **Input**: Tickets de `/lidr-create-branch` si elegibles
 - **Output**: PRs para code review estándar
-- **Escalation**: A `/implement-ticket` si scope crece
+- **Escalation**: A `/lidr-implement-ticket` si scope crece
 
 ### Con Skills
 
-| Skill            | Cuándo se usa                            |
-| ---------------- | ---------------------------------------- |
-| `pr-description` | Auto-invoked para generar PR description |
-| `bug-report`     | Si se detecta bug durante implementation |
-| `tech-debt`      | Si se identifica debt técnico            |
+| Skill                 | Cuándo se usa                            |
+| --------------------- | ---------------------------------------- |
+| `lidr-pr-description` | Auto-invoked para generar PR description |
+| `lidr-bug-report`     | Si se detecta bug durante implementation |
+| `lidr-tech-debt`      | Si se identifica debt técnico            |
 
 ### Con Hooks
 
-- **dtc-write-guard**: Evaluation simplificada (subset de DoD)
-- **context-loader**: Standard project context loading
-- **notify-desktop**: Success notification al crear PR
+- **lidr-frontmatter-guard**: Bloquea writes de .md sin frontmatter (PreToolUse)
+- **lidr-load-context**: Standard project context loading (SessionStart)
+- **notify**: Success notification al crear PR (Notification)
 
 
 ## FAQ
 
-### ¿Cuándo usar `/quick-dev` vs `/implement-ticket`?
+### ¿Cuándo usar `/lidr-quick-dev` vs `/lidr-implement-ticket`?
 
-**Regla de oro**: Si dudas, usa `/implement-ticket`. `/quick-dev` es solo para cambios que claramente cumplen criterios de elegibilidad.
+**Regla de oro**: Si dudas, usa `/lidr-implement-ticket`. `/lidr-quick-dev` es solo para cambios que claramente cumplen criterios de elegibilidad.
 
 **Examples**:
 
-- ✅ Fix typo en UI: `/quick-dev`
-- ✅ Add logging statement: `/quick-dev`
-- ✅ Update doc: `/quick-dev`
-- ❌ New API endpoint: `/implement-ticket`
-- ❌ Change DB schema: `/implement-ticket`
-- ❌ Algorithm modification: `/implement-ticket`
+- ✅ Fix typo en UI: `/lidr-quick-dev`
+- ✅ Add logging statement: `/lidr-quick-dev`
+- ✅ Update doc: `/lidr-quick-dev`
+- ❌ New API endpoint: `/lidr-implement-ticket`
+- ❌ Change DB schema: `/lidr-implement-ticket`
+- ❌ Algorithm modification: `/lidr-implement-ticket`
 
 ### ¿Puede saltar testing completamente?
 
@@ -322,12 +322,13 @@ tools_sequence:
 Command detecta automáticamente y sugiere:
 
 1. **Continuar**: Si crecimiento menor (1-2 files más)
-2. **Escalar**: A `/implement-ticket` si scope duplica
+2. **Escalar**: A `/lidr-implement-ticket` si scope duplica
 3. **Split**: Crear segundo ticket para scope adicional
 
 
 ## Changelog
 
-| Versión | Fecha      | Autor                   | Cambios                                               |
-| ------- | ---------- | ----------------------- | ----------------------------------------------------- |
-| 1.0.0   | 2026-03-15 | AI Agent: Claude Sonnet | Versión inicial basada en LIDR SDLC quick-dev pattern |
+| Versión | Fecha      | Autor                   | Cambios                                                                      |
+| ------- | ---------- | ----------------------- | ---------------------------------------------------------------------------- |
+| 1.0.1   | 2026-06-10 | TL: Stale-ref migration | Prefixed skill refs (lidr-\*); replaced fictional hooks with real hook names |
+| 1.0.0   | 2026-03-15 | AI Agent: Claude Sonnet | Versión inicial basada en LIDR SDLC quick-dev pattern                        |

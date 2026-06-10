@@ -1,9 +1,9 @@
 ---
 name: lidr-validate-requirements
 id: validate-requirements
-version: "1.3.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "1.4.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 user-invocable: false # The /lidr-validate-requirements command owns the slash; this skill is the delegated RTM / 5-pass validation engine (reached via the command or model auto-load, not the / menu). Resolves the command↔skill name collision.
 phase: 3
@@ -13,7 +13,7 @@ automation: true
 domain_agnostic: true
 language_default: en
 integrations: [tracking]
-description: "🤖 AUTOMATED cross-validation of functional (RFs) and non-functional (NFRs) requirements against PRDs using Python automation scripts. Executes 5-pass validation in <5 minutes vs 6+ hours manual. Auto-generates RTM, gap reports with owner assignment, and implementation clusters. Automation-first with manual fallback. Triggers on "validate requirements", "requirements automation", "RTM generation", "5-pass validation", "Gate 2 readiness", "requirements traceability". Essential for Gate 2 evaluation. Use after generate-rf AND generate-nfr. Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). ROI: 150+ hours/year saved. ALWAYS use before Sprint Planning to ensure requirements are complete and testable."
+description: "🤖 AUTOMATED cross-validation of functional (RFs) and non-functional (NFRs) requirements against PRDs using Python automation scripts. Executes 5-pass validation in <5 minutes vs 6+ hours manual. Auto-generates RTM, gap reports with owner assignment, and implementation clusters. Automation-first with manual fallback. Triggers on 'validate requirements', 'requirements automation', 'RTM generation', '5-pass validation', 'Gate 2 readiness', 'requirements traceability'. Essential for Gate 2 evaluation. Use after generate-rf AND generate-nfr. Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). ROI: 150+ hours/year saved. ALWAYS use before Sprint Planning to ensure requirements are complete and testable."
 ---
 
 # Requirements Validator & Traceability Matrix Generator
@@ -25,6 +25,22 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 LIDR-unique: the Gate-2 quality enforcer. Consumes the Functional + Technical PRD from `bmad-prd` and the requirements authored by `lidr-generate-rf` / `lidr-generate-nfr`, then produces the bidirectional RTM, gap report, and 5-pass Gate-2 validation that BMad's flow does not provide. Feeds `bmad-create-epics-and-stories` (validated requirements ready for decomposition).
+
+## Output Location
+
+The automation scripts write working artifacts to a transient `validation-results/` directory, but the **canonical RTM MUST be published to the per-client path Gate 2 reads** (`gate-evidence.yaml` G2 `lidr-validate-requirements` glob `{client_root}/rtm.md`):
+
+**`docs/projects/{CLIENT_CODE}/rtm.md`** — the Requirements Traceability Matrix (required G2 evidence)
+
+Companion reports are published alongside under the per-client root:
+
+- **`docs/projects/{CLIENT_CODE}/rtm.md`** — bidirectional RTM (the required gate artifact)
+- **`docs/projects/{CLIENT_CODE}/gap-report.md`** — gap analysis with owner-assigned action items
+- **`docs/projects/{CLIENT_CODE}/validation-results.json`** — machine-readable results for metrics
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`). When the scripts run with `--output-dir`, copy/move the generated `rtm.md` to `docs/projects/{CLIENT_CODE}/rtm.md` as the final step so the gate glob and `lidr-gate-evaluation` resolve it.
+
+> **Gate 2 contract**: `rtm.md` at the per-client root is REQUIRED evidence for G2. The transient `validation-results/` copy does NOT satisfy the gate — always publish the final RTM to `docs/projects/{CLIENT_CODE}/rtm.md`.
 
 ## Workflow
 
@@ -557,13 +573,13 @@ cd .claude/skills/bmad-create-epics-and-stories
 # ... (bmad-create-epics-and-stories skill workflow)
 
 # Execute Gate 2 evaluation
-/advance-gate 2
+/lidr-advance-gate 2
 ```
 
 **Integration with Commands**:
 
-- `/validate-requirements [project]` should run this automation automatically
-- `/advance-gate 2` should verify this skill's PASS status before proceeding
+- `/lidr-validate-requirements [project]` should run this automation automatically
+- `/lidr-advance-gate 2` should verify this skill's PASS status before proceeding
 
 ## Legacy Manual Process (Fallback Only)
 
@@ -610,7 +626,7 @@ See original skill sections (retained below) for manual 5-pass validation:
 
 ### Quality Gates Integration
 
-- **Automated validation results** are input to `/advance-gate 2` command
+- **Automated validation results** are input to `/lidr-advance-gate 2` command
 - **PASS/CONDITIONAL status required** before epic breakdown phase
 - **Re-validation required** after any RF/NFR changes (automated change detection)
 
@@ -676,6 +692,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix            | Added "## Output Location": canonical RTM now published to `docs/projects/{CLIENT_CODE}/rtm.md` (the required G2 gate-evidence path) instead of only the transient `validation-results/` working dir                                                                       |
 | 1.3.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted tracking via tool-registry                                                                                                                                                                                            |
 | 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix              | Language to English-default-configurable; added "Relationship to BMad" note (Gate-2 enforcer consuming bmad-prd + lidr-generate-rf/nfr, producing RTM/Gate-2 validation, feeding bmad-create-epics-and-stories); added language_default frontmatter                        |
 | 1.2.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Domain-agnostic remediation: replaced hardcoded biometric patterns in validation-engine.py, prd-parser.py, and validation_config.yaml with template variables ({{INDUSTRY_TIER_1}}, {{SENSITIVE_DATA_TYPE}}, {{ACCURACY_METRIC}}, etc.) - achieving 78→93/100 target score |

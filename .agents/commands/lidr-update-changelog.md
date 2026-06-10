@@ -16,17 +16,17 @@ Updates CHANGELOG.md following Keep a Changelog + Conventional Commits.
 Parses merged PRs, classifies by type, generates entry, commits and tags.
 
 USAGE:
-  /update-changelog v1.2.0
-  /update-changelog v1.2.0 --dry-run
-  /update-changelog v1.2.0 --no-tag
+  /lidr-update-changelog v1.2.0
+  /lidr-update-changelog v1.2.0 --dry-run
+  /lidr-update-changelog v1.2.0 --no-tag
 
 ARGUMENTS:
   version: Semver version (required). Format: vX.Y.Z
   Flags: --dry-run, --no-tag, --include-chores
 
 RELATED COMMANDS:
-  /create-release-notes - Generate the notes this command persists
-  /advance-gate 7       - Deploy gate checks CHANGELOG updated
+  /lidr-create-release-notes - Generate the notes this command persists
+  /lidr-advance-gate 7       - Deploy gate checks CHANGELOG updated
 
 CHANGELOG:
   v1.0.0 (2025-03-05): Initial release
@@ -38,7 +38,7 @@ CHANGELOG:
 
 If "$1" is empty or doesn't match semver pattern:
 ❌ Version required in semver format.
-Usage: /update-changelog v1.2.0
+Usage: /lidr-update-changelog v1.2.0
 Exit.
 
 Check if CHANGELOG.md exists: !`test -f CHANGELOG.md && echo "EXISTS" || echo "MISSING"`
@@ -160,7 +160,7 @@ Create GitHub Release with changelog entry as body.
 ## Report
 
 ```
-/update-changelog $1 ✅
+/lidr-update-changelog $1 ✅
 
 CHANGELOG.md updated: $1 ({YYYY-MM-DD})
 Changes: {N} entries ({X} added, {Y} fixed, {Z} changed)
@@ -168,5 +168,5 @@ Commit: "docs: update CHANGELOG for $1"
 Tag: $1 {created / skipped}
 GitHub Release: {created / skipped}
 
-Next: /advance-gate 7 (deploy to production)
+Next: /lidr-advance-gate 7 (deploy to production)
 ```

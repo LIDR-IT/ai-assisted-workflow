@@ -1,6 +1,10 @@
 ---
 name: react-native
 description: Review React Native code for Vercel React Native Best Practices compliance
+id: react-native
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 globs: ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js"]
 argument-hint: <file-or-pattern>

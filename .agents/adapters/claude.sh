@@ -58,7 +58,9 @@ claude_mcp() {
   }' "$AGENTS_DIR/mcp/mcp-servers.json" | write_json_if_changed "$PROJECT_ROOT/.mcp.json" ".mcp.json (project root)"
 
   # Remove legacy .claude/mcp.json if it exists
-  [ -f "$CLAUDE_DIR/mcp.json" ] && rm "$CLAUDE_DIR/mcp.json"
+  if [ -f "$CLAUDE_DIR/mcp.json" ]; then
+    rm "$CLAUDE_DIR/mcp.json"
+  fi
 }
 
 claude_hooks() {

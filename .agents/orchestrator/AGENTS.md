@@ -31,7 +31,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 - Edit once in `.agents/` → automatically synced to all 5 platforms
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic) — new in this version: `spec-execution.md` and `model-selection.md` for the LIDR Spec Lifecycle
 - **113 skills** (44 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-impact-analysis` (contract impact + variant compatibility against client-maintained registries; closes the PP-05/PP-06-class capability gaps), `lidr-help` (ecosystem-guide skill, ex-command; mirrors `bmad-help` with the LIDR SDLC governance layer on top), `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
-- **30 commands** (17 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic) — the 7 `lidr-spec-*` change-lifecycle commands (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`); `lidr-help` converted to a skill (still invocable as `/lidr-help`), `lidr-product-brief` removed (BMAD `bmad-product-brief` covers it); `document-project` and `check-readiness` removed (BMAD `bmad-document-project` + `bmad-check-implementation-readiness` cover them; readiness now lives in Gate 3)
+- **30 commands** (21 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 2 generic: `sync-setup`, `test-hooks`) — the 7 `lidr-spec-*` change-lifecycle commands (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`); `lidr-help` converted to a skill (still invocable as `/lidr-help`), `lidr-product-brief` removed (BMAD `bmad-product-brief` covers it); `document-project` and `check-readiness` removed (BMAD `bmad-document-project` + `bmad-check-implementation-readiness` cover them; readiness now lives in Gate 3)
 - **23 subagents** (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`) — new: `lidr-spec-orchestrator` for end-to-end change execution
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
 - **Declarative context manifest**: `.agents/context-manifest.yaml` enumerates docs loaded at SessionStart (replaces hard-coded paths in `lidr-load-context` hook)
@@ -170,7 +170,7 @@ ls .github/agents/*.agent.md
 │   ├── bmad-prd/, bmad-create-architecture/, ... # ← 69 BMAD skills (base flow + agents + utilities)
 │   └── ...                   # See `ls .agents/skills/` for full list
 │
-├── commands/                 # 32 commands (26 LIDR `lidr-*` + 6 generic)
+├── commands/                 # 30 commands (28 LIDR `lidr-*` — 21 SDLC + 7 spec-lifecycle — + 2 generic)
 │   ├── lidr-advance-gate.md  # ← LIDR orchestrator: gate evaluation + handoff
 │   ├── lidr-implement-ticket.md    # ← LIDR: dev workflow
 │   ├── lidr-prepare-testing.md     # ← LIDR: QA workflow
@@ -181,8 +181,7 @@ ls .github/agents/*.agent.md
 │   ├── lidr-spec-archive.md        # ← LIDR Spec Lifecycle: archive change
 │   ├── lidr-spec-continue.md       # ← LIDR Spec Lifecycle: resume paused change
 │   ├── lidr-spec-bulk-archive.md   # ← LIDR Spec Lifecycle: bulk archive
-│   ├── lidr-help.md          # ← LIDR ecosystem help
-│   ├── sync-setup.md         # Generic
+│   ├── sync-setup.md         # Generic (lidr-help is now a skill, still /lidr-help)
 │   ├── test-hooks.md         # Generic
 │   └── ...
 │
@@ -205,9 +204,10 @@ ls .github/agents/*.agent.md
 │
 ├── hooks/                    # Git workflow automation
 │   ├── hooks.json            # ← Source (6 hooks across 5 events: PreToolUse, PostToolUse, Notification, SessionStart, Stop)
-│   ├── scripts/              # notify.sh, auto-format.sh, protect-secrets.sh
-│   └── lidr/                 # ← LIDR: frontmatter-guard, load-context,
-│                             #   validate-ecosystem-counts (Claude-only)
+│   └── scripts/              # ALL hook scripts live here:
+│                             #   generic: notify.sh, auto-format.sh, protect-secrets.sh
+│                             #   LIDR (Claude-only): frontmatter-guard.sh,
+│                             #   load-context.sh, validate-ecosystem-counts.sh
 │
 ├── _shared/lidr/             # ← LIDR shared validators (BDD, AC, coherence)
 ├── memory/lidr/              # ← LIDR persistent memory (docs-agent)
@@ -461,23 +461,37 @@ trigger: always_on # Antigravity (optional)
 - Never create platform-specific files (one source with all fields → adapters transform).
 - Test on target platforms after creating new rules.
 
-### Rules Character Limit: 12,000
+### Rules Character Target: 12,000 (Cursor performance recommendation)
 
-Why 12,000 characters?
+12,000 chars is a **Cursor performance recommendation**, not a hard limit — it is
+**not enforced** by any hook or CI gate, and Claude Code / Gemini / Copilot load
+larger rules without issue. Author **new** rules to stay under it; keep them
+focused (split a generic rule only when it covers two genuinely separate topics).
 
-- Cursor recommendation for optimal performance
-- Balance between detail and loading speed
-- Cross-platform compatibility sweet spot
+**Intentional exceptions — comprehensive governance rules that exceed 12,000 by
+design** (they ARE the methodology reference, and are loaded path-scoped/on-demand,
+not eagerly, so the cost is bounded):
+
+| Rule                          | Size  | Why it's large                                   |
+| ----------------------------- | ----- | ------------------------------------------------ |
+| `lidr-sdlc/workflows.md`      | ~36KB | Full command catalog + role matrix + flow chains |
+| `lidr-sdlc/tech-stack.md`     | ~28KB | Complete stack conventions (TS/React/API/test)   |
+| `lidr-sdlc/documentation.md`  | ~28KB | DTC governance + frontmatter + staleness rules   |
+| `lidr-sdlc/org.md`            | ~25KB | Org standards, RACI, security policy             |
+| `lidr-sdlc/project.md`        | ~21KB | Active-project context (team, arch, ADRs)        |
+| `lidr-sdlc/spec-execution.md` | ~15KB | Mandatory test-execution steps per change        |
+| `product/roadmap.md`          | ~12KB | Product roadmap reference                        |
+
+Do NOT fragment these into multiple files — splitting a governance reference
+multiplies `@`-references and (for always-loaded rules) does not even reduce
+context cost. Trim redundancy instead if size becomes a real problem.
 
 ```bash
-# Check rule size before committing
+# Check rule size before committing a NEW rule
 wc -c .agents/rules/design/web-design.md
-# Output: 8432 .agents/rules/design/web-design.md
 
-# All rules in category
-for rule in .agents/rules/code/*.md; do
-  echo "$(wc -c < "$rule") - $rule"
-done
+# List any rules over the target (the lidr-sdlc set above is expected)
+find .agents/rules -name "*.md" ! -name "README.md" -exec wc -c {} \; | awk '$1>12000'
 ```
 
 ### Rules Categories Explained
@@ -592,16 +606,19 @@ arguments: [issue, branch] # Named positional args for $name substitution
 
 **Reference:** see `.agents/skills-readme.md` for full inventory, troubleshooting, and per-platform doc links.
 
-### Available Skills (66 total)
+### Available Skills (113 total)
 
-**Generic meta-skills (4):**
+**LIDR meta-skills (5, prefixed `lidr-*`):**
 
-- `agents-architecture` — Meta-skill: end-to-end scaffolding for skills, commands, and agents with auto-sync (formerly `team-skill-creator`)
-- `command-development` — Deep-dive on command authoring patterns; complements `agents-architecture`
-- `commit-management` — Git commit message workflows and conventions
-- `ticket-validation` — Ticket structure validation
+- `lidr-agents-architecture` — Meta-skill: end-to-end scaffolding for skills, commands, and agents with auto-sync
+- `lidr-command-development` — Deep-dive on command authoring patterns; complements `lidr-agents-architecture`
+- `lidr-hook-development` — Hook authoring patterns
+- `lidr-mcp-integration` — MCP server integration
+- `lidr-generate-rule` — Rule generation
 
-**LIDR skills (44):** unified phases 0–4 (BMad-aligned; stages context→release, see `.agents/_shared/lidr/UNIFIED-PHASES.md`) plus spec-lifecycle and meta-tooling, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-user-stories`, `lidr-adr`, `lidr-create-test-cases`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-gate-evaluation`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping. PRD/design/epics/test-plan are owned by BMad (`bmad-prd`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-testarch-test-design`) — LIDR wraps those outputs, see `.agents/_shared/lidr/MIGRATION.md`.
+**LIDR skills (44 total, incl. the 5 meta-skills above):** unified phases 0–4 (BMad-aligned; stages context→release, see `.agents/_shared/lidr/UNIFIED-PHASES.md`) plus spec-lifecycle and meta-tooling, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-user-stories`, `lidr-adr`, `lidr-create-test-cases`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-gate-evaluation`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping.
+
+**BMad skills (69, prefixed `bmad-*`):** base flow, agent personas, test-architecture, creative/innovation, utilities. PRD/design/epics/test-plan are owned by BMad (`bmad-prd`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-testarch-test-design`) — LIDR wraps those outputs, see `.agents/_shared/lidr/MIGRATION.md`. Run `ls .agents/skills/ | grep ^bmad-` for the full list.
 
 ---
 
@@ -617,7 +634,7 @@ Each platform calls commands by a **different name** and expects a **different f
 | **Antigravity** | **"Workflows"** (different name!) | `.agents/workflows/<name>.md` (workspace) | Markdown + YAML | Internal symlink `.agents/workflows` → `commands`            |
 | **Copilot**     | "Prompt files"                    | `.github/prompts/<name>.prompt.md`        | Markdown + YAML | Generated from `.md` source (`$ARGUMENTS` → `{{{ input }}}`) |
 
-Total: 32 commands (26 LIDR `lidr-*` — 19 SDLC + 7 spec-lifecycle — + 6 generic).
+Total: 30 commands (28 LIDR `lidr-*` — 21 SDLC + 7 spec-lifecycle — + 2 generic: `sync-setup`, `test-hooks`).
 
 ### Antigravity terminology note
 
@@ -625,20 +642,20 @@ Antigravity calls them **workflows**, not commands. The workspace path is `.agen
 
 ### Available commands (30)
 
-**Generic (7):** `/commit`, `/create-ticket`, `/enrich-ticket`, `/improve-docs`, `/sync-setup`, `/test-hooks`, `/validate-project-docs`
+**Generic (2):** `/sync-setup`, `/test-hooks`
 
-**LIDR SDLC (23):** all prefixed `lidr-*` — `lidr-advance-gate`, `lidr-implement-ticket`, `lidr-prepare-testing`, `lidr-validate-prd`, `lidr-validate-requirements`, etc. Run `ls .agents/commands/ | grep ^lidr-` for the full list. See `.agents/rules/lidr-sdlc/workflows.md` for the role × command matrix.
+**LIDR (28):** all prefixed `lidr-*` — 21 SDLC (`/lidr-advance-gate`, `/lidr-commit`, `/lidr-create-ticket`, `/lidr-enrich-ticket`, `/lidr-improve-docs`, `/lidr-implement-ticket`, `/lidr-prepare-testing`, `/lidr-validate-prd`, `/lidr-validate-project-docs`, `/lidr-validate-requirements`, …) + 7 spec-lifecycle (`/lidr-spec-new`, `/lidr-spec-ff`, `/lidr-spec-apply`, `/lidr-spec-verify`, `/lidr-spec-archive`, `/lidr-spec-continue`, `/lidr-spec-bulk-archive`). Run `ls .agents/commands/ | grep ^lidr-` for the full list. See `.agents/rules/lidr-sdlc/workflows.md` for the role × command matrix.
 
 **Full reference, per-platform schemas, common pitfalls, and add-a-new-command flow:** see `.agents/commands-readme.md`.
 
 ### Command → Agent → Skill Pattern
 
 ```
-User: /improve-docs docs/guides
+User: /lidr-improve-docs docs/guides
     ↓
-Command: improve-docs.md (slash command)
+Command: lidr-improve-docs.md (slash command)
     ↓
-Agent: doc-improver.md (autonomous workflow)
+Agent: lidr-doc-improver.md (autonomous workflow)
     ↓
 Skill: lidr-audit-standards (domain expertise)
     ↓
@@ -649,8 +666,8 @@ Result: Audit report with prioritized recommendations
 
 Example workflow:
 
-1. User runs `/improve-docs`
-2. Command invokes `doc-improver` agent
+1. User runs `/lidr-improve-docs`
+2. Command invokes `lidr-doc-improver` agent
 3. Agent reads `process/documentation.md` rule for standards
 4. Agent uses `lidr-audit-standards` skill for structure analysis
 5. Agent outputs audit with high/medium/low priority issues
@@ -797,7 +814,7 @@ See [Adding an MCP Server](#adding-an-mcp-server) section above.
 }
 ```
 
-**Scripts:** Symlinked from `.agents/hooks/scripts/` (generic) and `.agents/hooks/lidr/` (LIDR-specific).
+**Scripts:** All hook scripts (generic and LIDR-specific) live in `.agents/hooks/scripts/` and are symlinked per platform.
 
 **Official references:**
 

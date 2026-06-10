@@ -117,9 +117,13 @@ version: "1.0.0" # semver
 last_updated: "YYYY-MM-DD" # fecha del último cambio significativo
 updated_by: "{rol}: {nombre}" # quién actualizó
 status: draft | active | deprecated
-phase: 1-8 # fase del SDLC donde se usa
+phase: 0-4 # fase unificada del SDLC (numeración BMad) donde se usa — ver _shared/lidr/UNIFIED-PHASES.md
+stage: context | analysis | planning | specification | sprint-planning | development | qa | security | release | anytime
+# ↑ stage (slug ex-fase LIDR) dentro de la fase unificada — ver UNIFIED-PHASES.md para el mapeo phase↔stage
 owner_role: "{rol principal}" # quién mantiene este skill
 ```
+
+> **Phase taxonomy (since 2026-06-10):** LIDR y BMad comparten UNA sola taxonomía de fases (numeración BMad 0–4). Cada fase agrupa uno o más `stage` (slugs ex-fase LIDR). Fuente canónica con el mapeo old-phase ↔ unified: `.agents/_shared/lidr/UNIFIED-PHASES.md`. El antiguo esquema `phase: 1-8` queda obsoleto.
 
 ### Para Commands
 
@@ -520,11 +524,12 @@ Rule: org.md
 
 ## 12. Changelog
 
-| Versión | Fecha      | Autor                                       | Cambios                                                                                           |
-| ------- | ---------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| 2.2.0   | 2026-06-10 | TL: ecosystem coherence                     | Hooks y paths actualizados a artefactos reales (lidr-frontmatter-guard, commands/skills `lidr-*`) |
-| 2.1.0   | 2026-03-17 | TL: Self-Contained Architecture DTC Updates | Actualizada matriz DTC para patrón self-contained, agregadas reglas de templates inmutables       |
-| 2.0.0   | 2026-03-15 | TL: Lead Engineer                           | Enhanced frontmatter LIDR SDLC standard, documentation health metrics                             |
+| Versión | Fecha      | Autor                                       | Cambios                                                                                                                                        |
+| ------- | ---------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.3.0   | 2026-06-11 | TL: peripheral docs coherence               | Schema de frontmatter de skills migrado de `phase: 1-8` a `phase: 0-4` (numeración unificada BMad) + campo `stage:`, citando UNIFIED-PHASES.md |
+| 2.2.0   | 2026-06-10 | TL: ecosystem coherence                     | Hooks y paths actualizados a artefactos reales (lidr-frontmatter-guard, commands/skills `lidr-*`)                                              |
+| 2.1.0   | 2026-03-17 | TL: Self-Contained Architecture DTC Updates | Actualizada matriz DTC para patrón self-contained, agregadas reglas de templates inmutables                                                    |
+| 2.0.0   | 2026-03-15 | TL: Lead Engineer                           | Enhanced frontmatter LIDR SDLC standard, documentation health metrics                                                                          |
 
 
 _Esta rule es contexto persistente. La IA la aplica SIEMPRE al crear, leer, o modificar cualquier .md del ecosistema._

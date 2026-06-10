@@ -98,10 +98,8 @@ Browser debugging e inspección.
 
 ## Documentación
 
-- **Setup completo:** `docs/guides/mcp/mcp-setup-guide.md`
-- **Antigravity setup:** `docs/guides/mcp/ANTIGRAVITY_SETUP.md`
-- **Validación:** `docs/guides/mcp/VALIDATION.md`
-- **Referencias técnicas:** `docs/references/mcp/`
+- **Integración MCP (setup + troubleshooting):** `docs/guides/claude-code/mcp-integration.md`
+- **Skill de integración MCP:** `.agents/skills/lidr-mcp-integration/`
 
 ## Troubleshooting
 
@@ -115,4 +113,4 @@ Browser debugging e inspección.
 jq '.' .agents/mcp/mcp-servers.json
 ```
 
-Ver `docs/guides/mcp/` para troubleshooting detallado.
+Ver `docs/guides/claude-code/mcp-integration.md` para troubleshooting detallado.

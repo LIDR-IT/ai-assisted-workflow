@@ -1,9 +1,9 @@
 ---
 name: lidr-vuln-assessment
 id: vuln-assessment
-version: "1.3.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "1.4.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
 stage: security
@@ -24,6 +24,18 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 LIDR-unique: triages and prioritizes findings emitted by the {{CODE_QUALITY_TOOL}} SAST/SCA scanners (severity escalation, OWASP mapping, compliance-weighted criticality), producing the Gate-6 Security Sign-off evidence. Complements `bmad-testarch-nfr` (which audits NFR evidence including security posture) by owning the vulnerability-finding interpretation layer BMad does not cover.
+
+## Output Location
+
+The vulnerability assessment MUST be published to the per-client path Gate 6 reads (`gate-evidence.yaml` G6 `lidr-vuln-assessment` glob `{client_root}/vuln-assessment*.md`, `required: true`):
+
+**`docs/projects/{CLIENT_CODE}/vuln-assessment.md`** (or `vuln-assessment-{date}.md` per scan)
+
+`{CLIENT_CODE}` is the active client (see `rules/lidr-sdlc/project.md`).
+
+Example: `docs/projects/docline/vuln-assessment-2026-06-10.md`
+
+> **Gate 6 contract**: `vuln-assessment*.md` at the per-client root is REQUIRED evidence for G6. Publish the triaged assessment here so `/lidr-advance-gate 6` and `lidr-gate-evaluation` resolve it.
 
 ## Workflow
 
@@ -219,8 +231,9 @@ Risk weighting parameterizes per the active {{INDUSTRY}} and its bound {{COMPLIA
 
 ## Changelog
 
-| Version | Date       | Author                       | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable (worked-example exec summary translated to English under client-locale label); abstracted SAST/SCA scanners via tool-registry ({{CODE_QUALITY_TOOL}})                                                                                                                                                                                                                                                                                   |
-| 1.2.0   | 2026-06-09 | TL: BMad-coherence batch-fix | Parameterized industry/regulation specifics via {{INDUSTRY}}/{{COMPLIANCE_FRAMEWORK}} (industry risk blocks reframed as labelled examples); abstracted SAST/SCA scanners to {{CODE_QUALITY_TOOL}} in Workflow + Input; language to English-default-configurable (exec summary renders in client locale); added "Relationship to BMad" note (triages {{CODE_QUALITY_TOOL}} findings for Gate-6, complements bmad-testarch-nfr); added language_default + integrations frontmatter |
-| 1.1.0   | 2026-03-16 | System: QA Enhancement       | Quality assurance integration                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Version | Date       | Author                         | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/vuln-assessment*.md` (required G6 gate-evidence path)                                                                                                                                                                                                                                                                                                                                                      |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable (worked-example exec summary translated to English under client-locale label); abstracted SAST/SCA scanners via tool-registry ({{CODE_QUALITY_TOOL}})                                                                                                                                                                                                                                                                                   |
+| 1.2.0   | 2026-06-09 | TL: BMad-coherence batch-fix   | Parameterized industry/regulation specifics via {{INDUSTRY}}/{{COMPLIANCE_FRAMEWORK}} (industry risk blocks reframed as labelled examples); abstracted SAST/SCA scanners to {{CODE_QUALITY_TOOL}} in Workflow + Input; language to English-default-configurable (exec summary renders in client locale); added "Relationship to BMad" note (triages {{CODE_QUALITY_TOOL}} findings for Gate-6, complements bmad-testarch-nfr); added language_default + integrations frontmatter |
+| 1.1.0   | 2026-03-16 | System: QA Enhancement         | Quality assurance integration                                                                                                                                                                                                                                                                                                                                                                                                                                                    |

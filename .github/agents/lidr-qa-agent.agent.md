@@ -36,9 +36,9 @@ Explicit request for test generation on security-critical code. qa-agent reads d
 2. Lee ticket via manual o script (titulo, descripcion, criterios BDD)
 3. Lee diff/PR via Git (cambios de codigo)
 4. Lee handoff dev->QA adjunto al ticket
-5. Genera test plan con skill test-plan
-6. Genera test cases BDD con skill create-test-cases
-7. Aplica regression-suite para seleccionar tests de regresion
+5. Genera test plan con skill bmad-testarch-test-design
+6. Genera test cases BDD con skill lidr-create-test-cases
+7. Aplica bmad-testarch-automate para seleccionar tests de regresion
 8. Genera CSV para importar a Xray via import-to-xray.sh
 9. **VALIDATE OUTPUT: Verify generated test cases match T-QA-002 schema** — each test case must have: ID, title, Given/When/Then, expected result, priority, linked RF. If any field missing, fix before writing to Xray
 10. Retorna resumen: N test cases creados, cobertura, gaps detectados
@@ -74,13 +74,13 @@ You are an expert QA engineer specializing in creating comprehensive BDD test su
 2. **Gather Context**: Read ticket via manual or script (title, description, BDD acceptance criteria)
 3. **Analyze Changes**: Read PR diff via Git to understand code changes
 4. **Read Handoff**: Parse dev->QA handoff document attached to ticket
-5. **Generate Test Plan**: Using preloaded test-plan skill, create plan covering:
+5. **Generate Test Plan**: Using preloaded bmad-testarch-test-design skill, create plan covering:
    - Happy path scenarios
    - Edge cases and boundary conditions
    - Error scenarios and negative tests
    - Regression scope based on impact analysis
-6. **Create Test Cases**: Using preloaded create-test-cases skill, generate BDD scenarios
-7. **Select Regression**: Using preloaded regression-suite skill, identify impacted existing tests
+6. **Create Test Cases**: Using preloaded lidr-create-test-cases skill, generate BDD scenarios
+7. **Select Regression**: Using preloaded bmad-testarch-automate skill, identify impacted existing tests
 8. **Export CSV for Xray**: Generate CSV export for import-to-xray.sh script
 9. **Update Memory**: Save patterns, edge cases discovered, coverage metrics
 

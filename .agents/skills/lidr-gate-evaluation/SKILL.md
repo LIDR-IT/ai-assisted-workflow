@@ -1,9 +1,9 @@
 ---
 name: lidr-gate-evaluation
 id: gate-evaluation
-version: "1.2.0"
-last_updated: "2026-06-09"
-updated_by: "TL: epic-jira-cleanup"
+version: "1.3.0"
+last_updated: "2026-06-10"
+updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 0
 stage: anytime
@@ -81,7 +81,7 @@ This workflow is MANDATORY for every gate transition — ensures systematic eval
 
 ## Integration Points
 
-- **Commands**: Used by `/advance-gate [N]` for automated evaluation
+- **Commands**: Used by `/lidr-advance-gate [N]` for automated evaluation
 - **Manifest**: Reads `../../_shared/lidr/gate-evidence.yaml` for the per-gate evidence list (BMad artifacts + LIDR gap-fillers)
 - **Skills**: References artifacts from BMad (engine) + LIDR custom skills (governance/compliance/capacity)
 - **Governance**: Feeds into project health dashboards and metrics
@@ -90,8 +90,9 @@ This workflow is MANDATORY for every gate transition — ensures systematic eval
 
 ## Changelog
 
-| Version | Date       | Author                  | Changes                                                                                                                                                           |
-| ------- | ---------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic  | Language to English-default-configurable; abstracted tracking (Jira) via tool-registry                                                                            |
-| 1.1.0   | 2026-06-09 | TL: LIDR Gate-over-BMad | Evidence sourcing now reads `_shared/lidr/gate-evidence.yaml` — gate verifies BMad artifacts (primary) + LIDR gap-fillers instead of phase-specific re-generation |
-| 1.0.0   | 2026-04-06 | TL: epic-jira-cleanup   | Initial skill creation — extracted from deprecated epic-jira                                                                                                      |
+| Version | Date       | Author                         | Changes                                                                                                                                                           |
+| ------- | ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.3.0   | 2026-06-10 | TL: Gate-evidence contract fix | Fixed dead `/advance-gate` → `/lidr-advance-gate` and dead `docs/templates/` path → real template location in skill body + report template                        |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted tracking (Jira) via tool-registry                                                                            |
+| 1.1.0   | 2026-06-09 | TL: LIDR Gate-over-BMad        | Evidence sourcing now reads `_shared/lidr/gate-evidence.yaml` — gate verifies BMad artifacts (primary) + LIDR gap-fillers instead of phase-specific re-generation |
+| 1.0.0   | 2026-04-06 | TL: epic-jira-cleanup          | Initial skill creation — extracted from deprecated epic-jira                                                                                                      |

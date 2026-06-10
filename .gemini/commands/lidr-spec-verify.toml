@@ -11,7 +11,7 @@ LAST UPDATED: 2026-05-20
 PURPOSE:
 Run the final verification pass for a LIDR change: re-execute the unit suite,
 re-run curl on endpoints affected, re-run Playwright if applicable, detect docs
-drift via /sync-docs principles, and produce a final test-report.md with PASS /
+drift via /lidr-sync-docs principles, and produce a final test-report.md with PASS /
 WARNINGS / CRITICAL verdict.
 
 PRE-REQUISITE:

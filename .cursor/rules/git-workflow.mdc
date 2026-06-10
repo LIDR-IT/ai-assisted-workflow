@@ -1,6 +1,10 @@
 ---
 name: git-workflow
 description: Git workflow and commit conventions
+id: git-workflow
+version: "1.0.0"
+last_updated: "2026-06-11"
+status: active
 alwaysApply: false
 trigger: always_on
 ---

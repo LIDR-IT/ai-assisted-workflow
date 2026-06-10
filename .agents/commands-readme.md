@@ -2,7 +2,7 @@
 
 Source-of-truth for user-invocable slash commands across 5 platforms.
 
-**Source:** `.agents/commands/<name>.md` — 30 commands (17 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 6 generic). `lidr-help` is now a skill (still invocable as `/lidr-help`); `lidr-product-brief` removed (use `bmad-product-brief`).
+**Source:** `.agents/commands/<name>.md` — 30 commands (21 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 2 generic). `lidr-help` is now a skill (still invocable as `/lidr-help`); `lidr-product-brief` removed (use `bmad-product-brief`).
 
 Each platform calls the feature by a different name and expects a different file format. The adapter generates / symlinks per platform.
 
@@ -54,20 +54,20 @@ Markdown content here. Use $ARGUMENTS for user input.
 
 ## Available commands (30)
 
-### Generic (6)
+### Generic (2)
 
-- `/commit` — Conventional commit from staged changes
-- `/create-ticket` — Structured ticket creation
-- `/enrich-ticket` — Validate ticket completeness
-- `/improve-docs` — Documentation audit + improvement
-- `/sync-setup` — Run `./.agents/sync.sh`
+- `/sync-setup` — Run `./.agents/sync.sh` (rules, skills, commands, agents, MCP, hooks)
 - `/test-hooks` — Test cross-platform hooks
 
-### LIDR SDLC (17 — partial listing)
+### LIDR SDLC (21) — `lidr-*`
 
-`lidr-advance-gate`, `lidr-course-correct`, `lidr-create-branch`, `lidr-create-pr`, `lidr-create-release-notes`, `lidr-implement-ticket`, `lidr-init-project-docs`, `lidr-prepare-testing`, `lidr-quick-dev`, `lidr-quick-spec`, `lidr-sprint-health`, `lidr-sync-docs`, `lidr-track-sdlc`, `lidr-update-changelog`, `lidr-validate-prd`, `lidr-validate-project-docs`, `lidr-validate-requirements`
+`/lidr-advance-gate`, `/lidr-commit`, `/lidr-course-correct`, `/lidr-create-branch`, `/lidr-create-pr`, `/lidr-create-release-notes`, `/lidr-create-ticket`, `/lidr-enrich-ticket`, `/lidr-implement-ticket`, `/lidr-improve-docs`, `/lidr-init-project-docs`, `/lidr-prepare-testing`, `/lidr-quick-dev`, `/lidr-quick-spec`, `/lidr-sprint-health`, `/lidr-sync-docs`, `/lidr-track-sdlc`, `/lidr-update-changelog`, `/lidr-validate-prd`, `/lidr-validate-project-docs`, `/lidr-validate-requirements`
 
-> `/lidr-help` moved to a skill (`.agents/skills/lidr-help/`) — still invocable as `/lidr-help`. `lidr-product-brief` was removed; use the `bmad-product-brief` skill.
+### LIDR Spec Lifecycle (7) — `lidr-spec-*`
+
+`/lidr-spec-new`, `/lidr-spec-ff`, `/lidr-spec-apply`, `/lidr-spec-verify`, `/lidr-spec-archive`, `/lidr-spec-continue`, `/lidr-spec-bulk-archive`
+
+> `/lidr-help` moved to a skill (`.agents/skills/lidr-help/`) — still invocable as `/lidr-help`. `lidr-product-brief` was removed; use the `bmad-product-brief` skill. The ex-generic commands (`commit`, `create-ticket`, `enrich-ticket`, `improve-docs`) were renamed with the `lidr-` prefix.
 
 See `.agents/rules/lidr-sdlc/workflows.md` for the role × command matrix.
 
@@ -103,11 +103,11 @@ ls .agents/workflows/my-command.md            # Antigravity reads via the symlin
 Commands are thin invocation wrappers. They typically delegate to a more detailed unit:
 
 ```
-User types /improve-docs docs/guides
+User types /lidr-improve-docs docs/guides
    ↓
-Command (.agents/commands/improve-docs.md) — orchestrator with frontmatter
+Command (.agents/commands/lidr-improve-docs.md) — orchestrator with frontmatter
    ↓
-Subagent (.agents/subagents/doc-improver.md) — autonomous workflow
+Subagent (.agents/subagents/lidr-doc-improver.md) — autonomous workflow
    ↓
 Skill (.agents/skills/lidr-audit-standards/SKILL.md) — domain expertise
    ↓

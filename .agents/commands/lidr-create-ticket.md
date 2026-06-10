@@ -14,7 +14,7 @@ Interactive command to create a new ticket with complete folder structure.
 ## Usage
 
 ```bash
-/create-ticket [type]
+/lidr-create-ticket [type]
 ```
 
 **Arguments:**
@@ -24,8 +24,8 @@ Interactive command to create a new ticket with complete folder structure.
 **Examples:**
 
 ```bash
-/create-ticket feature
-/create-ticket bug
+/lidr-create-ticket feature
+/lidr-create-ticket bug
 ```
 
 ## What This Command Does
@@ -314,7 +314,7 @@ echo "Next steps:"
 echo "1. Edit ticket.md to fill in details"
 echo "2. Add acceptance criteria and DoD"
 echo "3. Optionally add resources (wireframes, designs, etc.)"
-echo "4. Run /enrich-ticket ${TICKET_ID} to validate"
+echo "4. Run /lidr-enrich-ticket ${TICKET_ID} to validate"
 ```
 
 ## Example Output
@@ -333,7 +333,7 @@ Next steps:
 1. Edit ticket.md to fill in details
 2. Add acceptance criteria and DoD
 3. Optionally add resources (wireframes, designs, etc.)
-4. Run /enrich-ticket TICK-006 to validate
+4. Run /lidr-enrich-ticket TICK-006 to validate
 ```
 
 ## After Creation
@@ -341,10 +341,10 @@ Next steps:
 1. **Edit ticket.md** - Fill in title, description, acceptance criteria
 2. **Update plan.md** - Break down implementation tasks
 3. **Add resources** - Include wireframes, designs, diagrams as needed
-4. **Validate** - Run `/enrich-ticket TICK-XXX` to check completeness
+4. **Validate** - Run `/lidr-enrich-ticket TICK-XXX` to check completeness
 5. **Move to active** - When ready to start: `mv backlog/TICK-XXX-* active/`
 
 ## Related Commands
 
-- `/enrich-ticket TICK-XXX` - Validate ticket completeness
+- `/lidr-enrich-ticket TICK-XXX` - Validate ticket completeness
 - `/validate-pr` - Check PR readiness before merge
