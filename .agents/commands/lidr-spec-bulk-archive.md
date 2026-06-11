@@ -2,7 +2,7 @@
 description: Archive all LIDR changes with PASSED verdict — bulk operation
 argument-hint: [optional-filter]
 allowed-tools: Read, Bash(ls:*), Bash(mv:*), Bash(mkdir:*), Edit, AskUserQuestion
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 <!--

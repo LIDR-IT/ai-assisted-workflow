@@ -2,7 +2,7 @@
 description: Archive a completed LIDR change — move to changes/archive/ and update indices
 argument-hint: [change-name]
 allowed-tools: Read, Bash(mv:*), Bash(mkdir:*), Bash(ls:*), Edit
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 <!--

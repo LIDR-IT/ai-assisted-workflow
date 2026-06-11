@@ -2,7 +2,7 @@
 description: Resume a paused LIDR change — read current state and pick up where it left off
 argument-hint: [change-name]
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright, AskUserQuestion
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 <!--

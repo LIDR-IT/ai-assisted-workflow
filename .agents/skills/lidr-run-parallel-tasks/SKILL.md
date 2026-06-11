@@ -11,7 +11,7 @@ owner_role: "TL"
 automation: true
 domain_agnostic: true
 integrations: [tracking]
-model: claude-opus-4-7
+model: opus
 effort: high
 description: >
   Run N change-driven features in parallel, each in its own isolated git worktree,

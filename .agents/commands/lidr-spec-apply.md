@@ -2,7 +2,7 @@
 description: Implement tasks from a LIDR change task-by-task, executing all mandatory tests per spec-execution.md
 argument-hint: [change-name]
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright, AskUserQuestion
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 <!--
@@ -37,7 +37,7 @@ CHANGELOG:
 
 ## Model self-correct (per lidr-sdlc/model-selection.md)
 
-This is implementation work. Verify the session is on Sonnet medium. If on Opus high (from prior planning), revert by editing `.claude/settings.json` with `"model": "claude-sonnet-4-6"` and `"effort": "medium"`. **Do not stop and ask the user**.
+This is implementation work. Verify the session is on Sonnet medium. If on Opus high (from prior planning), revert by editing `.claude/settings.json` with `"model": "sonnet"` and `"effort": "medium"`. **Do not stop and ask the user**.
 
 ## Select the change
 
