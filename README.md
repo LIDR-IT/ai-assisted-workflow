@@ -6,7 +6,7 @@
 [![Platforms](https://img.shields.io/badge/platforms-Cursor%20%7C%20Claude%20%7C%20Gemini%20%7C%20Antigravity%20%7C%20Copilot-green.svg)](#sync-strategies-per-platform)
 [![Skills](<https://img.shields.io/badge/skills-113%20(44%20LIDR%20%2B%2069%20BMAD)-blue.svg>)](#repository-structure)
 [![Commands](https://img.shields.io/badge/commands-30-blue.svg)](#repository-structure)
-[![Agents](https://img.shields.io/badge/subagents-23-blue.svg)](#repository-structure)
+[![Agents](https://img.shields.io/badge/subagents-10-blue.svg)](#repository-structure)
 [![MCP](https://img.shields.io/badge/MCP-Context7-purple.svg)](https://context7.com)
 
 This repository is the result of merging two projects:
@@ -40,9 +40,8 @@ lidr-ecosystem/
 │   ├── commands/                  # 30 commands
 │   │   ├── lidr-*.md              # 28 LIDR commands (21 SDLC + 7 spec-lifecycle: lidr-advance-gate, lidr-spec-*, ...)
 │   │   └── *.md                   # 2 generic commands (sync-setup, test-hooks)
-│   ├── subagents/                 # 23 subagents
-│   │   ├── lidr-*.md              # 10 LIDR subagents (qa, release, security, spec-orchestrator, ...)
-│   │   └── *.md                   # 13 BMAD subagents (bmad-*-agent personas)
+│   ├── subagents/                 # 10 subagents (LIDR workers)
+│   │   └── lidr-*.md              # 10 LIDR workers (qa, release, security, spec-orchestrator, ...) — BMad personas are skills (ADR-0008)
 │   ├── hooks/                     # 6 hooks registered in hooks.json
 │   │   ├── lidr/                  # 3 LIDR bash hooks (frontmatter-guard, load-context, validate-ecosystem-counts)
 │   │   ├── scripts/               # 3 generic hooks (notify, auto-format, protect-secrets)

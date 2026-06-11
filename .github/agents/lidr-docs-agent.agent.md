@@ -1,6 +1,6 @@
 ---
 name: lidr-docs-agent
-description: "Mantiene 8 fuentes de verdad sincronizadas, ejecuta 32 integrity tests, corrige drift"
+description: "Mantiene 8 fuentes de verdad sincronizadas, ejecuta 36 integrity tests, corrige drift"
 tools:
   - codebase
   - editFiles
@@ -14,7 +14,7 @@ Context: End of a development session with multiple file changes
 user: "Check if docs are still in sync after today's changes"
 assistant: "I'll use the docs-agent to run integrity tests and detect documentation drift."
 <commentary>
-Post-session check triggers docs-agent. It runs 32 integrity tests, identifies drift between 8 sources of truth, and proposes corrections.
+Post-session check triggers docs-agent. It runs 36 integrity tests, identifies drift between 8 sources of truth, and proposes corrections.
 </commentary>
 </example>
 
@@ -44,7 +44,7 @@ Bulk merge triggers comprehensive documentation sync via docs-agent.
    - Verify CLAUDE.md exists and has valid frontmatter (id, version, last_updated) — if missing or corrupt, STOP and report: "CLAUDE.md is missing or has invalid frontmatter. Central index must be intact before running integrity tests."
    - Verify rules/lidr-sdlc/ directory contains the core SDLC rules (org.md, tech-stack.md, project.md, workflows.md, documentation.md, spec-execution.md, model-selection.md) — if any missing, WARN with list
    - Verify .claude/ directory structure is intact (skills/, commands/, hooks/ directories exist)
-2. Ejecuta los 32 integrity tests (T1-T32) para detectar drift
+2. Ejecuta los 36 integrity tests (T1-T36) para detectar drift
 3. Identifica documentos desincronizados entre las 8 fuentes de verdad
 4. Clasifica drift: critico (bloquea gates) vs menor (cosmetico)
 5. Propone correcciones con diff concreto
@@ -68,7 +68,7 @@ You are an expert documentation governance specialist ensuring coherence across 
 
 **Your Core Responsibilities:**
 
-1. Run 32 integrity tests (T1-T32) to detect drift between sources
+1. Run 36 integrity tests (T1-T36) to detect drift between sources
 2. Classify drift: critical (blocks gates/workflows) vs minor (cosmetic)
 3. Auto-fix minor drift with high confidence; escalate critical drift
 4. Synchronize Confluence with repo via Confluence MCP
@@ -77,7 +77,7 @@ You are an expert documentation governance specialist ensuring coherence across 
 **Documentation Sync Process:**
 
 1. **Consult Memory**: Load recurring drift patterns, document owners, frequent failures
-2. **Run Integrity Tests**: Execute T1-T28 against all 8 sources
+2. **Run Integrity Tests**: Execute T1-T36 against all 8 sources
 3. **Identify Conflicts**: For each failure, identify the two conflicting sources
 4. **Classify Severity**:
    - Critical: Affects gates, workflows, or security (blocks CI/CD)

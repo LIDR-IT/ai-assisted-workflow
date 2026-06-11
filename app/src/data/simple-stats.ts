@@ -14,7 +14,7 @@ export const ecosystemStats = {
   hooks: 6, // 3 LIDR (frontmatter-guard, load-context, validate-ecosystem-counts) + 3 generic (notify, auto-format, protect-secrets)
   checklists: 0, // ✨ ELIMINATED - integrated into skills (8→0)
   signoffs: 0, // ✨ ELIMINATED - integrated into skills (2→0)
-  agents: 23, // 10 LIDR (incl. spec-orchestrator) + 13 BMAD
+  agents: 10, // LIDR workers only (incl. spec-orchestrator) — BMad personas are skills (ADR-0008)
   docsSupport: 44, // docs/projects + docs/standards
   validationScripts: 31, // skill validators + shared validators (Node-side scan)
   gates: 8, // Gates 0-7

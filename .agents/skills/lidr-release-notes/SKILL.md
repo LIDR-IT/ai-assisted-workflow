@@ -1,9 +1,9 @@
 ---
 name: lidr-release-notes
 id: release-notes
-version: "1.4.0"
+version: "1.4.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: release
@@ -313,6 +313,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                         | Changes                                                                                                                                                                       |
 | ------- | ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.1   | 2026-06-11 | TL: phase-prose normalization  | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts                    |
 | 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": canonical release notes publish to `docs/projects/{CLIENT_CODE}/release-notes*.md` (required G7 gate-evidence path)                               |
 | 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix   | Added Relationship to BMad note (LIDR-unique; canonical replacement for deprecated lidr-changelog-generator)                                                                  |
 | 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted GitHub CLI / Jira / Confluence / Slack via tool-registry ({{VCS_TOOL}}, {{TRACKING_TOOL}}, {{DOCS_TOOL}}, {{CHAT_TOOL}}) |

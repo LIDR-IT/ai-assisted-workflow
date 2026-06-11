@@ -493,7 +493,8 @@ const validationRules = [
 
 ## Changelog
 
-| Version | Date       | Author                   | Changes                                                                                                                        |
-| ------- | ---------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic   | Language to English-default-configurable; abstracted tracking/chat/VCS tools via tool-registry (supported list, not hardcoded) |
-| 1.0.0   | 2026-03-17 | System: Enhancement Plan | Initial implementation with three-tool sync orchestration                                                                      |
+| Version | Date       | Author                       | Changes                                                                                                                        |
+| ------- | ---------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 1.1.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Reconstructed entry — frontmatter was bumped to 1.1.1 without a changelog row (version↔changelog coherence sweep 2026-06-11)   |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted tracking/chat/VCS tools via tool-registry (supported list, not hardcoded) |
+| 1.0.0   | 2026-03-17 | System: Enhancement Plan     | Initial implementation with three-tool sync orchestration                                                                      |

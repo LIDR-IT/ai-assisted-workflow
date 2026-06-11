@@ -319,6 +319,7 @@ Gate 0 approved → skill `kickoff/` (kick-off meeting) + skill `tracking-integr
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                |
-| ------- | ---------- | ---------------------- | -------------------------------------------------------------------------------------- |
-| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tool references via tool-registry |
+| Version | Date       | Author                       | Changes                                                                                                                      |
+| ------- | ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Reconstructed entry — frontmatter was bumped to 1.2.1 without a changelog row (version↔changelog coherence sweep 2026-06-11) |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted tool references via tool-registry                                       |

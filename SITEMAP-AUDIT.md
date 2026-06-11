@@ -132,39 +132,39 @@ Las 19 rutas de `ROUTE_REGISTRY` (`app/src/app/route-registry.ts`). **Todos los 
 
 **Fase 5–8 + cross-cutting + meta (32)**
 
-| Skill                      | Descripción                                       | Solape BMAD                     | Veredicto                                   |
-| -------------------------- | ------------------------------------------------- | ------------------------------- | ------------------------------------------- |
-| lidr-pr-description        | PR description desde diff + ticket                | —                               | KEEP                                        |
-| lidr-adr                   | ADR en formato MADR                               | bmad-create-architecture        | WRAP (emisor MADR)                          |
-| lidr-tech-debt             | 🤖 Deuda técnica desde SonarQube                  | bmad-retrospective (parcial)    | KEEP (automatizado, BMAD es manual)         |
-| lidr-dev-handoff-qa        | Handoff Dev→QA Gate-4                             | —                               | KEEP                                        |
-| lidr-using-git-worktrees   | Worktrees aislados para paralelismo               | —                               | KEEP                                        |
-| lidr-run-parallel-tasks    | 🤖 N changes en paralelo (Opus high)              | —                               | KEEP                                        |
-| lidr-create-test-cases     | TCs BDD ejecutables desde "Ready for QA"          | bmad-testarch-test-design       | WRAP                                        |
-| lidr-bug-report            | Wrapper QA→Dev sobre root cause                   | bmad-investigate                | WRAP ✅ (ya correcto)                       |
-| lidr-test-execution-report | QA sign-off GO/NO-GO Gate-5                       | —                               | KEEP                                        |
-| lidr-vuln-assessment       | Interpreta SAST/SCA                               | —                               | KEEP (Phase 7 exclusiva)                    |
-| lidr-dast-interpretation   | Interpreta DAST (ZAP/Burp)                        | —                               | KEEP (Phase 7 exclusiva)                    |
-| lidr-pentest-report        | Reporte de pentesting                             | —                               | KEEP (Phase 7 exclusiva)                    |
-| lidr-security-checklist    | 🤖 Compliance OWASP Gate-6                        | —                               | KEEP (Phase 7 exclusiva)                    |
-| lidr-change-request        | Change Request ITIL/CAB                           | —                               | KEEP (Phase 8 exclusiva)                    |
-| lidr-rollback-plan         | 🤖 Plan de rollback                               | —                               | KEEP (Phase 8 exclusiva)                    |
-| lidr-release-notes         | 🤖 Release notes desde PRs                        | —                               | KEEP (Phase 8 exclusiva)                    |
-| lidr-postmortem            | Postmortem blameless (Five Whys)                  | bmad-retrospective (distinto)   | KEEP (incidente ≠ retro)                    |
-| lidr-gate-evaluation       | 🔴 Evalúa G0–G7 + handoff package                 | —                               | KEEP (core gobernanza)                      |
-| lidr-audit-standards       | Audita estructura del ecosistema `.agents/`       | bmad-review-adversarial-general | WRAP ✅ (ortogonal)                         |
-| lidr-sdlc-tracking         | Estado de portafolio centralizado                 | —                               | KEEP                                        |
-| lidr-automated-handoffs    | Transiciones Dev→QA→Sec→DevOps                    | —                               | KEEP                                        |
-| lidr-external-sync         | Sync bidireccional Jira↔Linear↔Notion             | —                               | KEEP                                        |
-| lidr-ticket-validation     | Valida estructura de tickets (DoR/DoD/BDD)        | —                               | KEEP                                        |
-| lidr-commit-management     | Conventional commits + rebase/squash              | —                               | KEEP                                        |
-| lidr-propuesta-builder     | JSONs para "Propuesta de Mejora" (consultoría)    | —                               | KEEP (opcional)                             |
-| lidr-playwright-cli        | E2E con Playwright                                | —                               | KEEP (opcional)                             |
-| lidr-agents-architecture   | Meta: scaffolding `.agents/` + sync 5 plataformas | bmad-agent-builder (parcial)    | KEEP (target distinto: sync cross-platform) |
-| lidr-command-development   | Autoría de slash commands                         | —                               | KEEP                                        |
-| lidr-generate-rule         | Genera rules Claude Code                          | —                               | KEEP                                        |
-| lidr-hook-development      | Hooks PreToolUse/PostToolUse/Stop                 | —                               | KEEP                                        |
-| lidr-mcp-integration       | Integra MCP servers                               | bmad-module-builder (parcial)   | KEEP (target distinto)                      |
+| Skill                      | Descripción                                                      | Solape BMAD                     | Veredicto                                                |
+| -------------------------- | ---------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------- |
+| lidr-pr-description        | PR description desde diff + ticket                               | —                               | KEEP                                                     |
+| lidr-adr                   | ADR en formato MADR (+ baseline brownfield en Phase 0 / context) | bmad-create-architecture        | WRAP (emisor MADR; cross-ref en sitemap/handoffs Fase 0) |
+| lidr-tech-debt             | 🤖 Deuda técnica desde SonarQube                                 | bmad-retrospective (parcial)    | KEEP (automatizado, BMAD es manual)                      |
+| lidr-dev-handoff-qa        | Handoff Dev→QA Gate-4                                            | —                               | KEEP                                                     |
+| lidr-using-git-worktrees   | Worktrees aislados para paralelismo                              | —                               | KEEP                                                     |
+| lidr-run-parallel-tasks    | 🤖 N changes en paralelo (Opus high)                             | —                               | KEEP                                                     |
+| lidr-create-test-cases     | TCs BDD ejecutables desde "Ready for QA"                         | bmad-testarch-test-design       | WRAP                                                     |
+| lidr-bug-report            | Wrapper QA→Dev sobre root cause                                  | bmad-investigate                | WRAP ✅ (ya correcto)                                    |
+| lidr-test-execution-report | QA sign-off GO/NO-GO Gate-5                                      | —                               | KEEP                                                     |
+| lidr-vuln-assessment       | Interpreta SAST/SCA                                              | —                               | KEEP (Phase 7 exclusiva)                                 |
+| lidr-dast-interpretation   | Interpreta DAST (ZAP/Burp)                                       | —                               | KEEP (Phase 7 exclusiva)                                 |
+| lidr-pentest-report        | Reporte de pentesting                                            | —                               | KEEP (Phase 7 exclusiva)                                 |
+| lidr-security-checklist    | 🤖 Compliance OWASP Gate-6                                       | —                               | KEEP (Phase 7 exclusiva)                                 |
+| lidr-change-request        | Change Request ITIL/CAB                                          | —                               | KEEP (Phase 8 exclusiva)                                 |
+| lidr-rollback-plan         | 🤖 Plan de rollback                                              | —                               | KEEP (Phase 8 exclusiva)                                 |
+| lidr-release-notes         | 🤖 Release notes desde PRs                                       | —                               | KEEP (Phase 8 exclusiva)                                 |
+| lidr-postmortem            | Postmortem blameless (Five Whys)                                 | bmad-retrospective (distinto)   | KEEP (incidente ≠ retro)                                 |
+| lidr-gate-evaluation       | 🔴 Evalúa G0–G7 + handoff package                                | —                               | KEEP (core gobernanza)                                   |
+| lidr-audit-standards       | Audita estructura del ecosistema `.agents/`                      | bmad-review-adversarial-general | WRAP ✅ (ortogonal)                                      |
+| lidr-sdlc-tracking         | Estado de portafolio centralizado                                | —                               | KEEP                                                     |
+| lidr-automated-handoffs    | Transiciones Dev→QA→Sec→DevOps                                   | —                               | KEEP                                                     |
+| lidr-external-sync         | Sync bidireccional Jira↔Linear↔Notion                            | —                               | KEEP                                                     |
+| lidr-ticket-validation     | Valida estructura de tickets (DoR/DoD/BDD)                       | —                               | KEEP                                                     |
+| lidr-commit-management     | Conventional commits + rebase/squash                             | —                               | KEEP                                                     |
+| lidr-propuesta-builder     | JSONs para "Propuesta de Mejora" (consultoría)                   | —                               | KEEP (opcional)                                          |
+| lidr-playwright-cli        | E2E con Playwright                                               | —                               | KEEP (opcional)                                          |
+| lidr-agents-architecture   | Meta: scaffolding `.agents/` + sync 5 plataformas                | bmad-agent-builder (parcial)    | KEEP (target distinto: sync cross-platform)              |
+| lidr-command-development   | Autoría de slash commands                                        | —                               | KEEP                                                     |
+| lidr-generate-rule         | Genera rules Claude Code                                         | —                               | KEEP                                                     |
+| lidr-hook-development      | Hooks PreToolUse/PostToolUse/Stop                                | —                               | KEEP                                                     |
+| lidr-mcp-integration       | Integra MCP servers                                              | bmad-module-builder (parcial)   | KEEP (target distinto)                                   |
 
 > 🔴 **Referenciadas pero inexistentes** (no hay `SKILL.md`): `lidr-prd-tecnico`, `lidr-prd-funcional`, `lidr-design-doc`, `lidr-epic-breakdown`, `lidr-test-plan`, `lidr-regression-suite`. CLAUDE.md/`org.md` también nombran `lidr-business-model`, `lidr-document-discovery`, `lidr-use-cases`, `lidr-poc-report`, `lidr-bdd-patterns`, `lidr-retrospective` que **tampoco existen**. → §7.
 
@@ -186,7 +186,9 @@ Las 19 rutas de `ROUTE_REGISTRY` (`app/src/app/route-registry.ts`). **Todos los 
 
 **BMad Builder / meta (4):** `bmad-bmb-setup`, `bmad-agent-builder`, `bmad-module-builder`, `bmad-workflow-builder`.
 
-**Core utilities (13):** `bmad-help`, `bmad-customize`, `bmad-shard-doc`, `bmad-index-docs`, `bmad-spec`, `bmad-party-mode`, `bmad-checkpoint-preview`, `bmad-investigate`, `bmad-eval-runner`, `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`, `bmad-editorial-review-{prose,structure}`.
+**Phase 0 / context — doc-lifecycle (2, anclados al stage `context`, no `anytime`):** `bmad-document-project`, `bmad-generate-project-context`, `bmad-shard-doc`, `bmad-index-docs`. Cross-ref UI: `lidr-adr` (ADR baseline brownfield; home principal Phase 4 · development). Ver `UNIFIED-PHASES.md` v1.2.0 + `gate-evidence.yaml` v2.3.0.
+
+**Core utilities (11):** `bmad-help`, `bmad-customize`, `bmad-spec`, `bmad-party-mode`, `bmad-checkpoint-preview`, `bmad-investigate`, `bmad-eval-runner`, `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`, `bmad-editorial-review-{prose,structure}`.
 
 ### 2.4 Commands (37)
 

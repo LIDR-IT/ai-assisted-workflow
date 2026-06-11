@@ -1,9 +1,9 @@
 ---
 name: lidr-vuln-assessment
 id: vuln-assessment
-version: "1.4.0"
+version: "1.4.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: security
@@ -233,6 +233,7 @@ Risk weighting parameterizes per the active {{INDUSTRY}} and its bound {{COMPLIA
 
 | Version | Date       | Author                         | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.1   | 2026-06-11 | TL: phase-prose normalization  | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts                                                                                                                                                                                                                                                                                                                       |
 | 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/vuln-assessment*.md` (required G6 gate-evidence path)                                                                                                                                                                                                                                                                                                                                                      |
 | 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable (worked-example exec summary translated to English under client-locale label); abstracted SAST/SCA scanners via tool-registry ({{CODE_QUALITY_TOOL}})                                                                                                                                                                                                                                                                                   |
 | 1.2.0   | 2026-06-09 | TL: BMad-coherence batch-fix   | Parameterized industry/regulation specifics via {{INDUSTRY}}/{{COMPLIANCE_FRAMEWORK}} (industry risk blocks reframed as labelled examples); abstracted SAST/SCA scanners to {{CODE_QUALITY_TOOL}} in Workflow + Input; language to English-default-configurable (exec summary renders in client locale); added "Relationship to BMad" note (triages {{CODE_QUALITY_TOOL}} findings for Gate-6, complements bmad-testarch-nfr); added language_default + integrations frontmatter |

@@ -1,9 +1,9 @@
 ---
 name: lidr-rollback-plan
 id: rollback-plan
-version: "1.4.0"
+version: "1.4.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: release
@@ -297,8 +297,9 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                         | Changes                                                                                                                                              |
-| ------- | ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": canonical rollback runbook publishes to `docs/projects/{CLIENT_CODE}/rollback-plan*.md` (required G7 gate-evidence path) |
-| 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix   | Added "Relationship to BMad" note (LIDR-native); added `vcs` to integrations frontmatter                                                             |
-| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted {{VCS_TOOL}}, {{TRACKING_TOOL}}, {{CHAT_TOOL}} via tool-registry                                |
+| Version | Date       | Author                         | Changes                                                                                                                                                    |
+| ------- | ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.1   | 2026-06-11 | TL: phase-prose normalization  | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |
+| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": canonical rollback runbook publishes to `docs/projects/{CLIENT_CODE}/rollback-plan*.md` (required G7 gate-evidence path)       |
+| 1.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix   | Added "Relationship to BMad" note (LIDR-native); added `vcs` to integrations frontmatter                                                                   |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted {{VCS_TOOL}}, {{TRACKING_TOOL}}, {{CHAT_TOOL}} via tool-registry                                      |

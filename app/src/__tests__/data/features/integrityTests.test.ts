@@ -218,12 +218,11 @@ describe('IntegrityTests Data Layer', () => {
         });
       });
 
-      it('has expected number of paths (236 artifacts)', () => {
-        // 236 = 225 − 3 deleted command entries (lidr-help is a skill not a command,
-        // lidr-product-brief removed, generic validate-project-docs removed) + 14 current
-        // artifacts (7 lidr-spec-* commands, 4 skills incl. lidr-impact-analysis,
-        // lidr-spec-orchestrator subagent, 2 rules spec-execution + model-selection).
-        expect(HELPCENTER_DOCPATHS).toHaveLength(236);
+      it('has expected number of paths (223 artifacts)', () => {
+        // 223 = 236 − 13 BMad persona subagent wrappers removed on 2026-06-11
+        // (personas live exclusively as skills — see ADR-0008). Prior baseline:
+        // 236 = 225 − 3 deleted command entries + 14 spec-lifecycle artifacts.
+        expect(HELPCENTER_DOCPATHS).toHaveLength(223);
       });
 
       it('contains valid file paths', () => {

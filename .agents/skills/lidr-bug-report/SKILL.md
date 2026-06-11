@@ -1,9 +1,9 @@
 ---
 name: lidr-bug-report
 id: bug-report
-version: "1.4.0"
+version: "1.4.1"
 last_updated: "2026-06-11"
-updated_by: "TL: lang+tool agnostic"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: qa
@@ -368,10 +368,11 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                                                       |
-| ------- | ---------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Jira/tracking tools via tool-registry                                    |
-| 1.3.1   | 2026-03-25 | TL: tier3-remediation  | Tier 3 domain-agnostic remediation: replaced domain-specific example with generic web application authentication flow example |
-| 1.3.0   | 2026-03-16 | Tech Lead: System      | Added Quality Assurance section with validation framework                                                                     |
-| 1.1.0   | 2026-03-09 | QA: Enhancement        | Added example sections, triage process, and edge cases                                                                        |
-| 1.0.0   | 2026-02-15 | QA: Initial            | Initial version with template and basic rules                                                                                 |
+| Version | Date       | Author                        | Changes                                                                                                                                                    |
+| ------- | ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.1   | 2026-06-11 | TL: phase-prose normalization | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |
+| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic        | Language to English-default-configurable; abstracted Jira/tracking tools via tool-registry                                                                 |
+| 1.3.1   | 2026-03-25 | TL: tier3-remediation         | Tier 3 domain-agnostic remediation: replaced domain-specific example with generic web application authentication flow example                              |
+| 1.3.0   | 2026-03-16 | Tech Lead: System             | Added Quality Assurance section with validation framework                                                                                                  |
+| 1.1.0   | 2026-03-09 | QA: Enhancement               | Added example sections, triage process, and edge cases                                                                                                     |
+| 1.0.0   | 2026-02-15 | QA: Initial                   | Initial version with template and basic rules                                                                                                              |

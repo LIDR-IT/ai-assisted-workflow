@@ -1,9 +1,9 @@
 ---
 name: lidr-change-request
 id: change-request
-version: "1.2.1"
+version: "1.2.2"
 last_updated: "2026-06-11"
-updated_by: "TL: BMad-coherence batch-fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: release
@@ -341,6 +341,7 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                                            |
-| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted VCS/test-management/chat/code-quality tools via tool-registry |
+| Version | Date       | Author                        | Changes                                                                                                                                                    |
+| ------- | ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.2   | 2026-06-11 | TL: phase-prose normalization | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic        | Language to English-default-configurable; abstracted VCS/test-management/chat/code-quality tools via tool-registry                                         |

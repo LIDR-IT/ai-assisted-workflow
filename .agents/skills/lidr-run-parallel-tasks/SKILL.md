@@ -1,9 +1,9 @@
 ---
 name: lidr-run-parallel-tasks
 id: run-parallel-tasks
-version: "1.1.0"
+version: "1.1.1"
 last_updated: "2026-06-11"
-updated_by: "TL: LIDR Spec Native"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: development
@@ -155,6 +155,7 @@ Final report includes:
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                     |
-| ------- | ---------- | ---------------------- | --------------------------------------------------------------------------- |
-| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Jira via tool-registry |
+| Version | Date       | Author                        | Changes                                                                                                                                                    |
+| ------- | ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.1   | 2026-06-11 | TL: phase-prose normalization | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic        | Language to English-default-configurable; abstracted Jira via tool-registry                                                                                |

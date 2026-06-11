@@ -11,14 +11,14 @@ describe('simple-stats', () => {
       // - rules: 7 LIDR SDLC + 17 generic = 24
       // - mcps: context7, playwright, chrome-devtools = 3
       // - hooks: 3 LIDR + 3 generic = 6
-      // - agents: 10 LIDR + 13 BMAD = 23
+      // - agents: 10 LIDR workers (BMad personas are skills since 2026-06-11, ADR-0008)
       expect(ecosystemStats.skills).toBe(113);
       expect(ecosystemStats.automatedSkills).toBe(8);
       expect(ecosystemStats.commands).toBe(30);
       expect(ecosystemStats.rules).toBe(24);
       expect(ecosystemStats.mcps).toBe(3);
       expect(ecosystemStats.hooks).toBe(6);
-      expect(ecosystemStats.agents).toBe(23);
+      expect(ecosystemStats.agents).toBe(10);
       expect(ecosystemStats.docsSupport).toBe(44);
       expect(ecosystemStats.validationScripts).toBe(31);
     });

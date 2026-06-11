@@ -32,7 +32,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic) — new in this version: `spec-execution.md` and `model-selection.md` for the LIDR Spec Lifecycle
 - **113 skills** (44 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-impact-analysis` (contract impact + variant compatibility against client-maintained registries; closes the PP-05/PP-06-class capability gaps), `lidr-help` (ecosystem-guide skill, ex-command; mirrors `bmad-help` with the LIDR SDLC governance layer on top), `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
 - **30 commands** (21 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 2 generic: `sync-setup`, `test-hooks`) — the 7 `lidr-spec-*` change-lifecycle commands (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`); `lidr-help` converted to a skill (still invocable as `/lidr-help`), `lidr-product-brief` removed (BMAD `bmad-product-brief` covers it); `document-project` and `check-readiness` removed (BMAD `bmad-document-project` + `bmad-check-implementation-readiness` cover them; readiness now lives in Gate 3)
-- **23 subagents** (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`) — new: `lidr-spec-orchestrator` for end-to-end change execution
+- **10 subagents** (LIDR `lidr-*` workers only) — new: `lidr-spec-orchestrator` for end-to-end change execution. The 13 BMad personas live exclusively as skills (`bmad-agent-*`, `bmad-cis-agent-*`, `bmad-tea`) — personas are conversational (main-loop) artifacts, not forked workers (ADR-0008)
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
 - **Declarative context manifest**: `.agents/context-manifest.yaml` enumerates docs loaded at SessionStart (replaces hard-coded paths in `lidr-load-context` hook)
 - MCP integration (Context7)
@@ -185,7 +185,7 @@ ls .github/agents/*.agent.md
 │   ├── test-hooks.md         # Generic
 │   └── ...
 │
-├── subagents/                # 23 subagents (10 LIDR `lidr-*` + 13 BMAD `bmad-*-agent`)
+├── subagents/                # 10 subagents (LIDR `lidr-*` workers — BMad personas are skills, ADR-0008)
 │   ├── lidr-qa-agent.md      # ← LIDR: QA automation
 │   ├── lidr-security-agent.md
 │   ├── lidr-release-agent.md
@@ -196,8 +196,6 @@ ls .github/agents/*.agent.md
 │   ├── lidr-pr-validator.md
 │   ├── lidr-ticket-enricher.md
 │   ├── lidr-spec-orchestrator.md   # ← LIDR Spec Lifecycle: end-to-end orchestrator
-│   ├── bmad-agent-analyst.agent.md, ... # ← 13 BMAD subagents
-│   └── ...
 │
 ├── mcp/                      # MCP server configs
 │   └── mcp-servers.json      # ← Source (universal format)

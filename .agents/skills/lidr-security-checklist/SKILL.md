@@ -1,9 +1,9 @@
 ---
 name: lidr-security-checklist
 id: security-checklist
-version: "1.2.0"
+version: "1.2.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: security
@@ -584,5 +584,6 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                         | Changes                                                                                                                                                           |
 | ------- | ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.1   | 2026-06-11 | TL: phase-prose normalization  | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts        |
 | 1.2.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location" + publish step: canonical checklist now lands at `docs/projects/{CLIENT_CODE}/security-checklist*.md` (required G6 gate-evidence path) |
 | 1.1.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted code-quality (SonarQube/Snyk/ZAP) + tracking tools via tool-registry                                         |

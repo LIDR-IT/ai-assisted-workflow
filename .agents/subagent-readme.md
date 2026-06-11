@@ -2,7 +2,7 @@
 
 Source-of-truth for autonomous subagents across 4 of 5 platforms (Antigravity does not support subagents).
 
-**Source:** `.agents/subagents/<name>.md` — 23 subagents (10 LIDR `lidr-*` + 13 BMad `bmad-*-agent`).
+**Source:** `.agents/subagents/<name>.md` — 10 subagents (LIDR `lidr-*` workers). BMad personas (`bmad-agent-*`, `bmad-cis-agent-*`, `bmad-tea`) live exclusively as skills — personas are conversational, subagents are autonomous workers (see `docs/adr/ADR-0008-personas-as-skills-not-subagents.md`).
 
 ## Terminology and paths per platform (verified May 2026)
 
@@ -48,7 +48,7 @@ tools: # optional — restrict tool access
 | Gemini   | ✅                      | `@agent-name` prefix                     |
 | Copilot  | ✅                      | Selected from agent picker in chat UI    |
 
-## Available subagents (23)
+## Available subagents (10)
 
 ### LIDR (10) — `lidr-*`
 
@@ -63,12 +63,9 @@ tools: # optional — restrict tool access
 - `lidr-spec-orchestrator` — End-to-end LIDR Spec Lifecycle (new → ff → apply → verify → archive)
 - `lidr-ticket-enricher` — Enrich tickets with missing details
 
-### BMad (13) — `bmad-*-agent` (file suffix `.agent.md`)
+### Where are the BMad personas?
 
-Agent personas from the BMad module:
-
-- `bmad-agent-analyst`, `bmad-agent-architect`, `bmad-agent-dev`, `bmad-agent-pm`, `bmad-agent-tech-writer`, `bmad-agent-ux-designer`, `bmad-tea`
-- Creative/innovation (`cis`): `bmad-cis-agent-brainstorming-coach`, `bmad-cis-agent-creative-problem-solver`, `bmad-cis-agent-design-thinking-coach`, `bmad-cis-agent-innovation-strategist`, `bmad-cis-agent-presentation-master`, `bmad-cis-agent-storyteller`
+The 13 BMad agent personas (`bmad-agent-*`, `bmad-cis-agent-*`, `bmad-tea`) are **skills, not subagents** (removed from `subagents/` on 2026-06-11 — they were one-line wrappers). Personas are conversational by design (greeting, menu, wait-for-input — main-loop), while subagents run forked and cannot converse. Invoke them as skills ("talk to Mary/Winston/Maya"); `bmad-party-mode` spawns them with inline prompts and never needed the wrappers. Rationale: `docs/adr/ADR-0008-personas-as-skills-not-subagents.md`.
 
 > The ex-generic subagents (`doc-improver`, `pr-validator`, `ticket-enricher`) were renamed with the `lidr-` prefix.
 

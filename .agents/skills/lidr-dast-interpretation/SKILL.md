@@ -1,9 +1,9 @@
 ---
 name: lidr-dast-interpretation
 id: dast-interpretation
-version: "1.2.0"
+version: "1.2.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: security
@@ -475,3 +475,9 @@ npx tsx scripts/validate-examples.ts
 - Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                        | Changes                                                                                                                                                    |
+| ------- | ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.1   | 2026-06-11 | TL: phase-prose normalization | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |

@@ -1,9 +1,9 @@
 ---
 name: lidr-dev-handoff-qa
 id: dev-handoff-qa
-version: "1.4.0"
+version: "1.4.1"
 last_updated: "2026-06-11"
-updated_by: "TL: lang+tool agnostic"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: development
@@ -542,6 +542,7 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                        |
-| ------- | ---------- | ---------------------- | ---------------------------------------------------------------------------------------------- |
-| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tracking/chat/vcs tools via tool-registry |
+| Version | Date       | Author                        | Changes                                                                                                                                                    |
+| ------- | ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.1   | 2026-06-11 | TL: phase-prose normalization | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |
+| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic        | Language to English-default-configurable; abstracted tracking/chat/vcs tools via tool-registry                                                             |

@@ -17,6 +17,12 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { commands as appCommands } from '@/data/artifacts/commands';
 import { skills as appSkills } from '@/data/artifacts/skills';
+import { getAllTemplates } from '@/data/features/handoffsTemplates';
+import {
+  skills as helpSkills,
+  bmadSkills as helpBmadSkills,
+  commands as helpCommands,
+} from '@/data/features/helpCenter';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url)); // app/src/__tests__
 const REPO = path.resolve(HERE, '../../..'); // repo root
@@ -343,6 +349,84 @@ describe('gate-evidence.yaml contract is satisfiable', () => {
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
+// The /handoffs page data (handoffsTemplates.ts) mirrors gate-evidence.yaml:
+// `mandatory: true` ⇔ a `required: true` producer (or a sign-off / the hard DoD).
+// This mirror was hand-synced twice on 2026-06-11 (T-DEV-002 claudePath fix;
+// v2.2.0 G0/G4/G5 relaxation) with no guard — lock it.
+describe('handoffsTemplates.ts mirrors gate-evidence.yaml + filesystem', () => {
+  const templates = getAllTemplates();
+  const ge = parseYaml(read(path.join(AGENTS, '_shared/lidr/gate-evidence.yaml'))) as {
+    gates: Record<string, { bmad_evidence?: any[]; lidr_evidence?: any[] }>;
+  };
+  // producer name -> true if required:true in ANY gate
+  const geRequired = new Map<string, boolean>();
+  for (const def of Object.values(ge.gates)) {
+    for (const e of [...(def.bmad_evidence || []), ...(def.lidr_evidence || [])]) {
+      const name = e.skill || e.command;
+      if (!name) {
+        continue;
+      }
+      geRequired.set(name, (geRequired.get(name) ?? false) || e.required === true);
+    }
+  }
+  // producer = artifact the row's claudePath points at (skills/<dir>/ or commands/<name>.md)
+  const producerOf = (t: { claudePath?: string }) =>
+    t.claudePath?.match(/skills\/([^/]+)\//)?.[1] ??
+    t.claudePath?.match(/commands\/([^.]+)\.md/)?.[1] ??
+    null;
+
+  it('every claudePath resolves to a real file in .agents/', () => {
+    const broken = templates
+      .filter((t) => t.claudePath)
+      .filter(
+        (t) => !exists(path.join(REPO, (t.claudePath as string).replace(/^\.claude\//, '.agents/')))
+      )
+      .map((t) => `${t.code}: ${t.claudePath}`);
+    expect(broken, `claudePaths pointing at missing files:\n${broken.join('\n')}`).toEqual([]);
+  });
+
+  it('aiAssist kind matches what claudePath points at (skill→SKILL.md, command→commands/*.md)', () => {
+    const mismatched = templates
+      .filter((t) => t.claudePath && (t.aiAssist === 'skill' || t.aiAssist === 'command'))
+      .filter((t) =>
+        t.aiAssist === 'skill'
+          ? !/skills\/[^/]+\/SKILL\.md$/.test(t.claudePath as string)
+          : !/commands\/[^/]+\.md$/.test(t.claudePath as string)
+      )
+      .map((t) => `${t.code}: aiAssist=${t.aiAssist} but claudePath=${t.claudePath}`);
+    expect(mismatched, mismatched.join('\n')).toEqual([]);
+  });
+
+  it('no template overclaims: mandatory:true rows whose producer is in gate-evidence need required:true there', () => {
+    // Rows without a gate-evidence producer (sign-offs, the DoD/advance-gate row) are exempt:
+    // their hardness comes from signoffs / the G4 DoD checklist, asserted by the gate test above.
+    const overclaims = templates
+      .filter((t) => t.mandatory)
+      .map((t) => ({ t, prod: producerOf(t) }))
+      .filter(({ prod }) => prod && geRequired.has(prod) && !geRequired.get(prod))
+      .map(({ t, prod }) => `${t.code} (${prod}): mandatory:true but gate-evidence required:false`);
+    expect(overclaims, overclaims.join('\n')).toEqual([]);
+  });
+
+  it('no template underclaims: every required:true producer has a mandatory:true row', () => {
+    const mandatoryProducers = new Set(
+      templates
+        .filter((t) => t.mandatory)
+        .map(producerOf)
+        .filter(Boolean)
+    );
+    const underclaims = [...geRequired.entries()]
+      .filter(([, req]) => req)
+      .filter(([name]) => !mandatoryProducers.has(name))
+      .map(([name]) => name);
+    expect(
+      underclaims,
+      `gate-evidence requires these producers but no /handoffs row is mandatory for them: ${underclaims.join(', ')}`
+    ).toEqual([]);
+  });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
 describe('no fictional hooks are claimed anywhere in rules', () => {
   const DEAD_HOOKS = ['dtc-write-guard', 'dtc-session-check', 'notify-desktop', 'context-loader'];
   it.each(ruleFiles)('%s has no fictional hook references', (file) => {
@@ -420,5 +504,81 @@ describe('_shared/lidr/templates references resolve to real files', () => {
       broken,
       `${path.relative(AGENTS, file)} references removed templates: ${broken.join(', ')}`
     ).toEqual([]);
+  });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// documentation.md §6: a version bump without a matching Changelog entry is the
+// "Inconsistencia de versión detectada" drift class. Found 5 such skills on
+// 2026-06-11 (adr, agents-architecture, business-case, commit-management,
+// external-sync) — lock the invariant for every lidr-* skill that keeps a
+// Changelog table.
+describe('lidr-* frontmatter version matches the Changelog top entry', () => {
+  it('no skill has a frontmatter version ahead of (or behind) its changelog', () => {
+    const drift: string[] = [];
+    for (const skill of lidrSkills) {
+      const content = read(path.join(AGENTS, 'skills', skill, 'SKILL.md'));
+      const fmVersion = content.match(/^version:\s*"([^"]+)"/m)?.[1];
+      // first data row of the "## Changelog" table (top = newest by convention)
+      const topEntry = content.match(/## Changelog\s*\n+\|[^\n]*\n\|[ \-|]+\n\|\s*([\d.]+)/)?.[1];
+      if (!fmVersion || !topEntry) {
+        continue;
+      } // no changelog table → out of scope
+      if (fmVersion !== topEntry) {
+        drift.push(`${skill}: frontmatter ${fmVersion} ≠ changelog top ${topEntry}`);
+      }
+    }
+    expect(
+      drift,
+      `version bumped without a changelog row (documentation.md §6):\n${drift.join('\n')}`
+    ).toEqual([]);
+  });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Page registries must stay LINKED to the canonical artifact registries.
+// skills.ts / commands.ts are the source of truth; the page registries (helpCenter
+// = /help) carry their own curated copy. They drifted silently (helpCenter showed
+// 86/113 skills, 16/30 commands). This locks coverage: every canonical artifact
+// MUST have a /help entry. Fix with `npm run data:sync` (additive, preserves
+// curation). See scripts/sync-registries.ts.
+describe('/help registry covers every canonical skill and command', () => {
+  const helpSkillIds = new Set([...helpSkills, ...helpBmadSkills].map((a) => a.id));
+  const helpCommandIds = new Set(helpCommands.map((a) => a.id));
+
+  it('every skills.ts skill has a /help entry', () => {
+    const missing = appSkills.filter((s) => !helpSkillIds.has(s.id)).map((s) => s.id);
+    expect(
+      missing,
+      `skills missing from helpCenter.ts (run: npm run data:sync): ${missing.join(', ')}`
+    ).toEqual([]);
+  });
+
+  it('every commands.ts command has a /help entry', () => {
+    const missing = appCommands.filter((c) => !helpCommandIds.has(c.id)).map((c) => c.id);
+    expect(
+      missing,
+      `commands missing from helpCenter.ts (run: npm run data:sync): ${missing.join(', ')}`
+    ).toEqual([]);
+  });
+
+  it('/help has no orphan skill entries (not in skills.ts)', () => {
+    const canon = new Set(appSkills.map((s) => s.id));
+    const orphans = [...helpSkillIds].filter((id) => !canon.has(id));
+    expect(orphans, `helpCenter skills not in skills.ts: ${orphans.join(', ')}`).toEqual([]);
+  });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// /sitemap is a curated tree, but it must still REFERENCE every canonical skill
+// (it silently dropped lidr-help). Guard coverage; the tree placement stays editorial.
+describe('/sitemap references every canonical skill', () => {
+  const sitemap = read(path.join(HERE, '../data/features/sitemapView.ts'));
+  const referenced = new Set(
+    [...sitemap.matchAll(/skills\/([a-z0-9-]+)\/SKILL/g)].map((m) => m[1])
+  );
+  it('every skills.ts skill appears in sitemapView.ts', () => {
+    const missing = appSkills.filter((s) => !referenced.has(s.id)).map((s) => s.id);
+    expect(missing, `skills missing from /sitemap tree: ${missing.join(', ')}`).toEqual([]);
   });
 });

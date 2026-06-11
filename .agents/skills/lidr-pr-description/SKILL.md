@@ -1,9 +1,9 @@
 ---
 name: lidr-pr-description
 id: pr-description
-version: "1.3.0"
+version: "1.3.1"
 last_updated: "2026-06-11"
-updated_by: "TL: BMad-coherence batch-fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: development
@@ -165,6 +165,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                    |
 | ------- | ---------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.3.1   | 2026-06-11 | TL: phase-prose normalization             | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts                                                                                 |
 | 1.3.0   | 2026-06-09 | TL: BMad-coherence batch-fix              | Added `language_default: en` frontmatter; added Relationship to BMad note (LIDR-unique Phase-5 artifact consumed by /lidr-create-pr + /lidr-implement-ticket)                                                                              |
 | 1.2.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted Jira (tracking), Slack (chat), SonarQube/Snyk (code_quality), GitHub (vcs) via tool-registry                                                                                          |
 | 1.1.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Domain-agnostic remediation: replaced biometric-specific examples with template variables ({{PRIMARY_WORKFLOW}}, {{VERIFICATION_METHOD}}, {{BUSINESS_PROCESS}}, {{CAPTURE_DEVICE}}) in Examples section. Achieving 75→92/100 target score. |

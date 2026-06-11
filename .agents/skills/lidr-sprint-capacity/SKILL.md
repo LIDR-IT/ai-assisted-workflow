@@ -1,9 +1,9 @@
 ---
 name: lidr-sprint-capacity
 id: sprint-capacity
-version: "1.4.0"
+version: "1.4.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 3
 stage: sprint-planning
@@ -198,7 +198,8 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                         | Changes                                                                                                                     |
-| ------- | ---------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/sprint-capacity*.md` (required G3 gate-evidence path) |
-| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted Jira/Slack/SonarQube via tool-registry                                 |
+| Version | Date       | Author                         | Changes                                                                                                                                                    |
+| ------- | ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.1   | 2026-06-11 | TL: phase-prose normalization  | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |
+| 1.4.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/sprint-capacity*.md` (required G3 gate-evidence path)                                |
+| 1.3.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted Jira/Slack/SonarQube via tool-registry                                                                |

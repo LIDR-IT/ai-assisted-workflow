@@ -1,9 +1,9 @@
 ---
 name: lidr-create-test-cases
 id: create-test-cases
-version: "2.6.0"
+version: "2.6.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: qa
@@ -556,10 +556,11 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                         | Changes                                                                                                                               |
-| ------- | ---------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.6.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes per-set files to `docs/projects/{CLIENT_CODE}/test-cases/*.md` (G5 optional gate-evidence path) |
-| 2.5.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted tracking/test_management via tool-registry                                       |
-| 2.2.0   | 2026-03-16 | Tech Lead: System              | Added Quality Assurance section with validation framework                                                                             |
-| 2.0.0   | 2026-03-09 | QA: Enhanced                   | Added comprehensive examples, troubleshooting guide, regression guidance, and test data management section                            |
-| 1.0.0   | 2025-02-01 | QA: Initial                    | Initial version of the skill                                                                                                          |
+| Version | Date       | Author                         | Changes                                                                                                                                                    |
+| ------- | ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.6.1   | 2026-06-11 | TL: phase-prose normalization  | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |
+| 2.6.0   | 2026-06-10 | TL: Gate-evidence contract fix | Added "## Output Location": publishes per-set files to `docs/projects/{CLIENT_CODE}/test-cases/*.md` (G5 optional gate-evidence path)                      |
+| 2.5.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted tracking/test_management via tool-registry                                                            |
+| 2.2.0   | 2026-03-16 | Tech Lead: System              | Added Quality Assurance section with validation framework                                                                                                  |
+| 2.0.0   | 2026-03-09 | QA: Enhanced                   | Added comprehensive examples, troubleshooting guide, regression guidance, and test data management section                                                 |
+| 1.0.0   | 2025-02-01 | QA: Initial                    | Initial version of the skill                                                                                                                               |

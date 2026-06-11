@@ -302,8 +302,9 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                           |
-| ------- | ---------- | ---------------------- | ------------------------------------------------------------------------------------------------- |
-| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted Slack/Jira via tool-registry                 |
-| 1.1.0   | 2026-03-15 | Tech Lead: System      | Added complete frontmatter, ## Workflow section, ## Changelog; standardized to canonical template |
-| 1.0.0   | 2025-02-01 | Tech Lead: Initial     | Initial version with MADR format template                                                         |
+| Version | Date       | Author                       | Changes                                                                                                                      |
+| ------- | ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Reconstructed entry — frontmatter was bumped to 1.4.1 without a changelog row (version↔changelog coherence sweep 2026-06-11) |
+| 1.4.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Slack/Jira via tool-registry                                            |
+| 1.1.0   | 2026-03-15 | Tech Lead: System            | Added complete frontmatter, ## Workflow section, ## Changelog; standardized to canonical template                            |
+| 1.0.0   | 2025-02-01 | Tech Lead: Initial           | Initial version with MADR format template                                                                                    |

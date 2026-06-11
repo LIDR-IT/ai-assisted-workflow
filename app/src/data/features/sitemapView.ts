@@ -225,6 +225,13 @@ export const projectTree: TreeNode[] = [
                     docPath: '.claude/skills/lidr-audit-standards/SKILL.md',
                   },
                   {
+                    name: 'lidr-help/SKILL.md',
+                    type: 'file',
+                    badge: { label: 'LIDR', color: 'bg-emerald-100 text-emerald-700' },
+                    desc: 'Ecosystem-guide: busca y recomienda skills/commands/workflows del ecosistema (mirror de bmad-help con la capa de gobernanza LIDR)',
+                    docPath: '.claude/skills/lidr-help/SKILL.md',
+                  },
+                  {
                     name: 'lidr-sdlc-tracking/SKILL.md',
                     type: 'file',
                     badge: { label: 'LIDR', color: 'bg-emerald-100 text-emerald-700' },
@@ -1259,8 +1266,8 @@ export const projectTree: TreeNode[] = [
         name: 'agents/',
         type: 'folder',
         iconName: 'Bot',
-        badge: { label: '23 subagents', color: 'bg-cyan-100 text-cyan-700' },
-        desc: '23 subagentes (.agents/subagents/) — 10 LIDR autónomos (qa, security, release, docs, metrics, onboarding, pr-validator, ticket-enricher, doc-improver, spec-orchestrator) + 13 personas BMAD (bmad-*-agent). Incluye lidr-spec-orchestrator para el LIDR Spec Lifecycle end-to-end.',
+        badge: { label: '10 subagents', color: 'bg-cyan-100 text-cyan-700' },
+        desc: '10 subagentes LIDR autónomos (.agents/subagents/) — qa, security, release, docs, metrics, onboarding, pr-validator, ticket-enricher, doc-improver, spec-orchestrator. Las 13 personas BMad viven como skills (ADR-0008). Incluye lidr-spec-orchestrator para el LIDR Spec Lifecycle end-to-end.',
         children: [
           {
             name: 'lidr-spec-orchestrator.md',

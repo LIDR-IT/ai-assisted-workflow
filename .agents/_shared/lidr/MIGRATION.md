@@ -341,7 +341,7 @@ BMad:  69 skills (base flow, untouched) — all prefixed bmad-*
 Total: 113 skills
 ```
 
-Companion ecosystem counts: 30 commands, 24 rules, 23 subagents, 6 hooks
+Companion ecosystem counts: 30 commands, 24 rules, 10 subagents (since 2026-06-11: the 13 BMad persona wrappers were removed — personas live as skills, see `docs/adr/ADR-0008-personas-as-skills-not-subagents.md`), 6 hooks
 (`notify`, `auto-format`, `protect-secrets`, `frontmatter-guard`, `load-context`,
 `validate-ecosystem-counts`). See `.agents/_shared/lidr/CRITICALITY.md` for the
 per-skill criticality classification.

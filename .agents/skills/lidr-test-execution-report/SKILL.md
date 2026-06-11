@@ -1,9 +1,9 @@
 ---
 name: lidr-test-execution-report
 id: test-execution-report
-version: "1.7.0"
+version: "1.7.1"
 last_updated: "2026-06-11"
-updated_by: "TL: Gate-evidence contract fix"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: qa
@@ -290,6 +290,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                         |
 | ------- | ---------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.7.1   | 2026-06-11 | TL: phase-prose normalization             | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts                                                                                      |
 | 1.7.0   | 2026-06-10 | TL: Gate-evidence contract fix            | Added "## Output Location": publishes to `docs/projects/{CLIENT_CODE}/test-execution-report*.md` (required G5 gate-evidence path)                                                                                                               |
 | 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted tracking/test_management via tool-registry                                                                                                                                                 |
 | 1.4.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Complete domain-agnostic remediation: Lines 26-28 (workflow terminology), 105-114 (8 Key Rules with template variables), 117-214 (complete example rewrite from biometric banking to generic Customer Portal), achieving 72→95/100 target score |

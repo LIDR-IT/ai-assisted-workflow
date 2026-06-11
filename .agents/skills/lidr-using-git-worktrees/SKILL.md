@@ -1,9 +1,9 @@
 ---
 name: lidr-using-git-worktrees
 id: using-git-worktrees
-version: "1.0.0"
+version: "1.0.1"
 last_updated: "2026-06-11"
-updated_by: "TL: LIDR Spec Native"
+updated_by: "TL: phase-prose normalization"
 status: active
 phase: 4
 stage: development
@@ -152,3 +152,9 @@ Next steps:
 
 - Git docs: https://git-scm.com/docs/git-worktree
 - Used by: `lidr-run-parallel-tasks` skill, `lidr-spec-apply` command when `--worktree` flag is present
+
+## Changelog
+
+| Version | Date       | Author                        | Changes                                                                                                                                                    |
+| ------- | ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0.1   | 2026-06-11 | TL: phase-prose normalization | Normalized body `Phase:` prose to the unified 0-4 numbering (`Phase: <0-4> — <Unified> · <stage> (ex-Fase N)`); now guarded by ecosystem-coherence.test.ts |

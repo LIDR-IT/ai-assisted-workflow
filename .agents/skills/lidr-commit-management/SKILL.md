@@ -626,9 +626,10 @@ Before committing, verify:
 
 ## Changelog
 
-| Version | Date       | Author                 | Changes                                                                                               |
-| ------- | ---------- | ---------------------- | ----------------------------------------------------------------------------------------------------- |
-| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic | Language to English-default-configurable; abstracted tracking/CI/chat tool mentions via tool-registry |
+| Version | Date       | Author                         | Changes                                                                                                                      |
+| ------- | ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-10 | TL: Gate-evidence contract fix | Reconstructed entry — frontmatter was bumped to 1.2.0 without a changelog row (version↔changelog coherence sweep 2026-06-11) |
+| 1.1.0   | 2026-06-09 | TL: lang+tool agnostic         | Language to English-default-configurable; abstracted tracking/CI/chat tool mentions via tool-registry                        |
 
 ---
 
