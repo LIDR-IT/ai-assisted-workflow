@@ -214,6 +214,27 @@ const ecommerce: IndustryPack = {
   ],
 };
 
+// Domain-agnostic fallback pack. Used when a client's industry matches none of
+// the specific packs above. Keeps the framework neutral by default — biometric
+// (or any other vertical) is an OPT-IN pack, never the silent default.
+const generic: IndustryPack = {
+  id: 'generic',
+  name: 'Generic',
+  displayName: 'Generic / Domain-Agnostic',
+  domainTerms: {
+    CLIENT_REGULATIONS: 'GDPR, applicable local data-protection law',
+    STAKEHOLDER_TYPES: 'usuarios, operadores, administradores',
+    DOMAIN_SYSTEMS: 'sistemas de negocio de la aplicación',
+    SENSITIVE_DATA_TYPE: 'datos personales (PII)',
+    COMPLIANCE_FRAMEWORK: 'protección de datos (GDPR)',
+  },
+  regulations: ['GDPR', 'ISO 27001', 'SOC 2'],
+  stakeholderTypes: 'End-users, operators, administrators, business owners',
+  sensitiveDataType: 'Personally Identifiable Information (PII)',
+  complianceFramework: 'GDPR (general data protection)',
+  commonProducts: ['Web application', 'REST/GraphQL API', 'Admin dashboard', 'User management'],
+};
+
 // ---------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------
@@ -224,6 +245,7 @@ const industryPacksMap: ReadonlyMap<string, IndustryPack> = new Map([
   [fintech.id, fintech],
   [government.id, government],
   [ecommerce.id, ecommerce],
+  [generic.id, generic],
 ]);
 
 /** All available industry pack IDs and display names */
@@ -267,4 +289,5 @@ export const industryPacks = {
   fintech,
   government,
   ecommerce,
+  generic,
 } as const;

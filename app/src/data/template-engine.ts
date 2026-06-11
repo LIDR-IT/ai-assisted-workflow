@@ -229,7 +229,7 @@ export function processFile(content: string, config: ClientConfig, industryId: s
  * Useful in UI components that always operate on the active client.
  */
 export function resolveWithDefaults(content: string): string {
-  // Determine industry from current client — fall back to biometric-identity
+  // Determine industry from current client — fall back to the generic pack
   const currentClient = getCurrentClient();
   const industryId = inferIndustryId(currentClient);
   return processFile(content, currentClient, industryId);
@@ -241,7 +241,7 @@ export function resolveWithDefaults(content: string): string {
 
 /**
  * Attempt to infer an industry pack ID from a ClientConfig's `industry` field.
- * Returns the best-matching pack ID or 'biometric-identity' as a default.
+ * Returns the best-matching pack ID or 'generic' (domain-agnostic) as a default.
  */
 export function inferIndustryId(config: ClientConfig): string {
   const industry = config.industry.toLowerCase();
@@ -270,8 +270,8 @@ export function inferIndustryId(config: ClientConfig): string {
     return 'ecommerce';
   }
 
-  // Default fallback
-  return 'biometric-identity';
+  // Default fallback — neutral/domain-agnostic pack, NEVER a specific vertical
+  return 'generic';
 }
 
 /** List all known template variable names */

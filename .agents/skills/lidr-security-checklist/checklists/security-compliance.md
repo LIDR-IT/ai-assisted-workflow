@@ -1,12 +1,12 @@
 ---
 id: security-compliance-checklist
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Checklist Migration"
+version: "1.1.0"
+last_updated: "2026-06-12"
+updated_by: "TL: domain-agnostic leak fix"
 status: active
 type: checklist
 review_cycle: 30
-next_review: "2026-04-15"
+next_review: "2026-07-12"
 owner_role: "Security Lead"
 ---
 
@@ -121,12 +121,12 @@ owner_role: "Security Lead"
 
 ## 4. Privacy and Data Protection
 
-- [ ] **GDPR Art. 9 Compliance** — Biometric data as special category: explicit consent documented
+- [ ] **GDPR Art. 9 Compliance** _(if processing special-category data — e.g. biometric/health)_ — Explicit consent documented for special-category data
 - [ ] **eIDAS Compliance** — If applicable: electronic identity standards compliance
 - [ ] **Minimized PII** — Only strictly necessary data collected and stored
 - [ ] **Right to be Forgotten** — Data deletion mechanism implemented and verified (hard delete, not soft)
 - [ ] **Data Residency** — Data stored in correct jurisdiction according to regulation
-- [ ] **Biometric Data Encryption** — Special encryption for biometric data in transit and at rest with key separation
+- [ ] **Special-Category Data Encryption** _(if applicable — e.g. biometric/health)_ — Dedicated encryption in transit and at rest with key separation
 - [ ] **Privacy by Design** — Architecture designed with privacy from the start, not as afterthought
 
 ---
@@ -156,6 +156,7 @@ If FAIL → Remediation → Re-evaluate
 
 ## Changelog
 
-| Version | Date       | Author                      | Changes                                                       |
-| ------- | ---------- | --------------------------- | ------------------------------------------------------------- |
-| 1.0.0   | 2026-03-16 | System: Checklist Migration | Initial migration from docs/checklists/security-compliance.md |
+| Version | Date       | Author                       | Changes                                                                                                                                        |
+| ------- | ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-12 | TL: domain-agnostic leak fix | GDPR Art. 9 + special-category-data encryption items made conditional "if applicable" (were ungated biometric mandatory) — agnostic by default |
+| 1.0.0   | 2026-03-16 | System: Checklist Migration  | Initial migration from docs/checklists/security-compliance.md                                                                                  |

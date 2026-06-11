@@ -1,12 +1,12 @@
 ---
 id: review-cruzado-checklist
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Checklist Migration"
+version: "1.1.0"
+last_updated: "2026-06-12"
+updated_by: "TL: domain-agnostic leak fix"
 status: active
 type: checklist
 review_cycle: 30
-next_review: "2026-04-15"
+next_review: "2026-07-12"
 owner_role: "PO"
 ---
 
@@ -57,7 +57,7 @@ owner_role: "PO"
 
 - [ ] **Traced Security Requirements** — Functionalities handling sensitive data have technical security counterpart
 - [ ] **Reflected Compliance** — Functional regulatory requirements have described technical implementation
-- [ ] **Handled Biometrics** — If involving biometric data: Technical PRD details encryption, storage, and specific compliance
+- [ ] **Handled Special-Category Data** — If involving special-category data (e.g. biometric/health, GDPR Art. 9): Technical PRD details encryption, storage, and specific compliance
 
 ---
 
@@ -138,6 +138,7 @@ If FAIL → Fix PRDs → Re-review
 
 ## Changelog
 
-| Version | Date       | Author                      | Changes                                                  |
-| ------- | ---------- | --------------------------- | -------------------------------------------------------- |
-| 1.0.0   | 2026-03-16 | System: Checklist Migration | Initial migration from docs/checklists/review-cruzado.md |
+| Version | Date       | Author                       | Changes                                                                                                                |
+| ------- | ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-12 | TL: domain-agnostic leak fix | "Handled Biometrics" item generalized to "Handled Special-Category Data" (biometric now an e.g.) — agnostic by default |
+| 1.0.0   | 2026-03-16 | System: Checklist Migration  | Initial migration from docs/checklists/review-cruzado.md                                                               |

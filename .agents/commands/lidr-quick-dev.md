@@ -1,8 +1,8 @@
 ---
 id: quick-dev
-version: "1.0.1"
-last_updated: "2026-06-10"
-updated_by: "TL: Stale-ref migration"
+version: "1.0.2"
+last_updated: "2026-06-12"
+updated_by: "TL: domain-agnostic leak fix"
 status: active
 tier: 2
 authorized_roles:
@@ -60,7 +60,7 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
 
 - **Estimación > 8 horas**: Usar `/lidr-implement-ticket` estándar
 - **Cambios de API**: Usar proceso completo con PRD + RFs
-- **Datos biométricos**: Requiere security review mandatory
+- **Datos sensibles / special-category** (p.ej. biométricos, salud — GDPR Art. 9): Requiere security review mandatory
 - **Múltiples componentes**: Usar epic breakdown
 - **Breaking changes**: Requiere ADR + revisión de arquitectura
 

@@ -1,8 +1,8 @@
 ---
 id: nfr-compliance-checklist
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Checklist Migration"
+version: "1.1.0"
+last_updated: "2026-06-12"
+updated_by: "TL: domain-agnostic leak fix"
 status: active
 type: checklist
 review_cycle: 30
@@ -51,14 +51,14 @@ owner_role: "Tech Lead"
 
 - [ ] **Encryption in Transit (TLS 1.2+)** — SSL test verified
 - [ ] **Encryption at Rest (AES-256)** — Config verified - DB encryption settings
-- [ ] **No PII/Biometric in Logs** — Log audit completed
-- [ ] **Biometric Data with Revocation Mechanism** — Deletion test verified
+- [ ] **No PII or Sensitive Data in Logs** — Log audit completed
+- [ ] **Special-Category Data Revocation** _(if applicable — e.g. biometric/health data, GDPR Art. 9)_ — Deletion test verified
 
 ---
 
 ## Compliance
 
-- [ ] **DPIA Completed for Biometric Data** — Signed document available
+- [ ] **DPIA Completed** _(if processing special-category data — e.g. biometric/health, GDPR Art. 9)_ — Signed document available
 - [ ] **Explicit Consent Implemented** — UI test verified
 - [ ] **Right to be Forgotten Functional (<72h)** — Deletion test verified
 - [ ] **Retention Policy Configured** — Config verified
@@ -94,6 +94,7 @@ owner_role: "Tech Lead"
 
 ## Changelog
 
-| Version | Date       | Author                      | Changes                                                  |
-| ------- | ---------- | --------------------------- | -------------------------------------------------------- |
-| 1.0.0   | 2026-03-16 | System: Checklist Migration | Initial migration from docs/checklists/nfr-compliance.md |
+| Version | Date       | Author                       | Changes                                                                                                                                       |
+| ------- | ---------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-12 | TL: domain-agnostic leak fix | Biometric-specific mandatory items (revocation, DPIA, no-biometric-in-logs) made conditional "if special-category data" — agnostic by default |
+| 1.0.0   | 2026-03-16 | System: Checklist Migration  | Initial migration from docs/checklists/nfr-compliance.md                                                                                      |

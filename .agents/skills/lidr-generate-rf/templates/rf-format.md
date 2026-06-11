@@ -319,84 +319,81 @@ but context that helps the dev understand constraints or suggestions.}
 
 ```markdown
 ---
-id: RF-BIO-001
-title: Facial enrollment with liveness validation
+id: RF-001
+title: User registration with email verification
 version: 1.0
 status: Approved
-prd_source: PRD-T-BIO §3.2, PRD-F-BIO §2.1
-author: María González
+prd_source: PRD-T §3.2, PRD-F §2.1
+author: Author Name
 created_date: 2025-11-15
 last_modified_date: 2025-11-20
 priority: Must Have
-complexity: High
+complexity: Medium
 sprint_estimate: Sprint 3
 ---
 
 ## Objective
 
-Allow a new user to register their facial identity with verification
-that they are a real person (liveness detection), storing the biometric
-template securely for future authentications.
+Allow a new user to create an account with their email, verifying that the
+email is valid and under their control before activating the account.
 
 ## Actors
 
-| Actor               | Role                                    | Permissions              |
-| ------------------- | --------------------------------------- | ------------------------ |
-| New user            | Starts enrollment, follows instructions | Public access (pre-auth) |
-| {{CLIENT_NAME}} SDK | Captures image, runs liveness           | Valid API key            |
-| Backend API         | Processes template, stores it encrypted | Service account          |
+| Actor       | Role                                        | Permissions              |
+| ----------- | ------------------------------------------- | ------------------------ |
+| New user    | Starts registration, follows instructions   | Public access (pre-auth) |
+| Web client  | Captures input, calls the registration API  | Valid API key            |
+| Backend API | Validates input, creates and stores account | Service account          |
 
 ## Scope
 
 ### Includes
 
-- Facial image capture via camera
-- Liveness detection (anti-spoofing)
-- Generation and storage of biometric template
+- Email and password capture with validation
+- Verification email with a single-use token
+- Account creation in "pending verification" state
 
 ### Excludes
 
-- 1:1 verification against existing template → RF-BIO-002
-- GDPR consent management → RF-BIO-005
+- Password reset flow → RF-002
+- Third-party / SSO login → RF-005
 
 ## Acceptance Criteria
 
-### CA-BIO-001-01: Successful enrollment
+### CA-001-01: Successful registration
 
-Scenario: Happy path — user with good lighting
-Given user "juan.perez@example.com" has no biometric template
-And the device camera is active
-And lighting is ≥300 lux (sensor)
-When the user positions their face inside the guide oval
-And the system detects a liveness score ≥0.95
-Then the system generates a biometric template
-And stores the encrypted template (AES-256) linked to the user
-And shows message: "Facial registration completed successfully"
-And logs event: ENROLLMENT_SUCCESS (no PII)
+Scenario: Happy path — new valid email
+Given user "juan.perez@example.com" has no existing account
+And the submitted email format is valid
+When the user submits the registration form
+Then the system creates an account in "pending verification" state
+And stores the password hashed (bcrypt/argon2) linked to the user
+And sends a verification email with a single-use token (TTL 24h)
+And shows message: "Registration completed — check your email to verify"
+And logs event: REGISTRATION_SUCCESS (no PII)
 
-Scenario: Error — liveness detection fails
-Given the user positions their face inside the guide oval
-And the system detects a liveness score <0.95
-When the liveness attempt fails 3 consecutive times
-Then the system shows: "We could not verify that you are a real person.
-Try again in a place with better lighting."
-And logs event: ENROLLMENT_LIVENESS_FAIL (attempt_count, score, no PII)
-And the user can: retry or cancel
+Scenario: Error — email already registered
+Given an account already exists for "juan.perez@example.com"
+When the user submits the registration form with that email
+Then the system rejects the registration
+And shows: "That email is already registered. Try signing in or resetting your password."
+And logs event: REGISTRATION_DUPLICATE (no PII)
+And the user can: go to sign-in or reset password
 
 ## Business Rules
 
-| ID            | Rule                | Logic                                         | Source               |
-| ------------- | ------------------- | --------------------------------------------- | -------------------- |
-| RN-BIO-001-01 | Liveness threshold  | Score ≥0.95 to PASS                           | Security Policy v2.1 |
-| RN-BIO-001-02 | Max attempts        | 3 failed attempts → temporary 5 min lockout   | UX Guidelines        |
-| RN-BIO-001-03 | Template encryption | AES-256-GCM, key in KMS, key rotation 90 days | GDPR Art. 9          |
+| ID        | Rule               | Logic                                      | Source               |
+| --------- | ------------------ | ------------------------------------------ | -------------------- |
+| RN-001-01 | Password policy    | ≥12 chars, complexity enforced             | Security Policy v2.1 |
+| RN-001-02 | Email uniqueness   | One active account per email address       | Product Guidelines   |
+| RN-001-03 | Verification token | Single-use, TTL 24h, invalidated after use | Security Policy v2.1 |
 
 ## Dependencies
 
-| Type                | RF         | Description                                |
-| ------------------- | ---------- | ------------------------------------------ |
-| Is prerequisite for | RF-BIO-002 | Verification requires an existing template |
-| Related to          | RF-BIO-005 | GDPR consent required beforehand           |
+| Type                | RF     | Description                                   |
+| ------------------- | ------ | --------------------------------------------- |
+| Is prerequisite for | RF-002 | Password reset requires an existing account   |
+| Related to          | RF-005 | SSO login is an alternative registration path |
 ```
 
 ---
