@@ -50,7 +50,7 @@
         "y": 110,
         "label": "PHASE 0: Context",
         "variant": "slate",
-        "subtitle": "bmad-document-project + bmad-generate-project-context · CLAUDE.md por repo (lidr-generate-rule) · checklist Context Ready — brownfield; opcional en greenfield"
+        "subtitle": "bmad-document-project + bmad-generate-project-context · docs shardeadas/indexadas (bmad-shard-doc + bmad-index-docs) · ADR baseline (lidr-adr) · CLAUDE.md por repo (lidr-generate-rule) · checklist Context Ready — brownfield; opcional en greenfield"
       },
       {
         "id": "gate0",

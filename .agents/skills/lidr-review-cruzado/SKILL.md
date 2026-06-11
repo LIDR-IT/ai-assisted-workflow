@@ -1,9 +1,9 @@
 ---
 name: lidr-review-cruzado
 id: review-cruzado
-version: "1.1.0"
-last_updated: "2026-06-10"
-updated_by: "TL: Gate-evidence contract fix"
+version: "1.2.0"
+last_updated: "2026-06-11"
+updated_by: "TL: BMad-seam visibility"
 status: active
 phase: 2
 stage: planning
@@ -17,6 +17,10 @@ description: "Gate 1 enforcer: validates that bmad-prd output contains both Func
 # PRD Cross-Review Facilitator
 
 Phase: 2 — Discovery | Gate: 1 (optional evidence) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+
+## Relationship to BMad
+
+LIDR Gate-1 enforcer (no BMad equivalent). `bmad-prd` produces a single unified PRD with Functional and Technical sections, but no BMad step formally checks that the two halves are both complete and mutually aligned before the PRD is accepted. This skill is that check: it consumes the `bmad-prd` output and validates F↔T coherence (personas/journeys ↔ architecture/NFRs/compliance), publishing the cross-review as **Gate 1** evidence (consumed by `lidr-gate-evaluation`). On APPROVE the flow proceeds to `lidr-generate-rf` (Gate 2 requirements authoring); on REWORK it returns to `bmad-prd`.
 
 ## Output Location
 
@@ -178,3 +182,10 @@ npx tsx scripts/validate-examples.ts
 - Used by `bmad-eval-runner` for ecosystem validation
 - Supports quality gates in SDLC workflow
 - Provides consistent validation across all skills
+
+## Changelog
+
+| Version | Date       | Author                         | Changes                                                                                                                                                        |
+| ------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-11 | TL: BMad-seam visibility       | Added "## Relationship to BMad" (Gate-1 enforcer consuming `bmad-prd`, feeding `lidr-generate-rf` / `lidr-gate-evaluation`); introduced this Changelog section |
+| 1.1.0   | 2026-06-10 | TL: Gate-evidence contract fix | Gate-evidence contract fix (pre-changelog; reconstructed entry)                                                                                                |

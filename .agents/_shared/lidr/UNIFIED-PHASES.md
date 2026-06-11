@@ -1,8 +1,8 @@
 ---
 id: unified-phases
-version: "1.1.1"
-last_updated: "2026-06-10"
-updated_by: "TL: Gate-evidence contract fix"
+version: "1.2.0"
+last_updated: "2026-06-11"
+updated_by: "TL: Phase 0 context — doc-lifecycle + ADR baseline"
 status: active
 type: standard
 review_cycle: 90
@@ -86,7 +86,7 @@ LIDR simplemente sitúa el gate donde corresponde en su modelo de gobernanza:
 
 | Fase / Stage            | BMad (motor)                                                                                                                                         | LIDR (gobernanza + gap-fillers)                                                                                                                                                                                                                                                                                                              |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0 / context**         | `bmad-document-project`, `bmad-generate-project-context`                                                                                             | `/lidr-init-project-docs`, rules (org/project/tech-stack), `context-manifest.yaml`                                                                                                                                                                                                                                                           |
+| **0 / context**         | `bmad-document-project`, `bmad-generate-project-context`, `bmad-shard-doc`, `bmad-index-docs`                                                        | `lidr-adr` (ADR baseline brownfield; home principal en 4/development), `/lidr-init-project-docs`, rules (org/project/tech-stack), `context-manifest.yaml`                                                                                                                                                                                    |
 | **0 / anytime**         | `bmad-quick-dev`, `bmad-correct-course`, `bmad-spec`, tech-writer, reviews, CIS                                                                      | `lidr-gate-evaluation`, `lidr-audit-standards`, `lidr-sdlc-tracking`, `lidr-external-sync`, `lidr-playwright-cli`, meta-tooling (`lidr-mcp-integration`, `lidr-hook-development`, `lidr-generate-rule`), `lidr-ticket-validation`, `lidr-commit-management`                                                                                  |
 | **1 / analysis**        | `bmad-brainstorming`, `bmad-market-research`, `bmad-domain-research`, `bmad-technical-research`, `bmad-product-brief` \| `bmad-prfaq`                | `lidr-business-case` ⭐G0, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`                                                                                                                                                                                                                                               |
 | **2 / planning**        | `bmad-prd` ⭐G1, `bmad-ux`                                                                                                                           | `lidr-review-cruzado` (F+T enforcer), `lidr-risk-log`, `/lidr-validate-prd`, `lidr-propuesta-builder`                                                                                                                                                                                                                                        |
@@ -105,9 +105,11 @@ LIDR simplemente sitúa el gate donde corresponde en su modelo de gobernanza:
 > fila de flujo porque no participa en la cadena input/output de ningún gate.
 >
 > Skills BMad meta/builder/utility (`bmad-agent-*`, `bmad-module-builder`, `bmad-workflow-builder`,
-> `bmad-bmb-setup`, `bmad-customize`, `bmad-index-docs`, `bmad-shard-doc`, `bmad-party-mode`,
-> `bmad-help`, CIS `bmad-cis-*`) son todos `anytime` ≡ Phase 0; no se listan fila-a-fila por
-> ser herramientas de autoría/exploración fuera de la cadena de gates.
+> `bmad-bmb-setup`, `bmad-customize`, `bmad-party-mode`, `bmad-help`, CIS `bmad-cis-*`) son todos
+> `anytime` ≡ Phase 0; no se listan fila-a-fila por ser herramientas de autoría/exploración fuera
+> de la cadena de gates. Excepción doc-lifecycle: `bmad-shard-doc` y `bmad-index-docs` se anclan
+> al stage `context` (fila 0/context) porque sostienen el levantamiento de contexto — shardean
+> docs heredadas para consumo LLM y mantienen `docs/index.md` (checklist Context Ready).
 
 ## 3. Flow audit — escenarios end-to-end con cadena input/output
 
@@ -189,13 +191,18 @@ G1/G2 (architecture movida a G2, ver §5).
 ```
 PHASE 0 — CONTEXT  (OBLIGATORIA en brownfield, antes de cualquier análisis)
   bmad-document-project (codebase) → docs/index.md + project docs   [→ INPUT de prd/architecture/epics]
+  bmad-shard-doc (docs heredadas grandes) → docs shardeadas por sección [→ consumo LLM de manuales/specs legacy]
+  bmad-index-docs (docs/) → docs/index.md regenerado                [→ inventario vivo tras cada cambio (DTC)]
   bmad-generate-project-context (codebase) → project-context.md     [→ contexto LLM de TODA sesión]
+  lidr-adr (decisiones heredadas hard-to-reverse) → ADR baseline    [→ "why" del sistema existente; INPUT de arch deltas]
   /lidr-init-project-docs → docs/projects/{client}/ scaffold        [→ destino de artefactos LIDR]
   Rules definidas: org.md, project.md (cliente activo), tech-stack.md
   context-manifest.yaml actualizado (lidr-load-context lo carga al SessionStart)
   ▸ Checklist "Context Ready" (evidencia brownfield de G0):
     [ ] project-context.md existe y refleja el stack real
     [ ] docs/index.md inventaría la documentación existente
+    [ ] docs grandes shardeadas para consumo LLM (bmad-shard-doc si aplica)
+    [ ] decisiones arquitectónicas heredadas críticas documentadas (lidr-adr baseline si aplica)
     [ ] rules/project.md apunta al cliente correcto
     [ ] deuda técnica conocida catalogada (lidr-tech-debt si aplica)
 ─────────────────────────────────────────────────────────────────────
@@ -277,6 +284,7 @@ Incidente P1 → aprobación verbal CTO → /lidr-create-branch → fix → /lid
 
 | Versión | Fecha      | Autor                           | Cambios                                                                                                                                                                                                                                                                              |
 | ------- | ---------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.2.0   | 2026-06-11 | TL: Phase 0 context enrichment  | 0/context suma doc-lifecycle (`bmad-shard-doc`, `bmad-index-docs`, antes nota anytime) y `lidr-adr` como ADR baseline brownfield (cross-ref; home en 4/development); §3.2 flow + checklist Context Ready ampliados; gate-evidence G0 añade lidr-adr opcional                         |
 | 1.1.1   | 2026-06-10 | TL: Gate-evidence contract fix  | §1 nota de excepciones deliberadas (sprint-planning gate@G3 vs CSV 4-implementation; test-design test_artifacts); §2 +`bmad-testarch-framework`/`-ci`/`-sprint-status` y nota `0-learning`/meta-builder; §3.1 RUTA A pasa G4 vía DoD (test-report RUTA B opcional, `required:false`) |
 | 1.1.0   | 2026-06-10 | TL: Capability gap closure      | `lidr-impact-analysis` closes PP-05/PP-06-class gaps (contract impact + variant compatibility; evidencia opcional G2/G4)                                                                                                                                                             |
 | 1.0.0   | 2026-06-10 | TL: Phase Unification BMad-LIDR | Creación: modelo unificado 5 fases × 8 gates + flow audit                                                                                                                                                                                                                            |

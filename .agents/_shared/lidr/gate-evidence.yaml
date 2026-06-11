@@ -47,11 +47,33 @@
 #           artifact: <path>            # the file that records the human approval
 # ─────────────────────────────────────────────────────────────────────────────
 
-version: "2.1.0"
-last_updated: "2026-06-10"
+version: "2.3.0"
+last_updated: "2026-06-11"
 maintained_by: "TL: LIDR Gate-over-BMad"
 
 # Changelog (comment-tracked; this file is parsed as data, not Markdown):
+#   2.3.0 (2026-06-11) — Phase 0 context enrichment (TL):
+#     - G0: added lidr-adr as OPTIONAL brownfield evidence (ADR baseline: legacy
+#           hard-to-reverse decisions captured as docs/adr/ADR-*.md during context
+#           lift; primary home remains Phase 4 development / G4 context).
+#     - G0: documented bmad-shard-doc + bmad-index-docs as doc-lifecycle SUPPORT
+#           skills of the Context Ready checklist (no separate evidence entries:
+#           index.md is already covered by the bmad-document-project glob, and
+#           sharded docs have no stable glob). See UNIFIED-PHASES.md §2 0/context.
+#   2.2.0 (2026-06-11) — "BMad principal, LIDR complementary" required-flag pass (TL):
+#     Principle: a LIDR artifact is `required: true` ONLY where BMad has NO concept
+#     for that gate's intent (genuine gap-fill). Where BMad HAS a principal artifact,
+#     the parallel LIDR artifact is COMPLEMENTARY (required:false) and the gate holds
+#     via the BMad evidence / checklist / human sign-off.
+#     - G0: lidr-business-case required:true → false (BMad HAS intake = brief/prfaq;
+#           the BC is the complementary ROI/risk deepening; gate held by the
+#           "≥1 intake artifact" checklist + PME sign-off).
+#     - G4: lidr-dev-handoff-qa required:true → false (hard G4 gate is the DoD
+#           checklist incl. bmad-code-review + TL sign-off; the handoff is context).
+#     - G5: lidr-test-execution-report required:true → false (QA evidence may be BMad
+#           TEA trace/automate OR the LIDR report; QA Lead sign-off is the hard gate).
+#     KEPT required (BMad has NO concept + governance-mandatory): G2 RF+RTM, G3
+#     capacity, G6 security, G7 release. G0/G4/G5 are now sign-off-governed gates.
 #   2.1.0 (2026-06-10) — Gate-evidence contract fix (TL):
 #     - Added bmad_test path_var (TEA test_artifacts = _bmad-output/test-artifacts).
 #     - G0: bmad-generate-project-context → {bmad_output}/project-context.md (was docs/);
@@ -109,6 +131,10 @@ gates:
     owner: [PME, Sponsor]
     bmad_evidence:
       # Brownfield intake: BMad documents the existing project (Phase 0 Context).
+      # Doc-lifecycle support (Phase 0 / context): bmad-index-docs regenerates this
+      # same {project_knowledge}/index.md after doc changes, and bmad-shard-doc
+      # splits large legacy docs for LLM consumption. They satisfy the Context Ready
+      # checklist through THIS glob — no separate evidence entries needed.
       - skill: bmad-document-project
         artifact: "{project_knowledge}/index.md"
         required: false
@@ -123,15 +149,28 @@ gates:
         artifact: "{bmad_planning}/briefs/**/brief.md"
         required: false
     lidr_evidence:
+      # BMad principal: intake is carried by BMad's brief/prfaq (the principal intake
+      # artifact) + the sponsor checklist + the PME sign-off. The LIDR business case is
+      # the COMPLEMENTARY ROI/risk/budget deepening — required:false so a BMad-led intake
+      # is not blocked on a LIDR-only artifact (gate-over-BMad: only hard-require what
+      # BMad has no concept of; BMad HAS intake).
       - skill: lidr-business-case
         artifact: "{client_root}/business-case.md"
-        required: true
+        required: false
       - skill: lidr-stakeholder-map
         artifact: "{client_root}/stakeholder-map.md"
         required: false
+      # Brownfield ADR baseline (Phase 0 / context): legacy hard-to-reverse
+      # decisions captured as MADR records BEFORE touching code, so PRD/architecture
+      # deltas inherit the existing "why". Optional — greenfield projects and
+      # brownfields without contested legacy decisions pass without it.
+      # (lidr-adr's primary home remains Phase 4 development / G4 context.)
+      - skill: lidr-adr
+        artifact: "docs/adr/ADR-*.md"
+        required: false
     checklist:
       - "Sponsor identified and budget/strategic alignment confirmed"
-      - "At least one of: product brief (BMad) OR business case (LIDR) is populated"
+      - "At least one intake artifact populated: BMad product-brief/prfaq (principal) OR LIDR business-case (adds ROI/risk justification when the initiative warrants it)"
       - "Brownfield only — Context Ready: project-context.md reflects the real stack, docs/index.md inventories existing docs, rules/project.md points to the active client"
     signoffs:
       - role: PME
@@ -268,9 +307,12 @@ gates:
       - command: lidr-spec-verify
         artifact: "{changes}/*/test-report.md"
         required: false
+      # BMad principal: the hard G4 gate is the DoD checklist (incl. bmad-code-review)
+      # + the TL sign-off. The LIDR dev→QA handoff is COMPLEMENTARY context for QA
+      # (BMad integrates dev↔QA via TEA with no handoff artifact), so required:false.
       - skill: lidr-dev-handoff-qa
         artifact: "{client_root}/handoffs/dev-qa-*.md"
-        required: true
+        required: false
       - skill: lidr-playwright-cli
         artifact: "{client_root}/reviews/runtime-review-*.md"
         required: false
@@ -304,13 +346,18 @@ gates:
         artifact: "{bmad_test}/traceability/**/*"
         required: false
     lidr_evidence:
+      # BMad principal: QA evidence can be BMad TEA (testarch-automate/trace) OR the LIDR
+      # report; the QA Lead sign-off is the hard gate. The LIDR test-execution-report is
+      # the COMPLEMENTARY consolidation, not the sole blocker → required:false. The
+      # "QA evidence present" checklist item below is the evidence floor.
       - skill: lidr-test-execution-report
         artifact: "{client_root}/test-execution-report*.md"
-        required: true
+        required: false
       - skill: lidr-create-test-cases
         artifact: "{client_root}/test-cases/*.md"
         required: false
     checklist:
+      - "QA evidence present: BMad TEA (testarch-automate/trace) OR LIDR test-execution-report"
       - "All planned test cases executed; 0 blocking defects open"
       - "Regression suite green"
       - "QA→Security handoff includes: QA results + coverage, security-test focus areas, vuln-assessment checklist, compliance verification, perf/load results"

@@ -12,14 +12,12 @@ import { FlowDiagram } from '@/app/components/shared/ReactFlowDiagram';
 import {
   handoffNodes,
   handoffEdges,
-  crossCuttingArtifacts,
   phases,
   getHandoffStats,
 } from '@/data/features/handoffsTemplates';
 
 // Local component imports
 import { PhaseAccordion } from './PhaseAccordion';
-import { CrossCuttingSection } from './CrossCuttingSection';
 import { StatsBar } from './StatsBar';
 
 export function HandoffsTemplates() {
@@ -98,9 +96,6 @@ export function HandoffsTemplates() {
       >
         <FlowDiagram nodes={handoffNodes} edges={handoffEdges} height={400} />
       </SectionBox>
-
-      {/* Cross-cutting AI Section */}
-      <CrossCuttingSection artifacts={crossCuttingArtifacts} />
 
       {/* Phase-based Templates Section */}
       <SectionBox

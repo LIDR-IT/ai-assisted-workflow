@@ -2,7 +2,7 @@
 name: lidr-release-notes
 id: release-notes
 version: "1.4.0"
-last_updated: "2026-06-10"
+last_updated: "2026-06-11"
 updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
@@ -17,7 +17,7 @@ description: "AUTOMATED release notes generation with business impact analysis u
 
 # Release Notes Generator 🤖 AUTOMATED
 
-Phase: 8 — Deployment | Gate: contributes to Gate 7
+Phase: 4 — Implementation · release (ex-Fase 8) | Gate: contributes to Gate 7
 Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 **ROI**: 50 hours/year (2+ hours manual → 5 minutes automated + 30 minutes review)

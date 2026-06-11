@@ -2,7 +2,7 @@
 name: lidr-tech-debt
 id: tech-debt
 version: "2.3.0"
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 4
@@ -17,7 +17,7 @@ description: "🤖 AUTOMATED technical debt identification and management using 
 
 # Technical Debt Identifier
 
-Phase: 5 — Development (detection) → all phases (backlog maintenance) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Phase: 4 — Implementation · development (ex-Fase 5) (detection) → all phases (backlog maintenance) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`. Code-quality scanning uses `{{CODE_QUALITY_TOOL}}`; backlog export targets `{{TRACKING_TOOL}}`.
 

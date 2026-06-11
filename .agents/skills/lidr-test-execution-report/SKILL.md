@@ -2,7 +2,7 @@
 name: lidr-test-execution-report
 id: test-execution-report
 version: "1.7.0"
-last_updated: "2026-06-10"
+last_updated: "2026-06-11"
 updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
@@ -22,7 +22,7 @@ description: >
 
 # Test Execution Report Generator
 
-Phase: 6 — QA | Gate: **G5 (QA Sign-off), `required: true`** — primary input for GO/NO-GO | Output: English-authored; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Phase: 4 — Implementation · qa (ex-Fase 6) | Gate: **G5 (QA Sign-off), `required: true`** — primary input for GO/NO-GO | Output: English-authored; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
 

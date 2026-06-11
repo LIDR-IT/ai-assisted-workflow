@@ -2,7 +2,7 @@
 name: lidr-change-request
 id: change-request
 version: "1.2.1"
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 4
@@ -24,7 +24,7 @@ description: >
 
 # Change Request Generator
 
-Phase: 8 — Deployment | Gate: 7 (Change Approved) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
+Phase: 4 — Implementation · release (ex-Fase 8) | Gate: 7 (Change Approved) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 

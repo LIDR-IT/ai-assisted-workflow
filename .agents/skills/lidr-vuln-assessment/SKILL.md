@@ -2,7 +2,7 @@
 name: lidr-vuln-assessment
 id: vuln-assessment
 version: "1.4.0"
-last_updated: "2026-06-10"
+last_updated: "2026-06-11"
 updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
@@ -17,7 +17,7 @@ description: "Essential for application security assessment - ALWAYS use when {{
 
 # Vulnerability Assessment Interpreter
 
-Phase: 7 — Security | Gate: contributes to Gate 6 | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The executive summary renders in the client locale.
+Phase: 4 — Implementation · security (ex-Fase 7) | Gate: contributes to Gate 6 | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The executive summary renders in the client locale.
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds the concrete {{CODE_QUALITY_TOOL}} (SAST/SCA), {{VCS_TOOL}}, and {{CI_TOOL}} in `clients/<CODE>.yaml`. Regulatory weighting resolves via {{COMPLIANCE_FRAMEWORK}} for the active {{INDUSTRY}}.
 

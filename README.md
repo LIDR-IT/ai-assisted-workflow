@@ -4,9 +4,9 @@
 > multi-platform AI configuration source-of-truth and a React documentation app.
 
 [![Platforms](https://img.shields.io/badge/platforms-Cursor%20%7C%20Claude%20%7C%20Gemini%20%7C%20Antigravity%20%7C%20Copilot-green.svg)](#sync-strategies-per-platform)
-[![Skills](<https://img.shields.io/badge/skills-67%20(61%20LIDR%20%2B%206%20generic)-blue.svg>)](#repository-structure)
+[![Skills](<https://img.shields.io/badge/skills-113%20(44%20LIDR%20%2B%2069%20BMAD)-blue.svg>)](#repository-structure)
 [![Commands](https://img.shields.io/badge/commands-30-blue.svg)](#repository-structure)
-[![Agents](https://img.shields.io/badge/subagents-9-blue.svg)](#repository-structure)
+[![Agents](https://img.shields.io/badge/subagents-23-blue.svg)](#repository-structure)
 [![MCP](https://img.shields.io/badge/MCP-Context7-purple.svg)](https://context7.com)
 
 This repository is the result of merging two projects:
@@ -31,18 +31,18 @@ overwritten or replaced.
 ```
 lidr-ecosystem/
 ├── .agents/                       ← SOURCE OF TRUTH
-│   ├── rules/                     # 22 rules total
-│   │   ├── lidr-sdlc/             # 5 LIDR rules (org, project, tech-stack, workflows, documentation)
+│   ├── rules/                     # 24 rules total
+│   │   ├── lidr-sdlc/             # 7 LIDR rules (org, project, tech-stack, workflows, documentation, spec-execution, model-selection)
 │   │   ├── code/, design/, ...    # 17 generic rules in 9 categories
-│   ├── skills/                    # 67 skills (Agent Skills open standard — read natively by Gemini/Copilot/Antigravity)
-│   │   ├── lidr-*/                # 61 LIDR SDLC skills (prefixed to avoid collisions)
-│   │   └── *                      # 6 generic meta-skills (team-skill-creator, command-development, ...)
+│   ├── skills/                    # 113 skills (Agent Skills open standard — read natively by Gemini/Copilot/Antigravity)
+│   │   ├── lidr-*/                # 44 LIDR SDLC skills (prefixed to avoid collisions)
+│   │   └── *                      # 69 BMAD skills (bmad-* — base flow + agent personas + utilities)
 │   ├── commands/                  # 30 commands
-│   │   ├── lidr-*.md              # 23 LIDR commands (lidr-advance-gate, lidr-implement-ticket, ...)
-│   │   └── *.md                   # 7 generic commands (/commit, /sync-setup, ...)
-│   ├── subagents/                 # 9 agents
-│   │   ├── lidr-*.md              # 6 LIDR autonomous agents (qa, release, security, ...)
-│   │   └── *.md                   # 3 generic agents (doc-improver, pr-validator, ticket-enricher)
+│   │   ├── lidr-*.md              # 28 LIDR commands (21 SDLC + 7 spec-lifecycle: lidr-advance-gate, lidr-spec-*, ...)
+│   │   └── *.md                   # 2 generic commands (sync-setup, test-hooks)
+│   ├── subagents/                 # 23 subagents
+│   │   ├── lidr-*.md              # 10 LIDR subagents (qa, release, security, spec-orchestrator, ...)
+│   │   └── *.md                   # 13 BMAD subagents (bmad-*-agent personas)
 │   ├── hooks/                     # 6 hooks registered in hooks.json
 │   │   ├── lidr/                  # 3 LIDR bash hooks (frontmatter-guard, load-context, validate-ecosystem-counts)
 │   │   ├── scripts/               # 3 generic hooks (notify, auto-format, protect-secrets)

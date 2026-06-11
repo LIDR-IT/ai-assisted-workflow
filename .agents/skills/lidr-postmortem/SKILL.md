@@ -2,7 +2,7 @@
 name: lidr-postmortem
 id: postmortem
 version: "1.2.1"
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 4
@@ -17,7 +17,7 @@ description: "Structure a blameless incident postmortem using Five Whys root cau
 
 # Blameless Postmortem Structurer
 
-Phase: 8 — Post-incident | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Logs and commands stay in English.
+Phase: 4 — Implementation · release (ex-Fase 8, post-incident) | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). Logs and commands stay in English.
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 

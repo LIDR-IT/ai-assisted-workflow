@@ -23,6 +23,8 @@
       "propuesta": [
         "bmad-document-project skill escanea el codebase existente e inventaría la documentación real del proyecto",
         "bmad-generate-project-context skill genera project-context.md optimizado para LLM, contexto persistente de toda sesión IA",
+        "bmad-shard-doc + bmad-index-docs skills mantienen la documentación consumible: shardean docs grandes por secciones y regeneran docs/index.md tras cada cambio (DTC)",
+        "lidr-adr skill (brownfield): ADR baseline — documenta las decisiones arquitectónicas heredadas difíciles de revertir (MADR v3) antes de tocar código",
         "lidr-generate-rule skill genera CLAUDE.md por repo (stack, patrones, convenciones)",
         "▸ /lidr-init-project-docs command scaffolds docs/projects/{{CLIENT_CODE}}/",
         "Checklist 'Context Ready': evidencia brownfield evaluada en Gate 0 (project-context refleja el stack real, docs inventariadas, rules del cliente activas)",

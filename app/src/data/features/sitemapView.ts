@@ -163,8 +163,8 @@ export const projectTree: TreeNode[] = [
                 name: 'context — Project context',
                 type: 'folder',
                 iconName: 'FolderOpen',
-                badge: { label: '2 BMad', color: 'bg-amber-50 text-amber-700' },
-                desc: 'Stage context (ex-F0 Preparación): documentación brownfield y project-context para la IA.',
+                badge: { label: '4 BMad + 1 x-ref', color: 'bg-amber-50 text-amber-700' },
+                desc: 'Stage context (ex-F0 Preparación): documentación brownfield, doc-lifecycle (shard/index) y project-context para la IA.',
                 children: [
                   {
                     name: 'bmad-document-project/SKILL.md',
@@ -179,6 +179,27 @@ export const projectTree: TreeNode[] = [
                     badge: { label: 'BMad', color: 'bg-amber-100 text-amber-800' },
                     desc: 'Crea project-context.md con AI rules',
                     docPath: '.claude/skills/bmad-generate-project-context/SKILL.md',
+                  },
+                  {
+                    name: 'bmad-shard-doc/SKILL.md',
+                    type: 'file',
+                    badge: { label: 'BMad', color: 'bg-amber-100 text-amber-800' },
+                    desc: 'Particiona docs grandes en archivos por sección — hace consumibles para LLM los docs heredados del brownfield',
+                    docPath: '.claude/skills/bmad-shard-doc/SKILL.md',
+                  },
+                  {
+                    name: 'bmad-index-docs/SKILL.md',
+                    type: 'file',
+                    badge: { label: 'BMad', color: 'bg-amber-100 text-amber-800' },
+                    desc: 'Genera/actualiza docs/index.md — mantiene navegable el inventario del checklist Context Ready',
+                    docPath: '.claude/skills/bmad-index-docs/SKILL.md',
+                  },
+                  {
+                    name: 'lidr-adr/SKILL.md (x-ref)',
+                    type: 'file',
+                    badge: { label: 'LIDR · x-ref', color: 'bg-emerald-100 text-emerald-700' },
+                    desc: 'ADR baseline en brownfield: documenta decisiones arquitectónicas heredadas antes de tocar código (home principal: Phase 4 · development)',
+                    docPath: '.claude/skills/lidr-adr/SKILL.md',
                   },
                 ],
               },
@@ -462,8 +483,8 @@ export const projectTree: TreeNode[] = [
                 name: 'anytime — Utilities & reviews (BMad)',
                 type: 'folder',
                 iconName: 'FolderOpen',
-                badge: { label: '15 BMad', color: 'bg-amber-50 text-amber-700' },
-                desc: 'Stage anytime: help, customize, doc-management, reviews, quick-dev y course correction.',
+                badge: { label: '13 BMad', color: 'bg-amber-50 text-amber-700' },
+                desc: 'Stage anytime: help, customize, reviews, quick-dev y course correction (shard/index movidos al stage context).',
                 children: [
                   {
                     name: 'bmad-help/SKILL.md',
@@ -478,20 +499,6 @@ export const projectTree: TreeNode[] = [
                     badge: { label: 'BMad', color: 'bg-amber-100 text-amber-800' },
                     desc: 'Customization overrides para installed BMad skills',
                     docPath: '.claude/skills/bmad-customize/SKILL.md',
-                  },
-                  {
-                    name: 'bmad-shard-doc/SKILL.md',
-                    type: 'file',
-                    badge: { label: 'BMad', color: 'bg-amber-100 text-amber-800' },
-                    desc: 'Splits large markdown docs en archivos organizados',
-                    docPath: '.claude/skills/bmad-shard-doc/SKILL.md',
-                  },
-                  {
-                    name: 'bmad-index-docs/SKILL.md',
-                    type: 'file',
-                    badge: { label: 'BMad', color: 'bg-amber-100 text-amber-800' },
-                    desc: 'Genera/actualiza index.md para folder de docs',
-                    docPath: '.claude/skills/bmad-index-docs/SKILL.md',
                   },
                   {
                     name: 'bmad-spec/SKILL.md',

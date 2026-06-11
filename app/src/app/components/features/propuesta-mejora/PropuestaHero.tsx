@@ -3,6 +3,8 @@ import { Brain, Zap, CheckCircle2, FileCode2, ChevronDown, ChevronUp } from 'luc
 import { SectionBox, DiagramCard } from '@/app/components/shared/FlowComponents';
 import { FlowDiagram, n, e } from '@/app/components/shared/ReactFlowDiagram';
 import { mejorasIntroData } from '@/data/features/propuestaMejora';
+import { crossCuttingArtifacts } from '@/data/features/handoffsTemplates';
+import { CrossCuttingSection } from '@/app/components/features/handoffs-templates/CrossCuttingSection';
 import { useCurrentClient } from '@/hooks';
 import { automationStats, ecosystemStats, summaryStrings } from '@/data';
 
@@ -185,6 +187,8 @@ export function PropuestaHero() {
               </p>
             </div>
           </DiagramCard>
+
+          <CrossCuttingSection artifacts={crossCuttingArtifacts} />
 
           {/* ROI */}
           <SectionBox

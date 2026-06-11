@@ -2,7 +2,7 @@
 name: lidr-create-test-cases
 id: create-test-cases
 version: "2.6.0"
-last_updated: "2026-06-10"
+last_updated: "2026-06-11"
 updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
@@ -26,7 +26,7 @@ description: >
 
 # BDD Test Case Generator
 
-Phase: 6 — QA | Gate: **G5 evidence (QA→Sec), `required: false`** | Output: English-authored (Gherkin); artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Phase: 4 — Implementation · qa (ex-Fase 6) | Gate: **G5 evidence (QA→Sec), `required: false`** | Output: English-authored (Gherkin); artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
 
