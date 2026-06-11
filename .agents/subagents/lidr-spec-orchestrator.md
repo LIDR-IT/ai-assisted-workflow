@@ -11,21 +11,20 @@ tools:
   - Grep
   - Bash
   - AskUserQuestion
-skills:
-  - lidr-using-git-worktrees
-  - lidr-run-parallel-tasks
 memory: project
 # ── Metadata ecosistema ──
 id: spec-orchestrator
-version: "1.0.0"
-last_updated: "2026-05-20"
-updated_by: "TL: LIDR Spec Native"
+version: "1.1.0"
+last_updated: "2026-06-11"
+updated_by: "TL: SDD single-sequence coherence"
 status: active
 triggerType: event-driven
 evolvedFrom: /lidr-spec-new + /lidr-spec-ff + /lidr-spec-apply + /lidr-spec-verify + /lidr-spec-archive
 ---
 
 Use this agent when the user wants to execute the full LIDR change lifecycle in one shot — from scaffold to archive — without manually invoking each `/lidr-spec-*` command. The agent orchestrates the chain, handles state transitions, pauses on critical blockers, and reports a single end-of-run summary.
+
+> **This is the forked execution _mode_ of the single LIDR development sequence — not an alternative route.** It runs the exact same `BMad engine → LIDR governance` steps the `/lidr-spec-*` commands run (planning wraps `bmad-spec` / `bmad-create-architecture` / `bmad-create-story`; implementation delegates the unit/regression TDD loop to `bmad-dev-story` and adds the LIDR-only curl / Playwright / DTC-docs / reports). There is no parallel "RUTA A vs RUTA B" — the BMad skills and the LIDR governance are one chain, in sequence.
 
 <example>
 Context: User just refined a ticket with full technical detail and wants to implement it end-to-end
@@ -64,6 +63,10 @@ Invoke `/lidr-spec-new <change-name>`:
 - Creates the change container with placeholder artifacts and `reports/` directory
 - Verify success before proceeding
 
+### 1.5. Seed the enriched US
+
+Write the identified enriched US (from Pre-flight) **into** `docs/projects/<CLIENT_CODE>/changes/<change-name>/enriched-us.md`, replacing the `[PENDIENTE]` placeholder, **before** invoking `/lidr-spec-ff`. This closes the producer→consumer handoff: `/lidr-spec-ff` reads `enriched-us.md` first (see its "Load context"). Do not rely on passing the US only inline.
+
 ### 2. Fast-forward (planning — requires Opus high)
 
 Self-correct model per `lidr-sdlc/model-selection.md`: promote to `claude-opus-4-7` + `effort: high`.
@@ -88,6 +91,8 @@ Invoke `/lidr-spec-apply <change-name>`:
 - Executes all mandatory tests (unit + curl + Playwright + docs) AGENT MUST EXECUTE
 - Generates per-step reports in `reports/`
 - Marks each task `[x]` immediately on completion
+
+> The unit / integration / regression TDD loop is owned by `bmad-dev-story` (the BMad engine); `/lidr-spec-apply` governs that loop in sequence and adds the LIDR-only mandatory steps. The curl + Playwright steps execute **inside the forked `/lidr-spec-apply` context** (it grants `mcp__playwright`), not in this orchestrator's own tool grant — which is why this agent does not need Playwright in its `tools:` list.
 
 ### 4. Verify
 
@@ -129,7 +134,9 @@ Location: docs/projects/<CLIENT_CODE>/changes/archive/<YYYY-MM-DD>-<change-name>
 Branch:   feature/<change-name>  (or feature/<ticket-id>-<slug>)
 
 Next:
-  /lidr-create-pr <ticket-id>    → open PR referencing this change
+  /lidr-advance-gate 4                → test-report.md is the G4 (Dev→QA) evidence; TL evaluates the gate
+  /lidr-create-pr <ticket-id|change-name>  → open PR referencing this change
+                                       (use <change-name> when the source US had no Jira ticket)
   /lidr-sync-docs                     → propagate any remaining doc updates
 ```
 
