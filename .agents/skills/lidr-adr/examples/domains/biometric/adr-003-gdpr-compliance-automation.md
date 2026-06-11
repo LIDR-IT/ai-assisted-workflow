@@ -1,4 +1,4 @@
-# ADR-003: GDPR Compliance Automation for domain-specific Data
+# ADR-003: GDPR Compliance Automation for Biometric Data
 
 **Status**: Accepted
 **Date**: 2024-03-15
@@ -8,33 +8,33 @@
 
 ## Context and Problem Statement
 
-{{CLIENT_NAME}} processes millions of domain-specific verifications monthly across EU markets, generating significant GDPR Art. 9 (special category data) compliance obligations. Current manual compliance processes are:
+{{CLIENT_NAME}} processes millions of biometric verifications monthly across EU markets, generating significant GDPR Art. 9 (special category data) compliance obligations. Current manual compliance processes are:
 
 **Current Pain Points:**
 
 - **Data Subject Requests**: 2-5 days to respond to access/erasure requests
 - **Consent Management**: Inconsistent consent capture across SDKs
-- **Data Inventory**: Manual tracking of domain-specific data flows
+- **Data Inventory**: Manual tracking of biometric data flows
 - **Retention Enforcement**: Manual cleanup processes, inconsistent execution
 - **Audit Trail**: Fragmented logging across systems
 
 **Regulatory Pressure:**
 
-- Recent €20M GDPR fine for domain-specific processing violations
-- Upcoming AI Act requirements for domain-specific systems
+- Recent €20M GDPR fine for biometric processing violations
+- Upcoming AI Act requirements for biometric systems
 - Customer contracts requiring <24h response to data subject requests
 - Auditor requirements for automated compliance controls
 
-**Core Question**: How do we implement automated GDPR compliance for domain-specific data processing while maintaining system performance and user experience?
+**Core Question**: How do we implement automated GDPR compliance for biometric data processing while maintaining system performance and user experience?
 
 ## Decision Drivers
 
 ### Legal & Compliance Drivers
 
-- **GDPR Art. 9**: Special protection for domain-specific data
+- **GDPR Art. 9**: Special protection for biometric data
 - **GDPR Art. 12-22**: Data subject rights automation
 - **GDPR Art. 25**: Privacy by Design requirements
-- **AI Act (incoming)**: Requirements for domain-specific systems
+- **AI Act (incoming)**: Requirements for biometric systems
 - **ISO 27001**: Automated security controls
 
 ### Business Drivers
@@ -68,7 +68,7 @@ Pros: + Mature compliance features
 
 Cons:
   - High licensing costs ($200K+ annually)
-  - Limited customization for domain-specific workflows
+  - Limited customization for biometric workflows
   - External dependency for critical compliance
   - Integration complexity with existing systems
   - Vendor lock-in concerns
@@ -80,7 +80,7 @@ Cons:
 
 ```yaml
 Pros: + Complete control over compliance logic
-  + Optimized for domain-specific data workflows
+  + Optimized for biometric data workflows
   + No external licensing costs
   + Tight integration with existing systems
   + Custom audit requirements support
@@ -95,12 +95,12 @@ Cons:
 
 ### Option 3: Hybrid Approach - OSS + Custom Components
 
-**Description**: Open source privacy tools + custom domain-specific-specific components
+**Description**: Open source privacy tools + custom biometric-specific components
 
 ```yaml
 Pros: + Lower licensing costs
   + Community-driven updates
-  + Flexibility for domain-specific use cases
+  + Flexibility for biometric use cases
   + Proven core components
   + Vendor neutrality
 
@@ -139,11 +139,11 @@ Cons:
 
 After comprehensive analysis and legal review, building a custom solution provides the best long-term value:
 
-1. **domain-specific Specificity**: Unique requirements not addressed by generic tools
+1. **Biometric Specificity**: Unique requirements not addressed by generic tools
 2. **Cost Efficiency**: Lower 5-year TCO than SaaS licensing
 3. **Competitive Advantage**: Privacy-first capabilities as differentiator
 4. **Control**: No external dependencies for critical compliance
-5. **Integration**: Native integration with existing domain-specific workflows
+5. **Integration**: Native integration with existing biometric workflows
 
 ### Architecture Decision
 
@@ -205,7 +205,7 @@ Privacy Policy Engine:
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    domain-specific Services                           │
+│                    Biometric Services                           │
 ├─────────────────────────────────────────────────────────────────┤
 │  {{PRODUCT_NAME_1}} Service    │  {{PRODUCT_NAME_1}}D Service   │  Voice Service         │
 │  Template Store    │  Platform API      │  Behavioral Service    │
@@ -231,7 +231,7 @@ Features:
 
 Success Criteria:
   - Handle 1000+ data subject requests/day
-  - <1s latency impact on domain-specific APIs
+  - <1s latency impact on biometric APIs
   - 100% audit trail coverage
   - GDPR Art. 12-15 compliance for access requests
 ```
@@ -308,8 +308,8 @@ CREATE TABLE data_subjects (
     last_updated        TIMESTAMP DEFAULT NOW()
 );
 
--- domain-specific data inventory
-CREATE TABLE domain-specific_data_inventory (
+-- biometric data inventory
+CREATE TABLE biometric_data_inventory (
     inventory_id        UUID PRIMARY KEY,
     subject_id          UUID REFERENCES data_subjects(subject_id),
     data_type           VARCHAR(50) NOT NULL, -- 'face_template', 'voice_template'
@@ -371,7 +371,7 @@ type AccessReport struct {
 }
 
 type DataCategoryReport struct {
-    Category        string    `json:"category"`        // "domain-specific_templates", "transaction_logs"
+    Category        string    `json:"category"`        // "biometric_templates", "transaction_logs"
     DataCount       int       `json:"data_count"`
     OldestRecord    time.Time `json:"oldest_record"`
     LatestRecord    time.Time `json:"latest_record"`
@@ -524,7 +524,7 @@ Monitoring & Alerting:
 - **Request Response Time**: <24 hours for 99% of privacy requests
 - **Automation Rate**: 95%+ of requests processed without human intervention
 - **Audit Success**: 100% pass rate for regulatory audits
-- **Data Discovery**: 100% coverage of domain-specific data across systems
+- **Data Discovery**: 100% coverage of biometric data across systems
 
 ### Business KPIs
 
@@ -544,14 +544,14 @@ Monitoring & Alerting:
 
 ### Dependent ADRs
 
-- ADR-001: [domain-specific Template Format](./adr-001-domain-specific-template-format.md) - Affects data portability
+- ADR-001: [Biometric Template Format](./adr-001-biometric-template-format.md) - Affects data portability
 - ADR-002: [Liveness Detection Architecture](./adr-002-liveness-detection-architecture.md) - Edge processing privacy implications
 
 ### Future ADRs Required
 
 - ADR-004: Cross-Border Data Transfer Architecture
 - ADR-005: Consent Management UI/UX Standards
-- ADR-006: AI Act Compliance for domain-specific Systems
+- ADR-006: AI Act Compliance for Biometric Systems
 
 ## Review Schedule
 

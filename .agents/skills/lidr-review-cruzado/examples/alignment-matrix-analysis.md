@@ -19,29 +19,29 @@ This matrix compares specific elements between functional and technical PRDs to 
 
 ---
 
-## 1. domain-specific Functionalities Alignment
+## 1. biometric Functionalities Alignment
 
-| PRD-F Functionality                    | PRD-T Capability               | Status        | Analysis                                                         |
-| -------------------------------------- | ------------------------------ | ------------- | ---------------------------------------------------------------- |
-| **Facial Recognition** (§4.1)          | **Face Algorithm v3.2** (§3.1) | ✅ ALIGNED    | Both specify same algorithm version, performance targets match   |
-| **Liveness Detection** (§4.1)          | **3D Liveness Module** (§3.2)  | ⚠️ PARTIAL    | PRD-F: passive detection; PRD-T: active + passive (clarify UX)   |
-| **Voice Authentication** (§4.2)        | **Voice Engine v2.1** (§3.4)   | ❌ MISALIGNED | PRD-F: 99.5% accuracy; PRD-T: 97.8% lab results (**CF-004**)     |
-| **Document Verification** (§4.3)       | **OCR Engine + NFC** (§3.5)    | ✅ ALIGNED    | Full feature parity, security requirements match                 |
-| **Behavioral domain-specifics** (§4.4) | **Typing Dynamics** (§3.6)     | ⚠️ PARTIAL    | PRD-F: full behavioral; PRD-T: typing only (scope clarification) |
-| **Multi-modal Fusion** (§4.5)          | ⭕ MISSING                     | ❌ MISALIGNED | PRD-F specifies combined modalities; no technical implementation |
+| PRD-F Functionality              | PRD-T Capability               | Status        | Analysis                                                         |
+| -------------------------------- | ------------------------------ | ------------- | ---------------------------------------------------------------- |
+| **Facial Recognition** (§4.1)    | **Face Algorithm v3.2** (§3.1) | ✅ ALIGNED    | Both specify same algorithm version, performance targets match   |
+| **Liveness Detection** (§4.1)    | **3D Liveness Module** (§3.2)  | ⚠️ PARTIAL    | PRD-F: passive detection; PRD-T: active + passive (clarify UX)   |
+| **Voice Authentication** (§4.2)  | **Voice Engine v2.1** (§3.4)   | ❌ MISALIGNED | PRD-F: 99.5% accuracy; PRD-T: 97.8% lab results (**CF-004**)     |
+| **Document Verification** (§4.3) | **OCR Engine + NFC** (§3.5)    | ✅ ALIGNED    | Full feature parity, security requirements match                 |
+| **Behavioral biometrics** (§4.4) | **Typing Dynamics** (§3.6)     | ⚠️ PARTIAL    | PRD-F: full behavioral; PRD-T: typing only (scope clarification) |
+| **Multi-modal Fusion** (§4.5)    | ⭕ MISSING                     | ❌ MISALIGNED | PRD-F specifies combined modalities; no technical implementation |
 
 ---
 
 ## 2. User Journey ↔ API Flow Mapping
 
-| PRD-F User Journey Step       | PRD-T API Endpoint                 | Status        | Technical Mapping                                          |
-| ----------------------------- | ---------------------------------- | ------------- | ---------------------------------------------------------- |
-| **2.1 Identity Capture**      | `POST /v3/domain-specific/capture` | ✅ ALIGNED    | Journey step maps to single API call                       |
-| **2.2 Liveness Check**        | `POST /v3/liveness/validate`       | ✅ ALIGNED    | Real-time validation with 2s timeout                       |
-| **2.3 Template Extraction**   | `POST /v3/template/extract`        | ✅ ALIGNED    | Background processing, async response                      |
-| **2.4 Identity Verification** | `POST /v3/verify/identity`         | ✅ ALIGNED    | 1:1 verification with confidence score                     |
-| **2.5 Result Communication**  | `WebSocket /v3/results/stream`     | ⚠️ PARTIAL    | PRD-F: instant; PRD-T: near real-time (0.5s)               |
-| **2.6 Error Recovery**        | Multiple error endpoints           | ❌ MISALIGNED | PRD-F: seamless retry; PRD-T: manual intervention required |
+| PRD-F User Journey Step       | PRD-T API Endpoint             | Status        | Technical Mapping                                          |
+| ----------------------------- | ------------------------------ | ------------- | ---------------------------------------------------------- |
+| **2.1 Identity Capture**      | `POST /v3/biometric/capture`   | ✅ ALIGNED    | Journey step maps to single API call                       |
+| **2.2 Liveness Check**        | `POST /v3/liveness/validate`   | ✅ ALIGNED    | Real-time validation with 2s timeout                       |
+| **2.3 Template Extraction**   | `POST /v3/template/extract`    | ✅ ALIGNED    | Background processing, async response                      |
+| **2.4 Identity Verification** | `POST /v3/verify/identity`     | ✅ ALIGNED    | 1:1 verification with confidence score                     |
+| **2.5 Result Communication**  | `WebSocket /v3/results/stream` | ⚠️ PARTIAL    | PRD-F: instant; PRD-T: near real-time (0.5s)               |
+| **2.6 Error Recovery**        | Multiple error endpoints       | ❌ MISALIGNED | PRD-F: seamless retry; PRD-T: manual intervention required |
 
 ---
 
@@ -50,8 +50,8 @@ This matrix compares specific elements between functional and technical PRDs to 
 | PRD-F GDPR Requirement         | PRD-T Technical Solution               | Status        | Compliance Gap                                               |
 | ------------------------------ | -------------------------------------- | ------------- | ------------------------------------------------------------ |
 | **Explicit Consent** (§6.1)    | **Consent API + UI** (§5.1)            | ✅ ALIGNED    | Granular consent with withdrawal capability                  |
-| **Data Minimization** (§6.2)   | **Template-only Storage** (§5.3)       | ✅ ALIGNED    | No raw domain-specific data retention                        |
-| **Right of Access** (§6.3)     | **Data Export API** (§5.2)             | ✅ ALIGNED    | JSON export of user's domain-specific metadata               |
+| **Data Minimization** (§6.2)   | **Template-only Storage** (§5.3)       | ✅ ALIGNED    | No raw biometric data retention                              |
+| **Right of Access** (§6.3)     | **Data Export API** (§5.2)             | ✅ ALIGNED    | JSON export of user's biometric metadata                     |
 | **Right to Erasure** (§6.3)    | **Deletion API** (§5.2)                | ❌ MISALIGNED | Templates deleted, but ML training data remains (**CF-001**) |
 | **Data Portability** (§6.4)    | ⭕ MISSING                             | ❌ MISALIGNED | PRD-F requires export; no technical implementation           |
 | **Breach Notification** (§6.5) | **Audit System** (§5.4)                | ⚠️ PARTIAL    | Logging present, but 72-hour notification automation missing |
@@ -80,14 +80,14 @@ This matrix compares specific elements between functional and technical PRDs to 
 
 ## 5. Error Handling ↔ Technical Failover
 
-| PRD-F Error Scenario               | PRD-T Failover Mechanism         | Status     | Robustness Assessment                          |
-| ---------------------------------- | -------------------------------- | ---------- | ---------------------------------------------- |
-| **Network Disconnection**          | **Local caching + sync**         | ✅ ALIGNED | Offline-first design supports use case         |
-| **Algorithm Failure**              | **Fallback to document**         | ✅ ALIGNED | Graceful degradation maintains functionality   |
-| **Server Overload**                | **Circuit breaker + queue**      | ✅ ALIGNED | Traffic shaping prevents cascade failures      |
-| **domain-specific Quality Issues** | **Re-capture guidance**          | ✅ ALIGNED | UX guides user to improve capture quality      |
-| **Fraud Detection**                | **Risk scoring + manual review** | ⚠️ PARTIAL | Automation partial, manual escalation required |
-| **Data Corruption**                | **Backup + recovery**            | ✅ ALIGNED | Point-in-time recovery with 4-hour RPO         |
+| PRD-F Error Scenario         | PRD-T Failover Mechanism         | Status     | Robustness Assessment                          |
+| ---------------------------- | -------------------------------- | ---------- | ---------------------------------------------- |
+| **Network Disconnection**    | **Local caching + sync**         | ✅ ALIGNED | Offline-first design supports use case         |
+| **Algorithm Failure**        | **Fallback to document**         | ✅ ALIGNED | Graceful degradation maintains functionality   |
+| **Server Overload**          | **Circuit breaker + queue**      | ✅ ALIGNED | Traffic shaping prevents cascade failures      |
+| **biometric Quality Issues** | **Re-capture guidance**          | ✅ ALIGNED | UX guides user to improve capture quality      |
+| **Fraud Detection**          | **Risk scoring + manual review** | ⚠️ PARTIAL | Automation partial, manual escalation required |
+| **Data Corruption**          | **Backup + recovery**            | ✅ ALIGNED | Point-in-time recovery with 4-hour RPO         |
 
 ---
 
@@ -96,7 +96,7 @@ This matrix compares specific elements between functional and technical PRDs to 
 | PRD-F Security Requirement | PRD-T Security Implementation    | Status     | Security Posture                    |
 | -------------------------- | -------------------------------- | ---------- | ----------------------------------- |
 | **Authentication**         |                                  |            |                                     |
-| • Multi-factor required    | • domain-specific + PIN/OTP      | ✅ ALIGNED | Strong authentication implemented   |
+| • Multi-factor required    | • biometric + PIN/OTP            | ✅ ALIGNED | Strong authentication implemented   |
 | • Session management       | • JWT with refresh tokens        | ✅ ALIGNED | Secure session handling             |
 | **Authorization**          |                                  |            |                                     |
 | • RBAC for admin functions | • Role-based API security        | ✅ ALIGNED | Principle of least privilege        |

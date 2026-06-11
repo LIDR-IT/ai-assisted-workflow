@@ -1,5 +1,5 @@
 ---
-validationTarget: "domain-specific-template-security-risks.md"
+validationTarget: "biometric-template-security-risks.md"
 validationDate: "2026-03-15T15:52:55.250386"
 inputDocuments: []
 validationStepsCompleted:
@@ -27,7 +27,7 @@ previousValidation: ""
 
 # Validation Report
 
-**Document:** domain-specific-template-security-risks.md
+**Document:** biometric-template-security-risks.md
 **Date:** 2026-03-15
 **Quality Rating:** 4/5 - Good
 **Overall Status:** Pass

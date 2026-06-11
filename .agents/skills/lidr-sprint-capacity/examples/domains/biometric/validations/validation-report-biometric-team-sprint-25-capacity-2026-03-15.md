@@ -1,5 +1,5 @@
 ---
-validationTarget: "domain-specific-team-sprint-25-capacity.md"
+validationTarget: "biometric-team-sprint-25-capacity.md"
 validationDate: "2026-03-15T15:52:54.540683"
 inputDocuments: []
 validationStepsCompleted:
@@ -27,7 +27,7 @@ previousValidation: ""
 
 # Validation Report
 
-**Document:** domain-specific-team-sprint-25-capacity.md
+**Document:** biometric-team-sprint-25-capacity.md
 **Date:** 2026-03-15
 **Quality Rating:** 4/5 - Good
 **Overall Status:** Pass

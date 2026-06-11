@@ -1,5 +1,5 @@
 ---
-validationTarget: "voice-domain-specific-regression-suite.md"
+validationTarget: "voice-biometric-regression-suite.md"
 validationDate: "2026-03-15T15:52:53.839441"
 inputDocuments: []
 validationStepsCompleted:
@@ -27,7 +27,7 @@ previousValidation: ""
 
 # Validation Report
 
-**Document:** voice-domain-specific-regression-suite.md
+**Document:** voice-biometric-regression-suite.md
 **Date:** 2026-03-15
 **Quality Rating:** 4/5 - Good
 **Overall Status:** Pass

@@ -1,5 +1,5 @@
 ---
-validationTarget: "adr-001-domain-specific-template-format.md"
+validationTarget: "adr-001-biometric-template-format.md"
 validationDate: "2026-03-15T15:52:53.461128"
 inputDocuments: []
 validationStepsCompleted:
@@ -27,7 +27,7 @@ previousValidation: ""
 
 # Validation Report
 
-**Document:** adr-001-domain-specific-template-format.md
+**Document:** adr-001-biometric-template-format.md
 **Date:** 2026-03-15
 **Quality Rating:** 4/5 - Good
 **Overall Status:** Pass

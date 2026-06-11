@@ -13,7 +13,7 @@
 
 **Rollback Trigger Threshold**: 10 minutes maximum
 **Rollback Complexity**: HIGH (Database migrations + API schema changes)
-**Business Impact**: CRITICAL (Affects all domain-specific verification services)
+**Business Impact**: CRITICAL (Affects all biometric verification services)
 **Recovery Time Objective (RTO)**: 8 minutes
 **Recovery Point Objective (RPO)**: 30 seconds (transaction log replay)
 

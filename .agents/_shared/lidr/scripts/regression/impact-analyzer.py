@@ -69,7 +69,7 @@ class ImpactAnalyzer:
                 {
                     "component": "facial_recognition",
                     "file_patterns": ["src/face_*", "src/algorithms/facial/*", "src/ml/face_detection/*"],
-                    "dependencies": ["core_domain-specifics", "ml_pipeline"],
+                    "dependencies": ["core_biometrics", "ml_pipeline"],
                     "test_cases": ["TC_FACE_001", "TC_FACE_002", "TC_FACE_010", "TC_LIVENESS_001"],
                     "risk_weight": 0.9
                 },
@@ -83,7 +83,7 @@ class ImpactAnalyzer:
                 {
                     "component": "voice_verification",
                     "file_patterns": ["src/voice/*", "src/audio_processing/*", "src/voice_ml/*"],
-                    "dependencies": ["audio_utils", "core_domain-specifics"],
+                    "dependencies": ["audio_utils", "core_biometrics"],
                     "test_cases": ["TC_VOICE_001", "TC_VOICE_003", "TC_VOICE_ENROLLMENT"],
                     "risk_weight": 0.85
                 },
@@ -95,8 +95,8 @@ class ImpactAnalyzer:
                     "risk_weight": 0.7
                 },
                 {
-                    "component": "core_domain-specifics",
-                    "file_patterns": ["src/core/*", "src/domain-specific_engine/*", "src/template_management/*"],
+                    "component": "core_biometrics",
+                    "file_patterns": ["src/core/*", "src/biometric_engine/*", "src/template_management/*"],
                     "dependencies": [],
                     "test_cases": ["TC_CORE_001", "TC_TEMPLATE_001", "TC_ENCRYPTION_001"],
                     "risk_weight": 1.0
@@ -109,7 +109,7 @@ class ImpactAnalyzer:
                 {"id": "TC_OCR_001", "name": "DNI Spanish extraction", "component": "document_ocr", "tier": "critical", "automated": True, "execution_time_min": 6},
                 {"id": "TC_VOICE_001", "name": "Voice enrollment flow", "component": "voice_verification", "tier": "critical", "automated": True, "execution_time_min": 15},
                 {"id": "TC_API_001", "name": "API authentication", "component": "api_gateway", "tier": "critical", "automated": True, "execution_time_min": 3},
-                {"id": "TC_PERF_001", "name": "Performance baseline", "component": "core_domain-specifics", "tier": "extended", "automated": True, "execution_time_min": 45}
+                {"id": "TC_PERF_001", "name": "Performance baseline", "component": "core_biometrics", "tier": "extended", "automated": True, "execution_time_min": 45}
             ]
         }
 

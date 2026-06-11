@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-On March 14, 2024, the {{CLIENT_NAME}} Platform API Gateway experienced a complete service outage affecting all domain-specific verification services across EU and US regions. The outage lasted 2 hours and 17 minutes, impacting 89% of our customer base and resulting in approximately €127,000 in lost revenue and significant customer trust impact.
+On March 14, 2024, the {{CLIENT_NAME}} Platform API Gateway experienced a complete service outage affecting all biometric verification services across EU and US regions. The outage lasted 2 hours and 17 minutes, impacting 89% of our customer base and resulting in approximately €127,000 in lost revenue and significant customer trust impact.
 
 ### Key Facts
 

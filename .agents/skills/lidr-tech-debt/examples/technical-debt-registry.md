@@ -21,7 +21,7 @@
 
 ## CRITICAL PRIORITY (Must fix next sprint)
 
-### TD-001: domain-specific Template SQL Injection
+### TD-001: Biometric Template SQL Injection
 
 - **Category**: Security
 - **Origin**: Legacy code (AuditLogRepository.ts:searchLogs)
@@ -34,13 +34,13 @@
 - **Quadrant**: DO FIRST
 - **Sprint Target**: Sprint 15 (current)
 
-### TD-002: domain-specific Data Logging Exposure
+### TD-002: Biometric Data Logging Exposure
 
 - **Category**: Security + Compliance
-- **Origin**: domain-specificLogger.ts (logging templates in plaintext)
+- **Origin**: BiometricLogger.ts (logging templates in plaintext)
 - **Discovery Date**: 2026-03-15
 - **Business Impact**: CRITICAL - GDPR Art. 9 violation, regulatory risk
-- **Technical Impact**: domain-specific templates exposed in logs
+- **Technical Impact**: Biometric templates exposed in logs
 - **Effort Estimate**: 2 hours (sanitization + test)
 - **Assignee**: Backend Dev + Compliance
 - **Status**: NEW
@@ -67,7 +67,7 @@
 ### TD-004: Cognitive Complexity in Verification Service
 
 - **Category**: Code
-- **Origin**: domain-specificVerificationService.ts:validateIdentity
+- **Origin**: BiometricVerificationService.ts:validateIdentity
 - **Discovery Date**: 2026-03-15
 - **Business Impact**: MEDIUM - Maintenance cost, bug risk
 - **Technical Impact**: Cognitive complexity 47 (threshold 15)
@@ -136,7 +136,7 @@
 
 ## DEFERRED (Low priority, hard fix)
 
-### TD-009: Legacy domain-specific Algorithm Migration
+### TD-009: Legacy Biometric Algorithm Migration
 
 - **Category**: Architecture
 - **Origin**: Legacy face recognition algorithm v1.x

@@ -1,5 +1,5 @@
 ---
-validationTarget: "domain-specific-banking-platform.md"
+validationTarget: "biometric-banking-platform.md"
 validationDate: "2026-03-15T15:52:54.620300"
 inputDocuments: []
 validationStepsCompleted:
@@ -27,7 +27,7 @@ previousValidation: ""
 
 # Validation Report
 
-**Document:** domain-specific-banking-platform.md
+**Document:** biometric-banking-platform.md
 **Date:** 2026-03-15
 **Quality Rating:** 4/5 - Good
 **Overall Status:** Pass

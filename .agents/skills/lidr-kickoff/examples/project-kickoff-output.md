@@ -26,7 +26,7 @@
 
 ### Business Context
 
-- **Objective**: Add voice domain-specific authentication to complement facial recognition
+- **Objective**: Add voice biometric authentication to complement facial recognition
 - **Market Need**: Customer demand for hands-free authentication in mobile apps
 - **Success Criteria**: 99.5% accuracy, <2s verification time, GDPR compliant
 
@@ -35,7 +35,7 @@
 - **Business Sponsor**: VP of Product
 - **Technical Sponsor**: CTO
 - **End Users**: Mobile app users in banking and fintech
-- **Compliance**: Legal team for domain-specific data regulations
+- **Compliance**: Legal team for biometric data regulations
 
 ---
 
@@ -70,7 +70,7 @@
 ### Integration Points
 
 - **Voice Processing**: New VoiceEngine service
-- **domain-specific Storage**: Extend existing template database
+- **biometric Storage**: Extend existing template database
 - **Authentication API**: New endpoints in auth service
 - **Mobile SDK**: Add voice capture capabilities
 

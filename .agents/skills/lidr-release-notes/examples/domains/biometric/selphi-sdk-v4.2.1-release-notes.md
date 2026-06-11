@@ -42,7 +42,7 @@ This release significantly enhances our facial recognition accuracy and anti-spo
 - **Algorithm Optimization**: Core facial recognition engine rebuilt for 24% speed improvement
 - **Memory Efficiency**: Reduced peak memory usage from 250MB to 205MB
 - **Battery Optimization**: 30% reduction in CPU usage during verification
-- **Network Efficiency**: Compressed domain-specific templates reduce bandwidth by 15%
+- **Network Efficiency**: Compressed biometric templates reduce bandwidth by 15%
 
 ### 🌍 Expanded Language Support
 
@@ -50,7 +50,7 @@ New language support added for:
 
 - **Polish**: Full OCR and interface localization
 - **Czech**: Native language processing for document verification
-- **Hungarian**: Complete domain-specific workflow support
+- **Hungarian**: Complete biometric workflow support
 - **Romanian**: Integrated voice and document verification
 
 ### 📱 Device Compatibility
@@ -76,7 +76,7 @@ Facial Recognition Engine v4.2:
 
 ### Security Enhancements
 
-- **Template Encryption**: AES-256 encryption for all domain-specific templates
+- **Template Encryption**: AES-256 encryption for all biometric templates
 - **GDPR Compliance**: Enhanced data minimization and right-to-erasure
 - **Audit Logging**: Comprehensive tracking for compliance requirements
 - **Secure Communication**: TLS 1.3 enforcement for all data transmission
@@ -323,7 +323,7 @@ Based on 1M+ verifications across 25 countries during beta testing:
 
 ### Beta Features (Enterprise Preview)
 
-- **Behavioral domain-specifics**: Typing pattern and device interaction analysis
+- **Behavioral biometrics**: Typing pattern and device interaction analysis
 - **Continuous Authentication**: Background verification without user interaction
 - **Advanced Analytics**: Deep insights into verification patterns and fraud attempts
 
@@ -342,7 +342,7 @@ Based on 1M+ verifications across 25 countries during beta testing:
 
 - **ISO 30107**: Presentation Attack Detection (PAD) Level 3
 - **Common Criteria**: EAL4+ evaluation in progress
-- **FIDO Alliance**: domain-specific component certification
+- **FIDO Alliance**: biometric component certification
 
 ### Industry Standards
 

@@ -104,13 +104,13 @@ class RollbackPlanGenerator:
             'incident_created': "🚨 Incident ticket created: {incident_id}. Root cause analysis will follow."
         }
 
-        # Domain-specific rollback patterns
-        self.domain_specific_rollback_patterns = {
+        # Biometric rollback patterns
+        self.biometric_rollback_patterns = {
             'algorithm_rollback': {
                 'critical_steps': [
-                    'Stop all domain-specific processing workflows',
+                    'Stop all biometric processing workflows',
                     'Rollback algorithm models to previous version',
-                    'Restart domain-specific services',
+                    'Restart biometric services',
                     'Verify template compatibility',
                     'Resume processing with previous algorithm'
                 ],
@@ -191,16 +191,16 @@ class RollbackPlanGenerator:
         ))
 
         # Critical user journeys
-        if analysis.get('domain-specific_domain_risks', {}).get('algorithm_change_risk'):
+        if analysis.get('biometric_domain_risks', {}).get('algorithm_change_risk'):
             criteria.append(RollbackCriteria(
-                condition="Domain-specific verification fails",
+                condition="Biometric verification fails",
                 baseline="> 95% success rate",
                 threshold="< 90% success rate",
-                monitoring_alert="DomainVerificationFailed"
+                monitoring_alert="BiometricVerificationFailed"
             ))
 
         # Template compatibility
-        if analysis.get('domain-specific_domain_risks', {}).get('template_storage_risk'):
+        if analysis.get('biometric_domain_risks', {}).get('template_storage_risk'):
             criteria.append(RollbackCriteria(
                 condition="Template compatibility errors",
                 baseline="0 template errors",
@@ -357,19 +357,19 @@ class RollbackPlanGenerator:
 
         return steps
 
-    def generate_domain_specific_steps(self, analysis: Dict, start_step: int) -> Tuple[List[RollbackStep], int]:
-        """Generate domain-specific rollback steps"""
+    def generate_biometric_steps(self, analysis: Dict, start_step: int) -> Tuple[List[RollbackStep], int]:
+        """Generate biometric rollback steps"""
         steps = []
         step_number = start_step
-        domain_risks = analysis.get('domain-specific_domain_risks', {})
+        domain_risks = analysis.get('biometric_domain_risks', {})
 
         # Algorithm rollback
         if domain_risks.get('algorithm_change_risk'):
             steps.append(RollbackStep(
                 step_number=step_number,
-                action="Stop domain-specific processing workflows",
-                command="kubectl scale deployment domain-processor --replicas=0 -n production",
-                verification="kubectl get pods -l app=domain-processor -n production",
+                action="Stop biometric processing workflows",
+                command="kubectl scale deployment biometric-processor --replicas=0 -n production",
+                verification="kubectl get pods -l app=biometric-processor -n production",
                 duration_minutes=1,
                 critical=True
             ))
@@ -401,7 +401,7 @@ class RollbackPlanGenerator:
         if domain_risks.get('api_compatibility_risk'):
             steps.append(RollbackStep(
                 step_number=step_number,
-                action="Test domain-specific API compatibility",
+                action="Test biometric API compatibility",
                 command="curl -X POST {api_endpoint}/verify -d @test_template.json",
                 verification="Check HTTP 200 response and valid verification result",
                 duration_minutes=2,
@@ -456,7 +456,7 @@ class RollbackPlanGenerator:
             "Check error rates are back to baseline levels",
             "Verify P95 latency is within acceptable limits",
             "Test critical user journeys manually",
-            "Verify domain-specific verification workflows (if applicable)",
+            "Verify biometric verification workflows (if applicable)",
             "Check template operations and compatibility (if applicable)",
             "Verify data integrity - run data validation checks",
             "Notify stakeholders of rollback completion",
@@ -477,7 +477,7 @@ class RollbackPlanGenerator:
         db_steps, next_step = self.generate_database_rollback_steps(analysis.get('database_migrations', []), next_step)
         infra_steps, next_step = self.generate_infrastructure_rollback_steps(analysis.get('infrastructure_changes', []), next_step)
         flag_steps = self.generate_feature_flag_steps(analysis.get('feature_flags', []))
-        domain_steps, _ = self.generate_domain_specific_steps(analysis, next_step)
+        domain_steps, _ = self.generate_biometric_steps(analysis, next_step)
 
         all_steps = app_steps + db_steps + infra_steps + domain_steps
 
@@ -597,12 +597,12 @@ Trigger rollback if ANY of these occur within {classification['estimated_time']}
         for strategy in analysis.get('risk_assessment', {}).get('mitigation_strategies', []):
             doc += f"- {strategy}\n"
 
-        if analysis.get('domain-specific_domain_risks'):
+        if analysis.get('biometric_domain_risks'):
             doc += """
-## Domain-Specific Considerations
+## Biometric Considerations
 
 """
-            domain_risks = analysis['domain-specific_domain_risks']
+            domain_risks = analysis['biometric_domain_risks']
             if domain_risks.get('algorithm_change_risk'):
                 doc += "- ⚠️ **Algorithm Change Risk**: Template compatibility must be verified post-rollback\n"
             if domain_risks.get('template_storage_risk'):
@@ -632,7 +632,7 @@ Trigger rollback if ANY of these occur within {classification['estimated_time']}
         app_steps, next_step = self.generate_application_rollback_steps(analysis.get('pull_requests', []))
         db_steps, next_step = self.generate_database_rollback_steps(analysis.get('database_migrations', []), next_step)
         infra_steps, next_step = self.generate_infrastructure_rollback_steps(analysis.get('infrastructure_changes', []), next_step)
-        domain_steps, _ = self.generate_domain_specific_steps(analysis, next_step)
+        domain_steps, _ = self.generate_biometric_steps(analysis, next_step)
 
         all_steps = app_steps + db_steps + infra_steps + domain_steps
 
@@ -642,8 +642,8 @@ Trigger rollback if ANY of these occur within {classification['estimated_time']}
                 component = "Database"
             elif "kubernetes" in step.command or "terraform" in step.command:
                 component = "Infrastructure"
-            elif "domain-specific" in step.action.lower():
-                component = "Domain-Specific"
+            elif "biometric" in step.action.lower():
+                component = "Biometric"
 
             csv_content += f"{step.step_number},{component},{step.action.replace(',', ';')},{step.command.replace(',', ';')},{step.duration_minutes},{step.critical},\n"
 
