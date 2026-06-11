@@ -137,18 +137,20 @@ class TemplateValidator {
   }
 
   private extractTemplateReferences(skillMdPath: string): string[] {
-    const content = readFileSync(skillMdPath, 'utf-8');
+    const raw = readFileSync(skillMdPath, 'utf-8');
+    // Strip fenced code blocks: meta-skills (e.g. lidr-command-development) show
+    // illustrative `templates/...` paths inside examples — those are not real refs.
+    const content = raw.replace(/```[\s\S]*?```/g, '');
     const references: string[] = [];
 
-    // Match templates/filename.md patterns
-    const templateRegex = /templates\/[^)]+\.md/g;
-    const matches = content.match(templateRegex) || [];
-
-    for (const match of matches) {
-      // Clean up the reference
-      const cleanRef = match.replace(/^templates\//, '');
-      if (!references.includes(cleanRef)) {
-        references.push(cleanRef);
+    // Match `templates/<file>.md`, but EXCLUDE:
+    //  - variable-prefixed illustrative paths (`${VAR}/templates/...`) → preceded by `}`
+    //  - wildcard/prose patterns (`templates/*.md`) → `*` is not in the filename class
+    const templateRegex = /(?:^|[^}\w])templates\/([a-z0-9._-]+\.md)/gi;
+    for (const m of content.matchAll(templateRegex)) {
+      const ref = m[1];
+      if (ref && !references.includes(ref)) {
+        references.push(ref);
       }
     }
 

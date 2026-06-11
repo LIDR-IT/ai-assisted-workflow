@@ -1,9 +1,9 @@
 ---
 name: lidr-tracking-integration
 id: tracking-integration
-version: "1.0.0"
-last_updated: "2026-04-06"
-updated_by: "TL: adaptive-skills-architecture"
+version: "1.0.1"
+last_updated: "2026-06-11"
+updated_by: "TL: template-reference fix"
 status: active
 phase: 1
 stage: analysis
@@ -357,9 +357,9 @@ class LinearAdapter(TrackingToolAdapter):
 
 ## References
 
-- Business Case Template: `templates/product-brief.md`
-- Kickoff Template: `templates/kickoff.md`
-- Gate Evaluation: `templates/gate-evaluation.md`
+- Business Case (upstream input): produced by the `lidr-business-case` skill
+- Kickoff (upstream input): produced by the `lidr-kickoff` skill
+- Gate Evaluation (upstream input): produced by the `lidr-gate-evaluation` skill
 - Tool Integrations Guide: `@docs/standards/tool-integrations.md`
 - Client Configuration: `src/data/client.ts`
 
@@ -367,4 +367,5 @@ class LinearAdapter(TrackingToolAdapter):
 
 | Versión | Fecha      | Autor                            | Cambios                                                                          |
 | ------- | ---------- | -------------------------------- | -------------------------------------------------------------------------------- |
+| 1.0.1   | 2026-06-11 | TL: template-reference fix       | Fix broken local template refs in References → point to the producing skills     |
 | 1.0.0   | 2026-04-06 | TL: adaptive-skills-architecture | Initial adaptive skill creation — replaces epic-jira with tool-agnostic approach |
