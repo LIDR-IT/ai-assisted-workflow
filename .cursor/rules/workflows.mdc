@@ -191,10 +191,13 @@ PRE-IMPLEMENTACIÓN (readiness = evidencia de Gate 3, ya no un command aparte)
 
 PHASE 3 — SOLUTIONING · stage sprint-planning (ex-Fase 4 Sprint Planning)
   PO ejecuta:
-    lidr-user-stories      → Genera US con BDD desde RFs
+    lidr-user-stories      → Genera US con BDD desde RFs (refina el esqueleto épica→story de
+                             bmad-create-epics-and-stories de G2; las US LIDR son el backlog
+                             comprometido que consume bmad-sprint-planning — no es un backlog paralelo)
   SM ejecuta:
-    lidr-sprint-capacity   → Calcula capacidad
-    lidr-refinement-notes  → Documenta refinement
+    lidr-sprint-capacity   → Calcula capacidad (input de bmad-sprint-planning: aporta la cifra de
+                             capacidad comprometible — productor→consumidor, no solapan)
+    lidr-refinement-notes  → Documenta refinement + checklist DoR (item bloqueante del G3)
   PO + TL ejecutan:
     (firman sprint commitment)
   PO ejecuta:
