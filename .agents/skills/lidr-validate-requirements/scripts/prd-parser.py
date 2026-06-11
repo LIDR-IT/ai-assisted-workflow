@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-{{CLIENT_NAME}} PRD Parser and Requirements Extractor
+LIDR PRD Parser and Requirements Extractor
 Parses a PRD to extract functionalities and NFR categories.
 
 Primary input is a single UNIFIED PRD (produced by `bmad-prd`), which contains
@@ -9,6 +9,16 @@ both the functional (F) and technical (T) sections in one document. Pass it via
 
 For backward compatibility with the old split-PRD layout, `--prd-funcional` and
 `--prd-tecnico` are still accepted as optional fallbacks.
+
+Domain configuration is DOMAIN-AGNOSTIC by default. LIDR is a multi-industry
+framework, so the built-in domain keyword set is empty: extraction relies on
+generic structure (sections, F-IDs, NFR categories) only. To bias extraction
+toward a specific industry, set domain_patterns from a config (the keywords are
+a soft heuristic used when scanning user journeys).
+
+An overridable EXAMPLE industry pack (biometric identity) is preserved below as
+the BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS constant. It is an example only — NOT the
+active default.
 """
 
 import re
@@ -18,6 +28,22 @@ from pathlib import Path
 from typing import Dict, List, Set, Optional
 from dataclasses import dataclass, asdict
 import yaml
+
+# ---------------------------------------------------------------------------
+# OVERRIDABLE EXAMPLE — biometric-identity industry pack.
+#
+# This is an EXAMPLE of an industry-specific domain keyword set, NOT the active
+# default. The parser's default `self.domain_patterns` is empty (domain-agnostic);
+# assign this constant in code, or load equivalent keywords from a config, to
+# bias the user-journey heuristic toward a biometric-identity context.
+# ---------------------------------------------------------------------------
+BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS = {
+    'biometric': ['biometric', 'facial', 'fingerprint', 'far', 'frr', 'liveness'],
+    'document': ['passport', 'id document', 'ocr', 'dni', 'kyc', 'onboarding'],
+    'voice': ['voice', 'vocal', 'speech', 'audio'],
+    'behavioral': ['behavioral', 'pattern', 'typing'],
+    'platform': ['platform', 'api', 'gateway', 'orchestrator'],
+}
 
 @dataclass
 class PRDFunctionality:
@@ -62,16 +88,13 @@ class PRDParser:
         self.nfr_categories: Dict[str, NFRCategory] = {}
         self.metadata = PRDMetadata("", "", [], [], "")
 
-        # {{CLIENT_NAME}} domain patterns (template-based)
-        self.domain_patterns = {
-            '{{VERIFICATION_METHOD}}': ['{{PRIMARY_VERIFICATION_METHOD}}', '{{VERIFICATION_TYPE}}', '{{ACCURACY_METRIC}}', '{{DATA_CAPTURE_TYPE}}', '{{PRIMARY_ALGORITHM}}'],
-            '{{DOCUMENT_TYPE}}': ['{{SENSITIVE_DATA_TYPE}}', '{{DATA_PROCESSING_METHOD}}', '{{DOCUMENT_FORMAT_1}}', '{{DOCUMENT_FORMAT_2}}', '{{VERIFICATION_TYPE}}_document', 'id'],
-            '{{AUDIO_TYPE}}': ['{{AUDIO_VERIFICATION_METHOD}}', 'vocal', 'speech', 'audio'],
-            '{{PATTERN_TYPE}}': ['behavioral', '{{PRIMARY_VERIFICATION_METHOD}}', 'pattern', 'typing'],
-            'platform': ['platform', 'api', 'gateway', 'orchestrator']
-        }
+        # DOMAIN-AGNOSTIC default: no industry keyword bias. The user-journey
+        # heuristic that consumes this map is a no-op until populated. Assign
+        # BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS (or load equivalent keywords from a
+        # config) to bias extraction toward a specific industry.
+        self.domain_patterns = {}
 
-        # Mandatory NFR categories for domain-specific systems
+        # Mandatory NFR categories — generic baseline for any production system.
         self.mandatory_nfr_categories = [
             'security', 'performance', 'availability', 'privacy', 'compliance'
         ]
@@ -119,7 +142,7 @@ class PRDParser:
             # Parse section 6: Technical Considerations
             self._parse_technical_considerations(content)
 
-            # Validate mandatory categories for {{CLIENT_NAME}} domain-specific projects
+            # Validate mandatory NFR categories for the project
             self._validate_mandatory_nfrs()
 
             print(f"✅ Extracted {len(self.nfr_categories)} NFR categories from the Technical PRD")
@@ -345,7 +368,7 @@ class PRDParser:
             ],
             'compliance': [
                 r'(?:compliance|cumplimiento|regulación|regulation)',
-                r'(?:iso|sox|pci|gdpr|eidas)',
+                r'(?:iso|sox|pci|gdpr|hipaa)',
                 r'(?:auditoría|audit|legal)'
             ],
             'reliability': [
@@ -462,7 +485,7 @@ class PRDParser:
                         )
 
     def _validate_mandatory_nfrs(self):
-        """Validate that mandatory NFR categories are present for domain-specific projects"""
+        """Validate that mandatory NFR categories are present for the project"""
         missing_mandatory = []
 
         for category in self.mandatory_nfr_categories:
@@ -470,14 +493,14 @@ class PRDParser:
                 missing_mandatory.append(category)
 
         if missing_mandatory:
-            print(f"⚠️  Missing mandatory NFR categories for domain-specific project: {', '.join(missing_mandatory)}")
+            print(f"⚠️  Missing mandatory NFR categories: {', '.join(missing_mandatory)}")
 
             # Add placeholders for missing mandatory categories
             for category in missing_mandatory:
                 self.nfr_categories[category] = NFRCategory(
                     name=category,
                     section="PRD-T (Missing - Auto-generated)",
-                    description=f"MISSING: This category is mandatory for {{CLIENT_NAME}} domain-specific projects",
+                    description=f"MISSING: This category is mandatory for production projects",
                     requirements=[f"PLACEHOLDER: Define {category} requirements"],
                     mandatory=True
                 )
@@ -620,7 +643,7 @@ class PRDParser:
         if len([f for f in self.functionalities.values() if f.priority == "High"]) == 0:
             content += "- ⚠️  No high priority functionalities identified - verify prioritization\n"
 
-        content += "\n---\n\n*Generated by {{CLIENT_NAME}} PRD Parser*"
+        content += "\n---\n\n*Generated by the LIDR PRD Parser*"
 
         output_path.write_text(content, encoding='utf-8')
         print(f"✅ Summary report generated: {output_path}")
@@ -628,7 +651,7 @@ class PRDParser:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="{{CLIENT_NAME}} PRD Parser and Requirements Extractor")
+    parser = argparse.ArgumentParser(description="LIDR PRD Parser and Requirements Extractor")
     parser.add_argument("--prd", help="Path to the UNIFIED PRD file (bmad-prd output, F+T in one doc) — preferred")
     parser.add_argument("--prd-funcional", help="[Backward-compat] Path to the Functional PRD file (split layout)")
     parser.add_argument("--prd-tecnico", help="[Backward-compat] Path to the Technical PRD file (split layout)")
@@ -639,7 +662,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 {{CLIENT_NAME}} PRD Parser - Requirements Extraction")
+    print("🚀 LIDR PRD Parser - Requirements Extraction")
     print("=" * 50)
 
     parser_instance = PRDParser()

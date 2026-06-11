@@ -184,7 +184,11 @@ function extractMasterEpic(content: string): EpicData | null {
   if (!masterMatch) return null;
 
   const title = masterMatch[1];
-  const description = extractSectionContent(content, "Descripción") || "";
+  // Language-neutral: accept the configured language's "Description" heading
+  // (English default, or any client-language equivalent). Structure, not a
+  // single hardcoded language literal.
+  const description =
+    extractSectionContent(content, "(?:Description|Descripción|Descrição|Beschreibung)") || "";
   const acceptanceCriteria = extractAcceptanceCriteria(content);
 
   return {
@@ -238,7 +242,10 @@ function extractSectionContent(content: string, sectionTitle: string): string | 
 
 function extractAcceptanceCriteria(content: string): string[] {
   const criteria: string[] = [];
-  const criteriaMatch = content.match(/### Criterios de Aceptación([\s\S]*?)(?=###|$)/);
+  // Language-neutral heading match: English default + client-language equivalents.
+  const criteriaMatch = content.match(
+    /###\s*(?:Acceptance Criteria|Criterios de Aceptación|Critérios de Aceitação|Critères d'acceptation|Akzeptanzkriterien)([\s\S]*?)(?=###|$)/i
+  );
 
   if (criteriaMatch) {
     const lines = criteriaMatch[1].split("\n");
@@ -263,16 +270,19 @@ function extractLinkedRequirements(content: string): string[] {
 }
 
 function extractSize(content: string): number {
+  // Language-neutral label match: English "Size" default + client-language equivalents.
   const sizeMatch =
-    content.match(/Tamaño:\s*(\d+)/i) ||
-    content.match(/Size:\s*(\d+)/i) ||
+    content.match(/(?:Size|Tamaño|Tamanho|Taille|Größe):\s*(\d+)/i) ||
     content.match(/(\d+)\s*story points/i);
   return sizeMatch ? parseInt(sizeMatch[1]) : 0;
 }
 
 function extractDependencies(content: string): string[] {
   const deps: string[] = [];
-  const depsMatch = content.match(/Dependencias:\s*(.+)/i);
+  // Language-neutral label match: English "Dependencies" default + equivalents.
+  const depsMatch = content.match(
+    /(?:Dependencies|Dependencias|Dependências|Dépendances|Abhängigkeiten):\s*(.+)/i
+  );
   if (depsMatch) {
     deps.push(...depsMatch[1].split(",").map((d) => d.trim()));
   }
@@ -286,17 +296,21 @@ function extractDescription(content: string): string {
 }
 
 function extractPhase(content: string): number {
-  const phaseMatch = content.match(/Fase:\s*(\d+)/i);
+  // Language-neutral label match: English "Phase" default + equivalents.
+  const phaseMatch = content.match(/(?:Phase|Fase|Phase|Phase):\s*(\d+)/i);
   return phaseMatch ? parseInt(phaseMatch[1]) : 4; // Default to Phase 4 (Sprint Planning)
 }
 
 function extractPriority(content: string): "high" | "medium" | "low" {
-  const priorityMatch = content.match(/Prioridad:\s*(alta|media|baja|high|medium|low)/i);
+  // Language-neutral label + value match: English default + client-language equivalents.
+  const priorityMatch = content.match(
+    /(?:Priority|Prioridad|Prioridade|Priorité|Priorität):\s*(alta|media|baja|alto|baixo|haute|basse|hoch|niedrig|high|medium|low)/i
+  );
   if (!priorityMatch) return "medium";
 
   const priority = priorityMatch[1].toLowerCase();
-  if (priority === "alta" || priority === "high") return "high";
-  if (priority === "baja" || priority === "low") return "low";
+  if (["alta", "alto", "haute", "hoch", "high"].includes(priority)) return "high";
+  if (["baja", "baixo", "basse", "niedrig", "low"].includes(priority)) return "low";
   return "medium";
 }
 

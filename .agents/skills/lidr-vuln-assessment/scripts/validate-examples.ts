@@ -5,15 +5,24 @@
  * Validates that vuln-assessment skill examples contain proper structure
  * for application security assessment with SAST/SCA scanner integration.
  *
+ * The DEFAULT validation set is DOMAIN-AGNOSTIC (scan results, risk assessment,
+ * vulnerability details, remediation, dependency analysis, compliance mapping,
+ * reporting). LIDR is a multi-industry framework, so no industry-specific rule
+ * is applied by default.
+ *
+ * An overridable EXAMPLE industry pack (biometric identity) is preserved below
+ * as BIOMETRIC_DOMAIN_PACK. It is NOT spread into the default validationCases —
+ * apply it only behind the explicit flag LIDR_DOMAIN_PACK==='biometric'.
+ *
  * Validates:
  * - Vulnerability scan results analysis and interpretation
  * - Risk assessment and prioritization methodology
  * - SAST/SCA findings with severity classification
  * - Remediation recommendations with implementation guidance
- * - Biometric domain-specific security considerations
  * - Compliance mapping and regulatory requirements
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *   (optional) LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync, readdirSync } from "fs";
@@ -176,7 +185,15 @@ const REMEDIATION_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_SECURITY_RULES: ValidationRule[] = [
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity industry pack.
+
+   This is an EXAMPLE of an industry override, NOT the active default. It is
+   intentionally NOT spread into the default validationCases below. Apply it
+   only behind the explicit flag LIDR_DOMAIN_PACK==='biometric'. For the
+   domain-agnostic (default) run the behavior is unchanged.
+──────────────────────────────────────────────────────────────────── */
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
   {
     name: "Biometric Data Security",
     description: "Must address biometric data handling security vulnerabilities",
@@ -309,6 +326,11 @@ const REPORTING_RULES: ValidationRule[] = [
   },
 ];
 
+// Explicit opt-in flag for the biometric example industry pack (see
+// BIOMETRIC_DOMAIN_PACK above). Default (unset) keeps the DOMAIN-AGNOSTIC set.
+const DOMAIN_PACK_RULES: ValidationRule[] =
+  process.env.LIDR_DOMAIN_PACK === "biometric" ? BIOMETRIC_DOMAIN_PACK : [];
+
 /* ────────────────────────────────────────────────────────────────────
    VALIDATION ENGINE
 ──────────────────────────────────────────────────────────────────── */
@@ -397,10 +419,10 @@ async function main(): Promise<void> {
       ...RISK_ASSESSMENT_RULES,
       ...VULNERABILITY_DETAILS_RULES,
       ...REMEDIATION_RULES,
-      ...BIOMETRIC_SECURITY_RULES,
       ...DEPENDENCY_ANALYSIS_RULES,
       ...COMPLIANCE_MAPPING_RULES,
       ...REPORTING_RULES,
+      ...DOMAIN_PACK_RULES,
     ],
     description: `Vulnerability Assessment: ${filePath.split("/").pop()?.replace(".md", "") || "Unknown"}`,
   }));

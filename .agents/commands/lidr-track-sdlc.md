@@ -1,7 +1,7 @@
 ---
 description: Centralized SDLC tracking with sdlc-tracking.yaml management
 argument-hint: [project-id] [action]
-allowed-tools: Read, Write, Edit, Bash(git:*), Bash(jq:*), AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash(git:*), Bash(jq:*), Skill(lidr-sdlc-tracking), Skill(lidr-external-sync), AskUserQuestion
 model: sonnet
 ---
 
@@ -48,7 +48,7 @@ CHANGELOG:
 
 # Track SDLC $1 $2
 
-> **Relationship (de-duplication):** The heavy logic lives in skills — **`lidr-sdlc-tracking`** owns the `sdlc-tracking.yaml` (init, status, health) and **`lidr-external-sync`** owns bidirectional Jira/Linear/Notion sync. This command is the thin interactive/portfolio entry point the user runs; it invokes those skills rather than re-implementing tracking or sync. When scripting, prefer the skills directly.
+> **Relationship (de-duplication):** The heavy logic lives in skills — **`lidr-sdlc-tracking`** owns the `sdlc-tracking.yaml` (init, status, health) and **`lidr-external-sync`** owns bidirectional sync with the bound {{TRACKING_TOOL}}. This command is the thin interactive/portfolio entry point the user runs; it invokes those skills rather than re-implementing tracking or sync. When scripting, prefer the skills directly.
 
 Load context from rules FIRST:
 
@@ -189,19 +189,12 @@ metrics:
 
 risks: []
 
+# Bound tool is resolved by lidr-external-sync from the registry ({{TRACKING_TOOL}}).
 external_sync:
-  jira:
-    project_key: "[DERIVED FROM PROJECT-ID]"
-    epic_id: null
-    last_sync: null
-  linear:
-    team_id: null
-    project_id: null
-    last_sync: null
-  notion:
-    database_id: null
-    page_id: null
-    last_sync: null
+  tracking_tool: "{{TRACKING_TOOL}}" # resolved via lidr-external-sync registry
+  project_key: "[DERIVED FROM PROJECT-ID]"
+  external_ref_id: null # epic/project/page id in the bound tool
+  last_sync: null
 
 automation:
   ci_cd_health: "green"
@@ -239,7 +232,7 @@ This folder contains the standardized implementation tracking structure:
 ## Integration
 
 - **Main tracking**: `../../sdlc-tracking.yaml`
-- **External tools**: Jira, Linear, Notion (bidirectional sync)
+- **External tools**: the bound {{TRACKING_TOOL}} (bidirectional sync via lidr-external-sync)
 - **Commands**: `/lidr-implement-ticket`, `/lidr-advance-gate`, `/lidr-track-sdlc`
 - **Automation**: CI/CD pipeline updates, automated handoffs
 
@@ -308,17 +301,15 @@ If action == "sync":
 
 ### 5a: Validate External Connections
 
-Check connectivity to configured external tools:
+Check connectivity to the configured external tool via lidr-external-sync, which resolves {{TRACKING_TOOL}} from the registry:
 
-- Jira: Test API connection with project_key
-- Linear: Test API connection with team_id
-- Notion: Test database access with database_id
+- Test the connection using the bound tool's project/team/database key from `external_sync`
 
 ### 5b: Bidirectional Synchronization
 
-**From External → Tracking:**
+**From External → Tracking:** (via lidr-external-sync, resolves {{TRACKING_TOOL}})
 
-- Pull epic/story status updates from Jira/Linear
+- Pull epic/story status updates from the bound tracking tool
 - Pull sprint assignments and velocity metrics
 - Pull bug counts and resolution data
 - Update tracking YAML with external data

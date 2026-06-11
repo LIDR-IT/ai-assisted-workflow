@@ -3,7 +3,7 @@
 Changelog Generator for Release Notes Automation
 ===============================================
 
-Part of {{CLIENT_NAME}} SDLC Automation Suite
+Part of the LIDR SDLC Automation Suite
 Transforms git analysis into comprehensive release notes with business impact
 
 This script generates release notes from git analysis results:
@@ -20,6 +20,16 @@ Dependencies:
     - git analysis results from git-analyzer.py
     - release note templates
     - business impact classification patterns
+
+Domain configuration is DOMAIN-AGNOSTIC by default. LIDR is a multi-industry
+framework, so the built-in business-impact and domain pattern sets are generic
+(cross-industry). To target a specific industry, pass a domain pattern pack via
+--domain-patterns (or BusinessImpactClassifier(domain_patterns=...)).
+
+An overridable EXAMPLE industry pack (biometric identity) is preserved as the
+BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS constant and as a sibling file
+`changelog-generator.biometric-example.json` (same schema as any override). It is
+an example only — NOT the active default.
 """
 
 import os
@@ -81,14 +91,16 @@ class ReleaseNotes:
 class BusinessImpactClassifier:
     """Classifier for business impact of changes.
 
-    The classifier is industry-agnostic. General (cross-industry) business
-    impact categories live in ``BUSINESS_IMPACT_PATTERNS``. Industry-specific
-    categories are kept in ``DEFAULT_DOMAIN_PATTERNS`` and act as an
-    *overridable default* — an "industry pack" example. To adapt the tool to a
-    different vertical (fintech, healthcare, e-commerce, etc.), pass a
-    ``domain_patterns`` dict to the constructor (or point it at a JSON file via
-    ``domain_patterns_path``) without editing this file. When no override is
-    provided, the default set is used so behavior is unchanged.
+    The classifier is DOMAIN-AGNOSTIC. General (cross-industry) business impact
+    categories live in ``BUSINESS_IMPACT_PATTERNS``. The active default domain
+    categories in ``DEFAULT_DOMAIN_PATTERNS`` are also generic / cross-industry
+    (core capability, compliance, integration). To specialize the tool for a
+    specific vertical (fintech, healthcare, biometric identity, e-commerce,
+    etc.), pass a ``domain_patterns`` dict to the constructor (or point it at a
+    JSON file via ``domain_patterns_path``) without editing this file — see the
+    overridable ``BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS`` constant and the sibling
+    ``changelog-generator.biometric-example.json`` for an example. When no
+    override is provided, the generic default set is used.
     """
 
     BUSINESS_IMPACT_PATTERNS = {
@@ -97,9 +109,9 @@ class BusinessImpactClassifier:
             'user_facing': True,
             'patterns': [
                 r'new.*feature', r'add.*functionality', r'introduce.*capability',
-                r'support.*for', r'enable.*users', r'domain-specific.*enhancement',
+                r'support.*for', r'enable.*users', r'capability.*enhancement',
                 r'authentication.*improvement', r'onboarding.*flow',
-                r'verification.*speed', r'accuracy.*improvement'
+                r'processing.*speed', r'accuracy.*improvement'
             ],
             'description': 'New features and capabilities that directly benefit users'
         },
@@ -194,25 +206,65 @@ class BusinessImpactClassifier:
     }
 
     # ------------------------------------------------------------------ #
-    # OVERRIDABLE DEFAULT — example "industry pack".                       #
+    # DOMAIN-AGNOSTIC DEFAULT — generic cross-industry pack.                #
     # ------------------------------------------------------------------ #
-    # This default set ships with a biometric / identity-verification     #
-    # example (liveness, anti-spoofing, EER/FAR/FRR, regulatory packs).    #
-    # It is ONLY an example: provide your own ``domain_patterns`` dict     #
-    # (or a JSON file via ``domain_patterns_path``) to the constructor to  #
-    # adapt the generator to any other industry without editing this file.#
-    # The matching mechanism in ``_classify_single_change`` is the same    #
-    # regardless of which pattern set is active.                           #
+    # LIDR is a multi-industry framework, so this active default set is     #
+    # DOMAIN-AGNOSTIC: it only adds generic, cross-industry impact          #
+    # categories (core capabilities, regulatory compliance, integrations).  #
+    # Provide your own ``domain_patterns`` dict (or a JSON file via          #
+    # ``domain_patterns_path``) to the constructor to specialize the         #
+    # generator for a specific industry without editing this file. The       #
+    # matching mechanism in ``_classify_single_change`` is the same          #
+    # regardless of which pattern set is active.                            #
     DEFAULT_DOMAIN_PATTERNS = {
+        'core_capability_improvements': {
+            'priority': 1,
+            'user_facing': True,
+            'patterns': [
+                r'accuracy.*improvement', r'precision.*improvement',
+                r'core.*capability', r'engine.*optimization',
+                r'quality.*improvement', r'processing.*speed'
+            ],
+            'description': 'Core capability accuracy and performance improvements'
+        },
+        'compliance_updates': {
+            'priority': 2,
+            'user_facing': False,
+            'patterns': [
+                r'gdpr.*compliance', r'regulatory.*compliance', r'data.*protection',
+                r'consent.*management', r'audit.*requirement', r'privacy.*update'
+            ],
+            'description': 'Regulatory compliance and data protection updates'
+        },
+        'integration_enhancements': {
+            'priority': 2,
+            'user_facing': False,
+            'patterns': [
+                r'sdk.*integration', r'api.*integration', r'platform.*integration',
+                r'mobile.*sdk', r'web.*integration', r'third.*party.*integration'
+            ],
+            'description': 'Integration and SDK improvements'
+        }
+    }
+
+    # ------------------------------------------------------------------ #
+    # OVERRIDABLE EXAMPLE — biometric-identity industry pack.              #
+    # ------------------------------------------------------------------ #
+    # This is an EXAMPLE of an industry override, NOT the active default.  #
+    # It mirrors the schema of ``DEFAULT_DOMAIN_PATTERNS`` and can be       #
+    # passed to the constructor as ``domain_patterns`` (or shipped as a     #
+    # JSON file and loaded via ``domain_patterns_path``) to specialize the  #
+    # generator for a biometric-identity context.                          #
+    BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS = {
         'algorithm_improvements': {
             'priority': 1,
             'user_facing': True,
             'patterns': [
                 r'algorithm.*accuracy', r'far.*improvement', r'frr.*reduction',
                 r'eer.*optimization', r'liveness.*detection', r'anti.*spoofing',
-                r'template.*matching', r'domain-specific.*quality'
+                r'template.*matching', r'biometric.*quality'
             ],
-            'description': 'domain-specific algorithm accuracy and performance improvements'
+            'description': 'Biometric algorithm accuracy and performance improvements'
         },
         'compliance_updates': {
             'priority': 2,
@@ -228,10 +280,10 @@ class BusinessImpactClassifier:
             'priority': 2,
             'user_facing': False,
             'patterns': [
-                r'sdk.*integration', r'api.*domain-specific', r'platform.*integration',
+                r'sdk.*integration', r'api.*biometric', r'platform.*integration',
                 r'mobile.*sdk', r'web.*integration', r'third.*party.*integration'
             ],
-            'description': 'Integration and SDK improvements for domain-specific capabilities'
+            'description': 'Integration and SDK improvements for biometric capabilities'
         }
     }
 
@@ -402,15 +454,15 @@ class ChangelogGenerator:
         summary_parts.append(".")
 
         # Add a highlight when a high-impact change comes from the active
-        # industry pack (domain patterns) rather than the generic business
+        # domain pack (domain patterns) rather than the generic business
         # categories. The set of domain category keys is derived from the
         # configured ``domain_patterns`` so this stays industry-agnostic: with
-        # the bundled default pack this matches the example domain categories
-        # (e.g. ``algorithm_improvements``); with a custom pack it matches that
-        # pack's categories instead — no code change required.
+        # the neutral default pack this matches the generic domain categories
+        # (e.g. ``core_capability_improvements``); with a custom/industry pack it
+        # matches that pack's categories instead — no code change required.
         domain_category_keys = set(self.classifier.domain_patterns.keys())
         if any(c.category in domain_category_keys for c in high_impact_categories):
-            summary_parts.append(" Key highlights include enhanced domain-specific performance and improved user-facing workflows.")
+            summary_parts.append(" Key highlights include enhanced core capability performance and improved user-facing workflows.")
 
         return ''.join(summary_parts)
 
@@ -469,6 +521,7 @@ class ChangelogGenerator:
             'critical_fixes': '🔧 Critical Fixes',
             'bug_fixes': '🐛 Bug Fixes',
             'performance': '⚡ Performance',
+            'core_capability_improvements': '🎯 Core Capability Improvements',
             'algorithm_improvements': '🎯 Algorithm Improvements',
             'compliance_updates': '📋 Compliance Updates',
             'security_enhancements': '🔒 Security',
@@ -491,7 +544,7 @@ class ChangelogGenerator:
         technical_notes = []
         if category.priority <= 2:
             technical_notes.append(f"Includes {len(category.changes)} changes in this area")
-            if category.category == 'algorithm_improvements':
+            if category.category in ('core_capability_improvements', 'algorithm_improvements'):
                 technical_notes.append("Performance impact: Improved accuracy and reduced processing time")
             elif category.category == 'security_enhancements':
                 technical_notes.append("Security impact: Enhanced data protection and compliance")
@@ -551,8 +604,8 @@ class ChangelogGenerator:
         if security_changes:
             testing_requirements.append("Perform security validation testing")
 
-        if any('domain-specific' in str(change).lower() for change in changes):
-            testing_requirements.append("Validate domain-specific algorithm performance benchmarks")
+        if any('core' in str(change).lower() for change in changes):
+            testing_requirements.append("Validate core capability performance benchmarks")
 
         if any('performance' in str(change).lower() for change in changes):
             testing_requirements.append("Execute performance benchmarks and load testing")
@@ -731,7 +784,7 @@ This release includes changes that may require coordination with your technical 
 **For Technical Details**: See `CHANGELOG-{release_notes.version}.md`
 **For Deployment**: See `deployment-guide-{release_notes.version}.md`
 
-*Generated on {datetime.now().strftime("%Y-%m-%d")} by {{CLIENT_NAME}} Release Notes Generator*
+*Generated on {datetime.now().strftime("%Y-%m-%d")} by the LIDR Release Notes Generator*
 """)
 
     def _generate_technical_changelog(self, file_path: Path, release_notes: ReleaseNotes):
@@ -790,7 +843,7 @@ This release includes changes that may require coordination with your technical 
             for change_type, count in release_notes.statistics['changes_by_type'].items():
                 f.write(f"- **{change_type.title()}**: {count}\n")
 
-            f.write(f"\n---\n\n*Generated by {{CLIENT_NAME}} Changelog Generator on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*\n")
+            f.write(f"\n---\n\n*Generated by the LIDR Changelog Generator on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*\n")
 
     def _generate_deployment_guide(self, file_path: Path, release_notes: ReleaseNotes):
         """Generate deployment guide"""

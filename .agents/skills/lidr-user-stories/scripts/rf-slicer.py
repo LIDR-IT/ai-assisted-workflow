@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 """
-{{CLIENT_NAME}} RF Slicer and User Story Generator
+RF Slicer and User Story Generator
 Automatically slices large RFs into INVEST-compliant User Stories with BDD scenarios.
+
+Domain-agnostic by default. The active vocabulary (``DEFAULT_DOMAIN_CONFIG``)
+uses generic risk/test/dependency/security patterns that fit any industry. To
+target a specific industry, supply an override via the ``domain_config=``
+argument to ``RFSlicer(...)`` or point ``LIDR_DOMAIN_CONFIG`` at a JSON file
+(any subset of keys; missing keys fall back to the generic default).
+
+A ready-made biometric / identity-verification pack ships as an overridable
+example in the ``BIOMETRIC_EXAMPLE_DOMAIN_CONFIG`` constant below (and as a
+sibling ``rf-slicer.biometric-example.json``); it is NOT the active default.
 """
 
 import json
@@ -85,37 +95,80 @@ class UserStory:
     total_slices: int = 1
 
 # ---------------------------------------------------------------------------
-# Industry pack (overridable default)
+# Domain pack (overridable default)
 #
-# LIDR is a multi-industry framework, so the concrete domain vocabulary below
-# is only an EXAMPLE industry pack (here: biometric / identity verification).
-# It is the fallback used when no override is supplied, which keeps behavior
-# byte-for-byte identical to previous versions. To target another industry,
-# pass `domain_config=` to RFSlicer(...) or point LIDR_DOMAIN_CONFIG at a JSON
-# file with any subset of these keys; missing keys fall back to this default.
+# LIDR is a multi-industry framework, so the concrete vocabulary below is a
+# DOMAIN-AGNOSTIC default: generic risk / test / dependency / security patterns
+# that fit any industry. It is the fallback used when no override is supplied.
+# To target a specific industry, pass `domain_config=` to RFSlicer(...) or point
+# LIDR_DOMAIN_CONFIG at a JSON file with any subset of these keys; missing keys
+# fall back to this default. A biometric pack ships as an overridable example
+# (BIOMETRIC_EXAMPLE_DOMAIN_CONFIG, below) but is NOT the active default.
 #
 # Keys:
 #   patterns             -> category -> list of matching keywords
 #   complexity_keywords  -> keywords that bump domain complexity hours
-#   complexity_factor    -> keyword list for the "Domain-Specific Processing" factor
+#   complexity_factor    -> keyword list for the "Specialized Processing" factor
 #   phrases              -> neutral business-value / action strings (see usage)
 # ---------------------------------------------------------------------------
 DEFAULT_DOMAIN_CONFIG = {
-    # Example industry pack: biometric / identity verification.
+    # Domain-agnostic default vocabulary (no industry-specific terms).
     'patterns': {
         'onboarding': ['registration', 'enrollment', 'signup', 'alta'],
         'authentication': ['login', 'verify', 'authenticate', 'verificar'],
-        'document_processing': ['ocr', 'document', 'dni', 'passport', '{{PRODUCT_NAME_1}}d'],
-        'facial_recognition': ['face', 'facial', 'liveness', '{{PRODUCT_NAME_1}}', 'selfie'],
+        'data_processing': ['ingest', 'parse', 'transform', 'document', 'record'],
+        'reporting': ['report', 'dashboard', 'analytics', 'metrics', 'export'],
+        'integration': ['api', 'webhook', 'sync', 'connector', 'service'],
+        'admin_operations': ['admin', 'configure', 'manage', 'dashboard'],
+    },
+    # Keywords that signal heavy processing (extra estimation hours).
+    'complexity_keywords': ['algorithm', 'pipeline', 'specialized', 'realtime', 'processing', 'template'],
+    # Keyword list backing the "Specialized Processing" complexity factor.
+    'complexity_factor': ['specialized', 'algorithm', 'pipeline', 'realtime', 'template'],
+    # Neutral business-value / action phrases inferred when the RF does not
+    # state them explicitly. Override these to add industry-specific wording.
+    'phrases': {
+        'value_verification': "verify the user's identity securely and quickly",
+        'value_onboarding': "enable an efficient and secure user onboarding process",
+        'value_security': "protect against fraud and comply with security regulations",
+        'value_default': "improve the user experience in the system",
+        'value_security_factor': "guarantee the security and protection of user data",
+        'value_performance_factor': "obtain fast and efficient results in the process",
+        'value_compliance_factor': "comply with privacy and data protection regulations",
+        'value_generic_factor': "improve the user experience and security in the system",
+        'action_register': 'register the required data',
+        'action_capture': 'capture the required information',
+        'action_analyze': 'analyze the data',
+        'action_facial': 'verify the user identity',
+        'action_document': 'process the document',
+        'action_voice': 'verify the user identity',
+        'action_default': 'use the functionality',
+    },
+}
+
+
+# ---------------------------------------------------------------------------
+# Overridable EXAMPLE: biometric / identity-verification industry pack.
+#
+# This is a ready-made override illustrating how to specialize the generic
+# default for a concrete domain. It is NOT applied automatically. To use it:
+#
+#     slicer = RFSlicer(domain_config=BIOMETRIC_EXAMPLE_DOMAIN_CONFIG)
+#
+# or copy it into a JSON file and point LIDR_DOMAIN_CONFIG at it (a sibling
+# `rf-slicer.biometric-example.json` is provided for that purpose).
+# ---------------------------------------------------------------------------
+BIOMETRIC_EXAMPLE_DOMAIN_CONFIG = {
+    'patterns': {
+        'onboarding': ['registration', 'enrollment', 'signup', 'alta'],
+        'authentication': ['login', 'verify', 'authenticate', 'verificar'],
+        'document_processing': ['ocr', 'document', 'dni', 'passport', 'id-document'],
+        'facial_recognition': ['face', 'facial', 'liveness', 'selfie'],
         'voice_verification': ['voice', 'vocal', 'speech', 'audio'],
         'admin_operations': ['admin', 'configure', 'manage', 'dashboard'],
     },
-    # Keywords that signal domain-heavy processing (extra estimation hours).
-    'complexity_keywords': ['facial', 'voice', 'domain-specific', 'liveness', 'ocr', 'template'],
-    # Keyword list backing the "Domain-Specific Processing" complexity factor.
-    'complexity_factor': ['domain-specific', 'facial', 'voice', 'liveness', 'template'],
-    # Neutral business-value / action phrases inferred when the RF does not
-    # state them explicitly. Override these to drop industry-specific wording.
+    'complexity_keywords': ['facial', 'voice', 'biometric', 'liveness', 'ocr', 'template'],
+    'complexity_factor': ['biometric', 'facial', 'voice', 'liveness', 'template'],
     'phrases': {
         'value_verification': "verify the user's identity securely and quickly",
         'value_onboarding': "enable an efficient and secure user onboarding process",
@@ -137,15 +190,15 @@ DEFAULT_DOMAIN_CONFIG = {
 
 
 def _load_domain_config(domain_config: Optional[Dict] = None) -> Dict:
-    """Resolve the active industry pack.
+    """Resolve the active domain pack.
 
     Resolution order (later steps only fill keys not already provided):
       1. explicit ``domain_config`` argument
       2. JSON file referenced by the ``LIDR_DOMAIN_CONFIG`` env variable
-      3. ``DEFAULT_DOMAIN_CONFIG`` (the example biometric industry pack)
+      3. ``DEFAULT_DOMAIN_CONFIG`` (the domain-agnostic default)
 
     Any subset of keys may be supplied; missing keys fall back to the default,
-    so an empty/absent override reproduces the original behavior exactly.
+    so an empty/absent override keeps the generic behavior.
     """
     resolved: Dict = {key: value for key, value in DEFAULT_DOMAIN_CONFIG.items()}
 
@@ -174,13 +227,13 @@ def _load_domain_config(domain_config: Optional[Dict] = None) -> Dict:
 
 
 class RFSlicer:
-    def __init__(self, project_code: str = "{{CLIENT_CODE_UPPER}}", domain_config: Optional[Dict] = None):
+    def __init__(self, project_code: str = "PROJ", domain_config: Optional[Dict] = None):
         self.project_code = project_code
         self.rfs: Dict[str, RequirementFunction] = {}
         self.user_stories: Dict[str, UserStory] = {}
 
-        # Active industry pack (overridable default — see DEFAULT_DOMAIN_CONFIG).
-        # With no override this reproduces the previous biometric vocabulary.
+        # Active domain pack (overridable default — see DEFAULT_DOMAIN_CONFIG).
+        # With no override this uses the domain-agnostic generic vocabulary.
         self._domain_config = _load_domain_config(domain_config)
 
         # Domain category -> matching keywords (overridable default).
@@ -201,7 +254,7 @@ class RFSlicer:
             SlicingPattern.ACCEPTANCE_CRITERIA: self._slice_by_acceptance_criteria
         }
 
-        # Standard DoD items for {{CLIENT_NAME}}
+        # Standard DoD items
         self.standard_dod = [
             "Code review approved (minimum 1 peer + Tech Lead)",
             "Unit tests pass (coverage >= 80% on business logic)",
@@ -357,7 +410,7 @@ class RFSlicer:
         domain_factor = 0
         content_lower = content.lower() + title.lower()
 
-        # domain-specific processing is more complex (keywords overridable via industry pack)
+        # specialized processing is more complex (keywords overridable via domain pack)
         domain_keywords = self.domain_keywords
         if any(keyword in content_lower for keyword in domain_keywords):
             domain_factor += 4
@@ -383,7 +436,7 @@ class RFSlicer:
         content_lower = content.lower()
 
         complexity_indicators = {
-            'Domain-Specific Processing': self.domain_complexity_factor_keywords,
+            'Specialized Processing': self.domain_complexity_factor_keywords,
             'Real-time Requirements': ['real-time', 'instant', 'immediate', 'live'],
             'Security Requirements': ['encrypt', 'security', 'secure', 'auth', 'crypto'],
             'Compliance Requirements': ['gdpr', 'compliance', 'regulation', 'audit', 'eidas'],
@@ -405,7 +458,7 @@ class RFSlicer:
         """Extract user personas/actors from RF content"""
         personas = []
 
-        # Common {{CLIENT_NAME}} personas
+        # Common personas
         persona_patterns = [
             r'(?:usuario|user)(?:\s+(?:final|end))?',
             r'(?:cliente|customer)',
@@ -445,7 +498,7 @@ class RFSlicer:
                 if not any(phrase in value.lower() for phrase in ['poder', 'can', 'able to', 'hacerlo']):
                     return value
 
-        # If no explicit value found, infer from domain (phrases overridable via industry pack)
+        # If no explicit value found, infer from domain (phrases overridable via domain pack)
         content_lower = combined_text.lower()
         if any(word in content_lower for word in ['verification', 'verify', 'authentication']):
             return self.domain_phrases['value_verification']
@@ -779,9 +832,9 @@ class RFSlicer:
 
     def _extract_action_from_title(self, title: str) -> str:
         """Extract action verb from RF title for User Story action"""
-        # Common action patterns in {{CLIENT_NAME}} domain.
-        # Domain-flavored actions come from the industry pack (overridable);
-        # neutral verbs stay inline. Defaults reproduce previous behavior.
+        # Common action patterns.
+        # Domain-flavored actions come from the domain pack (overridable);
+        # neutral verbs stay inline.
         actions = {
             'verify': 'verify the identity',
             'authenticate': 'authenticate the user',
@@ -800,10 +853,10 @@ class RFSlicer:
             if keyword in title_lower:
                 return action
 
-        # Default action based on common patterns (returned phrases overridable via industry pack)
-        if any(word in title_lower for word in ['facial', 'face', '{{PRODUCT_NAME_1}}']):
+        # Default action based on common patterns (returned phrases overridable via domain pack)
+        if any(word in title_lower for word in ['facial', 'face', 'recognition']):
             return self.domain_phrases['action_facial']
-        elif any(word in title_lower for word in ['document', 'ocr', '{{PRODUCT_NAME_1}}d']):
+        elif any(word in title_lower for word in ['document', 'ocr', 'record']):
             return self.domain_phrases['action_document']
         elif any(word in title_lower for word in ['voice', 'vocal']):
             return self.domain_phrases['action_voice']
@@ -815,7 +868,7 @@ class RFSlicer:
         if rf.business_value:
             return rf.business_value
 
-        # Infer from domain and complexity factors (phrases overridable via industry pack)
+        # Infer from domain and complexity factors (phrases overridable via domain pack)
         if 'Security Requirements' in rf.complexity_factors:
             return self.domain_phrases['value_security_factor']
         elif 'Performance Requirements' in rf.complexity_factors:
@@ -1215,9 +1268,9 @@ owner_role: "PO + SM"
         return str(output_path)
 
 def main():
-    parser = argparse.ArgumentParser(description="{{CLIENT_NAME}} RF Slicer and User Story Generator")
+    parser = argparse.ArgumentParser(description="RF Slicer and User Story Generator")
     parser.add_argument("--rf-dir", required=True, help="Directory containing RF markdown files")
-    parser.add_argument("--project-code", default="{{CLIENT_CODE_UPPER}}", help="Project code for User Story IDs")
+    parser.add_argument("--project-code", default="PROJ", help="Project code for User Story IDs")
     parser.add_argument("--sprint-capacity", type=int, default=400, help="Sprint capacity in hours")
     parser.add_argument("--debt-percentage", type=float, default=0.20, help="Percentage reserved for tech debt")
     parser.add_argument("--output-dir", default=".", help="Output directory")
@@ -1227,7 +1280,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 {{CLIENT_NAME}} RF Slicer and User Story Generator")
+    print("🚀 RF Slicer and User Story Generator")
     print("=" * 50)
 
     # Initialize RF Slicer

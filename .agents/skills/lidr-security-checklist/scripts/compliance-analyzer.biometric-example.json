@@ -1,0 +1,47 @@
+{
+  "_comment": "OVERRIDABLE EXAMPLE industry pack (biometric identity). NOT the active default. Pass via LIDR_DOMAIN_PATTERNS_FILE to specialize compliance-analyzer.py for a biometric-identity context. Schema matches load_domain_config().",
+  "domain_patterns": {
+    "template_encryption": [
+      "AES-256-GCM",
+      "HSM",
+      "template.*encrypt",
+      "biometric.*encrypt",
+      "encrypt.*template"
+    ],
+    "gdpr_art9_compliance": [
+      "consent.*biometric",
+      "data.*subject.*rights",
+      "deletion.*template",
+      "gdpr.*biometric",
+      "special.*category.*data"
+    ],
+    "template_exposure": [
+      "log.*template",
+      "console.*template",
+      "debug.*biometric",
+      "template.*plain",
+      "biometric.*log"
+    ],
+    "api_security": [
+      "oauth2.*biometric",
+      "rate.*limit.*biometric",
+      "auth.*template",
+      "biometric.*endpoint"
+    ],
+    "liveness_detection": [
+      "liveness.*detection",
+      "anti.*spoofing",
+      "presentation.*attack",
+      "3d.*liveness"
+    ]
+  },
+  "domain_endpoint_keywords": [
+    "biometric",
+    "template",
+    "face",
+    "voice",
+    "selph",
+    "liveness",
+    "verification"
+  ]
+}

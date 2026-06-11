@@ -3,17 +3,24 @@
  * validate-examples.ts - Sprint Capacity Skill Example Validator
  *
  * Validates that sprint-capacity skill examples contain proper structure
- * for biometric project sprint planning and capacity calculation.
+ * for project sprint planning and capacity calculation.
+ *
+ * The DEFAULT validation set is 100% domain-agnostic (team composition,
+ * availability analysis, capacity calculation, buffers, risk/contingency). An
+ * overridable EXAMPLE industry pack (biometric identity) is preserved below as
+ * the BIOMETRIC_DOMAIN_PACK_RULES constant and is applied ONLY behind an
+ * explicit flag (`LIDR_DOMAIN_PACK=biometric`). It is documentation/example
+ * only and is NOT part of the default behavior.
  *
  * Validates:
  * - Team composition with roles and specializations
  * - Availability analysis with impact mitigation
  * - Capacity calculations with buffers and risk factors
  * - Sprint commitment methodology and constraints
- * - Biometric domain-specific capacity considerations
  * - Risk assessment and contingency planning
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync, readdirSync } from "fs";
@@ -72,10 +79,8 @@ const TEAM_COMPOSITION_RULES: ValidationRule[] = [
   },
   {
     name: "Role Specializations",
-    description: "Must document role specializations relevant to biometric development",
-    check: (content) =>
-      content.includes("Specialization") &&
-      (content.includes("biometric") || content.includes("algorithm") || content.includes("SDK")),
+    description: "Must document role specializations relevant to the development work",
+    check: (content) => content.includes("Specialization") || content.includes("Specializations"),
     severity: "ERROR",
   },
   {
@@ -165,7 +170,16 @@ const CAPACITY_CALCULATION_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity industry pack (NOT DEFAULT).
+   These rules are applied ONLY when LIDR_DOMAIN_PACK=biometric. They are
+   documentation/example content showing how a domain pack layers extra,
+   domain-specific team-composition checks (biometric specializations, anti-
+   spoofing, mobile SDK) on top of the agnostic defaults. They are NOT spread
+   into the default validation set.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK_RULES: ValidationRule[] = [
   {
     name: "Biometric Specialization Focus",
     description: "Must highlight biometric-specific skills and specializations",
@@ -209,6 +223,8 @@ const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
     severity: "WARN",
   },
 ];
+
+const DOMAIN_PACK_ENABLED = process.env.LIDR_DOMAIN_PACK === "biometric";
 
 const SPRINT_COMMITMENT_RULES: ValidationRule[] = [
   {
@@ -353,23 +369,33 @@ async function main(): Promise<void> {
     return files;
   };
 
+  // DEFAULT (domain-agnostic) rule set applied to every sprint-capacity example.
+  const DEFAULT_CAPACITY_RULES = [
+    ...SPRINT_BASIC_INFO_RULES,
+    ...TEAM_COMPOSITION_RULES,
+    ...AVAILABILITY_ANALYSIS_RULES,
+    ...CAPACITY_CALCULATION_RULES,
+    ...SPRINT_COMMITMENT_RULES,
+    ...TECHNICAL_CONSIDERATIONS_RULES,
+  ];
+
+  // Optional biometric domain pack — appended ONLY when LIDR_DOMAIN_PACK=biometric.
+  const activeRules = DOMAIN_PACK_ENABLED
+    ? [...DEFAULT_CAPACITY_RULES, ...BIOMETRIC_DOMAIN_PACK_RULES]
+    : DEFAULT_CAPACITY_RULES;
+
   const mdFiles = findMdFiles(examplesDir);
   const validationCases = mdFiles.map((filePath) => ({
     file: filePath.replace(examplesDir + "/", ""),
     fullPath: filePath,
-    rules: [
-      ...SPRINT_BASIC_INFO_RULES,
-      ...TEAM_COMPOSITION_RULES,
-      ...AVAILABILITY_ANALYSIS_RULES,
-      ...CAPACITY_CALCULATION_RULES,
-      ...BIOMETRIC_DOMAIN_RULES,
-      ...SPRINT_COMMITMENT_RULES,
-      ...TECHNICAL_CONSIDERATIONS_RULES,
-    ],
+    rules: activeRules,
     description: `Sprint Capacity Planning: ${filePath.split("/").pop()?.replace(".md", "") || "Unknown"}`,
   }));
 
   console.log("🔍 Validating Sprint Capacity Skill Examples...\n");
+  if (DOMAIN_PACK_ENABLED) {
+    console.log("ℹ️  LIDR_DOMAIN_PACK=biometric — applying optional biometric domain rules.\n");
+  }
 
   let totalPassed = 0;
   let totalFailed = 0;
@@ -422,13 +448,11 @@ async function main(): Promise<void> {
 
   if (allValid) {
     console.log("\n🎉 All sprint capacity examples are properly structured!");
-    console.log("   Ready for biometric project sprint planning.");
+    console.log("   Ready for project sprint planning.");
     console.log("   📊 Team composition, capacity calculation, and risk assessment validated");
   } else {
     console.log("\n💡 Fix the validation errors to ensure sprint planning compatibility.");
-    console.log(
-      "   Focus on capacity calculation methodology and biometric domain considerations."
-    );
+    console.log("   Focus on capacity calculation methodology and team composition.");
   }
 
   process.exit(allValid ? 0 : 1);

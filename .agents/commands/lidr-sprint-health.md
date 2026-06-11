@@ -1,7 +1,7 @@
 ---
 description: Active sprint monitoring with health metrics and risk detection
 argument-hint: [sprint-id]
-allowed-tools: Read, Bash(git:*), Bash(jq:*), AskUserQuestion
+allowed-tools: Read, Bash(git:*), Bash(jq:*), Skill(lidr-sdlc-tracking), AskUserQuestion
 model: sonnet
 tier: 2
 authorized_roles:
@@ -56,7 +56,7 @@ Load: @../rules/lidr-sdlc/org.md
 If "$1" is empty or "$1" equals "current":
 Look for current active sprint:
 
-- Jira query equivalent: `project = SDLC AND sprint in openSprints()`
+- Tracking-tool query via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}}): open sprints for the active project
 - Git branch patterns: `git branch -r | grep -E "(sprint|SP-)" | head -5`
 - Check recent commits: `git log --oneline --since="14 days ago" | head -10`
 

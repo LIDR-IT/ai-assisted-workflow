@@ -5,6 +5,15 @@
  * Validates that ADR skill examples contain proper MADR (Markdown Architecture Decision Record) structure
  * for documenting significant technical decisions with context, alternatives, and trade-offs.
  *
+ * The DEFAULT validation set is DOMAIN-AGNOSTIC: the validation rules check only
+ * generic MADR structure/quality/numbering, and the default fixtures are the
+ * generic ADR templates. LIDR is a multi-industry framework, so no industry
+ * fixture is validated by default.
+ *
+ * An overridable EXAMPLE industry pack (biometric identity) is preserved below
+ * as BIOMETRIC_DOMAIN_PACK_CASES. Those fixtures are NOT validated by default —
+ * apply them only behind the explicit flag LIDR_DOMAIN_PACK==='biometric'.
+ *
  * Validates:
  * - MADR format compliance with proper section structure
  * - Metadata completeness (status, date, deciders, technical area)
@@ -374,33 +383,54 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const validationCases = [
-    {
-      file: "domains/biometric/adr-001-biometric-template-format.md",
-      rules: [...ADR_STRUCTURE_RULES, ...ADR_QUALITY_RULES, ...ADR_NUMBERING_RULES],
-      description: "Biometric Template Format ADR",
-    },
-    {
-      file: "domains/biometric/adr-002-liveness-detection-architecture.md",
-      rules: [...ADR_STRUCTURE_RULES, ...ADR_QUALITY_RULES, ...ADR_NUMBERING_RULES],
-      description: "Liveness Detection Architecture ADR",
-    },
-    {
-      file: "domains/biometric/adr-003-gdpr-compliance-automation.md",
-      rules: [...ADR_STRUCTURE_RULES, ...ADR_QUALITY_RULES, ...ADR_NUMBERING_RULES],
-      description: "GDPR Compliance Automation ADR",
-    },
+  const ALL_ADR_RULES = [...ADR_STRUCTURE_RULES, ...ADR_QUALITY_RULES, ...ADR_NUMBERING_RULES];
+
+  // DEFAULT validation set — DOMAIN-AGNOSTIC generic ADR fixtures only.
+  const validationCases: Array<{ file: string; rules: ValidationRule[]; description: string }> = [
     {
       file: "generic/adr-template-architecture-pattern.md",
-      rules: [...ADR_STRUCTURE_RULES, ...ADR_QUALITY_RULES, ...ADR_NUMBERING_RULES],
+      rules: ALL_ADR_RULES,
       description: "Generic Architecture Pattern ADR",
     },
     {
       file: "generic/adr-template-technology-selection.md",
-      rules: [...ADR_STRUCTURE_RULES, ...ADR_QUALITY_RULES, ...ADR_NUMBERING_RULES],
+      rules: ALL_ADR_RULES,
       description: "Generic Technology Selection ADR",
     },
   ];
+
+  /* ──────────────────────────────────────────────────────────────────
+     OVERRIDABLE EXAMPLE — biometric-identity industry pack fixtures.
+
+     These are EXAMPLE fixtures, NOT validated by default. They use the same
+     generic MADR rules. Apply them only behind the explicit flag
+     LIDR_DOMAIN_PACK==='biometric'. Descriptions are kept domain-neutral.
+  ────────────────────────────────────────────────────────────────── */
+  const BIOMETRIC_DOMAIN_PACK_CASES: Array<{
+    file: string;
+    rules: ValidationRule[];
+    description: string;
+  }> = [
+    {
+      file: "domains/biometric/adr-001-biometric-template-format.md",
+      rules: ALL_ADR_RULES,
+      description: "Data Format ADR",
+    },
+    {
+      file: "domains/biometric/adr-002-liveness-detection-architecture.md",
+      rules: ALL_ADR_RULES,
+      description: "Detection Architecture ADR",
+    },
+    {
+      file: "domains/biometric/adr-003-gdpr-compliance-automation.md",
+      rules: ALL_ADR_RULES,
+      description: "Compliance Automation ADR",
+    },
+  ];
+
+  if (process.env.LIDR_DOMAIN_PACK === "biometric") {
+    validationCases.push(...BIOMETRIC_DOMAIN_PACK_CASES);
+  }
 
   console.log("🔍 Validating ADR Skill Examples...\n");
 

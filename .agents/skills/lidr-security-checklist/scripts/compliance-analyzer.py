@@ -1,13 +1,23 @@
 #!/usr/bin/env python3
 """
-Security Compliance Analyzer for {{CLIENT_NAME}} domain-specific projects
-Automated SAST/SCA/DAST analysis with GDPR Art. 9 compliance validation
+Security Compliance Analyzer for generic software projects
+Automated SAST/SCA/DAST analysis with gate-readiness and compliance scoring.
 
 Transforms 4+ hours of manual security analysis into a 5-minute automated workflow.
 Follows proven patterns from tech-debt and validate-requirements automation.
 
-Author: {{CLIENT_NAME}} SDLC Automation
-Version: 1.0.0
+Domain configuration is DOMAIN-AGNOSTIC by default. LIDR is a multi-industry
+framework, so the built-in pattern set is a generic security baseline (risk,
+test, dependency and security patterns). To target a specific industry, point
+LIDR_DOMAIN_PATTERNS_FILE at an override JSON.
+
+An overridable EXAMPLE industry pack (biometric identity) is preserved below as
+the BIOMETRIC_EXAMPLE_* constants and as a sibling file
+`compliance-analyzer.biometric-example.json` (same schema as any override). It is
+an example only — NOT the active default.
+
+Author: LIDR SDLC Automation
+Version: 1.1.0
 """
 
 import json
@@ -29,10 +39,9 @@ DAST_TOOL = os.getenv("LIDR_DAST_TOOL", "OWASP ZAP")
 
 # Optional path to a JSON file providing an industry-specific override for the
 # domain pattern set and/or the domain endpoint keywords. LIDR is a
-# multi-industry framework, so the concrete patterns below are an OVERRIDABLE
-# DEFAULT (an example "biometric identity" industry pack), not a hardcoded
-# industry. When the env var is unset (or the file is missing/invalid) the
-# built-in defaults are used so existing behavior is preserved byte-for-byte.
+# multi-industry framework, so the built-in defaults below are DOMAIN-AGNOSTIC
+# (a generic security baseline). When the env var is unset (or the file is
+# missing/invalid) the built-in defaults are used.
 #
 # Expected JSON shape (all keys optional):
 #   {
@@ -41,28 +50,73 @@ DAST_TOOL = os.getenv("LIDR_DAST_TOOL", "OWASP ZAP")
 #   }
 DOMAIN_PATTERNS_FILE = os.getenv("LIDR_DOMAIN_PATTERNS_FILE", "")
 
-# Default domain pattern set — example industry pack (biometric identity).
-# Renamed from the legacy industry-specific name to a neutral one; the matching
-# MECHANISM (regex search in assess_domain_relevance) is unchanged. Override via
-# LIDR_DOMAIN_PATTERNS_FILE to target a different industry without editing code.
+# Default domain pattern set — DOMAIN-AGNOSTIC generic security baseline.
+# These categories and regexes target sensitive-data handling, secrets, access
+# control, injection and API exposure for ANY application. The matching
+# MECHANISM (regex search in assess_domain_relevance) is industry-independent.
+# Override via LIDR_DOMAIN_PATTERNS_FILE to target a specific industry.
 DEFAULT_DOMAIN_PATTERNS = {
+    'data_encryption': [
+        r'AES-256', r'HSM', r'encrypt.*at.*rest',
+        r'encrypt.*in.*transit', r'key.*management'
+    ],
+    'data_protection_compliance': [
+        r'consent.*management', r'data.*subject.*rights',
+        r'data.*deletion', r'data.*retention',
+        r'personal.*data', r'sensitive.*data'
+    ],
+    'sensitive_data_exposure': [
+        r'log.*secret', r'console.*token',
+        r'debug.*password', r'plaintext.*credential',
+        r'hardcoded.*secret'
+    ],
+    'api_security': [
+        r'oauth2', r'rate.*limit',
+        r'auth.*token', r'unauthenticated.*endpoint'
+    ],
+    'access_control': [
+        r'broken.*access', r'privilege.*escalation',
+        r'insecure.*direct.*object', r'missing.*authorization'
+    ]
+}
+
+# Default domain endpoint keywords — DOMAIN-AGNOSTIC generic baseline.
+# Used to flag whether a DAST-scanned URL touches a sensitive endpoint.
+DEFAULT_DOMAIN_ENDPOINT_KEYWORDS = [
+    'admin', 'auth', 'login', 'account', 'user',
+    'payment', 'token', 'session'
+]
+
+# ---------------------------------------------------------------------------
+# OVERRIDABLE EXAMPLE — biometric-identity industry pack.
+#
+# This is an EXAMPLE of an industry override, NOT the active default. It mirrors
+# the schema accepted by load_domain_config / LIDR_DOMAIN_PATTERNS_FILE. The
+# same content is also shipped as the sibling JSON file
+# `compliance-analyzer.biometric-example.json` so it can be passed via env:
+#
+#   LIDR_DOMAIN_PATTERNS_FILE=.../compliance-analyzer.biometric-example.json
+#
+# Or imported in code: load_domain_config(...) accepts the same shape.
+# ---------------------------------------------------------------------------
+BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS = {
     'template_encryption': [
         r'AES-256-GCM', r'HSM', r'template.*encrypt',
-        r'domain-specific.*encrypt', r'encrypt.*template'
+        r'biometric.*encrypt', r'encrypt.*template'
     ],
     'gdpr_art9_compliance': [
-        r'consent.*domain-specific', r'data.*subject.*rights',
-        r'deletion.*template', r'gdpr.*domain-specific',
+        r'consent.*biometric', r'data.*subject.*rights',
+        r'deletion.*template', r'gdpr.*biometric',
         r'special.*category.*data'
     ],
     'template_exposure': [
         r'log.*template', r'console.*template',
-        r'debug.*domain-specific', r'template.*plain',
-        r'domain-specific.*log'
+        r'debug.*biometric', r'template.*plain',
+        r'biometric.*log'
     ],
     'api_security': [
-        r'oauth2.*domain-specific', r'rate.*limit.*domain-specific',
-        r'auth.*template', r'domain-specific.*endpoint'
+        r'oauth2.*biometric', r'rate.*limit.*biometric',
+        r'auth.*template', r'biometric.*endpoint'
     ],
     'liveness_detection': [
         r'liveness.*detection', r'anti.*spoofing',
@@ -70,11 +124,8 @@ DEFAULT_DOMAIN_PATTERNS = {
     ]
 }
 
-# Default domain endpoint keywords — example industry pack (biometric identity).
-# Used to flag whether a DAST-scanned URL touches a domain-sensitive endpoint.
-# Overridable default; same matching behavior preserved when no override given.
-DEFAULT_DOMAIN_ENDPOINT_KEYWORDS = [
-    'domain-specific', 'template', 'face', 'voice', 'selph',
+BIOMETRIC_EXAMPLE_DOMAIN_ENDPOINT_KEYWORDS = [
+    'biometric', 'template', 'face', 'voice', 'selph',
     'liveness', 'verification'
 ]
 
@@ -84,8 +135,9 @@ def load_domain_config(config_path):
     Load an optional industry-pack override from a JSON file.
 
     Returns a (domain_patterns, domain_endpoint_keywords) tuple. Falls back to
-    the built-in defaults for any key that is absent, the file being unset, or
-    the file being missing/invalid — so default behavior is fully preserved.
+    the built-in generic defaults for any key that is absent, the file being
+    unset, or the file being missing/invalid — so default behavior is fully
+    preserved.
     """
     domain_patterns = dict(DEFAULT_DOMAIN_PATTERNS)
     domain_endpoint_keywords = list(DEFAULT_DOMAIN_ENDPOINT_KEYWORDS)
@@ -107,7 +159,7 @@ def load_domain_config(config_path):
 
 class SecurityComplianceAnalyzer:
     """
-    Automated security analysis for domain-specific platforms
+    Automated security analysis for generic software platforms
     """
 
     def __init__(self, project_dir=".", output_dir="security-analysis"):
@@ -115,16 +167,14 @@ class SecurityComplianceAnalyzer:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
 
-        # Domain matching rules (neutral name). Concrete set is an OVERRIDABLE
-        # DEFAULT example industry pack — see DEFAULT_DOMAIN_PATTERNS above.
-        # Provide LIDR_DOMAIN_PATTERNS_FILE to swap industries without code
-        # edits; the matching mechanism in assess_domain_relevance is unchanged.
+        # Domain matching rules (neutral name). Concrete set is the generic,
+        # DOMAIN-AGNOSTIC default — see DEFAULT_DOMAIN_PATTERNS above. Provide
+        # LIDR_DOMAIN_PATTERNS_FILE (e.g. the biometric example sidecar) to swap
+        # industries without code edits; the matching mechanism in
+        # assess_domain_relevance is unchanged.
         self.domain_patterns, self.domain_endpoint_keywords = load_domain_config(
             DOMAIN_PATTERNS_FILE
         )
-        # Backwards-compatible alias: existing references / external callers that
-        # read `.biometric_patterns` keep working against the default pack.
-        self.biometric_patterns = self.domain_patterns
 
         # Security categorization mapping
         self.security_categories = {
@@ -179,7 +229,7 @@ class SecurityComplianceAnalyzer:
 
     def parse_sonarqube_results(self, report_file):
         """
-        Parse SAST results with a domain-specific focus
+        Parse SAST results with a domain-relevance focus
         """
         try:
             with open(report_file, 'r') as f:
@@ -201,9 +251,9 @@ class SecurityComplianceAnalyzer:
                 message = issue.get('message', '')
                 component = issue.get('component', '')
 
-                # Domain-specific categorization
+                # Domain-relevance categorization
                 category = self.categorize_security_issue(rule, message, component)
-                biometric_relevance = self.assess_biometric_relevance(rule, message, component)
+                domain_relevance = self.assess_domain_relevance(rule, message, component)
 
                 processed_issue = {
                     'source': 'SAST',
@@ -214,8 +264,8 @@ class SecurityComplianceAnalyzer:
                     'file': component,
                     'line': issue.get('line', 0),
                     'category': category,
-                    'biometric_relevance': biometric_relevance,
-                    'remediation_priority': self.calculate_priority(severity, biometric_relevance)
+                    'domain_relevance': domain_relevance,
+                    'remediation_priority': self.calculate_priority(severity, domain_relevance)
                 }
                 issues.append(processed_issue)
 
@@ -254,7 +304,7 @@ class SecurityComplianceAnalyzer:
                     'title': title,
                     'cve': vuln.get('identifiers', {}).get('CVE', []),
                     'category': 'dependencies',
-                    'biometric_relevance': 'high' if any(pkg in package_name.lower()
+                    'domain_relevance': 'high' if any(pkg in package_name.lower()
                                                         for pkg in ['crypto', 'auth', 'security', 'jwt']) else 'medium',
                     'remediation_priority': self.calculate_priority(severity, 'high' if 'crypto' in package_name.lower() else 'medium')
                 }
@@ -294,7 +344,7 @@ class SecurityComplianceAnalyzer:
                     'description': alert.get('desc', ''),
                     'url': alert.get('url', ''),
                     'category': self.categorize_dast_finding(name),
-                    'biometric_relevance': self.assess_api_relevance(alert.get('url', '')),
+                    'domain_relevance': self.assess_api_relevance(alert.get('url', '')),
                     'remediation_priority': self.calculate_priority(risk, self.assess_api_relevance(alert.get('url', '')))
                 }
                 alerts.append(processed_alert)
@@ -307,7 +357,7 @@ class SecurityComplianceAnalyzer:
 
     def categorize_security_issue(self, rule, message, component):
         """
-        Categorize security issues using rule patterns and domain-specific knowledge
+        Categorize security issues using rule patterns and domain knowledge
         """
         rule_lower = rule.lower()
         message_lower = message.lower()
@@ -329,9 +379,9 @@ class SecurityComplianceAnalyzer:
         else:
             return 'infrastructure'
 
-    def assess_biometric_relevance(self, rule, message, component):
+    def assess_domain_relevance(self, rule, message, component):
         """
-        Assess domain-specific relevance for prioritization
+        Assess domain relevance for prioritization
         """
         text = f"{rule} {message} {component}".lower()
 
@@ -339,9 +389,11 @@ class SecurityComplianceAnalyzer:
         for pattern_type, patterns in self.domain_patterns.items():
             for pattern in patterns:
                 if re.search(pattern, text, re.IGNORECASE):
-                    if pattern_type in ['template_exposure', 'gdpr_art9_compliance']:
+                    if pattern_type in ['sensitive_data_exposure', 'data_protection_compliance',
+                                        'template_exposure', 'gdpr_art9_compliance']:
                         return 'critical'
-                    elif pattern_type in ['template_encryption', 'api_security']:
+                    elif pattern_type in ['data_encryption', 'access_control', 'api_security',
+                                          'template_encryption']:
                         return 'high'
                     else:
                         return 'medium'
@@ -372,7 +424,7 @@ class SecurityComplianceAnalyzer:
         Assess whether an API endpoint is domain-relevant.
 
         Endpoint keywords come from the configured/overridable industry pack
-        (self.domain_endpoint_keywords); the default set preserves prior behavior.
+        (self.domain_endpoint_keywords); the default set is domain-agnostic.
         """
         url_lower = url.lower()
 
@@ -385,7 +437,7 @@ class SecurityComplianceAnalyzer:
 
         return 'medium'
 
-    def calculate_priority(self, severity, biometric_relevance):
+    def calculate_priority(self, severity, domain_relevance):
         """
         Calculate remediation priority score
         """
@@ -396,7 +448,7 @@ class SecurityComplianceAnalyzer:
             'high': 1.5,
             'medium': 1.0,
             'low': 0.7
-        }.get(biometric_relevance, 1.0)
+        }.get(domain_relevance, 1.0)
 
         return int(severity_score * relevance_multiplier)
 
@@ -448,8 +500,8 @@ class SecurityComplianceAnalyzer:
             'by_severity': {},
             'by_category': {},
             'by_source': {},
-            'biometric_critical': 0,
-            'gdpr_compliance_issues': 0,
+            'domain_critical': 0,
+            'compliance_issues': 0,
             'api_security_issues': 0
         }
 
@@ -466,14 +518,15 @@ class SecurityComplianceAnalyzer:
             source = finding.get('source', 'unknown')
             stats['by_source'][source] = stats['by_source'].get(source, 0) + 1
 
-            # Special domain-specific counters
-            if finding.get('biometric_relevance') == 'critical':
-                stats['biometric_critical'] += 1
+            # Special domain-relevance counters
+            if finding.get('domain_relevance') == 'critical':
+                stats['domain_critical'] += 1
 
-            if 'gdpr' in finding.get('message', '').lower() or 'domain-specific' in finding.get('message', '').lower():
-                stats['gdpr_compliance_issues'] += 1
+            message_lower = finding.get('message', '').lower()
+            if 'gdpr' in message_lower or 'compliance' in message_lower or 'personal data' in message_lower:
+                stats['compliance_issues'] += 1
 
-            if finding.get('category') == 'api' and finding.get('biometric_relevance') in ['critical', 'high']:
+            if finding.get('category') == 'api' and finding.get('domain_relevance') in ['critical', 'high']:
                 stats['api_security_issues'] += 1
 
         return stats
@@ -484,7 +537,7 @@ class SecurityComplianceAnalyzer:
         """
         critical_count = stats['by_severity'].get('CRITICAL', 0)
         high_count = stats['by_severity'].get('HIGH', 0)
-        biometric_critical = stats['biometric_critical']
+        domain_critical = stats['domain_critical']
 
         # Gate 6 criteria
         blocking_issues = []
@@ -492,11 +545,11 @@ class SecurityComplianceAnalyzer:
         if critical_count > 0:
             blocking_issues.append(f"{critical_count} Critical severity issues")
 
-        if biometric_critical > 0:
-            blocking_issues.append(f"{biometric_critical} Critical domain-specific security issues")
+        if domain_critical > 0:
+            blocking_issues.append(f"{domain_critical} Critical domain-relevant security issues")
 
-        if stats['gdpr_compliance_issues'] > 0:
-            blocking_issues.append(f"{stats['gdpr_compliance_issues']} GDPR compliance violations")
+        if stats['compliance_issues'] > 0:
+            blocking_issues.append(f"{stats['compliance_issues']} compliance violations")
 
         # Determine gate status
         if len(blocking_issues) == 0:
@@ -516,7 +569,7 @@ class SecurityComplianceAnalyzer:
             'blocking_issues': blocking_issues,
             'critical_count': critical_count,
             'high_count': high_count,
-            'biometric_critical': biometric_critical
+            'domain_critical': domain_critical
         }
 
     def generate_remediation_plan(self, findings):
@@ -524,8 +577,8 @@ class SecurityComplianceAnalyzer:
         Generate prioritized remediation plan
         """
         # Group findings by priority
-        critical_findings = [f for f in findings if f['severity'] == 'CRITICAL' or f['biometric_relevance'] == 'critical']
-        high_findings = [f for f in findings if f['severity'] == 'HIGH' or f['biometric_relevance'] == 'high']
+        critical_findings = [f for f in findings if f['severity'] == 'CRITICAL' or f['domain_relevance'] == 'critical']
+        high_findings = [f for f in findings if f['severity'] == 'HIGH' or f['domain_relevance'] == 'high']
 
         remediation_plan = {
             'blocking_items': [],
@@ -586,13 +639,13 @@ class SecurityComplianceAnalyzer:
         print(f"   Total findings: {analysis['total_findings']}")
         print(f"   Gate 6 status: {analysis['gate_assessment']['status']}")
         print(f"   Critical issues: {analysis['statistics']['by_severity'].get('CRITICAL', 0)}")
-        print(f"   Domain-specific critical: {analysis['statistics']['biometric_critical']}")
+        print(f"   Domain-relevant critical: {analysis['statistics']['domain_critical']}")
         print(f"📊 JSON output: {json_file}")
 
         return analysis
 
 def main():
-    parser = argparse.ArgumentParser(description='Security Compliance Analyzer for {{CLIENT_NAME}} domain-specific projects')
+    parser = argparse.ArgumentParser(description='Security Compliance Analyzer for generic software projects')
     parser.add_argument('--project-dir', default='.', help='Project directory to analyze')
     parser.add_argument('--output-dir', default='security-analysis', help='Output directory for results')
     parser.add_argument('--verbose', action='store_true', help='Verbose output')

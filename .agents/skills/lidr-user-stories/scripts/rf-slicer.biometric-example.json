@@ -1,0 +1,29 @@
+{
+  "patterns": {
+    "onboarding": ["registration", "enrollment", "signup", "alta"],
+    "authentication": ["login", "verify", "authenticate", "verificar"],
+    "document_processing": ["ocr", "document", "dni", "passport", "id-document"],
+    "facial_recognition": ["face", "facial", "liveness", "selfie"],
+    "voice_verification": ["voice", "vocal", "speech", "audio"],
+    "admin_operations": ["admin", "configure", "manage", "dashboard"]
+  },
+  "complexity_keywords": ["facial", "voice", "biometric", "liveness", "ocr", "template"],
+  "complexity_factor": ["biometric", "facial", "voice", "liveness", "template"],
+  "phrases": {
+    "value_verification": "verify the user's identity securely and quickly",
+    "value_onboarding": "enable an efficient and secure user onboarding process",
+    "value_security": "protect against fraud and comply with security regulations",
+    "value_default": "improve the user experience in the biometric system",
+    "value_security_factor": "guarantee the security and protection of biometric data",
+    "value_performance_factor": "obtain fast and efficient results in the biometric process",
+    "value_compliance_factor": "comply with privacy and data protection regulations",
+    "value_generic_factor": "improve the user experience and security in the system",
+    "action_register": "register biometric data",
+    "action_capture": "capture biometric information",
+    "action_analyze": "analyze biometric data",
+    "action_facial": "verify facial identity",
+    "action_document": "process the identity document",
+    "action_voice": "verify voice identity",
+    "action_default": "use biometric functionality"
+  }
+}

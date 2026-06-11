@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """
-Security Checklist Generator for {{CLIENT_NAME}} domain-specific Projects
-Automated generation of security checklists with GDPR Art. 9 compliance
+Security Checklist Generator for generic software projects
+Automated generation of security checklists with regulatory compliance scoring.
 
 Transforms compliance-analyzer.py results into actionable security checklist reports.
 Follows proven patterns from tech-debt and validate-requirements automation.
 
-Author: {{CLIENT_NAME}} SDLC Automation
-Version: 1.0.0
+Domain-relevance keys consumed here (`domain_critical`, `domain_relevance`) match
+the keys emitted by compliance-analyzer.py. The active industry requirement set is
+DOMAIN-AGNOSTIC (generic banking / government / consumer baselines). A biometric-
+identity EXAMPLE is preserved as BIOMETRIC_EXAMPLE_INDUSTRY_STANDARDS below — it is
+an example only, NOT the active default.
+
+Author: LIDR SDLC Automation
+Version: 1.1.0
 """
 
 import json
@@ -21,50 +27,98 @@ from pathlib import Path
 # Defaults to the current tool so existing behavior is preserved; override via env.
 TRACKING_TOOL = os.getenv("LIDR_TRACKING_TOOL", "jira")
 
+# ---------------------------------------------------------------------------
+# OVERRIDABLE EXAMPLE — biometric-identity industry standards.
+#
+# This is an EXAMPLE, NOT the active default (which is DEFAULT_INDUSTRY_STANDARDS
+# below). It shows how the generic baselines specialize for a biometric-identity
+# context. Swap it in by passing it to SecurityChecklistGenerator(...,
+# industry_standards=BIOMETRIC_EXAMPLE_INDUSTRY_STANDARDS) or by editing a copy.
+# ---------------------------------------------------------------------------
+BIOMETRIC_EXAMPLE_INDUSTRY_STANDARDS = {
+    'banking': {
+        'name': 'Banking/Financial Services (PCI-DSS Equivalent)',
+        'requirements': [
+            'HSM-backed encryption for biometric templates',
+            'Dual authorization for template access',
+            'Immutable audit logging of all operations',
+            '4-hour breach notification procedures',
+            'Network segmentation for biometric processing'
+        ]
+    },
+    'government': {
+        'name': 'Government/eID (FedRAMP Equivalent)',
+        'requirements': [
+            'FIPS 140-2 Level 3 cryptographic modules',
+            'Multi-factor authentication for all access',
+            'Real-time security monitoring and alerting',
+            'Data sovereignty and residency compliance',
+            'Continuous security assessment programs'
+        ]
+    },
+    'consumer': {
+        'name': 'Consumer/General (OWASP Baseline)',
+        'requirements': [
+            'Industry-standard encryption (AES-256)',
+            'OAuth2 + API key authentication',
+            'Regular security scanning and updates',
+            'Privacy policy and consent mechanisms',
+            'Incident response and notification procedures'
+        ]
+    }
+}
+
+# Active DOMAIN-AGNOSTIC default industry standards. Generic security baselines
+# for any application type — no biometric/FAR/FRR/liveness/template specifics.
+DEFAULT_INDUSTRY_STANDARDS = {
+    'banking': {
+        'name': 'Banking/Financial Services (PCI-DSS Equivalent)',
+        'requirements': [
+            'HSM-backed encryption for sensitive data at rest',
+            'Dual authorization for privileged data access',
+            'Immutable audit logging of all operations',
+            '4-hour breach notification procedures',
+            'Network segmentation for sensitive data processing'
+        ]
+    },
+    'government': {
+        'name': 'Government/eID (FedRAMP Equivalent)',
+        'requirements': [
+            'FIPS 140-2 Level 3 cryptographic modules',
+            'Multi-factor authentication for all access',
+            'Real-time security monitoring and alerting',
+            'Data sovereignty and residency compliance',
+            'Continuous security assessment programs'
+        ]
+    },
+    'consumer': {
+        'name': 'Consumer/General (OWASP Baseline)',
+        'requirements': [
+            'Industry-standard encryption (AES-256)',
+            'OAuth2 + API key authentication',
+            'Regular security scanning and updates',
+            'Privacy policy and consent mechanisms',
+            'Incident response and notification procedures'
+        ]
+    }
+}
+
 class SecurityChecklistGenerator:
     """
     Generate security checklists from analysis results
     """
 
-    def __init__(self, analysis_file, project_name="{{CLIENT_NAME}} Project", output_dir="security-analysis"):
+    def __init__(self, analysis_file, project_name="Security Project", output_dir="security-analysis",
+                 industry_standards=None):
         self.analysis_file = Path(analysis_file)
         self.project_name = project_name
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
 
-        # Security checklist templates for different industries
-        self.industry_standards = {
-            'banking': {
-                'name': 'Banking/Financial Services (PCI-DSS Equivalent)',
-                'requirements': [
-                    'HSM-backed encryption for domain-specific templates',
-                    'Dual authorization for template access',
-                    'Immutable audit logging of all operations',
-                    '4-hour breach notification procedures',
-                    'Network segmentation for domain-specific processing'
-                ]
-            },
-            'government': {
-                'name': 'Government/eID (FedRAMP Equivalent)',
-                'requirements': [
-                    'FIPS 140-2 Level 3 cryptographic modules',
-                    'Multi-factor authentication for all access',
-                    'Real-time security monitoring and alerting',
-                    'Data sovereignty and residency compliance',
-                    'Continuous security assessment programs'
-                ]
-            },
-            'consumer': {
-                'name': 'Consumer/General (OWASP Baseline)',
-                'requirements': [
-                    'Industry-standard encryption (AES-256)',
-                    'OAuth2 + API key authentication',
-                    'Regular security scanning and updates',
-                    'Privacy policy and consent mechanisms',
-                    'Incident response and notification procedures'
-                ]
-            }
-        }
+        # Security checklist templates for different industries. DOMAIN-AGNOSTIC
+        # by default; pass `industry_standards` (e.g.
+        # BIOMETRIC_EXAMPLE_INDUSTRY_STANDARDS) to specialize for an industry.
+        self.industry_standards = industry_standards or DEFAULT_INDUSTRY_STANDARDS
 
         # OWASP Top 10 mapping to security categories
         self.owasp_categories = {
@@ -135,7 +189,7 @@ class SecurityChecklistGenerator:
             'category_summary': category_summary,
             'critical_count': stats['by_severity'].get('CRITICAL', 0),
             'high_count': stats['by_severity'].get('HIGH', 0),
-            'domain-specific_critical': stats.get('domain-specific_critical', 0)
+            'domain_critical': stats.get('domain_critical', 0)
         }
 
     def generate_detailed_evaluation(self, analysis):
@@ -166,7 +220,7 @@ class SecurityChecklistGenerator:
                     'check': finding.get('message', finding.get('title', finding.get('name', 'Unknown check'))),
                     'status': status,
                     'evidence': f"{finding.get('source', 'Manual')} - {source}",
-                    'notes': f"Severity: {finding.get('severity', 'UNKNOWN')}, domain-specific relevance: {finding.get('domain-specific_relevance', 'low')}"
+                    'notes': f"Severity: {finding.get('severity', 'UNKNOWN')}, domain relevance: {finding.get('domain_relevance', 'low')}"
                 })
 
             detailed_sections.append({
@@ -247,9 +301,9 @@ class SecurityChecklistGenerator:
         elif 'encrypt' in description or 'crypto' in description:
             return 'Implement AES-256-GCM encryption'
         elif 'template' in description:
-            return 'Encrypt domain-specific templates, prevent logging'
+            return 'Encrypt sensitive data payloads, prevent logging'
         elif 'gdpr' in description:
-            return 'Implement GDPR Article 9 compliance measures'
+            return 'Implement applicable data-protection compliance measures'
         else:
             return 'Address security vulnerability according to best practices'
 
@@ -269,7 +323,7 @@ class SecurityChecklistGenerator:
         elif 'ssl' in description or 'tls' in description:
             return 'nginx.conf: ssl_protocols TLSv1.3; ssl_ciphers ECDHE+AESGCM'
         elif 'template' in description:
-            return 'app.config: encryption.algorithm=AES-256-GCM, logging.exclude=template'
+            return 'app.config: encryption.algorithm=AES-256-GCM, logging.exclude=sensitive'
         elif 'database' in description:
             return 'database.config: ssl=true, encrypt=true, trustServerCertificate=false'
         else:
@@ -438,7 +492,7 @@ class SecurityChecklistGenerator:
 
         report += f"""
 
-**Critical Issues**: {summary['critical_count']} | **High Issues**: {summary['high_count']} | **domain-specific Critical**: {summary['domain-specific_critical']}
+**Critical Issues**: {summary['critical_count']} | **High Issues**: {summary['high_count']} | **Domain-Relevant Critical**: {summary['domain_critical']}
 
 ## Detailed Evaluation
 
@@ -499,7 +553,7 @@ class SecurityChecklistGenerator:
 
 ---
 
-*Generated by {{CLIENT_NAME}} Security Checklist Automation v1.0.0*
+*Generated by LIDR Security Checklist Automation v1.1.0*
 *Source: {self.analysis_file.name}*
 *Total findings analyzed: {analysis['total_findings']}*
 """
@@ -531,9 +585,9 @@ class SecurityChecklistGenerator:
         print(f"📊 CSV export generated for {TRACKING_TOOL}: {csv_file}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Security Checklist Generator for {{CLIENT_NAME}} Projects')
+    parser = argparse.ArgumentParser(description='Security Checklist Generator for software projects')
     parser.add_argument('--analysis-file', required=True, help='Security analysis JSON file')
-    parser.add_argument('--project-name', default='{{CLIENT_NAME}} Project', help='Project name for report')
+    parser.add_argument('--project-name', default='Security Project', help='Project name for report')
     parser.add_argument('--output-dir', default='security-analysis', help='Output directory for reports')
     parser.add_argument('--verbose', action='store_true', help='Verbose output')
 

@@ -1,0 +1,46 @@
+{
+  "_comment": "OVERRIDABLE EXAMPLE industry pack (biometric identity). NOT the active default. Pass via --domain-patterns to specialize changelog-generator.py for a biometric-identity context. Schema matches DEFAULT_DOMAIN_PATTERNS / BusinessImpactClassifier(domain_patterns_path=...). Mirrors BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS.",
+  "algorithm_improvements": {
+    "priority": 1,
+    "user_facing": true,
+    "patterns": [
+      "algorithm.*accuracy",
+      "far.*improvement",
+      "frr.*reduction",
+      "eer.*optimization",
+      "liveness.*detection",
+      "anti.*spoofing",
+      "template.*matching",
+      "biometric.*quality"
+    ],
+    "description": "Biometric algorithm accuracy and performance improvements"
+  },
+  "compliance_updates": {
+    "priority": 2,
+    "user_facing": false,
+    "patterns": [
+      "gdpr.*compliance",
+      "psd2.*update",
+      "eidas.*support",
+      "iso.*30107",
+      "regulatory.*compliance",
+      "data.*protection",
+      "consent.*management",
+      "audit.*requirement"
+    ],
+    "description": "Regulatory compliance and data protection updates"
+  },
+  "integration_enhancements": {
+    "priority": 2,
+    "user_facing": false,
+    "patterns": [
+      "sdk.*integration",
+      "api.*biometric",
+      "platform.*integration",
+      "mobile.*sdk",
+      "web.*integration",
+      "third.*party.*integration"
+    ],
+    "description": "Integration and SDK improvements for biometric capabilities"
+  }
+}

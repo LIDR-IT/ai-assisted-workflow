@@ -3,11 +3,11 @@ description: Create feature branch from a ticket with SDLC tracking integration 
 argument-hint: [ticket-id]
 allowed-tools: Read, Bash(git:*), Write, Skill(lidr-sdlc-tracking), Skill(lidr-external-sync), AskUserQuestion
 model: sonnet
-version: "2.0.1"
+version: "2.0.2"
 phase: 4
 stage: development
-last_updated: "2026-06-10"
-updated_by: "TL: Stale-ref migration"
+last_updated: "2026-06-11"
+updated_by: "TL: Tool-routing + domain-pack migration"
 ---
 
 <!--
@@ -23,7 +23,7 @@ unified phase model.
 
 FEATURES:
 - SDLC tracking integration (links branch to story)
-- External tool sync (Jira, Linear, Notion status updates)
+- External tool sync ({{TRACKING_TOOL}} status updates, resolved per client via the registry)
 - Automated story metadata update
 - Implementation folder structure awareness
 - Portfolio-scale project context loading
@@ -34,7 +34,7 @@ USAGE:
   /lidr-create-branch PROJ-123 --sync=false
 
 ARGUMENTS:
-  ticket-id: Jira/Linear ticket ID (required)
+  ticket-id: {{TRACKING_TOOL}} ticket ID (required)
   --project: Override project detection (optional)
   --sync: Enable/disable external tool sync (default: true)
 
@@ -44,6 +44,10 @@ RELATED COMMANDS:
   /lidr-track-sdlc - SDLC tracking operations
 
 CHANGELOG:
+  v2.0.2 (2026-06-11): Tool-routing — concrete tracker names (Jira/Linear/Notion)
+                        replaced by {{TRACKING_TOOL}}; ticket-read invocation site
+                        delegated to lidr-sdlc-tracking; biometric slug example and
+                        GDPR framing genericized.
   v2.0.1 (2026-06-10): Repointed Skill() refs + skill loads to lidr-* prefixes;
                         reframed Phase 5 → unified Phase 4 Implementation/development.
   v2.0.0 (2026-03-17): SDLC tracking integration enhancement (then "Phase 5")
@@ -109,7 +113,7 @@ Extract story metadata:
 - Epic relationship
 - Story estimation and priority
 - Assignee and sprint
-- External tool references (Jira, Linear, Notion)
+- External tool references (resolved per client via the registry: {{TRACKING_TOOL}})
 - Implementation folder path
 
 ## Enhanced Ticket Reading
@@ -118,14 +122,13 @@ Extract story metadata:
 
 Read ticket from available sources (priority order):
 
-1. Jira MCP: GET /issue/$1
-2. Linear (if story has linear ref): GraphQL query
-3. Local story file: implementation/stories/story-{project-id}-{nnn}.md
+1. Via `lidr-sdlc-tracking`, which resolves {{TRACKING_TOOL}} from the registry: read ticket $1
+2. Local story file: implementation/stories/story-{project-id}-{nnn}.md
 
 Combine ticket data with story metadata for complete context.
 
 If ticket not found in any source:
-❌ "Ticket $1 not found in Jira, Linear, or local story tracking." Exit.
+❌ "Ticket $1 not found in {{TRACKING_TOOL}} or local story tracking." Exit.
 
 ### Enhanced Assignment Validation
 
@@ -191,7 +194,7 @@ const generateSlug = (ticket: string, title: string, epic?: string) => {
 ```
 
 Branch name: {prefix}{project-prefix}-{ticket-number}-{smart-slug}
-Example: feature/PROJ-123-biometric-enrollment-flow
+Example: feature/PROJ-123-user-enrollment-flow
 
 ## SDLC-Aware Base Branch Detection
 
@@ -294,28 +297,17 @@ workflow:
 ## External Tool Synchronization
 
 If --sync=true (default):
-Use Skill: lidr-external-sync with project context:
+Use Skill: lidr-external-sync with project context. It resolves the bound
+{{TRACKING_TOOL}} (and any secondary trackers) from the registry and applies the
+equivalent of the operations below to each:
 
-### Jira Updates
+### Tracking Tool Updates ({{TRACKING_TOOL}})
 
 - Transition ticket to "In Progress"
-- Add branch reference in ticket comments
+- Add branch reference in ticket comments / description
 - Update development start timestamp
-- Link to story documentation
-
-### Linear Updates
-
-- Update issue state to "In Progress"
-- Add branch reference to issue description
-- Update assignee if changed
-- Link to SDLC tracking
-
-### Notion Updates
-
-- Update page status to "In Progress"
-- Add branch property
-- Update last modified timestamp
-- Cross-reference to other tools
+- Link to story documentation and SDLC tracking
+- Cross-reference any secondary trackers bound for the client
 
 ### Sync Error Handling
 
@@ -343,10 +335,9 @@ Log: {sync error details}
    Remote:   origin/{branch-name}
 
 🔄 Synchronization:
-   Jira:     $1 → "In Progress" ✅
-   Linear:   {linear-id} → "In Progress" ✅
-   Notion:   {notion-id} → Updated ✅
-   SDLC:     {story-file} → Updated ✅
+   {{TRACKING_TOOL}}:  $1 → "In Progress" ✅
+   (secondary trackers, if bound):  Updated ✅
+   SDLC:               {story-file} → Updated ✅
 
 📂 Implementation Path:
    Story:    docs/projects/{project-id}/implementation/stories/story-{project-id}-{nnn}.md
@@ -454,5 +445,5 @@ Gradual adoption path:
 
 - No sensitive data in branch names
 - Encrypted communication with external tools
-- GDPR-compliant logging
+- Privacy-compliant logging (no PII; follow the client's applicable regulations)
 - Audit trail retention policies

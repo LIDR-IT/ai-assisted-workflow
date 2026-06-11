@@ -1,0 +1,120 @@
+{
+  "_comment": "Biometric-identity OVERRIDE EXAMPLE for dependency-mapper.py. NOT the active default. Pass via: python3 dependency-mapper.py <src> --config dependency-mapper.biometric-example.json. Mirrors the BIOMETRIC_EXAMPLE_* constants in the module.",
+  "component_config": {
+    "facial_recognition": {
+      "patterns": ["**/face_*", "**/facial/**", "**/liveness/**", "**/ml/face/**"],
+      "entry_points": ["face_detection.py", "liveness_detector.py", "face_verification.py"],
+      "base_risk": 0.9
+    },
+    "document_ocr": {
+      "patterns": ["**/ocr/**", "**/document/**", "**/tesseract/**", "**/image_processing/**"],
+      "entry_points": ["ocr_engine.py", "document_processor.py", "field_extractor.py"],
+      "base_risk": 0.8
+    },
+    "voice_verification": {
+      "patterns": ["**/voice/**", "**/audio/**", "**/voice_ml/**", "**/speech/**"],
+      "entry_points": ["voice_enrollment.py", "voice_verification.py", "audio_processor.py"],
+      "base_risk": 0.85
+    },
+    "api_gateway": {
+      "patterns": ["**/api/**", "**/gateway/**", "**/middleware/**", "**/routes/**"],
+      "entry_points": ["app.py", "main.py", "server.py", "gateway.py"],
+      "base_risk": 0.7
+    },
+    "authentication": {
+      "patterns": ["**/auth/**", "**/jwt/**", "**/oauth/**", "**/security/**"],
+      "entry_points": ["auth_service.py", "jwt_handler.py", "oauth_provider.py"],
+      "base_risk": 0.95
+    },
+    "core_biometric": {
+      "patterns": ["**/core/**", "**/biometric/**", "**/template/**", "**/crypto/**"],
+      "entry_points": ["biometric_engine.py", "template_manager.py", "crypto_utils.py"],
+      "base_risk": 1.0
+    },
+    "database": {
+      "patterns": ["**/db/**", "**/models/**", "**/repository/**", "**/dao/**"],
+      "entry_points": ["database.py", "models.py", "repository.py"],
+      "base_risk": 0.75
+    },
+    "configuration": {
+      "patterns": ["**/config/**", "**/settings/**", "**/env/**"],
+      "entry_points": ["config.py", "settings.py", "environment.py"],
+      "base_risk": 0.6
+    }
+  },
+  "component_keywords": {
+    "facial_recognition": ["face", "facial", "liveness", "biometric_face"],
+    "document_ocr": ["ocr", "document", "tesseract", "extraction"],
+    "voice_verification": ["voice", "audio", "speech", "voice_ml"],
+    "api_gateway": ["api", "gateway", "route", "middleware"],
+    "authentication": ["auth", "jwt", "oauth", "security", "login"],
+    "core_biometric": ["biometric", "template", "crypto", "core"],
+    "database": ["db", "models", "repository", "dao", "table:"],
+    "configuration": ["config", "settings", "env", "environment"]
+  },
+  "test_patterns": {
+    "facial_recognition": [
+      "TC_FACE_ACCURACY",
+      "TC_LIVENESS_DETECTION",
+      "TC_FACE_ENROLLMENT",
+      "TC_FACE_VERIFICATION",
+      "TC_ANTI_SPOOFING",
+      "TC_FACE_QUALITY"
+    ],
+    "document_ocr": [
+      "TC_DNI_EXTRACTION",
+      "TC_PASSPORT_OCR",
+      "TC_LICENSE_PROCESSING",
+      "TC_DOCUMENT_VALIDATION",
+      "TC_FIELD_ACCURACY",
+      "TC_IMAGE_QUALITY"
+    ],
+    "voice_verification": [
+      "TC_VOICE_ENROLLMENT",
+      "TC_VOICE_VERIFICATION",
+      "TC_VOICE_QUALITY",
+      "TC_NOISE_HANDLING",
+      "TC_ACCENT_ROBUSTNESS",
+      "TC_VOICE_ANTI_SPOOFING"
+    ],
+    "api_gateway": [
+      "TC_API_AUTHENTICATION",
+      "TC_RATE_LIMITING",
+      "TC_API_PERFORMANCE",
+      "TC_ERROR_HANDLING",
+      "TC_REQUEST_VALIDATION",
+      "TC_RESPONSE_FORMAT"
+    ],
+    "authentication": [
+      "TC_LOGIN_FLOW",
+      "TC_JWT_VALIDATION",
+      "TC_OAUTH_INTEGRATION",
+      "TC_SESSION_MANAGEMENT",
+      "TC_PASSWORD_SECURITY",
+      "TC_MFA"
+    ],
+    "core_biometric": [
+      "TC_TEMPLATE_GENERATION",
+      "TC_TEMPLATE_MATCHING",
+      "TC_ENCRYPTION",
+      "TC_BIOMETRIC_STORAGE",
+      "TC_TEMPLATE_QUALITY",
+      "TC_PERFORMANCE"
+    ],
+    "database": [
+      "TC_DATA_INTEGRITY",
+      "TC_QUERY_PERFORMANCE",
+      "TC_BACKUP_RESTORE",
+      "TC_CONCURRENT_ACCESS",
+      "TC_DATA_MIGRATION",
+      "TC_INDEX_EFFICIENCY"
+    ],
+    "configuration": [
+      "TC_CONFIG_LOADING",
+      "TC_ENVIRONMENT_SWITCHING",
+      "TC_DEFAULT_VALUES",
+      "TC_CONFIG_VALIDATION",
+      "TC_RUNTIME_UPDATES"
+    ]
+  }
+}

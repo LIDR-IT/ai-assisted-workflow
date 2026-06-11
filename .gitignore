@@ -41,3 +41,7 @@ Thumbs.db
 
 # Installer/editor backups
 *.bak
+
+# Python bytecode
+__pycache__/
+*.pyc

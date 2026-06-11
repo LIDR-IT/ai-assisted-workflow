@@ -5,13 +5,21 @@
  * Validates that review-cruzado skill examples contain proper structure
  * for PRD alignment validation before Gate 1.
  *
+ * The DEFAULT validation set is 100% domain-agnostic (structure, severity
+ * classification, status indicators, impact analysis, gate readiness). An
+ * overridable EXAMPLE industry pack (biometric identity) is preserved below as
+ * the BIOMETRIC_DOMAIN_PACK_* constants and is applied ONLY behind an explicit
+ * flag (`LIDR_DOMAIN_PACK=biometric`). It is documentation/example only and is
+ * NOT part of the default behavior.
+ *
  * Validates:
  * - Cross-review findings reports with severity classification
  * - Alignment matrix structure with status indicators
- * - GDPR compliance validation sections
+ * - Compliance validation sections
  * - Gate readiness assessment format
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -51,9 +59,12 @@ const FINDINGS_REPORT_RULES: ValidationRule[] = [
     severity: "ERROR",
   },
   {
-    name: "GDPR Compliance Section",
-    description: "Must validate GDPR Article 9 compliance alignment",
-    check: (content) => content.includes("GDPR") && content.includes("Article 9"),
+    name: "Compliance Section",
+    description: "Must validate compliance/regulatory alignment between PRD-F and PRD-T",
+    check: (content) =>
+      content.includes("Compliance") ||
+      content.includes("Regulatory") ||
+      content.includes("compliance"),
     severity: "ERROR",
   },
   {
@@ -96,10 +107,10 @@ const ALIGNMENT_MATRIX_RULES: ValidationRule[] = [
     severity: "ERROR",
   },
   {
-    name: "Biometric Functionalities Matrix",
+    name: "Functionalities Matrix",
     description: "Must map PRD-F functionalities to PRD-T capabilities",
     check: (content) =>
-      content.includes("Biometric Functionalities Alignment") &&
+      content.includes("Functionalities Alignment") &&
       content.includes("PRD-F Functionality | PRD-T Capability"),
     severity: "ERROR",
   },
@@ -112,11 +123,11 @@ const ALIGNMENT_MATRIX_RULES: ValidationRule[] = [
     severity: "ERROR",
   },
   {
-    name: "GDPR Compliance Matrix",
-    description: "Must validate GDPR requirements against technical implementation",
+    name: "Compliance Matrix",
+    description: "Must validate compliance requirements against technical implementation",
     check: (content) =>
-      content.includes("GDPR Compliance ↔ Technical Implementation") &&
-      content.includes("Right to Erasure"),
+      content.includes("Compliance ↔ Technical Implementation") ||
+      content.includes("Compliance Matrix"),
     severity: "ERROR",
   },
   {
@@ -145,6 +156,33 @@ const ALIGNMENT_MATRIX_RULES: ValidationRule[] = [
       content.includes("Immediate Resolution Required"),
     severity: "ERROR",
   },
+];
+
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity industry pack (NOT DEFAULT).
+   These rules are applied ONLY when LIDR_DOMAIN_PACK=biometric. They are
+   documentation/example content showing how a domain pack layers extra,
+   domain-specific checks on top of the agnostic defaults above.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK_FINDINGS_RULES: ValidationRule[] = [
+  {
+    name: "GDPR Article 9 Section",
+    description: "Must validate GDPR Article 9 compliance alignment (biometric data)",
+    check: (content) => content.includes("GDPR") && content.includes("Article 9"),
+    severity: "ERROR",
+  },
+];
+
+const BIOMETRIC_DOMAIN_PACK_MATRIX_RULES: ValidationRule[] = [
+  {
+    name: "GDPR Compliance Matrix",
+    description: "Must validate GDPR requirements against technical implementation",
+    check: (content) =>
+      content.includes("GDPR Compliance ↔ Technical Implementation") &&
+      content.includes("Right to Erasure"),
+    severity: "ERROR",
+  },
   {
     name: "Biometric-Specific Validation",
     description: "Must include biometric domain specifics (voice, face, liveness, templates)",
@@ -153,6 +191,8 @@ const ALIGNMENT_MATRIX_RULES: ValidationRule[] = [
     severity: "WARN",
   },
 ];
+
+const DOMAIN_PACK_ENABLED = process.env.LIDR_DOMAIN_PACK === "biometric";
 
 /* ────────────────────────────────────────────────────────────────────
    VALIDATION ENGINE
@@ -216,15 +256,23 @@ async function main(): Promise<void> {
   const validationCases = [
     {
       file: "cross-review-findings-report.md",
-      rules: FINDINGS_REPORT_RULES,
+      rules: DOMAIN_PACK_ENABLED
+        ? [...FINDINGS_REPORT_RULES, ...BIOMETRIC_DOMAIN_PACK_FINDINGS_RULES]
+        : FINDINGS_REPORT_RULES,
       description: "Cross-Review Findings Report Structure",
     },
     {
       file: "alignment-matrix-analysis.md",
-      rules: ALIGNMENT_MATRIX_RULES,
+      rules: DOMAIN_PACK_ENABLED
+        ? [...ALIGNMENT_MATRIX_RULES, ...BIOMETRIC_DOMAIN_PACK_MATRIX_RULES]
+        : ALIGNMENT_MATRIX_RULES,
       description: "Alignment Matrix Format",
     },
   ];
+
+  if (DOMAIN_PACK_ENABLED) {
+    console.log("ℹ️  LIDR_DOMAIN_PACK=biometric — applying optional biometric domain rules.\n");
+  }
 
   console.log("🔍 Validating Review-Cruzado Skill Examples...\n");
 

@@ -13,6 +13,7 @@ tools:
 skills:
   - bmad-create-architecture
   - bmad-sprint-planning
+  - lidr-external-sync
 memory: project
 # ── Metadata ecosistema ──
 id: docs-agent
@@ -21,9 +22,10 @@ last_updated: "2026-06-11"
 updated_by: "TL: Lead Engineer"
 status: active
 triggerType: event-driven
+# External docs/VCS routed through the abstraction skill lidr-external-sync
+# ({{DOCS_TOOL}} resolved via _shared/lidr/integrations/tool-registry.yaml); GitHub via gh/git primitives
 mcps:
-  - Confluence
-  - GitHub
+  - filesystem
 evolvedFrom: /lidr-sync-docs + lidr-validate-ecosystem-counts hook
 ---
 
@@ -69,8 +71,8 @@ Bulk merge triggers comprehensive documentation sync via docs-agent.
 4. Clasifica drift: critico (bloquea gates) vs menor (cosmetico)
 5. Propone correcciones con diff concreto
 6. Si es drift menor y tiene confianza alta, aplica correccion
-7. Si es drift critico, crea issue en GitHub y notifica al owner
-8. Sincroniza Confluence con repo via Confluence MCP
+7. Si es drift critico, crea issue en GitHub (via gh) y notifica al owner
+8. Sincroniza {{DOCS_TOOL}} con repo via lidr-external-sync (resuelve {{DOCS_TOOL}} desde el registry)
 9. **VALIDATE OUTPUT: Verify corrections maintain document integrity**
    - Every modified file must retain valid frontmatter (version bumped, last_updated set to today)
    - Cross-references in modified files must still resolve (no cascading broken refs)
@@ -91,7 +93,7 @@ You are an expert documentation governance specialist ensuring coherence across 
 1. Run 36 integrity tests (T1-T36) to detect drift between sources
 2. Classify drift: critical (blocks gates/workflows) vs minor (cosmetic)
 3. Auto-fix minor drift with high confidence; escalate critical drift
-4. Synchronize Confluence with repo via Confluence MCP
+4. Synchronize {{DOCS_TOOL}} with repo via lidr-external-sync (which resolves {{DOCS_TOOL}} from the registry)
 5. Track drift patterns in agent memory for prevention
 
 **Documentation Sync Process:**
@@ -103,8 +105,8 @@ You are an expert documentation governance specialist ensuring coherence across 
    - Critical: Affects gates, workflows, or security (blocks CI/CD)
    - Minor: Cosmetic, naming, formatting, stale dates
 5. **Auto-fix Minor**: If minor drift AND confidence > 90%, apply correction with explicit diff
-6. **Escalate Critical**: Create GitHub issue + notify document owner
-7. **Sync Confluence**: Push updated docs via Confluence MCP
+6. **Escalate Critical**: Create GitHub issue (via gh) + notify document owner
+7. **Sync {{DOCS_TOOL}}**: Push updated docs via lidr-external-sync (resolves {{DOCS_TOOL}} from the registry)
 8. **Update Memory**: Record drift patterns, resolutions, frequency
 
 **Quality Standards:**

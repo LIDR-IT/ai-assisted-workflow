@@ -3,17 +3,25 @@
  * validate-examples.ts - Test Execution Report Skill Example Validator
  *
  * Validates that test-execution-report skill examples contain proper structure
- * for biometric QA sign-off and Gate 5 approval requirements.
+ * for QA sign-off and Gate 5 approval requirements.
+ *
+ * The DEFAULT validation set is DOMAIN-AGNOSTIC (structure, metrics, traceability,
+ * defect analysis, QA sign-off). LIDR is a multi-industry framework, so no
+ * industry-specific rule is applied by default.
+ *
+ * An overridable EXAMPLE industry pack (biometric identity) is preserved below
+ * as BIOMETRIC_DOMAIN_PACK. It is NOT spread into the default validationCases —
+ * apply it only behind the explicit flag LIDR_DOMAIN_PACK==='biometric'.
  *
  * Validates:
  * - Test execution summary with pass/fail metrics
  * - Test case results with evidence and traceability
  * - Defect analysis and risk assessment
  * - Environment and configuration validation
- * - Biometric-specific testing requirements
  * - QA sign-off criteria and Gate 5 readiness
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *   (optional) LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync, readdirSync } from "fs";
@@ -148,7 +156,15 @@ const DEFECT_ANALYSIS_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_TESTING_RULES: ValidationRule[] = [
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity industry pack.
+
+   This is an EXAMPLE of an industry override, NOT the active default. It is
+   intentionally NOT spread into the default validationCases below. Apply it
+   only behind the explicit flag LIDR_DOMAIN_PACK==='biometric'. For the
+   domain-agnostic (default) run the behavior is unchanged.
+──────────────────────────────────────────────────────────────────── */
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
   {
     name: "Biometric Testing Coverage",
     description: "Must include biometric-specific testing coverage",
@@ -285,11 +301,16 @@ const COMPLIANCE_RULES: ValidationRule[] = [
   },
   {
     name: "Accessibility Testing",
-    description: "Should include accessibility testing for biometric interfaces",
+    description: "Should include accessibility testing for user-facing interfaces",
     check: (content) => content.includes("accessibility") || content.includes("WCAG"),
     severity: "WARN",
   },
 ];
+
+// Explicit opt-in flag for the biometric example industry pack (see
+// BIOMETRIC_DOMAIN_PACK above). Default (unset) keeps the DOMAIN-AGNOSTIC set.
+const DOMAIN_PACK_RULES: ValidationRule[] =
+  process.env.LIDR_DOMAIN_PACK === "biometric" ? BIOMETRIC_DOMAIN_PACK : [];
 
 /* ────────────────────────────────────────────────────────────────────
    VALIDATION ENGINE
@@ -378,10 +399,10 @@ async function main(): Promise<void> {
       ...EXECUTION_SUMMARY_RULES,
       ...TEST_RESULTS_RULES,
       ...DEFECT_ANALYSIS_RULES,
-      ...BIOMETRIC_TESTING_RULES,
       ...PERFORMANCE_TESTING_RULES,
       ...QA_SIGNOFF_RULES,
       ...COMPLIANCE_RULES,
+      ...DOMAIN_PACK_RULES,
     ],
     description: `Test Execution Report: ${filePath.split("/").pop()?.replace(".md", "") || "Unknown"}`,
   }));
@@ -439,11 +460,11 @@ async function main(): Promise<void> {
 
   if (allValid) {
     console.log("\n🎉 All test execution report examples are properly structured!");
-    console.log("   Ready for biometric QA sign-off and Gate 5 approval.");
+    console.log("   Ready for QA sign-off and Gate 5 approval.");
     console.log("   🧪 Test results, defect analysis, and QA sign-off criteria validated");
   } else {
     console.log("\n💡 Fix the validation errors to ensure Gate 5 compatibility.");
-    console.log("   Focus on QA sign-off criteria and biometric testing coverage.");
+    console.log("   Focus on QA sign-off criteria and test coverage.");
   }
 
   process.exit(allValid ? 0 : 1);

@@ -3,14 +3,29 @@
 Risk Analyzer for Test Plan Automation
 ======================================
 
-Part of {{CLIENT_NAME}} SDLC Automation Suite
-Transforms 3+ hours of manual risk assessment into 5-minute automated analysis
+Part of the SDLC Automation Suite.
+Transforms 3+ hours of manual risk assessment into 5-minute automated analysis.
 
 This script analyzes project complexity, requirements, and domain factors to:
 1. Auto-discover requirements and project context
-2. Assess testing risks based on {{SENSITIVE_DATA_TYPE}} domain expertise
+2. Assess testing risks based on domain-agnostic heuristics
 3. Generate risk-based test strategy recommendations
 4. Export structured data for test-strategy-generator.py
+
+Domain configuration
+--------------------
+The active defaults (``DomainRiskPatterns``) are domain-agnostic: generic
+security, accuracy, performance, compliance and complexity patterns that apply
+to any software project. To specialize the analyzer for a concrete vertical,
+override the risk factors and complexity indicators.
+
+A worked, overridable example for a biometric-identity vertical ships alongside
+this module:
+  - As an in-code constant block: ``BIOMETRIC_EXAMPLE_RISK_FACTORS`` and
+    ``BIOMETRIC_EXAMPLE_COMPLEXITY_INDICATORS`` (see bottom of this file).
+  - As a sibling config file: ``risk-analyzer.biometric-example.json`` in this
+    same directory.
+Neither is loaded by default; copy/adapt them only when you need that domain.
 
 Usage:
     python risk-analyzer.py [--project-dir path] [--output-dir path]
@@ -18,7 +33,7 @@ Usage:
 Dependencies:
     - requirements files (RFs, NFRs, PRDs)
     - project context (architecture, tech stack)
-    - {{SENSITIVE_DATA_TYPE}} domain patterns
+    - domain-agnostic risk patterns (overridable per vertical)
 """
 
 import os
@@ -31,7 +46,11 @@ from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime
-import yaml
+
+try:  # optional dependency — not required for the default workflow
+    import yaml  # noqa: F401
+except ImportError:
+    yaml = None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -72,40 +91,45 @@ class TestStrategy:
     timeline_multiplier: float
     special_requirements: List[str]
 
-class {{INDUSTRY_TIER_1}}RiskPatterns:
-    """Domain-specific risk patterns for {{SENSITIVE_DATA_TYPE}} systems"""
+class DomainRiskPatterns:
+    """Domain-agnostic risk patterns for software systems.
 
-    {{INDUSTRY_TIER_1}}_RISK_FACTORS = {
-        'template_security': {
-            'patterns': [r'{{SENSITIVE_DATA_TYPE}}.*encrypt', r'{{SENSITIVE_DATA_TYPE}}.*hash', r'irreversible', r'privacy.*preserving'],
+    These are neutral defaults that apply to any project. Specialize them per
+    vertical by overriding ``DOMAIN_RISK_FACTORS`` and ``COMPLEXITY_INDICATORS``
+    (see the biometric example at the bottom of this module).
+    """
+
+    DOMAIN_RISK_FACTORS = {
+        'sensitive_data_protection': {
+            'patterns': [r'sensitive.*data', r'encrypt', r'hash', r'irreversible', r'privacy.*preserving'],
             'risk_level': 'HIGH',
-            'test_implications': ['Template encryption testing', 'Privacy verification', 'Data breach simulation']
+            'test_implications': ['Data encryption testing', 'Privacy verification', 'Data breach simulation']
         },
-        '{{PRIMARY_VERIFICATION_METHOD}}_detection': {
-            'patterns': [r'{{ACCURACY_METRIC}}', r'{{SECURITY_FEATURE}}.*detect', r'anti.*{{SECURITY_FEATURE}}', r'{{SECURITY_FEATURE}}.*attack'],
+        'authentication_integrity': {
+            'patterns': [r'authentication', r'authoriz', r'access.*control', r'spoof.*detect', r'anti.*fraud'],
             'risk_level': 'HIGH',
-            'test_implications': ['{{SECURITY_FEATURE}} attack tests', '{{ACCURACY_METRIC}} accuracy testing', 'Edge case scenarios']
+            'test_implications': ['Authentication bypass tests', 'Access-control validation', 'Edge case scenarios']
         },
         'performance_accuracy': {
-            'patterns': [r'{{METRIC_TYPE_1}}', r'{{METRIC_TYPE_2}}', r'{{ACCURACY_METRIC}}', r'accuracy', r'performance.*metric'],
+            'patterns': [r'latency', r'throughput', r'error.*rate', r'accuracy', r'performance.*metric'],
             'risk_level': 'MEDIUM',
             'test_implications': ['Performance benchmarking', 'Accuracy validation', 'Load testing']
         },
-        'gdpr_compliance': {
+        'privacy_compliance': {
             'patterns': [r'GDPR', r'consent', r'data.*subject.*rights', r'privacy.*impact'],
             'risk_level': 'HIGH',
             'test_implications': ['Consent flow testing', 'Data deletion verification', 'Privacy audit']
         },
         'regulatory_compliance': {
-            'patterns': [r'eIDAS', r'PSD2', r'ISO.*30107', r'banking.*compliance'],
+            'patterns': [r'compliance', r'regulation', r'certification', r'audit.*trail'],
             'risk_level': 'HIGH',
             'test_implications': ['Compliance validation', 'Certification testing', 'Audit trail verification']
         }
     }
 
     COMPLEXITY_INDICATORS = {
-        'multi_modal': {
-            'patterns': [r'{{PRIMARY_WORKFLOW}}.*{{SECONDARY_WORKFLOW}}', r'multi.*{{PRIMARY_VERIFICATION_METHOD}}'],
+        'multi_channel': {
+            'patterns': [r'multi.*channel', r'omni.*channel', r'multi.*modal'],
             'complexity_score': 0.8
         },
         'real_time': {
@@ -130,7 +154,7 @@ class ProjectRiskAnalyzer:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
 
-        self.patterns = {{INDUSTRY_TIER_1}}RiskPatterns()
+        self.patterns = DomainRiskPatterns()
         self.project_context: Optional[ProjectContext] = None
         self.risk_factors: List[RiskFactor] = []
 
@@ -279,7 +303,7 @@ class ProjectRiskAnalyzer:
                     all_content += content + "\n"
 
         domain_patterns = {
-            '{{INDUSTRY_TIER_1}} {{PRIMARY_WORKFLOW}}': [r'{{SENSITIVE_DATA_TYPE}}', r'{{PRIMARY_VERIFICATION_METHOD}}', r'{{ACCURACY_METRIC}}', r'{{PRIMARY_WORKFLOW}}'],
+            'Identity Verification': [r'identity', r'verification', r'authentication', r'onboarding'],
             'Fintech': [r'banking', r'financial', r'payment', r'fintech'],
             'Healthcare': [r'medical', r'healthcare', r'clinical', r'patient'],
             'Government': [r'government', r'public.*sector', r'eIDAS', r'identity.*card'],
@@ -374,9 +398,9 @@ class ProjectRiskAnalyzer:
             'GDPR': [r'GDPR', r'data.*protection', r'privacy.*regulation'],
             'eIDAS': [r'eIDAS', r'electronic.*identification'],
             'PSD2': [r'PSD2', r'payment.*directive', r'strong.*customer.*authentication'],
-            'ISO 30107': [r'ISO.*30107', r'presentation.*attack.*detection'],
             'PCI DSS': [r'PCI.*DSS', r'payment.*card.*industry'],
             'CCPA': [r'CCPA', r'california.*consumer.*privacy'],
+            'HIPAA': [r'HIPAA', r'protected.*health.*information'],
         }
 
         for regulation, patterns in regulatory_patterns.items():
@@ -394,7 +418,7 @@ class ProjectRiskAnalyzer:
                 if content:
                     all_content += content + "\n"
 
-        if re.search(r'{{SENSITIVE_DATA_TYPE}}|template|{{PRIMARY_VERIFICATION_METHOD}}', all_content, re.IGNORECASE):
+        if re.search(r'sensitive.*data|special.*category|biometric', all_content, re.IGNORECASE):
             return 'CRITICAL'
         elif re.search(r'financial|banking|payment', all_content, re.IGNORECASE):
             return 'HIGH'
@@ -410,7 +434,7 @@ class ProjectRiskAnalyzer:
         risk_factors = []
 
         # Domain-specific risks
-        risk_factors.extend(self._analyze_{{INDUSTRY_TIER_1}}_risks())
+        risk_factors.extend(self._analyze_domain_risks())
 
         # Technical complexity risks
         risk_factors.extend(self._analyze_technical_risks())
@@ -427,40 +451,46 @@ class ProjectRiskAnalyzer:
         logger.info(f"Identified {len(risk_factors)} risk factors")
         return risk_factors
 
-    def _analyze_{{INDUSTRY_TIER_1}}_risks(self) -> List[RiskFactor]:
-        """Analyze {{SENSITIVE_DATA_TYPE}}-specific testing risks"""
+    def _analyze_domain_risks(self) -> List[RiskFactor]:
+        """Analyze domain-specific testing risks driven by data sensitivity and compliance.
+
+        Domain-agnostic: triggers on sensitive-data handling and privacy
+        regulation rather than any one industry vertical.
+        """
         risks = []
 
-        if self.project_context.domain != '{{INDUSTRY_TIER_1}} {{PRIMARY_WORKFLOW}}':
+        # Only raise domain data-protection risks when the project handles
+        # sensitive data (HIGH or CRITICAL sensitivity).
+        if self.project_context.data_sensitivity not in ('HIGH', 'CRITICAL'):
             return risks
 
-        # Template security risk
+        # Sensitive-data protection risk
         risks.append(RiskFactor(
             category="Security",
-            factor="{{SENSITIVE_DATA_TYPE}} Template Encryption",
+            factor="Sensitive Data Protection",
             probability=0.8,
             impact=0.9,
             risk_score=0.72,
-            mitigation="Implement comprehensive {{SENSITIVE_DATA_TYPE}} template encryption testing",
-            test_implications=["Template encryption validation", "Key management testing", "Data breach simulation"]
+            mitigation="Implement comprehensive sensitive-data encryption testing",
+            test_implications=["Data encryption validation", "Key management testing", "Data breach simulation"]
         ))
 
-        # Liveness detection accuracy
+        # Authentication / access integrity
         risks.append(RiskFactor(
             category="Accuracy",
-            factor="{{PRIMARY_VERIFICATION_METHOD}} Detection False Positives/Negatives",
+            factor="Authentication Accuracy (False Positives/Negatives)",
             probability=0.7,
             impact=0.8,
             risk_score=0.56,
-            mitigation="Extensive {{SECURITY_FEATURE}} attack testing with diverse scenarios",
-            test_implications=["Anti-{{SECURITY_FEATURE}} test suite", "Edge case validation", "Performance benchmarking"]
+            mitigation="Extensive authentication and access-control testing with diverse scenarios",
+            test_implications=["Authentication bypass test suite", "Edge case validation", "Performance benchmarking"]
         ))
 
-        # GDPR compliance
+        # Privacy regulation compliance
         if 'GDPR' in self.project_context.regulatory_requirements:
             risks.append(RiskFactor(
                 category="Compliance",
-                factor="GDPR Article 9 Violations",
+                factor="Privacy Regulation Violations",
                 probability=0.6,
                 impact=1.0,
                 risk_score=0.6,
@@ -524,7 +554,7 @@ class ProjectRiskAnalyzer:
                     probability=0.5,
                     impact=0.8,
                     risk_score=0.4,
-                    mitigation="Cross-border {{PRIMARY_WORKFLOW}} testing",
+                    mitigation="Cross-border interoperability testing",
                     test_implications=["Interoperability testing", "Certificate validation", "Cross-border scenarios"]
                 ))
             elif regulation == 'PSD2':
@@ -599,10 +629,10 @@ class ProjectRiskAnalyzer:
             automation_ratio = 80
             timeline_multiplier = 1.0
 
-        # Generate approach based on domain and risks
-        if self.project_context.domain == '{{INDUSTRY_TIER_1}} {{PRIMARY_WORKFLOW}}':
-            approach = "{{SENSITIVE_DATA_TYPE}}-specialized testing with security-first approach"
-            environment_strategy = "Isolated test environments with synthetic {{SENSITIVE_DATA_TYPE}} data"
+        # Generate approach based on data sensitivity and risks
+        if self.project_context.data_sensitivity in ('HIGH', 'CRITICAL'):
+            approach = "Sensitive-data-specialized testing with security-first approach"
+            environment_strategy = "Isolated test environments with synthetic sensitive data"
             data_strategy = "Anonymized datasets with comprehensive edge case coverage"
         else:
             approach = "Risk-based testing with focus on identified critical areas"
@@ -753,7 +783,7 @@ class ProjectRiskAnalyzer:
    - Adjust strategy based on findings
 
 ---
-*Report generated by {{CLIENT_NAME}} Test Risk Analyzer v1.0*
+*Report generated by Test Risk Analyzer v1.0*
 *Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}*
 """)
 
@@ -802,6 +832,68 @@ class ProjectRiskAnalyzer:
         except Exception as e:
             logger.error(f"Analysis failed: {str(e)}")
             raise
+
+
+# ---------------------------------------------------------------------------
+# OVERRIDABLE EXAMPLE — Biometric-identity vertical (NOT loaded by default)
+# ---------------------------------------------------------------------------
+# These constants show how to specialize DomainRiskPatterns for a concrete
+# vertical (here: biometric identity verification). They are reference-only.
+# To use them, assign them onto DomainRiskPatterns before instantiating the
+# analyzer, e.g.:
+#
+#     DomainRiskPatterns.DOMAIN_RISK_FACTORS = BIOMETRIC_EXAMPLE_RISK_FACTORS
+#     DomainRiskPatterns.COMPLEXITY_INDICATORS = BIOMETRIC_EXAMPLE_COMPLEXITY_INDICATORS
+#
+# A machine-readable copy lives in risk-analyzer.biometric-example.json.
+
+BIOMETRIC_EXAMPLE_RISK_FACTORS = {
+    'template_security': {
+        'patterns': [r'biometric.*encrypt', r'biometric.*hash', r'irreversible', r'privacy.*preserving'],
+        'risk_level': 'HIGH',
+        'test_implications': ['Template encryption testing', 'Privacy verification', 'Data breach simulation']
+    },
+    'liveness_detection': {
+        'patterns': [r'liveness', r'spoof.*detect', r'anti.*spoof', r'spoof.*attack'],
+        'risk_level': 'HIGH',
+        'test_implications': ['Spoofing attack tests', 'Liveness accuracy testing', 'Edge case scenarios']
+    },
+    'performance_accuracy': {
+        'patterns': [r'FAR', r'FRR', r'liveness', r'accuracy', r'performance.*metric'],
+        'risk_level': 'MEDIUM',
+        'test_implications': ['Performance benchmarking', 'Accuracy validation', 'Load testing']
+    },
+    'gdpr_compliance': {
+        'patterns': [r'GDPR', r'consent', r'data.*subject.*rights', r'privacy.*impact'],
+        'risk_level': 'HIGH',
+        'test_implications': ['Consent flow testing', 'Data deletion verification', 'Privacy audit']
+    },
+    'regulatory_compliance': {
+        'patterns': [r'eIDAS', r'PSD2', r'ISO.*30107', r'banking.*compliance'],
+        'risk_level': 'HIGH',
+        'test_implications': ['Compliance validation', 'Certification testing', 'Audit trail verification']
+    }
+}
+
+BIOMETRIC_EXAMPLE_COMPLEXITY_INDICATORS = {
+    'multi_modal': {
+        'patterns': [r'face.*document', r'multi.*biometric'],
+        'complexity_score': 0.8
+    },
+    'real_time': {
+        'patterns': [r'real.*time', r'streaming', r'live.*capture'],
+        'complexity_score': 0.6
+    },
+    'mobile_integration': {
+        'patterns': [r'mobile.*SDK', r'iOS', r'Android', r'React.*Native'],
+        'complexity_score': 0.7
+    },
+    'api_integration': {
+        'patterns': [r'REST.*API', r'microservice', r'webhook'],
+        'complexity_score': 0.5
+    }
+}
+
 
 def main():
     """Main entry point"""

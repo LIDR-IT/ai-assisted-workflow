@@ -5,15 +5,23 @@
  * Validates that user-stories skill examples contain proper structure
  * for automated user story generation with BDD acceptance criteria.
  *
+ * The DEFAULT validation set is DOMAIN-AGNOSTIC (user-story format, BDD/Gherkin,
+ * Definition of Done, technical tasks, estimation, INVEST principles). LIDR is a
+ * multi-industry framework, so no industry-specific rule is applied by default.
+ *
+ * An overridable EXAMPLE industry pack (biometric identity) is preserved below
+ * as BIOMETRIC_DOMAIN_PACK. It is NOT spread into the default validationCases —
+ * apply it only behind the explicit flag LIDR_DOMAIN_PACK==='biometric'.
+ *
  * Validates:
  * - User story format (As a...I want...So that...)
  * - BDD acceptance criteria with Gherkin syntax
  * - Technical tasks and Definition of Done
  * - Sprint information and effort estimation
  * - INVEST principles compliance
- * - Biometric domain-specific requirements
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *   (optional) LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -197,7 +205,15 @@ const ESTIMATION_AND_PLANNING_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity industry pack.
+
+   This is an EXAMPLE of an industry override, NOT the active default. It is
+   intentionally NOT spread into the default validationCases below. Apply it
+   only behind the explicit flag LIDR_DOMAIN_PACK==='biometric'. For the
+   domain-agnostic (default) run the behavior is unchanged.
+──────────────────────────────────────────────────────────────────── */
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
   {
     name: "Biometric Context",
     description: "Should address biometric-specific functionality or compliance",
@@ -297,6 +313,11 @@ const INVEST_PRINCIPLES_RULES: ValidationRule[] = [
   },
 ];
 
+// Explicit opt-in flag for the biometric example industry pack (see
+// BIOMETRIC_DOMAIN_PACK above). Default (unset) keeps the DOMAIN-AGNOSTIC set.
+const DOMAIN_PACK_RULES: ValidationRule[] =
+  process.env.LIDR_DOMAIN_PACK === "biometric" ? BIOMETRIC_DOMAIN_PACK : [];
+
 /* ────────────────────────────────────────────────────────────────────
    VALIDATION ENGINE
 ──────────────────────────────────────────────────────────────────── */
@@ -365,10 +386,10 @@ async function main(): Promise<void> {
         ...DEFINITION_OF_DONE_RULES,
         ...TECHNICAL_TASKS_RULES,
         ...ESTIMATION_AND_PLANNING_RULES,
-        ...BIOMETRIC_DOMAIN_RULES,
         ...INVEST_PRINCIPLES_RULES,
+        ...DOMAIN_PACK_RULES,
       ],
-      description: "User Stories for Selphi Document Capture",
+      description: "User Stories for Document Capture Feature",
     },
   ];
 
