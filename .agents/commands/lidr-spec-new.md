@@ -2,7 +2,7 @@
 description: Create a new LIDR change container with empty scaffold (proposal, design, tasks, spec)
 argument-hint: [change-name]
 allowed-tools: Read, Write, Bash(mkdir:*), Bash(ls:*), AskUserQuestion
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 <!--

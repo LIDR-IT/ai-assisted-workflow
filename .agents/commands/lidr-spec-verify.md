@@ -2,7 +2,7 @@
 description: Final verification of a LIDR change — runs full test suite, docs drift check, and generates test-report.md
 argument-hint: [change-name]
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 <!--
@@ -37,7 +37,7 @@ CHANGELOG:
 
 ## Conditional model promote (per lidr-sdlc/model-selection.md §2.3)
 
-Verify starts on Sonnet medium. If CRITICAL findings emerge, **self-promote to Opus high** for analysis: edit `.claude/settings.json` with `"model": "claude-opus-4-7"` and `"effort": "high"`. Then continue.
+Verify starts on Sonnet medium. If CRITICAL findings emerge, **self-promote to Opus high** for analysis: edit `.claude/settings.json` with `"model": "opus"` and `"effort": "high"`. Then continue.
 
 ## Load context
 

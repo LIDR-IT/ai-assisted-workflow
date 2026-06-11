@@ -2,7 +2,7 @@
 description: Fast-forward — generate proposal, design, tasks, spec for a LIDR change in one pass. Requires Opus high reasoning.
 argument-hint: [change-name]
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(ls:*), AskUserQuestion
-model: claude-opus-4-7
+model: opus
 ---
 
 <!--
@@ -40,7 +40,7 @@ CHANGELOG:
 
 ## Model self-correct (per lidr-sdlc/model-selection.md)
 
-Before starting, verify the session is using Opus high reasoning. If not, self-correct by editing `.claude/settings.json` (use `update-config` skill or jq) with `"model": "claude-opus-4-7"` and `"effort": "high"`. **Do not stop and ask the user** — this is planning work and Opus is mandatory.
+Before starting, verify the session is using Opus high reasoning. If not, self-correct by editing `.claude/settings.json` (use `update-config` skill or jq) with `"model": "opus"` and `"effort": "high"`. **Do not stop and ask the user** — this is planning work and Opus is mandatory.
 
 ## Validate input
 

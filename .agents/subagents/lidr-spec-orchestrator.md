@@ -69,7 +69,7 @@ Write the identified enriched US (from Pre-flight) **into** `docs/projects/<CLIE
 
 ### 2. Fast-forward (planning — requires Opus high)
 
-Self-correct model per `lidr-sdlc/model-selection.md`: promote to `claude-opus-4-7` + `effort: high`.
+Self-correct model per `lidr-sdlc/model-selection.md`: promote to `opus` + `effort: high`.
 
 Invoke `/lidr-spec-ff <change-name>` with the enriched US as the primary source of truth.
 
@@ -83,7 +83,7 @@ If validation fails: **pause** and report which artifact is incomplete. Do NOT p
 
 ### 3. Apply (implementation — Sonnet medium)
 
-Self-correct model: revert to `claude-sonnet-4-6` + `effort: medium`.
+Self-correct model: revert to `sonnet` + `effort: medium`.
 
 Invoke `/lidr-spec-apply <change-name>`:
 
