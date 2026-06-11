@@ -3,19 +3,28 @@
  * validate-examples.ts - Risk Log Skill Example Validator
  *
  * Validates that risk-log skill examples contain proper structure
- * for biometric project risk management throughout SDLC lifecycle.
+ * for project risk management throughout the SDLC lifecycle.
+ *
+ * The DEFAULT validation set is 100% domain-agnostic (risk log header,
+ * risk categories, probability/impact matrix, mitigation strategies, risk
+ * ownership, plus generic technical/compliance/security/performance risk
+ * checks). An overridable EXAMPLE industry pack (biometric identity) is
+ * preserved below as the BIOMETRIC_DOMAIN_PACK constant and is applied ONLY
+ * behind an explicit flag (`LIDR_DOMAIN_PACK=biometric`). It is
+ * documentation/example only and is NOT part of the default behavior.
  *
  * Validates:
- * - Risk identification with biometric-specific categories
+ * - Risk identification with structured risk categories
  * - Risk assessment with probability and impact scoring
  * - Mitigation strategies with ownership and timelines
  * - Risk monitoring and status tracking
  * - Compliance and regulatory risk assessment
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync } from "fs";
 import { join } from "path";
 
 interface ValidationRule {
@@ -58,7 +67,52 @@ const RISK_STRUCTURE_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
+// DOMAIN-AGNOSTIC: applies to every risk log regardless of industry.
+const CORE_RISK_DOMAIN_RULES: ValidationRule[] = [
+  {
+    name: "Technical Risks",
+    description: "Must identify technical risks (accuracy, reliability, integration, data)",
+    check: (content) =>
+      content.includes("accuracy") ||
+      content.includes("reliability") ||
+      content.includes("integration") ||
+      content.includes("data"),
+    severity: "ERROR",
+  },
+  {
+    name: "Compliance Risks",
+    description: "Must address regulatory / compliance risks",
+    check: (content) =>
+      content.includes("compliance") ||
+      content.includes("Compliance") ||
+      content.includes("regulatory") ||
+      content.includes("regulation"),
+    severity: "ERROR",
+  },
+  {
+    name: "Security Risks",
+    description: "Should identify security and threat risks",
+    check: (content) => content.includes("security") || content.includes("Security"),
+    severity: "WARN",
+  },
+  {
+    name: "Performance Risks",
+    description: "Should identify performance and scalability risks",
+    check: (content) => content.includes("performance") || content.includes("latency"),
+    severity: "WARN",
+  },
+];
+
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity industry pack (NOT DEFAULT).
+   These rules are applied ONLY when LIDR_DOMAIN_PACK=biometric. They are
+   documentation/example content showing how a domain pack layers extra,
+   domain-specific risk checks (biometric accuracy/template, GDPR Art. 9,
+   anti-spoofing/liveness) on top of the agnostic defaults. They are NOT
+   spread into the default validation set.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
   {
     name: "Biometric Technical Risks",
     description: "Must identify biometric-specific technical risks",
@@ -74,17 +128,13 @@ const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
   },
   {
     name: "Anti-Spoofing Risks",
-    description: "Should identify anti-spoofing and security risks",
-    check: (content) => content.includes("spoofing") || content.includes("security"),
-    severity: "WARN",
-  },
-  {
-    name: "Performance Risks",
-    description: "Should identify performance and scalability risks",
-    check: (content) => content.includes("performance") || content.includes("latency"),
+    description: "Should identify anti-spoofing and liveness security risks",
+    check: (content) => content.includes("spoofing") || content.includes("liveness"),
     severity: "WARN",
   },
 ];
+
+const DOMAIN_PACK_ENABLED = process.env.LIDR_DOMAIN_PACK === "biometric";
 
 function validateFile(filePath: string, rules: ValidationRule[]): any {
   const content = readFileSync(filePath, "utf-8");
@@ -113,15 +163,46 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const validationCases = [
-    {
-      file: "biometric-project-risk-log.md",
-      rules: [...RISK_STRUCTURE_RULES, ...BIOMETRIC_DOMAIN_RULES],
-      description: "Biometric Project Risk Log Structure",
-    },
-  ];
+  // DEFAULT (domain-agnostic) rule set applied to every risk-log example.
+  const DEFAULT_RISK_RULES = [...RISK_STRUCTURE_RULES, ...CORE_RISK_DOMAIN_RULES];
+
+  // Optional biometric domain pack — appended ONLY when LIDR_DOMAIN_PACK=biometric.
+  const activeRules = DOMAIN_PACK_ENABLED
+    ? [...DEFAULT_RISK_RULES, ...BIOMETRIC_DOMAIN_PACK]
+    : DEFAULT_RISK_RULES;
+
+  // Discover all .md example files (excluding validation reports) so the
+  // validator runs against whatever risk-log examples are present.
+  const findMdFiles = (dir: string): string[] => {
+    const files: string[] = [];
+    const entries = readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...findMdFiles(fullPath));
+      } else if (
+        entry.isFile() &&
+        entry.name.endsWith(".md") &&
+        !entry.name.includes("validation")
+      ) {
+        files.push(fullPath);
+      }
+    }
+    return files;
+  };
+
+  const mdFiles = findMdFiles(examplesDir);
+  const validationCases = mdFiles.map((filePath) => ({
+    file: filePath.replace(examplesDir + "/", ""),
+    fullPath: filePath,
+    rules: activeRules,
+    description: `Risk Log: ${filePath.split("/").pop()?.replace(".md", "") || "Unknown"}`,
+  }));
 
   console.log("🔍 Validating Risk Log Skill Examples...\n");
+  if (DOMAIN_PACK_ENABLED) {
+    console.log("ℹ️  LIDR_DOMAIN_PACK=biometric — applying optional biometric domain rules.\n");
+  }
 
   let totalPassed = 0,
     totalFailed = 0,
@@ -129,15 +210,13 @@ async function main(): Promise<void> {
     allValid = true;
 
   for (const testCase of validationCases) {
-    const filePath = join(examplesDir, testCase.file);
-
-    if (!existsSync(filePath)) {
+    if (!existsSync(testCase.fullPath)) {
       console.log(`❌ ${testCase.description}\n   File not found: ${testCase.file}\n`);
       allValid = false;
       continue;
     }
 
-    const result = validateFile(filePath, testCase.rules);
+    const result = validateFile(testCase.fullPath, testCase.rules);
     totalPassed += result.passed;
     totalFailed += result.failed;
     totalWarnings += result.warnings;
@@ -167,7 +246,7 @@ async function main(): Promise<void> {
 
   if (allValid) {
     console.log(
-      "\n🎉 All Risk Log examples are properly structured!\n   Ready for comprehensive biometric project risk management."
+      "\n🎉 All Risk Log examples are properly structured!\n   Ready for comprehensive project risk management."
     );
   } else {
     console.log(

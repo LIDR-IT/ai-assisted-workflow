@@ -5,7 +5,13 @@
  * Validates that release-notes skill examples contain proper structure
  * for automated release notes generation with business impact analysis.
  *
- * Validates:
+ * The DEFAULT validation set is 100% domain-agnostic — it applies to any
+ * product, stack, or industry. Domain-specific rule packs (e.g. biometric)
+ * are opt-in and only activate when `LIDR_DOMAIN_PACK` is set; example
+ * fixtures for a domain live under `examples/domains/<domain>/` per the
+ * documented example convention.
+ *
+ * Validates (default, domain-agnostic):
  * - Executive summary with key metrics and business impact
  * - What's new section with categorized features
  * - Technical enhancements with detailed specifications
@@ -13,7 +19,12 @@
  * - Migration guidance and deployment instructions
  * - Proper versioning and compatibility information
  *
- * Usage: npx tsx scripts/validate-examples.ts
+ * Optional domain packs (set LIDR_DOMAIN_PACK to enable):
+ * - biometric: identity/liveness/anti-spoof/FAR-FRR/GDPR-Art9 terminology
+ *
+ * Usage:
+ *   npx tsx scripts/validate-examples.ts                       # generic only
+ *   LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts  # + biometric pack
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -135,10 +146,7 @@ const WHATS_NEW_RULES: ValidationRule[] = [
   {
     name: "Security Enhancements",
     description: "Should highlight security improvements",
-    check: (content) =>
-      content.includes("Security") ||
-      content.includes("security") ||
-      content.includes("Anti-Spoofing"),
+    check: (content) => content.includes("Security") || content.includes("security"),
     severity: "WARN",
   },
   {
@@ -226,7 +234,14 @@ const DEVELOPER_EXPERIENCE_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
+/* ────────────────────────────────────────────────────────────────────
+   OPT-IN DOMAIN PACK — BIOMETRIC / IDENTITY
+   These rules are NOT part of the default (domain-agnostic) validation set.
+   They are spread into validationCases ONLY when LIDR_DOMAIN_PACK==='biometric'.
+   The default validator path must never reference biometric / liveness /
+   anti-spoof / FAR / FRR / GDPR-Art9 / ISO-30107 / Selphi terminology.
+──────────────────────────────────────────────────────────────────── */
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
   {
     name: "Biometric Terminology",
     description: "Should use proper biometric domain terminology",
@@ -362,20 +377,8 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  // DEFAULT validation set — 100% domain-agnostic. Runs for every product/stack.
   const validationCases = [
-    {
-      file: "domains/biometric/selphi-sdk-v4.2.1-release-notes.md",
-      rules: [
-        ...RELEASE_HEADER_RULES,
-        ...EXECUTIVE_SUMMARY_RULES,
-        ...WHATS_NEW_RULES,
-        ...TECHNICAL_DETAILS_RULES,
-        ...DEVELOPER_EXPERIENCE_RULES,
-        ...BIOMETRIC_DOMAIN_RULES,
-        ...MIGRATION_DEPLOYMENT_RULES,
-      ],
-      description: "Biometric SDK Release Notes Structure",
-    },
     {
       file: "generic/release-notes-template.md",
       rules: [
@@ -388,6 +391,25 @@ async function main(): Promise<void> {
       description: "Generic Release Notes Template Structure",
     },
   ];
+
+  // OPT-IN domain pack — biometric/identity. Only active when explicitly enabled.
+  // The example fixture under examples/domains/biometric/ is a documented
+  // example convention (example data, not a default rule).
+  if (process.env.LIDR_DOMAIN_PACK === "biometric") {
+    validationCases.push({
+      file: "domains/biometric/selphi-sdk-v4.2.1-release-notes.md",
+      rules: [
+        ...RELEASE_HEADER_RULES,
+        ...EXECUTIVE_SUMMARY_RULES,
+        ...WHATS_NEW_RULES,
+        ...TECHNICAL_DETAILS_RULES,
+        ...DEVELOPER_EXPERIENCE_RULES,
+        ...BIOMETRIC_DOMAIN_PACK,
+        ...MIGRATION_DEPLOYMENT_RULES,
+      ],
+      description: "Biometric SDK Release Notes Structure (LIDR_DOMAIN_PACK=biometric)",
+    });
+  }
 
   console.log("🔍 Validating Release Notes Skill Examples...\n");
 

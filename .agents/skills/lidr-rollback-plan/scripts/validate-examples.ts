@@ -5,6 +5,9 @@
  * Validates that rollback-plan skill examples contain proper structure
  * for automated rollback planning with deployment risk analysis.
  *
+ * The DEFAULT validation set is 100% domain-agnostic — it validates a generic
+ * deployment rollback plan and works for any technology stack or industry.
+ *
  * Validates:
  * - Change analysis with deployment components
  * - Rollback procedures with detailed steps
@@ -12,7 +15,13 @@
  * - Testing validation for rollback scenarios
  * - Communication plan and stakeholder notification
  *
- * Usage: npx tsx scripts/validate-examples.ts
+ * Domain packs: example fixtures under `examples/domains/<domain>/` are an
+ * opt-in convention. Set `LIDR_DOMAIN_PACK=biometric` to additionally validate
+ * the biometric/identity example fixtures (see BIOMETRIC_DOMAIN_PACK below).
+ *
+ * Usage:
+ *   npx tsx scripts/validate-examples.ts                       # generic only
+ *   LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts  # + biometric pack
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -112,13 +121,34 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  // DEFAULT validation set — 100% domain-agnostic.
   const validationCases = [
     {
-      file: "biometric-platform-rollback-plan.md",
+      file: "generic/deployment-rollback-plan-template.md",
       rules: [...ROLLBACK_STRUCTURE_RULES, ...RISK_ASSESSMENT_RULES],
-      description: "Biometric Platform Rollback Plan Structure",
+      description: "Generic Deployment Rollback Plan Structure",
     },
   ];
+
+  // Opt-in biometric/identity domain pack. The validation RULES are identical
+  // and domain-agnostic; only the example FIXTURES under examples/domains/biometric/
+  // are biometric. Spread into validationCases ONLY when the domain pack is selected.
+  const BIOMETRIC_DOMAIN_PACK = [
+    {
+      file: "domains/biometric/platform-api-gateway-rollback.md",
+      rules: [...ROLLBACK_STRUCTURE_RULES, ...RISK_ASSESSMENT_RULES],
+      description: "Biometric Platform API Gateway Rollback Plan Structure",
+    },
+    {
+      file: "domains/biometric/selphi-algorithm-rollback-plan.md",
+      rules: [...ROLLBACK_STRUCTURE_RULES, ...RISK_ASSESSMENT_RULES],
+      description: "Biometric Algorithm Rollback Plan Structure",
+    },
+  ];
+
+  if (process.env.LIDR_DOMAIN_PACK === "biometric") {
+    validationCases.push(...BIOMETRIC_DOMAIN_PACK);
+  }
 
   console.log("🔍 Validating Rollback Plan Skill Examples...\n");
 

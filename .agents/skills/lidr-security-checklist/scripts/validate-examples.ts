@@ -6,14 +6,22 @@
  * for automated security validation and Gate 6 compliance assessment.
  *
  * Validates:
- * - GDPR Article 9 compliance sections with biometric data focus
+ * - GDPR special-category data compliance sections
  * - OWASP Top 10 security validation complete coverage
- * - PSD2 SCA compliance assessment for banking contexts
+ * - PSD2 SCA compliance assessment for regulated/payment contexts
  * - ISO 27001 controls mapping with evidence requirements
- * - Biometric-specific security requirements validation
  * - Gate 6 approval conditions and risk acceptance criteria
  *
+ * The DEFAULT validation set is DOMAIN-AGNOSTIC — the rule sets check universal
+ * security/compliance concepts (GDPR special-category data, OWASP Top 10, PSD2
+ * SCA, ISO 27001, executive sign-off) — LIDR is a multi-industry framework. An
+ * OPTIONAL biometric/identity domain pack of extra rules (template encryption,
+ * liveness / anti-spoofing / presentation-attack detection, biometric legal
+ * basis) is preserved as BIOMETRIC_DOMAIN_PACK below and applied only when
+ * LIDR_DOMAIN_PACK === 'biometric'. Example only — NOT the active default.
+ *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -30,26 +38,30 @@ interface ValidationRule {
   severity: "ERROR" | "WARN";
 }
 
+// DEFAULT — domain-agnostic. GDPR Article 9 governs ALL special-category data
+// (health, biometric, genetic, political/religious, etc.), not biometrics alone.
 const GDPR_COMPLIANCE_RULES: ValidationRule[] = [
   {
     name: "GDPR Article 9 Special Category Data Section",
-    description: "Must contain specific GDPR Article 9 compliance assessment for biometric data",
+    description:
+      "Must contain a GDPR Article 9 compliance assessment for special-category personal data",
     check: (content) =>
       content.includes("GDPR Article 9 Compliance") && content.includes("Special Category Data"),
     severity: "ERROR",
   },
   {
-    name: "Biometric Data Legal Basis",
-    description: "Must document explicit consent mechanism for biometric processing",
+    name: "Lawful Basis Documentation",
+    description: "Must document the lawful basis for processing special-category data",
     check: (content) =>
-      content.includes("Biometric Data Legal Basis") && content.includes("explicit consent"),
+      content.includes("Legal Basis") ||
+      content.includes("Lawful Basis") ||
+      content.includes("consent"),
     severity: "ERROR",
   },
   {
     name: "Data Minimization Assessment",
-    description: "Must validate data minimization principles for biometric templates",
-    check: (content) =>
-      content.includes("Data Minimization") && content.includes("biometric templates"),
+    description: "Must validate data minimization principles for the processed personal data",
+    check: (content) => content.includes("Data Minimization"),
     severity: "ERROR",
   },
   {
@@ -63,7 +75,7 @@ const GDPR_COMPLIANCE_RULES: ValidationRule[] = [
   },
   {
     name: "Technical and Organizational Measures",
-    description: "Must document specific security measures for biometric data protection",
+    description: "Must document specific security measures for personal data protection",
     check: (content) =>
       content.includes("Technical and Organizational Measures") && content.includes("AES-256"),
     severity: "ERROR",
@@ -186,7 +198,30 @@ const ISO27001_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_SECURITY_RULES: ValidationRule[] = [
+/* ────────────────────────────────────────────────────────────────────
+   OPTIONAL BIOMETRIC / IDENTITY DOMAIN PACK
+   Example only — NOT part of the default validation set. Spread into
+   validationCases ONLY when LIDR_DOMAIN_PACK === 'biometric'. Holds the
+   biometric-specific rules (template encryption, liveness / anti-spoofing /
+   presentation-attack detection, biometric legal basis) that do not belong
+   in the domain-agnostic default path.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
+  {
+    name: "Biometric Data Legal Basis",
+    description: "Must document explicit consent mechanism for biometric processing",
+    check: (content) =>
+      content.includes("Biometric Data Legal Basis") && content.includes("explicit consent"),
+    severity: "ERROR",
+  },
+  {
+    name: "Biometric Template Data Minimization",
+    description: "Must validate data minimization principles for biometric templates",
+    check: (content) =>
+      content.includes("Data Minimization") && content.includes("biometric templates"),
+    severity: "ERROR",
+  },
   {
     name: "Biometric-Specific Security Requirements",
     description: "Must contain dedicated biometric security assessment section",
@@ -354,6 +389,13 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  // OPTIONAL biometric/identity domain pack — example only, NOT the default.
+  // Applied only when LIDR_DOMAIN_PACK === 'biometric'. The DEFAULT validation
+  // set below is 100% domain-agnostic (no biometric / liveness / anti-spoof
+  // rule in the default path).
+  const domainPack: ValidationRule[] =
+    process.env.LIDR_DOMAIN_PACK === "biometric" ? BIOMETRIC_DOMAIN_PACK : [];
+
   const validationCases = [
     {
       file: "gate-6-security-validation.md",
@@ -363,8 +405,8 @@ async function main(): Promise<void> {
         ...PSD2_COMPLIANCE_RULES,
         ...OWASP_VALIDATION_RULES,
         ...ISO27001_RULES,
-        ...BIOMETRIC_SECURITY_RULES,
         ...GATE6_APPROVAL_RULES,
+        ...domainPack,
       ],
       description: "Gate 6 Security Validation Document",
     },
@@ -372,13 +414,14 @@ async function main(): Promise<void> {
       file: "owasp-top10-validation.md",
       rules: [
         ...OWASP_VALIDATION_RULES,
-        ...BIOMETRIC_SECURITY_RULES,
         {
           name: "Security Testing Coverage",
           description: "Must include comprehensive security testing results",
-          check: (content) => content.includes("Testing Evidence") && content.includes("coverage"),
-          severity: "ERROR",
+          check: (content: string) =>
+            content.includes("Testing Evidence") && content.includes("coverage"),
+          severity: "ERROR" as const,
         },
+        ...domainPack,
       ],
       description: "OWASP Top 10 Security Validation",
     },
@@ -443,7 +486,9 @@ async function main(): Promise<void> {
     console.log("   🔐 GDPR Article 9, PSD2, OWASP Top 10, and ISO 27001 compliance validated");
   } else {
     console.log("\n💡 Fix the validation errors to ensure Gate 6 compliance compatibility.");
-    console.log("   Focus on GDPR Article 9 biometric requirements and OWASP coverage.");
+    console.log(
+      "   Focus on GDPR Article 9 special-category data requirements and OWASP coverage."
+    );
   }
 
   process.exit(allValid ? 0 : 1);

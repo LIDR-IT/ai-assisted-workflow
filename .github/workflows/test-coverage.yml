@@ -22,15 +22,23 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies
         run: npm ci
         working-directory: ./app
 
-      - name: Ecosystem coherence guard (codifies the A/B/C audit — blocking)
+      - name: LIDR Python scripts compile (guards the 2026-06 botched-rename breakage — blocking)
+        run: |
+          set -e
+          for f in $(find .agents/skills/lidr-* .agents/_shared/lidr/scripts -name '*.py'); do
+            python3 -m py_compile "$f"
+          done
+          echo "✅ all LIDR Python scripts compile"
+
+      - name: Ecosystem coherence guard (codifies the A/B/C audit + session-2026-06 guards — blocking)
         run: npm run test:ecosystem
         working-directory: ./app
 
@@ -107,8 +115,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies
@@ -148,8 +156,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies

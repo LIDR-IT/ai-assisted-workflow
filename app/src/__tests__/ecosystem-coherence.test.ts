@@ -15,6 +15,7 @@ import { parse as parseYaml } from 'yaml';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 import { commands as appCommands } from '@/data/artifacts/commands';
 import { skills as appSkills } from '@/data/artifacts/skills';
 import { getAllTemplates } from '@/data/features/handoffsTemplates';
@@ -580,5 +581,129 @@ describe('/sitemap references every canonical skill', () => {
   it('every skills.ts skill appears in sitemapView.ts', () => {
     const missing = appSkills.filter((s) => !referenced.has(s.id)).map((s) => s.id);
     expect(missing, `skills missing from /sitemap tree: ${missing.join(', ')}`).toEqual([]);
+  });
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// Session 2026-06 regression guards — turn "verified once" into "protected".
+// Each guards a change-class that had NO other test and HAS regressed before
+// (a botched rename broke 3 Python scripts and nobody noticed for weeks).
+// ════════════════════════════════════════════════════════════════════════════
+
+const lidrPy = [
+  ...walk(path.join(AGENTS, 'skills'), (f) => f.endsWith('.py')).filter((p) =>
+    /[/\\]lidr-/.test(p)
+  ),
+  ...walk(path.join(AGENTS, '_shared', 'lidr', 'scripts'), (f) => f.endsWith('.py')),
+];
+let hasPython = false;
+try {
+  execSync('python3 --version', { stdio: 'ignore' });
+  hasPython = true;
+} catch {
+  // no python3 in this env — the static {{token}} proxy below still runs
+}
+const cmdSub = [
+  ...lsMd(path.join(AGENTS, 'commands')).map((f) => path.join(AGENTS, 'commands', f)),
+  ...lsMd(path.join(AGENTS, 'subagents')).map((f) => path.join(AGENTS, 'subagents', f)),
+];
+
+describe('Guard: LIDR Python scripts parse (botched-rename breakage)', () => {
+  it.skipIf(!hasPython)('every LIDR .py compiles (python3 -m py_compile)', () => {
+    const broken = lidrPy.filter((p) => {
+      try {
+        execSync(`python3 -m py_compile "${p}"`, { stdio: 'ignore' });
+        return false;
+      } catch {
+        return true;
+      }
+    });
+    expect(
+      broken.map((p) => path.relative(REPO, p)),
+      'non-parsing Python scripts'
+    ).toEqual([]);
+  });
+
+  it('no LIDR .py uses a {{TOKEN}} in identifier position (the pattern that broke 3 scripts)', () => {
+    // Catches {{TOKEN}} fused to a word char (e.g. `{{CLIENT_CODE}}_components`,
+    // `{{INDUSTRY_TIER_1}}RiskPatterns`) — the actual SyntaxError cause. A {{TOKEN}}
+    // inside a string/docstring (a legitimate client-config placeholder) is fine.
+    const offenders: string[] = [];
+    for (const p of lidrPy) {
+      read(p)
+        .split('\n')
+        .forEach((ln, i) => {
+          if (/[A-Za-z0-9_]\{\{[A-Z0-9_]+\}\}|\{\{[A-Z0-9_]+\}\}[A-Za-z0-9_]/.test(ln)) {
+            offenders.push(`${path.relative(REPO, p)}:${i + 1}`);
+          }
+        });
+    }
+    expect(offenders.slice(0, 20), 'template token in Python identifier position').toEqual([]);
+  });
+});
+
+describe('Guard: tool-routing via abstraction skills', () => {
+  it('no command/subagent frontmatter pins a concrete MCP (mcp__jira/confluence/slack)', () => {
+    const offenders = cmdSub.filter((p) =>
+      /mcp__(jira|confluence|slack)\b/i.test(frontmatter(read(p)) ?? '')
+    );
+    expect(
+      offenders.map((p) => path.relative(REPO, p)),
+      'concrete MCP in frontmatter — use Skill(lidr-sdlc-tracking)/lidr-external-sync'
+    ).toEqual([]);
+  });
+});
+
+describe('Guard: model-id uses future-proof aliases', () => {
+  it('no command/subagent/skill frontmatter pins a hardcoded claude-{opus,sonnet,haiku}-N model-id', () => {
+    const files = [...cmdSub, ...lidrSkills.map((d) => path.join(AGENTS, 'skills', d, 'SKILL.md'))];
+    const offenders = files.filter((p) =>
+      /\bclaude-(opus|sonnet|haiku)-\d/i.test(frontmatter(read(p)) ?? '')
+    );
+    expect(
+      offenders.map((p) => path.relative(REPO, p)),
+      'hardcoded model-id in frontmatter — use the opus/sonnet/haiku aliases'
+    ).toEqual([]);
+  });
+});
+
+describe('Guard: single development sequence (no live RUTA A/B framing)', () => {
+  it('no .agents/ doc frames two parallel routes (RUTA A vs RUTA B), outside changelogs/negations', () => {
+    const offenders: string[] = [];
+    for (const p of walk(AGENTS, (f) => /\.(md|ya?ml)$/.test(f))) {
+      read(p)
+        .split('\n')
+        .forEach((ln, i) => {
+          if (!/\bRUTA [AB]\b/i.test(ln)) {
+            return;
+          }
+          if (
+            /no hay|not an alternative|sin RUTA|route-agnostic|ambas rutas|both routes|colapsa|^\s*\|\s*\d+\.\d+\.\d+\s*\|/i.test(
+              ln
+            )
+          ) {
+            return; // explicit negation or historical changelog row
+          }
+          offenders.push(`${path.relative(REPO, p)}:${i + 1}`);
+        });
+    }
+    expect(offenders.slice(0, 20), 'live RUTA A/B framing').toEqual([]);
+  });
+});
+
+describe('Guard: validators keep biometric rules behind the gated domain pack', () => {
+  it('any lidr-*/validate-examples.ts defining a BIOMETRIC_* rules constant must gate it (LIDR_DOMAIN_PACK)', () => {
+    const validators = walk(
+      path.join(AGENTS, 'skills'),
+      (f) => f === 'validate-examples.ts'
+    ).filter((p) => /[/\\]lidr-/.test(p));
+    const offenders = validators.filter((p) => {
+      const c = read(p);
+      return /\bBIOMETRIC_[A-Z_]+\b/.test(c) && !/LIDR_DOMAIN_PACK/.test(c);
+    });
+    expect(
+      offenders.map((p) => path.relative(REPO, p)),
+      'biometric rules NOT behind the LIDR_DOMAIN_PACK gate'
+    ).toEqual([]);
   });
 });

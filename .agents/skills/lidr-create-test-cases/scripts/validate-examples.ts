@@ -5,16 +5,24 @@
  * Validates that create-test-cases skill examples contain proper BDD structure
  * for generating executable test cases from tickets in "Ready for QA".
  *
- * Validates:
+ * Validates (DEFAULT, domain-agnostic):
  * - BDD Gherkin syntax and structure (Given/When/Then)
  * - Test case metadata completeness
  * - Concrete test data specifications
  * - Priority and automation markers
- * - Biometric domain-specific scenarios
- * - GDPR compliance considerations
+ * - Compliance / data-protection considerations
  * - Edge case and error scenario coverage
  *
- * Usage: npx tsx scripts/validate-examples.ts
+ * Domain packs (opt-in via LIDR_DOMAIN_PACK):
+ * - Example domain-specific rule sets (e.g. biometric/identity) live in
+ *   clearly-labelled constants and are spread into the validation set ONLY
+ *   when the matching domain pack is enabled. The default path stays generic.
+ *   Domain example FIXTURES under `examples/domains/<pack>/` are a documented
+ *   example convention and are only validated when that pack is active.
+ *
+ * Usage:
+ *   npx tsx scripts/validate-examples.ts                  # generic (default)
+ *   LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts  # + biometric pack
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -99,7 +107,7 @@ const BDD_TEMPLATE_RULES: ValidationRule[] = [
   },
   {
     name: "Compliance Requirements",
-    description: "Must address regulatory compliance (GDPR, data protection)",
+    description: "Must address regulatory compliance (data protection, consent)",
     check: (content) => content.includes("compliance") && content.includes("consent"),
     severity: "ERROR",
   },
@@ -134,6 +142,15 @@ const BDD_TEMPLATE_RULES: ValidationRule[] = [
     severity: "ERROR",
   },
 ];
+
+/* ────────────────────────────────────────────────────────────────────
+   BIOMETRIC DOMAIN PACK (opt-in)
+
+   These rule sets are NOT part of the default, domain-agnostic validation.
+   They are an EXAMPLE domain pack (biometric / identity verification) and are
+   spread into the validation set ONLY when LIDR_DOMAIN_PACK === 'biometric'.
+   The accompanying example fixtures live under examples/domains/biometric/.
+──────────────────────────────────────────────────────────────────── */
 
 const BIOMETRIC_SCENARIOS_RULES: ValidationRule[] = [
   {
@@ -265,6 +282,30 @@ const VOICE_VERIFICATION_RULES: ValidationRule[] = [
   },
 ];
 
+/**
+ * Biometric/identity example domain pack: maps example fixtures under
+ * examples/domains/biometric/ to their domain-specific rule sets. Spread into
+ * the default validation set ONLY when LIDR_DOMAIN_PACK === 'biometric'.
+ */
+const BIOMETRIC_DOMAIN_PACK: Array<{ file: string; rules: ValidationRule[]; description: string }> =
+  [
+    {
+      file: "domains/biometric/selphi-liveness-detection-bdd-scenarios.feature",
+      rules: BIOMETRIC_SCENARIOS_RULES,
+      description: "Biometric Liveness Detection Scenarios",
+    },
+    {
+      file: "domains/biometric/selphid-ocr-accuracy-test-matrix.json",
+      rules: OCR_ACCURACY_RULES,
+      description: "OCR Accuracy Test Matrix",
+    },
+    {
+      file: "domains/biometric/voice-verification-test-scenarios.csv",
+      rules: VOICE_VERIFICATION_RULES,
+      description: "Voice Verification Test Scenarios",
+    },
+  ];
+
 /* ────────────────────────────────────────────────────────────────────
    VALIDATION ENGINE
 ──────────────────────────────────────────────────────────────────── */
@@ -324,28 +365,19 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const validationCases = [
+  // DEFAULT validation set — 100% domain-agnostic.
+  const validationCases: Array<{ file: string; rules: ValidationRule[]; description: string }> = [
     {
       file: "generic/feature-test-cases-template.feature",
       rules: BDD_TEMPLATE_RULES,
       description: "BDD Feature Template Structure",
     },
-    {
-      file: "domains/biometric/selphi-liveness-detection-bdd-scenarios.feature",
-      rules: BIOMETRIC_SCENARIOS_RULES,
-      description: "Biometric Liveness Detection Scenarios",
-    },
-    {
-      file: "domains/biometric/selphid-ocr-accuracy-test-matrix.json",
-      rules: OCR_ACCURACY_RULES,
-      description: "OCR Accuracy Test Matrix",
-    },
-    {
-      file: "domains/biometric/voice-verification-test-scenarios.csv",
-      rules: VOICE_VERIFICATION_RULES,
-      description: "Voice Verification Test Scenarios",
-    },
   ];
+
+  // Opt-in domain packs (example convention). Enable with LIDR_DOMAIN_PACK.
+  if (process.env.LIDR_DOMAIN_PACK === "biometric") {
+    validationCases.push(...BIOMETRIC_DOMAIN_PACK);
+  }
 
   console.log("🔍 Validating Create-Test-Cases Skill Examples...\n");
 
