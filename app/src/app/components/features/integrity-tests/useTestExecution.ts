@@ -34,21 +34,68 @@ import { ecosystemStats, automationStats } from '@/data/simple-stats';
  * (it needs a server/CLI run), the test is honestly relabelled as
  * informational and reports `warn`, never a false `pass`.
  */
+export type TestStatusFilter = 'all' | 'fail' | 'warn' | 'pass' | 'pending';
+
 export function useTestExecution() {
   // State management
   const [testResults, setTestResults] = useState<Record<string, TestResult>>({});
   const [isRunning, setIsRunning] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategoryState] = useState<string | null>(null);
+  const [statusFilter, setStatusFilterState] = useState<TestStatusFilter>('all');
   const [executionStartTime, setExecutionStartTime] = useState<number | null>(null);
 
+  // Changing a filter must land the user on page 1 — otherwise a narrower
+  // filter can leave currentPage beyond totalPages and render an empty list.
+  const setSelectedCategory = useCallback((categoryId: string | null) => {
+    setSelectedCategoryState(categoryId);
+    setCurrentPage(1);
+  }, []);
+  const setStatusFilter = useCallback((filter: TestStatusFilter) => {
+    setStatusFilterState(filter);
+    setCurrentPage(1);
+  }, []);
+
   // Computed values
-  const filteredTests = useMemo(() => {
+  const categoryTests = useMemo(() => {
     if (!selectedCategory) {
       return TEST_DEFINITIONS;
     }
     return getTestsByCategory(selectedCategory);
   }, [selectedCategory]);
+
+  // Status counts over the category-filtered set (drives the filter chips).
+  const statusCounts = useMemo(() => {
+    const counts = { all: categoryTests.length, fail: 0, warn: 0, info: 0, pass: 0, pending: 0 };
+    for (const test of categoryTests) {
+      const status = testResults[test.id]?.status;
+      if (status === 'fail') {
+        counts.fail++;
+      } else if (status === 'warn') {
+        counts.warn++;
+      } else if (status === 'info') {
+        counts.info++;
+      } else if (status === 'pass') {
+        counts.pass++;
+      } else {
+        counts.pending++;
+      }
+    }
+    return counts;
+  }, [categoryTests, testResults]);
+
+  const filteredTests = useMemo(() => {
+    if (statusFilter === 'all') {
+      return categoryTests;
+    }
+    return categoryTests.filter((test) => {
+      const status = testResults[test.id]?.status;
+      if (statusFilter === 'pending') {
+        return !status || status === 'idle' || status === 'running';
+      }
+      return status === statusFilter;
+    });
+  }, [categoryTests, statusFilter, testResults]);
 
   const paginatedTests = useMemo(() => {
     const startIndex = (currentPage - 1) * TEST_EXECUTION_CONFIG.TESTS_PER_PAGE;
@@ -64,9 +111,10 @@ export function useTestExecution() {
     const pass = results.filter((r) => r.status === 'pass').length;
     const fail = results.filter((r) => r.status === 'fail').length;
     const warn = results.filter((r) => r.status === 'warn').length;
+    const info = results.filter((r) => r.status === 'info').length;
     const totalDuration = results.reduce((sum, r) => sum + (r.duration || 0), 0);
 
-    return { total, pass, fail, warn, totalDuration };
+    return { total, pass, fail, warn, info, totalDuration };
   }, [testResults]);
 
   // Test execution logic — each case is wired to the executor whose REAL logic
@@ -270,6 +318,7 @@ export function useTestExecution() {
     isRunning,
     currentPage,
     selectedCategory,
+    statusFilter,
     executionStartTime,
 
     // Computed
@@ -277,6 +326,7 @@ export function useTestExecution() {
     paginatedTests,
     totalPages,
     summary,
+    statusCounts,
 
     // Actions
     runAllTests,
@@ -284,6 +334,7 @@ export function useTestExecution() {
     clearResults,
     setCurrentPage,
     setSelectedCategory,
+    setStatusFilter,
 
     // Data
     testCategories: TEST_CATEGORIES,
@@ -338,6 +389,23 @@ function warn(testDef: TestDefinition, message: string, details?: string[]): Tes
     name: testDef.name,
     category: testDef.category,
     status: 'warn',
+    message,
+    details,
+  };
+}
+
+/**
+ * Informational result: the check is real but can only be fully verified
+ * server-side / via CLI / via git — not from the client bundle. Distinct from
+ * `warn` (a soft problem) so the summary doesn't count honest "run it on CLI"
+ * reminders as warnings.
+ */
+function info(testDef: TestDefinition, message: string, details?: string[]): TestResult {
+  return {
+    id: testDef.id,
+    name: testDef.name,
+    category: testDef.category,
+    status: 'info',
     message,
     details,
   };
@@ -1001,10 +1069,10 @@ async function executeRepoStructureChecklistTest(testDef: TestDefinition): Promi
   // owning skill exists, but cannot inspect the checklist's category coverage
   // from the browser — so this is reported honestly as informational.
   const owner = skills.find((s) => s.id === 'lidr-kickoff');
-  return warn(
+  return info(
     testDef,
     owner
-      ? '⚠️ Informational: repo-structure checklist (lidr-kickoff) exists but its category coverage needs a server-side scan'
+      ? 'ℹ️ Informational: repo-structure checklist (lidr-kickoff) exists but its category coverage needs a server-side scan'
       : '⚠️ Informational: repo-structure checklist owner skill (lidr-kickoff) not found in registry',
     [
       'Checklist files (checklists/*.md) are not in the client bundle glob — run a CLI audit to verify category coverage',
@@ -1244,9 +1312,9 @@ async function executeAutomationScriptsTest(testDef: TestDefinition): Promise<Te
   // per-skill `automated` flag; treat a positive promised count as the bundle's
   // best verifiable signal and surface the rest as informational.
   return ecosystemStats.validationScripts > 0
-    ? warn(
+    ? info(
         testDef,
-        `⚠️ Informational: ${ecosystemStats.validationScripts} automation scripts promised — existence needs a server-side scan`,
+        `ℹ️ Informational: ${ecosystemStats.validationScripts} automation scripts promised — existence needs a server-side scan`,
         details
       )
     : fail(testDef, '❌ No automation scripts promised (validationScripts = 0)', details);
@@ -1305,10 +1373,10 @@ async function executeDtcComplianceTest(testDef: TestDefinition): Promise<TestRe
   // property that cannot be observed from the client bundle. We verify the
   // governing rule is present, then honestly mark the rest informational.
   const hasRule = availableDocPaths.has('.claude/rules/lidr-sdlc/documentation.md');
-  return warn(
+  return info(
     testDef,
     hasRule
-      ? '⚠️ Informational: DTC governance rule present; per-PR DTC compliance requires git history (run /lidr-validate-project-docs)'
+      ? 'ℹ️ Informational: DTC governance rule present; per-PR DTC compliance requires git history (run /lidr-validate-project-docs)'
       : '⚠️ Informational: DTC governance rule (documentation.md) not found — cannot assess DTC',
     [
       'DTC is enforced per-PR by the lidr-frontmatter-guard hook + Gate 4; not observable from the browser bundle',
@@ -1322,9 +1390,9 @@ async function executeDtcComplianceTest(testDef: TestDefinition): Promise<TestRe
 async function executeCoherenceValidationTest(testDef: TestDefinition): Promise<TestResult> {
   // `npm run validate:coherence` is a Node CLI script; it cannot run from the
   // browser. Report honestly as informational instead of a fake pass.
-  return warn(
+  return info(
     testDef,
-    '⚠️ Informational: run `npm run validate:coherence` (CLI) to detect hardcoded-value drift',
+    'ℹ️ Informational: run `npm run validate:coherence` (CLI) to detect hardcoded-value drift',
     ['This check executes server-side and is not runnable from the client bundle']
   );
 }

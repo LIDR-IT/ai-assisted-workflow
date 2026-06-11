@@ -92,6 +92,13 @@ export function TestRunner({
               </div>
             )}
 
+            {summary.info > 0 && (
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-sky-500"></div>
+                <span>Informativos: {summary.info}</span>
+              </div>
+            )}
+
             {summary.fail > 0 && (
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>

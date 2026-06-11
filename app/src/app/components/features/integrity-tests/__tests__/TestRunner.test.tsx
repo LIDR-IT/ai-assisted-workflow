@@ -28,6 +28,7 @@ const createMockSummary = (overrides: Partial<TestSummary> = {}): TestSummary =>
   pass: 0,
   fail: 0,
   warn: 0,
+  info: 0,
   totalDuration: 0,
   ...overrides,
 });
@@ -309,6 +310,7 @@ describe('TestRunner', () => {
         total: 32,
         pass: 29,
         warn: 3,
+        info: 0,
         totalDuration: 2000,
       });
       render(<TestRunner {...defaultProps} summary={warningSummary} totalTests={32} />);

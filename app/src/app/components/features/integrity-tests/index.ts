@@ -5,4 +5,5 @@ export * from './IntegrityTests';
 export * from './TestRunner';
 export * from './TestSuite';
 export * from './TestResults';
+export * from './ProblemsPanel';
 export * from './useTestExecution';

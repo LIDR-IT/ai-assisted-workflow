@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   XCircle,
   AlertTriangle,
+  Info,
 } from 'lucide-react';
 import { useMemo } from 'react';
 import { TestSummary, TestCategory, TestResult } from '@/data/features/integrityTests';
@@ -43,10 +44,13 @@ export function TestResults({
     }
 
     const passScore = summary.pass * 100;
+    const infoScore = summary.info * 100; // informational = not a problem
     const warnScore = summary.warn * 70;
     const failScore = summary.fail * 0;
 
-    return Math.round(((passScore + warnScore + failScore) / (summary.total * 100)) * 100);
+    return Math.round(
+      ((passScore + infoScore + warnScore + failScore) / (summary.total * 100)) * 100
+    );
   }, [summary]);
 
   // Calculate category scores
@@ -62,10 +66,11 @@ export function TestResults({
       }
 
       const pass = categoryTests.filter((t) => t.status === 'pass').length;
+      const info = categoryTests.filter((t) => t.status === 'info').length;
       const warn = categoryTests.filter((t) => t.status === 'warn').length;
       const fail = categoryTests.filter((t) => t.status === 'fail').length;
 
-      const score = Math.round(((pass * 100 + warn * 70) / (total * 100)) * 100);
+      const score = Math.round(((pass * 100 + info * 100 + warn * 70) / (total * 100)) * 100);
 
       return {
         ...category,
@@ -160,6 +165,12 @@ export function TestResults({
                 <span>{summary.warn} advertencias</span>
               </div>
             )}
+            {summary.info > 0 && (
+              <div className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-sky-600" />
+                <span>{summary.info} informativos</span>
+              </div>
+            )}
             {summary.fail > 0 && (
               <div className="flex items-center gap-2">
                 <XCircle className="w-4 h-4 text-red-600" />
@@ -177,6 +188,10 @@ export function TestResults({
               style={{ width: formatPercentage(summary.pass, summary.total) }}
             ></div>
             <div
+              className="bg-sky-500"
+              style={{ width: formatPercentage(summary.info, summary.total) }}
+            ></div>
+            <div
               className="bg-yellow-500"
               style={{ width: formatPercentage(summary.warn, summary.total) }}
             ></div>
@@ -189,6 +204,7 @@ export function TestResults({
 
         <div className="text-xs text-slate-500">
           {formatPercentage(summary.pass, summary.total)} exitosos •{' '}
+          {formatPercentage(summary.info, summary.total)} informativos •{' '}
           {formatPercentage(summary.warn, summary.total)} advertencias •{' '}
           {formatPercentage(summary.fail, summary.total)} fallidos
         </div>

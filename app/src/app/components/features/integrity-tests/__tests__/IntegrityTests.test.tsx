@@ -107,6 +107,13 @@ vi.mock('../TestResults', () => ({
   ),
 }));
 
+// Mock ProblemsPanel (covered by its own ProblemsPanel.test.tsx)
+vi.mock('../ProblemsPanel', () => ({
+  ProblemsPanel: ({ testResults }: { testResults: Record<string, unknown> }) => (
+    <div data-testid="problems-panel-mock">Problems: {Object.keys(testResults || {}).length}</div>
+  ),
+}));
+
 // Mock shared components
 vi.mock('@/app/components/shared/FlowComponents', () => ({
   PageHeader: ({ title, subtitle }: { title: string; subtitle?: string }) => (
@@ -163,6 +170,9 @@ vi.mock('lucide-react', async (importOriginal) => {
 // Default mock configuration
 const defaultMockReturn = {
   // State
+  statusFilter: 'all' as const,
+  statusCounts: { all: 3, fail: 1, warn: 0, info: 0, pass: 1, pending: 1 },
+  setStatusFilter: vi.fn(),
   testResults: {
     test1: {
       id: 'test1',
@@ -232,6 +242,7 @@ const defaultMockReturn = {
     pass: 28,
     fail: 4,
     warn: 0,
+    info: 0,
     totalDuration: 1500,
   },
 
@@ -426,7 +437,7 @@ describe('IntegrityTests', () => {
     it('shows completion status correctly', () => {
       mockUseTestExecution.mockReturnValue({
         ...defaultMockReturn,
-        summary: { total: 3, pass: 3, fail: 0, warn: 0, totalDuration: 1000 },
+        summary: { total: 3, pass: 3, fail: 0, warn: 0, info: 0, totalDuration: 1000 },
         testDefinitions: [
           {
             id: 'test1',
@@ -539,7 +550,7 @@ describe('IntegrityTests', () => {
       mockUseTestExecution.mockReturnValue({
         ...defaultMockReturn,
         testResults: {},
-        summary: { total: 0, pass: 0, fail: 0, warn: 0, totalDuration: 0 },
+        summary: { total: 0, pass: 0, fail: 0, warn: 0, info: 0, totalDuration: 0 },
       });
 
       render(<IntegrityTests />);
@@ -580,7 +591,7 @@ describe('IntegrityTests', () => {
       mockUseTestExecution.mockReturnValue({
         ...defaultMockReturn,
         testResults: {},
-        summary: { total: 0, pass: 0, fail: 0, warn: 0, totalDuration: 0 },
+        summary: { total: 0, pass: 0, fail: 0, warn: 0, info: 0, totalDuration: 0 },
       });
 
       expect(() => render(<IntegrityTests />)).not.toThrow();

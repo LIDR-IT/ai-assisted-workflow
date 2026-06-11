@@ -126,6 +126,7 @@ describe('TestResults', () => {
     total: 5,
     pass: 3,
     warn: 1,
+    info: 0,
     fail: 1,
     totalDuration: 65,
   };
@@ -134,6 +135,7 @@ describe('TestResults', () => {
     total: 0,
     pass: 0,
     warn: 0,
+    info: 0,
     fail: 0,
     totalDuration: 0,
   };
@@ -204,6 +206,7 @@ describe('TestResults', () => {
         total: 10,
         pass: 9,
         warn: 1,
+        info: 0,
         fail: 0,
         totalDuration: 100,
       };
@@ -246,6 +249,7 @@ describe('TestResults', () => {
         total: 10,
         pass: 2,
         warn: 1,
+        info: 0,
         fail: 7,
         totalDuration: 100,
       };
@@ -318,7 +322,7 @@ describe('TestResults', () => {
       expect(progressBar).toBeInTheDocument();
 
       const progressSegments = progressBar?.children;
-      expect(progressSegments).toHaveLength(3); // pass, warn, fail
+      expect(progressSegments).toHaveLength(4); // pass, info, warn, fail
     });
 
     it('displays percentage breakdown correctly', () => {
@@ -538,6 +542,7 @@ describe('TestResults', () => {
         total: 5,
         pass: 5,
         warn: 0,
+        info: 0,
         fail: 0,
         totalDuration: 50,
       };
@@ -578,6 +583,7 @@ describe('TestResults', () => {
         total: 3,
         pass: 0,
         warn: 0,
+        info: 0,
         fail: 3,
         totalDuration: 30,
       };
@@ -686,6 +692,7 @@ describe('TestResults', () => {
         total: 6,
         pass: 4,
         warn: 1,
+        info: 0,
         fail: 1,
         totalDuration: 70,
       };
@@ -830,6 +837,7 @@ describe('TestResults', () => {
         total: 100,
         pass: 34,
         warn: 33,
+        info: 0,
         fail: 33,
         totalDuration: 1000,
       };

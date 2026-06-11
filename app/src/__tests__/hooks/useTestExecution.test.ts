@@ -276,3 +276,57 @@ describe('useTestExecution Hook', () => {
     });
   });
 });
+
+describe('useTestExecution — status filter & pagination reset', () => {
+  it('defaults to statusFilter "all" and exposes statusCounts (all pending before a run)', () => {
+    const { result } = renderHook(() => useTestExecution());
+    expect(result.current.statusFilter).toBe('all');
+    expect(result.current.statusCounts.all).toBe(result.current.filteredTests.length);
+    expect(result.current.statusCounts.pending).toBe(result.current.statusCounts.all);
+    expect(result.current.statusCounts.fail).toBe(0);
+    expect(result.current.statusCounts.warn).toBe(0);
+    expect(result.current.statusCounts.pass).toBe(0);
+  });
+
+  it('filters the test list by result status (pending = no result yet)', () => {
+    const { result } = renderHook(() => useTestExecution());
+    const total = result.current.filteredTests.length;
+
+    act(() => {
+      result.current.setStatusFilter('fail');
+    });
+    expect(result.current.filteredTests).toHaveLength(0);
+
+    act(() => {
+      result.current.setStatusFilter('pending');
+    });
+    expect(result.current.filteredTests).toHaveLength(total);
+
+    act(() => {
+      result.current.setStatusFilter('all');
+    });
+    expect(result.current.filteredTests).toHaveLength(total);
+  });
+
+  it('resets currentPage to 1 when the category or status filter changes', () => {
+    const { result } = renderHook(() => useTestExecution());
+
+    act(() => {
+      result.current.setCurrentPage(3);
+    });
+    expect(result.current.currentPage).toBe(3);
+
+    act(() => {
+      result.current.setSelectedCategory('data-integrity');
+    });
+    expect(result.current.currentPage).toBe(1);
+
+    act(() => {
+      result.current.setCurrentPage(2);
+    });
+    act(() => {
+      result.current.setStatusFilter('pending');
+    });
+    expect(result.current.currentPage).toBe(1);
+  });
+});

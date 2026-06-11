@@ -32,7 +32,7 @@ const defaultMockValue = {
     { id: 'test2', name: 'Counter Check', category: 'counters' },
   ],
   totalPages: 2,
-  summary: { total: 0, pass: 0, fail: 0, warn: 0, totalDuration: 0 },
+  summary: { total: 0, pass: 0, fail: 0, warn: 0, info: 0, totalDuration: 0 },
   runAllTests: vi.fn(),
   runSingleTest: vi.fn(),
   clearResults: vi.fn(),

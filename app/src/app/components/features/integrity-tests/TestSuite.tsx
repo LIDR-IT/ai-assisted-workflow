@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   XCircle,
   AlertTriangle,
+  Info,
   Clock,
 } from 'lucide-react';
 import {
@@ -13,6 +14,7 @@ import {
   TestCategory,
   getStatusColor,
 } from '@/data/features/integrityTests';
+import type { TestStatusFilter } from './useTestExecution';
 
 interface TestSuiteProps {
   tests: TestDefinition[];
@@ -25,7 +27,37 @@ interface TestSuiteProps {
   onSelectCategory: (categoryId: string | null) => void;
   onRunSingleTest: (testId: string) => void;
   onPageChange: (page: number) => void;
+  /** Optional status-filter chips (rendered only when wired). */
+  statusFilter?: TestStatusFilter;
+  statusCounts?: { all: number; fail: number; warn: number; pass: number; pending: number };
+  onSelectStatus?: (filter: TestStatusFilter) => void;
 }
+
+const STATUS_CHIP_STYLES: Record<
+  Exclude<TestStatusFilter, 'all'>,
+  { label: string; active: string; idle: string }
+> = {
+  fail: {
+    label: 'Fallidos',
+    active: 'bg-red-600 text-white border-red-600',
+    idle: 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100',
+  },
+  warn: {
+    label: 'Advertencias',
+    active: 'bg-amber-500 text-white border-amber-500',
+    idle: 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100',
+  },
+  pass: {
+    label: 'Pasaron',
+    active: 'bg-emerald-600 text-white border-emerald-600',
+    idle: 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100',
+  },
+  pending: {
+    label: 'Pendientes',
+    active: 'bg-slate-600 text-white border-slate-600',
+    idle: 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100',
+  },
+};
 
 /**
  * Test suite display component with pagination
@@ -42,6 +74,9 @@ export function TestSuite({
   onSelectCategory,
   onRunSingleTest,
   onPageChange,
+  statusFilter = 'all',
+  statusCounts,
+  onSelectStatus,
 }: TestSuiteProps) {
   const getStatusIcon = (testId: string) => {
     const result = testResults[testId];
@@ -56,6 +91,8 @@ export function TestSuite({
         return <XCircle className="w-4 h-4 text-red-600" />;
       case 'warn':
         return <AlertTriangle className="w-4 h-4 text-yellow-600" />;
+      case 'info':
+        return <Info className="w-4 h-4 text-sky-600" />;
       case 'running':
         return <Clock className="w-4 h-4 text-blue-600 animate-pulse" />;
       default:
@@ -125,6 +162,46 @@ export function TestSuite({
           </button>
         ))}
       </div>
+
+      {/* Status filter chips — narrow the list to failures/warnings in one click */}
+      {onSelectStatus && statusCounts && (
+        <div
+          className="flex flex-wrap gap-2"
+          role="group"
+          aria-label="Filtrar tests por estado del resultado"
+        >
+          <button
+            onClick={() => onSelectStatus('all')}
+            aria-pressed={statusFilter === 'all'}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 ${
+              statusFilter === 'all'
+                ? 'bg-indigo-600 text-white border-indigo-600'
+                : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-100'
+            }`}
+          >
+            Todos ({statusCounts.all})
+          </button>
+          {(Object.keys(STATUS_CHIP_STYLES) as Array<keyof typeof STATUS_CHIP_STYLES>).map(
+            (status) => {
+              const chip = STATUS_CHIP_STYLES[status];
+              const count = statusCounts[status];
+              return (
+                <button
+                  key={status}
+                  onClick={() => onSelectStatus(status)}
+                  disabled={count === 0}
+                  aria-pressed={statusFilter === status}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed ${
+                    statusFilter === status ? chip.active : chip.idle
+                  }`}
+                >
+                  {chip.label} ({count})
+                </button>
+              );
+            }
+          )}
+        </div>
+      )}
 
       {/* Tests list */}
       <div className="space-y-2">
@@ -231,9 +308,15 @@ export function TestSuite({
 
         {tests.length === 0 && (
           <div className="text-center py-12 text-slate-500">
-            <div className="text-lg font-medium mb-2">No hay tests en esta categoría</div>
+            <div className="text-lg font-medium mb-2">
+              {statusFilter !== 'all'
+                ? 'Ningún test con este estado'
+                : 'No hay tests en esta categoría'}
+            </div>
             <div className="text-sm">
-              Selecciona otra categoría o "Todos los tests" para ver los tests disponibles.
+              {statusFilter !== 'all'
+                ? 'Cambia el filtro de estado o ejecuta los tests para generar resultados.'
+                : 'Selecciona otra categoría o "Todos los tests" para ver los tests disponibles.'}
             </div>
           </div>
         )}

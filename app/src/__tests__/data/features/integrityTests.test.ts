@@ -398,6 +398,7 @@ describe('IntegrityTests Data Layer', () => {
         pass: 7,
         fail: 2,
         warn: 1,
+        info: 0,
         totalDuration: 5000,
       };
 

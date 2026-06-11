@@ -3,6 +3,7 @@ import { PageHeader, SectionBox } from '@/app/components/shared/FlowComponents';
 import { TestRunner } from './TestRunner';
 import { TestSuite } from './TestSuite';
 import { TestResults } from './TestResults';
+import { ProblemsPanel } from './ProblemsPanel';
 import { useTestExecution } from './useTestExecution';
 
 /**
@@ -23,6 +24,7 @@ export function IntegrityTests() {
     isRunning,
     currentPage,
     selectedCategory,
+    statusFilter,
     executionStartTime,
 
     // Computed
@@ -30,6 +32,7 @@ export function IntegrityTests() {
     paginatedTests,
     totalPages,
     summary,
+    statusCounts,
 
     // Actions
     runAllTests,
@@ -37,6 +40,7 @@ export function IntegrityTests() {
     clearResults,
     setCurrentPage,
     setSelectedCategory,
+    setStatusFilter,
 
     // Data
     testCategories,
@@ -65,6 +69,13 @@ export function IntegrityTests() {
         onRunAllTests={runAllTests}
         onClearResults={clearResults}
         totalTests={testDefinitions.length}
+      />
+
+      {/* Problems first: every failure/warning surfaced full-width, no pagination hunting */}
+      <ProblemsPanel
+        testResults={testResults}
+        isRunning={isRunning}
+        onRunSingleTest={runSingleTest}
       />
 
       {/* Main Content */}
@@ -116,6 +127,9 @@ export function IntegrityTests() {
               onSelectCategory={setSelectedCategory}
               onRunSingleTest={runSingleTest}
               onPageChange={setCurrentPage}
+              statusFilter={statusFilter}
+              statusCounts={statusCounts}
+              onSelectStatus={setStatusFilter}
             />
           </SectionBox>
         </div>

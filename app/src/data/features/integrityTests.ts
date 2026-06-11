@@ -15,7 +15,7 @@ import { ecosystemStats } from '@/data/computed/stats';
 // TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type TestStatus = 'idle' | 'running' | 'pass' | 'fail' | 'warn';
+export type TestStatus = 'idle' | 'running' | 'pass' | 'fail' | 'warn' | 'info';
 
 export interface TestResult {
   id: string;
@@ -53,6 +53,8 @@ export interface TestSummary {
   pass: number;
   fail: number;
   warn: number;
+  /** Informational checks that need a server-side/CLI run — not problems. */
+  info: number;
   totalDuration: number;
 }
 
@@ -1012,6 +1014,8 @@ export function getStatusColor(status: TestStatus): string {
       return 'bg-red-50 border-red-200';
     case 'warn':
       return 'bg-amber-50 border-amber-200';
+    case 'info':
+      return 'bg-sky-50 border-sky-200';
     case 'running':
       return 'bg-blue-50 border-blue-200';
     default:

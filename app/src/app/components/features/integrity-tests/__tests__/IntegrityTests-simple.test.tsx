@@ -82,17 +82,20 @@ describe('IntegrityTests - Simple Mock Test', () => {
       isRunning: false,
       currentPage: 1,
       selectedCategory: null,
+      statusFilter: 'all' as const,
       executionStartTime: null,
 
       // Computed
       filteredTests: [],
       paginatedTests: [],
       totalPages: 1,
-      summary: { total: 0, pass: 0, fail: 0, warn: 0, totalDuration: 0 },
+      summary: { total: 0, pass: 0, fail: 0, warn: 0, info: 0, totalDuration: 0 },
+      statusCounts: { all: 0, fail: 0, warn: 0, info: 0, pass: 0, pending: 0 },
 
       // Actions
       runAllTests: vi.fn(),
       runSingleTest: vi.fn(),
+      setStatusFilter: vi.fn(),
       clearResults: vi.fn(),
       setCurrentPage: vi.fn(),
       setSelectedCategory: vi.fn(),
