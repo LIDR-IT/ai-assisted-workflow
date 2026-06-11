@@ -291,7 +291,7 @@ gates:
   # ───────────────────────────────────────────────────────────────────────────
   G4:
     transition: "Phase 4 Implementation: development → qa (DoD met)"
-    owner: [Dev, Sec]
+    owner: [Dev, TL]
     bmad_evidence:
       - skill: bmad-dev-story
         artifact: "{bmad_impl}/**/*.md"

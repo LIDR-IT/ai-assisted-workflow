@@ -22,15 +22,15 @@ description: >
 
 # Test Execution Report Generator
 
-Phase: 4 — Implementation · qa (ex-Fase 6) | Gate: **G5 (QA Sign-off), `required: true`** — primary input for GO/NO-GO | Output: English-authored; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Phase: 4 — Implementation · qa (ex-Fase 6) | Gate: **G5 (QA Sign-off), `required: false`** (complementary consolidation — G5 QA evidence may be BMad TEA trace/automate OR this report; the QA Lead sign-off is the hard gate) | Output: English-authored; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml` (`{{TRACKING_TOOL}}`, `{{TEST_MGMT_TOOL}}`); the active client binds concrete tools in `clients/<CODE>.yaml`.
 
-> **BMad relationship (extension):** BMad's `bmad-testarch-trace` emits a traceability matrix + quality-gate decision, `bmad-testarch-automate` runs the automated suite, and `bmad-tea` is the Test Architect advisor. This skill is the LIDR gap-filler that consolidates all of that (plus compliance / security / performance evidence) into a **formal executive GO/NO-GO QA sign-off** — an artifact BMad has no single concept for. Wired into `_shared/lidr/gate-evidence.yaml` → **G5** (`required: true`).
+> **BMad relationship (extension):** BMad's `bmad-testarch-trace` emits a traceability matrix + quality-gate decision, `bmad-testarch-automate` runs the automated suite, and `bmad-tea` is the Test Architect advisor. This skill is the LIDR gap-filler that consolidates all of that (plus compliance / security / performance evidence) into a **formal executive GO/NO-GO QA sign-off** — an artifact BMad has no single concept for. Wired into `_shared/lidr/gate-evidence.yaml` → **G5** (`required: false` — complementary; QA evidence may be BMad TEA OR this report).
 
 ## Output Location
 
-The QA sign-off report MUST be published to the per-client path Gate 5 reads (`gate-evidence.yaml` G5 `lidr-test-execution-report` glob `{client_root}/test-execution-report*.md`, `required: true`):
+The QA sign-off report MUST be published to the per-client path Gate 5 reads (`gate-evidence.yaml` G5 `lidr-test-execution-report` glob `{client_root}/test-execution-report*.md`, `required: false` — complementary consolidation):
 
 **`docs/projects/{CLIENT_CODE}/test-execution-report.md`** (or `test-execution-report-{release}.md` per release/cycle)
 

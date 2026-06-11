@@ -26,7 +26,7 @@ description: >
 
 # Dev → QA Handoff Generator
 
-Phase: 4 — Implementation · development → qa (ex-Fase 5 → 6) | Gate: **G4 evidence — Dev→QA, `required: true`** | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Phase: 4 — Implementation · development → qa (ex-Fase 5 → 6) | Gate: **G4 evidence — Dev→QA, `required: false`** (complementary; the hard G4 gate is the DoD checklist + TL sign-off — BMad integrates dev↔QA via TEA without a handoff artifact) | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
@@ -40,7 +40,7 @@ This skill is a **LIDR extension on top of BMad** (BMad = source of truth; LIDR 
 - **Consumes (LIDR siblings, same G4):** `/lidr-spec-verify` → `test-report.md` + `reports/` (Step N+1/N+2/N+3 evidence); `lidr-playwright-cli` runtime/visual review (its screenshots feed §5 and §7).
 - **Feeds (QA flow):** `bmad-testarch-test-design`, `bmad-testarch-trace` (traceability + gate decision), the `bmad-tea` Test Architect, and `lidr-create-test-cases`.
 
-Wired into `_shared/lidr/gate-evidence.yaml` → **G4** as `required: true` at `{client_root}/handoffs/dev-qa-*.md`.
+Wired into `_shared/lidr/gate-evidence.yaml` → **G4** as `required: false` (complementary evidence) at `{client_root}/handoffs/dev-qa-*.md`.
 
 ## Workflow
 
