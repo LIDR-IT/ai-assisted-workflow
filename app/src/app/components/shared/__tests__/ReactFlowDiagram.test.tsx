@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ComponentType } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import '@testing-library/jest-dom';
@@ -238,7 +238,7 @@ describe('ReactFlowDiagram', () => {
 
   describe('StatusNode component', () => {
     it('renders status node with correct data', () => {
-      const StatusNode = nodeTypes.status;
+      const StatusNode = nodeTypes.status! as ComponentType<{ data: unknown }>;
       const nodeData = {
         label: 'Test Status',
         variant: 'blue',
@@ -252,7 +252,7 @@ describe('ReactFlowDiagram', () => {
     });
 
     it('renders handles for connections', () => {
-      const StatusNode = nodeTypes.status;
+      const StatusNode = nodeTypes.status! as ComponentType<{ data: unknown }>;
       const nodeData = { label: 'Test', variant: 'blue' };
 
       render(<StatusNode data={nodeData} />);
@@ -264,7 +264,7 @@ describe('ReactFlowDiagram', () => {
     });
 
     it('uses fallback color for unknown variant', () => {
-      const StatusNode = nodeTypes.status;
+      const StatusNode = nodeTypes.status! as ComponentType<{ data: unknown }>;
       const nodeData = { label: 'Test', variant: 'unknown-color' };
 
       const { container } = render(<StatusNode data={nodeData} />);
@@ -277,7 +277,7 @@ describe('ReactFlowDiagram', () => {
 
   describe('WaypointNode component', () => {
     it('renders waypoint node', () => {
-      const WaypointNode = nodeTypes.waypoint;
+      const WaypointNode = nodeTypes.waypoint! as ComponentType<{ data: unknown }>;
 
       expect(() => {
         render(<WaypointNode data={{}} />);
@@ -285,7 +285,7 @@ describe('ReactFlowDiagram', () => {
     });
 
     it('has minimal styling', () => {
-      const WaypointNode = nodeTypes.waypoint;
+      const WaypointNode = nodeTypes.waypoint! as ComponentType<{ data: unknown }>;
       const { container } = render(<WaypointNode data={{}} />);
 
       // Just verify that the component renders without throwing

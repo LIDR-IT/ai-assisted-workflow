@@ -60,7 +60,7 @@ export function PlanificacionSprint() {
             }
             onLoad={(data) => {
               console.warn('PlanificacionSprint diagram loaded:', data.metadata.title);
-              setDiagramData(data);
+              setDiagramData(data as DiagramData);
             }}
             onError={(error) => console.error('PlanificacionSprint diagram error:', error)}
           />

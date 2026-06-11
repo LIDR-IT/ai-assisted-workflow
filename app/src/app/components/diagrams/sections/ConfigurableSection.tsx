@@ -5,7 +5,6 @@
  * permitiendo configuración completa vía JSON por cliente.
  */
 
-import React from 'react';
 import {
   ConfiguracionSection,
   SeparacionRolesSection,
