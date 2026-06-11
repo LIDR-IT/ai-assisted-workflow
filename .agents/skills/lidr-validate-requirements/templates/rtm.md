@@ -48,7 +48,21 @@
 | RF-XX-015      | —                | —            | ❌ Orphaned |
 ```
 
-### 4. NFR → RF Impact Matrix
+### 4. Decomposition Traceability (RF/NFR → Epic → Story → Test)
+
+```markdown
+## Decomposition: Requirements → Epics → Stories → Tests
+
+| RF / NFR        | Epic (bmad-create-epics) | Story / US     | Test Case(s)   | Status     |
+| --------------- | ------------------------ | -------------- | -------------- | ---------- |
+| RF-XX-001       | EPIC-01: {name}          | US-001, US-002 | TC-001, TC-002 | ✅ Covered |
+| NFR-XX-PERF-001 | EPIC-01                  | US-001         | TC-PERF-001    | ✅ Covered |
+| RF-XX-015       | —                        | —              | —              | ❌ GAP     |
+```
+
+> This section **traces** the `bmad-create-epics-and-stories` output back to the RFs/NFRs (BMad derives the epics from the PRD; the RTM maps them for coverage) and forward to the test cases — the RF ↔ epic/story ↔ test mapping the Gate-2 checklist requires. It is built **after** epics exist; the RTM does not feed epic generation.
+
+### 5. NFR → RF Impact Matrix
 
 ```markdown
 ## NFR → RF Impact
@@ -60,7 +74,7 @@
 | NFR-XX-ACC-001  | RF-020, RF-021         | Specific    | UI-facing RFs        |
 ```
 
-### 5. Implementation Clusters
+### 6. Implementation Clusters
 
 ```markdown
 ## Clusters for Sprint Planning
@@ -68,11 +82,11 @@
 | Cluster         | RFs         | Applicable NFRs          | Est. Sprints | Dependencies | Team     |
 | --------------- | ----------- | ------------------------ | ------------ | ------------ | -------- |
 | Auth & Security | RF-001..005 | NFR-SEC-\*, NFR-PERF-001 | 2-3          | None         | Backend  |
-| Core Biometrics | RF-010..020 | NFR-PERF-\*, NFR-SEC-002 | 3-4          | Cluster 1    | Core     |
+| Core Domain     | RF-010..020 | NFR-PERF-\*, NFR-SEC-002 | 3-4          | Cluster 1    | Core     |
 | UI/UX           | RF-030..035 | NFR-ACC-\*, NFR-PERF-003 | 2            | Cluster 1, 2 | Frontend |
 ```
 
-### 6. Gap Report
+### 7. Gap Report
 
 ```markdown
 ## Detected Gaps

@@ -145,11 +145,11 @@ PHASE 3 — SOLUTIONING / specification
   bmad-testarch-test-design (epics+NFRs) → test-design.md           [→ create-test-cases, automate]
   ▸ G2 Specs Complete (PO+QA): RF 100% BDD + RTM sin huérfanos + epics 2-40h
 PHASE 3 — SOLUTIONING / sprint-planning
-  lidr-user-stories (RFs+epics) → US con BDD                        [→ create-story, DoR check]
-  lidr-sprint-capacity (equipo+risk-log) → sprint-capacity.md ⭐G3  [→ commitment]
-  lidr-refinement-notes (refinement) → refinement-notes.md
+  lidr-user-stories (RFs + skeleton de bmad-create-epics) → backlog US comprometido  [refina la story-skeleton de BMad, NO la alimenta]
+  lidr-sprint-capacity (equipo+risk-log) → sprint-capacity.md ⭐G3  [→ cifra de capacidad comprometible (gobernanza), input humano del commitment]
+  lidr-refinement-notes (backlog US) → refinement-notes.md          [→ DoR, evidencia G3]
   bmad-check-implementation-readiness (PRD+UX+arch+epics) → readiness-report.md ⭐G3
-  bmad-sprint-planning (epics+capacity) → sprint-status.yaml ⭐G3   [→ create-story, sprint-health]
+  bmad-sprint-planning (epics) → sprint-status.yaml ⭐G3            [→ create-story; consume epics — la capacity LIDR la usa el humano al comprometer, no es input de archivo]
   ▸ G3 Ready to Implement (PO+TL): readiness + capacity ≤90% + DoR por US
 ─────────────────────────────────────────────────────────────────────
 PHASE 4 — IMPLEMENTATION / development  (por ticket/story — UNA secuencia: motor BMad → envoltura LIDR)

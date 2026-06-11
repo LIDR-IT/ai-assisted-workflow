@@ -12,7 +12,7 @@ automation: false
 domain_agnostic: true
 language_default: en
 integrations: [tracking]
-description: "POST-BMad WRAPPER: consumes user stories from `bmad-create-story` and captures DoR-readiness backlog grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer that BMad's story creation does not provide. ALWAYS use after `bmad-create-story` during backlog grooming, before sprint commitment."
+description: "POST-BMad WRAPPER: consumes the Phase-3 backlog stories (the `bmad-create-epics-and-stories` story skeleton and/or the `lidr-user-stories` PO backlog) and captures DoR-readiness grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer BMad has no concept of. ALWAYS use during backlog grooming — after the story skeleton exists, before sprint commitment (and before the Phase-4 `bmad-create-story`/`bmad-dev-story` context-fill + implement the story)."
 ---
 
 # Refinement Notes Structurer
@@ -23,7 +23,7 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 ## Relationship to BMad
 
-POST-BMad wrapper (BMad has no Definition-of-Ready gate). `bmad-create-story` turns a backlog item into a context-rich dev story, but nothing in the base flow grooms it for readiness before sprint commitment. This skill consumes those user stories — the `lidr-user-stories` PO backlog and/or the `bmad-create-story` output — and captures the LIDR refinement record (domain decisions, compliance clarifications, performance thresholds, blockers), flagging each story `sprint-ready` vs `needs investigation`. Feeds **Gate 3** evidence (DoR validation) before `bmad-dev-story` or the `lidr-spec-*` lifecycle implements the story.
+POST-BMad wrapper (BMad has no Definition-of-Ready gate). `bmad-create-epics-and-stories` produces the epic→story skeleton and `lidr-user-stories` refines it into the PO backlog, but nothing in the base flow grooms those stories for readiness before sprint commitment. This skill (Phase 3 · sprint-planning) consumes those **Phase-3 backlog stories** — the `bmad-create-epics-and-stories` skeleton and/or the `lidr-user-stories` PO backlog — and captures the LIDR refinement record (domain decisions, compliance clarifications, performance thresholds, blockers), flagging each story `sprint-ready` vs `needs investigation`. Feeds **Gate 3** evidence (DoR validation) — which gates BEFORE the Phase-4 `bmad-create-story` context-fill, `bmad-dev-story`, or the `lidr-spec-*` lifecycle implements the story.
 
 ## Workflow
 

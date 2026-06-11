@@ -24,7 +24,7 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 ## Relationship to BMad
 
-LIDR-unique: the Gate-2 quality enforcer. Consumes the Functional + Technical PRD from `bmad-prd` and the requirements authored by `lidr-generate-rf` / `lidr-generate-nfr`, then produces the bidirectional RTM, gap report, and 5-pass Gate-2 validation that BMad's flow does not provide. Feeds `bmad-create-epics-and-stories` (validated requirements ready for decomposition).
+LIDR-unique: the Gate-2 quality enforcer. Consumes the Functional + Technical PRD from `bmad-prd`, the requirements authored by `lidr-generate-rf` / `lidr-generate-nfr`, **and the `bmad-create-epics-and-stories` epics/stories**, then produces the bidirectional RTM (RF/NFR ↔ epic/story ↔ test), gap report, and 5-pass Gate-2 validation that BMad's flow does not provide. It **traces** BMad's epics for coverage — it does **not** feed epic generation: `bmad-create-epics-and-stories` derives epics from the PRD directly, and the RTM is the Gate-2 traceability layer **on top** (it runs after epics exist).
 
 ## Output Location
 
