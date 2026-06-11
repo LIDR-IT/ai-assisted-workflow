@@ -764,7 +764,7 @@ export const skills: Skill[] = [
     source: 'lidr',
     criticality: 'recommended',
     description: 'Centralized SDLC tracking system with sdlc-tracking.yaml management',
-    triggers: ['sdlc tracking', 'project tracking', 'phase tracking', 'portfolio dashboard'],
+    triggers: ['sdlc tracking', 'track project progress', 'phase tracking', 'portfolio dashboard'],
     roles: ['PME', 'SM', 'TL'],
     gateContribution: 'All Gates',
     docPath: '.claude/skills/lidr-sdlc-tracking/SKILL.md',

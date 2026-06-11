@@ -341,7 +341,7 @@ class LinearAdapter(TrackingToolAdapter):
 ### Workflow Integration Rules
 
 - ✅ **Immediate Creation**: Execute this skill within 24h of kickoff approval — no delays
-- ✅ **Gate Dependency**: Project creation is prerequisite for Gate 0 → Gate 1 transition
+- ✅ **Gate Enablement**: Project creation runs **after Gate 0 approval** (within 24h of kickoff) and enables the tracking the team uses from Gate 0 onward. It is a setup step, **not** a gate-evidence artifact — `gate-evidence.yaml` G0/G1 do not block on it (the gate is governed by the intake artifacts + sign-off).
 - ✅ **Team Assignment**: Project owner becomes accountable for Gate compliance throughout SDLC
 - ✅ **Sub-Project Strategy**: Projects >3 sprints automatically get phase-based sub-projects
 
