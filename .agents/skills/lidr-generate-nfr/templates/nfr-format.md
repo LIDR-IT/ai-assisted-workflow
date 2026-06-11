@@ -117,26 +117,29 @@ criticality: Blocking | High | Medium | Low
 
 ---
 
-## Categories by Domain {{CLIENT_NAME}}
+## Categories by Domain (example — replace with your project's domain)
 
-### Performance (Biometrics)
+> Illustrative NFR targets for a generic web/API product. Each project replaces
+> these with domain-specific, measurable values from its industry pack.
 
-- 1:1 face matching latency: P95 <500ms
-- 1:N matching latency: P95 <2s for N=10K
-- Enrollment throughput: >100 transactions/second
-- Liveness detection: <200ms
+### Performance
 
-### Security (Biometric Data)
+- API read latency: P95 <500ms
+- API write latency: P95 <800ms
+- Throughput: >100 requests/second per instance
+- Critical operation latency: <200ms
 
-- Biometric template encryption: AES-256 at rest
+### Security
+
+- Sensitive data encryption: AES-256 at rest
 - Transmission: TLS 1.2+ mandatory
-- No PII in logs: NEVER (GDPR Art. 9)
-- Data revocation: mechanism implemented
+- No PII or sensitive data in logs: NEVER
+- Data revocation: mechanism implemented (if special-category data — GDPR Art. 9)
 
 ### Compliance (Regulatory)
 
-- GDPR Art. 9: DPIA completed
-- eIDAS: assurance level documented
+- DPIA completed (if processing special-category data — e.g. biometric/health)
+- Applicable sector/identity standards documented (if applicable)
 - Right to be forgotten: response time <72h
 - Data retention: documented and automated policy
 

@@ -1,12 +1,12 @@
 ---
 id: security-signoff-record
-version: "1.0.0"
-last_updated: "2026-03-16"
-updated_by: "System: Signoff Migration"
+version: "1.1.0"
+last_updated: "2026-06-12"
+updated_by: "TL: domain-agnostic leak fix"
 status: active
 type: signoff
 review_cycle: 90
-next_review: "2026-06-15"
+next_review: "2026-09-10"
 owner_role: "Security Lead"
 ---
 
@@ -141,7 +141,7 @@ Cross-evaluation against security compliance checklist:
 ### 3.3 Regulatory Compliance
 
 - [ ] **GDPR compliance**: Personal data handled according to GDPR (consent, minimization, access)
-- [ ] **GDPR Art. 9**: Biometric data as special category — explicit consent documented
+- [ ] **GDPR Art. 9** _(if applicable)_: Special-category data (e.g. biometric/health) — explicit consent documented
 - [ ] **eIDAS compliance**: If applicable — electronic identity standards compliant
 - [ ] **Data residency**: Data stored in correct jurisdiction
 - [ ] **Right to be forgotten**: Functional and verified deletion mechanism
@@ -248,6 +248,7 @@ If REJECTED → Remediation → Re-evaluation
 
 ## Changelog
 
-| Version | Date       | Author                    | Changes                                                  |
-| ------- | ---------- | ------------------------- | -------------------------------------------------------- |
-| 1.0.0   | 2026-03-16 | System: Signoff Migration | Initial migration from docs/signoffs/security-signoff.md |
+| Version | Date       | Author                       | Changes                                                                                                                                |
+| ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-12 | TL: domain-agnostic leak fix | GDPR Art. 9 row made conditional "if applicable / special-category data" (was a dedicated ungated biometric row) — agnostic by default |
+| 1.0.0   | 2026-03-16 | System: Signoff Migration    | Initial migration from docs/signoffs/security-signoff.md                                                                               |

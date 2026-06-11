@@ -707,3 +707,68 @@ describe('Guard: validators keep biometric rules behind the gated domain pack', 
     ).toEqual([]);
   });
 });
+
+// The 2026-06 biometric-agnosticism audit found ~10 leaks the BIOMETRIC_* guard
+// above does NOT reach: domain-specific items baked into framework CHECKLISTS,
+// SIGN-OFFS and TEMPLATES (the prose surface), plus the tracking-template default
+// domain and the app industry-pack fallback. These three guards close that surface.
+describe('Guard: framework checklists/signoffs/templates stay domain-agnostic', () => {
+  it('no checklist item / header names a specific vertical (biometric/liveness) without a conditional qualifier', () => {
+    const files = walk(path.join(AGENTS, 'skills'), (f) => /\.md$/.test(f)).filter((p) =>
+      /[/\\](checklists|signoffs|templates)[/\\]/.test(p)
+    );
+    // A vertical term in a mandatory item/header is a leak UNLESS it is gated by a
+    // conditional ("if applicable"), framed as an illustrative example ("e.g."),
+    // or part of a generic sensitive-data enumeration ("passwords, tokens, …").
+    const QUALIFIER =
+      /if applicable|if processing|if handling|special[- ]category|e\.g\.|example|illustrative|domain pack/i;
+    const VERTICAL = /\bbiometrics?\b|\bliveness\b|facial recognition/i;
+    const offenders: string[] = [];
+    for (const p of files) {
+      read(p)
+        .split('\n')
+        .forEach((ln, i) => {
+          const isItem = /^\s*-\s*\[[ xX]\]/.test(ln);
+          const isHeader = /^#{2,6}\s/.test(ln);
+          if (!isItem && !isHeader) {
+            return;
+          }
+          if (!VERTICAL.test(ln)) {
+            return;
+          }
+          if (QUALIFIER.test(ln)) {
+            return;
+          } // conditional / illustrative → agnostic-safe
+          if (/passwords|tokens/i.test(ln)) {
+            return;
+          } // generic sensitive-data list → ok
+          offenders.push(`${path.relative(REPO, p)}:${i + 1}`);
+        });
+    }
+    expect(
+      offenders.slice(0, 20),
+      'ungated vertical-specific item in a framework checklist/signoff/template'
+    ).toEqual([]);
+  });
+});
+
+describe('Guard: sdlc-tracking template default domain is a placeholder', () => {
+  it('the tracking template seeds domain as a {{DOMAIN}} placeholder, not a hardcoded vertical', () => {
+    const p = path.join(AGENTS, 'skills/lidr-sdlc-tracking/templates/sdlc-tracking.yaml');
+    const m = read(p).match(/^\s*domain:\s*"([^"]*)"/m);
+    expect(m, 'domain: line present in sdlc-tracking.yaml').toBeTruthy();
+    expect(
+      m?.[1] ?? '',
+      'tracking default domain must be a {{DOMAIN}} placeholder, not a hardcoded vertical'
+    ).toMatch(/\{\{.*\}\}/);
+  });
+});
+
+describe('Guard: industry-pack inference falls back to the generic pack', () => {
+  it('template-engine inferIndustryId default fallback returns the generic pack, not a vertical', () => {
+    const p = path.join(REPO, 'app/src/data/template-engine.ts');
+    const m = read(p).match(/Default fallback[^\n]*\n\s*return\s*'([^']+)'/);
+    expect(m, '"Default fallback" return found in inferIndustryId').toBeTruthy();
+    expect(m?.[1], 'industry fallback must be the generic/domain-agnostic pack').toBe('generic');
+  });
+});
