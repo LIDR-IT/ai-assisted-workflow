@@ -11,7 +11,7 @@ vi.mock('../clients/docline/config', () => ({
       primaryColor: '#2563eb',
       logoPath: '/logos/docline.svg',
     },
-  } as ClientConfig,
+  } as unknown as ClientConfig,
 }));
 
 vi.mock('../clients/facephi/config', () => ({
@@ -23,7 +23,7 @@ vi.mock('../clients/facephi/config', () => ({
       primaryColor: '#7c3aed',
       logoPath: '/logos/facephi.svg',
     },
-  } as ClientConfig,
+  } as unknown as ClientConfig,
 }));
 
 import {
@@ -73,7 +73,7 @@ describe('ClientRegistry', () => {
         primaryColor: '#ff0000',
         logoPath: '/test.svg',
       },
-    } as ClientConfig;
+    } as unknown as ClientConfig;
 
     afterEach(() => {
       // Clean up test client if it was registered
@@ -187,19 +187,19 @@ describe('ClientRegistry', () => {
       clientRegistry.setCurrentClient('docline');
       const client = clientRegistry.getClient();
 
-      expect(client.id).toBe('docline');
+      expect(client.name).toBe('Docline');
     });
 
     it('returns specific client by ID', () => {
       const client = clientRegistry.getClient('facephi');
 
-      expect(client.id).toBe('facephi');
+      expect(client.name).toBe('FacePhi');
     });
 
     it('normalizes client ID to lowercase', () => {
       const client = clientRegistry.getClient('DOCLINE');
 
-      expect(client.id).toBe('docline');
+      expect(client.name).toBe('Docline');
     });
 
     it('throws error for non-existent client', () => {
@@ -248,7 +248,7 @@ describe('ClientRegistry', () => {
         primaryColor: '#00ff00',
         logoPath: '/temp.svg',
       },
-    } as ClientConfig;
+    } as unknown as ClientConfig;
 
     beforeEach(() => {
       // Register a temporary client for testing unregistration
@@ -362,13 +362,13 @@ describe('ClientRegistry', () => {
       clientRegistry.setCurrentClient('docline');
       const client = getCurrentClient();
 
-      expect(client.id).toBe('docline');
+      expect(client.name).toBe('Docline');
     });
 
     it('getClientById() returns specific client config', () => {
       const client = getClientById('facephi');
 
-      expect(client.id).toBe('facephi');
+      expect(client.name).toBe('FacePhi');
     });
 
     it('setCurrentClient() sets current client', () => {
@@ -383,7 +383,7 @@ describe('ClientRegistry', () => {
         name: 'Convenience Test',
         domain: 'testing',
         branding: { primaryColor: '#123456', logoPath: '/test.svg' },
-      } as ClientConfig;
+      } as unknown as ClientConfig;
 
       registerClient('convenience-test', config);
 

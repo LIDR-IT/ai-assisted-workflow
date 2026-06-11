@@ -5,7 +5,6 @@
  * verificados y enlaces a transcripciones originales.
  */
 
-import React from 'react';
 import { ProcesoAdicionalSection } from '@/data/schemas/diagram-schema';
 
 interface ProblemasIdentificadosProps {
