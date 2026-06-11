@@ -1032,6 +1032,12 @@ async function executeTriggerUniquenessTest(testDef: TestDefinition): Promise<Te
   // Within skills, a trigger phrase owned by 2+ skills is ambiguous (the model
   // cannot disambiguate which skill to load). Cross-type overlap (a skill and a
   // command sharing a phrase) is healthy and not flagged.
+  //
+  // EXEMPTION — deprecated aliases: a DEPRECATED skill (its description says so)
+  // intentionally shares its trigger with its replacement — catching the phrase
+  // and redirecting IS its purpose (e.g. bmad-create-prd → bmad-prd, removed in
+  // v7). A collision is only ambiguous if 2+ NON-deprecated skills own it.
+  const isDeprecated = new Map(skills.map((s) => [s.id, /\bDEPRECATED\b/i.test(s.description)]));
   const triggerOwners = new Map<string, string[]>();
   for (const s of skills) {
     for (const t of s.triggers || []) {
@@ -1044,18 +1050,32 @@ async function executeTriggerUniquenessTest(testDef: TestDefinition): Promise<Te
       triggerOwners.set(key, owners);
     }
   }
+  let exempted = 0;
   const collisions = Array.from(triggerOwners.entries())
     .filter(([, owners]) => owners.length > 1)
+    .filter(([, owners]) => {
+      // A collision is real only if 2+ NON-deprecated skills own the phrase.
+      const active = owners.filter((id) => !isDeprecated.get(id));
+      if (active.length <= 1) {
+        exempted++;
+        return false; // deprecated-alias redirect — intentional, healthy
+      }
+      return true;
+    })
     .map(([trigger, owners]) => `"${trigger}" → ${owners.join(', ')}`);
 
+  const exemptNote =
+    exempted > 0
+      ? ` (${exempted} deprecated-alias redirect${exempted === 1 ? '' : 's'} exempted)`
+      : '';
   return collisions.length === 0
     ? pass(
         testDef,
-        `✅ All skill triggers are unique within the skills type (no intra-type ambiguity)`
+        `✅ All skill triggers are unique within active skills (no intra-type ambiguity)${exemptNote}`
       )
     : warn(
         testDef,
-        `⚠️ ${collisions.length} trigger phrases are shared by multiple skills (ambiguous)`,
+        `⚠️ ${collisions.length} trigger phrases are shared by multiple active skills (ambiguous)${exemptNote}`,
         collisions.slice(0, 12)
       );
 }

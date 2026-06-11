@@ -110,6 +110,11 @@ LIDR simplemente sitúa el gate donde corresponde en su modelo de gobernanza:
 > de la cadena de gates. Excepción doc-lifecycle: `bmad-shard-doc` y `bmad-index-docs` se anclan
 > al stage `context` (fila 0/context) porque sostienen el levantamiento de contexto — shardean
 > docs heredadas para consumo LLM y mantienen `docs/index.md` (checklist Context Ready).
+>
+> **TEA qa-augmenters** (`bmad-testarch-test-review`, `bmad-qa-generate-e2e-tests`, `bmad-testarch-nfr`)
+> en la fila 4/qa son **opcionales/transversales**: se invocan cuando aplican (revisión de calidad de
+> tests, generación E2E, auditoría de evidencia NFR) pero no son evidencia required del G5 ni parte de
+> la cadena lineal del flujo — por eso no aparecen fila-a-fila en §3.
 
 ## 3. Flow audit — escenarios end-to-end con cadena input/output
 
