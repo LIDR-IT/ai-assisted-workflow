@@ -5,7 +5,14 @@
  * Validates that bug-report skill examples contain proper structure
  * for comprehensive bug reporting with reproduction steps and environment details.
  *
+ * The DEFAULT validation set is 100% DOMAIN-AGNOSTIC (title, reproduction steps,
+ * expected vs actual, environment, severity) — LIDR is a multi-industry framework.
+ * An OPTIONAL biometric/identity domain pack of extra example fixtures is preserved
+ * as BIOMETRIC_DOMAIN_PACK below and applied only when LIDR_DOMAIN_PACK === 'biometric'.
+ * Example only — NOT the active default.
+ *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -58,18 +65,29 @@ const BUG_REPORT_RULES: ValidationRule[] = [
   },
 ];
 
-const validationCases = [
+// DEFAULT validation cases — DOMAIN-AGNOSTIC generic bug reports.
+const DEFAULT_CASES = [
   {
     file: "platform-api-memory-leak.md",
     rules: BUG_REPORT_RULES,
     description: "Comprehensive Bug Report Template",
   },
+];
+
+// OPTIONAL biometric/identity domain pack — example only, NOT the active default.
+// Applied only when LIDR_DOMAIN_PACK === 'biometric'.
+const BIOMETRIC_DOMAIN_PACK = [
   {
     file: "selphi-liveness-false-rejection-bug.md",
     rules: BUG_REPORT_RULES,
     description: "Biometric Verification Bug Report",
   },
 ];
+
+const validationCases =
+  process.env.LIDR_DOMAIN_PACK === "biometric"
+    ? [...DEFAULT_CASES, ...BIOMETRIC_DOMAIN_PACK]
+    : DEFAULT_CASES;
 
 async function main(): Promise<void> {
   console.log("🔍 Validating Bug Report Skill Examples...\n");

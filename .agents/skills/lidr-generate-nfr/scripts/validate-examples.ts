@@ -8,12 +8,20 @@
  * Validates:
  * - NFR structure with measurable criteria and metrics
  * - Performance, scalability, security, availability requirements
- * - Compliance with domain-specific regulations (GDPR, PSD2)
+ * - Compliance with regulatory requirements (regulatory-agnostic)
  * - Testing and validation approaches for each NFR
  * - Priority classification and business impact assessment
  * - Technical implementation guidelines
  *
+ * The DEFAULT validation set is 100% DOMAIN-AGNOSTIC: the compliance rule only
+ * asks for regulatory framing, never a specific regulation — LIDR is a
+ * multi-industry framework. An OPTIONAL biometric/identity domain pack
+ * (GDPR/PSD2-specific compliance rule + extra example fixtures) is preserved as
+ * BIOMETRIC_DOMAIN_PACK_RULES / BIOMETRIC_DOMAIN_PACK_FILES below and applied
+ * only when LIDR_DOMAIN_PACK === 'biometric'. Example only — NOT the active default.
+ *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -90,10 +98,12 @@ const GENERATE_NFR_RULES: ValidationRule[] = [
   },
   {
     name: "Compliance Requirements",
-    description: "Must address regulatory compliance requirements (GDPR, PSD2, etc.)",
+    description: "Must address regulatory compliance requirements where applicable",
     check: (content) =>
       content.includes("compliance") &&
-      (content.includes("GDPR") || content.includes("PSD2") || content.includes("regulatory")),
+      (content.includes("regulatory") ||
+        content.includes("regulation") ||
+        content.includes("standard")),
     severity: "ERROR",
   },
   {
@@ -177,6 +187,29 @@ const GENERATE_NFR_RULES: ValidationRule[] = [
 ];
 
 /* ────────────────────────────────────────────────────────────────────
+   OPTIONAL BIOMETRIC/IDENTITY DOMAIN PACK — example only, NOT the default.
+   Spread into the active rules only when LIDR_DOMAIN_PACK === 'biometric'.
+   These rules assert industry-specific regulatory framing (GDPR/PSD2) that
+   must NOT be required of a generic, multi-industry artifact.
+──────────────────────────────────────────────────────────────────── */
+const BIOMETRIC_DOMAIN_PACK_RULES: ValidationRule[] = [
+  {
+    name: "Domain Regulatory Compliance (GDPR/PSD2)",
+    description: "Must address GDPR/PSD2 compliance for identity/financial data",
+    check: (content) =>
+      content.includes("compliance") && (content.includes("GDPR") || content.includes("PSD2")),
+    severity: "ERROR",
+  },
+];
+
+// OPTIONAL biometric/identity example fixtures — example only, NOT the default.
+const BIOMETRIC_DOMAIN_PACK_FILES = [
+  "biometric-platform-nfrs.md",
+  "nfr-selphid-banking-platform.md",
+  "security-compliance-nfrs.md",
+];
+
+/* ────────────────────────────────────────────────────────────────────
    VALIDATION ENGINE
 ──────────────────────────────────────────────────────────────────── */
 
@@ -235,20 +268,29 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // Look for example files in the directory
+  // DEFAULT example files + rules — DOMAIN-AGNOSTIC generic NFR artifacts.
   const exampleFiles = [
-    "biometric-platform-nfrs.md",
+    "nfr-requirements.md",
     "api-performance-requirements.md",
     "security-compliance-nfrs.md",
   ];
+
+  const domainPack = process.env.LIDR_DOMAIN_PACK === "biometric";
+  const activeRules = domainPack
+    ? [...GENERATE_NFR_RULES, ...BIOMETRIC_DOMAIN_PACK_RULES]
+    : GENERATE_NFR_RULES;
+  const filesToCheck = domainPack
+    ? [...exampleFiles, ...BIOMETRIC_DOMAIN_PACK_FILES]
+    : exampleFiles;
+
   const validationCases = [];
 
-  for (const file of exampleFiles) {
+  for (const file of filesToCheck) {
     const filePath = join(examplesDir, file);
     if (existsSync(filePath)) {
       validationCases.push({
         file,
-        rules: GENERATE_NFR_RULES,
+        rules: activeRules,
         description: `NFR Generation Example: ${file}`,
       });
     }
@@ -256,9 +298,7 @@ async function main(): Promise<void> {
 
   if (validationCases.length === 0) {
     console.log("⚠️ No example files found to validate");
-    console.log(
-      "Expected files: biometric-platform-nfrs.md, api-performance-requirements.md, security-compliance-nfrs.md"
-    );
+    console.log(`Expected files: ${filesToCheck.join(", ")}`);
     process.exit(0);
   }
 

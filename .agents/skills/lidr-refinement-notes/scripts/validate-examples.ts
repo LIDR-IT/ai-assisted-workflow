@@ -3,17 +3,25 @@
  * validate-examples.ts - Refinement Notes Skill Example Validator
  *
  * Validates that refinement-notes skill examples contain proper structure
- * for biometric user story refinement during Sprint Planning.
+ * for user story refinement during Sprint Planning.
+ *
+ * The DEFAULT validation set is 100% domain-agnostic (session metadata, user
+ * story refinement structure, BDD/Gherkin acceptance criteria, estimation, DoR
+ * checklist, dependencies). An overridable EXAMPLE industry pack (biometric
+ * identity) is preserved below as the BIOMETRIC_DOMAIN_PACK_RULES constant and
+ * is applied ONLY behind an explicit flag (`LIDR_DOMAIN_PACK=biometric`). It is
+ * documentation/example only and is NOT part of the default behavior.
  *
  * Validates:
  * - Session metadata and participant information
- * - User story refinement structure with biometric considerations
- * - BDD acceptance criteria with biometric-specific scenarios
+ * - User story refinement structure
+ * - BDD acceptance criteria scenarios
  * - Estimation and complexity assessment
  * - DoR checklist completion and dependencies
  * - Action items and readiness assessment
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -113,7 +121,15 @@ const USER_STORY_REFINEMENT_RULES: ValidationRule[] = [
   },
 ];
 
-const BIOMETRIC_SPECIFIC_RULES: ValidationRule[] = [
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity industry pack (NOT DEFAULT).
+   These rules are applied ONLY when LIDR_DOMAIN_PACK=biometric. They are
+   documentation/example content showing how a domain pack layers extra,
+   domain-specific checks (FAR/FRR, anti-spoofing, GDPR Art. 9) on top of the
+   agnostic defaults. They are NOT spread into the default validation set.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK_RULES: ValidationRule[] = [
   {
     name: "Biometric Considerations",
     description: "Must include biometric-specific technical considerations",
@@ -154,6 +170,8 @@ const BIOMETRIC_SPECIFIC_RULES: ValidationRule[] = [
     severity: "WARN",
   },
 ];
+
+const DOMAIN_PACK_ENABLED = process.env.LIDR_DOMAIN_PACK === "biometric";
 
 const DOR_DEPENDENCIES_RULES: ValidationRule[] = [
   {
@@ -220,13 +238,13 @@ const BDD_SCENARIOS_RULES: ValidationRule[] = [
     severity: "WARN",
   },
   {
-    name: "Biometric Scenario Context",
-    description: "Scenarios should be specific to biometric workflows",
+    name: "Domain Scenario Context",
+    description: "Scenarios should be grounded in concrete domain workflows/entities",
     check: (content) =>
-      content.includes("template") ||
-      content.includes("enrollment") ||
-      content.includes("verification") ||
-      content.includes("matching"),
+      content.includes("workflow") ||
+      content.includes("scenario") ||
+      content.includes("validation") ||
+      content.includes("process"),
     severity: "WARN",
   },
 ];
@@ -290,27 +308,36 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  // DEFAULT (domain-agnostic) rule sets applied to every refinement-notes example.
+  const DEFAULT_REFINEMENT_RULES = [
+    ...SESSION_METADATA_RULES,
+    ...USER_STORY_REFINEMENT_RULES,
+    ...DOR_DEPENDENCIES_RULES,
+    ...BDD_SCENARIOS_RULES,
+  ];
+
+  // Optional biometric domain pack — appended ONLY when LIDR_DOMAIN_PACK=biometric.
+  const domainExampleRules = DOMAIN_PACK_ENABLED
+    ? [...DEFAULT_REFINEMENT_RULES, ...BIOMETRIC_DOMAIN_PACK_RULES]
+    : DEFAULT_REFINEMENT_RULES;
+
   const validationCases = [
     {
       file: "domains/biometric/voice-biometric-v3-refinement-session.md",
-      rules: [
-        ...SESSION_METADATA_RULES,
-        ...USER_STORY_REFINEMENT_RULES,
-        ...BIOMETRIC_SPECIFIC_RULES,
-        ...DOR_DEPENDENCIES_RULES,
-        ...BDD_SCENARIOS_RULES,
-      ],
-      description: "Voice Biometric Refinement Session Structure",
+      rules: domainExampleRules,
+      description: "Voice Refinement Session Structure (biometric example fixture)",
     },
     {
       file: "domains/biometric/selphid-nfc-enhancement-backlog-grooming.md",
-      rules: [
-        ...SESSION_METADATA_RULES,
-        ...USER_STORY_REFINEMENT_RULES,
-        ...BIOMETRIC_SPECIFIC_RULES,
-        ...DOR_DEPENDENCIES_RULES,
-      ],
-      description: "SelphID NFC Enhancement Backlog Grooming Structure",
+      rules: DOMAIN_PACK_ENABLED
+        ? [
+            ...SESSION_METADATA_RULES,
+            ...USER_STORY_REFINEMENT_RULES,
+            ...DOR_DEPENDENCIES_RULES,
+            ...BIOMETRIC_DOMAIN_PACK_RULES,
+          ]
+        : [...SESSION_METADATA_RULES, ...USER_STORY_REFINEMENT_RULES, ...DOR_DEPENDENCIES_RULES],
+      description: "NFC Enhancement Backlog Grooming Structure (biometric example fixture)",
     },
     {
       file: "generic/refinement-notes-template.md",
@@ -320,6 +347,9 @@ async function main(): Promise<void> {
   ];
 
   console.log("🔍 Validating Refinement Notes Skill Examples...\n");
+  if (DOMAIN_PACK_ENABLED) {
+    console.log("ℹ️  LIDR_DOMAIN_PACK=biometric — applying optional biometric domain rules.\n");
+  }
 
   let totalPassed = 0;
   let totalFailed = 0;
@@ -374,7 +404,7 @@ async function main(): Promise<void> {
 
   if (allValid) {
     console.log("\n🎉 All Refinement Notes examples are properly structured!");
-    console.log("   Ready for biometric user story refinement and sprint planning.");
+    console.log("   Ready for user story refinement and sprint planning.");
   } else {
     console.log("\n💡 Fix the validation errors to ensure effective backlog grooming.");
   }

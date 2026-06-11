@@ -5,7 +5,14 @@
  * Validates that business-case skill examples contain proper structure
  * for comprehensive business case documentation with ROI analysis and stakeholder justification.
  *
+ * The DEFAULT validation set is 100% DOMAIN-AGNOSTIC (executive summary, problem,
+ * financial analysis, risk, timeline, metrics) — LIDR is a multi-industry framework.
+ * An OPTIONAL biometric/identity domain pack of extra example fixtures is preserved
+ * as BIOMETRIC_DOMAIN_PACK below and applied only when LIDR_DOMAIN_PACK === 'biometric'.
+ * Example only — NOT the active default.
+ *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -63,11 +70,12 @@ const BUSINESS_CASE_RULES: ValidationRule[] = [
   },
 ];
 
-const validationCases = [
+// DEFAULT validation cases — DOMAIN-AGNOSTIC generic business cases.
+const DEFAULT_CASES = [
   {
-    file: "biometric-platform-business-case.md",
+    file: "business-case.md",
     rules: BUSINESS_CASE_RULES,
-    description: "Biometric Platform Business Case",
+    description: "Generic Business Case",
   },
   {
     file: "compliance-automation-business-case.md",
@@ -75,6 +83,26 @@ const validationCases = [
     description: "Compliance Automation Business Case",
   },
 ];
+
+// OPTIONAL biometric/identity domain pack — example only, NOT the active default.
+// Applied only when LIDR_DOMAIN_PACK === 'biometric'.
+const BIOMETRIC_DOMAIN_PACK = [
+  {
+    file: "biometric-platform-business-case.md",
+    rules: BUSINESS_CASE_RULES,
+    description: "Biometric Platform Business Case",
+  },
+  {
+    file: "business-case-selphid-banking.md",
+    rules: BUSINESS_CASE_RULES,
+    description: "Identity-Banking Business Case",
+  },
+];
+
+const validationCases =
+  process.env.LIDR_DOMAIN_PACK === "biometric"
+    ? [...DEFAULT_CASES, ...BIOMETRIC_DOMAIN_PACK]
+    : DEFAULT_CASES;
 
 async function main(): Promise<void> {
   console.log("🔍 Validating Business Case Skill Examples...\n");

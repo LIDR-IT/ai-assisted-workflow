@@ -5,6 +5,14 @@
  * Validates that stakeholder-map skill examples contain proper structure
  * for project stakeholder identification and engagement planning.
  *
+ * The DEFAULT validation set is 100% domain-agnostic (project overview,
+ * power/interest matrix, detailed analysis, communication strategy, generic
+ * regulatory/compliance stakeholders, risk assessment, engagement planning). An
+ * overridable EXAMPLE industry pack (biometric identity / banking) is preserved
+ * below as the BIOMETRIC_DOMAIN_PACK_RULES constant and is applied ONLY behind
+ * an explicit flag (`LIDR_DOMAIN_PACK=biometric`). It is documentation/example
+ * only and is NOT part of the default behavior.
+ *
  * Validates:
  * - Power/Interest matrix with proper stakeholder categorization
  * - Detailed stakeholder analysis with roles and responsibilities
@@ -14,6 +22,7 @@
  * - Project-specific stakeholder requirements
  *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync, readdirSync } from "fs";
@@ -186,65 +195,46 @@ const REGULATORY_COMPLIANCE_RULES: ValidationRule[] = [
   },
   {
     name: "Data Protection Authorities",
-    description: "For biometric projects, must include data protection authorities",
+    description: "Should include data protection / privacy authorities where relevant",
     check: (content) =>
-      content.includes("Data Protection") || content.includes("DPA") || content.includes("GDPR"),
+      content.includes("Data Protection") ||
+      content.includes("Privacy") ||
+      content.includes("regulator"),
     severity: "WARN",
   },
   {
     name: "Industry-Specific Regulators",
     description: "Must identify industry-specific regulatory bodies",
     check: (content) =>
-      content.includes("Banking") ||
-      content.includes("Financial") ||
-      content.includes("ECB") ||
+      content.includes("Regulator") ||
       content.includes("regulatory") ||
-      content.includes("EBA"),
+      content.includes("Authority") ||
+      content.includes("Compliance"),
     severity: "WARN",
   },
   {
     name: "Compliance Requirements",
-    description: "Should reference relevant compliance requirements (PSD2, GDPR, etc.)",
+    description: "Should reference relevant compliance requirements/standards",
     check: (content) =>
-      content.includes("PSD2") ||
-      content.includes("GDPR") ||
-      content.includes("ISO") ||
-      content.includes("compliance requirements"),
+      content.includes("compliance requirements") ||
+      content.includes("Compliance") ||
+      content.includes("standard") ||
+      content.includes("regulation"),
     severity: "WARN",
   },
 ];
 
-const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
-  {
-    name: "Biometric Domain Context",
-    description: "Should address biometric-specific stakeholder considerations",
-    check: (content) =>
-      content.includes("biometric") ||
-      content.includes("Biometric") ||
-      content.includes("identity") ||
-      content.includes("authentication") ||
-      content.includes("verification"),
-    severity: "WARN",
-  },
+// DOMAIN-AGNOSTIC: applies to every stakeholder map regardless of industry.
+const CORE_STAKEHOLDER_GROUPS_RULES: ValidationRule[] = [
   {
     name: "Privacy and Security Stakeholders",
-    description: "Must include privacy and security stakeholders for biometric projects",
+    description: "Must include privacy and security stakeholders",
     check: (content) =>
       content.includes("Security") ||
       content.includes("Privacy") ||
       content.includes("CISO") ||
       content.includes("Legal"),
     severity: "ERROR",
-  },
-  {
-    name: "Banking Integration Stakeholders",
-    description: "For banking projects, must identify banking integration stakeholders",
-    check: (content) =>
-      content.includes("Banking") ||
-      content.includes("Financial") ||
-      content.includes("Tier-1") ||
-      content.includes("IT Security"),
-    severity: "WARN",
   },
   {
     name: "End User Considerations",
@@ -257,6 +247,40 @@ const BIOMETRIC_DOMAIN_RULES: ValidationRule[] = [
     severity: "WARN",
   },
 ];
+
+/* ────────────────────────────────────────────────────────────────────
+   OVERRIDABLE EXAMPLE — biometric-identity / banking industry pack (NOT
+   DEFAULT). These rules are applied ONLY when LIDR_DOMAIN_PACK=biometric. They
+   are documentation/example content showing how a domain pack layers extra,
+   domain-specific stakeholder checks on top of the agnostic defaults. They are
+   NOT spread into the default validation set.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK_RULES: ValidationRule[] = [
+  {
+    name: "Biometric Domain Context",
+    description: "Should address biometric-specific stakeholder considerations",
+    check: (content) =>
+      content.includes("biometric") ||
+      content.includes("Biometric") ||
+      content.includes("identity") ||
+      content.includes("authentication") ||
+      content.includes("verification"),
+    severity: "WARN",
+  },
+  {
+    name: "Banking Integration Stakeholders",
+    description: "For banking projects, must identify banking integration stakeholders",
+    check: (content) =>
+      content.includes("Banking") ||
+      content.includes("Financial") ||
+      content.includes("Tier-1") ||
+      content.includes("IT Security"),
+    severity: "WARN",
+  },
+];
+
+const DOMAIN_PACK_ENABLED = process.env.LIDR_DOMAIN_PACK === "biometric";
 
 const RISK_ASSESSMENT_RULES: ValidationRule[] = [
   {
@@ -408,24 +432,35 @@ async function main(): Promise<void> {
     return files;
   };
 
+  // DEFAULT (domain-agnostic) rule set applied to every stakeholder-map example.
+  const DEFAULT_STAKEHOLDER_RULES = [
+    ...PROJECT_OVERVIEW_RULES,
+    ...STAKEHOLDER_MATRIX_RULES,
+    ...DETAILED_ANALYSIS_RULES,
+    ...COMMUNICATION_STRATEGY_RULES,
+    ...REGULATORY_COMPLIANCE_RULES,
+    ...CORE_STAKEHOLDER_GROUPS_RULES,
+    ...RISK_ASSESSMENT_RULES,
+    ...ENGAGEMENT_PLANNING_RULES,
+  ];
+
+  // Optional biometric domain pack — appended ONLY when LIDR_DOMAIN_PACK=biometric.
+  const activeRules = DOMAIN_PACK_ENABLED
+    ? [...DEFAULT_STAKEHOLDER_RULES, ...BIOMETRIC_DOMAIN_PACK_RULES]
+    : DEFAULT_STAKEHOLDER_RULES;
+
   const mdFiles = findMdFiles(examplesDir);
   const validationCases = mdFiles.map((filePath) => ({
     file: filePath.replace(examplesDir + "/", ""),
     fullPath: filePath,
-    rules: [
-      ...PROJECT_OVERVIEW_RULES,
-      ...STAKEHOLDER_MATRIX_RULES,
-      ...DETAILED_ANALYSIS_RULES,
-      ...COMMUNICATION_STRATEGY_RULES,
-      ...REGULATORY_COMPLIANCE_RULES,
-      ...BIOMETRIC_DOMAIN_RULES,
-      ...RISK_ASSESSMENT_RULES,
-      ...ENGAGEMENT_PLANNING_RULES,
-    ],
+    rules: activeRules,
     description: `Stakeholder Map: ${filePath.split("/").pop()?.replace(".md", "") || "Unknown"}`,
   }));
 
   console.log("🔍 Validating Stakeholder Map Skill Examples...\n");
+  if (DOMAIN_PACK_ENABLED) {
+    console.log("ℹ️  LIDR_DOMAIN_PACK=biometric — applying optional biometric domain rules.\n");
+  }
 
   let totalPassed = 0;
   let totalFailed = 0;

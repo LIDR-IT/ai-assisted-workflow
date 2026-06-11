@@ -48,26 +48,26 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
     name: "Functional Description Section",
     description: "Must include user-friendly functional description of implementation",
     check: (content) =>
-      content.includes("¿Qué se Implementó?") && content.includes("Descripción Funcional"),
+      content.includes("What Was Implemented?") && content.includes("Functional Description"),
     severity: "ERROR",
   },
   {
     name: "Visible Changes Documentation",
     description: "Must document all visible changes with locations and screenshots",
-    check: (content) => content.includes("Cambios Visibles") && content.includes("screenshot"),
+    check: (content) => content.includes("Visible Changes") && content.includes("screenshot"),
     severity: "ERROR",
   },
   {
     name: "Exclusions Documentation",
     description: "Must explicitly document what was NOT implemented to prevent false bug reports",
     check: (content) =>
-      content.includes("Lo que NO se Implementó") && content.includes("exclusions"),
+      content.includes("What Was NOT Implemented") && content.includes("exclusions"),
     severity: "ERROR",
   },
   {
     name: "Technical Changes Section",
     description: "Must detail technical changes relevant for QA testing",
-    check: (content) => content.includes("Cambios Técnicos Relevantes para QA"),
+    check: (content) => content.includes("Technical Changes Relevant for QA"),
     severity: "ERROR",
   },
   {
@@ -81,7 +81,7 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
     name: "Database Changes Documentation",
     description: "Must document database schema changes and QA testing impact",
     check: (content) =>
-      content.includes("Base de Datos") &&
+      content.includes("Database") &&
       content.includes("Migration") &&
       content.includes("QA Impact"),
     severity: "ERROR",
@@ -89,27 +89,27 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
   {
     name: "Configuration Changes",
     description: "Must list configuration changes and staging environment values",
-    check: (content) => content.includes("Configuración") && content.includes("Staging Value"),
+    check: (content) => content.includes("Configuration") && content.includes("Staging Value"),
     severity: "WARN",
   },
   {
     name: "External Dependencies",
     description: "Must identify external service dependencies and failure impacts",
     check: (content) =>
-      content.includes("Dependencias Externas") && content.includes("Impact if down"),
+      content.includes("External Dependencies") && content.includes("Impact if down"),
     severity: "WARN",
   },
   {
     name: "Testing Instructions",
     description: "Must provide comprehensive testing instructions with prerequisites",
-    check: (content) => content.includes("Cómo Probarlo") && content.includes("Prerequisitos"),
+    check: (content) => content.includes("How to Test It") && content.includes("Prerequisites"),
     severity: "ERROR",
   },
   {
     name: "Happy Path Testing",
     description: "Must document main flow testing with concrete steps and expected results",
     check: (content) =>
-      content.includes("Flujo Principal") &&
+      content.includes("Main Flow") &&
       content.includes("Happy Path") &&
       content.includes("Expected Result"),
     severity: "ERROR",
@@ -117,8 +117,7 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
   {
     name: "Error Scenarios Coverage",
     description: "Must include error scenarios with reproduction steps and expected behavior",
-    check: (content) =>
-      content.includes("Escenarios de Error") && content.includes("How to Reproduce"),
+    check: (content) => content.includes("Error Scenarios") && content.includes("How to Reproduce"),
     severity: "ERROR",
   },
   {
@@ -130,7 +129,7 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
   {
     name: "Test Data Specification",
     description: "Must provide specific test data with concrete file names and users",
-    check: (content) => content.includes("Datos de Prueba") && content.includes("Test Documents"),
+    check: (content) => content.includes("Test Data") && content.includes("Test Documents"),
     severity: "ERROR",
   },
   {
@@ -143,7 +142,7 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
   {
     name: "Regression Analysis",
     description: "Must identify regression areas and impact assessment for existing functionality",
-    check: (content) => content.includes("Áreas de Regresión") && content.includes("Impact areas"),
+    check: (content) => content.includes("Regression Areas") && content.includes("Impact areas"),
     severity: "ERROR",
   },
   {
@@ -156,7 +155,7 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
     name: "Risk Assessment",
     description: "Must document risks, limitations, and workarounds for testing",
     check: (content) =>
-      content.includes("Riesgos y Limitaciones") && content.includes("Testing Impact"),
+      content.includes("Risks and Limitations") && content.includes("Testing Impact"),
     severity: "ERROR",
   },
   {
@@ -175,7 +174,7 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
   {
     name: "User Language Usage",
     description: "Must use user-friendly language rather than technical jargon",
-    check: (content) => content.includes("usuario puede") && content.includes("verificar"),
+    check: (content) => content.includes("The user can") && content.includes("verify"),
     severity: "WARN",
   },
   {
@@ -189,7 +188,7 @@ const DEV_HANDOFF_RULES: ValidationRule[] = [
   {
     name: "Environment Information",
     description: "Must specify staging environment URL and deployment information",
-    check: (content) => content.includes("Entorno") && content.includes("deployed"),
+    check: (content) => content.includes("Environment") && content.includes("deployed"),
     severity: "ERROR",
   },
   {

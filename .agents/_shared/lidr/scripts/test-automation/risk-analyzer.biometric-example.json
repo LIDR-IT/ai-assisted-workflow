@@ -1,0 +1,60 @@
+{
+  "_comment": "Overridable EXAMPLE domain config for risk-analyzer.py (biometric-identity vertical). NOT loaded by default. Mirrors the BIOMETRIC_EXAMPLE_* constants in risk-analyzer.py. Copy/adapt to specialize DomainRiskPatterns for this vertical.",
+  "domain_risk_factors": {
+    "template_security": {
+      "patterns": ["biometric.*encrypt", "biometric.*hash", "irreversible", "privacy.*preserving"],
+      "risk_level": "HIGH",
+      "test_implications": [
+        "Template encryption testing",
+        "Privacy verification",
+        "Data breach simulation"
+      ]
+    },
+    "liveness_detection": {
+      "patterns": ["liveness", "spoof.*detect", "anti.*spoof", "spoof.*attack"],
+      "risk_level": "HIGH",
+      "test_implications": [
+        "Spoofing attack tests",
+        "Liveness accuracy testing",
+        "Edge case scenarios"
+      ]
+    },
+    "performance_accuracy": {
+      "patterns": ["FAR", "FRR", "liveness", "accuracy", "performance.*metric"],
+      "risk_level": "MEDIUM",
+      "test_implications": ["Performance benchmarking", "Accuracy validation", "Load testing"]
+    },
+    "gdpr_compliance": {
+      "patterns": ["GDPR", "consent", "data.*subject.*rights", "privacy.*impact"],
+      "risk_level": "HIGH",
+      "test_implications": ["Consent flow testing", "Data deletion verification", "Privacy audit"]
+    },
+    "regulatory_compliance": {
+      "patterns": ["eIDAS", "PSD2", "ISO.*30107", "banking.*compliance"],
+      "risk_level": "HIGH",
+      "test_implications": [
+        "Compliance validation",
+        "Certification testing",
+        "Audit trail verification"
+      ]
+    }
+  },
+  "complexity_indicators": {
+    "multi_modal": {
+      "patterns": ["face.*document", "multi.*biometric"],
+      "complexity_score": 0.8
+    },
+    "real_time": {
+      "patterns": ["real.*time", "streaming", "live.*capture"],
+      "complexity_score": 0.6
+    },
+    "mobile_integration": {
+      "patterns": ["mobile.*SDK", "iOS", "Android", "React.*Native"],
+      "complexity_score": 0.7
+    },
+    "api_integration": {
+      "patterns": ["REST.*API", "microservice", "webhook"],
+      "complexity_score": 0.5
+    }
+  }
+}

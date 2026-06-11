@@ -1,19 +1,20 @@
 ---
 description: Generate release notes from merged PRs
 argument-hint: [version]
-allowed-tools: Read, Write, Bash(git:*), mcp__jira, mcp__confluence, mcp__slack, AskUserQuestion
+allowed-tools: Read, Write, Bash(git:*), Skill(lidr-sdlc-tracking), Skill(lidr-external-sync), AskUserQuestion
 model: sonnet
 ---
 
 <!--
 COMMAND: create-release-notes
-VERSION: 2.0.0
+VERSION: 2.0.1
 AUTHOR: SDLC Team
-LAST UPDATED: 2025-03-05
+LAST UPDATED: 2026-06-11
 
 PURPOSE:
 Generates changelog at 2 levels (executive for business + technical for team)
-from merged PRs since last release. Enriches with Jira context for traceability.
+from merged PRs since last release. Enriches with {{TRACKING_TOOL}} context for
+traceability (resolved per client via the registry).
 
 USAGE:
   /lidr-create-release-notes v1.2.0
@@ -27,6 +28,10 @@ RELATED COMMANDS:
   /lidr-advance-gate 7    - Deploy gate that checks release notes exist
 
 CHANGELOG:
+  v2.0.1 (2026-06-11): Tool-routing — concrete MCP bindings (jira/confluence/slack)
+                        replaced by abstraction skills; prose tool names replaced by
+                        {{TRACKING_TOOL}}/{{DOCS_TOOL}}/{{CHAT_TOOL}} placeholders;
+                        real invocation site delegated to lidr-sdlc-tracking.
   v2.0.0 (2025-03-05): Rewritten to official command format
   v1.0.0 (2025-02-15): Initial version
 -->
@@ -70,12 +75,12 @@ Use AskUserQuestion:
   - {suggested version} (Recomendado basado en cambios)
   - {alternative} (Override manual)
 
-## Enrich with Jira Context
+## Enrich with Tracking Context
 
 For each merged PR:
 
 - Extract ticket ID from PR title/branch name
-- Jira MCP: GET /issue/{ticket-id}
+- Via `lidr-sdlc-tracking`, which resolves {{TRACKING_TOOL}} from the registry: read ticket {ticket-id}
 - Get: title, type (feat/fix), User Story, RF, component
 - Build traceability chain: PR → Ticket → US → RF → BC
 
@@ -156,12 +161,11 @@ For engineering team (Dev, QA, DevOps):
 
 ## Publish
 
-If Confluence MCP available:
-Publish both versions to Confluence space.
+Via `lidr-external-sync` (resolves {{DOCS_TOOL}} and {{CHAT_TOOL}} from the registry):
 
-If Slack MCP available:
-Post executive summary to #releases channel.
-Post technical summary to #engineering channel.
+- If {{DOCS_TOOL}} is bound: publish both versions to the {{DOCS_TOOL}} space.
+- If {{CHAT_TOOL}} is bound: post the executive summary to the releases channel and the
+  technical summary to the engineering channel.
 
 Save locally: `.claude/releases/v{version}-release-notes.local.md`
 
@@ -176,8 +180,8 @@ Changes: {N} PRs, {N} tickets
   - Fixes: {N}
   - Breaking: {N}
 
-Published to: {Confluence / local file}
-Notified: {Slack channels / manual}
+Published to: {{{DOCS_TOOL}} / local file}
+Notified: {{{CHAT_TOOL}} channels / manual}
 
 Next: /lidr-update-changelog v{version}
 ```

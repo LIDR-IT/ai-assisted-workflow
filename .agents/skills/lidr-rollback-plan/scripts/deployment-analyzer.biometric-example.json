@@ -1,0 +1,28 @@
+{
+  "_comment": "OVERRIDABLE EXAMPLE industry pack (biometric identity). NOT the active default. Pass via --domain-patterns or LIDR_DOMAIN_PATTERNS to specialize deployment-analyzer.py for a biometric-identity context. Schema matches DEFAULT_DOMAIN_RISK_PATTERNS / _load_domain_patterns().",
+  "algorithm_changes": {
+    "patterns": ["biometric.*algorithm", "face.*recognition", "template.*generation"],
+    "risk_level": "HIGH",
+    "rollback_impact": "Algorithm rollback requires template revalidation"
+  },
+  "domain_specific_api_changes": {
+    "patterns": ["verification.*endpoint", "enroll.*api", "match.*service"],
+    "risk_level": "MEDIUM",
+    "rollback_impact": "API changes may affect client integrations"
+  },
+  "template_storage": {
+    "patterns": ["template.*storage", "biometric.*database", "encryption.*key"],
+    "risk_level": "CRITICAL",
+    "rollback_impact": "Template storage changes risk data corruption"
+  },
+  "liveness_detection": {
+    "patterns": ["liveness.*detection", "anti.*spoofing", "pam.*detection"],
+    "risk_level": "HIGH",
+    "rollback_impact": "Liveness changes affect security posture"
+  },
+  "compliance_changes": {
+    "patterns": ["gdpr.*compliance", "consent.*management", "audit.*trail"],
+    "risk_level": "HIGH",
+    "rollback_impact": "Compliance changes may affect regulatory approval"
+  }
+}

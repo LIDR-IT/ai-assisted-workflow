@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-{{CLIENT_NAME}} Requirements Traceability Matrix (RTM) Generator
+LIDR Requirements Traceability Matrix (RTM) Generator
 Automates the 5-pass validation process and generates comprehensive RTM reports.
 """
 
@@ -71,7 +71,7 @@ class RTMGenerator:
     #   deps      -> str   (cluster dependency note, free-form)
     DEFAULT_CLUSTER_PATTERNS: List[Dict] = [
         {"name": "Auth & Security", "keywords": ["auth", "login"], "sprints": "2-3 sprints", "deps": "None"},
-        {"name": "Core domain-specifics", "keywords": ["domain-specific", "core"], "sprints": "3-4 sprints", "deps": "Auth cluster"},
+        {"name": "Core Domain", "keywords": ["core", "domain"], "sprints": "3-4 sprints", "deps": "Auth cluster"},
         {"name": "API Gateway", "keywords": ["api", "endpoint"], "sprints": "2 sprints", "deps": "Core cluster"},
         {"name": "User Interface", "keywords": ["ui", "interface"], "sprints": "2-3 sprints", "deps": "API cluster"},
     ]
@@ -431,7 +431,7 @@ class RTMGenerator:
         missing_categories = []
         critical_missing = []
 
-        # {{CLIENT_NAME}} domain-specific projects require security and compliance
+        # Generic baseline: every production project requires security and performance
         mandatory_categories = ['security', 'performance']
 
         for category in self.prd_nfr_categories:
@@ -635,7 +635,7 @@ type: validation
 owner_role: "PO + TL"
 ---
 
-# Requirements Traceability Matrix: {{CLIENT_NAME}} SDLC Project
+# Requirements Traceability Matrix: LIDR SDLC Project
 
 **Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 **RFs analyzed**: {len(self.rfs)} | **NFRs analyzed**: {len(self.nfrs)}
@@ -738,7 +738,7 @@ type: validation
 owner_role: "PO + TL"
 ---
 
-# Gap Report: {{CLIENT_NAME}} SDLC Project
+# Gap Report: LIDR SDLC Project
 
 **Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
@@ -881,7 +881,7 @@ owner_role: "PO + TL"
         return str(results_file)
 
 def main():
-    parser = argparse.ArgumentParser(description="{{CLIENT_NAME}} RTM Generator - 5-Pass Validation Automation")
+    parser = argparse.ArgumentParser(description="LIDR RTM Generator - 5-Pass Validation Automation")
     parser.add_argument("--project-dir", default=".", help="Project directory path")
     parser.add_argument("--output-dir", default=".", help="Output directory for reports")
     parser.add_argument("--rtm-file", default="rtm.md", help="RTM output filename")
@@ -893,7 +893,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 {{CLIENT_NAME}} Requirements Validation - 5-Pass Automation")
+    print("🚀 LIDR Requirements Validation - 5-Pass Automation")
     print("=" * 60)
 
     # Initialize RTM generator

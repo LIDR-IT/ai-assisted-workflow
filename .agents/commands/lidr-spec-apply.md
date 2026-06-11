@@ -79,6 +79,8 @@ Mandatory steps remaining:
 
 ## Implementation loop
 
+> **Engine ↔ governance — one sequence, no parallel route.** The TDD loop (red-green-refactor) is owned by the BMad engine (`bmad-dev-story`), which `tasks.md` already encodes via `/lidr-spec-ff`. This command **does not reinvent that loop — it reuses `bmad-dev-story`'s pattern and re-runs the suite as auditable verification** (Step N+1, with a DB baseline + per-step report), then adds the LIDR-only mandatory steps: Step 0 (feature branch), Step N+2 (curl + DB restore), Step N+3 (Playwright E2E), Step N+4 (DTC docs). The re-run is governance/evidence, not a parallel TDD loop. See `lidr-sdlc/spec-execution.md` §0 "Relationship to the BMad engine".
+
 For each pending task in `tasks.md`:
 
 1. **Announce**: "Working on task X.Y: <task description>"

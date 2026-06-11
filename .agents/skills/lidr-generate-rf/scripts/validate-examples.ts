@@ -13,7 +13,14 @@
  * - Testability and measurability of requirements
  * - Priority classification and business value mapping
  *
+ * The DEFAULT validation set is 100% DOMAIN-AGNOSTIC (structure, completeness,
+ * format, BDD, measurability, traceability) — LIDR is a multi-industry framework.
+ * An OPTIONAL biometric/identity domain pack of extra example fixtures is
+ * preserved as BIOMETRIC_DOMAIN_PACK below and applied only when
+ * LIDR_DOMAIN_PACK === 'biometric'. It is an example only — NOT the active default.
+ *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -222,15 +229,25 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // Look for example files in the directory
-  const exampleFiles = [
+  // DEFAULT example files — DOMAIN-AGNOSTIC generic RF artifacts.
+  const exampleFiles = ["functional-requirements.md", "api-functional-specs.md"];
+
+  // OPTIONAL biometric/identity domain pack — example fixtures only, NOT the
+  // active default. Applied only when LIDR_DOMAIN_PACK === 'biometric'.
+  const BIOMETRIC_DOMAIN_PACK = [
     "biometric-verification-rfs.md",
     "identity-platform-requirements.md",
-    "api-functional-specs.md",
+    "requirements-selphid-banking-complex.md",
   ];
+
+  const filesToCheck =
+    process.env.LIDR_DOMAIN_PACK === "biometric"
+      ? [...exampleFiles, ...BIOMETRIC_DOMAIN_PACK]
+      : exampleFiles;
+
   const validationCases = [];
 
-  for (const file of exampleFiles) {
+  for (const file of filesToCheck) {
     const filePath = join(examplesDir, file);
     if (existsSync(filePath)) {
       validationCases.push({
@@ -243,9 +260,7 @@ async function main(): Promise<void> {
 
   if (validationCases.length === 0) {
     console.log("⚠️ No example files found to validate");
-    console.log(
-      "Expected files: biometric-verification-rfs.md, identity-platform-requirements.md, api-functional-specs.md"
-    );
+    console.log(`Expected files: ${filesToCheck.join(", ")}`);
     process.exit(0);
   }
 

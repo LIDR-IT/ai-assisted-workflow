@@ -86,8 +86,9 @@ maintained_by: "TL: LIDR Gate-over-BMad"
 #     - G5: bmad-testarch-automate/trace globs scoped to {bmad_test} (TEA test_artifacts root).
 #     - G4: bmad-code-review glob REMOVED (CR emits inline findings, no file → checklist item);
 #           lidr-spec-verify relabeled `command:` (spec-lifecycle, not a skill) and set
-#           required: false so the pure-BMad RUTA A dev route can pass G4 via the DoD
-#           checklist (the hard G4 gate) + bmad-code-review. RUTA B still produces test-report.md.
+#           required: false because the hard G4 gate is the route-agnostic DoD checklist
+#           + bmad-code-review — the gate is not coupled to any single artifact. The single
+#           development sequence still produces test-report.md as LIDR governance evidence.
 #   2.0.0 (2026-06-10) — Unified phase model + gate-over-BMad rewrite.
 
 # Unified phase model (see .agents/_shared/lidr/UNIFIED-PHASES.md):
@@ -299,11 +300,12 @@ gates:
       # routes back to dev-story (CSV output-location is blank). Tracked as a checklist
       # item ("code review approved") below instead of a non-existent file glob.
     lidr_evidence:
-      # test-report.md is produced ONLY by RUTA B (the /lidr-spec-* change lifecycle).
-      # It is a COMMAND/spec-lifecycle artifact, not a skill output (there is no
-      # .agents/skills/lidr-spec-verify; verify is the /lidr-spec-verify command).
-      # RUTA A teams (pure BMad dev-story + bmad-code-review) satisfy G4 via the DoD
-      # checklist below, so this is required: false to avoid coupling G4 to RUTA B.
+      # test-report.md is produced by the /lidr-spec-* change lifecycle (the LIDR
+      # governance wrap over the BMad engine). It is a COMMAND/spec-lifecycle artifact,
+      # not a skill output (there is no .agents/skills/lidr-spec-verify; verify is the
+      # /lidr-spec-verify command). required: false because the hard G4 gate is the
+      # route-agnostic DoD checklist below, not any single artifact — the gate is not
+      # coupled to the test-report even though the single sequence always produces it.
       - command: lidr-spec-verify
         artifact: "{changes}/*/test-report.md"
         required: false
@@ -322,10 +324,11 @@ gates:
         artifact: "{client_root}/impact/contract-impact-*.md"
         required: false
     checklist:
-      # DoD is the HARD G4 gate (binding for both routes). RUTA A (bmad-dev-story +
-      # bmad-code-review) and RUTA B (/lidr-spec-* with test-report.md) both must pass it.
+      # DoD is the HARD G4 gate (route-agnostic, binding for every change). The BMad
+      # engine (bmad-dev-story + bmad-code-review) and the LIDR governance wrap
+      # (/lidr-spec-* with test-report.md) are ONE sequence; the DoD is what the gate enforces.
       - "DoD met: code review approved (bmad-code-review or peer review), unit tests pass, SAST/SCA clean (0 crit/high)"
-      - "RUTA B only: test-report verdict is PASSED (or WARNINGS explicitly accepted). RUTA A satisfies this via the DoD checklist + bmad-code-review."
+      - "When the change ran the /lidr-spec-* lifecycle: test-report verdict is PASSED (or WARNINGS explicitly accepted). The hard gate itself remains the route-agnostic DoD checklist + bmad-code-review above."
       - "Docs updated in the same change (DTC) per documentation.md"
       - "Runtime/visual review of changed UI passed (lidr-playwright-cli via Playwright MCP): renders, key flows, console errors, a11y — complements bmad-code-review"
     signoffs:

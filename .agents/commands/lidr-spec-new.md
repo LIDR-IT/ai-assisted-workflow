@@ -71,6 +71,7 @@ Create the directory structure:
 
 ```
 docs/projects/<CLIENT_CODE>/changes/<change-name>/
+├── enriched-us.md        (placeholder — paste the enriched user story here; consumed by /lidr-spec-ff)
 ├── proposal.md           (placeholder)
 ├── design.md             (placeholder)
 ├── tasks.md              (placeholder)
@@ -102,11 +103,14 @@ editHistory:
 
 # <Artifact Title>: <change-name>
 
-> ⚠️ Placeholder — fill via /lidr-spec-ff or manually.
+> ⚠️ [PENDIENTE] — Placeholder. Fill via /lidr-spec-ff or manually.
 ```
+
+> The literal token `[PENDIENTE]` is the repo-wide readiness sentinel: `/lidr-spec-ff` and `/lidr-spec-apply` both guard on it, so a freshly-scaffolded-but-unfilled artifact is correctly blocked from `apply`. Keep this exact token.
 
 Use the artifact title appropriate for each file:
 
+- `enriched-us.md` → "Enriched User Story" (paste the US/ticket detail here before running `/lidr-spec-ff`)
 - `proposal.md` → "Proposal"
 - `design.md` → "Design"
 - `tasks.md` → "Tasks"
@@ -121,11 +125,12 @@ Use the artifact title appropriate for each file:
 Change:    <change-name>
 Location:  docs/projects/<CLIENT_CODE>/changes/<change-name>/
 Status:    draft
-Artifacts: proposal.md, design.md, tasks.md, spec.md, test-report.md
+Artifacts: enriched-us.md, proposal.md, design.md, tasks.md, spec.md, test-report.md
 Reports:   docs/projects/<CLIENT_CODE>/changes/<change-name>/reports/ (empty)
 
 Next steps:
-  /lidr-spec-ff <change-name>     → fast-forward: generate all artifacts in one pass
+  1. Paste the enriched user story into enriched-us.md
+  2. /lidr-spec-ff <change-name>     → fast-forward: generate all artifacts in one pass
   /lidr-spec-apply <change-name>  → implement tasks (after ff)
 ```
 

@@ -36,7 +36,7 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
 
 | Parámetro      | Tipo     | Descripción                                                        | Default |
 | -------------- | -------- | ------------------------------------------------------------------ | ------- |
-| `TICKET-ID`    | Required | ID del ticket Jira (ej: SDLC-123)                                  | -       |
+| `TICKET-ID`    | Required | ID del ticket en {{TRACKING_TOOL}} (ej: SDLC-123)                  | -       |
 | `--type`       | Optional | Tipo de cambio: `fix`, `feat`, `docs`, `style`, `refactor`, `test` | `fix`   |
 | `--skip-tests` | Flag     | Saltear generación de tests (solo para fixes menores)              | false   |
 
@@ -224,7 +224,7 @@ flowchart TD
 ```yaml
 tools_sequence:
   validation:
-    - jira_check_ticket_status
+    - tracking_check_ticket_status # via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}})
     - estimate_validation
     - scope_validation
 

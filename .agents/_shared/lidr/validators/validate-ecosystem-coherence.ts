@@ -396,22 +396,28 @@ function validateTemplateConsistency(
 ): void {
   const templates = artifacts.filter((a) => a.type === "template");
 
-  // Check for required sections in templates
-  const requiredTemplateSections = ["propósito", "estructura", "criterios de completitud"];
+  // Required template sections, language-neutral. Each entry lists accepted
+  // heading literals across supported languages (English is the default
+  // authoring language per `_shared/lidr/integrations/tool-registry.yaml`;
+  // client-language equivalents are accepted). Structure check — never a single
+  // hardcoded-language assertion.
+  const requiredTemplateSections: ReadonlyArray<readonly string[]> = [
+    ["purpose", "propósito", "propósito", "objectif", "zweck"],
+    ["structure", "estructura", "estrutura", "structure", "struktur"],
+    ["completion criteria", "criterios de completitud", "critérios de conclusão"],
+  ];
 
   templates.forEach((template) => {
     for (const section of requiredTemplateSections) {
-      const hasSection = new RegExp(
-        `##\\s*${section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
-        "i"
-      ).test(template.content);
+      const escaped = section.map((alt) => alt.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+      const hasSection = new RegExp(`##\\s*(?:${escaped.join("|")})`, "i").test(template.content);
 
       if (!hasSection) {
         issues.push({
           severity: ValidationSeverity.WARNING,
-          message: `Template missing section: "${section}"`,
+          message: `Template missing section: "${section[0]}"`,
           context: `Template "${template.id}" should follow standard structure`,
-          suggestion: `Add "## ${section}" section`,
+          suggestion: `Add "## ${section[0]}" section`,
           ruleId: "COHERENCE-TEMPLATE-001",
         });
       }
@@ -601,10 +607,13 @@ export function extractCoherenceMetrics(ecosystemPath: string): EcosystemCoheren
     }))
   );
 
-  // Check template consistency
+  // Check template consistency — language-neutral heading match (English
+  // default + client-language equivalents), not a single hardcoded language.
   const templates = artifacts.filter((a) => a.type === "template");
   const templateConsistency = templates.every((template) =>
-    /##\s*(propósito|estructura|criterios de completitud)/i.test(template.content)
+    /##\s*(purpose|propósito|estructura|structure|estrutura|struktur|objectif|zweck|completion criteria|criterios de completitud|critérios de conclusão)/i.test(
+      template.content
+    )
   );
 
   // Check naming conventions

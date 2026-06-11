@@ -1,7 +1,23 @@
 #!/usr/bin/env python3
 """
-{{CLIENT_NAME}} Component Dependency Mapper
-Analyzes codebase to automatically build component dependency graphs for regression testing.
+Component Dependency Mapper
+Analyzes a codebase to automatically build component dependency graphs for
+regression testing.
+
+This script is DOMAIN-AGNOSTIC by default: the built-in component, test and
+risk patterns describe generic application layers (api gateway, authentication,
+core domain, database, configuration, ...) and contain no industry-specific
+terminology.
+
+To analyze a domain-specific codebase, override the defaults by either:
+  - editing the `DEFAULT_COMPONENT_CONFIG` / `DEFAULT_TEST_PATTERNS` /
+    `DEFAULT_COMPONENT_KEYWORDS` constants below, or
+  - passing a `--config <file>.json` with the same shape, or
+  - using one of the labelled example overrides shipped with this module.
+
+A biometric-identity override is preserved as an EXAMPLE (not the active
+default) in the `BIOMETRIC_EXAMPLE_*` constants below, and mirrored as a
+sibling file `dependency-mapper.biometric-example.json` for `--config` use.
 """
 
 import json
@@ -13,6 +29,191 @@ from typing import Dict, List, Set, Tuple
 from collections import defaultdict, deque
 from dataclasses import dataclass, asdict
 import argparse
+
+# ---------------------------------------------------------------------------
+# Generic (domain-agnostic) DEFAULT configuration — the active default.
+# ---------------------------------------------------------------------------
+
+# Components identified by directory-structure glob patterns. Generic layers
+# common to most applications; no industry-specific concepts.
+DEFAULT_COMPONENT_CONFIG = {
+    'api_gateway': {
+        'patterns': ['**/api/**', '**/gateway/**', '**/middleware/**', '**/routes/**'],
+        'entry_points': ['app.py', 'main.py', 'server.py', 'gateway.py'],
+        'base_risk': 0.7
+    },
+    'authentication': {
+        'patterns': ['**/auth/**', '**/jwt/**', '**/oauth/**', '**/security/**'],
+        'entry_points': ['auth_service.py', 'jwt_handler.py', 'oauth_provider.py'],
+        'base_risk': 0.95
+    },
+    'core_domain': {
+        'patterns': ['**/core/**', '**/domain/**', '**/services/**', '**/lib/**'],
+        'entry_points': ['domain_engine.py', 'service_manager.py', 'core_utils.py'],
+        'base_risk': 1.0
+    },
+    'business_logic': {
+        'patterns': ['**/logic/**', '**/handlers/**', '**/use_cases/**', '**/workflows/**'],
+        'entry_points': ['handler.py', 'use_case.py', 'workflow.py'],
+        'base_risk': 0.85
+    },
+    'integration': {
+        'patterns': ['**/integration/**', '**/clients/**', '**/adapters/**', '**/connectors/**'],
+        'entry_points': ['client.py', 'adapter.py', 'connector.py'],
+        'base_risk': 0.8
+    },
+    'database': {
+        'patterns': ['**/db/**', '**/models/**', '**/repository/**', '**/dao/**'],
+        'entry_points': ['database.py', 'models.py', 'repository.py'],
+        'base_risk': 0.75
+    },
+    'configuration': {
+        'patterns': ['**/config/**', '**/settings/**', '**/env/**'],
+        'entry_points': ['config.py', 'settings.py', 'environment.py'],
+        'base_risk': 0.6
+    }
+}
+
+# Keyword → component mapping used to resolve a raw dependency string (import
+# path, api route, table name, ...) back to one of the components above.
+DEFAULT_COMPONENT_KEYWORDS = {
+    'api_gateway': ['api', 'gateway', 'route', 'middleware'],
+    'authentication': ['auth', 'jwt', 'oauth', 'security', 'login'],
+    'core_domain': ['domain', 'core', 'service', 'lib'],
+    'business_logic': ['logic', 'handler', 'use_case', 'workflow'],
+    'integration': ['integration', 'client', 'adapter', 'connector'],
+    'database': ['db', 'models', 'repository', 'dao', 'table:'],
+    'configuration': ['config', 'settings', 'env', 'environment']
+}
+
+# Generic regression test-case patterns per component.
+DEFAULT_TEST_PATTERNS = {
+    'api_gateway': [
+        'TC_API_AUTHENTICATION', 'TC_RATE_LIMITING', 'TC_API_PERFORMANCE',
+        'TC_ERROR_HANDLING', 'TC_REQUEST_VALIDATION', 'TC_RESPONSE_FORMAT'
+    ],
+    'authentication': [
+        'TC_LOGIN_FLOW', 'TC_JWT_VALIDATION', 'TC_OAUTH_INTEGRATION',
+        'TC_SESSION_MANAGEMENT', 'TC_PASSWORD_SECURITY', 'TC_MFA'
+    ],
+    'core_domain': [
+        'TC_DOMAIN_LOGIC', 'TC_DOMAIN_VALIDATION', 'TC_DOMAIN_STATE',
+        'TC_DOMAIN_STORAGE', 'TC_DOMAIN_QUALITY', 'TC_PERFORMANCE'
+    ],
+    'business_logic': [
+        'TC_WORKFLOW_EXECUTION', 'TC_USE_CASE_HAPPY_PATH', 'TC_USE_CASE_EDGE_CASES',
+        'TC_INPUT_VALIDATION', 'TC_ERROR_RECOVERY', 'TC_IDEMPOTENCY'
+    ],
+    'integration': [
+        'TC_CLIENT_CONNECTION', 'TC_RETRY_LOGIC', 'TC_TIMEOUT_HANDLING',
+        'TC_PAYLOAD_MAPPING', 'TC_CIRCUIT_BREAKER', 'TC_FALLBACK'
+    ],
+    'database': [
+        'TC_DATA_INTEGRITY', 'TC_QUERY_PERFORMANCE', 'TC_BACKUP_RESTORE',
+        'TC_CONCURRENT_ACCESS', 'TC_DATA_MIGRATION', 'TC_INDEX_EFFICIENCY'
+    ],
+    'configuration': [
+        'TC_CONFIG_LOADING', 'TC_ENVIRONMENT_SWITCHING', 'TC_DEFAULT_VALUES',
+        'TC_CONFIG_VALIDATION', 'TC_RUNTIME_UPDATES'
+    ]
+}
+
+# ---------------------------------------------------------------------------
+# Biometric-identity EXAMPLE override (NOT the active default).
+# Provided as a clearly-labelled, overridable reference. To use it, pass it via
+# --config or assign it into a DependencyMapper instance. Mirrored as the
+# sibling file `dependency-mapper.biometric-example.json`.
+# ---------------------------------------------------------------------------
+
+BIOMETRIC_EXAMPLE_COMPONENT_CONFIG = {
+    'facial_recognition': {
+        'patterns': ['**/face_*', '**/facial/**', '**/liveness/**', '**/ml/face/**'],
+        'entry_points': ['face_detection.py', 'liveness_detector.py', 'face_verification.py'],
+        'base_risk': 0.9
+    },
+    'document_ocr': {
+        'patterns': ['**/ocr/**', '**/document/**', '**/tesseract/**', '**/image_processing/**'],
+        'entry_points': ['ocr_engine.py', 'document_processor.py', 'field_extractor.py'],
+        'base_risk': 0.8
+    },
+    'voice_verification': {
+        'patterns': ['**/voice/**', '**/audio/**', '**/voice_ml/**', '**/speech/**'],
+        'entry_points': ['voice_enrollment.py', 'voice_verification.py', 'audio_processor.py'],
+        'base_risk': 0.85
+    },
+    'api_gateway': {
+        'patterns': ['**/api/**', '**/gateway/**', '**/middleware/**', '**/routes/**'],
+        'entry_points': ['app.py', 'main.py', 'server.py', 'gateway.py'],
+        'base_risk': 0.7
+    },
+    'authentication': {
+        'patterns': ['**/auth/**', '**/jwt/**', '**/oauth/**', '**/security/**'],
+        'entry_points': ['auth_service.py', 'jwt_handler.py', 'oauth_provider.py'],
+        'base_risk': 0.95
+    },
+    'core_biometric': {
+        'patterns': ['**/core/**', '**/biometric/**', '**/template/**', '**/crypto/**'],
+        'entry_points': ['biometric_engine.py', 'template_manager.py', 'crypto_utils.py'],
+        'base_risk': 1.0
+    },
+    'database': {
+        'patterns': ['**/db/**', '**/models/**', '**/repository/**', '**/dao/**'],
+        'entry_points': ['database.py', 'models.py', 'repository.py'],
+        'base_risk': 0.75
+    },
+    'configuration': {
+        'patterns': ['**/config/**', '**/settings/**', '**/env/**'],
+        'entry_points': ['config.py', 'settings.py', 'environment.py'],
+        'base_risk': 0.6
+    }
+}
+
+BIOMETRIC_EXAMPLE_COMPONENT_KEYWORDS = {
+    'facial_recognition': ['face', 'facial', 'liveness', 'biometric_face'],
+    'document_ocr': ['ocr', 'document', 'tesseract', 'extraction'],
+    'voice_verification': ['voice', 'audio', 'speech', 'voice_ml'],
+    'api_gateway': ['api', 'gateway', 'route', 'middleware'],
+    'authentication': ['auth', 'jwt', 'oauth', 'security', 'login'],
+    'core_biometric': ['biometric', 'template', 'crypto', 'core'],
+    'database': ['db', 'models', 'repository', 'dao', 'table:'],
+    'configuration': ['config', 'settings', 'env', 'environment']
+}
+
+BIOMETRIC_EXAMPLE_TEST_PATTERNS = {
+    'facial_recognition': [
+        'TC_FACE_ACCURACY', 'TC_LIVENESS_DETECTION', 'TC_FACE_ENROLLMENT',
+        'TC_FACE_VERIFICATION', 'TC_ANTI_SPOOFING', 'TC_FACE_QUALITY'
+    ],
+    'document_ocr': [
+        'TC_DNI_EXTRACTION', 'TC_PASSPORT_OCR', 'TC_LICENSE_PROCESSING',
+        'TC_DOCUMENT_VALIDATION', 'TC_FIELD_ACCURACY', 'TC_IMAGE_QUALITY'
+    ],
+    'voice_verification': [
+        'TC_VOICE_ENROLLMENT', 'TC_VOICE_VERIFICATION', 'TC_VOICE_QUALITY',
+        'TC_NOISE_HANDLING', 'TC_ACCENT_ROBUSTNESS', 'TC_VOICE_ANTI_SPOOFING'
+    ],
+    'api_gateway': [
+        'TC_API_AUTHENTICATION', 'TC_RATE_LIMITING', 'TC_API_PERFORMANCE',
+        'TC_ERROR_HANDLING', 'TC_REQUEST_VALIDATION', 'TC_RESPONSE_FORMAT'
+    ],
+    'authentication': [
+        'TC_LOGIN_FLOW', 'TC_JWT_VALIDATION', 'TC_OAUTH_INTEGRATION',
+        'TC_SESSION_MANAGEMENT', 'TC_PASSWORD_SECURITY', 'TC_MFA'
+    ],
+    'core_biometric': [
+        'TC_TEMPLATE_GENERATION', 'TC_TEMPLATE_MATCHING', 'TC_ENCRYPTION',
+        'TC_BIOMETRIC_STORAGE', 'TC_TEMPLATE_QUALITY', 'TC_PERFORMANCE'
+    ],
+    'database': [
+        'TC_DATA_INTEGRITY', 'TC_QUERY_PERFORMANCE', 'TC_BACKUP_RESTORE',
+        'TC_CONCURRENT_ACCESS', 'TC_DATA_MIGRATION', 'TC_INDEX_EFFICIENCY'
+    ],
+    'configuration': [
+        'TC_CONFIG_LOADING', 'TC_ENVIRONMENT_SWITCHING', 'TC_DEFAULT_VALUES',
+        'TC_CONFIG_VALIDATION', 'TC_RUNTIME_UPDATES'
+    ]
+}
+
 
 @dataclass
 class ComponentDependency:
@@ -33,10 +234,19 @@ class ComponentInfo:
     test_coverage: float
 
 class DependencyMapper:
-    def __init__(self, source_dir: str):
+    def __init__(self, source_dir: str, config: dict = None):
         self.source_dir = Path(source_dir)
         self.components = {}
         self.dependencies = []
+
+        # Overridable configuration. Defaults are domain-agnostic; callers may
+        # supply a `config` dict with keys: component_config, component_keywords,
+        # test_patterns.
+        config = config or {}
+        self.component_config = config.get('component_config', DEFAULT_COMPONENT_CONFIG)
+        self.component_keywords = config.get('component_keywords', DEFAULT_COMPONENT_KEYWORDS)
+        self.test_patterns = config.get('test_patterns', DEFAULT_TEST_PATTERNS)
+
         self.import_patterns = {
             'python': r'(?:from|import)\s+([a-zA-Z_][a-zA-Z0-9_\.]*)',
             'javascript': r'(?:import.*from\s+["\']([^"\']+)["\']|require\(["\']([^"\']+)["\']\))',
@@ -67,51 +277,10 @@ class DependencyMapper:
         return self.components
 
     def _identify_components(self):
-        """Identify components based on {{CLIENT_NAME}} codebase structure"""
-        {{CLIENT_CODE}}_components = {
-            'facial_recognition': {
-                'patterns': ['**/face_*', '**/facial/**', '**/liveness/**', '**/ml/face/**'],
-                'entry_points': ['face_detection.py', 'liveness_detector.py', 'face_verification.py'],
-                'base_risk': 0.9
-            },
-            'document_ocr': {
-                'patterns': ['**/ocr/**', '**/document/**', '**/tesseract/**', '**/image_processing/**'],
-                'entry_points': ['ocr_engine.py', 'document_processor.py', 'field_extractor.py'],
-                'base_risk': 0.8
-            },
-            'voice_verification': {
-                'patterns': ['**/voice/**', '**/audio/**', '**/voice_ml/**', '**/speech/**'],
-                'entry_points': ['voice_enrollment.py', 'voice_verification.py', 'audio_processor.py'],
-                'base_risk': 0.85
-            },
-            'api_gateway': {
-                'patterns': ['**/api/**', '**/gateway/**', '**/middleware/**', '**/routes/**'],
-                'entry_points': ['app.py', 'main.py', 'server.py', 'gateway.py'],
-                'base_risk': 0.7
-            },
-            'authentication': {
-                'patterns': ['**/auth/**', '**/jwt/**', '**/oauth/**', '**/security/**'],
-                'entry_points': ['auth_service.py', 'jwt_handler.py', 'oauth_provider.py'],
-                'base_risk': 0.95
-            },
-            'core_domain-specifics': {
-                'patterns': ['**/core/**', '**/domain-specific/**', '**/template/**', '**/crypto/**'],
-                'entry_points': ['domain-specific_engine.py', 'template_manager.py', 'crypto_utils.py'],
-                'base_risk': 1.0
-            },
-            'database': {
-                'patterns': ['**/db/**', '**/models/**', '**/repository/**', '**/dao/**'],
-                'entry_points': ['database.py', 'models.py', 'repository.py'],
-                'base_risk': 0.75
-            },
-            'configuration': {
-                'patterns': ['**/config/**', '**/settings/**', '**/env/**'],
-                'entry_points': ['config.py', 'settings.py', 'environment.py'],
-                'base_risk': 0.6
-            }
-        }
+        """Identify components based on the configured codebase structure"""
+        domain_components = self.component_config
 
-        for comp_name, comp_config in {{CLIENT_CODE}}_components.items():
+        for comp_name, comp_config in domain_components.items():
             matching_files = self._find_matching_files(comp_config['patterns'])
             if matching_files:
                 self.components[comp_name] = ComponentInfo(
@@ -222,16 +391,7 @@ class DependencyMapper:
     def _map_dependency_to_component(self, dependency: str, source_component: str) -> str:
         """Map a dependency string to a component name"""
         # Direct component name mapping
-        component_keywords = {
-            'facial_recognition': ['face', 'facial', 'liveness', 'domain-specific_face'],
-            'document_ocr': ['ocr', 'document', 'tesseract', 'extraction'],
-            'voice_verification': ['voice', 'audio', 'speech', 'voice_ml'],
-            'api_gateway': ['api', 'gateway', 'route', 'middleware'],
-            'authentication': ['auth', 'jwt', 'oauth', 'security', 'login'],
-            'core_domain-specifics': ['domain-specific', 'template', 'crypto', 'core'],
-            'database': ['db', 'models', 'repository', 'dao', 'table:'],
-            'configuration': ['config', 'settings', 'env', 'environment']
-        }
+        component_keywords = self.component_keywords
 
         dependency_lower = dependency.lower()
 
@@ -277,41 +437,8 @@ class DependencyMapper:
         """Generate test case mapping for each component"""
         test_mapping = {}
 
-        # {{CLIENT_NAME}}-specific test patterns
-        test_patterns = {
-            'facial_recognition': [
-                'TC_FACE_ACCURACY', 'TC_LIVENESS_DETECTION', 'TC_FACE_ENROLLMENT',
-                'TC_FACE_VERIFICATION', 'TC_ANTI_SPOOFING', 'TC_FACE_QUALITY'
-            ],
-            'document_ocr': [
-                'TC_DNI_EXTRACTION', 'TC_PASSPORT_OCR', 'TC_LICENSE_PROCESSING',
-                'TC_DOCUMENT_VALIDATION', 'TC_FIELD_ACCURACY', 'TC_IMAGE_QUALITY'
-            ],
-            'voice_verification': [
-                'TC_VOICE_ENROLLMENT', 'TC_VOICE_VERIFICATION', 'TC_VOICE_QUALITY',
-                'TC_NOISE_HANDLING', 'TC_ACCENT_ROBUSTNESS', 'TC_VOICE_ANTI_SPOOFING'
-            ],
-            'api_gateway': [
-                'TC_API_AUTHENTICATION', 'TC_RATE_LIMITING', 'TC_API_PERFORMANCE',
-                'TC_ERROR_HANDLING', 'TC_REQUEST_VALIDATION', 'TC_RESPONSE_FORMAT'
-            ],
-            'authentication': [
-                'TC_LOGIN_FLOW', 'TC_JWT_VALIDATION', 'TC_OAUTH_INTEGRATION',
-                'TC_SESSION_MANAGEMENT', 'TC_PASSWORD_SECURITY', 'TC_MFA'
-            ],
-            'core_domain-specifics': [
-                'TC_TEMPLATE_GENERATION', 'TC_TEMPLATE_MATCHING', 'TC_ENCRYPTION',
-                'TC_domain-specific_STORAGE', 'TC_TEMPLATE_QUALITY', 'TC_PERFORMANCE'
-            ],
-            'database': [
-                'TC_DATA_INTEGRITY', 'TC_QUERY_PERFORMANCE', 'TC_BACKUP_RESTORE',
-                'TC_CONCURRENT_ACCESS', 'TC_DATA_MIGRATION', 'TC_INDEX_EFFICIENCY'
-            ],
-            'configuration': [
-                'TC_CONFIG_LOADING', 'TC_ENVIRONMENT_SWITCHING', 'TC_DEFAULT_VALUES',
-                'TC_CONFIG_VALIDATION', 'TC_RUNTIME_UPDATES'
-            ]
-        }
+        # Configured test patterns (domain-agnostic by default)
+        test_patterns = self.test_patterns
 
         for component_name in self.components.keys():
             test_mapping[component_name] = test_patterns.get(component_name, [f'TC_{component_name.upper()}_BASIC'])
@@ -365,7 +492,7 @@ class DependencyMapper:
         """Generate human-readable dependency report"""
         impact_scores = self.calculate_impact_scores()
 
-        report = f"""# {{CLIENT_NAME}} Component Dependency Analysis
+        report = f"""# Component Dependency Analysis
 
 Generated: {subprocess.run(["date"], capture_output=True, text=True).stdout.strip()}
 Source Directory: {self.source_dir}
@@ -396,9 +523,20 @@ Source Directory: {self.source_dir}
 
         return report
 
+def _load_config_file(config_path: str) -> dict:
+    """Load an optional override config (component_config / component_keywords /
+    test_patterns) from a JSON file."""
+    with open(config_path, 'r') as f:
+        return json.load(f)
+
 def main():
-    parser = argparse.ArgumentParser(description="{{CLIENT_NAME}} Component Dependency Mapper")
+    parser = argparse.ArgumentParser(description="Component Dependency Mapper")
     parser.add_argument("source_dir", help="Source code directory to analyze")
+    parser.add_argument("--config", default=None,
+                       help="Optional JSON override config (component_config, "
+                            "component_keywords, test_patterns). Defaults are "
+                            "domain-agnostic; see the BIOMETRIC_EXAMPLE_* "
+                            "constants / *.biometric-example.json for an example.")
     parser.add_argument("--output-config", default="regression-config.json",
                        help="Output configuration file")
     parser.add_argument("--output-report", default="dependency-report.md",
@@ -411,7 +549,14 @@ def main():
         print(f"Error: Source directory '{args.source_dir}' does not exist")
         return 1
 
-    mapper = DependencyMapper(args.source_dir)
+    config = None
+    if args.config:
+        if not os.path.exists(args.config):
+            print(f"Error: Config file '{args.config}' does not exist")
+            return 1
+        config = _load_config_file(args.config)
+
+    mapper = DependencyMapper(args.source_dir, config=config)
 
     # Scan codebase and build dependency graph
     components = mapper.scan_codebase()

@@ -25,8 +25,8 @@ Example (Jira tracking + GitHub PRs + Slack chat — illustrative, not canonical
 
 ### Functional Description (Descripción Funcional — USER language, not developer)
 
-- **New flow**: The usuario puede now authenticate using facial recognition for passwordless login on mobile.
-- **Improved validation**: The system can verificar whether a real, live person is present (liveness detection), not a photo.
+- **New flow**: The user can now authenticate using facial recognition for passwordless login on mobile.
+- **Improved validation**: The system can verify whether a real, live person is present (liveness detection), not a photo.
 - **Visual feedback**: Real-time capture guidance with an oval overlay (green/red frames).
 - **Immediate results**: Identity validated in under 3 seconds with an accept/reject decision.
 

@@ -1,0 +1,145 @@
+{
+  "_comment": "OVERRIDABLE EXAMPLE — not the active default. A worked Biometric Identity Verification specialization for DomainTestTemplates. To use, load this JSON and assign its sections onto a DomainTestTemplates subclass/instance (domain_test_phases, domain_environments, REGULATORY_TEST_REQUIREMENTS) and set SPECIALIZED_DOMAIN. The active script defaults remain fully domain-agnostic.",
+  "specialized_domain": "Biometric Identity Verification",
+  "domain_test_phases": {
+    "unit_testing": {
+      "description": "Component-level algorithm and function testing",
+      "test_types": ["Algorithm Unit Tests", "Template Generation Tests", "Encryption Unit Tests"],
+      "coverage_target": 90,
+      "domain_specifics": [
+        "Template format validation",
+        "Encryption key management",
+        "Algorithm accuracy benchmarks"
+      ]
+    },
+    "integration_testing": {
+      "description": "Cross-component and API integration testing",
+      "test_types": [
+        "API Integration Tests",
+        "Service Integration Tests",
+        "Database Integration Tests"
+      ],
+      "coverage_target": 80,
+      "domain_specifics": [
+        "Template storage/retrieval",
+        "Liveness detection pipeline",
+        "Multi-modal integration"
+      ]
+    },
+    "security_testing": {
+      "description": "Security-focused testing for biometric data protection",
+      "test_types": ["Penetration Testing", "Vulnerability Scanning", "Data Protection Testing"],
+      "coverage_target": 100,
+      "domain_specifics": [
+        "Template encryption validation",
+        "Anti-spoofing verification",
+        "GDPR compliance testing"
+      ]
+    },
+    "performance_testing": {
+      "description": "Performance and accuracy testing under various conditions",
+      "test_types": ["Load Testing", "Stress Testing", "Accuracy Testing"],
+      "coverage_target": 95,
+      "domain_specifics": [
+        "Algorithm performance benchmarks",
+        "Template matching speed",
+        "Concurrent user testing"
+      ]
+    },
+    "user_acceptance_testing": {
+      "description": "End-user validation of biometric workflows",
+      "test_types": ["Functional UAT", "Usability Testing", "Accessibility Testing"],
+      "coverage_target": 90,
+      "domain_specifics": [
+        "Enrollment flow validation",
+        "Authentication UX testing",
+        "Edge device testing"
+      ]
+    }
+  },
+  "domain_environments": {
+    "synthetic_data_env": {
+      "purpose": "Development and basic testing with synthetic biometric data",
+      "data_characteristics": "Generated biometric templates and synthetic identity data",
+      "configurations": [
+        "Synthetic template generators",
+        "Mock liveness detection",
+        "Test identity database"
+      ]
+    },
+    "anonymized_data_env": {
+      "purpose": "Integration testing with anonymized production-like data",
+      "data_characteristics": "Production data with anonymized PII and synthetic biometric templates",
+      "configurations": [
+        "Data anonymization pipeline",
+        "Production-like volumes",
+        "Realistic accuracy testing"
+      ]
+    },
+    "security_testing_env": {
+      "purpose": "Isolated security testing and penetration testing",
+      "data_characteristics": "Minimal test data with focus on attack scenarios",
+      "configurations": [
+        "Isolated network",
+        "Security scanning tools",
+        "Attack simulation capabilities"
+      ]
+    },
+    "performance_testing_env": {
+      "purpose": "Load and stress testing with realistic volumes",
+      "data_characteristics": "High-volume synthetic templates for performance testing",
+      "configurations": [
+        "Load generation tools",
+        "Performance monitoring",
+        "Scalable infrastructure"
+      ]
+    }
+  },
+  "REGULATORY_TEST_REQUIREMENTS": {
+    "GDPR": {
+      "test_areas": [
+        "Consent management",
+        "Data portability",
+        "Right to be forgotten",
+        "Data minimization"
+      ],
+      "specific_tests": [
+        "Consent withdrawal verification",
+        "Biometric data export functionality",
+        "Template deletion confirmation",
+        "Purpose limitation validation"
+      ]
+    },
+    "eIDAS": {
+      "test_areas": [
+        "Digital identity interoperability",
+        "Security levels",
+        "Cross-border recognition"
+      ],
+      "specific_tests": [
+        "Level of Assurance (LoA) validation",
+        "Cross-border identity verification",
+        "Digital signature integration",
+        "eID scheme compatibility"
+      ]
+    },
+    "PSD2": {
+      "test_areas": ["Strong Customer Authentication", "Dynamic linking", "Transaction security"],
+      "specific_tests": [
+        "Multi-factor authentication flows",
+        "Transaction binding verification",
+        "Inherence factor validation",
+        "SCA exemption handling"
+      ]
+    },
+    "ISO_30107": {
+      "test_areas": ["Presentation Attack Detection", "Biometric system evaluation"],
+      "specific_tests": [
+        "Photo attack detection",
+        "Video attack detection",
+        "Mask attack detection",
+        "PAD performance metrics"
+      ]
+    }
+  }
+}

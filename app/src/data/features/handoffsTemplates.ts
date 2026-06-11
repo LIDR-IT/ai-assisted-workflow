@@ -279,15 +279,15 @@ export const handoffs: HandoffResponsibility[] = [
     artifacts: [
       '⭐ DoD Checklist (T-DEV-002) — gate duro G4 (incl. bmad-code-review)',
       'Handoff Dev→QA (T-DEV-006) — LIDR, complementario',
-      'Story implementada RUTA A (T-DEV-003) — BMad',
-      'test-report.md RUTA B (T-DEV-005)',
+      'Story implementada (T-DEV-003) — motor BMad',
+      'test-report.md (T-DEV-005) — envoltura LIDR',
       'Code Review (T-DEV-004) — BMad, checklist',
       'Runtime/Visual Review (T-DEV-007)',
       'Contract Impact (T-DEV-008)',
       'Sign-off TL: gate-4-handoff.md',
     ],
     aiAutomation:
-      'RUTA A (BMad): bmad-create-story → bmad-dev-story → bmad-code-review pasan G4 vía DoD checklist. RUTA B (LIDR): /lidr-spec-new → ff → apply → verify genera test-report.md. En ambas: lidr-dev-handoff-qa (⭐G4) + lidr-playwright-cli (review visual)',
+      'Una secuencia (motor BMad → envoltura LIDR): bmad-create-story → bmad-dev-story (código + tests) es el motor; el spec lifecycle LIDR (/lidr-spec-new → ff → apply → verify) lo envuelve en secuencia y produce test-report.md. Gate duro = DoD checklist + bmad-code-review (route-agnostic). También: lidr-dev-handoff-qa (⭐G4) + lidr-playwright-cli (review visual)',
     color: 'bg-orange-50',
     borderColor: 'border-orange-200',
   },
@@ -790,14 +790,14 @@ export const phases: PhaseTemplates[] = [
     ],
     exitCriteria: [
       'DoD cumplida: code review aprobado (bmad-code-review o peer), unit tests pasan, SAST/SCA limpio 0 crit/high',
-      'RUTA B: test-report.md con verdict PASSED (o WARNINGS aceptados explícitamente)',
+      'test-report.md con verdict PASSED (o WARNINGS aceptados) — la envoltura LIDR de la secuencia',
       'Docs actualizadas en el mismo change — DTC (documentation.md)',
       'Runtime/visual review de UI cambiada passed (lidr-playwright-cli): render, flujos clave, console, a11y',
       'Handoff dev→QA recomendado (lidr-dev-handoff-qa) — complementario; el gate duro es la DoD + sign-off TL',
     ],
     gateSpecific: [
       'Sign-off TL en gate-4-handoff.md',
-      'DoD es el gate DURO: vinculante para RUTA A y RUTA B',
+      'DoD es el gate DURO (route-agnostic): vinculante para todo cambio',
     ],
     templates: [
       {
@@ -813,7 +813,7 @@ export const phases: PhaseTemplates[] = [
       {
         code: 'T-DEV-002',
         name: 'Definition of Done (DoD) Checklist',
-        desc: 'Gate DURO del G4, vinculante para ambas rutas: code review aprobado, tests pasan, SAST/SCA limpio (.claude/skills/lidr-pr-description/checklists/dod.md). Guardias automáticas: hooks lidr-frontmatter-guard + protect-secrets. Evaluación formal: /lidr-advance-gate 4.',
+        desc: 'Gate DURO del G4, route-agnostic (vinculante para todo cambio): code review aprobado, tests pasan, SAST/SCA limpio (.claude/skills/lidr-pr-description/checklists/dod.md). Guardias automáticas: hooks lidr-frontmatter-guard + protect-secrets. Evaluación formal: /lidr-advance-gate 4.',
         format: 'Checklist',
         owner: 'Dev + TL',
         mandatory: true,
@@ -822,8 +822,8 @@ export const phases: PhaseTemplates[] = [
       },
       {
         code: 'T-DEV-003',
-        name: 'Story Implementada — RUTA A (BMad)',
-        desc: 'Ciclo BMad puro: bmad-create-story (story contextualizada) → bmad-dev-story (código + tests). Pasa el G4 vía DoD checklist + bmad-code-review, sin test-report. Evidencia opcional (implementation-artifacts).',
+        name: 'Story Implementada (motor BMad)',
+        desc: 'El motor de la secuencia: bmad-create-story (story contextualizada) → bmad-dev-story (código + loop unit/regresión + tests). Es lo que /lidr-spec-apply envuelve en secuencia (añade Step 0 branch + curl + Playwright + DTC docs + reports). Pasa el G4 vía DoD checklist + bmad-code-review. Evidencia opcional (implementation-artifacts).',
         format: '_bmad-output/implementation-artifacts/',
         owner: 'Dev',
         mandatory: false,
@@ -832,8 +832,8 @@ export const phases: PhaseTemplates[] = [
       },
       {
         code: 'T-DEV-005',
-        name: 'test-report.md — RUTA B (/lidr-spec-verify)',
-        desc: 'Producido solo por el spec lifecycle LIDR: /lidr-spec-new → ff → apply → verify. Verdict PASSED/WARNINGS/CRITICAL en changes/*/test-report.md. Evidencia opcional del G4 (required:false para no acoplar el gate a RUTA B).',
+        name: 'test-report.md (envoltura LIDR · /lidr-spec-verify)',
+        desc: 'Producido por la envoltura de gobernanza LIDR (/lidr-spec-new → ff → apply → verify) sobre el motor BMad. Verdict PASSED/WARNINGS/CRITICAL en changes/*/test-report.md. Evidencia opcional del G4 (required:false: el gate duro es la DoD, route-agnostic, no se acopla a un solo artefacto).',
         format: 'docs/projects/{client}/changes/',
         owner: 'Dev',
         mandatory: false,

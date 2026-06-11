@@ -9,8 +9,19 @@ AUTOMATED ROLLBACK ANALYSIS ENGINE
 - Generates deployment impact assessment with timing estimates
 - Follows proven automation pattern: 4+ hours manual → 5 minutes automated
 
-Part of {{CLIENT_NAME}} SDLC Ecosystem - Phase 2 Automation (45h/year ROI)
+Part of the LIDR SDLC Ecosystem - Phase 2 Automation (45h/year ROI)
 Following proven patterns from validate-requirements and tech-debt skills
+
+Domain configuration is DOMAIN-AGNOSTIC by default. LIDR is a multi-industry
+framework, so the built-in domain risk-pattern set is a generic deployment
+baseline (data store, public API, security, dependency and config risks). To
+target a specific industry, point LIDR_DOMAIN_PATTERNS at an override JSON
+(or pass --domain-patterns).
+
+An overridable EXAMPLE industry pack (biometric identity) is preserved below as
+the BIOMETRIC_EXAMPLE_DOMAIN_RISK_PATTERNS constant and as a sibling file
+`deployment-analyzer.biometric-example.json` (same schema as any override). It is
+an example only — NOT the active default.
 """
 
 import os
@@ -94,20 +105,61 @@ class DeploymentAnalyzer:
     - Configuration updates
     """
 
-    # Overridable default domain pattern pack (EXAMPLE industry pack).
-    # The matching MECHANISM is industry-agnostic; only this concrete pattern
-    # SET is domain-flavored. Override it per project by passing a JSON config
-    # path to `domain_patterns_config` (or via the --domain-patterns CLI flag),
-    # or by setting the LIDR_DOMAIN_PATTERNS env var to a JSON file path.
+    # Default domain risk-pattern pack — DOMAIN-AGNOSTIC generic deployment
+    # baseline. These categories and regexes target deployment risks common to
+    # ANY application (core service changes, public API contract changes, data
+    # store / persistence changes, security posture, regulatory/compliance).
+    # The matching MECHANISM is industry-agnostic; only the concrete pattern SET
+    # is configurable. Override it per project by passing a JSON config path to
+    # `domain_patterns_config` (or via the --domain-patterns CLI flag), or by
+    # setting the LIDR_DOMAIN_PATTERNS env var to a JSON file path.
     # The JSON must mirror this structure:
     #   { "<risk_type>": { "patterns": [<regex>...],
     #                       "risk_level": "LOW|MEDIUM|HIGH|CRITICAL",
     #                       "rollback_impact": "<text>" }, ... }
-    # When no override is provided, this default set is used so behavior is
-    # identical to the original implementation.
+    # When no override is provided, this neutral default set is used.
     DEFAULT_DOMAIN_RISK_PATTERNS = {
+        'core_logic_changes': {
+            'patterns': [r'core.*logic', r'business.*rule', r'processing.*engine'],
+            'risk_level': 'HIGH',
+            'rollback_impact': 'Core logic rollback requires functional revalidation'
+        },
+        'public_api_changes': {
+            'patterns': [r'public.*api', r'endpoint.*contract', r'breaking.*api'],
+            'risk_level': 'MEDIUM',
+            'rollback_impact': 'API changes may affect client integrations'
+        },
+        'data_store_changes': {
+            'patterns': [r'data.*store', r'schema.*migration', r'encryption.*key'],
+            'risk_level': 'CRITICAL',
+            'rollback_impact': 'Data store changes risk data corruption'
+        },
+        'security_posture_changes': {
+            'patterns': [r'access.*control', r'authentication.*change', r'authorization.*change'],
+            'risk_level': 'HIGH',
+            'rollback_impact': 'Security changes affect security posture'
+        },
+        'compliance_changes': {
+            'patterns': [r'gdpr.*compliance', r'consent.*management', r'audit.*trail'],
+            'risk_level': 'HIGH',
+            'rollback_impact': 'Compliance changes may affect regulatory approval'
+        }
+    }
+
+    # ---------------------------------------------------------------------- #
+    # OVERRIDABLE EXAMPLE — biometric-identity industry pack.
+    #
+    # This is an EXAMPLE of an industry override, NOT the active default. It
+    # mirrors the schema accepted by `_load_domain_patterns` /
+    # LIDR_DOMAIN_PATTERNS. The same content is also shipped as the sibling JSON
+    # file `deployment-analyzer.biometric-example.json` so it can be passed via:
+    #
+    #   --domain-patterns .../deployment-analyzer.biometric-example.json
+    #   (or)  LIDR_DOMAIN_PATTERNS=.../deployment-analyzer.biometric-example.json
+    # ---------------------------------------------------------------------- #
+    BIOMETRIC_EXAMPLE_DOMAIN_RISK_PATTERNS = {
         'algorithm_changes': {
-            'patterns': [r'{{PRODUCT_NAME_1}}.*algorithm', r'face.*recognition', r'template.*generation'],
+            'patterns': [r'biometric.*algorithm', r'face.*recognition', r'template.*generation'],
             'risk_level': 'HIGH',
             'rollback_impact': 'Algorithm rollback requires template revalidation'
         },
@@ -117,7 +169,7 @@ class DeploymentAnalyzer:
             'rollback_impact': 'API changes may affect client integrations'
         },
         'template_storage': {
-            'patterns': [r'template.*storage', r'domain-specific.*database', r'encryption.*key'],
+            'patterns': [r'template.*storage', r'biometric.*database', r'encryption.*key'],
             'risk_level': 'CRITICAL',
             'rollback_impact': 'Template storage changes risk data corruption'
         },
@@ -774,46 +826,45 @@ class DeploymentAnalyzer:
 
     def _assess_domain_specific_risks(self, prs: List[PRAnalysis], migrations: List[MigrationAnalysis],
                               infra_changes: List[InfrastructureChange]) -> Dict:
-        """Assess domain-specific deployment risks"""
+        """Assess domain-specific deployment risks.
+
+        Industry-agnostic: the result keys are derived from the active domain
+        pattern pack (``self.domain_specific_risk_patterns``) rather than a fixed
+        biometric-flavored set. Each risk type in the loaded pack becomes a
+        ``<risk_type>_risk`` boolean, set True when any of its patterns match a PR
+        title or a migration filename. With the neutral default pack this yields
+        generic keys (e.g. ``core_logic_changes_risk``); with an override pack it
+        yields that pack's keys — no code change required.
+        """
         domain_specific_risks = {
-            'gdpr_compliance_risk': False,
-            'algorithm_change_risk': False,
-            'template_storage_risk': False,
-            'performance_degradation_risk': False,
-            'api_compatibility_risk': False
+            f"{risk_type}_risk": False
+            for risk_type in self.domain_specific_risk_patterns
         }
 
-        # Check PR titles and file changes for domain-specific patterns
+        # Check PR titles against each risk type's patterns.
         for pr in prs:
-            for risk_type, patterns in self.domain_specific_risk_patterns.items():
-                for pattern in patterns['patterns']:
-                    if re.search(pattern, pr.title, re.IGNORECASE):
-                        if 'gdpr' in risk_type or 'compliance' in risk_type:
-                            domain_specific_risks['gdpr_compliance_risk'] = True
-                        elif 'algorithm' in risk_type:
-                            domain_specific_risks['algorithm_change_risk'] = True
-                        elif 'template' in risk_type:
-                            domain_specific_risks['template_storage_risk'] = True
-                        elif 'api' in risk_type:
-                            domain_specific_risks['api_compatibility_risk'] = True
-
-        # Check migrations for template storage changes.
-        # Keywords are derived from the configured domain pattern pack (any
-        # risk type whose name contains 'template'/'storage') so they stay
-        # industry-agnostic. Neutral defaults are always included as a fallback.
-        storage_keywords = {'template', 'domain-specific'}
-        for risk_type, risk_info in self.domain_specific_risk_patterns.items():
-            if 'template' in risk_type or 'storage' in risk_type:
+            for risk_type, risk_info in self.domain_specific_risk_patterns.items():
                 for pattern in risk_info.get('patterns', []):
-                    # Use the leading alphanumeric token of each regex as a
-                    # filename keyword indicator (e.g. r'template.*storage' -> 'template').
-                    token_match = re.match(r'[a-z0-9_-]+', pattern, re.IGNORECASE)
-                    if token_match:
-                        storage_keywords.add(token_match.group(0).lower())
+                    if re.search(pattern, pr.title, re.IGNORECASE):
+                        domain_specific_risks[f"{risk_type}_risk"] = True
+                        break
 
-        for migration in migrations:
-            if any(keyword in migration.file.lower() for keyword in storage_keywords):
-                domain_specific_risks['template_storage_risk'] = True
+        # Check migration filenames against each risk type's pattern tokens.
+        # The leading alphanumeric token of each regex acts as a filename keyword
+        # indicator (e.g. r'data.*store' -> 'data'), so this stays agnostic to
+        # whichever pattern pack is active.
+        for risk_type, risk_info in self.domain_specific_risk_patterns.items():
+            keywords = set()
+            for pattern in risk_info.get('patterns', []):
+                token_match = re.match(r'[a-z0-9_-]+', pattern, re.IGNORECASE)
+                if token_match:
+                    keywords.add(token_match.group(0).lower())
+            if not keywords:
+                continue
+            for migration in migrations:
+                if any(keyword in migration.file.lower() for keyword in keywords):
+                    domain_specific_risks[f"{risk_type}_risk"] = True
+                    break
 
         return domain_specific_risks
 

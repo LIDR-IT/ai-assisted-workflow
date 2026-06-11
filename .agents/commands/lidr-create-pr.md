@@ -3,11 +3,11 @@ description: Create a PR with auto-generated description, SDLC tracking and auto
 argument-hint: [ticket-id]
 allowed-tools: Read, Write, Bash(git:*), Bash(npm:*), Skill(lidr-sdlc-tracking), Skill(lidr-external-sync), Skill(lidr-dev-handoff-qa), AskUserQuestion
 model: sonnet
-version: "2.0.1"
+version: "2.0.2"
 phase: 4
 stage: development
-last_updated: "2026-06-10"
-updated_by: "TL: Stale-ref migration"
+last_updated: "2026-06-11"
+updated_by: "TL: Tool-routing + domain-pack migration"
 ---
 
 <!--
@@ -24,7 +24,7 @@ Implementation (development stage) of the unified phase model.
 FEATURES:
 - SDLC tracking integration (PR links to story and epic)
 - Automated handoff generation with context
-- External tool synchronization (Jira, Linear, Notion)
+- External tool synchronization ({{TRACKING_TOOL}}, resolved per client via the registry)
 - Enhanced DoD validation with security checklist
 - Smart reviewer assignment based on project context
 - Automated test execution and reporting
@@ -37,7 +37,7 @@ USAGE:
   /lidr-create-pr PROJ-123 --project=PROJ-2026-001
 
 ARGUMENTS:
-  ticket-id: Jira/Linear ticket ID (required)
+  ticket-id: {{TRACKING_TOOL}} ticket ID (required)
   --project: Override project detection (optional)
   --handoff: auto|manual|skip handoff generation (default: auto)
   --draft: Create as draft PR (default: false)
@@ -51,6 +51,10 @@ RELATED COMMANDS:
   /lidr-advance-gate 4 - Sprint aggregator after all PRs merged
 
 CHANGELOG:
+  v2.0.2 (2026-06-11): Tool-routing — concrete tracker/docs/chat names
+                        (Jira/Linear/Notion/Slack) replaced by {{TRACKING_TOOL}}/
+                        {{CHAT_TOOL}} and routed through lidr-external-sync;
+                        GDPR/privacy framing in the PR template genericized.
   v2.0.1 (2026-06-10): Repointed Skill() refs + skill loads to lidr-* prefixes;
                         reframed Phase 5 → unified Phase 4 Implementation/development;
                         /help → /lidr-help.
@@ -263,10 +267,9 @@ Using story context, requirements traceability, and change analysis:
 - **Story**: [{story.id}]({link-to-story-file})
 - **Epic**: [{epic.id}]({link-to-epic-file})
 - **Requirements**: {linked-RF-IDs}
-- **External Tools**:
-  - Jira: [$1]({jira-link})
-  - Linear: [{linear.id}]({linear-link}) _(if applicable)_
-  - Notion: [{notion.id}]({notion-link}) _(if applicable)_
+- **External Tools** (resolved per client via the registry):
+  - {{TRACKING_TOOL}}: [$1]({tracking-link})
+  - {secondary tracker}: [{secondary.id}]({secondary-link}) _(if applicable)_
 
 ### 🔧 Technical Implementation
 
@@ -323,7 +326,7 @@ Using story context, requirements traceability, and change analysis:
 - [ ] Input validation implemented
 - [ ] Sensitive data handling compliant
 - [ ] OWASP Top 10 considerations addressed
-- [ ] GDPR/privacy requirements met
+- [ ] Privacy requirements met (per the client's applicable regulations)
 
 #### Security Impact Assessment
 
@@ -475,29 +478,18 @@ const generateLabels = (changes: ChangeAnalysis, story: Story) => {
 ### External Tool Synchronization
 
 If --sync=true (default):
-Use Skill: lidr-external-sync with comprehensive PR context:
+Use Skill: lidr-external-sync with comprehensive PR context. It resolves the bound
+{{TRACKING_TOOL}} (and any secondary trackers) from the registry and applies the
+equivalent of the operations below to each:
 
-#### Jira Integration
+#### Tracking Tool Integration ({{TRACKING_TOOL}})
 
 - Transition ticket to "In Review"
-- Add PR link to ticket comments
-- Update development completion timestamp
-- Link to handoff documentation
+- Add PR link to ticket comments / properties
+- Update development completion timestamp / progress
+- Link to handoff documentation and SDLC tracking
 - Add test execution summary
-
-#### Linear Integration
-
-- Update issue state to "In Review"
-- Add PR reference to issue
-- Update completion percentage
-- Cross-reference to SDLC tracking
-
-#### Notion Integration
-
-- Update page status to "In Review"
-- Add PR URL to page properties
-- Update progress tracking
-- Link to implementation documentation
+- Cross-reference any secondary trackers bound for the client
 
 ## Automated Handoff Generation
 
@@ -534,7 +526,7 @@ Generated handoff includes:
 
 - Save to: `docs/projects/{project-id}/implementation/handoffs/dev-to-qa/`
 - Link in PR description
-- Attach to Jira ticket
+- Attach to the {{TRACKING_TOOL}} ticket
 - Notify QA team automatically
 - Update story status tracking
 
@@ -574,11 +566,11 @@ const getNotificationRecipients = (project: Project, story: Story, pr: PR) => {
 };
 ```
 
-#### Multi-Channel Notifications
+#### Multi-Channel Notifications (via lidr-external-sync)
 
-- **Slack**: Project channel + reviewer DMs
+- **{{CHAT_TOOL}}**: Project channel + reviewer DMs
 - **Email**: Stakeholder summary (if configured)
-- **Jira**: Ticket comments with PR link
+- **{{TRACKING_TOOL}}**: Ticket comments with PR link
 - **Dashboard**: Project health dashboard update
 
 ## Comprehensive Success Reporting
@@ -624,10 +616,9 @@ const getNotificationRecipients = (project: Project, story: Story, pr: PR) => {
    Tests Link:  {test.coverage.by.requirement}
 
 🔄 External Sync:
-   Jira:        $1 → "In Review" ✅
-   Linear:      {linear.id} → "In Review" ✅ (if applicable)
-   Notion:      {notion.id} → Updated ✅ (if applicable)
-   SDLC Track:  {story.file} → Updated ✅
+   {{TRACKING_TOOL}}:  $1 → "In Review" ✅
+   (secondary trackers, if bound):  Updated ✅
+   SDLC Track:         {story.file} → Updated ✅
 
 📦 Handoff Generated:
    Document:    {handoff.file.path}

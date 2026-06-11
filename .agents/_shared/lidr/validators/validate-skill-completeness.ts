@@ -26,23 +26,37 @@ const DEFAULT_OPTIONS: SkillCompletenessOptions = {
   strictMode: false,
 };
 
-const REQUIRED_SECTIONS = [
-  "contexto del skill",
-  "input requerido",
-  "proceso paso a paso",
-  "validaciones automáticas",
-  "handoff al siguiente skill",
-  "criterios de completitud",
-  "ejemplo de ejecución",
-  "documentos de referencia",
+// Required skill sections, language-neutral. Each entry lists the accepted
+// heading literals across supported languages (English is the default authoring
+// language per `_shared/lidr/integrations/tool-registry.yaml`; client-language
+// equivalents are accepted so a skill authored under any configured `language`
+// still validates). The check matches if ANY alternative is present — never a
+// single hardcoded-language assertion.
+const REQUIRED_SECTIONS: ReadonlyArray<readonly string[]> = [
+  ["skill context", "contexto del skill"],
+  ["required input", "input requerido"],
+  ["step-by-step process", "proceso paso a paso"],
+  ["automated validations", "validaciones automáticas"],
+  ["handoff to next skill", "handoff al siguiente skill"],
+  ["completion criteria", "criterios de completitud"],
+  ["execution example", "ejemplo de ejecución"],
+  ["reference documents", "documentos de referencia"],
 ];
 
-const OPTIONAL_SECTIONS = [
-  "automatización disponible",
-  "personalización por dominio",
-  "métricas de calidad",
-  "troubleshooting",
+const OPTIONAL_SECTIONS: ReadonlyArray<readonly string[]> = [
+  ["available automation", "automatización disponible"],
+  ["domain customization", "personalización por dominio"],
+  ["quality metrics", "métricas de calidad"],
+  ["troubleshooting"],
 ];
+
+/** Build an `i`-flagged regex that matches an `##` heading for any of the
+ *  language alternatives of a section (structure check, not a single-language
+ *  literal). */
+function sectionHeadingRegex(alternatives: readonly string[]): RegExp {
+  const escaped = alternatives.map((alt) => alt.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  return new RegExp(`##\\s*(?:${escaped.join("|")})`, "i");
+}
 
 /**
  * Validates skill completeness according to ecosystem standards
@@ -166,28 +180,28 @@ function validateFrontmatter(
 }
 
 function validateRequiredSections(content: string, issues: ValidationIssue[]): void {
-  const lowercaseContent = content.toLowerCase();
-
   for (const section of REQUIRED_SECTIONS) {
-    const sectionRegex = new RegExp(`##\\s*${section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i");
+    const sectionRegex = sectionHeadingRegex(section);
+    const primaryLabel = section[0];
 
     if (!sectionRegex.test(content)) {
       issues.push({
         severity: ValidationSeverity.ERROR,
-        message: `Missing required section: "${section}"`,
+        message: `Missing required section: "${primaryLabel}"`,
         context: "All skills must have complete structure",
-        suggestion: `Add "## ${section}" section with appropriate content`,
+        suggestion: `Add "## ${primaryLabel}" section with appropriate content`,
         ruleId: "SKILL-005",
       });
     } else {
       // Check if section has content
+      const escaped = section.map((alt) => alt.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
       const sectionMatch = content.match(
-        new RegExp(`##\\s*${section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[\\s\\S]*?(?=##|$)`, "i")
+        new RegExp(`##\\s*(?:${escaped.join("|")})[\\s\\S]*?(?=##|$)`, "i")
       );
       if (sectionMatch && sectionMatch[0].replace(/##.*/, "").trim().length < 50) {
         issues.push({
           severity: ValidationSeverity.WARNING,
-          message: `Section "${section}" appears to be incomplete`,
+          message: `Section "${primaryLabel}" appears to be incomplete`,
           context: "Sections should have substantial content",
           suggestion: "Add detailed content to this section",
           ruleId: "SKILL-006",
@@ -335,7 +349,12 @@ function validateAutomationIndicators(
   context: SkillValidationContext,
   issues: ValidationIssue[]
 ): void {
-  const hasAutomationSection = /##\s*automatización\s+disponible/i.test(content);
+  // Language-neutral heading check: English "Available Automation" default +
+  // client-language equivalents.
+  const hasAutomationSection =
+    /##\s*(?:available\s+automation|automatización\s+disponible|automação\s+disponível|automatisation\s+disponible|verfügbare\s+automatisierung)/i.test(
+      content
+    );
   const hasRobotEmoji = content.includes("🤖");
   const hasScripts = fs.existsSync(path.join(path.dirname(context.files.skillMd), "scripts"));
 
@@ -344,7 +363,7 @@ function validateAutomationIndicators(
       severity: ValidationSeverity.WARNING,
       message: "Robot emoji found but missing automation section",
       context: "Skills marked as automated should document automation capabilities",
-      suggestion: 'Add "## Automatización Disponible" section',
+      suggestion: 'Add "## Available Automation" section',
       ruleId: "SKILL-014",
     });
   }
@@ -366,10 +385,9 @@ function calculateCompletenessScore(
   issues: ValidationIssue[]
 ): number {
   // Base score from required sections (2.5 points max)
-  const requiredSectionCount = REQUIRED_SECTIONS.filter((section) => {
-    const regex = new RegExp(`##\\s*${section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i");
-    return regex.test(content);
-  }).length;
+  const requiredSectionCount = REQUIRED_SECTIONS.filter((section) =>
+    sectionHeadingRegex(section).test(content)
+  ).length;
   const sectionScore = (requiredSectionCount / REQUIRED_SECTIONS.length) * 2.5;
 
   // Content quality score (1.5 points max)
