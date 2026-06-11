@@ -31,4 +31,14 @@ if [ -f "$COUNTS_HOOK" ]; then
   fi
 fi
 
-echo "✅ Pre-push checks passed (branch: $BRANCH, ecosystem counts OK)"
+# 3. Page-registry linkage: every canonical skill/command must have a /help entry.
+#    Catches "added a skill, forgot the page" before push (deep check still in CI).
+if [ -f "app/scripts/sync-registries.ts" ]; then
+  if ! (cd app && npx tsx scripts/sync-registries.ts --check >/dev/null 2>&1); then
+    echo "❌ Page registries drifted: a canonical skill/command is missing from /help."
+    echo "   Run: cd app && npm run data:sync   (additive, preserves curated entries)."
+    exit 1
+  fi
+fi
+
+echo "✅ Pre-push checks passed (branch: $BRANCH, ecosystem counts + /help linkage OK)"

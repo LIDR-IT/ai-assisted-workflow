@@ -22,6 +22,8 @@
     "pre-commit": "npm run validate:coherence && npm run validate:templates && npm run lint",
     "data:validate": "npm run validate:coherence",
     "data:stats": "tsx scripts/generate-stats-report.ts",
+    "data:sync": "tsx scripts/sync-registries.ts",
+    "data:sync:check": "tsx scripts/sync-registries.ts --check",
     "skills:validate": "npm run validate:templates",
     "skills:health": "tsx scripts/skill-health-report.ts",
     "skills:examples": "tsx scripts/validate-skill-examples.ts",
