@@ -1,6 +1,6 @@
-# Stakeholder Map Example: domain-specific Banking Authentication Platform
+# Stakeholder Map Example: Biometric Banking Authentication Platform
 
-**Project**: Next-generation domain-specific authentication for digital banking onboarding
+**Project**: Next-generation biometric authentication for digital banking onboarding
 **Context**: PSD2 compliance + GDPR Article 9 + Anti-money laundering integration
 
 ---
@@ -15,7 +15,7 @@
 ### Key Objectives
 
 1. **PSD2 SCA Compliance**: Strong Customer Authentication implementation
-2. **GDPR Article 9**: domain-specific data processing compliance framework
+2. **GDPR Article 9**: biometric data processing compliance framework
 3. **AML Integration**: Real-time watchlist screening and risk scoring
 4. **Market Expansion**: Enable tier-1 banking clients across EU
 
@@ -82,10 +82,10 @@ Low Power, Low Interest [MONITOR] 🔵
 - **Interest**: High (Article 9 special category data)
 - **Influence**: GDPR compliance certification required
 - **Concerns**:
-  - Explicit consent mechanisms for domain-specific processing
+  - Explicit consent mechanisms for biometric processing
   - Data minimization and purpose limitation
   - Cross-border data transfer safeguards
-  - domain-specific template irreversibility
+  - biometric template irreversibility
 - **Engagement Strategy**:
   - DPIA consultations with lead supervisory authority
   - Monthly compliance status reports
@@ -118,7 +118,7 @@ Low Power, Low Interest [MONITOR] 🔵
 - **Interest**: Very High (Legal and security liability)
 - **Influence**: Security architecture and legal framework approval
 - **Concerns**:
-  - domain-specific template encryption standards
+  - biometric template encryption standards
   - Incident response procedures
   - Vendor risk management for cloud services
   - International data transfer mechanisms
@@ -181,7 +181,7 @@ Low Power, Low Interest [MONITOR] 🔵
 - **Interest**: High (Fraud detection effectiveness)
 - **Influence**: Algorithm tuning and false positive optimization
 - **Concerns**:
-  - domain-specific spoofing detection accuracy
+  - biometric spoofing detection accuracy
   - Integration with existing fraud scoring
   - Real-time performance under load
 - **Engagement Strategy**:
@@ -193,13 +193,13 @@ Low Power, Low Interest [MONITOR] 🔵
 
 #### 9. General Banking Customers
 
-**Role**: End users of domain-specific authentication
+**Role**: End users of biometric authentication
 
 - **Power**: Low (Individual influence)
 - **Interest**: Low (Indirect interaction)
 - **Influence**: Long-term adoption and satisfaction
 - **Concerns**:
-  - Privacy of domain-specific data
+  - Privacy of biometric data
   - Ease of use and accessibility
   - Alternative authentication methods
 - **Engagement Strategy**:
@@ -229,15 +229,15 @@ Low Power, Low Interest [MONITOR] 🔵
 
 #### For Regulators (PSD2 Focus)
 
-> "{{CLIENT_NAME}} {{PRODUCT_NAME_1}}D exceeds PSD2 Strong Customer Authentication requirements with multi-factor domain-specific verification, ensuring customer protection while enabling digital innovation in banking services."
+> "{{CLIENT_NAME}} {{PRODUCT_NAME_1}}D exceeds PSD2 Strong Customer Authentication requirements with multi-factor biometric verification, ensuring customer protection while enabling digital innovation in banking services."
 
 #### For DPAs (GDPR Focus)
 
-> "Our Privacy by Design approach implements explicit consent, data minimization, and domain-specific template irreversibility, ensuring full GDPR Article 9 compliance for special category personal data."
+> "Our Privacy by Design approach implements explicit consent, data minimization, and biometric template irreversibility, ensuring full GDPR Article 9 compliance for special category personal data."
 
 #### For Banking Clients (Business Focus)
 
-> "Reduce fraud by 94% while improving customer onboarding conversion by 23% through seamless domain-specific authentication that meets all regulatory requirements."
+> "Reduce fraud by 94% while improving customer onboarding conversion by 23% through seamless biometric authentication that meets all regulatory requirements."
 
 #### For Technical Teams (Integration Focus)
 
@@ -266,7 +266,7 @@ Low Power, Low Interest [MONITOR] 🔵
 
 #### Security Incidents
 
-- **Trigger**: Any security incident affecting domain-specific data
+- **Trigger**: Any security incident affecting biometric data
 - **Action**: Stakeholder notification per incident response plan
 - **Timeline**: 72-hour breach notification requirement
 

@@ -1,5 +1,5 @@
 ---
-validationTarget: "voice-domain-specific-v3-refinement-session.md"
+validationTarget: "voice-biometric-v3-refinement-session.md"
 validationDate: "2026-03-15T15:52:55.568297"
 inputDocuments: []
 validationStepsCompleted:
@@ -27,7 +27,7 @@ previousValidation: ""
 
 # Validation Report
 
-**Document:** voice-domain-specific-v3-refinement-session.md
+**Document:** voice-biometric-v3-refinement-session.md
 **Date:** 2026-03-15
 **Quality Rating:** 4/5 - Good
 **Overall Status:** Pass

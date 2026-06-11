@@ -22,7 +22,7 @@
 
 ### Critical Code Smells (12 issues)
 
-1. **Cognitive Complexity** - `domain-specificVerificationService.ts:validateIdentity()`
+1. **Cognitive Complexity** - `BiometricVerificationService.ts:validateIdentity()`
    - **Complexity**: 47 (threshold: 15)
    - **Impact**: High maintenance cost, error-prone
    - **Effort**: 8 hours to refactor
@@ -39,7 +39,7 @@
 
 ### Critical Bugs (3 issues)
 
-1. **Null Pointer Risk** - `domain-specificTemplateManager.ts:compareTemplates()`
+1. **Null Pointer Risk** - `BiometricTemplateManager.ts:compareTemplates()`
    - **Issue**: Potential null access on `template.features`
    - **Impact**: Runtime crashes during verification
    - **Effort**: 2 hours to fix + test
@@ -56,8 +56,8 @@
    - **Impact**: Database compromise risk
    - **Effort**: 3 hours to parameterize + test
 
-2. **Sensitive Data Exposure** - `domain-specificLogger.ts:logVerificationAttempt()`
-   - **Issue**: domain-specific templates logged in plaintext
+2. **Sensitive Data Exposure** - `BiometricLogger.ts:logVerificationAttempt()`
+   - **Issue**: biometric templates logged in plaintext
    - **Impact**: GDPR Article 9 violation risk
    - **Effort**: 2 hours to sanitize + test
 

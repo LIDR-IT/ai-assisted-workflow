@@ -500,16 +500,16 @@ public class ImageProcessingService {
 #### 3. HTTP Connection Pool Leak
 
 ```java
-// LEAK SOURCE #3: domain-specificServiceClient.java
+// LEAK SOURCE #3: BiometricServiceClient.java
 @Component
-public class domain-specificServiceClient {
+public class BiometricServiceClient {
     private static final HttpClient httpClient = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(30))
         // BUG: No connection pool size limits
         // BUG: No connection timeout or cleanup
         .build();
 
-    public VerificationResult calldomain-specificService(VerificationRequest req) {
+    public VerificationResult callBiometricService(VerificationRequest req) {
         // Each call potentially creates new connection
         HttpRequest request = HttpRequest.newBuilder()
             .uri(serviceUri)

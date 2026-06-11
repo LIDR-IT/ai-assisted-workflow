@@ -1,16 +1,16 @@
 # Stakeholder Map Example: GDPR Article 9 Compliance Initiative
 
-**Project**: Organization-wide GDPR Article 9 compliance for domain-specific data processing
+**Project**: Organization-wide GDPR Article 9 compliance for biometric data processing
 **Context**: Regulatory compliance, data protection, and risk mitigation across all {{CLIENT_NAME}} products
 
 ---
 
 ## Project Overview
 
-**Initiative**: GDPR Article 9 domain-specific Compliance Program
+**Initiative**: GDPR Article 9 biometric Compliance Program
 **Timeline**: Q1-Q3 2025
 **Budget**: €1.2M
-**Scope**: Full GDPR compliance for domain-specific data processing across {{PRODUCT_NAME_1}}D, {{PRODUCT_NAME_1}}, and Platform
+**Scope**: Full GDPR compliance for biometric data processing across {{PRODUCT_NAME_1}}D, {{PRODUCT_NAME_1}}, and Platform
 
 ### Key Objectives
 
@@ -66,8 +66,8 @@ Low Power, Low Interest [MONITOR] 🔵
 - **Interest**: Very High (Article 9 enforcement priority)
 - **Influence**: Compliance certification and ongoing supervision
 - **Concerns**:
-  - Explicit consent implementation for domain-specific processing
-  - domain-specific template encryption and irreversibility
+  - Explicit consent implementation for biometric processing
+  - biometric template encryption and irreversibility
   - Cross-border data transfer compliance (Article 44-49)
   - Data Protection Impact Assessment (DPIA) adequacy
   - Processor-Controller relationships and contracts
@@ -86,7 +86,7 @@ Low Power, Low Interest [MONITOR] 🔵
 - **Interest**: Very High (Professional and corporate responsibility)
 - **Influence**: Compliance strategy and implementation approval
 - **Concerns**:
-  - Legal defensibility of domain-specific processing
+  - Legal defensibility of biometric processing
   - Liability exposure and insurance implications
   - Contractual obligations to clients and partners
   - Cross-jurisdictional compliance complexity
@@ -121,11 +121,11 @@ Low Power, Low Interest [MONITOR] 🔵
 **Role**: GDPR interpretation and consistency across EU
 
 - **Power**: High (Guidance and best practices authority)
-- **Interest**: High (domain-specific processing precedent setting)
+- **Interest**: High (biometric processing precedent setting)
 - **Influence**: Industry-wide compliance standards
 - **Concerns**:
   - Consistent interpretation of Article 9 across member states
-  - domain-specific processing best practices
+  - biometric processing best practices
   - Technology vendor compliance patterns
 - **Engagement Strategy**:
   - Consultation response submissions
@@ -155,7 +155,7 @@ Low Power, Low Interest [MONITOR] 🔵
 
 #### 6. External Privacy Law Firms
 
-**Partners**: Specialized GDPR and domain-specific privacy counsel
+**Partners**: Specialized GDPR and biometric privacy counsel
 
 - **Power**: High (Legal expertise and representation)
 - **Interest**: Medium (Professional service delivery)
@@ -206,13 +206,13 @@ Low Power, Low Interest [MONITOR] 🔵
 
 #### 9. End Users (Banking Customers)
 
-**Role**: Ultimate beneficiaries of domain-specific authentication
+**Role**: Ultimate beneficiaries of biometric authentication
 
 - **Power**: Low (Collective influence only)
 - **Interest**: Low (Indirect privacy concerns)
 - **Influence**: Long-term adoption and satisfaction
 - **Concerns**:
-  - domain-specific data privacy and security
+  - biometric data privacy and security
   - Consent clarity and control
   - Alternative authentication options
 - **Engagement Strategy**:

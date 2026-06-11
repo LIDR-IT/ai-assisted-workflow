@@ -13,7 +13,7 @@
 **Current Issues:**
 
 - **Latency**: 3-5 seconds in regions with poor connectivity
-- **Data Privacy**: Customer concerns about domain-specific data leaving device
+- **Data Privacy**: Customer concerns about biometric data leaving device
 - **Bandwidth**: High data usage in mobile-first markets
 - **Compliance**: New regulations requiring on-device processing
 - **Offline Capability**: Zero functionality without internet connection
@@ -65,7 +65,7 @@ Pros: + Maximum algorithm accuracy
 
 Cons:
   - High latency (3-5s in poor network)
-  - Privacy concerns with domain-specific upload
+  - Privacy concerns with biometric upload
   - Requires internet connectivity
   - High bandwidth usage (2-5MB per verification)
   - Scaling costs with usage volume
@@ -304,7 +304,7 @@ Success Criteria:
 
 **Long Term (18+ months)**
 
-- Technology foundation for next-generation domain-specifics
+- Technology foundation for next-generation biometrics
 - Reduced dependency on cloud infrastructure
 - Competitive moat through superior mobile performance
 
@@ -405,7 +405,7 @@ Validation:
 
 ### Related ADRs
 
-- ADR-001: [domain-specific Template Format](./adr-001-domain-specific-template-format.md)
+- ADR-001: [biometric Template Format](./adr-001-biometric-template-format.md)
 - ADR-003: [Mobile SDK Security Architecture](./adr-003-mobile-sdk-security.md)
 - ADR-004: [Model Update Infrastructure](./adr-004-model-update-infrastructure.md)
 

@@ -1,5 +1,5 @@
 ---
-validationTarget: "sast-sca-domain-specific-scan.md"
+validationTarget: "sast-sca-biometric-scan.md"
 validationDate: "2026-03-15T15:52:54.801961"
 inputDocuments: []
 validationStepsCompleted:
@@ -27,7 +27,7 @@ previousValidation: ""
 
 # Validation Report
 
-**Document:** sast-sca-domain-specific-scan.md
+**Document:** sast-sca-biometric-scan.md
 **Date:** 2026-03-15
 **Quality Rating:** 4/5 - Good
 **Overall Status:** Pass

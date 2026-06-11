@@ -58,20 +58,20 @@ European Banking Authority's Regulatory Technical Standards (EBA RTS) for Strong
 
 #### Root Cause Analysis
 
-1. **Regulatory Ambiguity**: EBA RTS Article 10 (inherence factor) lacks specific domain-specific implementation guidance
+1. **Regulatory Ambiguity**: EBA RTS Article 10 (inherence factor) lacks specific biometric implementation guidance
 2. **National Competent Authority Variations**: Different interpretations of "independence" requirement between authentication factors
-3. **Technical Implementation**: domain-specific template processing may not meet all jurisdictional requirements
+3. **Technical Implementation**: biometric template processing may not meet all jurisdictional requirements
 4. **Timing Pressure**: Compliance deadlines vary by country and banking client
 
 #### Detailed Risk Assessment
 
-| Jurisdiction                | Specific Risk                                          | Probability  | Client Impact                 |
-| --------------------------- | ------------------------------------------------------ | ------------ | ----------------------------- |
-| **Germany (BaFin)**         | Strict inherence factor isolation requirement          | High (70%)   | Deutsche Bank, Commerzbank    |
-| **France (ACPR)**           | domain-specific template storage location restrictions | Medium (40%) | BNP Paribas, Société Générale |
-| **Spain (Banco de España)** | Cross-border data processing limitations               | High (60%)   | BBVA, Santander               |
-| **Netherlands (DNB)**       | Additional technical safeguards for domain-specifics   | Medium (50%) | ING, ABN AMRO                 |
-| **Italy (Bank of Italy)**   | Enhanced consumer protection measures                  | Low (25%)    | UniCredit, Intesa Sanpaolo    |
+| Jurisdiction                | Specific Risk                                    | Probability  | Client Impact                 |
+| --------------------------- | ------------------------------------------------ | ------------ | ----------------------------- |
+| **Germany (BaFin)**         | Strict inherence factor isolation requirement    | High (70%)   | Deutsche Bank, Commerzbank    |
+| **France (ACPR)**           | biometric template storage location restrictions | Medium (40%) | BNP Paribas, Société Générale |
+| **Spain (Banco de España)** | Cross-border data processing limitations         | High (60%)   | BBVA, Santander               |
+| **Netherlands (DNB)**       | Additional technical safeguards for biometrics   | Medium (50%) | ING, ABN AMRO                 |
+| **Italy (Bank of Italy)**   | Enhanced consumer protection measures            | Low (25%)    | UniCredit, Intesa Sanpaolo    |
 
 #### Mitigation Strategy
 
@@ -111,7 +111,7 @@ European Banking Authority's Regulatory Technical Standards (EBA RTS) for Strong
 - **Insurance**: Professional liability coverage activation
 - **Client Relations**: Executive-level crisis management
 
-### RISK-REG-002: domain-specific Processing GDPR Article 9 Conflict with PSD2
+### RISK-REG-002: Biometric Processing GDPR Article 9 Conflict with PSD2
 
 **Category**: Regulatory - Cross-Regulation Conflict
 **Probability**: Medium (45%)
@@ -121,22 +121,22 @@ European Banking Authority's Regulatory Technical Standards (EBA RTS) for Strong
 
 #### Description
 
-GDPR Article 9 special category data protection requirements for domain-specific processing may conflict with PSD2 Strong Customer Authentication requirements, creating impossible compliance scenarios.
+GDPR Article 9 special category data protection requirements for biometric processing may conflict with PSD2 Strong Customer Authentication requirements, creating impossible compliance scenarios.
 
 #### Legal Analysis
 
 **GDPR Article 9 Requirements**:
 
-- Explicit consent for domain-specific processing
+- Explicit consent for biometric processing
 - Data minimization and purpose limitation
 - Right to erasure and data portability
-- domain-specific data subject to enhanced protection
+- biometric data subject to enhanced protection
 
 **PSD2 SCA Requirements**:
 
 - Robust authentication required for payment initiation
 - Something the user "is" (inherence) factor mandatory
-- domain-specific matching required for authentication
+- biometric matching required for authentication
 - Audit trail and non-repudiation requirements
 
 **Potential Conflicts**:
@@ -150,14 +150,14 @@ GDPR Article 9 special category data protection requirements for domain-specific
 
 1. **Legal Opinion**: Joint GDPR/PSD2 counsel opinion on lawful processing basis
 2. **Data Protection Impact Assessment (DPIA)**: Comprehensive DPIA covering both regulations
-3. **Technical Implementation**: Privacy-preserving domain-specific authentication methods
+3. **Technical Implementation**: Privacy-preserving biometric authentication methods
 4. **Client Consultation**: Joint approach with banking clients and DPAs
 
 ---
 
 ## High-Priority Technical Risks
 
-### RISK-TECH-001: domain-specific Authentication Factor Independence Requirement
+### RISK-TECH-001: Biometric Authentication Factor Independence Requirement
 
 **Category**: Technical - Authentication Architecture
 **Probability**: High (70%)
@@ -167,13 +167,13 @@ GDPR Article 9 special category data protection requirements for domain-specific
 
 #### Description
 
-EBA RTS requires authentication factors to be "independent," meaning compromise of one factor should not compromise others. Current domain-specific implementation may not achieve sufficient independence from knowledge and possession factors.
+EBA RTS requires authentication factors to be "independent," meaning compromise of one factor should not compromise others. Current biometric implementation may not achieve sufficient independence from knowledge and possession factors.
 
 #### Technical Analysis
 
 **Current Architecture Limitations**:
 
-- domain-specific templates encrypted with user-derived keys (knowledge dependency)
+- biometric templates encrypted with user-derived keys (knowledge dependency)
 - Authentication flow shares session tokens across factors (possession dependency)
 - Single database storage for all authentication factors
 - Common API endpoints for factor verification
@@ -191,7 +191,7 @@ EBA RTS requires authentication factors to be "independent," meaning compromise 
 Independent Factor Processing:
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Knowledge     │    │   Possession    │    │   Inherence     │
-│   (PIN/PWD)     │    │   (SMS/Token)   │    │   (domain-specific)   │
+│   (PIN/PWD)     │    │   (SMS/Token)   │    │   (Biometric)   │
 ├─────────────────┤    ├─────────────────┤    ├─────────────────┤
 │ • Separate HSM  │    │ • Isolated API  │    │ • Dedicated     │
 │ • Unique crypto │    │ • Independent   │    │   processing    │
@@ -211,7 +211,7 @@ Independent Factor Processing:
 #### Implementation Plan
 
 **Phase 1 (Q1 2025)**: Architecture design and security review
-**Phase 2 (Q2 2025)**: Independent domain-specific processing implementation
+**Phase 2 (Q2 2025)**: Independent biometric processing implementation
 **Phase 3 (Q2-Q3 2025)**: Integration testing and compliance validation
 **Phase 4 (Q3 2025)**: Production deployment and certification
 
@@ -235,12 +235,12 @@ PSD2 requires real-time authentication (sub-second response times) while impleme
 | **Multi-factor cryptographic validation** | +150ms per factor     | Medium (cumulative impact)  |
 | **Comprehensive audit logging**           | +50ms per transaction | Low (acceptable)            |
 | **Real-time fraud scoring**               | +100-300ms            | High (may exceed limits)    |
-| **domain-specific liveness detection**    | +500-1000ms           | Critical (likely violation) |
+| **biometric liveness detection**          | +500-1000ms           | Critical (likely violation) |
 
 #### Current Performance Baseline
 
 - **Authentication Request**: 50ms processing
-- **domain-specific Verification**: 120ms average
+- **biometric Verification**: 120ms average
 - **Fraud Scoring**: 80ms average
 - **Total Current**: ~250ms
 - **PSD2 Target**: <500ms (recommended <200ms)
@@ -248,8 +248,8 @@ PSD2 requires real-time authentication (sub-second response times) while impleme
 #### Optimization Strategy
 
 1. **Parallel Processing**: Simultaneous factor verification
-2. **Caching**: Pre-computed domain-specific templates and fraud models
-3. **Hardware Acceleration**: GPU-based domain-specific processing
+2. **Caching**: Pre-computed biometric templates and fraud models
+3. **Hardware Acceleration**: GPU-based biometric processing
 4. **Microservices**: Distributed authentication factor processing
 5. **Edge Computing**: Reduced latency through geographic distribution
 

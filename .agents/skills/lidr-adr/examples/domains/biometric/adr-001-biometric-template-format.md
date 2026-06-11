@@ -1,4 +1,4 @@
-# ADR-001: domain-specific Template Format Standardization
+# ADR-001: biometric Template Format Standardization
 
 **Status**: Accepted
 **Date**: 2024-03-15
@@ -8,7 +8,7 @@
 
 ## Context and Problem Statement
 
-{{CLIENT_NAME}} currently uses different proprietary template formats for face, voice, and document domain-specifics across our SDK portfolio. This creates several challenges:
+{{CLIENT_NAME}} currently uses different proprietary template formats for face, voice, and document biometrics across our SDK portfolio. This creates several challenges:
 
 1. **Integration Complexity**: Partners must handle multiple template formats
 2. **Storage Inefficiency**: Different encryption schemes and metadata structures
@@ -16,7 +16,7 @@
 4. **Compliance Risk**: Inconsistent GDPR metadata across template types
 5. **Algorithm Evolution**: Template format changes break existing integrations
 
-The core question: Should we standardize on a unified domain-specific template format across all modalities?
+The core question: Should we standardize on a unified biometric template format across all modalities?
 
 ## Decision Drivers
 
@@ -44,7 +44,7 @@ The core question: Should we standardize on a unified domain-specific template f
 
 ### Option 1: ISO/IEC 19785 (CBEFF) Standard
 
-**Description**: Adopt the Common domain-specific Exchange Formats Framework
+**Description**: Adopt the Common biometric Exchange Formats Framework
 
 ```yaml
 Pros: + Industry standard, wide adoption
@@ -119,8 +119,8 @@ Cons:
 After analyzing our specific requirements, performance benchmarks, and integration patterns, a custom format provides the best balance of:
 
 1. **Performance**: 40% smaller templates than ISO/IEC 19785, 60% faster parsing
-2. **Flexibility**: Supports novel domain-specific modalities (behavioral, multi-modal fusion)
-3. **Security**: Built-in encryption/compression optimized for domain-specific data
+2. **Flexibility**: Supports novel biometric modalities (behavioral, multi-modal fusion)
+3. **Security**: Built-in encryption/compression optimized for biometric data
 4. **Control**: Can evolve format in lockstep with algorithm improvements
 
 ### Implementation Plan
@@ -191,7 +191,7 @@ Phase 3 (Q4 2024): Full Adoption
 **Long Term (18+ months)**
 
 - Competitive advantage from superior template efficiency
-- Platform ready for next-generation domain-specific modalities
+- Platform ready for next-generation biometric modalities
 - Reduced technical debt from format fragmentation
 
 ### Negative Consequences

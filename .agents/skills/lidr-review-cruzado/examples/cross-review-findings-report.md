@@ -10,14 +10,14 @@
 
 ## Executive Summary
 
-| Dimension                                                    | Status         | Critical Issues | Minor Issues |
-| ------------------------------------------------------------ | -------------- | --------------- | ------------ |
-| **domain-specific Functionalities ↔ Technical Capabilities** | ⚠️ CONDITIONAL | 1               | 2            |
-| **User Journeys ↔ API Flow**                                 | ✅ ALIGNED     | 0               | 1            |
-| **GDPR Requirements ↔ Compliance Architecture**              | ❌ MISALIGNED  | 2               | 0            |
-| **Performance Expectations ↔ Algorithm Capabilities**        | ⚠️ CONDITIONAL | 1               | 1            |
-| **Error Handling ↔ Technical Failover**                      | ✅ ALIGNED     | 0               | 0            |
-| **Scalability Requirements ↔ Infrastructure Design**         | ✅ ALIGNED     | 0               | 1            |
+| Dimension                                              | Status         | Critical Issues | Minor Issues |
+| ------------------------------------------------------ | -------------- | --------------- | ------------ |
+| **biometric Functionalities ↔ Technical Capabilities** | ⚠️ CONDITIONAL | 1               | 2            |
+| **User Journeys ↔ API Flow**                           | ✅ ALIGNED     | 0               | 1            |
+| **GDPR Requirements ↔ Compliance Architecture**        | ❌ MISALIGNED  | 2               | 0            |
+| **Performance Expectations ↔ Algorithm Capabilities**  | ⚠️ CONDITIONAL | 1               | 1            |
+| **Error Handling ↔ Technical Failover**                | ✅ ALIGNED     | 0               | 0            |
+| **Scalability Requirements ↔ Infrastructure Design**   | ✅ ALIGNED     | 0               | 1            |
 
 **Overall Assessment**: CONDITIONAL PASS
 **Critical Issues**: 4 (must resolve before Gate 1)
@@ -35,7 +35,7 @@
 
 #### Problem Description
 
-- **PRD-F states**: "Users can request complete deletion of domain-specific data within 72 hours"
+- **PRD-F states**: "Users can request complete deletion of biometric data within 72 hours"
 - **PRD-T limitation**: Current architecture only supports template deletion, not training data removal from ML models
 
 #### Impact Analysis
@@ -83,7 +83,7 @@
 
 ---
 
-### CF-003: domain-specific Template Storage - GDPR Encryption Requirements
+### CF-003: biometric Template Storage - GDPR Encryption Requirements
 
 **Dimension**: GDPR Requirements ↔ Compliance Architecture
 **Severity**: CRITICAL
@@ -91,7 +91,7 @@
 
 #### Problem Description
 
-- **PRD-F requirement**: "domain-specific templates encrypted with user-specific keys"
+- **PRD-F requirement**: "biometric templates encrypted with user-specific keys"
 - **PRD-T limitation**: Proposed AES-256 encryption uses shared keys for performance
 
 #### Impact Analysis
@@ -113,7 +113,7 @@
 
 ### CF-004: Voice Authentication Accuracy - Algorithm Capability Gap
 
-**Dimension**: domain-specific Functionalities ↔ Technical Capabilities
+**Dimension**: biometric Functionalities ↔ Technical Capabilities
 **Severity**: CRITICAL
 **Source Documents**: PRD-F §4.2 vs PRD-T §3.4
 
@@ -157,9 +157,9 @@ PRD-F expects liveness detection on older mobile devices, but PRD-T specifies mi
 
 ---
 
-### CN-002: domain-specific Template Versioning - Future Algorithm Updates
+### CN-002: biometric Template Versioning - Future Algorithm Updates
 
-**Dimension**: domain-specific Functionalities ↔ Technical Capabilities
+**Dimension**: biometric Functionalities ↔ Technical Capabilities
 **Source Documents**: PRD-F §4.4 vs PRD-T §3.1
 
 #### Issue
@@ -185,19 +185,19 @@ PRD-F mentions "seamless algorithm updates," but PRD-T doesn't specify template 
 
 **Dimension**: GDPR Requirements ↔ Compliance Architecture
 **Issue**: PRD-F states "regulatory compliance period," PRD-T specifies "5 years"
-**Resolution**: Clarify regulatory requirements for domain-specific audit logs
+**Resolution**: Clarify regulatory requirements for biometric audit logs
 
-### MN-003: Load Balancing Strategy for domain-specific Processing
+### MN-003: Load Balancing Strategy for biometric Processing
 
 **Dimension**: Scalability Requirements ↔ Infrastructure Design
 **Issue**: PRD-F mentions "enterprise scale," but load balancing strategy unclear
-**Resolution**: Detail domain-specific processing distribution across nodes
+**Resolution**: Detail biometric processing distribution across nodes
 
 ---
 
 ## Compliance Validation Results
 
-### GDPR Article 9 (domain-specific Data) Compliance
+### GDPR Article 9 (biometric Data) Compliance
 
 | Requirement                 | PRD-F Coverage                 | PRD-T Implementation            | Status     |
 | --------------------------- | ------------------------------ | ------------------------------- | ---------- |
@@ -211,7 +211,7 @@ PRD-F mentions "seamless algorithm updates," but PRD-T doesn't specify template 
 
 | Requirement                  | PRD-F Coverage                | PRD-T Implementation             | Status     |
 | ---------------------------- | ----------------------------- | -------------------------------- | ---------- |
-| **PSD2 SCA Compliance**      | ✅ §4.3 Multi-factor auth     | ✅ §3.3 domain-specific + PIN    | ALIGNED    |
+| **PSD2 SCA Compliance**      | ✅ §4.3 Multi-factor auth     | ✅ §3.3 biometric + PIN          | ALIGNED    |
 | **AML KYC Integration**      | ✅ §5.2 Identity verification | ✅ §3.5 Document validation      | ALIGNED    |
 | **Audit Trail Requirements** | ✅ §7.1 Compliance logging    | ⚠️ §5.4 Retention period unclear | **MN-002** |
 

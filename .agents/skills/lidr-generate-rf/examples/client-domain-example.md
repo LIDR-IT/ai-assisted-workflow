@@ -5,12 +5,12 @@ last_updated: "2026-03-25"
 updated_by: "TL: tier3-remediation"
 status: active
 type: example
-domain: domain-specific-identity
+domain: biometric-identity
 ---
 
 # {{CLIENT_NAME}} Domain RF Examples
 
-> **Purpose**: Domain-specific RF examples for domain-specific identity verification systems.
+> **Purpose**: Domain-specific RF examples for biometric identity verification systems.
 > These examples are intentionally kept here as reference for {{CLIENT_NAME}}-context usage.
 > The main SKILL.md uses generic, domain-agnostic examples for portability.
 

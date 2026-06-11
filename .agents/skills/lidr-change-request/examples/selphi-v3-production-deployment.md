@@ -35,7 +35,7 @@ Customer Impact: Medium (Improvement)
 ITIL Classification:
   Category: Application Update
   Subcategory: Algorithm Deployment
-  Service: domain-specific Verification Platform
+  Service: Biometric Verification Platform
   Configuration Item: {{PRODUCT_NAME_1}} Liveness Service
 ```
 
@@ -400,7 +400,7 @@ Data Protection: ✓ GDPR Article 9 compliance validated
   ✓ Privacy impact assessment completed
   ✓ Audit trail capabilities verified
 
-domain-specific Standards: ✓ ISO 30107 Level 2 compliance maintained
+Biometric Standards: ✓ ISO 30107 Level 2 compliance maintained
   ✓ Algorithm bias testing completed
   ✓ Fairness across demographic groups validated
   ✓ Technical documentation updated
