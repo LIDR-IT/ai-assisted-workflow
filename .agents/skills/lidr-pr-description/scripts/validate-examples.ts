@@ -12,7 +12,19 @@
  * - Related issues and ticket references
  * - Review guidance and deployment considerations
  *
+ * The DEFAULT validation set (ALL_RULES) is DOMAIN-AGNOSTIC — it checks
+ * universal PR-description concepts (what/why/how, testing, change impact,
+ * generic security/privacy, deployment, code quality) — because LIDR is a
+ * multi-industry framework. An OPTIONAL biometric/identity domain pack of extra
+ * RULES is preserved as BIOMETRIC_DOMAIN_PACK below (GDPR Art. 9, biometric
+ * template / liveness / anti-spoofing framing) and is spread into the active
+ * rule set ONLY when LIDR_DOMAIN_PACK === 'biometric'. Likewise the biometric
+ * EXAMPLE FIXTURES under examples/domains/biometric/ are appended to the
+ * validation run ONLY behind that same flag. Example only — NOT the active
+ * default. The default run uses the generic example under examples/generic/.
+ *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -165,14 +177,12 @@ const SECURITY_COMPLIANCE_RULES: ValidationRule[] = [
     severity: "WARN",
   },
   {
-    name: "GDPR Compliance",
-    description: "Should address GDPR compliance for data handling changes",
+    name: "Data Privacy Compliance",
+    description: "Should address privacy/compliance for data handling changes",
     check: (content) =>
-      (!content.includes("data") &&
-        !content.includes("personal") &&
-        !content.includes("biometric")) ||
-      content.includes("GDPR") ||
+      (!content.includes("data") && !content.includes("personal")) ||
       content.includes("compliant") ||
+      content.includes("compliance") ||
       content.includes("privacy"),
     severity: "WARN",
   },
@@ -234,6 +244,48 @@ const ALL_RULES = [
   ...CODE_QUALITY_RULES,
 ];
 
+/* ────────────────────────────────────────────────────────────────────
+   BIOMETRIC / IDENTITY DOMAIN PACK (OPTIONAL — example only, NOT default)
+
+   These RULES are biometric/identity-specific and are spread into the active
+   rule set ONLY when LIDR_DOMAIN_PACK === 'biometric'. The default ALL_RULES
+   set above stays 100% domain-agnostic so the validator passes on a generic
+   PR description from any industry.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
+  {
+    name: "Biometric Data Handling",
+    description: "Must describe how biometric data is processed or protected",
+    check: (content) =>
+      !content.includes("biometric") ||
+      content.includes("template") ||
+      content.includes("encryption") ||
+      content.includes("consent") ||
+      content.includes("liveness") ||
+      content.includes("verification"),
+    severity: "ERROR",
+  },
+  {
+    name: "GDPR Art. 9 Compliance",
+    description: "Must address GDPR Art. 9 special-category data compliance for biometric changes",
+    check: (content) =>
+      (!content.includes("biometric") && !content.includes("personal")) ||
+      content.includes("GDPR") ||
+      content.includes("Article 9") ||
+      content.includes("Art. 9"),
+    severity: "ERROR",
+  },
+  {
+    name: "Anti-Spoofing / Liveness Coverage",
+    description:
+      "Should mention anti-spoofing or liveness handling when biometric capture is involved",
+    check: (content) =>
+      !content.includes("liveness") || content.includes("spoof") || content.includes("ISO 30107"),
+    severity: "WARN",
+  },
+];
+
 interface ValidationResult {
   file: string;
   passed: number;
@@ -285,23 +337,50 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const validationCases = [
+  // DEFAULT rule set is DOMAIN-AGNOSTIC. The biometric/identity RULES are spread
+  // in ONLY when LIDR_DOMAIN_PACK === 'biometric' (example domain pack, not default).
+  const activeRules =
+    process.env.LIDR_DOMAIN_PACK === "biometric"
+      ? [...ALL_RULES, ...BIOMETRIC_DOMAIN_PACK]
+      : ALL_RULES;
+
+  // DEFAULT validation case is the generic (domain-agnostic) example fixture.
+  const validationCases: Array<{ file: string; rules: ValidationRule[]; description: string }> = [
     {
-      file: "liveness-detection-api.md",
-      rules: ALL_RULES,
+      file: "generic/api-rate-limiting.md",
+      rules: activeRules,
+      description: "Generic API Rate Limiting PR Description",
+    },
+  ];
+
+  // Biometric/identity EXAMPLE FIXTURES under examples/domains/biometric/ are a
+  // DOCUMENTED example convention. They are appended to the run ONLY behind the
+  // explicit LIDR_DOMAIN_PACK==='biometric' flag. Descriptions are domain-neutral.
+  const BIOMETRIC_DOMAIN_PACK_CASES: Array<{
+    file: string;
+    rules: ValidationRule[];
+    description: string;
+  }> = [
+    {
+      file: "domains/biometric/liveness-detection-api.md",
+      rules: activeRules,
       description: "Liveness Detection API PR Description",
     },
     {
-      file: "gdpr-consent-ui.md",
-      rules: ALL_RULES,
-      description: "GDPR Consent UI PR Description",
+      file: "domains/biometric/gdpr-consent-ui.md",
+      rules: activeRules,
+      description: "Consent UI PR Description",
     },
     {
-      file: "biometric-template-security.md",
-      rules: ALL_RULES,
-      description: "Biometric Template Security PR Description",
+      file: "domains/biometric/biometric-template-security.md",
+      rules: activeRules,
+      description: "Template Security PR Description",
     },
   ];
+
+  if (process.env.LIDR_DOMAIN_PACK === "biometric") {
+    validationCases.push(...BIOMETRIC_DOMAIN_PACK_CASES);
+  }
 
   console.log("🔍 Validating PR Description Skill Examples...\n");
 

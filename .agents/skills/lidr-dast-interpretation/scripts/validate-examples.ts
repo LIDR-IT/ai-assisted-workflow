@@ -8,13 +8,22 @@
  * Validates:
  * - DAST report structure and format
  * - Security vulnerability categorization (CVSS scores, priorities)
- * - Biometric domain-specific security considerations
  * - Infrastructure and configuration analysis
- * - Compliance assessment (GDPR, PSD2, eIDAS)
+ * - Generic compliance / regulatory framing
  * - Remediation roadmap and business impact
  * - Runtime performance under attack scenarios
  *
+ * The DEFAULT validation set (DAST_REPORT_RULES) is DOMAIN-AGNOSTIC — it checks
+ * universal DAST concepts (CVSS, severity counts, session management, rate
+ * limiting, API security, remediation, runtime behavior) — because LIDR is a
+ * multi-industry framework. An OPTIONAL biometric/identity domain pack of extra
+ * RULES is preserved as BIOMETRIC_DOMAIN_PACK below (anti-spoofing/liveness,
+ * biometric template testing, GDPR Art. 9 / PSD2 / eIDAS compliance) and is
+ * spread into the active rule set ONLY when LIDR_DOMAIN_PACK === 'biometric'.
+ * Example only — NOT the active default.
+ *
  * Usage: npx tsx scripts/validate-examples.ts
+ *        LIDR_DOMAIN_PACK=biometric npx tsx scripts/validate-examples.ts
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -82,15 +91,6 @@ const DAST_REPORT_RULES: ValidationRule[] = [
     severity: "ERROR",
   },
   {
-    name: "Biometric-Specific Testing",
-    description: "Must include biometric domain-specific security considerations",
-    check: (content) =>
-      content.includes("Biometric") &&
-      content.includes("template") &&
-      content.includes("verification"),
-    severity: "ERROR",
-  },
-  {
     name: "Infrastructure Assessment",
     description: "Must analyze infrastructure and configuration security",
     check: (content) => content.includes("Infrastructure") && content.includes("Configuration"),
@@ -105,9 +105,10 @@ const DAST_REPORT_RULES: ValidationRule[] = [
   },
   {
     name: "Compliance Framework Analysis",
-    description: "Must address regulatory compliance (GDPR, PSD2, eIDAS)",
+    description: "Must address regulatory compliance impact of findings",
     check: (content) =>
-      content.includes("GDPR") && content.includes("PSD2") && content.includes("Compliance"),
+      content.includes("Compliance") &&
+      (content.includes("Regulatory") || content.includes("regulatory")),
     severity: "ERROR",
   },
   {
@@ -122,12 +123,6 @@ const DAST_REPORT_RULES: ValidationRule[] = [
     description: "Must distinguish between true positives and false positives/mitigated findings",
     check: (content) => content.includes("False Positive") || content.includes("Mitigated"),
     severity: "WARN",
-  },
-  {
-    name: "Anti-Spoofing Testing",
-    description: "Must test anti-spoofing mechanisms for biometric systems",
-    check: (content) => content.includes("spoofing") || content.includes("liveness"),
-    severity: "ERROR",
   },
   {
     name: "Rate Limiting Validation",
@@ -187,8 +182,8 @@ const DAST_REPORT_RULES: ValidationRule[] = [
   },
   {
     name: "Data Protection Analysis",
-    description: "Must analyze data protection mechanisms for sensitive biometric data",
-    check: (content) => content.includes("Data Protection") || content.includes("Article 9"),
+    description: "Must analyze data protection mechanisms for sensitive data",
+    check: (content) => content.includes("Data Protection") || content.includes("data protection"),
     severity: "ERROR",
   },
   {
@@ -196,6 +191,47 @@ const DAST_REPORT_RULES: ValidationRule[] = [
     description: "Must test multi-factor authentication security",
     check: (content) => content.includes("Multi-factor") || content.includes("multi-factor"),
     severity: "WARN",
+  },
+];
+
+/* ────────────────────────────────────────────────────────────────────
+   BIOMETRIC / IDENTITY DOMAIN PACK (OPTIONAL — example only, NOT default)
+
+   These RULES are biometric/identity-specific and are spread into the active
+   rule set ONLY when LIDR_DOMAIN_PACK === 'biometric'. The default DAST rule
+   set above stays 100% domain-agnostic so the validator passes on a generic
+   DAST artifact from any industry.
+──────────────────────────────────────────────────────────────────── */
+
+const BIOMETRIC_DOMAIN_PACK: ValidationRule[] = [
+  {
+    name: "Biometric-Specific Testing",
+    description: "Must include biometric domain-specific security considerations",
+    check: (content) =>
+      content.includes("Biometric") &&
+      content.includes("template") &&
+      content.includes("verification"),
+    severity: "ERROR",
+  },
+  {
+    name: "Anti-Spoofing Testing",
+    description: "Must test anti-spoofing mechanisms for biometric systems",
+    check: (content) => content.includes("spoofing") || content.includes("liveness"),
+    severity: "ERROR",
+  },
+  {
+    name: "Identity Compliance Framework Analysis",
+    description: "Must address identity/biometric regulatory compliance (GDPR Art. 9, PSD2, eIDAS)",
+    check: (content) =>
+      content.includes("GDPR") && content.includes("PSD2") && content.includes("Compliance"),
+    severity: "ERROR",
+  },
+  {
+    name: "Sensitive Biometric Data Protection",
+    description:
+      "Must analyze data protection mechanisms for sensitive biometric data (GDPR Art. 9)",
+    check: (content) => content.includes("Data Protection") || content.includes("Article 9"),
+    severity: "ERROR",
   },
 ];
 
@@ -258,10 +294,17 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  // DEFAULT rule set is DOMAIN-AGNOSTIC. The biometric/identity RULES are spread
+  // in ONLY when LIDR_DOMAIN_PACK === 'biometric' (example domain pack, not default).
+  const activeRules =
+    process.env.LIDR_DOMAIN_PACK === "biometric"
+      ? [...DAST_REPORT_RULES, ...BIOMETRIC_DOMAIN_PACK]
+      : DAST_REPORT_RULES;
+
   const validationCases = [
     {
       file: "api-runtime-security-scan.md",
-      rules: DAST_REPORT_RULES,
+      rules: activeRules,
       description: "DAST API Runtime Security Assessment Report",
     },
   ];
