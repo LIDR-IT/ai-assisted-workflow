@@ -1,9 +1,9 @@
 ---
 name: lidr-refinement-notes
 id: refinement-notes
-version: "1.2.1"
-last_updated: "2026-06-09"
-updated_by: "TL: BMad-coherence batch-fix"
+version: "1.3.0"
+last_updated: "2026-06-11"
+updated_by: "TL: BMad-seam visibility"
 status: active
 phase: 3
 stage: sprint-planning
@@ -17,9 +17,13 @@ description: "POST-BMad WRAPPER: consumes user stories from `bmad-create-story` 
 
 # Refinement Notes Structurer
 
-Phase: 4 — Sprint Planning | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
+Phase: 3 — Solutioning · sprint-planning (ex-Fase 4) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMad
+
+POST-BMad wrapper (BMad has no Definition-of-Ready gate). `bmad-create-story` turns a backlog item into a context-rich dev story, but nothing in the base flow grooms it for readiness before sprint commitment. This skill consumes those user stories — the `lidr-user-stories` PO backlog and/or the `bmad-create-story` output — and captures the LIDR refinement record (domain decisions, compliance clarifications, performance thresholds, blockers), flagging each story `sprint-ready` vs `needs investigation`. Feeds **Gate 3** evidence (DoR validation) before `bmad-dev-story` or the `lidr-spec-*` lifecycle implements the story.
 
 ## Workflow
 
@@ -156,7 +160,8 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                       | Changes                                                                                |
-| ------- | ---------- | ---------------------------- | -------------------------------------------------------------------------------------- |
-| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added `language_default: en` frontmatter (P5 bookkeeping)                              |
-| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira (tracking) via tool-registry |
+| Version | Date       | Author                       | Changes                                                                                                                                                                                                                             |
+| ------- | ---------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.3.0   | 2026-06-11 | TL: BMad-seam visibility     | Added "## Relationship to BMad": makes explicit that it consumes `bmad-create-story` / `lidr-user-stories` output and feeds Gate 3 DoR before `bmad-dev-story` / `lidr-spec-*` (relationship was only in the `description:` before) |
+| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added `language_default: en` frontmatter (P5 bookkeeping)                                                                                                                                                                           |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira (tracking) via tool-registry                                                                                                                                              |

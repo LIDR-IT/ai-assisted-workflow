@@ -3,7 +3,7 @@ name: lidr-sdlc-project
 description: "LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded."
 id: project
 version: "1.0.1"
-last_updated: "2026-03-09"
+last_updated: "2026-06-11"
 updated_by: "IA: sync-docs"
 status: active
 scope: project
@@ -147,7 +147,7 @@ src/
 │       │   ├── HandoffsTemplates.tsx    → /handoffs · 35 templates + handoffs, gates, DoR/DoD por fase
 │       │   ├── SitemapView.tsx          → /sitemap · Sitemap + árbol de ficheros
 │       │   ├── HelpCenter.tsx           → /help · 137 artefactos buscables + 17 workflows
-│       │   ├── IntegrityTests.tsx       → /integrity · 32 tests (T1-T32)
+│       │   ├── IntegrityTests.tsx       → /integrity · 36 tests (T1-T36)
 │       │   ├── AgentsArchitecture.tsx   → /agents · 6 subagentes + FAQs
 │       │   ├── MetricsDashboard.tsx     → Embebido en PropuestaMejora (tab métricas)
 │       │   ├── MarkdownViewer.tsx       → /doc/* · Renderizador de .md con DiagramBlock

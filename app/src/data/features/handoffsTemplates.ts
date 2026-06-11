@@ -1,8 +1,8 @@
 /**
  * @file Handoffs Templates Data
  * @description SDLC phases, handoffs and template catalog aligned 1:1 with the
- * unified phase model (.agents/_shared/lidr/UNIFIED-PHASES.md v1.1.1) and the
- * gate evidence manifest (.agents/_shared/lidr/gate-evidence.yaml v2.1.0).
+ * unified phase model (.agents/_shared/lidr/UNIFIED-PHASES.md v1.2.0) and the
+ * gate evidence manifest (.agents/_shared/lidr/gate-evidence.yaml v2.3.0).
  *
  * Model: 5 unified phases (0-4) x 9 stages x 8 gates (G0-G7).
  *
@@ -155,14 +155,14 @@ export const handoffs: HandoffResponsibility[] = [
       { role: 'Tech Lead', action: 'Recibe research técnico y contexto del proyecto' },
     ],
     artifacts: [
-      '⭐ Business Case (T-ORI-001) — required',
-      'Product Brief / PRFAQ (T-ORI-005) — BMad',
+      '⭐ Product Brief / PRFAQ (T-ORI-005) — BMad, intake principal',
+      'Business Case (T-ORI-001) — LIDR, complementario (ROI/riesgo)',
       'Research docs (T-ORI-006) — BMad',
       'Stakeholder Map (T-ORI-003)',
-      'Sign-off PME: gate-0-handoff.md',
+      '⭐ Sign-off PME: gate-0-handoff.md (gate duro)',
     ],
     aiAutomation:
-      'BMad produce: bmad-brainstorming / bmad-*-research → bmad-product-brief | bmad-prfaq. LIDR verifica: lidr-business-case (⭐G0) + lidr-stakeholder-map. Brownfield: checklist "Context Ready" de Fase 0 es evidencia adicional del G0',
+      'BMad principal produce el intake: bmad-brainstorming / bmad-*-research → bmad-product-brief | bmad-prfaq. LIDR complementa: lidr-business-case (ROI/riesgo, no bloqueante) + lidr-stakeholder-map. El gate G0 aguanta con el checklist "≥1 artefacto de intake" + sign-off PME. Brownfield: checklist "Context Ready" de Fase 0 es evidencia adicional',
     color: 'bg-purple-50',
     borderColor: 'border-purple-200',
   },
@@ -277,8 +277,8 @@ export const handoffs: HandoffResponsibility[] = [
       { role: 'Security', action: 'Recibe código para análisis SAST/SCA continuo' },
     ],
     artifacts: [
-      '⭐ Handoff Dev→QA (T-DEV-006) — required',
-      '⭐ DoD Checklist (T-DEV-002) — gate duro G4',
+      '⭐ DoD Checklist (T-DEV-002) — gate duro G4 (incl. bmad-code-review)',
+      'Handoff Dev→QA (T-DEV-006) — LIDR, complementario',
       'Story implementada RUTA A (T-DEV-003) — BMad',
       'test-report.md RUTA B (T-DEV-005)',
       'Code Review (T-DEV-004) — BMad, checklist',
@@ -307,14 +307,14 @@ export const handoffs: HandoffResponsibility[] = [
       { role: 'DevOps', action: 'Recibe artefactos para preparar el deploy' },
     ],
     artifacts: [
-      '⭐ Test Execution Report (T-QA-004) — required',
-      '⭐ QA Sign-off (T-QA-007) — signoffs/qa-signoff.md',
+      '⭐ QA Sign-off (T-QA-007) — signoffs/qa-signoff.md (gate duro)',
+      'Test Execution Report (T-QA-004) — LIDR, complementario',
+      'Regression Suite (T-QA-005) — BMad, evidencia QA principal',
+      'Traceability + Gate Decision (T-QA-006) — BMad, evidencia QA principal',
       'Test Cases BDD (T-QA-002)',
-      'Regression Suite (T-QA-005) — BMad',
-      'Traceability + Gate Decision (T-QA-006) — BMad',
     ],
     aiAutomation:
-      'BMad produce: bmad-testarch-automate (regresión) + bmad-testarch-trace (trazabilidad + gate decision). LIDR verifica: lidr-create-test-cases + lidr-test-execution-report (⭐G5); el sign-off humano del QA Lead cierra el gate',
+      'BMad principal produce la evidencia QA: bmad-testarch-automate (regresión) + bmad-testarch-trace (trazabilidad + gate decision). LIDR complementa: lidr-create-test-cases + lidr-test-execution-report (consolidación). El gate G5 lo cierra el sign-off humano del QA Lead; la evidencia QA puede ser TEA O el report',
     color: 'bg-sky-50',
     borderColor: 'border-sky-200',
   },
@@ -396,9 +396,11 @@ export const phases: PhaseTemplates[] = [
     ],
     exitCriteria: [
       'project-context.md existe y refleja el stack real (bmad-generate-project-context)',
-      'docs/index.md inventaría la documentación existente (bmad-document-project)',
+      'docs/index.md inventaría la documentación existente (bmad-document-project + bmad-index-docs)',
       'rules/project.md apunta al cliente activo correcto',
       'context-manifest.yaml actualizado (lidr-load-context lo carga al SessionStart)',
+      'Docs grandes particionadas para consumo LLM (bmad-shard-doc si aplica)',
+      'Brownfield: decisiones arquitectónicas heredadas críticas documentadas (lidr-adr baseline si aplica)',
       'Deuda técnica conocida catalogada (lidr-tech-debt si aplica)',
     ],
     templates: [
@@ -422,6 +424,36 @@ export const phases: PhaseTemplates[] = [
         aiAssist: 'skill',
         claudePath: '.claude/skills/bmad-generate-project-context/SKILL.md',
       },
+      {
+        code: 'T-CTX-003',
+        name: 'Docs Index Maintenance (bmad-index-docs)',
+        desc: 'Genera/actualiza docs/index.md referenciando toda la documentación del folder. Mantiene navegable el inventario que bmad-document-project crea: se re-ejecuta cada vez que la documentación cambia (DTC). Soporte del checklist Context Ready.',
+        format: 'docs/',
+        owner: 'Tech Lead',
+        mandatory: false,
+        aiAssist: 'skill',
+        claudePath: '.claude/skills/bmad-index-docs/SKILL.md',
+      },
+      {
+        code: 'T-CTX-004',
+        name: 'Doc Sharding (bmad-shard-doc)',
+        desc: 'Particiona documentos markdown grandes en archivos organizados por secciones de nivel 2. Hace consumibles para LLM los docs largos del brownfield (manuales, specs heredadas) antes de generar project-context. Complementa a bmad-index-docs.',
+        format: 'docs/',
+        owner: 'Tech Lead',
+        mandatory: false,
+        aiAssist: 'skill',
+        claudePath: '.claude/skills/bmad-shard-doc/SKILL.md',
+      },
+      {
+        code: 'T-CTX-005',
+        name: 'ADR Baseline (lidr-adr)',
+        desc: 'Brownfield: documenta como ADRs (MADR v3) las decisiones arquitectónicas heredadas difíciles de revertir ANTES de tocar código — el "why" del sistema existente queda preservado para PRD/architecture deltas. Cross-ref: el home principal de lidr-adr es Phase 4 · development (Gate 4), aquí se usa como baseline de contexto.',
+        format: 'docs/adr/',
+        owner: 'Tech Lead',
+        mandatory: false,
+        aiAssist: 'skill',
+        claudePath: '.claude/skills/lidr-adr/SKILL.md',
+      },
     ],
   },
   {
@@ -440,18 +472,18 @@ export const phases: PhaseTemplates[] = [
     ],
     exitCriteria: [
       'Sponsor identificado y presupuesto/alineación estratégica confirmados',
-      'Al menos uno poblado: Product Brief (BMad) o Business Case (LIDR)',
-      'Business Case aprobado por sponsor (lidr-business-case — required G0)',
+      'Al menos un artefacto de intake poblado: Product Brief/PRFAQ (BMad, principal) O Business Case (LIDR, complementario)',
+      'Sign-off PME del intake (gate duro; el Business Case añade ROI/riesgo cuando la iniciativa lo amerita)',
     ],
     gateSpecific: ['Sign-off PME en gate-0-handoff.md', 'Owners del gate: PME + Sponsor'],
     templates: [
       {
         code: 'T-ORI-001',
         name: 'Business Case',
-        desc: 'Justificación de negocio: problema, solución propuesta, ROI estimado, riesgos, timeline alto nivel. Evidencia REQUIRED del G0 (docs/projects/{client}/business-case.md). IA genera borrador; el humano aporta ROI real y firma.',
+        desc: 'Justificación de negocio: problema, solución propuesta, ROI estimado, riesgos, timeline alto nivel. Evidencia COMPLEMENTARIA del G0 (no bloqueante): añade ROI/riesgo/presupuesto sobre el intake. BMad principal: el intake lo porta el product-brief/prfaq de BMad; el gate aguanta con el checklist "≥1 artefacto de intake" + sign-off PME. La IA genera borrador; el humano aporta ROI real y firma.',
         format: 'Confluence',
         owner: 'Negocio / PME',
-        mandatory: true,
+        mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-business-case/SKILL.md',
       },
@@ -761,7 +793,7 @@ export const phases: PhaseTemplates[] = [
       'RUTA B: test-report.md con verdict PASSED (o WARNINGS aceptados explícitamente)',
       'Docs actualizadas en el mismo change — DTC (documentation.md)',
       'Runtime/visual review de UI cambiada passed (lidr-playwright-cli): render, flujos clave, console, a11y',
-      'Handoff dev→QA generado y adjunto al ticket (lidr-dev-handoff-qa)',
+      'Handoff dev→QA recomendado (lidr-dev-handoff-qa) — complementario; el gate duro es la DoD + sign-off TL',
     ],
     gateSpecific: [
       'Sign-off TL en gate-4-handoff.md',
@@ -771,10 +803,10 @@ export const phases: PhaseTemplates[] = [
       {
         code: 'T-DEV-006',
         name: 'Handoff Dev→QA',
-        desc: 'Contexto completo para QA: qué cambió, cómo probarlo, riesgos, datos de prueba (lidr-dev-handoff-qa). Evidencia REQUIRED del G4 (handoffs/dev-qa-*.md). INPUT directo de lidr-create-test-cases en la fase qa.',
+        desc: 'Contexto completo para QA: qué cambió, cómo probarlo, riesgos, datos de prueba (lidr-dev-handoff-qa). Evidencia COMPLEMENTARIA del G4 (handoffs/dev-qa-*.md): el gate duro del G4 es el checklist DoD (incl. bmad-code-review) + sign-off TL — BMad integra dev↔QA vía TEA sin artefacto de handoff. Sigue siendo INPUT recomendado de lidr-create-test-cases en la fase qa.',
         format: 'docs/projects/{client}/handoffs/',
         owner: 'Dev',
-        mandatory: true,
+        mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-dev-handoff-qa/SKILL.md',
       },
@@ -866,20 +898,23 @@ export const phases: PhaseTemplates[] = [
       'Entorno de staging operativo y estable',
     ],
     exitCriteria: [
+      'Evidencia QA presente: BMad TEA (bmad-testarch-automate/trace) O Test Execution Report (lidr-test-execution-report)',
       'Todos los test cases planificados ejecutados; 0 defectos bloqueantes abiertos',
       'Suite de regresión verde (bmad-testarch-automate)',
-      'Test execution report generado (lidr-test-execution-report)',
       'Handoff QA→Security incluye: resultados + cobertura, focus areas de security, checklist de vuln-assessment, verificación de compliance, resultados perf/load',
     ],
-    gateSpecific: ['Sign-off QA Lead en signoffs/qa-signoff.md', 'Owner del gate: QA Lead'],
+    gateSpecific: [
+      'Sign-off QA Lead en signoffs/qa-signoff.md (gate duro)',
+      'Owner del gate: QA Lead',
+    ],
     templates: [
       {
         code: 'T-QA-004',
         name: 'Test Execution Report',
-        desc: 'Resultados de la ejecución completa: funcional + BDD + regresión, cobertura, defectos (lidr-test-execution-report). Evidencia REQUIRED del G5 (test-execution-report*.md).',
+        desc: 'Resultados de la ejecución completa: funcional + BDD + regresión, cobertura, defectos (lidr-test-execution-report). Evidencia COMPLEMENTARIA del G5 (test-execution-report*.md): BMad principal — la evidencia QA puede ser BMad TEA (bmad-testarch-automate/trace) O este report; el gate duro es el sign-off del QA Lead. El checklist exige "evidencia QA presente: TEA O report".',
         format: 'docs/projects/{client}/',
         owner: 'QA Lead',
-        mandatory: true,
+        mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-test-execution-report/SKILL.md',
       },

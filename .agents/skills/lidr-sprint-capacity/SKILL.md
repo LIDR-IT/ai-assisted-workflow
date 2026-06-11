@@ -2,7 +2,7 @@
 name: lidr-sprint-capacity
 id: sprint-capacity
 version: "1.4.0"
-last_updated: "2026-06-10"
+last_updated: "2026-06-11"
 updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 3
@@ -17,7 +17,7 @@ description: "Essential for software project sprint planning - ALWAYS use before
 
 # Sprint Capacity Calculator
 
-Phase: 4 — Sprint Planning | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The Spanish column headers in the templates/examples below are illustrative — the bound client `language` drives the emitted artifact.
+Phase: 3 — Solutioning · sprint-planning (ex-Fase 4) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). The Spanish column headers in the templates/examples below are illustrative — the bound client `language` drives the emitted artifact.
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 

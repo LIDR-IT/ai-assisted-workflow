@@ -1618,7 +1618,7 @@ export const skills: Skill[] = [
     name: 'bmad-index-docs',
     phase: 'BMad — Utilities',
     phaseNum: 200,
-    stage: 'anytime',
+    stage: 'context',
     source: 'bmad',
     description:
       'Generates or updates an index.md to reference all docs in the folder. Use if user requests to create or update an index of all files.',
@@ -1670,7 +1670,7 @@ export const skills: Skill[] = [
     name: 'bmad-shard-doc',
     phase: 'BMad — Utilities',
     phaseNum: 200,
-    stage: 'anytime',
+    stage: 'context',
     source: 'bmad',
     description:
       'Splits large markdown documents into smaller, organized files based on level 2 (default) sections. Use if the user says perform shard document.',

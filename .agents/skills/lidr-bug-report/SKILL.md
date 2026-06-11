@@ -2,7 +2,7 @@
 name: lidr-bug-report
 id: bug-report
 version: "1.4.0"
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 4
@@ -25,7 +25,7 @@ description: >
 
 # Bug Report Structurer
 
-Phase: 6 — QA | Feeds the QA→Dev loop (not a G5 evidence artifact) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
+Phase: 4 — Implementation · qa (ex-Fase 6) | Feeds the QA→Dev loop (not a G5 evidence artifact) | Language: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`)
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 

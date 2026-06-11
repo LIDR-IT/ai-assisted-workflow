@@ -2,7 +2,7 @@
 name: lidr-pr-description
 id: pr-description
 version: "1.3.0"
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 updated_by: "TL: BMad-coherence batch-fix"
 status: active
 phase: 4
@@ -17,7 +17,7 @@ description: "Generate a structured Pull Request description from git diff and {
 
 # PR Description Generator
 
-Phase: 5 — Development | Language: English
+Phase: 4 — Implementation · development (ex-Fase 5) | Language: English
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 

@@ -100,6 +100,39 @@ describe('ecosystem counts are internally consistent (filesystem ↔ CLAUDE.md)'
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
+// README.md is a public source of truth too; it drifted to pre-merge numbers
+// (67 skills / 22 rules / 9 subagents) undetected. Lock its advertised counts
+// (tree block + badges) to the filesystem.
+describe('README advertised counts match the filesystem', () => {
+  const readme = read(path.join(REPO, 'README.md'));
+  const claim = (re: RegExp) => {
+    const m = readme.match(re);
+    return m && m[1] ? parseInt(m[1], 10) : null;
+  };
+  it('tree: rules total', () => {
+    expect(claim(/#\s*(\d+)\s+rules total/)).toBe(ruleFiles.length);
+  });
+  it('tree: skills total', () => {
+    expect(claim(/#\s*(\d+)\s+skills \(Agent Skills/)).toBe(skillDirs.length);
+  });
+  it('tree: commands total', () => {
+    expect(claim(/#\s*(\d+)\s+commands\b/)).toBe(commandFiles.length);
+  });
+  it('tree: subagents total', () => {
+    expect(claim(/#\s*(\d+)\s+subagents\b/)).toBe(subagentFiles.length);
+  });
+  it('tree: hooks total', () => {
+    expect(claim(/#\s*(\d+)\s+hooks registered/)).toBe(hookScripts.length);
+  });
+  it('badge: skills', () => {
+    expect(claim(/badge\/skills-(\d+)/)).toBe(skillDirs.length);
+  });
+  it('badge: subagents', () => {
+    expect(claim(/badge\/subagents-(\d+)/)).toBe(subagentFiles.length);
+  });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
 describe('no dead artifact names survive in command/subagent bodies', () => {
   // skills/commands/hooks that were renamed or removed in the BMad+LIDR unification
   const DEAD_SKILLS = [
@@ -232,13 +265,37 @@ describe('lidr-* skills declare a valid unified phase + stage', () => {
       true
     );
   });
+
+  // Frontmatter is unified (phase 0-4), but the human-readable "Phase: N — …" line
+  // in the body must NOT regress to pre-unification numbering (ex-Fase 5/6/7/8).
+  // Canonical form: "Phase: <0-4> — <Unified> · <stage> (ex-Fase N)".
+  it('no lidr-* skill body uses pre-unification phase numbering in its "Phase:" prose line', () => {
+    const drift: string[] = [];
+    for (const skill of lidrSkills) {
+      const content = read(path.join(AGENTS, 'skills', skill, 'SKILL.md'));
+      const meta = parseYaml(frontmatter(content) as string) as { phase?: number };
+      const body = content.replace(/^---\n[\s\S]*?\n---\n/, '');
+      const m = body.match(/^Phase:\s*(\d+)\b/m);
+      if (!m) {
+        continue;
+      } // a skill without a prose "Phase:" line is fine
+      const prose = parseInt(m[1] as string, 10);
+      if (prose !== meta.phase) {
+        drift.push(`${skill}: body "Phase: ${prose}" ≠ frontmatter phase ${meta.phase}`);
+      }
+    }
+    expect(
+      drift,
+      `Body prose uses stale phase numbering. Use "Phase: <0-4> — <Unified> · <stage> (ex-Fase N)":\n${drift.join('\n')}`
+    ).toEqual([]);
+  });
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
 describe('gate-evidence.yaml contract is satisfiable', () => {
   const gePath = path.join(AGENTS, '_shared/lidr/gate-evidence.yaml');
   const ge = parseYaml(read(gePath)) as {
-    gates: Record<string, { bmad_evidence?: any[]; lidr_evidence?: any[] }>;
+    gates: Record<string, { bmad_evidence?: any[]; lidr_evidence?: any[]; signoffs?: any[] }>;
   };
 
   it('parses and defines G0-G7', () => {
@@ -264,18 +321,23 @@ describe('gate-evidence.yaml contract is satisfiable', () => {
     ).toEqual([]);
   });
 
-  it('every gate has at least one required producer', () => {
+  it('every gate has a hard requirement: a required producer OR a sign-off', () => {
+    // A gate is non-toothless if it either hard-requires a machine-checked artifact
+    // (required: true) OR a human sign-off. Under "BMad principal, LIDR complementary"
+    // (v2.2.0), G0/G4/G5 are sign-off-governed: the LIDR artifact is complementary and
+    // the hard point is the PME/TL/QA-Lead sign-off + the gate checklist.
     const empty: string[] = [];
     for (const [gate, def] of Object.entries(ge.gates)) {
       const all = [...(def.bmad_evidence || []), ...(def.lidr_evidence || [])];
-      if (!all.some((e) => e.required === true)) {
+      const hasRequiredProducer = all.some((e) => e.required === true);
+      const hasSignoff = (def.signoffs || []).length > 0;
+      if (!hasRequiredProducer && !hasSignoff) {
         empty.push(gate);
       }
     }
-    // G6/G7 may be governance-only; document expected exceptions explicitly
     expect(
       empty,
-      `gates with no required evidence (verify intentional): ${empty.join(', ')}`
+      `gates with no hard requirement (no required producer AND no sign-off): ${empty.join(', ')}`
     ).toEqual([]);
   });
 });

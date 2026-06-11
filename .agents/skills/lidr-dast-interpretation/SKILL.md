@@ -2,7 +2,7 @@
 name: lidr-dast-interpretation
 id: dast-interpretation
 version: "1.2.0"
-last_updated: "2026-06-10"
+last_updated: "2026-06-11"
 updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
@@ -16,7 +16,7 @@ description: "Interpret DAST (Dynamic Application Security Testing) scan reports
 
 # DAST Scan Interpreter
 
-Phase: 7 — Security | Gate: contributes to Gate 6 | Language: English
+Phase: 4 — Implementation · security (ex-Fase 7) | Gate: contributes to Gate 6 | Language: English
 
 ## Output Location
 

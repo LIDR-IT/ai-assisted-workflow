@@ -2,7 +2,7 @@
 name: lidr-security-checklist
 id: security-checklist
 version: "1.2.0"
-last_updated: "2026-06-10"
+last_updated: "2026-06-11"
 updated_by: "TL: Gate-evidence contract fix"
 status: active
 phase: 4
@@ -17,7 +17,7 @@ description: "🤖 Essential for platform security validation - ALWAYS use befor
 
 # Security Checklist Evaluator
 
-Phase: 7 — Security | Gate: 6 (Security Sign-off) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Phase: 4 — Implementation · security (ex-Fase 7) | Gate: 6 (Security Sign-off) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 

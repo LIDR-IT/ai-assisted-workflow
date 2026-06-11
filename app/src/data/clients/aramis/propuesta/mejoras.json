@@ -23,6 +23,8 @@
       "propuesta": [
         "✅ bmad-document-project: skill incluida — escanea el codebase existente (BE/FE/Bridge) e inventaría la documentación real del proyecto",
         "✅ bmad-generate-project-context: skill incluida — genera project-context.md optimizado para LLM, contexto persistente de toda sesión IA",
+        "✅ bmad-shard-doc + bmad-index-docs: skills incluidas — shardean docs grandes (Notion exportado, specs heredadas) por secciones y mantienen docs/index.md regenerado tras cada cambio",
+        "✅ lidr-adr (brownfield): ADR baseline — documenta las decisiones arquitectónicas heredadas de Polaris/Bridge difíciles de revertir (MADR v3) antes de tocar código",
         "✅ lidr-generate-rule: skill incluida — genera CLAUDE.md por repo (PHP+Symfony hexagonal / Angular+Nuxt / Bridge). Driver inicial sugerido: Dídac",
         "✅ ▸ /lidr-init-project-docs: command incluido — scaffold docs/projects/aramis/",
         "✅ Checklist 'Context Ready': evidencia brownfield evaluada en Gate 0 (project-context refleja el stack real, docs inventariadas, rules del cliente activas)",

@@ -2,7 +2,7 @@
 name: lidr-using-git-worktrees
 id: using-git-worktrees
 version: "1.0.0"
-last_updated: "2026-05-20"
+last_updated: "2026-06-11"
 updated_by: "TL: LIDR Spec Native"
 status: active
 phase: 4
@@ -22,7 +22,7 @@ description: >
 
 # Using Git Worktrees Skill
 
-Phase: 5 — Development | Author: LIDR Consultorias
+Phase: 4 — Implementation · development (ex-Fase 5) | Author: LIDR Consultorias
 
 ## When to Invoke
 

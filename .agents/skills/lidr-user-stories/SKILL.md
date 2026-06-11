@@ -1,9 +1,9 @@
 ---
 name: lidr-user-stories
 id: user-stories
-version: "2.4.0"
-last_updated: "2026-06-09"
-updated_by: "TL: lang+tool agnostic"
+version: "2.5.0"
+last_updated: "2026-06-11"
+updated_by: "TL: BMad-seam visibility"
 status: active
 phase: 3
 stage: sprint-planning
@@ -26,9 +26,13 @@ description: >
 
 # User Story Generator
 
-Phase: 4 — Sprint Planning (feeds G3 evidence) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). BDD scenarios stay in English.
+Phase: 3 — Solutioning · sprint-planning (ex-Fase 4) (feeds G3 evidence) | Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). BDD scenarios stay in English.
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
+
+## Relationship to BMad
+
+LIDR-unique PO artifact. BMad's `bmad-create-epics-and-stories` decomposes the validated requirements into the **epic structure**, and `bmad-create-story` / `bmad-dev-story` then turn a backlog item into a **dev-agent story file** (implementation-context fodder). This skill fills the gap between them: it slices the BDD-bearing RFs authored by `lidr-generate-rf` (within that epic structure) into **INVEST, story-pointed, tracking-tool-ready user stories** for the PO backlog (CSV export to `{{TRACKING_TOOL}}`) — the artifact BMad's dev-facing stories deliberately are not (per `_shared/lidr/MIGRATION.md`: _"BMad stories are dev-agent fodder, not Jira-ready PO artifacts"_). Consumes the RFs from `lidr-generate-rf` within the epics from `bmad-create-epics-and-stories`; feeds `bmad-create-story` (which re-contextualizes each US for the dev agent) and the Gate 3 DoR grooming step (`lidr-refinement-notes`).
 
 ## Automated Workflow (NEW)
 
@@ -542,6 +546,7 @@ npx tsx scripts/validate-examples.ts
 
 | Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                                                                                                                          |
 | ------- | ---------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2.5.0   | 2026-06-11 | TL: BMad-seam visibility                  | Added "## Relationship to BMad": positions the skill as the PO-backlog wrapper that slices `lidr-generate-rf` RFs within `bmad-create-epics-and-stories` epics and feeds `bmad-create-story` + Gate 3 DoR (`lidr-refinement-notes`) — closes the MIGRATION.md §115 follow-up for this skill                                                      |
 | 2.4.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted tracking tool (Jira) via tool-registry. Translated remaining Spanish example user story, BDD scenarios, CSV export, template, and examples to English                                                                                                                                       |
 | 2.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix              | Language to English-default-configurable (BDD stays English); abstracted tracking tool via {{TRACKING_TOOL}} in generic prose; added language_default + integrations frontmatter                                                                                                                                                                 |
 | 2.3.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Complete domain-agnostic remediation: replaced examples/user-stories-selphi-document-capture.md with user-stories-document-capture-feature.md using comprehensive template variables ({{PRIMARY_WORKFLOW}}, {{DOCUMENT_TYPE}}, {{VERIFICATION_DEVICE}}, etc.). Removed all banking/biometric-specific content. Achieving 75→92/100 target score. |

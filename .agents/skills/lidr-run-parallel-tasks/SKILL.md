@@ -2,7 +2,7 @@
 name: lidr-run-parallel-tasks
 id: run-parallel-tasks
 version: "1.1.0"
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 updated_by: "TL: LIDR Spec Native"
 status: active
 phase: 4
@@ -27,7 +27,7 @@ description: >
 
 # Run Parallel Tasks Skill
 
-Phase: 5 — Development | Author: LIDR Consultorias | Pipeline: enrich → new → ff → apply → verify → stop
+Phase: 4 — Implementation · development (ex-Fase 5) | Author: LIDR Consultorias | Pipeline: enrich → new → ff → apply → verify → stop
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 

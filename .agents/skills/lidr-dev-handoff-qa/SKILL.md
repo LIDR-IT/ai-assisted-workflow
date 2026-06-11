@@ -2,7 +2,7 @@
 name: lidr-dev-handoff-qa
 id: dev-handoff-qa
 version: "1.4.0"
-last_updated: "2026-06-09"
+last_updated: "2026-06-11"
 updated_by: "TL: lang+tool agnostic"
 status: active
 phase: 4
@@ -26,7 +26,7 @@ description: >
 
 # Dev → QA Handoff Generator
 
-Phase: 5 (Development) → 6 (QA) | Gate: **G4 evidence — Dev→QA, `required: true`** | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
+Phase: 4 — Implementation · development → qa (ex-Fase 5 → 6) | Gate: **G4 evidence — Dev→QA, `required: true`** | Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
 
 Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.yaml`; the active client binds concrete tools in `clients/<CODE>.yaml`.
 
