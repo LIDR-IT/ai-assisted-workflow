@@ -110,6 +110,7 @@ describe('useTestExecution Hook', () => {
       pass: 0,
       fail: 0,
       warn: 0,
+      info: 0,
       totalDuration: 0,
     });
   });
