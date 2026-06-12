@@ -2,7 +2,7 @@
 
 > **Purpose**: Complete bidirectional traceability: Business Case → PRDs → RFs + NFRs → Epics → US.
 > **When it is created**: Phase 3 — Specification, after generating and validating RFs + NFRs
-> **Who fills it in**: PO + TL with skill `validate-requirements`
+> **Who fills it in**: PO + TL with skill the validate mode
 > **Associated Gate**: Gate 2 — Requirements Complete and Coherent
 > **Instances**: `docs/projects/{project}/rtm.md`
 
@@ -121,9 +121,9 @@
 
 ## Assisting Skills
 
-- **RFs**: `skills/generate-rf/SKILL.md`
-- **NFRs**: `skills/generate-nfr/SKILL.md`
-- **Validation**: `skills/validate-requirements/SKILL.md` (generates this document)
+- **RFs**: `workflows/per-rf.md (per-rf mode)`
+- **NFRs**: `workflows/nfr.md (nfr mode)`
+- **Validation**: `workflows/validate.md (validate mode)` (generates this document)
 - **Coherence**: `docs/checklists/rf-coherence.md`
 - **Next**: `skills/epic-breakdown/SKILL.md` (uses clusters from this RTM)
 

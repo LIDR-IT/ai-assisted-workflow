@@ -24,7 +24,7 @@ Distintos workflows del SDLC tienen perfiles de razonamiento muy distintos:
 
 - **Planning** (PRD, RFs, design docs, fast-forward de change): necesita razonamiento profundo, exploración de trade-offs, búsqueda de inconsistencias. → **Opus high reasoning** (`opus`, effort: high)
 - **Implementación** (escribir código según un tasks.md ya generado): necesita velocidad, throughput, ejecución determinista. → **Sonnet medium** (`sonnet`, effort: medium)
-- **Verificación / análisis cruzado** (validate-requirements, validate-prd, spec-verify): puede subir a Opus si encuentra problemas estructurales. → **Opus high** condicional
+- **Verificación / análisis cruzado** (lidr-requirements validate mode, validate-prd, spec-verify): puede subir a Opus si encuentra problemas estructurales. → **Opus high** condicional
 
 Si la sesión está en el modelo equivocado, el agente DEBE auto-corregir editando `.claude/settings.json` (vía el skill `update-config` o edición directa) — **no detenerse a preguntar al usuario**.
 
@@ -34,22 +34,20 @@ Si la sesión está en el modelo equivocado, el agente DEBE auto-corregir editan
 
 ### 2.1 Workflows que requieren Opus high reasoning
 
-| Workflow / Skill / Command                         | Por qué Opus high                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------------------- |
-| `lidr-business-case`                               | Razonamiento de negocio, ROI, alineación estratégica                      |
-| `bmad-prd`                                         | PRD unificado (F+T) — alto nivel de exploración (planning intensivo)      |
-| `bmad-create-architecture`                         | Arquitectura, decisiones estructurales                                    |
-| `lidr-generate-rf`                                 | RFs con BDD — requiere comprensión completa del PRD                       |
-| `lidr-generate-nfr`                                | NFRs medibles — necesita conectar negocio ↔ medición                      |
-| `lidr-validate-requirements`                       | Detección de gaps, coherencia cruzada, RTM                                |
-| `lidr-validate-prd`                                | Scoring + recomendaciones                                                 |
-| `lidr-user-stories`                                | Slicing + BDD                                                             |
-| `bmad-create-epics-and-stories`                    | Descomposición de épica master en sub-épicas + stories                    |
-| `bmad-testarch-test-design`                        | Estrategia de testing risk-based                                          |
-| `lidr-security-checklist`                          | Compliance + threat modeling                                              |
-| `/lidr-spec-ff`                                    | Fast-forward genera proposal + design + tasks + spec — planning intensivo |
-| `lidr-run-parallel-tasks`                          | Coordinación + planning interno por sub-agente                            |
-| `lidr-spec-orchestrator` (subagent, fase planning) | Decisiones de coordinación cross-change                                   |
+| Workflow / Skill / Command                         | Por qué Opus high                                                                           |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `lidr-business-case`                               | Razonamiento de negocio, ROI, alineación estratégica                                        |
+| `bmad-prd`                                         | PRD unificado (F+T) — alto nivel de exploración (planning intensivo)                        |
+| `bmad-create-architecture`                         | Arquitectura, decisiones estructurales                                                      |
+| `lidr-requirements` (per-rf → nfr → validate)      | RFs con BDD, NFRs medibles, RTM + detección de gaps — requiere comprensión completa del PRD |
+| `lidr-validate-prd`                                | Scoring + recomendaciones                                                                   |
+| `lidr-user-stories`                                | Slicing + BDD                                                                               |
+| `bmad-create-epics-and-stories`                    | Descomposición de épica master en sub-épicas + stories                                      |
+| `bmad-testarch-test-design`                        | Estrategia de testing risk-based                                                            |
+| `lidr-security-checklist`                          | Compliance + threat modeling                                                                |
+| `/lidr-spec-ff`                                    | Fast-forward genera proposal + design + tasks + spec — planning intensivo                   |
+| `lidr-run-parallel-tasks`                          | Coordinación + planning interno por sub-agente                                              |
+| `lidr-spec-orchestrator` (subagent, fase planning) | Decisiones de coordinación cross-change                                                     |
 
 ### 2.2 Workflows que vuelven a Sonnet medium
 
@@ -104,7 +102,7 @@ Los skills LIDR pueden declarar el modelo requerido directamente en frontmatter:
 
 ```yaml
 ---
-name: lidr-generate-rf
+name: lidr-requirements
 model: opus # Claude-only field, ignorado por otras plataformas
 effort: high # Claude-only
 ---

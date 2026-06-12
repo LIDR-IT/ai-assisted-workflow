@@ -717,29 +717,15 @@ export const projectTree: TreeNode[] = [
                 name: 'specification (ex-F3 Especificación)',
                 type: 'folder',
                 iconName: 'FolderOpen',
-                badge: { label: '8 skills', color: getPhaseColorClass(3) },
+                badge: { label: '6 skills', color: getPhaseColorClass(3) },
                 desc: 'Stage specification → Gate 2: Specs Complete',
                 children: [
                   {
-                    name: 'lidr-generate-rf/SKILL.md',
+                    name: 'lidr-requirements/SKILL.md',
                     type: 'file',
                     badge: { label: 'LIDR', color: 'bg-emerald-100 text-emerald-700' },
-                    desc: 'Genera RFs completos con BDD desde PRD (⭐ evidencia G2)',
-                    docPath: '.claude/skills/lidr-generate-rf/SKILL.md',
-                  },
-                  {
-                    name: 'lidr-generate-nfr/SKILL.md',
-                    type: 'file',
-                    badge: { label: 'LIDR', color: 'bg-emerald-100 text-emerald-700' },
-                    desc: 'Genera NFRs standalone medibles desde PRD-T §5',
-                    docPath: '.claude/skills/lidr-generate-nfr/SKILL.md',
-                  },
-                  {
-                    name: 'lidr-validate-requirements/SKILL.md',
-                    type: 'file',
-                    badge: { label: 'LIDR', color: 'bg-emerald-100 text-emerald-700' },
-                    desc: '🤖 AUTOMATED: 5-pass validation (6h → 5min). Valida RFs + NFRs, genera RTM, detecta gaps (⭐ evidencia G2)',
-                    docPath: '.claude/skills/lidr-validate-requirements/SKILL.md',
+                    desc: 'RF + NFR + RTM en una skill-workflow (5 modos: per-rf · nfr · validate 5-pass · living-spec · brownfield-audit) (⭐ evidencia G2)',
+                    docPath: '.claude/skills/lidr-requirements/SKILL.md',
                   },
                   {
                     name: 'bmad-create-architecture/SKILL.md',

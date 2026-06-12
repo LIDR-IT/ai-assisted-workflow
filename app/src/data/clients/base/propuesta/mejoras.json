@@ -87,9 +87,9 @@
       "actual": "RFs sin trazabilidad formal a PRD ni gate ATDD pre-desarrollo. Dependencias mapeadas tarde, sin RTM compartida. Arquitectura sin documento vivo.",
       "propuesta": [
         "bmad-create-architecture + lidr-adr skills documentan arquitectura del sistema con ADRs por decisión; en el modelo unificado la arquitectura es evidencia REQUERIDA de Gate 2",
-        "lidr-generate-rf skill genera RFs con BDD desde PRD aprobado",
-        "lidr-generate-nfr skill genera NFRs con métricas medibles",
-        "lidr-validate-requirements skill orquesta la fase completa: RFs + NFRs + RTM (motor 5-pass) — trazabilidad BC → PRD → RF sin huérfanos",
+        "lidr-requirements (per-rf mode) genera RFs con BDD desde PRD aprobado",
+        "lidr-requirements (nfr mode) genera NFRs con métricas medibles",
+        "lidr-requirements (validate mode) orquesta la fase completa: RFs + NFRs + RTM (motor 5-pass) — trazabilidad BC → PRD → RF sin huérfanos",
         "cl-rf checklist valida coherencia de RFs vs PRD",
         "bmad-create-epics-and-stories skill descompone épicas en sub-épicas con dependencias (stories 2-40h)",
         "bmad-testarch-test-design + bmad-testarch-atdd skills: la estrategia de test se diseña en Solutioning; ATDD genera los acceptance tests en fase roja ANTES del dev",

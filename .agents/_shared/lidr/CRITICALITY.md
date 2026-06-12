@@ -40,11 +40,11 @@ These fill gaps that BMad has zero coverage for. Cannot be skipped without losin
 
 ### Gate 2 (3)
 
-| Skill                        | Why required                                                                                                  |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `lidr-generate-rf`           | BMad embeds reqs in PRD; LIDR produces standalone Jira-ready RFs with BDD.                                    |
-| `lidr-generate-nfr`          | BMad-testarch-nfr **audits evidence** (post-implementation), doesn't **generate**. LIDR produces the NFR doc. |
-| `lidr-validate-requirements` | BMad has no RTM / Jira CSV automation (5-pass, 150h/yr ROI).                                                  |
+| Skill                               | Why required                                                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `lidr-requirements` (per-rf mode)   | BMad embeds reqs in PRD; LIDR produces standalone Jira-ready RFs with BDD.                                    |
+| `lidr-requirements` (nfr mode)      | BMad-testarch-nfr **audits evidence** (post-implementation), doesn't **generate**. LIDR produces the NFR doc. |
+| `lidr-requirements` (validate mode) | BMad has no RTM / Jira CSV automation (5-pass, 150h/yr ROI).                                                  |
 
 ### Gate 3 (1)
 

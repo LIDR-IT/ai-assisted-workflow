@@ -15,7 +15,7 @@ owner_role: "Tech Lead"
 > **Purpose**: Verify Non-Functional Requirements are met before deploy.
 > **When Evaluated**: Pre-deploy, between Gate 5 (QA) and Gate 6 (Security)
 > **Who Evaluates**: TL + DevOps + QA (performance/load test data)
-> **Associated Skill**: `generate-nfr`
+> **Associated Skill**: the nfr mode
 > **Complements**: Security checklist (security-specific validations)
 
 ---

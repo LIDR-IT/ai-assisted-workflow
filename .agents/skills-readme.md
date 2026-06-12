@@ -49,7 +49,7 @@ A command and a skill MAY intentionally share a name when the command is the **v
 
 **Rule:** the skill-engine declares `user-invocable: false`. The command owns `/<name>`; the skill is reached only by delegation (the command calls it) or by the model's auto-load — never from the `/` menu. This resolves the collision with one frontmatter line and **zero churn** (no rename of refs, `gate-evidence.yaml`, validators, or script paths).
 
-Canonical example (the only collision in the ecosystem): command `lidr-validate-requirements` (Phase-3 orchestrator) + skill `lidr-validate-requirements` (RTM / 5-pass engine, `user-invocable: false`). Full rationale and the rejected rename option: `docs/adr/ADR-0007-command-skill-name-resolution.md`.
+Former canonical example: command `lidr-validate-requirements` (Phase-3 orchestrator) once paired with a same-name skill (RTM / 5-pass engine). The **2026-06-12 fusion** folded that engine into the `lidr-requirements` skill (validate mode), so the name pair no longer collides — the command now delegates to `lidr-requirements`. The flag rule above still governs any future verb↔engine pair. Rationale + rejected rename option: `docs/adr/ADR-0007-command-skill-name-resolution.md`.
 
 Do NOT introduce a new same-name pair without applying this flag. Prefer distinct names for genuinely independent artifacts; reserve the shared name for true verb↔engine pairs.
 
@@ -137,7 +137,7 @@ phase-by-phase mapping. Includes:
   `references/` (2026-06-12 consolidation).
 - **SDLC + spec-lifecycle (37):** `lidr-business-case`, `lidr-kickoff`,
   `lidr-stakeholder-map`, `lidr-risk-log`, `lidr-review-cruzado`,
-  `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements`,
+  `lidr-requirements` (per-rf / nfr / validate / living-spec / brownfield-audit modes),
   `lidr-user-stories`, `lidr-refinement-notes`, `lidr-sprint-capacity`,
   `lidr-adr`, `lidr-pr-description`, `lidr-tech-debt`, `lidr-dev-handoff-qa`,
   `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`,

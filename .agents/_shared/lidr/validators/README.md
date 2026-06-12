@@ -184,7 +184,7 @@ Hook-callable validators (used by `validate-ecosystem-counts.sh` Stop hook):
 Commands that orchestrate validators:
 
 - `/lidr-advance-gate` — gate-pass evaluation
-- `/lidr-validate-requirements` — RFs + NFRs + RTM coherence
+- `/lidr-validate-requirements` — RFs + NFRs + RTM coherence (delegates to the `lidr-requirements` validate mode)
 - `/lidr-validate-prd` — PRD scoring + recommendations
 - `/lidr-prepare-testing` — test plan quality
 

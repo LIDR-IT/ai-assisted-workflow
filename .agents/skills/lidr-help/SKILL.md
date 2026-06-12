@@ -58,14 +58,14 @@ for f in .agents/skills/*/SKILL.md; do grep -m1 'name:' "$f"; done
 
 LIDR does **not** replace BMad — it adds the SDLC governance wrapper around it. Recommend the BMad skill for the core artifact and the LIDR skill/command for the gate, traceability, and orchestration layer:
 
-| BMad provides (core)                        | LIDR adds (governance wrapper)                                                           |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `bmad-prd` (unified PRD)                    | `lidr-review-cruzado` (Gate-1 F+T check), `/lidr-validate-prd` (scored Gate-1 readiness) |
-| `bmad-create-epics-and-stories`             | `/lidr-validate-requirements` (RFs+NFRs+RTM, Gate-2)                                     |
-| `bmad-create-story`                         | `lidr-refinement-notes` (DoR / Gate-3 layer)                                             |
-| `bmad-testarch-*` (test design/automate)    | `/lidr-prepare-testing`, `lidr-test-execution-report` (Gate-5 sign-off)                  |
-| `bmad-quick-dev` (code an intent)           | `/lidr-implement-ticket`, the `/lidr-spec-*` lifecycle (branch→tests→PR→handoff, Gate-4) |
-| `bmad-correct-course`, `bmad-sprint-status` | `/lidr-course-correct`, `/lidr-sprint-health` (SDLC + portfolio framing)                 |
+| BMad provides (core)                        | LIDR adds (governance wrapper)                                                                       |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `bmad-prd` (unified PRD)                    | `lidr-review-cruzado` (Gate-1 F+T check), `/lidr-validate-prd` (scored Gate-1 readiness)             |
+| `bmad-create-epics-and-stories`             | `/lidr-validate-requirements` (RFs+NFRs+RTM, Gate-2; delegates to `lidr-requirements` validate mode) |
+| `bmad-create-story`                         | `lidr-refinement-notes` (DoR / Gate-3 layer)                                                         |
+| `bmad-testarch-*` (test design/automate)    | `/lidr-prepare-testing`, `lidr-test-execution-report` (Gate-5 sign-off)                              |
+| `bmad-quick-dev` (code an intent)           | `/lidr-implement-ticket`, the `/lidr-spec-*` lifecycle (branch→tests→PR→handoff, Gate-4)             |
+| `bmad-correct-course`, `bmad-sprint-status` | `/lidr-course-correct`, `/lidr-sprint-health` (SDLC + portfolio framing)                             |
 
 When the user's need is the artifact itself → recommend the BMad skill. When it's _governance_ (which gate, who signs off, traceability, what's next) → that's the LIDR layer.
 

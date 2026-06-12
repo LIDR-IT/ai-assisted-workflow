@@ -230,13 +230,15 @@ gates:
         artifact: "{bmad_test}/test-design/**/*.md"
         required: false
     lidr_evidence:
-      - skill: lidr-generate-rf
+      # lidr-requirements fuses the former generate-rf + generate-nfr + validate-requirements;
+      # one producer, three Gate-2 artifacts (per-rf / nfr / validate modes).
+      - skill: lidr-requirements
         artifact: "{client_root}/requirements/RF-*.md"
         required: true
-      - skill: lidr-generate-nfr
+      - skill: lidr-requirements
         artifact: "{client_root}/requirements/NFR-*.md"
         required: false
-      - skill: lidr-validate-requirements
+      - skill: lidr-requirements
         artifact: "{client_root}/rtm.md"
         required: true
       # Variant-compatibility analysis of new/modified RFs against the

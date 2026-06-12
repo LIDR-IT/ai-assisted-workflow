@@ -62,7 +62,7 @@
       "icon": null,
       "actual": "TODO AS-IS Phase 3 specification",
       "propuesta": [
-        "TODO TO-BE (bmad-create-architecture + lidr-adr, lidr-generate-rf, lidr-generate-nfr, lidr-validate-requirements, bmad-create-epics-and-stories, bmad-testarch-test-design + bmad-testarch-atdd)"
+        "TODO TO-BE (bmad-create-architecture + lidr-adr, lidr-requirements (per-rf → nfr → validate modes), bmad-create-epics-and-stories, bmad-testarch-test-design + bmad-testarch-atdd)"
       ]
     },
     {

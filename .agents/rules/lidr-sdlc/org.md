@@ -86,16 +86,16 @@ Cada eslabón referencia al anterior. La IA debe **mantener esta trazabilidad** 
 
 Para tareas repetitivas con alto volumen (> 2h/sprint), priorizamos **automatización completa**:
 
-| Skill Automatizado              | Antes            | Ahora              | Ahorro/Ciclo | ROI Anual  |
-| ------------------------------- | ---------------- | ------------------ | ------------ | ---------- |
-| 🤖 `lidr-validate-requirements` | 6h manual        | 5min script        | 5.9h         | 150+ horas |
-| 🤖 `lidr-tech-debt`             | 6h análisis      | 5min SonarQube     | 5.9h         | 120+ horas |
-| 🤖 `lidr-user-stories`          | 3h escritura     | 15min slicing      | 2.75h        | 80+ horas  |
-| 🤖 `bmad-testarch-automate`     | 8h selección     | 30min impact       | 7.5h         | 120+ horas |
-| 🤖 `lidr-security-checklist`    | 4h compliance    | 5min analysis      | 3.9h         | 80+ horas  |
-| 🤖 `bmad-testarch-test-design`  | 3h planning      | 5min risk analysis | 2.9h         | 60+ horas  |
-| 🤖 `lidr-release-notes`         | 2h manual        | 5min git analysis  | 1.9h         | 50+ horas  |
-| 🤖 `lidr-rollback-plan`         | 4h risk analysis | 5min automation    | 3.9h         | 45+ horas  |
+| Skill Automatizado                | Antes            | Ahora              | Ahorro/Ciclo | ROI Anual  |
+| --------------------------------- | ---------------- | ------------------ | ------------ | ---------- |
+| 🤖 `lidr-requirements` (validate) | 6h manual        | 5min script        | 5.9h         | 150+ horas |
+| 🤖 `lidr-tech-debt`               | 6h análisis      | 5min SonarQube     | 5.9h         | 120+ horas |
+| 🤖 `lidr-user-stories`            | 3h escritura     | 15min slicing      | 2.75h        | 80+ horas  |
+| 🤖 `bmad-testarch-automate`       | 8h selección     | 30min impact       | 7.5h         | 120+ horas |
+| 🤖 `lidr-security-checklist`      | 4h compliance    | 5min analysis      | 3.9h         | 80+ horas  |
+| 🤖 `bmad-testarch-test-design`    | 3h planning      | 5min risk analysis | 2.9h         | 60+ horas  |
+| 🤖 `lidr-release-notes`           | 2h manual        | 5min git analysis  | 1.9h         | 50+ horas  |
+| 🤖 `lidr-rollback-plan`           | 4h risk analysis | 5min automation    | 3.9h         | 45+ horas  |
 
 **Total ROI**: 775+ horas/año liberadas para trabajo de valor estratégico.
 
@@ -329,11 +329,11 @@ La IA DEBE verificar estos checklists en los puntos indicados:
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | Definition of Ready | Antes de aceptar US en sprint                                                                                                                 | lidr-refinement-notes/checklists/dor.md                   |
 | Definition of Done  | Al escribir/editar archivos (hook lidr-frontmatter-guard, PreToolUse: Write\|Edit) + TL review                                                | lidr-pr-description/checklists/dod.md                     |
-| Coherencia RF       | Al generar o validar RFs                                                                                                                      | lidr-generate-rf/checklists/rf-coherence.md               |
+| Coherencia RF       | Al generar o validar RFs                                                                                                                      | lidr-requirements/checklists/rf-coherence.md              |
 | Review Cruzado PRD  | Al revisar PRD-T vs PRD-F                                                                                                                     | lidr-review-cruzado/checklists/review-cruzado.md          |
 | Security Compliance | Pre-deploy (skill lidr-security-checklist, manual)                                                                                            | lidr-security-checklist/checklists/security-compliance.md |
 | Post-Deploy         | Post-deploy a producción (DevOps manual + /lidr-advance-gate 7)                                                                               | lidr-change-request/checklists/post-deploy.md             |
-| NFR Compliance      | Pre-deploy: verificación de NFRs (performance, scalability, availability, security)                                                           | lidr-generate-nfr/checklists/nfr-compliance.md            |
+| NFR Compliance      | Pre-deploy: verificación de NFRs (performance, scalability, availability, security)                                                           | lidr-requirements/checklists/nfr-compliance.md            |
 | Repo Structure      | Al crear repositorio: governance, CI/CD, API contracts, architecture, tooling                                                                 | lidr-kickoff/checklists/repo-structure.md                 |
 | Spec Execution      | Al ejecutar `/lidr-spec-apply` o `/lidr-spec-verify`: Step 0 branch + unit + curl + Playwright + docs + reports por step (AGENT MUST EXECUTE) | `.agents/rules/lidr-sdlc/spec-execution.md` §5            |
 | Model Selection     | Al iniciar workflows planning (Opus high) vs implementación (Sonnet medium); self-correct sin pedir confirmación                              | `.agents/rules/lidr-sdlc/model-selection.md`              |
@@ -347,10 +347,10 @@ La IA DEBE verificar estos checklists en los puntos indicados:
 
 ### 10.3 Templates Estándar
 
-| Template          | Uso                                  | Formato                                 |
-| ----------------- | ------------------------------------ | --------------------------------------- |
-| Formato RF        | Generación de requisitos funcionales | lidr-generate-rf/templates/rf-format.md |
-| Sprint Commitment | Compromiso formal de sprint          | docs/standards/sprint-commitment.md     |
+| Template          | Uso                                  | Formato                                  |
+| ----------------- | ------------------------------------ | ---------------------------------------- |
+| Formato RF        | Generación de requisitos funcionales | lidr-requirements/templates/rf-format.md |
+| Sprint Commitment | Compromiso formal de sprint          | docs/standards/sprint-commitment.md      |
 
 ---
 

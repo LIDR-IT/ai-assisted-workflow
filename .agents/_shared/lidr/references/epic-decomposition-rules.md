@@ -14,13 +14,13 @@ replaces_with: bmad-create-epics-and-stories
 
 ## Prerequisites (must exist before decomposition)
 
-| Artifact                | Source                       | Required           |
-| ----------------------- | ---------------------------- | ------------------ |
-| Validated RTM           | `lidr-validate-requirements` | Blocks execution   |
-| Implementation Clusters | `lidr-validate-requirements` | Blocks execution   |
-| Master Project          | `lidr-tracking-integration`  | Blocks execution   |
-| Dependency Map          | `lidr-generate-rf`           | Critical           |
-| NFR Summary             | `lidr-generate-nfr`          | Highly recommended |
+| Artifact                | Source                              | Required           |
+| ----------------------- | ----------------------------------- | ------------------ |
+| Validated RTM           | `lidr-requirements` (validate mode) | Blocks execution   |
+| Implementation Clusters | `lidr-requirements` (validate mode) | Blocks execution   |
+| Master Project          | `lidr-tracking-integration`         | Blocks execution   |
+| Dependency Map          | `lidr-requirements` (per-rf mode)   | Critical           |
+| NFR Summary             | `lidr-requirements` (nfr mode)      | Highly recommended |
 
 **Do NOT proceed without validated requirements.**
 

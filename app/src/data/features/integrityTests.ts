@@ -156,7 +156,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/hooks/scripts/protect-secrets.sh',
   '.claude/hooks/scripts/validate-ecosystem-counts.sh',
 
-  // Skills (108)
+  // Skills (106)
   '.claude/skills/bmad-advanced-elicitation/SKILL.md',
   '.claude/skills/bmad-agent-analyst/SKILL.md',
   '.claude/skills/bmad-agent-architect/SKILL.md',
@@ -238,8 +238,6 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/skills/lidr-dev-handoff-qa/SKILL.md',
   '.claude/skills/lidr-external-sync/SKILL.md',
   '.claude/skills/lidr-gate-evaluation/SKILL.md',
-  '.claude/skills/lidr-generate-nfr/SKILL.md',
-  '.claude/skills/lidr-generate-rf/SKILL.md',
   '.claude/skills/lidr-help/SKILL.md',
   '.claude/skills/lidr-impact-analysis/SKILL.md',
   '.claude/skills/lidr-kickoff/SKILL.md',
@@ -263,7 +261,7 @@ export const HELPCENTER_DOCPATHS: string[] = [
   '.claude/skills/lidr-tracking-integration/SKILL.md',
   '.claude/skills/lidr-user-stories/SKILL.md',
   '.claude/skills/lidr-using-git-worktrees/SKILL.md',
-  '.claude/skills/lidr-validate-requirements/SKILL.md',
+  '.claude/skills/lidr-requirements/SKILL.md',
   '.claude/skills/lidr-vuln-assessment/SKILL.md',
 
   // Commands (30)
@@ -394,7 +392,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/hooks/scripts/protect-secrets.sh',
   '.claude/hooks/scripts/validate-ecosystem-counts.sh',
 
-  // Skills (108)
+  // Skills (106)
   '.claude/skills/bmad-advanced-elicitation/SKILL.md',
   '.claude/skills/bmad-agent-analyst/SKILL.md',
   '.claude/skills/bmad-agent-architect/SKILL.md',
@@ -476,8 +474,6 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/skills/lidr-dev-handoff-qa/SKILL.md',
   '.claude/skills/lidr-external-sync/SKILL.md',
   '.claude/skills/lidr-gate-evaluation/SKILL.md',
-  '.claude/skills/lidr-generate-nfr/SKILL.md',
-  '.claude/skills/lidr-generate-rf/SKILL.md',
   '.claude/skills/lidr-help/SKILL.md',
   '.claude/skills/lidr-impact-analysis/SKILL.md',
   '.claude/skills/lidr-kickoff/SKILL.md',
@@ -501,7 +497,7 @@ export const SITEMAP_DOCPATHS: string[] = [
   '.claude/skills/lidr-tracking-integration/SKILL.md',
   '.claude/skills/lidr-user-stories/SKILL.md',
   '.claude/skills/lidr-using-git-worktrees/SKILL.md',
-  '.claude/skills/lidr-validate-requirements/SKILL.md',
+  '.claude/skills/lidr-requirements/SKILL.md',
   '.claude/skills/lidr-vuln-assessment/SKILL.md',
 
   // Commands (30)

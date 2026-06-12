@@ -49,7 +49,7 @@
       "fase": "Phase 3 — Solutioning · specification (placeholder genérico)",
       "problema": "RFs y NFRs sin separación formal típicamente. Compliance multi-jurisdicción (GDPR + eIDAS + PSD2 + ISO) requiere NFRs cuantificables.",
       "impacto": "Crítico",
-      "mejora": "lidr-generate-rf + lidr-generate-nfr skills con threshold cuantificable por regulación (FAR/FRR, latencia liveness, retention period por jurisdicción) + RTM (lidr-validate-requirements) como evidencia del Gate 2"
+      "mejora": "lidr-requirements (per-rf → nfr modes) con threshold cuantificable por regulación (FAR/FRR, latencia liveness, retention period por jurisdicción) + RTM (lidr-requirements validate mode) como evidencia del Gate 2"
     },
     {
       "fase": "Phase 4 — Implementation · qa (placeholder genérico)",

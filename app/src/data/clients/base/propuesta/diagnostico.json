@@ -12,7 +12,7 @@
     "sourceReport": "src/data/features/propuestaMejora.tsx (legacy TSX defaults)"
   },
   "summary": {
-    "executiveSummary": "Plantilla base LIDR: 13 pain points genéricos del SDLC sin estandarizar. El framework .agents/ entrega 107 skills (38 lidr-* de gobernanza SDLC + 69 bmad-* del motor BMad), 30 commands, 24 rules, 6 hooks (lidr-frontmatter-guard, lidr-load-context, lidr-validate-ecosystem-counts, notify, auto-format, protect-secrets) y 10 subagents bajo el modelo de fases unificado BMad × LIDR (Phase 0 Context → 1 Analysis → 2 Planning → 3 Solutioning → 4 Implementation, gates G0-G7). Nuevo en v2.1: lidr-impact-analysis — análisis de impacto sobre contratos compartidos (Gate 4) y compatibilidad multi-variante (Gate 2) sobre registries mantenidos por el cliente en docs/projects/{{CLIENT_CODE}}/registries/. Estado actual típico: procesos artesanales, PRDs inconsistentes, RFs sin separación formal, QA reactivo, gaps en seguridad y despliegue. Quick wins LIDR: bmad-prd + lidr-generate-rf + bmad-testarch-test-design en Sprint 1-2. Personaliza este JSON con datos reales del discovery para reemplazar el fallback genérico.",
+    "executiveSummary": "Plantilla base LIDR: 13 pain points genéricos del SDLC sin estandarizar. El framework .agents/ entrega 105 skills (36 lidr-* de gobernanza SDLC + 69 bmad-* del motor BMad), 30 commands, 24 rules, 6 hooks (lidr-frontmatter-guard, lidr-load-context, lidr-validate-ecosystem-counts, notify, auto-format, protect-secrets) y 10 subagents bajo el modelo de fases unificado BMad × LIDR (Phase 0 Context → 1 Analysis → 2 Planning → 3 Solutioning → 4 Implementation, gates G0-G7). Nuevo en v2.1: lidr-impact-analysis — análisis de impacto sobre contratos compartidos (Gate 4) y compatibilidad multi-variante (Gate 2) sobre registries mantenidos por el cliente en docs/projects/{{CLIENT_CODE}}/registries/. Estado actual típico: procesos artesanales, PRDs inconsistentes, RFs sin separación formal, QA reactivo, gaps en seguridad y despliegue. Quick wins LIDR: bmad-prd + lidr-requirements (per-rf mode) + bmad-testarch-test-design en Sprint 1-2. Personaliza este JSON con datos reales del discovery para reemplazar el fallback genérico.",
     "fortalezas": [
       "• Sprint Planning establecido (cadencia regular)",
       "• Equipo organizado con roles diferenciados",
@@ -22,7 +22,7 @@
     "oportunidades": [
       "• Levantar el contexto brownfield con Phase 0: bmad-document-project + bmad-generate-project-context + CLAUDE.md por repo (lidr-agents-architecture, rule-development reference)",
       "• Formalizar PRDs con bmad-prd (un solo PRD F+T) + lidr-review-cruzado + lidr-risk-log",
-      "• Extraer RFs desde PRDs con skill lidr-generate-rf + RTM (lidr-validate-requirements)",
+      "• Extraer RFs desde PRDs con lidr-requirements (per-rf mode) + RTM (lidr-requirements validate mode)",
       "• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases + ATDD pre-dev (bmad-testarch-atdd)",
       "• Spec lifecycle por change: /lidr-spec-new → ff → apply → verify → archive con rule spec-execution (AGENT MUST EXECUTE)",
       "• Code review dual técnico/funcional con bmad-code-review (3 capas paralelas) en Gate 4",
@@ -58,7 +58,7 @@
       "fase": "Phase 3 — Solutioning · specification (ex-Especificación)",
       "problema": "RFs mezclados dentro del PRD, sin separación formal. Sin NFRs documentados ni trazabilidad. Arquitectura sin documento vivo.",
       "impacto": "Crítico",
-      "mejora": "lidr-generate-rf + lidr-generate-nfr skills. Extraer RFs desde PRDs, crear NFRs medibles, trazabilidad RF→US→Tasks con lidr-validate-requirements (RTM). bmad-create-architecture + lidr-adr como evidencia de Gate 2 (movida de G1 a G2 en el modelo unificado). Si el producto tiene variantes (países, brands, tenants, ediciones): lidr-impact-analysis (modo variant-compatibility) valida los RFs contra la matriz de variantes del cliente como evidencia opcional de Gate 2."
+      "mejora": "lidr-requirements (per-rf → nfr modes). Extraer RFs desde PRDs, crear NFRs medibles, trazabilidad RF→US→Tasks con lidr-requirements (validate mode, RTM). bmad-create-architecture + lidr-adr como evidencia de Gate 2 (movida de G1 a G2 en el modelo unificado). Si el producto tiene variantes (países, brands, tenants, ediciones): lidr-impact-analysis (modo variant-compatibility) valida los RFs contra la matriz de variantes del cliente como evidencia opcional de Gate 2."
     },
     {
       "fase": "Phase 3 — Solutioning · sprint-planning (ex-Sprint Planning)",

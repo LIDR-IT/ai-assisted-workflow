@@ -33,7 +33,7 @@ nice-to-have layer over BMad — never a hard requirement; the requirements come
 
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic). **All path-scoped (`paths:`)**
   — none load at launch; each loads only when you touch matching files. → `rules-readme.md`
-- **108 skills** (39 LIDR `lidr-*` + 69 BMad `bmad-*`), [Agent Skills](https://agentskills.io)
+- **106 skills** (37 LIDR `lidr-*` + 69 BMad `bmad-*`), [Agent Skills](https://agentskills.io)
   open standard; load on invocation. → `skills-readme.md`
 - **30 commands** (28 LIDR `lidr-*` — 21 SDLC + 7 `lidr-spec-*` lifecycle — + 2 generic:
   `sync-setup`, `test-hooks`). → `commands-readme.md`
@@ -79,7 +79,7 @@ edit `.claude/` directly. (The sync engine can also target the other platforms v
 ```
 .agents/
 ├── rules/          24 path-scoped rules (lidr-sdlc/, code/, design/, process/, quality/, …)
-├── skills/         108 skills (lidr-*, bmad-*)
+├── skills/         106 skills (lidr-*, bmad-*)
 ├── commands/       30 commands
 ├── subagents/      10 lidr-* workers
 ├── hooks/          hooks.json + scripts/

@@ -1,5 +1,5 @@
 ---
-id: generate-rf-workflow-living-spec
+id: requirements-workflow-living-spec
 version: "1.0.0"
 last_updated: "2026-06-13"
 updated_by: "TL: workflow refactor"
@@ -22,7 +22,7 @@ status: active
 
 - **UJ** — reference from the PRD / `bmad-ux` (inline at the moments that matter).
 - **RF + AC** — author with `references/decomposition-rules.md` + `references/bdd-rules.md` (AC in Gherkin = AC + test).
-- **NFR** — pull from `lidr-generate-nfr` for this feature.
+- **NFR** — pull from the **nfr mode** for this feature.
 
 ## Phase 2 — Consolidate
 
@@ -34,7 +34,7 @@ Apply the PRD-delta to the existing `spec.md`: **add / modify / deprecate** RFs 
 
 ## Phase 4 — Validate / trace
 
-Hand the consolidated RF/NFR/AC to `lidr-validate-requirements` (RTM) so RF/AC ↔ test ↔ delta stay traceable. Resolve gaps.
+Hand the consolidated RF/NFR/AC to the **validate mode** (RTM) so RF/AC ↔ test ↔ delta stay traceable. Resolve gaps.
 
 ## Phase 5 — Finalize
 

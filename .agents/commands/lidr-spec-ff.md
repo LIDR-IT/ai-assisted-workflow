@@ -15,7 +15,7 @@ PURPOSE:
 Fast-forward through artifact creation for a LIDR change: generate proposal.md,
 design.md, spec.md, and tasks.md in one pass, using the existing LIDR skills as
 sub-steps (bmad-prd for proposal, bmad-create-architecture for design,
-lidr-generate-rf + lidr-generate-nfr for spec, lidr-user-stories +
+lidr-requirements (per-rf → nfr modes) for spec, lidr-user-stories +
 spec-execution.md for tasks). BMad is the canonical SDD engine; LIDR wraps its
 outputs (gate / format / traceability) — see .agents/_shared/lidr/MIGRATION.md.
 
@@ -92,9 +92,9 @@ Content must cover:
 
 ### Step 3 — Generate `spec.md`
 
-Invoke logic from skills `lidr-generate-rf` (RFs with BDD) + `lidr-generate-nfr` (NFRs measurable). Update frontmatter (append to `editHistory`, add `step-04-spec` to `stepsCompleted`).
+Invoke logic from skill `lidr-requirements` (per-rf mode for RFs with BDD → nfr mode for measurable NFRs). Update frontmatter (append to `editHistory`, add `step-04-spec` to `stepsCompleted`).
 
-> **`bmad-spec` deliberately bypassed here.** LIDR builds `spec.md` from `lidr-generate-rf`/`lidr-generate-nfr` (human-readable RFs with BDD + measurable NFRs), **not** from BMad's `bmad-spec` SPEC kernel (a machine-contract artifact). This is a deliberate decision, not an oversight: the change container's `spec.md` is the governance/traceability spec, while `bmad-spec`'s kernel is consumed (when present) only as planning input to Step 1's `proposal.md`.
+> **`bmad-spec` deliberately bypassed here.** LIDR builds `spec.md` from `lidr-requirements` (per-rf → nfr modes: human-readable RFs with BDD + measurable NFRs), **not** from BMad's `bmad-spec` SPEC kernel (a machine-contract artifact). This is a deliberate decision, not an oversight: the change container's `spec.md` is the governance/traceability spec, while `bmad-spec`'s kernel is consumed (when present) only as planning input to Step 1's `proposal.md`.
 
 Content must cover:
 
@@ -137,7 +137,7 @@ If any validation fails: report which artifact and what's missing; do NOT mark t
 Generated:
   ✓ proposal.md      (bmad-prd + lidr-review-cruzado Gate-1 check)
   ✓ design.md        (bmad-create-architecture + lidr-adr references)
-  ✓ spec.md          (lidr-generate-rf + lidr-generate-nfr)
+  ✓ spec.md          (lidr-requirements per-rf → nfr modes)
   ✓ tasks.md         (lidr-user-stories + spec-execution.md mandatory steps)
 
 Location: docs/projects/<CLIENT_CODE>/changes/<change-name>/

@@ -1,0 +1,61 @@
+# lidr-requirements — workflow customization (BMad-style, read directly by the orchestrator)
+# The orchestrator (SKILL.md) reads this for paths + state. Overrides are merged by the
+# active client config when present. No external resolver needed — the agent reads it.
+
+[workflow]
+states = ["draft", "in-progress", "final"]
+state_field = "status"
+resume_on_activation = true
+
+# Five parallel modes (intents). The orchestrator detects the mode and routes to its workflow.
+[workflow.modes.per-rf]
+workflow = "workflows/per-rf.md"
+output = "docs/projects/{CLIENT_CODE}/requirements/RF-{PROJ}-{NNN}.md"
+companion = "docs/projects/{CLIENT_CODE}/requirements/dependency-map.md"
+gate = "G2"
+owner = "PO"
+
+[workflow.modes.nfr]
+workflow = "workflows/nfr.md"
+output = "docs/projects/{CLIENT_CODE}/requirements/NFR-{PROJ}-{CAT}-{NNN}.md"
+companion = "docs/projects/{CLIENT_CODE}/requirements/nfr-summary-matrix.md"
+gate = "G2"
+owner = "TL"
+
+[workflow.modes.validate]
+workflow = "workflows/validate.md"
+output = "docs/projects/{CLIENT_CODE}/rtm.md" # REQUIRED Gate-2 artifact
+companion = "docs/projects/{CLIENT_CODE}/gap-report.md"
+gate = "G2"
+owner = "PO + TL"
+command = "/lidr-validate-requirements" # the command delegates to this mode
+
+[workflow.modes.living-spec]
+workflow = "workflows/living-spec.md"
+output = "docs/features/{feature}/spec.md"
+per_client = "docs/projects/{CLIENT_CODE}/features/{feature}/spec.md"
+
+[workflow.modes.brownfield-audit]
+workflow = "workflows/brownfield-audit.md"
+output = "docs/features/{feature}/spec.md"
+inputs = ["bmad-document-project"]
+handoff = "bmad-testarch-trace"
+
+[workflow.shared]
+persistent_facts = [
+  "file:rules/lidr-sdlc/project.md",
+  "file:rules/lidr-sdlc/tech-stack.md",
+]
+decision_log = ".decision-log.md"
+references = [
+  "references/decomposition-rules.md",
+  "references/bdd-rules.md",
+  "templates/rf-format.md",
+  "templates/rf-body.md",
+  "templates/nfr-format.md",
+  "templates/rtm.md",
+  "checklists/rf-coherence.md",
+  "checklists/nfr-compliance.md",
+  "checklists/requirements-validation.md",
+]
+language = "client" # resolve via _shared/lidr/integrations/

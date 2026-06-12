@@ -117,7 +117,7 @@
         "y": 550,
         "label": "RFs + NFRs con BDD",
         "variant": "cyan",
-        "subtitle": "lidr-generate-rf + lidr-generate-nfr · hereda Gherkin existente · NFRs medibles (incl. CI rápido)"
+        "subtitle": "lidr-requirements (per-rf → nfr modes) · hereda Gherkin existente · NFRs medibles (incl. CI rápido)"
       },
       {
         "id": "cross-country",
@@ -133,7 +133,7 @@
         "y": 660,
         "label": "RTM + Epic Breakdown",
         "variant": "cyan",
-        "subtitle": "lidr-validate-requirements (RTM) + bmad-create-epics-and-stories · dependencias Bridge"
+        "subtitle": "lidr-requirements (validate mode, RTM) + bmad-create-epics-and-stories · dependencias Bridge"
       },
 
       {
@@ -472,7 +472,7 @@
     {
       "gate": "Gate 2",
       "name": "Specs Complete + ATDD (Solutioning: specification → sprint-planning)",
-      "criteria": "Arquitectura documentada (bmad-create-architecture + lidr-adr — evidencia movida de G1 a G2 en el modelo unificado) · RFs+NFRs+RTM completos (lidr-generate-rf + lidr-generate-nfr + lidr-validate-requirements) · Epics descompuestas (bmad-create-epics-and-stories) · Test design (bmad-testarch-test-design) · QA valida criterios Gherkin pre-'Ready for Dev' (ATDD via bmad-testarch-atdd; la transición en el tracker la cablea Aramis) · Compatibilidad multi-variante: lidr-impact-analysis (modo variant-compatibility) sobre la matriz de variantes — evidencia opcional ✅ [CLIENTE: poblar variant-matrix.yaml; sin matriz, checklist manual guiado]",
+      "criteria": "Arquitectura documentada (bmad-create-architecture + lidr-adr — evidencia movida de G1 a G2 en el modelo unificado) · RFs+NFRs+RTM completos (lidr-requirements per-rf → nfr → validate modes) · Epics descompuestas (bmad-create-epics-and-stories) · Test design (bmad-testarch-test-design) · QA valida criterios Gherkin pre-'Ready for Dev' (ATDD via bmad-testarch-atdd; la transición en el tracker la cablea Aramis) · Compatibilidad multi-variante: lidr-impact-analysis (modo variant-compatibility) sobre la matriz de variantes — evidencia opcional ✅ [CLIENTE: poblar variant-matrix.yaml; sin matriz, checklist manual guiado]",
       "owner": "PO + Tech Lead + QA Lead"
     },
     {

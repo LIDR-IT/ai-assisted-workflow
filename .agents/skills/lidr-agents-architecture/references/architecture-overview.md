@@ -402,7 +402,7 @@ ln -s ../.agents/subagents .gemini/agents
 
 - `lidr-agents-architecture` — Umbrella meta-skill for creating skills/commands/subagents/hooks/MCP/rules
 - `lidr-business-case` — LIDR Phase 1 originación
-- `lidr-generate-rf` — LIDR Phase 3 especificación
+- `lidr-requirements` — LIDR Phase 3 especificación
 - Command authoring deep-dive → `references/command-development.md` (folded into this skill)
 
 ### Commands

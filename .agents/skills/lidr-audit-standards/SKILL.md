@@ -111,7 +111,7 @@ This skill audits the **structure** of the `.agents/` ecosystem itself — front
 - F0: Preparación (bmad-document-project)
 - F1: Originación (business-case, kickoff, stakeholder-map, tracking-integration)
 - F2: Discovery (bmad-prd, bmad-prd, review-cruzado, risk-log, bmad-technical-research)
-- F3: Especificación (generate-rf, generate-nfr, validate-requirements, bmad-create-epics-and-stories)
+- F3: Especificación (lidr-requirements (per-rf → nfr → validate modes), bmad-create-epics-and-stories)
 - F4: Planning (user-stories, sprint-capacity, refinement-notes)
 - F5: Desarrollo (pr-description, adr, tech-debt, dev-handoff-qa)
 - F6: QA (test-plan, create-test-cases, bug-report, test-execution-report, bmad-testarch-automate)
@@ -129,7 +129,7 @@ This skill audits the **structure** of the `.agents/` ecosystem itself — front
 **Automation Flags:**
 
 - `automation: true` for 7 automated skills:
-  - validate-requirements, tech-debt
+  - lidr-requirements (validate mode), tech-debt
   - user-stories, bmad-testarch-automate, test-plan
   - release-notes, security-checklist
 - `automation: false` for all manual skills

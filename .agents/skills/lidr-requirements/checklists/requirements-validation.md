@@ -13,7 +13,7 @@ owner_role: "PO"
 # Requirements Validation Checklist
 
 > **Purpose**: Validation criteria for complete requirements traceability matrix and coherence check.
-> **Evaluated by**: Skill `validate-requirements` during Phase 3 — Specification
+> **Evaluated by**: Skill the validate mode during Phase 3 — Specification
 > **Associated Gate**: Gate 2 — Requirements Complete
 > **Frequency**: After RFs and NFRs generation, before epic breakdown
 

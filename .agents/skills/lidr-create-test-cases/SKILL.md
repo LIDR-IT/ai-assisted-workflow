@@ -18,7 +18,7 @@ description: >
   Use for QA preparation, test coverage analysis, and BDD scenario expansion into detailed test cases.
   Essential for test execution planning when transitioning tickets to QA.
   Always use before test execution, always use when tickets move to "Ready for QA" status.
-  Do NOT use for requirements generation (use lidr-generate-rf), for test planning strategy (use bmad-testarch-test-design), or for bug reporting (use lidr-bug-report).
+  Do NOT use for requirements generation (use lidr-requirements per-rf mode), for test planning strategy (use bmad-testarch-test-design), or for bug reporting (use lidr-bug-report).
   Triggers on "create test cases", "generate TCs", "write test cases", "BDD test cases", "prepare test execution", "Ready for QA test cases".
   Content authored in English (Gherkin); artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). CSV-ready for the bound {{TEST_MGMT_TOOL}} import.
   Audience: QA (executes tests), Dev (understands test scope), QA Lead (validates coverage).
@@ -51,20 +51,20 @@ Examples:
 
 1. Read {{TRACKING_TOOL}} ticket: US + BDD acceptance criteria
 2. Read Dev→QA handoff (`lidr-dev-handoff-qa`): technical changes, test data, error scenarios
-3. Read linked RF (`lidr-generate-rf`): detailed BDD scenarios, business rules, data specs
+3. Read linked RF (`lidr-requirements` per-rf mode): detailed BDD scenarios, business rules, data specs
 4. Expand each BDD scenario into executable test case with concrete data
 5. Add edge cases and regression candidates from impact analysis
 6. Output CSV ready for the bound {{TEST_MGMT_TOOL}} import (or markdown)
 
 ## Input
 
-| Input                                     | Required  | Source                      |
-| ----------------------------------------- | --------- | --------------------------- |
-| {{TRACKING_TOOL}} ticket (US + BDD)       | ✅        | Manual or script            |
-| Dev→QA handoff                            | ✅        | `lidr-dev-handoff-qa`       |
-| Linked RF (BDD scenarios, business rules) | ✅        | `lidr-generate-rf`          |
-| Available test data                       | ✅        | Test data repo              |
-| Test Plan (risk priority)                 | Desirable | `bmad-testarch-test-design` |
+| Input                                     | Required  | Source                       |
+| ----------------------------------------- | --------- | ---------------------------- |
+| {{TRACKING_TOOL}} ticket (US + BDD)       | ✅        | Manual or script             |
+| Dev→QA handoff                            | ✅        | `lidr-dev-handoff-qa`        |
+| Linked RF (BDD scenarios, business rules) | ✅        | `lidr-requirements` (per-rf) |
+| Available test data                       | ✅        | Test data repo               |
+| Test Plan (risk priority)                 | Desirable | `bmad-testarch-test-design`  |
 
 ## Output Template — Per Test Case
 
@@ -520,7 +520,7 @@ created: "2025-01-15"
 ## Resources
 
 - **TC template with examples**: `references/tc-template.md`
-- **BDD anti-patterns**: see skill `generate-rf/` references
+- **BDD anti-patterns**: see skill `lidr-requirements/` references
 - **Test data catalog**: `references/test-data-catalog.md`
 
 ## Quality Assurance

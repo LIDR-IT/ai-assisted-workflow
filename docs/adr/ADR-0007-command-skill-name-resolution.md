@@ -27,7 +27,7 @@ El ecosistema expone dos superficies de invocación que comparten el mismo espac
 - **Comandos** (`.agents/commands/<name>.md`) — verbos que el usuario teclea (`/name`), orquestadores con `authorized_roles`, precondiciones de gate y encadenamiento de skills.
 - **Skills** (`.agents/skills/<name>/SKILL.md`) — conocimiento/motor que la IA auto-carga por _trigger phrases_; por defecto también son **user-invocable** vía `/name`.
 
-Durante la limpieza de comandos (junio 2026) se detectó **una** colisión: el comando `lidr-validate-requirements` (orquestador de Fase 3) y la skill `lidr-validate-requirements` (motor RTM + validación 5-pass) compartían nombre. Ambos quedaban registrados bajo el mismo `/lidr-validate-requirements`, creando ambigüedad de invocación y confusión en el registro.
+Durante la limpieza de comandos (junio 2026) se detectó **una** colisión: el comando `lidr-validate-requirements` (orquestador de Fase 3) y la skill `lidr-requirements` (motor RTM + validación 5-pass, en su **validate mode**) compartían superficie de slash cuando la skill aún se llamaba `lidr-validate-requirements`. Ambos quedaban registrados bajo el mismo `/lidr-validate-requirements`, creando ambigüedad de invocación y confusión en el registro.
 
 El patrón es legítimo y deseable: **el comando es el verbo y delega la lógica reutilizable en la skill** (command → skill). El problema es solo el nombre compartido en la superficie de slash.
 
@@ -47,7 +47,7 @@ El patrón es legítimo y deseable: **el comando es el verbo y delega la lógica
 #### Opción 1: Renombrar la skill (nombres 100% limpios)
 
 - **Pros**: Elimina el nombre compartido de raíz; registro sin ambigüedad cosmética.
-- **Cons**: Blast radius alto — `name` + `id` + dir + ~15 refs en docs + `gate-evidence.yaml` (machine-read, alimenta G2) + validators + rutas internas de scripts (`cd .claude/skills/validate-requirements`, `@../skills/validate-requirements/templates/rtm.md`) + re-sync. Riesgo real de romper el gate system para un beneficio cosmético.
+- **Cons**: Blast radius alto — `name` + `id` + dir + ~15 refs en docs + `gate-evidence.yaml` (machine-read, alimenta G2) + validators + rutas internas de scripts (`cd .claude/skills/lidr-requirements`, `@../skills/lidr-requirements/templates/rtm.md`) + re-sync. Riesgo real de romper el gate system para un beneficio cosmético.
 
 #### Opción 2: `user-invocable: false` en la skill (elegida)
 
@@ -67,7 +67,7 @@ Se elige **Opción 2: `user-invocable: false` en la skill-motor**. Cuando un com
 
 > Si existe un comando `X` y una skill `X` que el comando usa como motor, la skill `X` DEBE declarar `user-invocable: false`. El comando posee `/X`; la skill nunca compite por el menú de slash.
 
-Caso aplicado: `lidr-validate-requirements` (skill) → `user-invocable: false`. Es la **única** colisión existente en el ecosistema al momento de este ADR (verificado por comparación de basenames `commands/` vs `skills/`).
+Caso aplicado: `lidr-requirements` (skill, validate mode) → `user-invocable: false`. Era la **única** colisión existente en el ecosistema al momento de este ADR (verificado por comparación de basenames `commands/` vs `skills/`); tras la fusión de los tres skills de requisitos en `lidr-requirements`, el comando `/lidr-validate-requirements` delega en su **validate mode**.
 
 ### Consecuencias
 
@@ -88,7 +88,7 @@ Caso aplicado: `lidr-validate-requirements` (skill) → `user-invocable: false`.
 
 ### Links
 
-- Skill-motor: `.agents/skills/lidr-validate-requirements/SKILL.md` (`user-invocable: false`)
+- Skill-motor: `.agents/skills/lidr-requirements/SKILL.md` (validate mode, `user-invocable: false`)
 - Comando-verbo: `.agents/commands/lidr-validate-requirements.md`
 - Decisión command-vs-skill: `.agents/skills-readme.md`, `.agents/commands-readme.md`
 - Gate machine-read afectado por un eventual rename: `.agents/_shared/lidr/gate-evidence.yaml`
