@@ -43,7 +43,7 @@
     {
       "id": "root",
       "x": 0,
-      "y": 827,
+      "y": 838,
       "label": "root/",
       "variant": "slate",
       "subtitle": "raíz del repo"
@@ -59,7 +59,7 @@
     {
       "id": "bmad-output",
       "x": 300,
-      "y": 1465,
+      "y": 1485,
       "label": "_bmad-output/",
       "variant": "slate",
       "subtitle": "output_folder (BMad)"
@@ -86,7 +86,7 @@
       "y": 40,
       "label": "spec.md · spec viva",
       "variant": "sky",
-      "subtitle": "UJ+RF+NFR+AC consolidados · estado actual (formato PRD)"
+      "subtitle": "UJ+RF+NFR+AC consolidados (estado actual) · la levantan generate-rf + -nfr"
     },
     {
       "id": "dd-whatsapp",
@@ -94,7 +94,7 @@
       "y": 150,
       "label": "deep-dive.md",
       "variant": "sky",
-      "subtitle": "prosa: cómo funciona / arquitectura local"
+      "subtitle": "prosa del código (document-project): inventory · data flow · integration · dependency graph · testing · mod-guide"
     },
     {
       "id": "adr-folder",
@@ -145,44 +145,20 @@
       "subtitle": "área · agrupa los outputs de análisis"
     },
     {
-      "id": "out-brainstorm",
+      "id": "out-iter1",
       "x": 1420,
-      "y": 480,
-      "label": "Brainstorming",
+      "y": 580,
+      "label": "iter1 · análisis completo",
       "variant": "teal",
-      "subtitle": "iter1 · análisis completo"
-    },
-    {
-      "id": "out-market",
-      "x": 1420,
-      "y": 560,
-      "label": "Market research",
-      "variant": "teal",
-      "subtitle": "iter1 · planning-artifacts/research/"
-    },
-    {
-      "id": "out-tech",
-      "x": 1420,
-      "y": 640,
-      "label": "Technical research",
-      "variant": "teal",
-      "subtitle": "iter1 · planning-artifacts/research/"
-    },
-    {
-      "id": "out-brief",
-      "x": 1420,
-      "y": 720,
-      "label": "Product brief / PRFAQ",
-      "variant": "teal",
-      "subtitle": "iter1 · planning-artifacts/"
+      "subtitle": "brainstorm · market · tech · brief/prfaq (planning-artifacts/)"
     },
     {
       "id": "out-mejora",
       "x": 1420,
-      "y": 800,
-      "label": "Brief de mejora",
+      "y": 700,
+      "label": "iter2 · brief de mejora",
       "variant": "teal",
-      "subtitle": "iter2 · ligero (sale del monitoring de iter1)"
+      "subtitle": "ligero (sale del monitoring de iter1)"
     },
     {
       "id": "ini-otras",
@@ -331,10 +307,34 @@
     {
       "id": "test-artifacts",
       "x": 660,
-      "y": 2160,
+      "y": 2200,
       "label": "test-artifacts/",
       "variant": "amber",
-      "subtitle": "VERDAD ejecutable · ACUMULATIVA (ratchet) · suite iter1 + iter2, la cobertura solo sube"
+      "subtitle": "VERDAD ejecutable · ACUMULATIVA (ratchet) · módulo TEA"
+    },
+    {
+      "id": "ta-design",
+      "x": 1040,
+      "y": 2120,
+      "label": "test-design/",
+      "variant": "amber",
+      "subtitle": "plan risk-based (testarch-test-design)"
+    },
+    {
+      "id": "ta-trace",
+      "x": 1040,
+      "y": 2200,
+      "label": "traceability/",
+      "variant": "amber",
+      "subtitle": "matriz AC↔test + GATE (testarch-trace)"
+    },
+    {
+      "id": "ta-exec",
+      "x": 1040,
+      "y": 2280,
+      "label": "atdd · suite · nfr · review",
+      "variant": "amber",
+      "subtitle": "tests ejecutables (rojo→verde) + reports (testarch-*)"
     }
   ],
   "edges": [
@@ -465,30 +465,9 @@
       "targetHandle": "left"
     },
     {
-      "id": "e-iniwa-brainstorm",
+      "id": "e-iniwa-iter1",
       "source": "ini-whatsapp",
-      "target": "out-brainstorm",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-iniwa-market",
-      "source": "ini-whatsapp",
-      "target": "out-market",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-iniwa-tech",
-      "source": "ini-whatsapp",
-      "target": "out-tech",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-iniwa-brief",
-      "source": "ini-whatsapp",
-      "target": "out-brief",
+      "target": "out-iter1",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
@@ -589,6 +568,27 @@
       "target": "ux-exp",
       "sourceHandle": "right",
       "targetHandle": "left"
+    },
+    {
+      "id": "e-ta-design",
+      "source": "test-artifacts",
+      "target": "ta-design",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-ta-trace",
+      "source": "test-artifacts",
+      "target": "ta-trace",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-ta-exec",
+      "source": "test-artifacts",
+      "target": "ta-exec",
+      "sourceHandle": "right",
+      "targetHandle": "left"
     }
   ],
   "legend": [
@@ -634,7 +634,7 @@
     },
     {
       "color": "bg-amber-200",
-      "label": "test-artifacts/ — verdad ejecutable, acumulativa (ratchet)"
+      "label": "test-artifacts/ (TEA) — test-design · traceability+gate · atdd/suite/nfr/review · acumulativa (ratchet)"
     }
   ],
   "tables": [
@@ -657,6 +657,10 @@
     {
       "label": "Las 2 iteraciones del ejemplo",
       "value": "iter1 'whatsapp-ficha-reserva' (ficha del coche + enlace de reserva; análisis completo) → iter2 'whatsapp-plantillas-recordatorios' (plantillas WhatsApp Business + recordatorio a 48h; nace del monitoring de iter1)."
+    },
+    {
+      "label": "deep-dive.md — qué genera (document-project)",
+      "value": "Prosa derivada del CÓDIGO (no UJ/RF/NFR/AC): overview · file inventory (exports/imports/used-by) · data flow · integration points (APIs/eventos/BD) · dependency graph · testing analysis (coverage) · modification guidance. El full-scan añade además index.md · project-overview · source-tree · architecture · component-inventory · development-guide."
     }
   ]
 }
