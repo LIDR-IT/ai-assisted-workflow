@@ -20,7 +20,7 @@ export const aramisNavConfig: ClientNavConfig = {
     {
       title: 'Propuesta LIDR',
       kind: 'solution',
-      routes: ['propuesta', 'handoffs', 'agents'],
+      routes: ['propuesta', 'estructura-contexto', 'handoffs', 'agents'],
     },
     {
       title: 'Soporte',
@@ -69,6 +69,12 @@ export const aramisNavConfig: ClientNavConfig = {
       shortLabel: 'Propuesta',
       status: 'ok',
       note: 'Propuesta LIDR para cerrar los gaps detectados en el diagnóstico.',
+    },
+    'estructura-contexto': {
+      label: 'Estructura de Contexto',
+      shortLabel: 'Contexto',
+      status: 'ok',
+      note: 'Arquitectura de contexto propuesta: PRFAQ → PROs → epics → stories, con project-context/ y docs/adr como fuente de verdad para el desarrollo asistido por IA.',
     },
     handoffs: {
       label: 'Templates',
