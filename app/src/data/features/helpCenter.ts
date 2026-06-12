@@ -757,6 +757,27 @@ export const skills: Artifact[] = [
     gateContribution: 'All Gates',
     docPath: '.claude/skills/lidr-sdlc-tracking/SKILL.md',
   },
+  {
+    id: 'lidr-contract-extraction',
+    name: 'lidr-contract-extraction',
+    type: 'skill',
+    source: 'lidr',
+    criticality: 'recommended',
+    phase: 'Fase 4 — Implementation',
+    phaseNum: 4,
+    stage: 'development',
+    description:
+      'Self-configuring (capability probe + scenario routing) extraction of API/event/schema contracts from one or more repos — monorepo or multi-repo (api, frontend, bridge, QA) — into versioned contract specs (ADR-style) plus a derived contract-registry.yaml (document-project-style) that lidr-impact-analysis consumes. Works brownfield via framework introspection, annotations, traffic capture, or AI fallback.',
+    triggers: [
+      'extract contracts',
+      'generate contract registry',
+      'bootstrap API contracts',
+      'scan repos for contracts',
+    ],
+    roles: ['TL', 'Dev'],
+    gateContribution: 'Gate 4',
+    docPath: '.claude/skills/lidr-contract-extraction/SKILL.md',
+  },
 ];
 
 /* ─── COMMANDS DATA (37 commands — 30 LIDR + 7 generic) ─────────────────────────────── */

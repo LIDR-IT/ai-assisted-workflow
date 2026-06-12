@@ -4,7 +4,7 @@
 > multi-platform AI configuration source-of-truth and a React documentation app.
 
 [![Platforms](https://img.shields.io/badge/platforms-Cursor%20%7C%20Claude%20%7C%20Gemini%20%7C%20Antigravity%20%7C%20Copilot-green.svg)](#sync-strategies-per-platform)
-[![Skills](<https://img.shields.io/badge/skills-107%20(38%20LIDR%20%2B%2069%20BMAD)-blue.svg>)](#repository-structure)
+[![Skills](<https://img.shields.io/badge/skills-108%20(39%20LIDR%20%2B%2069%20BMAD)-blue.svg>)](#repository-structure)
 [![Commands](https://img.shields.io/badge/commands-30-blue.svg)](#repository-structure)
 [![Agents](https://img.shields.io/badge/subagents-10-blue.svg)](#repository-structure)
 [![MCP](https://img.shields.io/badge/MCP-Context7-purple.svg)](https://context7.com)
@@ -34,8 +34,8 @@ lidr-ecosystem/
 │   ├── rules/                     # 24 rules total
 │   │   ├── lidr-sdlc/             # 7 LIDR rules (org, project, tech-stack, workflows, documentation, spec-execution, model-selection)
 │   │   ├── code/, design/, ...    # 17 generic rules in 9 categories
-│   ├── skills/                    # 107 skills (Agent Skills open standard — read natively by Gemini/Copilot/Antigravity)
-│   │   ├── lidr-*/                # 38 LIDR SDLC skills (prefixed to avoid collisions)
+│   ├── skills/                    # 108 skills (Agent Skills open standard — read natively by Gemini/Copilot/Antigravity)
+│   │   ├── lidr-*/                # 39 LIDR SDLC skills (prefixed to avoid collisions)
 │   │   └── *                      # 69 BMAD skills (bmad-* — base flow + agent personas + utilities)
 │   ├── commands/                  # 30 commands
 │   │   ├── lidr-*.md              # 28 LIDR commands (21 SDLC + 7 spec-lifecycle: lidr-advance-gate, lidr-spec-*, ...)

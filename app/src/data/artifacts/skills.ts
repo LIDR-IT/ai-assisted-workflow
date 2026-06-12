@@ -369,6 +369,28 @@ export const skills: Skill[] = [
     relatedCommands: ['lidr-spec-verify', 'lidr-advance-gate'],
   },
   {
+    id: 'lidr-contract-extraction',
+    name: 'lidr-contract-extraction',
+    phase: 'Phase 4 — Implementation · development',
+    phaseNum: 4,
+    stage: 'development',
+    source: 'lidr',
+    criticality: 'recommended',
+    description:
+      'Self-configuring (capability probe + scenario routing) extraction of API/event/schema contracts from one or more repos — monorepo or multi-repo (api, frontend, bridge, QA) — into versioned contract specs (ADR-style) plus a derived contract-registry.yaml (document-project-style) that lidr-impact-analysis consumes. Works brownfield via framework introspection, annotations, traffic capture, or AI fallback.',
+    triggers: [
+      'extract contracts',
+      'generate contract registry',
+      'bootstrap API contracts',
+      'scan repos for contracts',
+    ],
+    roles: ['TL', 'Dev'],
+    gateContribution: 'Gate 4',
+    docPath: '.claude/skills/lidr-contract-extraction/SKILL.md',
+    relatedSkills: ['lidr-impact-analysis', 'bmad-document-project'],
+    relatedCommands: ['lidr-spec-apply', 'lidr-advance-gate'],
+  },
+  {
     id: 'lidr-dev-handoff-qa',
     name: 'lidr-dev-handoff-qa',
     phase: 'Phase 4 — Implementation · development',
