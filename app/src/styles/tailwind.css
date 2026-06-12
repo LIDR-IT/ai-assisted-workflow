@@ -1,4 +1,13 @@
 @import 'tailwindcss' source(none);
 @source '../**/*.{js,ts,jsx,tsx}';
 
+/*
+ * Legend swatches read their `bg-<hue>-200` class from JSON diagram data, which
+ * the `@source` globs above do NOT scan (.ts/.tsx/.js/.jsx only). Safelist every
+ * swatch hue here so the classes are always generated — without this the `sky`
+ * "docs / deep-dive" swatch renders blank. Keep in sync with the diagram color
+ * key and the variant enum in src/data/schemas/diagram-schema.ts.
+ */
+@source inline("bg-{slate,teal,blue,indigo,cyan,violet,green,amber,orange,sky,emerald,yellow,red,purple}-200");
+
 @import 'tw-animate-css';

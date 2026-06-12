@@ -1,0 +1,38 @@
+# Resolved configuration produced by the Step 0 probe (NOT hand-written first —
+# the skill detects these, the user confirms/overrides). Each value carries a confidence.
+# Place at: docs/projects/{client}/registries/contract-config.yaml
+
+version: "0.1.0"
+generated: "YYYY-MM-DD"
+generated_by: lidr-contract-extraction (probe)
+
+topology: { value: multi-repo, confidence: high } # monorepo | multi-repo
+
+# Per-repo detection (one block per entry in repos.yaml)
+repos:
+  - id: api
+    stack: { value: node-nest, confidence: high }
+    surfaces: { value: [rest, events], confidence: high }
+    existing_specs: # strongest source when present
+      - { type: openapi, path: openapi.json, confidence: high }
+    extraction_strategy: { value: spec-first, confidence: high } # spec-first | framework-aware | annotations | traffic | ai-fallback
+  - id: frontend
+    stack: { value: node-next, confidence: high }
+    surfaces: { value: [rest], confidence: medium }
+    existing_specs: []
+    extraction_strategy: { value: consumer-types, confidence: medium } # what it consumes (api client / generated types)
+  - id: bridge
+    stack: { value: node-nest, confidence: medium }
+    surfaces: { value: [events, rest], confidence: medium }
+    extraction_strategy: { value: ai-fallback, confidence: low } # legacy → AI synth, [REQUIERE VALIDACIÓN HUMANA]
+
+# Cross-cutting decisions (the 4 "questions" the skill answers itself)
+events: { value: true, confidence: high } # → AsyncAPI mode on
+verification:
+  baseline: schema-diff # always: oasdiff (REST) / buf (proto) / graphql-inspector (GraphQL)
+  pact: { value: false, confidence: medium } # consumer-driven + broker can-i-deploy (opt-in)
+catalog: { value: registry-file, confidence: high } # registry-file | backstage | microcks | eventcatalog
+ci: { value: github-actions, confidence: high } # where breaking-change checks get wired
+
+# Anything the probe could not resolve lands here for the user to answer before extraction
+open_questions: []

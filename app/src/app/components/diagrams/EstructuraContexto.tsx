@@ -1,14 +1,87 @@
 import { memo } from 'react';
-import { FolderTree, Workflow, RefreshCw, Layers, GitBranch, Target, BookOpen } from 'lucide-react';
+import {
+  FolderTree,
+  Workflow,
+  RefreshCw,
+  Layers,
+  GitBranch,
+  Target,
+  BookOpen,
+  FileText,
+} from 'lucide-react';
 import { DiagramCard, PageHeader, SectionBox } from '@/app/components/shared/FlowComponents';
 import { DiagramRenderer } from '@/app/components/shared/DiagramRenderer';
+
+/**
+ * Literal content for `project-context.md` (the file BMad auto-loads in every workflow).
+ * Shown read-only in the UI so the team can see/copy how we work. Kept in English to match
+ * BMad's `document_output_language` and because it is AI-facing rules.
+ */
+const PROJECT_CONTEXT_MD = `# Project Context — How We Work (LIDR × BMad)
+
+## Source of truth (read first)
+- A PRD is NOT the source of truth. It is the intake/change layer: per-feature, run-folder,
+  finalized (status: final), then archived. Its content is baked into stories at create-story
+  time and is not re-read during dev.
+- The living truth is layered and mostly DERIVED:
+  · WHAT IT DOES (present): code + test suite, made verifiable by the traceability matrix + gate
+    (bmad-testarch-trace) and legible by the per-feature deep-dive (bmad-document-project →
+    docs/index.md).
+  · WHY (past): .decision-log.md + ADRs (docs/adr/) + archived PRDs.
+  · HOW (rules): project-context.md (this file) + platform rules/.
+- The durable residue of a PRD is its acceptance criteria (AC) + user journeys (UJ): they graduate
+  into tests. The PRD narrative is transient; its AC are eternal as tests.
+
+## Features and PRDs
+- One feature = one product (Whatsapp, Correos, Módulo preview, …). One PRD-line per feature.
+- A change is a PRD-delta: bmad-prd Update on the feature (extend) or Create (new feature). Same
+  UJ/domain/release-cycle → extend; otherwise → create. What grows is the FEATURE (its derived
+  deep-dive + its test suite), not a perpetually-open PRD.
+
+## Cross-feature initiatives
+- An initiative may touch several features → it fans out into N PRD-deltas (one per feature). It
+  does NOT become one merged PRD.
+- The initiative is the umbrella (analysis: brief/prfaq) and the traceability join-key across all
+  its PRD-deltas, epics, stories and ADRs.
+- The shared contract between features (event/schema/API/enum) lives ONCE in architecture.md
+  (centralized) + an ADR + the contract registry — never duplicated per PRD. Validate cross-feature
+  impact with lidr-impact-analysis; verify the seam with a contract test.
+
+## Architecture & UX
+- architecture.md = one centralized, system-wide doc (home of cross-feature contracts); shards into
+  architecture/ (index + sections) when large. All PRDs reuse it.
+- UX: the design system (DESIGN.md tokens) is shared across features; EXPERIENCE.md (flows) is per
+  feature.
+
+## The loop
+analysis → PRD-delta (planning) → epics/stories (implementation) → retro → monitoring (feature KPIs)
+→ reports/improvements → improvements feed the next PRD-delta.
+- DTC (Docs Travel with Code): ship code and update affected derived docs + tests in the SAME PR.
+  Retro always updates the PRD-delta; project-context/docs/ADR only when rules/decisions/behavior
+  actually change.
+
+## Tests = executable truth (TEA / Murat)
+- New feature (truth-first): AC/UJ → test-design (risk) → ATDD (red tests = the spec, before code)
+  → dev-story (green) → trace (AC↔test matrix + gate PASS/CONCERNS/FAIL/WAIVED) → NFR audit.
+- Brownfield: document-project → framework+ci → characterization tests (golden master) → trace with
+  synthetic oracle → prioritize P1. Ratchet: coverage only goes up.
+
+## Traceability
+- Stable IDs everywhere: RF-NN, UJ-N, EPIC-N, STORY-N, ADR-NNNN, ticket. PR references ticket +
+  change. Two matrices: RTM (lidr-validate-requirements) + test trace (bmad-testarch-trace).
+
+## Folder layout (real BMad paths)
+- docs/ (project_knowledge): index.md (derived index → per-feature deep-dives) + adr/.
+- _bmad-output/ (output_folder): analisis/, project-context.md, prds/ (planning-artifacts),
+  architecture.md, ux-designs/, test-artifacts/, implementation-artifacts/.
+`;
 
 function EstructuraContextoComponent() {
   return (
     <div>
       <PageHeader
         title="Estructura de Contexto & Specs"
-        subtitle="Propuesta LIDR de carpetas del repo (alineada con las rutas reales de BMad). Distingue project-context.md (archivo único global de reglas para la IA, bmad-generate-project-context) de docs/index.md (índice maestro que apunta a los deep-dives por funcionalidad, bmad-document-project). Más: analisis/ (Fase 1 por área), PRDs/ (planning-artifacts: 1 PRD por funcionalidad UJ+RF+NFR → épicas → stories/retro en implementation-artifacts) y arquitecture/."
+        subtitle="Propuesta LIDR de carpetas del repo (alineada con las rutas reales de BMad). Distingue project-context.md (archivo único global de reglas para la IA, bmad-generate-project-context) de docs/index.md (índice maestro que apunta a los deep-dives por funcionalidad, bmad-document-project). Más: analisis/ (Fase 1 por área), PRDs/ (planning-artifacts, capa de intake/cambio: 1 PRD por funcionalidad UJ+RF+NFR → épicas → stories/retro en implementation-artifacts; la verdad viva son los tests + docs derivados) y arquitecture/."
       />
 
       <div className="mt-6 space-y-6">
@@ -175,15 +248,16 @@ function EstructuraContextoComponent() {
               <ol className="space-y-2 text-sm text-slate-600 list-none">
                 <li>
                   <span className="text-indigo-500 font-medium mr-1">1.</span>
-                  El análisis de cada iniciativa decide <span className="font-medium">
-                    qué PRD
-                  </span>{' '}
-                  se crea o actualiza.
+                  El análisis de cada iniciativa decide{' '}
+                  <span className="font-medium">qué PRD(s)</span> se crean o actualizan — una
+                  iniciativa puede tocar varios features.
                 </li>
                 <li>
                   <span className="text-indigo-500 font-medium mr-1">2.</span>
-                  Cada <code className="text-xs bg-slate-100 px-1 rounded">PRD</code> = una
-                  funcionalidad tratada como producto (Whatsapp, Correos, Módulo preview, Otro…).
+                  Cada <span className="font-medium">funcionalidad</span> = un producto (Whatsapp,
+                  Correos, Módulo preview, Otro…); su{' '}
+                  <code className="text-xs bg-slate-100 px-1 rounded">PRD</code> es el delta de cada
+                  cambio sobre ella.
                 </li>
                 <li>
                   <span className="text-indigo-500 font-medium mr-1">3.</span>
@@ -224,12 +298,15 @@ function EstructuraContextoComponent() {
           >
             <div className="text-sm text-slate-600 space-y-2">
               <p>
-                Regla: la pregunta no es “¿extiendo o creo?” sino{' '}
+                Sigue siendo válida, pero su marco cambió con el resto del modelo:{' '}
+                <span className="font-medium">el PRD es la capa de intake/cambio</span> (se finaliza
+                y se archiva), <span className="font-medium">no la verdad viva</span>. Así que la
+                pregunta real es:{' '}
                 <span className="font-medium">
-                  ¿es la misma funcionalidad evolucionando, o una funcionalidad nueva?
+                  ¿este cambio pertenece a un feature existente o es un feature nuevo?
                 </span>{' '}
-                Un PRD nunca está “terminado”: es <span className="font-medium">spec viva</span>{' '}
-                (“estable v1”, no cerrado).
+                La verdad viva del feature (su deep-dive derivado + sus tests/AC) crece igual vía
+                DTC; el PRD es solo el delta que la dispara.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="rounded-md border border-green-200 bg-green-50 p-3">
@@ -242,28 +319,32 @@ function EstructuraContextoComponent() {
                     <li>El PO lo ve como “la misma feature creciendo”.</li>
                   </ul>
                   <div className="text-xs text-green-700 mt-1">
-                    → se añade un <span className="font-medium">epic nuevo</span> al mismo PRD.
+                    → un <span className="font-medium">PRD-delta</span> (bmad-prd Update) sobre ese
+                    feature; sus AC entran a la suite de tests + deep-dive del feature. El PRD se
+                    re-finaliza y se archiva.
                   </div>
                 </div>
                 <div className="rounded-md border border-cyan-200 bg-cyan-50 p-3">
                   <div className="font-semibold text-cyan-800 mb-1">Crear nuevo</div>
                   <ul className="space-y-1 ml-4 list-disc text-cyan-700">
                     <li>Otro UJ / objetivo / dueño / ciclo de release.</li>
-                    <li>O si extender vuelve el PRD im-cargable por la IA (revienta contexto).</li>
+                    <li>O si el feature se vuelve im-cargable por la IA (revienta contexto).</li>
                     <li>Funcionalidad genuinamente distinta = un producto nuevo (tu modelo).</li>
                   </ul>
                   <div className="text-xs text-cyan-700 mt-1">
-                    → un PRD nuevo por funcionalidad.
+                    → un PRD nuevo (nueva línea de feature); arranca su propio deep-dive + suite de
+                    tests.
                   </div>
                 </div>
               </div>
               <p>
-                Extender es seguro con 3 disciplinas: <span className="font-medium">(1)</span>{' '}
-                crecer por epics + versionar (v1 → v1.1) y registrar en changelog/decision-log;{' '}
-                <span className="font-medium">(2)</span> mover el detalle pesado a{' '}
-                <code className="text-xs bg-white px-1 rounded">docs/</code> deep-dives e indexarlo
-                (el PRD queda lean); <span className="font-medium">(3)</span> marcar lo nuevo con{' '}
-                <code className="text-xs bg-white px-1 rounded">status</code> en frontmatter.
+                Disciplinas que se mantienen: <span className="font-medium">(1)</span> versionar +
+                registrar en <code className="text-xs bg-white px-1 rounded">.decision-log.md</code>{' '}
+                / changelog; <span className="font-medium">(2)</span> mover el detalle pesado a{' '}
+                <code className="text-xs bg-white px-1 rounded">docs/</code> deep-dives e indexarlo;{' '}
+                <span className="font-medium">(3)</span> que cada AC nuevo entre a la suite de
+                tests. Clave: <span className="font-medium">lo durable no es el PRD</span> sino el
+                deep-dive + los tests del feature.
               </p>
               <p className="text-xs text-slate-500">
                 BMad lo respalda: <code className="bg-white px-1 rounded">bmad-prd</code> tiene
@@ -305,9 +386,11 @@ function EstructuraContextoComponent() {
               </p>
               <ul className="space-y-1 ml-4 list-disc">
                 <li>
-                  <span className="font-medium">Siempre</span> → el{' '}
-                  <code className="text-xs bg-white px-1 rounded">PRD</code> de la funcionalidad
-                  (spec viva) y su backlog (épicas/stories del próximo ciclo).
+                  <span className="font-medium">Siempre</span> → un{' '}
+                  <code className="text-xs bg-white px-1 rounded">PRD-delta</code> de la
+                  funcionalidad (intake, se archiva) y su backlog (épicas/stories del próximo
+                  ciclo); la spec viva (deep-dive + tests) se actualiza vía DTC cuando entra el
+                  código.
                 </li>
                 <li>
                   <span className="font-medium">Solo si se profundizó una funcionalidad</span> → su
@@ -325,8 +408,8 @@ function EstructuraContextoComponent() {
                 Clave: <code className="bg-white px-1 rounded">project-context.md</code> son reglas
                 globales (cambia poco) y{' '}
                 <code className="bg-white px-1 rounded">docs/index.md</code> es el índice de
-                deep-dives. Así nunca actualizas tres specs a la vez: editas el PRD, y el resto se
-                toca solo cuando aplica.
+                deep-dives. Así nunca actualizas tres specs a la vez: editas el PRD-delta, y el
+                resto se toca solo cuando aplica.
               </p>
             </div>
           </SectionBox>
@@ -610,6 +693,33 @@ function EstructuraContextoComponent() {
                 test → release) con las dos matrices; el 100% se cierra formalizando el feedback y
                 respetando identificadores + referencias.
               </p>
+            </div>
+          </SectionBox>
+        </DiagramCard>
+
+        <DiagramCard>
+          <SectionBox
+            title="project-context.md — cómo trabajamos"
+            borderColor="border-slate-300"
+            bgColor="bg-slate-50"
+            icon={<FileText className="text-slate-600" size={20} />}
+          >
+            <div className="space-y-2">
+              <p className="text-sm text-slate-600">
+                Este es el texto que va en{' '}
+                <code className="text-xs bg-white px-1 rounded">
+                  _bmad-output/project-context.md
+                </code>{' '}
+                — BMad lo <span className="font-medium">auto-carga al inicio de cada workflow</span>{' '}
+                para entender cómo trabajamos. En inglés (config{' '}
+                <code className="text-xs bg-white px-1 rounded">
+                  document_output_language = English
+                </code>
+                ). Selecciona y copia para llevarlo al archivo.
+              </p>
+              <pre className="max-h-[28rem] overflow-auto rounded-lg border border-slate-200 bg-white p-4 text-[11px] leading-relaxed text-slate-700 whitespace-pre-wrap break-words">
+                {PROJECT_CONTEXT_MD}
+              </pre>
             </div>
           </SectionBox>
         </DiagramCard>

@@ -867,6 +867,13 @@ export const projectTree: TreeNode[] = [
                     docPath: '.agents/skills/lidr-impact-analysis/SKILL.md',
                   },
                   {
+                    name: 'lidr-contract-extraction/SKILL.md',
+                    type: 'file',
+                    badge: { label: 'LIDR', color: 'bg-emerald-100 text-emerald-700' },
+                    desc: 'Extrae contratos API/eventos/schema de uno o varios repos (monorepo o multi-repo) a specs versionadas + registry derivado que consume lidr-impact-analysis',
+                    docPath: '.agents/skills/lidr-contract-extraction/SKILL.md',
+                  },
+                  {
                     name: 'lidr-dev-handoff-qa/SKILL.md',
                     type: 'file',
                     badge: { label: 'LIDR', color: 'bg-emerald-100 text-emerald-700' },

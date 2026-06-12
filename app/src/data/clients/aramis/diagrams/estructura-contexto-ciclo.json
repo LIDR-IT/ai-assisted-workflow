@@ -34,7 +34,7 @@
       "y": 40,
       "label": "1 · Análisis",
       "variant": "teal",
-      "subtitle": "por área → decide qué PRD"
+      "subtitle": "por área → decide qué PRD(s) (puede tocar varios features)"
     },
     {
       "id": "cyc-prd",
@@ -49,7 +49,7 @@
       "x": 840,
       "y": 40,
       "label": "3 · Implementación",
-      "variant": "violet",
+      "variant": "green",
       "subtitle": "stories → código"
     },
     {
@@ -57,7 +57,7 @@
       "x": 1180,
       "y": 40,
       "label": "4 · Retro",
-      "variant": "amber",
+      "variant": "yellow",
       "subtitle": "dispara actualizaciones (DTC)"
     },
     {
@@ -73,7 +73,7 @@
       "x": 360,
       "y": 300,
       "label": "PRDs/ por funcionalidad",
-      "variant": "cyan",
+      "variant": "indigo",
       "subtitle": "planning-artifacts/ · LEE: al trabajar la func · ACTUALIZA: cada iteración (planning + retro)"
     },
     {
@@ -121,7 +121,7 @@
       "x": 1520,
       "y": 40,
       "label": "5 · Monitoring",
-      "variant": "green",
+      "variant": "blue",
       "subtitle": "vigila KPIs de la feature en prod"
     },
     {
@@ -252,32 +252,28 @@
       "label": "PRD / Planning"
     },
     {
-      "color": "bg-violet-200",
-      "label": "Implementación"
+      "color": "bg-green-200",
+      "label": "Implementación (stories → código)"
     },
     {
-      "color": "bg-amber-200",
+      "color": "bg-yellow-200",
       "label": "Retro (dispara DTC)"
     },
     {
-      "color": "bg-cyan-200",
-      "label": "Info de PRODUCTO (PRDs)"
-    },
-    {
-      "color": "bg-sky-200",
-      "label": "Info TÉCNICA — docs/deep-dives"
+      "color": "bg-slate-200",
+      "label": "Carriles / contenedores (info de producto · info técnica · rules · project-context)"
     },
     {
       "color": "bg-orange-200",
-      "label": "Info TÉCNICA — arquitectura / ADR"
+      "label": "Arquitectura / ADR (decisión)"
     },
     {
-      "color": "bg-green-200",
-      "label": "Monitoring — vigila KPIs de la feature"
+      "color": "bg-sky-200",
+      "label": "Docs · deep-dives (índice + carga selectiva)"
     },
     {
       "color": "bg-blue-200",
-      "label": "Reportes (KPIs · dashboards)"
+      "label": "Monitoring · Reportes (KPIs en prod)"
     },
     {
       "color": "bg-emerald-200",

@@ -82,7 +82,7 @@
       "x": 1920,
       "y": 140,
       "label": "Monitoring",
-      "variant": "green",
+      "variant": "blue",
       "subtitle": "lleva: KPI"
     },
     {
@@ -179,16 +179,46 @@
     }
   ],
   "legend": [
-    { "color": "bg-teal-200", "label": "Necesidad / Análisis" },
-    { "color": "bg-indigo-200", "label": "PRD (RF · UJ · NFR)" },
-    { "color": "bg-violet-200", "label": "Épica / Story" },
-    { "color": "bg-cyan-200", "label": "Pull Request / Código" },
-    { "color": "bg-amber-200", "label": "Test + Gate (matriz de tests)" },
-    { "color": "bg-slate-200", "label": "Release (tag + changelog)" },
-    { "color": "bg-green-200", "label": "Monitoring (KPI)" },
-    { "color": "bg-emerald-200", "label": "Mejora" },
-    { "color": "bg-orange-200", "label": "ADR — decisión (transversal)" },
-    { "color": "bg-red-200", "label": "Eslabón débil — falta identificador (a formalizar)" }
+    {
+      "color": "bg-teal-200",
+      "label": "Necesidad / Análisis"
+    },
+    {
+      "color": "bg-indigo-200",
+      "label": "PRD (RF · UJ · NFR)"
+    },
+    {
+      "color": "bg-violet-200",
+      "label": "Épica / Story"
+    },
+    {
+      "color": "bg-cyan-200",
+      "label": "Pull Request / Código"
+    },
+    {
+      "color": "bg-amber-200",
+      "label": "Test + Gate (matriz de tests)"
+    },
+    {
+      "color": "bg-slate-200",
+      "label": "Release (tag + changelog)"
+    },
+    {
+      "color": "bg-blue-200",
+      "label": "Monitoring (KPI)"
+    },
+    {
+      "color": "bg-emerald-200",
+      "label": "Mejora"
+    },
+    {
+      "color": "bg-orange-200",
+      "label": "ADR — decisión (transversal)"
+    },
+    {
+      "color": "bg-red-200",
+      "label": "Eslabón débil — falta identificador (a formalizar)"
+    }
   ],
   "tables": [
     {

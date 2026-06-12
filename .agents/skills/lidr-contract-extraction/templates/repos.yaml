@@ -1,0 +1,44 @@
+# Repo manifest for lidr-contract-extraction (CLIENT-OWNED).
+# Lists the repositories the skill scans to derive contracts. Works for a single
+# monorepo (one entry, packages discovered inside) OR multiple repos (one entry per clone).
+# The skill drafts this file from discovery if it does not exist; the user confirms paths/roles.
+#
+# Place at: docs/projects/{client}/registries/repos.yaml
+
+version: "0.1.0"
+last_updated: "YYYY-MM-DD"
+topology: multi-repo # multi-repo | monorepo  (the probe infers this; override if wrong)
+
+repos:
+  - id: api # short stable id (used in the registry as owner_repo)
+    path: ../api # local path to the cloned repo (relative to project-root or absolute)
+    role: provider # provider | consumer | both
+    stack: auto # auto | node-nest | node-express | python-fastapi | java-spring | go | …  (auto = probe detects)
+    surfaces: [rest, events] # rest | events | graphql | grpc  (auto-detected; list to constrain)
+
+  - id: frontend
+    path: ../frontend
+    role: consumer
+    stack: auto
+    surfaces: [rest] # what it CONSUMES from providers
+
+  - id: bridge
+    path: ../bridge
+    role: both # consumes api + emits/consumes events to external systems
+    stack: auto
+    surfaces: [events, rest]
+
+  - id: qa
+    path: ../qa
+    role: consumer # holds the contract tests (Pact consumer tests / schema validation)
+    stack: auto
+    surfaces: [rest, events]
+
+# --- Monorepo example (single entry; the probe discovers packages) ---
+# topology: monorepo
+# repos:
+#   - id: monorepo
+#     path: .
+#     role: both
+#     stack: auto
+#     packages: auto   # auto = discover via workspaces (pnpm/turbo/lerna/nx) or packages/*
