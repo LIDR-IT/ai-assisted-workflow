@@ -416,6 +416,28 @@ bmad-prd (update intent)                → PRD delta sobre docs existentes
   ↓ ...ciclo normal Phase 2 → 4 (regresión obligatoria en stage qa)...
 ```
 
+### Cadena típica: Auditoría de sistema (brownfield — recuperar spec + verificar cobertura)
+
+Objetivo: levantar las funcionalidades de un sistema existente en formato trazable (UJ/RF/NFR/AC) y auditar que cada UJ tenga test que cumpla sus AC. **Compuesta de skills existentes — NO requiere command nuevo.**
+
+```
+bmad-document-project              → entiende el código: deep-dives + docs/index.md (qué hace cada feature)
+bmad-generate-project-context      → project-context.md (reglas globales para la IA)
+  ↓ LEVANTAR LA SPEC TRAZABLE (reverse / brownfield)
+lidr-generate-rf (living-spec)     → docs/features/<f>/spec.md con UJ/RF/AC desde el comportamiento documentado
+lidr-generate-nfr                  → NFRs medibles del sistema actual
+  (inferidos → marcar [REQUIERE VALIDACIÓN HUMANA]; derivado ≠ confirmado)
+  ↓ AUDITAR COBERTURA
+bmad-testarch-automate             → caracterización (golden master del comportamiento actual)
+bmad-testarch-trace                → matriz UJ/AC↔test + GATE (PASS/CONCERNS/FAIL/WAIVED) ← VEREDICTO de la auditoría
+  (oráculo sintético: infiere UJ/AC del código → la auditoría puede arrancar sin spec formal)
+bmad-testarch-test-design          → diseña los tests faltantes (risk-based, prioriza P1)
+bmad-testarch-nfr                  → evidencia NFR (perf/seguridad/fiabilidad)
+lidr-validate-requirements         → RTM: cierra RF/NFR ↔ story ↔ test
+```
+
+El GATE de `bmad-testarch-trace` responde la pregunta de la auditoría: **¿cada UJ tiene test que cumple sus AC?** PASS = cubierto · CONCERNS/FAIL = gaps a cerrar (test-design). La capacidad de recuperar la spec vive en `lidr-generate-rf` (modo brownfield/reverse), no en un artefacto nuevo.
+
 ### Cadena típica: Feature sobre producto en marcha (PRD desde funcionalidad extra)
 
 ```

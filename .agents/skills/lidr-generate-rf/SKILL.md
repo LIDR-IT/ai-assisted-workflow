@@ -1,9 +1,9 @@
 ---
 name: lidr-generate-rf
 id: generate-rf
-version: "1.9.0"
+version: "1.10.0"
 last_updated: "2026-06-12"
-updated_by: "TL: living-spec mode"
+updated_by: "TL: brownfield audit mode"
 status: active
 phase: 3
 stage: specification
@@ -19,7 +19,7 @@ description: >
   Essential at Gate 2: all RFs must exist before Sprint Planning begins.
   Always use when the Functional PRD is approved, always use when specifying acceptance criteria for features.
   Do NOT use for non-functional requirements (use generate-nfr), for user stories (use user-stories), or for epic decomposition (use bmad-create-epics-and-stories).
-  Triggers on "generate requirements", "functional requirements", "RF", "BDD requirements", "acceptance criteria", "feature specification", "requirements from PRD", "feature living spec", "consolidate feature spec".
+  Triggers on "generate requirements", "functional requirements", "RF", "BDD requirements", "acceptance criteria", "feature specification", "requirements from PRD", "feature living spec", "consolidate feature spec", "audit system spec", "recover spec from code", "brownfield spec".
   Output: English by default; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`).
   Audience: PO (validates business alignment), QA (uses for test cases), Dev (implements against).
 ---
@@ -83,6 +83,16 @@ By default this skill emits per-RF files from a PRD-delta for Gate 2 (above). It
 - **Delta → reconcile (DTC)**: a PRD-delta describes the CHANGE; in living-spec mode the skill applies it to the existing `spec.md` (add / modify / deprecate RFs by stable ID), keeping the spec the current-state truth. The delta is then archived.
 - **Stable IDs**: RF/AC keep their IDs across deltas so `lidr-validate-requirements` (RTM) traces RF/AC ↔ test ↔ delta over time.
 - **When to use**: maintaining the current-state spec of a feature that evolves across iterations (brownfield / feature work), where per-PRD files alone don't give a consolidated, traceable view. For first-time Gate-2 specification, the per-RF mode above remains the default.
+
+### Brownfield / system audit (reverse mode)
+
+When there is **no PRD** (auditing an existing system to recover its spec), run living-spec mode **reverse** — the input is the code understanding from `bmad-document-project` (deep-dives + `docs/index.md`) instead of a forward PRD:
+
+1. **Inventory** — `bmad-document-project` derives what each feature DOES (code-facing deep-dives + the feature index).
+2. **Recover the spec** — this skill (+ `lidr-generate-nfr`) turns that documented behavior into each feature's `docs/features/<feature>/spec.md` (UJ/RF/NFR/AC, stable IDs). **Semi-assisted**: mark every inferred requirement `[REQUIERE VALIDACIÓN HUMANA]` — derived ≠ confirmed.
+3. **Audit coverage** — the recovered `spec.md` feeds **`bmad-testarch-trace`** (UJ/AC ↔ test matrix + GATE: PASS / CONCERNS / FAIL / WAIVED). That gate is the audit verdict: _does every UJ have a test that meets its AC?_ Gaps → `bmad-testarch-test-design` (risk-based, P1). `bmad-testarch-trace`'s **synthetic oracle** can infer UJ/AC straight from code, so the coverage audit can start before the spec is fully recovered.
+
+This is the "audit-system" chain — composed of existing skills, no new command. Full sequence in `rules/lidr-sdlc/workflows.md` → "Cadena típica: Auditoría de sistema (brownfield)".
 
 > The deep-dive (`bmad-document-project`) documents the CODE; the living spec documents the REQUIREMENTS (UJ/RF/NFR/AC). Complementary, both live and accumulate per feature.
 
@@ -445,14 +455,15 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                                | Changes                                                                                                                                                                                           |
-| ------- | ---------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.9.0   | 2026-06-12 | TL: living-spec mode                  | Added Living Spec Mode: consolidate a feature's UJ/RF/NFR/AC into `docs/features/<feature>/spec.md` (current-state living spec), reconciled per PRD-delta via DTC; complements per-RF Gate-2 mode |
-| 1.8.0   | 2026-06-10 | TL: Gate-evidence contract fix        | Output Location now emits per-RF files at `docs/projects/{CLIENT_CODE}/requirements/RF-*.md` (matching G2 gate-evidence glob) instead of a single requirements.md; per-RF frontmatter template    |
-| 1.7.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added "Relationship to BMad" note (LIDR-unique BDD-bearing RF authoring; consumes bmad-prd, feeds bmad-create-epics-and-stories + lidr-validate-requirements)                                     |
-| 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tracking/docs tools via tool-registry                                                                                                        |
-| 1.5.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific patterns with e-commerce/SaaS/healthcare examples; moved domain-specific content to examples/client-domain-example.md                         |
-| 1.4.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                                                                                                     |
-| 1.2.0   | 2026-03-09 | System: Improvement                   | Added concrete BDD scenarios and domain-specific RF patterns                                                                                                                                      |
-| 1.1.0   | 2026-02-15 | TL: García                            | Added decomposition rules and validation checklist                                                                                                                                                |
-| 1.0.0   | 2026-01-20 | TL: García                            | Initial version of the skill                                                                                                                                                                      |
+| Version | Date       | Author                                | Changes                                                                                                                                                                                                                                                            |
+| ------- | ---------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.10.0  | 2026-06-12 | TL: brownfield audit mode             | Living Spec Mode gained a reverse/brownfield path: recover a feature's `spec.md` (UJ/RF/NFR/AC) from `bmad-document-project` when there's no PRD, then hand off to `bmad-testarch-trace` for the coverage audit + gate (the "audit-system" chain — no new command) |
+| 1.9.0   | 2026-06-12 | TL: living-spec mode                  | Added Living Spec Mode: consolidate a feature's UJ/RF/NFR/AC into `docs/features/<feature>/spec.md` (current-state living spec), reconciled per PRD-delta via DTC; complements per-RF Gate-2 mode                                                                  |
+| 1.8.0   | 2026-06-10 | TL: Gate-evidence contract fix        | Output Location now emits per-RF files at `docs/projects/{CLIENT_CODE}/requirements/RF-*.md` (matching G2 gate-evidence glob) instead of a single requirements.md; per-RF frontmatter template                                                                     |
+| 1.7.0   | 2026-06-09 | TL: BMad-coherence batch-fix          | Added "Relationship to BMad" note (LIDR-unique BDD-bearing RF authoring; consumes bmad-prd, feeds bmad-create-epics-and-stories + lidr-validate-requirements)                                                                                                      |
+| 1.6.0   | 2026-06-09 | TL: lang+tool agnostic                | Language to English-default-configurable; abstracted tracking/docs tools via tool-registry                                                                                                                                                                         |
+| 1.5.0   | 2026-03-25 | TL: tier3-remediation                 | Domain-agnostic migration: replaced domain-specific patterns with e-commerce/SaaS/healthcare examples; moved domain-specific content to examples/client-domain-example.md                                                                                          |
+| 1.4.0   | 2026-03-16 | System: Quality Assurance Integration | Quality assurance integration                                                                                                                                                                                                                                      |
+| 1.2.0   | 2026-03-09 | System: Improvement                   | Added concrete BDD scenarios and domain-specific RF patterns                                                                                                                                                                                                       |
+| 1.1.0   | 2026-02-15 | TL: García                            | Added decomposition rules and validation checklist                                                                                                                                                                                                                 |
+| 1.0.0   | 2026-01-20 | TL: García                            | Initial version of the skill                                                                                                                                                                                                                                       |
