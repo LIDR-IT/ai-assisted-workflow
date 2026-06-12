@@ -8,22 +8,11 @@ prompt = """
 > **ROI**: 150+ hours/year through 70% automation of lightweight requirements
 > **Context**: Small to medium features that don't need full PRD process
 
-yaml
-id: quick-spec
-version: "1.0.0"
-last_updated: "2026-03-15"
-updated_by: "TL: Claude"
-status: active
-tier: 2
-authorized_roles:
-  - PO
-  - Tech Lead
-  - Dev
-
-
 ## Purpose
 
-Rapidly generate lightweight requirements specification for small features (≤ 40h effort) without full PRD overhead. Based on LIDR SDLC Methodology's quick specification pattern adapted for biometric/identity domain.
+Rapidly generate lightweight requirements specification for small features (≤ 40h effort) without full PRD overhead. Based on the LIDR SDLC Methodology's quick specification pattern — **domain-agnostic** (any domain-specific compliance is bound per client config via `{{...}}` variables, never hardcoded).
+
+> **Relationship to BMad — one sequence, no parallel route.** `/lidr-quick-spec` is the lightweight intent **front-end**; the BMad engine for small changes is `bmad-quick-dev` (intent → hardened artifact) / `bmad-spec` (SPEC kernel). quick-spec does not compete with them — its output feeds the same `/lidr-spec-*` governance chain, which delegates implementation to the BMad engine (`bmad-dev-story`). See `lidr-sdlc/spec-execution.md` §0.
 
 ## When to Use
 
@@ -53,7 +42,7 @@ Rapidly generate lightweight requirements specification for small features (≤ 
 
 [Code block:]
 /lidr-quick-spec user-avatar-upload --type=enhancement --effort=24
-/lidr-quick-spec biometric-timeout-fix --type=bugfix --effort=8
+/lidr-quick-spec session-timeout-fix --type=bugfix --effort=8
 /lidr-quick-spec webhook-notifications --type=integration --effort=32
 
 
@@ -164,11 +153,11 @@ json
 1. {Edge case 1 - boundary conditions}
 2. {Edge case 2 - error conditions}
 
-### Biometric-Specific Tests (if applicable)
+### Domain-Specific Tests (if applicable)
 
-1. **Liveness detection**: Test with various attack vectors
+1. **Security / abuse vectors**: Test against the domain's relevant attack and abuse cases
 2. **Performance**: Response time under load
-3. **Accuracy**: FAR/FRR metrics validation
+3. **Accuracy / correctness**: Validate the domain's quality metrics
 
 ## Dependencies & Risks
 
@@ -213,9 +202,8 @@ json
 
 ## Regulatory Compliance (if applicable)
 
-- [ ] GDPR Art. 9 compliance (biometric data)
-- [ ] PSD2 SCA requirements
-- [ ] ISO 30107 PAD testing
+- [ ] Data-protection compliance relevant to the data handled (e.g. GDPR)
+- [ ] Domain / industry regulatory requirements (bound per client config)
 - [ ] Accessibility (WCAG 2.1 AA)
 
 
@@ -318,7 +306,7 @@ Conservative ROI: 150+ hours/year
 - Features requiring DPIA (Data Protection Impact Assessment)
 - Multi-team coordination features
 - Breaking API changes
-- Features affecting core biometric algorithms
+- Features affecting core domain algorithms
 - Compliance-critical features
 
 ### ❌ Common Mistakes
@@ -366,8 +354,8 @@ async function executeQuickSpec(featureName: string, options: QuickSpecOptions) 
 ### With Existing Commands
 
 - **Pre**: `/lidr-validate-project-docs` to ensure project context is current
-- **Post**: `/lidr-implement-ticket` can use quick spec as input
-- **Chain**: `/lidr-quick-spec` → `/create-test-cases` → `/lidr-implement-ticket`
+- **Post**: feeds the single development sequence — paste the quick-spec doc as the enriched intent into `/lidr-spec-new` → `/lidr-spec-ff` → `/lidr-spec-apply` → `/lidr-spec-verify` → `/lidr-spec-archive`
+- **Chain**: `/lidr-quick-spec` → `/lidr-spec-new` → ff → apply → verify (quick-spec is the lightweight planning front-end of the same chain, not a separate route)
 
 ### With Skills
 

@@ -38,7 +38,7 @@ Ecosystem navigation question. Agent provides guided tour of QA-relevant artifac
 5. Explica los workflows que le aplican (de workflows.md)
 6. Muestra los quality gates en los que participa
 7. Sugiere lecturas prioritarias de docs/
-8. Publica plan en Confluence via Confluence MCP
+8. Publica plan en {{DOCS_TOOL}} via lidr-external-sync (resuelve {{DOCS_TOOL}} desde el registry)
 9. Retorna resumen: plan de onboarding + lecturas sugeridas + FAQ del rol
 
 ## Templates
@@ -68,7 +68,7 @@ You are an expert onboarding facilitator specializing in guiding new team member
 2. **Identify Role**: Detect or ask for the new member's role (Dev, QA, TL, PO, Sec, PME, DevOps)
 3. **Generate Plan**: Using the lidr-help ecosystem guide, create role-specific plan:
    - **Dev**: rules/, dev skills, /lidr-implement-ticket, hooks, GitHub flow
-   - **QA**: QA skills, /lidr-prepare-testing, Xray CSV export/import, test templates
+   - **QA**: QA skills, /lidr-prepare-testing, {{TEST_MGMT_TOOL}} CSV export/import, test templates
    - **TL**: All above + gates, checklists, ADRs, code review
    - **PO**: PRDs, RFs, sprint planning, /lidr-advance-gate, /lidr-validate-requirements
    - **Sec**: Security skills, OWASP, compliance checklists, lidr-security-checklist
@@ -76,7 +76,7 @@ You are an expert onboarding facilitator specializing in guiding new team member
    - **DevOps**: Deployment, CI/CD, hooks, rollback plans, post-deploy checklists
 4. **Present Progressively**: Start with essentials, layer in advanced topics
 5. **Reference Docs**: Always point to specific file paths in docs/
-6. **Publish Plan**: Via Confluence MCP
+6. **Publish Plan**: Via lidr-external-sync to {{DOCS_TOOL}} (resolved from the registry)
 7. **Update Memory**: Save new FAQ, feedback on useful readings
 
 **Quality Standards:**

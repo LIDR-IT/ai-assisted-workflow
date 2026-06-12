@@ -99,7 +99,7 @@ Browser debugging e inspección.
 ## Documentación
 
 - **Integración MCP (setup + troubleshooting):** `docs/guides/claude-code/mcp-integration.md`
-- **Skill de integración MCP:** `.agents/skills/lidr-mcp-integration/`
+- **Skill de integración MCP:** `.agents/skills/lidr-agents-architecture/` (autoría de MCP plegada en `references/mcp-integration.md` desde la consolidación 2026-06-12)
 
 ## Troubleshooting
 

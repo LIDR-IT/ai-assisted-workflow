@@ -6,13 +6,16 @@ describe('simple-stats', () => {
     it('has correct base counts', () => {
       // Post-merge BMAD + LIDR Spec Lifecycle, synced to filesystem reality
       // (.agents/skills, .agents/commands, .agents/rules, .agents/subagents):
-      // - skills: 44 LIDR + 69 BMAD = 113 (matches `.agents/skills/`)
+      // - skills: 38 LIDR + 69 BMAD = 107 (matches `.agents/skills/`)
+      //   (2026-06-12 consolidation dropped LIDR 44→38: 4 meta skills folded into
+      //   lidr-agents-architecture, lidr-ticket-validation → lidr-refinement-notes,
+      //   lidr-commit-management → process/git-workflow.md rule + /lidr-commit)
       // - commands: 24 LIDR + 6 generic = 30 (matches `.agents/commands/`)
       // - rules: 7 LIDR SDLC + 17 generic = 24
       // - mcps: context7, playwright, chrome-devtools = 3
       // - hooks: 3 LIDR + 3 generic = 6
       // - agents: 10 LIDR workers (BMad personas are skills since 2026-06-11, ADR-0008)
-      expect(ecosystemStats.skills).toBe(113);
+      expect(ecosystemStats.skills).toBe(107);
       expect(ecosystemStats.automatedSkills).toBe(8);
       expect(ecosystemStats.commands).toBe(30);
       expect(ecosystemStats.rules).toBe(24);

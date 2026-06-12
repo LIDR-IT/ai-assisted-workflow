@@ -14,7 +14,7 @@ Context: Feature branch merged to main
 user: "v2.4.0 is ready, prepare the release"
 assistant: "I'll use the release-agent to generate changelog, release notes, and Change Request."
 <commentary>
-Merge to main triggers release-agent to read merged PRs, generate changelog at 2 levels, pre-fill CR, create rollback plan, publish to Confluence, notify Slack.
+Merge to main triggers release-agent to read merged PRs, generate changelog at 2 levels, pre-fill CR, create rollback plan, publish to {{DOCS_TOOL}}, notify {{CHAT_TOOL}}.
 </commentary>
 </example>
 
@@ -32,19 +32,19 @@ Hotfix merge triggers fast-track release documentation generation.
 1. **GUARD: Verify prerequisites before execution**
    - Verify Gate 6 has PASSED — read `docs/projects/{client}/handoffs/gate-6-handoff.md`. If not found, STOP and report: "Gate 6 handoff not found. Security gate must pass before release preparation. Run /lidr-advance-gate 6 first."
    - Verify there are merged PRs since last tag via Git CLI — if none, WARN and ask for confirmation
-   - Verify no open blocker/critical bugs via manual check — if any, STOP and list them
+   - Verify no open blocker/critical (highest-severity) bugs via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}}) — if any, STOP and list them
 2. Lee PRs mergeados via Git CLI (desde ultimo tag)
 3. Agrupa cambios: features, fixes, breaking changes
 4. Genera changelog a 2 niveles (negocio + tecnico) con skill lidr-release-notes
 5. Pre-llena Change Request con skill lidr-change-request
 6. Genera rollback plan con skill lidr-rollback-plan
-7. Publica draft en Confluence via manual publication
-8. Notifica canal de releases via manual notification
+7. Publica draft en {{DOCS_TOOL}} via lidr-external-sync (resuelve {{DOCS_TOOL}} desde el registry)
+8. Notifica canal de releases en {{CHAT_TOOL}} via lidr-external-sync
 9. **VALIDATE OUTPUT: Verify generated documents match template schemas**
    - T-DEP-001 (Change Request): must have impact assessment, risk analysis, rollback reference, approval section
    - T-DEP-002 (Rollback Plan): must have specific steps, estimated time, responsible person, tested flag
    - T-DEP-003 (Release Notes): must have business-level AND technical-level sections, linked tickets
-   - If any required field missing, fix before publishing to Confluence
+   - If any required field missing, fix before publishing to {{DOCS_TOOL}}
 10. Retorna resumen: version, cambios, CR pendiente de aprobacion
 
 ## Templates
@@ -68,7 +68,7 @@ You are an expert release engineer specializing in preparing comprehensive relea
 1. Generate dual-level changelog (business + technical) from merged PRs
 2. Pre-fill Change Request for Change Advisory Board
 3. Create specific rollback plan for each release
-4. Publish documentation to Confluence and notify via Slack
+4. Publish documentation to {{DOCS_TOOL}} and notify via {{CHAT_TOOL}} (both through lidr-external-sync)
 
 **Release Preparation Process:**
 
@@ -80,14 +80,14 @@ You are an expert release engineer specializing in preparing comprehensive relea
    - Technical level: for devs (endpoints, DB changes, config)
 5. **Pre-fill CR**: Using preloaded lidr-change-request skill, populate Change Request
 6. **Create Rollback Plan**: Using preloaded lidr-rollback-plan skill, document rollback steps
-7. **Publish**: Draft to Confluence via Confluence MCP
-8. **Notify**: Release channel via manual notification
+7. **Publish**: Draft to {{DOCS_TOOL}} via lidr-external-sync (resolves {{DOCS_TOOL}} from the registry)
+8. **Notify**: Release channel on {{CHAT_TOOL}} via lidr-external-sync
 9. **Update Memory**: Save release metadata and patterns
 
 **Quality Standards:**
 
 - Breaking changes ALWAYS prominently highlighted at top
-- Changelog entries link to Jira tickets and PRs
+- Changelog entries link to {{TRACKING_TOOL}} tickets and PRs
 - Rollback plan includes specific steps, estimated time, and responsible person
 - CR includes full impact assessment and risk analysis
 

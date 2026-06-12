@@ -154,6 +154,15 @@ describe('no dead artifact names survive in command/subagent bodies', () => {
     'bdd-patterns',
     'skill-development',
     'implementation-phases',
+    // 2026-06-12 meta-tooling + ticket/commit consolidation (folded/absorbed):
+    // 4 meta skills → lidr-agents-architecture references/; lidr-ticket-validation →
+    // lidr-refinement-notes; lidr-commit-management → process/git-workflow.md rule + /lidr-commit
+    'lidr-command-development',
+    'lidr-hook-development',
+    'lidr-mcp-integration',
+    'lidr-generate-rule',
+    'lidr-commit-management',
+    'lidr-ticket-validation',
   ];
   const DEAD_HOOKS = ['dtc-write-guard', 'dtc-session-check', 'notify-desktop', 'context-loader'];
 

@@ -100,37 +100,32 @@ These fill gaps that BMad has zero coverage for. Cannot be skipped without losin
 
 BMad covers partially. LIDR adds automation, per-client output localization, Gate-binding, or compliance.
 
-| Skill                    | What LIDR adds beyond BMad                                                                                                            |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `lidr-risk-log`          | Formal registry with industry patterns. BMad could embed risks in PRD.                                                                |
-| `lidr-sprint-capacity`   | Math with buffer 15-20% + velocity. BMad-sprint-planning doesn't compute capacity.                                                    |
-| `lidr-refinement-notes`  | **WRAPS `bmad-create-story`**: adds DoR-readiness grooming layer (domain decisions, compliance clarifications) post-story creation.   |
-| `lidr-tech-debt`         | SonarQube auto-parse (120h/yr ROI). BMad-investigate is forensic.                                                                     |
-| `lidr-bug-report`        | **WRAPS `bmad-investigate`**: QA→Dev outbound template (audience), BMad investigate is Dev-internal forensic.                         |
-| `lidr-ticket-validation` | Validate LIDR/BMad ticket structure pre-refinement and pre-PR. Adds Gate-aware validation over BMad story output.                     |
-| `lidr-sdlc-tracking`     | Portfolio state centralized. BMad-sprint-status is per-sprint.                                                                        |
-| `lidr-impact-analysis`   | Contract impact + variant compatibility against client registries (consumed at G2, enforced at G4). BMad has no contract-impact gate. |
-| `lidr-audit-standards`   | **WRAPS `bmad-review-adversarial-general`**: ecosystem-scope audit (`.agents/` frontmatter, drift, paths) vs BMad content reviews.    |
+| Skill                   | What LIDR adds beyond BMad                                                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `lidr-risk-log`         | Formal registry with industry patterns. BMad could embed risks in PRD.                                                                |
+| `lidr-sprint-capacity`  | Math with buffer 15-20% + velocity. BMad-sprint-planning doesn't compute capacity.                                                    |
+| `lidr-refinement-notes` | **WRAPS `bmad-create-story`**: adds DoR-readiness grooming layer (domain decisions, compliance clarifications) post-story creation.   |
+| `lidr-tech-debt`        | SonarQube auto-parse (120h/yr ROI). BMad-investigate is forensic.                                                                     |
+| `lidr-bug-report`       | **WRAPS `bmad-investigate`**: QA→Dev outbound template (audience), BMad investigate is Dev-internal forensic.                         |
+| `lidr-sdlc-tracking`    | Portfolio state centralized. BMad-sprint-status is per-sprint.                                                                        |
+| `lidr-impact-analysis`  | Contract impact + variant compatibility against client registries (consumed at G2, enforced at G4). BMad has no contract-impact gate. |
+| `lidr-audit-standards`  | **WRAPS `bmad-review-adversarial-general`**: ecosystem-scope audit (`.agents/` frontmatter, drift, paths) vs BMad content reviews.    |
 
-## 🟢 OPCIONAL (12 skills — all prefixed `lidr-*`)
+## 🟢 OPCIONAL (all prefixed `lidr-*`)
 
-Only use if your team has the specific use case. Includes the 5 meta-tooling
-skills (anytime; extend the agent platform itself, not the SDLC Gate model).
+Only use if your team has the specific use case. Includes **1 umbrella meta-tooling
+skill** — `lidr-agents-architecture` — which folds command/hook/MCP/rule authoring as
+`references/` (anytime; extends the agent platform itself, not the SDLC Gate model).
 
-| Skill (kind)                           | When to activate                                                                      |
-| -------------------------------------- | ------------------------------------------------------------------------------------- |
-| `lidr-propuesta-builder` (consultancy) | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora".                |
-| `lidr-external-sync` (consultancy)     | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.                          |
-| `lidr-playwright-cli` (web QA)         | Web QA + runtime/visual review layer over `bmad-code-review` (drives Playwright MCP). |
-| `lidr-using-git-worktrees` (parallel)  | Create/use/clean up git worktrees safely; prerequisite for parallel work.             |
-| `lidr-run-parallel-tasks` (parallel)   | Launch N changes in parallel, each in its own isolated worktree.                      |
-| `lidr-help` (utility)                  | Ecosystem guide: recommend the next skill/command/workflow/doc.                       |
-| `lidr-agents-architecture` (meta)      | Meta-skill: entry point for creating skills/commands/subagents.                       |
-| `lidr-command-development` (meta)      | Create slash commands.                                                                |
-| `lidr-generate-rule` (meta)            | Create behavioral rules.                                                              |
-| `lidr-hook-development` (meta)         | Create PreToolUse/PostToolUse hooks.                                                  |
-| `lidr-mcp-integration` (meta)          | Connect external services via MCP.                                                    |
-| `lidr-commit-management` (utility)     | Conventional commits, rebase/squash workflows with LIDR scope conventions.            |
+| Skill (kind)                           | When to activate                                                                                                                                                              |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lidr-propuesta-builder` (consultancy) | Consultancy multi-client: generate UI JSONs for "Propuesta de Mejora".                                                                                                        |
+| `lidr-external-sync` (consultancy)     | Multi-tool teams: bidirectional sync Jira ↔ Linear ↔ Notion.                                                                                                                  |
+| `lidr-playwright-cli` (web QA)         | Web QA + runtime/visual review layer over `bmad-code-review` (drives Playwright MCP).                                                                                         |
+| `lidr-using-git-worktrees` (parallel)  | Create/use/clean up git worktrees safely; prerequisite for parallel work.                                                                                                     |
+| `lidr-run-parallel-tasks` (parallel)   | Launch N changes in parallel, each in its own isolated worktree.                                                                                                              |
+| `lidr-help` (utility)                  | Ecosystem guide: recommend the next skill/command/workflow/doc.                                                                                                               |
+| `lidr-agents-architecture` (meta)      | Umbrella meta-skill: author any `.agents/` component (skills/commands/subagents/hooks/MCP/rules). Folded command/hook/MCP/rule authoring into its `references/` (2026-06-12). |
 
 ## How to use this classification
 
@@ -147,20 +142,25 @@ For the full BMad-base + LIDR-complement workflow, see:
 - `.agents/rules/lidr-sdlc/workflows.md` (orchestration map)
 - `.agents/_shared/lidr/MIGRATION.md` (consolidation history)
 
-## Inventory snapshot (as of 2026-06-11)
+## Inventory snapshot (as of 2026-06-12)
 
 ```
-LIDR:  44 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 12 OPCIONAL) — all prefixed lidr-*
+LIDR:  38 skills — all prefixed lidr-*
 BMad:  69 skills (base flow, untouched) — all prefixed bmad-*
-Total: 113 skills
+Total: 107 skills
 ```
 
-The 5 meta-tooling skills (`lidr-agents-architecture`, `lidr-command-development`,
-`lidr-generate-rule`, `lidr-hook-development`, `lidr-mcp-integration`) are counted
-inside the LIDR 44 and classified OPCIONAL (anytime). The 4 newest skills
-(`lidr-help`, `lidr-impact-analysis`, `lidr-run-parallel-tasks`,
-`lidr-using-git-worktrees`) are now classified (impact-analysis → RECOMENDABLE; the
-other three → OPCIONAL).
+> The 2026-06-12 meta-tooling consolidation folded 4 skills
+> (`lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`,
+> `lidr-generate-rule`) into `lidr-agents-architecture` as `references/`, dropping LIDR
+> from 42→38. (The earlier 44 also reflects 2 unrelated removals —
+> `lidr-commit-management`, `lidr-ticket-validation` — handled by other streams.)
+
+The **1 umbrella meta-tooling skill** (`lidr-agents-architecture`) is counted inside the
+LIDR 38 and classified OPCIONAL (anytime). It folds command/hook/MCP/rule authoring as
+progressive-disclosure `references/`. The 4 newest skills (`lidr-help`,
+`lidr-impact-analysis`, `lidr-run-parallel-tasks`, `lidr-using-git-worktrees`) are now
+classified (impact-analysis → RECOMENDABLE; the other three → OPCIONAL).
 
 > **Prefix history:** Phase E (2026-05) temporarily moved the 5 meta-tooling skills to
 > a `claude-*` prefix; they were later renamed back to `lidr-*` (the `claude-*` prefix

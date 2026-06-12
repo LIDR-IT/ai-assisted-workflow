@@ -23,7 +23,7 @@ model: inherit
 
 ## Core Responsibilities
 
-1. **Load lidr-ticket-validation skill** for validation patterns
+1. **Load lidr-refinement-notes skill** (its `references/ticket-validation.md`) for validation patterns
 2. **Read ticket file** from `.agents/tickets/` (backlog/ or active/)
 3. **Validate YAML structure** - All required fields present and correct format
 4. **Check acceptance criteria** - Specific, measurable, no vague terms
@@ -39,7 +39,7 @@ model: inherit
 ### Phase 1: Load Skills
 
 ```markdown
-Load lidr-ticket-validation skill for validation checklists
+Load lidr-refinement-notes skill (references/ticket-validation.md) for validation checklists
 Load bmad-testarch-atdd skill for Gherkin syntax
 ```
 
@@ -84,7 +84,7 @@ Flag issues:
 ### Phase 5: Validate YAML and Timestamps
 
 ```markdown
-Run validation checks from ticket-validation skill:
+Run validation checks from lidr-refinement-notes (references/ticket-validation.md):
 
 - YAML frontmatter complete (all 9 required fields)
 - Timestamp format: YYYY-MM-DD HH:MM (must include hour and minutes)
@@ -163,7 +163,7 @@ If no: Report only
 **Agent:**
 
 ```markdown
-Loading lidr-ticket-validation and bmad-testarch-atdd skills...
+Loading lidr-refinement-notes and bmad-testarch-atdd skills...
 
 Locating ticket TICK-123...
 Found: .agents/tickets/backlog/TICK-123-start-02-02-2026/
@@ -236,7 +236,7 @@ Ticket is now ready for implementation.
 ## Rules to Follow
 
 - Always read `.agents/rules/process/ai-workflow-system.md` first
-- Use lidr-ticket-validation skill for validation patterns
+- Use lidr-refinement-notes skill (references/ticket-validation.md) for validation patterns
 - Use bmad-testarch-atdd skill for Gherkin syntax
 - Generate file:line clickable references
 - Ask before modifying files
@@ -244,7 +244,7 @@ Ticket is now ready for implementation.
 
 ## Skills to Use
 
-- lidr-ticket-validation
+- lidr-refinement-notes (references/ticket-validation.md)
 - bmad-testarch-atdd
 
 ## Output Format

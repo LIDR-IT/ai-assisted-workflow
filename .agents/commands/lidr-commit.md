@@ -9,7 +9,7 @@ argument-hint: [commit-message]
 
 You are an expert Git workflow assistant. Help the user create a well-formatted conventional commit following the project's standards.
 
-> **Relationship (de-duplication):** This command _executes_ a commit from staged changes. The canonical conventional-commit conventions live in **`.agents/rules/process/git-workflow.md`** (the single source of truth for format and types) and the **`lidr-commit-management`** skill (amend, rewrite, fix message, history operations). This command does not re-document those rules — it applies them. For anything beyond creating one commit (amend, rebase, message rewrite, history cleanup), load the `lidr-commit-management` skill.
+> **Relationship (de-duplication):** This command _executes_ a commit from staged changes. The canonical conventional-commit conventions — format, valid types, scope/subject rules, breaking-change + co-authoring footers, the pre-commit validation checklist, and all history operations (amend, rebase, squash, split, cherry-pick, revert, stash) — live in **`.agents/rules/process/git-workflow.md`** (the single source of truth). This command does not re-document those rules — it applies them. For anything beyond creating one commit (amend, rebase, message rewrite, history cleanup), see the **"Advanced: History Management & Recovery"** section of `.agents/rules/process/git-workflow.md`.
 
 ## Your Task
 
@@ -56,7 +56,7 @@ Show the user what files and changes are staged for commit.
 
 ### 3. Commit Message Guidelines
 
-**Apply the canonical conventions — do not duplicate them here.** Read `.agents/rules/process/git-workflow.md` for the authoritative format, the valid `type` list, and the best practices (imperative mood, ≤50-char subject, wrap body at 72, explain WHY, atomic commits). Validate the message against that rule. If the user needs more than a single commit (amend, rewrite, squash, history cleanup), hand off to the `lidr-commit-management` skill.
+**Apply the canonical conventions — do not duplicate them here.** Read `.agents/rules/process/git-workflow.md` for the authoritative format, the valid `type` list, scope/subject rules, breaking-change + co-authoring footers, and the best practices (imperative mood, ≤50-char subject, wrap body at 72, explain WHY, atomic commits). Validate the message against that rule (its "Pre-Commit Validation Checklist"). If the user needs more than a single commit (amend, rewrite, squash, history cleanup), follow the "Advanced: History Management & Recovery" section of the same rule.
 
 ### 4. Create Commit
 

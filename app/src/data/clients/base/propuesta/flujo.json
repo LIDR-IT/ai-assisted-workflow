@@ -50,7 +50,7 @@
         "y": 110,
         "label": "PHASE 0: Context",
         "variant": "slate",
-        "subtitle": "bmad-document-project + bmad-generate-project-context · docs shardeadas/indexadas (bmad-shard-doc + bmad-index-docs) · ADR baseline (lidr-adr) · CLAUDE.md por repo (lidr-generate-rule) · checklist Context Ready — brownfield; opcional en greenfield"
+        "subtitle": "bmad-document-project + bmad-generate-project-context · docs shardeadas/indexadas (bmad-shard-doc + bmad-index-docs) · ADR baseline (lidr-adr) · CLAUDE.md por repo (lidr-agents-architecture, rule-development reference) · checklist Context Ready — brownfield; opcional en greenfield"
       },
       {
         "id": "gate0",
@@ -403,7 +403,7 @@
     {
       "gate": "Gate 0",
       "name": "Intake (cierra Phase 1 Analysis)",
-      "criteria": "Business Case aprobado (lidr-business-case) · Sponsor identificado · Presupuesto asignado · Alineación estratégica · Proyecto creado vía lidr-tracking-integration en {{TRACKING_TOOL}} · Brownfield: checklist Context Ready cumplido (bmad-document-project + bmad-generate-project-context ejecutados, CLAUDE.md por repo vía lidr-generate-rule)",
+      "criteria": "Business Case aprobado (lidr-business-case) · Sponsor identificado · Presupuesto asignado · Alineación estratégica · Proyecto creado vía lidr-tracking-integration en {{TRACKING_TOOL}} · Brownfield: checklist Context Ready cumplido (bmad-document-project + bmad-generate-project-context ejecutados, CLAUDE.md por repo vía lidr-agents-architecture, rule-development reference)",
       "owner": "PME + Negocio"
     },
     {

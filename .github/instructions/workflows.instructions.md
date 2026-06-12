@@ -197,38 +197,41 @@ PHASE 3 — SOLUTIONING · stage sprint-planning (ex-Fase 4 Sprint Planning)
                               → AUTO: asigna US a devs
                               → AUTO: notifica equipo de Dev
 
-PHASE 4 — IMPLEMENTATION · stage development (ex-Fase 5; por cada ticket)
-  Dev ejecuta:
-    /lidr-create-branch [ID]      → Crea feature branch desde Jira
-    /lidr-implement-ticket [ID]   → Workflow completo (o ejecuta pasos individuales):
-      ├── skill: lidr-pr-description    → Auto-genera PR description
-      ├── skill: lidr-dev-handoff-qa    → Genera handoff
-      ├── skill: lidr-tech-debt         → Registra deuda si la detecta
-      ├── skill: lidr-adr               → Genera ADR si hay decisión arquitectónica
-      ├── hook: lidr-frontmatter-guard  → Valida frontmatter docs (DTC) en PreToolUse:Write|Edit
-      └── /lidr-create-pr [ID]          → Crea PR (puede ser standalone)
+PHASE 4 — IMPLEMENTATION · stage development (ex-Fase 5; por cada ticket/story)
+  UNA secuencia — motor BMad → envoltura LIDR. NO hay rutas paralelas: las skills
+  BMad producen, los commands LIDR gobiernan, en orden. Dos ENTRADAS a la misma
+  cadena (Jira o change-container), nunca dos flujos que compiten.
 
-  Dev ejecuta (LIDR Spec Lifecycle — granular per-change, opcional):
-    /lidr-spec-new <name>    → Crea docs/projects/<cliente>/changes/<name>/ con scaffold
-    /lidr-spec-ff <name>     → Fast-forward planning (Opus high reasoning)
-                              ├── skill: bmad-prd           → proposal.md (+ lidr-review-cruzado Gate-1)
-                              ├── skill: bmad-create-architecture → design.md (+ lidr-adr)
-                              ├── skill: lidr-generate-rf   → spec.md (RFs + NFRs)
-                              └── skill: lidr-user-stories  → tasks.md (con mandatory steps)
-    /lidr-spec-apply <name>  → Implementa task-by-task (Sonnet medium)
-                              ├── rule: spec-execution.md   → AGENT MUST EXECUTE tests
-                              ├── reports/                  → un report por mandatory step
-                              └── tasks.md                  → [x] tras cada task completada
-    /lidr-spec-verify <name> → Re-ejecuta tests, detecta docs drift, escribe test-report.md
-    /lidr-spec-archive <name>→ Mueve a changes/archive/YYYY-MM-DD-<name>/
-    /lidr-create-pr [ID]          → PR referencia el ticket + el change archivado
+  Entrada Jira-céntrica:
+    /lidr-create-branch [ID]      → feature branch desde Jira
+    /lidr-implement-ticket [ID]   → entrada del flujo: si el ticket tiene un change
+                                    asociado DELEGA en /lidr-spec-apply (motor+wrap);
+                                    encadena lidr-pr-description, lidr-dev-handoff-qa,
+                                    lidr-tech-debt / lidr-adr (si aplica), /lidr-create-pr
+                                    (hook lidr-frontmatter-guard valida DTC en cada write)
 
-  TL ejecuta (paralelización opcional):
-    skill: lidr-run-parallel-tasks → Lanza N changes en worktrees aislados
-                                   → cada sub-agente corre el pipeline completo
+  Entrada por change-container (la MISMA secuencia, granular per-change):
+    /lidr-spec-new <name>    → scaffold changes/<name>/ (+ enriched-us.md)
+    /lidr-spec-ff <name>     → planning (Opus high) — envuelve el motor BMad:
+                              ├── bmad-spec / bmad-prd            → proposal.md (+ lidr-review-cruzado G1)
+                              ├── bmad-create-architecture        → design.md (+ lidr-adr)
+                              ├── lidr-generate-rf / -nfr         → spec.md (omite el SPEC kernel a propósito)
+                              └── bmad-create-story + lidr-user-stories → tasks.md (mandatory steps)
+    /lidr-spec-apply <name>  → implementación (Sonnet medium): DELEGA el loop unit/regresión a
+                              bmad-dev-story (motor, ejecuta los tests) y AÑADE Step 0 branch +
+                              curl + Playwright + DTC docs + reports auditables (spec-execution.md §0)
+    /lidr-spec-verify <name> → re-ejecuta tests, docs drift, escribe test-report.md (verdict) — evidencia G4
+    /lidr-spec-archive <name>→ changes/archive/YYYY-MM-DD-<name>/
+    /lidr-create-pr [ID|name]→ PR referencia el ticket (o el change si no hay ticket)
+
+    ▸ Batch denso: lidr-run-parallel-tasks corre N changes de ESTA misma secuencia en
+      worktrees aislados (cada worktree produce su test-report.md = su evidencia G4).
+      No es otra ruta — es la misma secuencia en paralelo físico.
 
   TL ejecuta:
-    /lidr-advance-gate 4          → Agregador: ¿todos los tickets del sprint PASS?
+    /lidr-advance-gate 4          → Agregador: ¿todos los tickets/changes del sprint PASS?
+                              (cada change aporta su test-report.md como evidencia G4;
+                               el gate duro sigue siendo el DoD checklist, route-agnostic)
                               → AUTO: notifica QA team
 
 PHASE 4 — IMPLEMENTATION · stage qa (ex-Fase 6; por cada ticket)
@@ -407,13 +410,12 @@ bmad-prd (update intent)                → PRD delta sobre docs existentes
 ```
 PRE: Context Ready (Phase 0 viva) + producto con ≥1 ciclo completo
 /lidr-enrich-ticket FEAT-123                 → Ticket enriquecido (completitud validada)
-  ↓ bifurcación por tamaño
-≤40h: /lidr-quick-spec feature               → Spec ligera → /lidr-spec-new → ff → apply →
-                                          verify → archive → /lidr-create-pr (G4–G7 por ticket)
->40h: bmad-prd (feature PRD)            → Hereda project-context + PRD maestro
-      /lidr-validate-requirements            → RFs del feature + epics delta + RTM incremental
-      /lidr-advance-gate 2 → 3               → Specs + readiness del feature
-      ...pipeline normal Phase 4...     → G4–G7
+  ↓ MISMA cadena — profundidad del front-end de planning según tamaño (NO son dos rutas)
+front-end ligero (≤40h):   /lidr-quick-spec feature  → quick-spec doc (intent ligero)
+front-end completo (>40h): bmad-prd (feature PRD)     → /lidr-validate-requirements
+                                                      → /lidr-advance-gate 2 → 3 (specs + readiness)
+  ↓ AMBOS convergen en la MISMA secuencia de development:
+/lidr-spec-new → ff → apply → verify → archive → /lidr-create-pr   (G4–G7 por ticket)
 POST: PRD maestro actualizado en el mismo PR (DTC)
 ```
 
@@ -578,10 +580,11 @@ Si el rol no está claro → PREGUNTAR antes de ejecutar commands restringidos
 
 ## Changelog
 
-| Versión | Fecha      | Autor                   | Cambios                                                                                                      |
-| ------- | ---------- | ----------------------- | ------------------------------------------------------------------------------------------------------------ |
-| 1.1.0   | 2026-06-10 | TL: ecosystem coherence | Commands/skills normalizados a nombres reales (`lidr-*`); §6 reescrita con los 6 hooks reales del ecosistema |
-| 1.0.0   | 2026-03-25 | IA: sync-docs           | Versión base                                                                                                 |
+| Versión | Fecha      | Autor                             | Cambios                                                                                                                                                                                                                                             |
+| ------- | ---------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.2.0   | 2026-06-11 | TL: SDD single-sequence coherence | §3 Phase-4 development reescrita como UNA secuencia (motor BMad → envoltura LIDR); `/lidr-implement-ticket` = entrada Jira que delega en `/lidr-spec-apply`; feature scenario sin bifurcación de rutas (front-end ligero vs completo, misma cadena) |
+| 1.1.0   | 2026-06-10 | TL: ecosystem coherence           | Commands/skills normalizados a nombres reales (`lidr-*`); §6 reescrita con los 6 hooks reales del ecosistema                                                                                                                                        |
+| 1.0.0   | 2026-03-25 | IA: sync-docs                     | Versión base                                                                                                                                                                                                                                        |
 
 
 _Esta rule se carga bajo demanda (via description) cuando se ejecuta un command o se consulta el workflow SDLC._

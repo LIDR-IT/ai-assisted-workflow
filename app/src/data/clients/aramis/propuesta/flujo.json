@@ -58,7 +58,7 @@
         "y": 110,
         "label": "PHASE 0: Context (brownfield)",
         "variant": "slate",
-        "subtitle": "bmad-document-project + bmad-generate-project-context · docs shardeadas/indexadas (bmad-shard-doc + bmad-index-docs) · ADR baseline (lidr-adr) · CLAUDE.md por repo (lidr-generate-rule) · checklist Context Ready"
+        "subtitle": "bmad-document-project + bmad-generate-project-context · docs shardeadas/indexadas (bmad-shard-doc + bmad-index-docs) · ADR baseline (lidr-adr) · CLAUDE.md por repo (lidr-agents-architecture, rule-development reference) · checklist Context Ready"
       },
       {
         "id": "gate0",
@@ -177,7 +177,7 @@
         "y": 1210,
         "label": "Desarrollo",
         "variant": "orange",
-        "subtitle": "CLAUDE.md (lidr-generate-rule) · /lidr-spec-new → ff → apply → verify (AGENT MUST EXECUTE tests) o bmad-dev-story · MCP Redmine+GitLab del cliente [CLIENTE]"
+        "subtitle": "CLAUDE.md (lidr-agents-architecture, rule-development reference) · /lidr-spec-new → ff → apply → verify (AGENT MUST EXECUTE tests) o bmad-dev-story · MCP Redmine+GitLab del cliente [CLIENTE]"
       },
       {
         "id": "ci-existing",
@@ -466,7 +466,7 @@
     {
       "gate": "Gate 1",
       "name": "PRD Aprobado (Planning → Solutioning)",
-      "criteria": "PRD unificado F+T completo (bmad-prd — reemplaza los antiguos PRD-T/PRD-F separados) · Review cruzado formalizado (lidr-review-cruzado) · UX spec si hay UI (bmad-ux) · Riesgos registrados (lidr-risk-log) · Si Aramis decide conectar su Polaris Knowledge Agent vía lidr-mcp-integration, queda como contexto adicional [CLIENTE]",
+      "criteria": "PRD unificado F+T completo (bmad-prd — reemplaza los antiguos PRD-T/PRD-F separados) · Review cruzado formalizado (lidr-review-cruzado) · UX spec si hay UI (bmad-ux) · Riesgos registrados (lidr-risk-log) · Si Aramis decide conectar su Polaris Knowledge Agent vía el patrón mcp-integration de lidr-agents-architecture, queda como contexto adicional [CLIENTE]",
       "owner": "Producto + Tech Lead (Tribu correspondiente)"
     },
     {
@@ -496,7 +496,7 @@
     {
       "gate": "Gate 6",
       "name": "Security Sign-off (Implementation: security → release)",
-      "criteria": "OWASP Top 10 OK (lidr-security-checklist) · SAST/SCA interpretado (lidr-vuln-assessment) · DAST si aplica (lidr-dast-interpretation) · security-signoff firmado por VP Seguridad del cliente · Hook GDPR: lo implementa Ciberseguridad Aramis usando el patrón lidr-hook-development que LIDR enseña [CLIENTE]",
+      "criteria": "OWASP Top 10 OK (lidr-security-checklist) · SAST/SCA interpretado (lidr-vuln-assessment) · DAST si aplica (lidr-dast-interpretation) · security-signoff firmado por VP Seguridad del cliente · Hook GDPR: lo implementa Ciberseguridad Aramis usando el patrón hook-development de lidr-agents-architecture que LIDR enseña [CLIENTE]",
       "owner": "VP Seguridad Aramis Group + Sec Lead"
     },
     {

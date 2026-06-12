@@ -25,7 +25,7 @@
         "✅ bmad-generate-project-context: skill incluida — genera project-context.md optimizado para LLM, contexto persistente de toda sesión IA",
         "✅ bmad-shard-doc + bmad-index-docs: skills incluidas — shardean docs grandes (Notion exportado, specs heredadas) por secciones y mantienen docs/index.md regenerado tras cada cambio",
         "✅ lidr-adr (brownfield): ADR baseline — documenta las decisiones arquitectónicas heredadas de Polaris/Bridge difíciles de revertir (MADR v3) antes de tocar código",
-        "✅ lidr-generate-rule: skill incluida — genera CLAUDE.md por repo (PHP+Symfony hexagonal / Angular+Nuxt / Bridge). Driver inicial sugerido: Dídac",
+        "✅ lidr-agents-architecture (rule-development reference): skill incluida — genera CLAUDE.md por repo (PHP+Symfony hexagonal / Angular+Nuxt / Bridge). Driver inicial sugerido: Dídac",
         "✅ ▸ /lidr-init-project-docs: command incluido — scaffold docs/projects/aramis/",
         "✅ Checklist 'Context Ready': evidencia brownfield evaluada en Gate 0 (project-context refleja el stack real, docs inventariadas, rules del cliente activas)",
         "📚 LIDR forma al equipo en el flujo Phase 0 → el contexto se levanta UNA vez y se mantiene con la rule DTC (docs travel with code)",
@@ -73,7 +73,7 @@
         "✅ ▸ /lidr-advance-gate 1: command incluido",
         "📌 Nota del modelo unificado: la arquitectura YA NO es evidencia de Gate 1 — se movió a Gate 2 (Solutioning), donde BMad la ubica. El PRD de Planning queda más ligero y el diseño técnico va después",
         "📚 LIDR forma a PO y TL en bmad-prd + el flujo de review cruzado pre-Gate 1",
-        "💡 Sugerencia: el Polaris Knowledge Agent (Pedro) puede consumirse como MCP externo durante PRDs y RFs para dar contexto de negocio a la IA — Aramis decide si conecta su MCP usando el patrón lidr-mcp-integration que LIDR enseña",
+        "💡 Sugerencia: el Polaris Knowledge Agent (Pedro) puede consumirse como MCP externo durante PRDs y RFs para dar contexto de negocio a la IA — Aramis decide si conecta su MCP usando el patrón mcp-integration que lidr-agents-architecture enseña (reference: mcp-integration.md)",
         "💡 Sugerencia: el orquestador de Luis Marco puede convivir con el framework; conviene mapear sus pasos a skills equivalentes para evitar duplicar esfuerzo — la decisión y la ejecución son de Aramis",
         "⚠️ Guard: PRD debe declarar brands/países objetivo y, cuando aplique, referenciar contratos Bridge afectados (la lista de contratos la mantiene Aramis internamente)"
       ]
@@ -121,7 +121,7 @@
         "✅ ▸ /lidr-advance-gate 3 y ▸ /lidr-sprint-health: commands incluidos",
         "📚 LIDR forma a SM, PO y TL en el flujo de Sprint Planning y en el uso de checklists DoR/DoD",
         "🏠 Recuperar Sprint Review formal es un cambio cultural que decide y ejecuta Aramis (LIDR explica el patrón en la rule org.md)",
-        "💡 Sugerencia: el comando /lidr-sprint-health puede leer datos del sprint vía MCP; si Aramis tiene MCP Redmine maduro, puede conectarlo siguiendo lidr-mcp-integration — la integración es de Aramis",
+        "💡 Sugerencia: el comando /lidr-sprint-health puede leer datos del sprint vía MCP; si Aramis tiene MCP Redmine maduro, puede conectarlo siguiendo el patrón mcp-integration de lidr-agents-architecture — la integración es de Aramis",
         "⚠️ Guard: cada US referencia contratos potencialmente afectados cuando aplique (la lista de contratos la mantiene Aramis internamente)"
       ]
     },
@@ -135,7 +135,7 @@
       "icon": null,
       "actual": "Desarrollo sin CLAUDE.md en ninguno de los 3 repos (BE/FE/Bridge) — PP-08. Code review dual técnico/funcional inconsistente — PP-02 (Dídac formaliza individualmente con Claude Code ~2 semanas). Cambios en Polaris rompen Bridge silenciosamente — PP-05 ('te cargas un enum', David). CI muy lento — PP-09 (3/5 self-score). Pre-Code-Review CI Gate operativo ✅: Unit + Integration + Acceptance + PHPStan + validadores hexagonal.",
       "propuesta": [
-        "✅ lidr-generate-rule: skill incluida — genera CLAUDE.md por repo BE (PHP+Symfony hexagonal) + FE (Angular/Nuxt) + Bridge (resuelve PP-08; se ejecuta en Phase 0). Driver inicial sugerido: Dídac",
+        "✅ lidr-agents-architecture (rule-development reference): skill incluida — genera CLAUDE.md por repo BE (PHP+Symfony hexagonal) + FE (Angular/Nuxt) + Bridge (resuelve PP-08; se ejecuta en Phase 0). Driver inicial sugerido: Dídac",
         "✅ bmad-code-review: skill incluida — code review adversarial en 3 capas paralelas (Blind Hunter técnico + Edge Case Hunter + Acceptance Auditor contra los criterios del ticket). CIERRA el gap PP-02 que en v1.6.0 estaba fuera del framework ✅ — cubre exactamente la dualidad técnico/funcional",
         "✅ LIDR Spec Lifecycle: ▸ /lidr-spec-new → ff → apply → verify → archive — cada feature técnica es un change versionable con proposal/design/spec/tasks/test-report; la rule spec-execution obliga a que LA IA EJECUTE unit + curl + Playwright (AGENT MUST EXECUTE) con report auditable por step",
         "✅ bmad-create-story + bmad-dev-story: skills incluidas — ruta alternativa story-driven para tickets que no necesitan change container",
@@ -146,13 +146,13 @@
         "✅ Checklist DoD (lidr-pr-description) + hook lidr-frontmatter-guard: incluidos",
         "✅ ▸ /lidr-advance-gate 4, ▸ /lidr-create-branch, ▸ /lidr-create-pr, ▸ /lidr-implement-ticket: commands incluidos (hoy Jira-only)",
         "📚 LIDR forma a Devs y TLs en el spec lifecycle, CLAUDE.md y commands del framework",
-        "📚 LIDR enseña los patrones lidr-agents-architecture, lidr-command-development y lidr-mcp-integration para que Aramis evolucione el framework",
+        "📚 LIDR enseña el patrón lidr-agents-architecture (umbrella; command/hook/MCP/rule authoring en sus references/) para que Aramis evolucione el framework",
         "✅ lidr-impact-analysis (modo contract-impact): skill incluida en v2.1 — analiza el diff/change contra el catálogo de contratos (enums, types, endpoints, schema, eventos), clasifica severidad por consumer system y emite impact report con verdicto SAFE/REVIEW REQUIRED/BLOCKING como evidencia opcional de Gate 4 (cierra PP-05; bmad-investigate queda para el análisis forense cuando algo ya rompió)",
         "📌 Los commands del framework son Jira-only hoy. Aramis puede crear variantes Redmine si lo necesita — fuera de scope LIDR",
         "✅ El Pre-Code-Review CI Gate existente (PHPStan + hex-validators + acceptance) se preserva tal cual — no se reemplaza, no se toca",
         "🏠 Poblar el catálogo de contratos Bridge (enums, types, OpenAPI, schema DB) en docs/projects/aramis/registries/contract-registry.yaml es responsabilidad de Aramis — owner sugerido: David / R&D; sin el registry, lidr-impact-analysis degrada a checklist manual guiado",
         "🏠 Optimizar GitLab Pipelines (PP-09) es responsabilidad del equipo Plataforma de Aramis — fuera de scope LIDR (bmad-testarch-ci puede scaffoldear el quality pipeline como referencia)",
-        "💡 Sugerencia: el MCP Redmine+GitLab del equipo Plataforma puede consumirse desde commands futuros que Aramis cree; el patrón lidr-mcp-integration está documentado en el framework"
+        "💡 Sugerencia: el MCP Redmine+GitLab del equipo Plataforma puede consumirse desde commands futuros que Aramis cree; el patrón mcp-integration está documentado en lidr-agents-architecture (reference: mcp-integration.md)"
       ]
     },
     {
@@ -198,7 +198,7 @@
         "✅ Signoff security-signoff: incluido en lidr-security-checklist/signoffs/ — firmado por VP Seguridad del cliente",
         "✅ ▸ /lidr-advance-gate 6: command incluido",
         "📚 LIDR forma al equipo de producto y a Ciberseguridad Aramis en el flujo Gate 6 y en el uso de las 4 skills de seguridad",
-        "📚 LIDR enseña el patrón lidr-hook-development y los 6 hooks existentes (lidr-frontmatter-guard, lidr-load-context, lidr-validate-ecosystem-counts, notify, auto-format, protect-secrets) como referencia",
+        "📚 LIDR enseña el patrón hook-development de lidr-agents-architecture (reference: hook-development.md) y los 6 hooks existentes (lidr-frontmatter-guard, lidr-load-context, lidr-validate-ecosystem-counts, notify, auto-format, protect-secrets) como referencia",
         "🏠 La implementación del hook GDPR planeado por Ciberseguridad Aramis es responsabilidad de Aramis; LIDR enseña el patrón PreToolUse pero no entrega la lógica de validación a medida",
         "🏠 Generalizar la detección de secretos y SCA a todos los repos es responsabilidad del equipo Plataforma del cliente",
         "💡 Sugerencia: coordinación trimestral con el VP de Ciberseguridad Aramis para alinear roadmap de seguridad — es iniciativa del cliente",

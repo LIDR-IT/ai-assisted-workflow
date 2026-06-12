@@ -89,9 +89,9 @@ Using project context from `bmad-document-project`:
 
 1. **Domain Context Analysis**:
    - Load business case for domain understanding
-   - Identify industry vertical (banking, government, healthcare, fintech)
-   - Classify domain-specific complexity level (facial-only, multi-modal, behavioral)
-   - Map regulatory requirements (GDPR, PSD2, eIDAS, local compliance)
+   - Identify industry vertical (from the active client config)
+   - Classify domain-specific complexity level (per the client's domain pack, if any)
+   - Map regulatory requirements declared by the client (none assumed by default)
 
 2. **Project Classification**:
    - Project type: Web app, mobile app, SDK, platform integration
@@ -163,11 +163,15 @@ Load: skills/generate-rf/checklists/rf-coherence.md
    - Performance criteria quantified (latency, accuracy, throughput)
    - Error handling scenarios specified
 
-2. **domain-specific-Specific Measurability**:
-   - FAR/FRR thresholds specified where applicable
-   - Liveness detection accuracy requirements
-   - Response time requirements for domain-specific operations
+2. **Quantified Metric Coverage**:
+   - Accuracy/quality thresholds specified where applicable
+   - Detection/precision requirements quantified
+   - Response time requirements for core operations
    - User experience metrics (completion rates, attempts)
+
+> Domain-specific metric checks (e.g. accuracy/quality thresholds for a
+> specialized vertical) are applied only when the active client binds a domain
+> pack; the default measurability check stays domain-agnostic.
 
 Output: Measurability score (0-100%), untestable requirements list
 
@@ -195,8 +199,8 @@ Output: Traceability matrix completeness (0-100%), orphan requirements
    - Business rules independent of system architecture
    - Integration requirements vs specific technology choices
 
-2. **domain-specific Implementation Independence**:
-   - Algorithm-agnostic accuracy requirements
+2. **Cross-Cutting Implementation Independence**:
+   - Algorithm-agnostic accuracy/quality requirements
    - Platform-independent user experience definitions
    - Security requirements without specific encryption methods
    - Compliance requirements without technology assumptions
@@ -209,11 +213,16 @@ Output: Abstraction score (0-100%), implementation leakage detection
 
 Load: @../rules/lidr-sdlc/org.md for regulatory context
 
-1. **domain-specific Industry Compliance**:
-   - GDPR Art. 9 domain-specific data requirements
-   - ISO 30107 presentation attack detection standards
-   - Industry-specific regulations (banking, government)
-   - Privacy by Design principles implementation
+1. **Industry Compliance** (default = domain-agnostic):
+   - Privacy-by-Design principles implementation
+   - General data-protection obligations declared by the client
+   - Any industry-specific regulations bound by the active client config
+   - (No specific framework is assumed by default — see note below)
+
+   > Specialized regulatory packs (e.g. special-category data, presentation-attack
+   > detection standards, sector regulations) are checked **only** when the active
+   > client binds a domain pack. The default compliance check validates the generic
+   > privacy/data-protection obligations above.
 
 2. **Regulatory Pattern Detection**:
    - User consent mechanisms specified
@@ -231,8 +240,8 @@ Output: Compliance score (0-100%), missing regulatory requirements
    - Security architecture matches data sensitivity level
    - Integration capabilities match ecosystem requirements
 
-2. **domain-specific Platform Requirements**:
-   - SDK integration complexity assessment
+2. **Platform Requirements**:
+   - SDK/integration complexity assessment
    - Cloud vs on-premise deployment requirements
    - Real-time vs batch processing needs
    - Mobile vs web platform considerations
@@ -248,11 +257,14 @@ Output: Infrastructure alignment score (0-100%), architecture gaps
    - Relevant: Aligned with business objectives
    - Time-bound: Clear delivery expectations
 
-2. **domain-specific Success Metrics**:
-   - Accuracy metrics (FAR, FRR, EER) specified
+2. **Success Metrics**:
+   - Quality/accuracy metrics specified where applicable
    - Performance metrics (latency, throughput) quantified
    - User experience metrics (completion rates) defined
    - Business impact metrics (conversion, satisfaction) included
+
+> Domain-specific accuracy metrics are validated only when the active client
+> binds a domain pack; the default SMART check stays domain-agnostic.
 
 Output: SMART compliance score (0-100%), vague criteria identification
 
@@ -324,7 +336,7 @@ Use AskUserQuestion:
 If yes, execute cross-review validation:
 
 1. Load both PRDs for alignment analysis
-2. Execute domain-specific-specific cross-validation
+2. Execute cross-validation between functional and technical sections
 3. Check for contradictions and gaps between PRDs
 4. Generate alignment matrix and findings report
 
@@ -517,14 +529,14 @@ If only PRD-T exists:
 
 ### Tool Unavailability
 
-If Jira MCP unavailable:
-→ Skip traceability to Jira tickets
+If `lidr-sdlc-tracking` cannot resolve {{TRACKING_TOOL}} from the registry:
+→ Skip traceability to tracking tickets
 → Generate local validation report only
-→ Provide instructions for manual Jira integration
+→ Provide instructions for manual tracking-tool integration
 
-If Confluence MCP unavailable:
+If `lidr-external-sync` cannot resolve {{DOCS_TOOL}} from the registry:
 → Save all reports as local markdown
-→ Provide instructions for manual Confluence upload
+→ Provide instructions for manual {{DOCS_TOOL}} upload
 → Include formatted content ready for copy-paste
 
 ## Success Metrics & Continuous Improvement

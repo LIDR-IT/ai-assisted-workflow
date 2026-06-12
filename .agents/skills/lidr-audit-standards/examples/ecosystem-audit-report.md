@@ -1,5 +1,11 @@
 # SDLC Ecosystem Standards Audit Report
 
+> **Historical sample (illustrative).** This is a point-in-time example audit from
+> 2026-03-16 (54-skill era). Skill names it mentions — e.g. `generate-rule`,
+> `mcp-integration` — reflect that snapshot; they were folded into
+> `lidr-agents-architecture` (as `references/`) in the 2026-06-12 meta-tooling
+> consolidation. Kept verbatim as an example of report shape, not a live inventory.
+
 **Audit Date**: 2026-03-16
 **Auditor**: Quality Assurance Lead
 **Scope**: All 54 skills, 20 commands, 5 rules, 4 hooks

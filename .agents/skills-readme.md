@@ -117,23 +117,25 @@ Anti-patterns:
 - "I help with X" (first person — doesn't match how Claude/Gemini reason about skills)
 - Multi-paragraph descriptions (most chars never reach Claude's listing budget)
 
-## Inventory (113 skills)
+## Inventory (107 skills)
 
 All artifacts inherited from the LIDR SDLC methodology are prefixed `lidr-*`;
 BMad skills (base flow + agents + utilities) keep the `bmad-*` prefix. LIDR
 wraps BMad outputs rather than duplicating them — see
 `.agents/_shared/lidr/MIGRATION.md`.
 
-### LIDR skills (44) — `lidr-*`
+### LIDR skills (38) — `lidr-*`
 
 SDLC phases 0–4 (unified BMad numbering) plus the spec-lifecycle and the
 meta-tooling skills. Run `ls .agents/skills/ | grep ^lidr-` for the live list,
 or see the orchestrator AGENTS.md "LIDR SDLC Methodology" section for the
 phase-by-phase mapping. Includes:
 
-- **Meta-tooling (5):** `lidr-agents-architecture`, `lidr-command-development`,
-  `lidr-hook-development`, `lidr-mcp-integration`, `lidr-generate-rule`
-- **SDLC + spec-lifecycle (39):** `lidr-business-case`, `lidr-kickoff`,
+- **Meta-tooling (1):** `lidr-agents-architecture` — the single umbrella meta-skill. It
+  absorbed the former `lidr-command-development`, `lidr-hook-development`,
+  `lidr-mcp-integration`, and `lidr-generate-rule` skills as progressive-disclosure
+  `references/` (2026-06-12 consolidation).
+- **SDLC + spec-lifecycle (37):** `lidr-business-case`, `lidr-kickoff`,
   `lidr-stakeholder-map`, `lidr-risk-log`, `lidr-review-cruzado`,
   `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-validate-requirements`,
   `lidr-user-stories`, `lidr-refinement-notes`, `lidr-sprint-capacity`,
@@ -143,8 +145,8 @@ phase-by-phase mapping. Includes:
   `lidr-vuln-assessment`, `lidr-dast-interpretation`, `lidr-pentest-report`,
   `lidr-security-checklist`, `lidr-change-request`, `lidr-rollback-plan`,
   `lidr-release-notes`, `lidr-postmortem`, `lidr-gate-evaluation`,
-  `lidr-impact-analysis`, `lidr-audit-standards`, `lidr-commit-management`,
-  `lidr-ticket-validation`, `lidr-tracking-integration`, `lidr-sdlc-tracking`,
+  `lidr-impact-analysis`, `lidr-audit-standards`,
+  `lidr-tracking-integration`, `lidr-sdlc-tracking`,
   `lidr-external-sync`, `lidr-playwright-cli`, `lidr-propuesta-builder`,
   `lidr-help`
 

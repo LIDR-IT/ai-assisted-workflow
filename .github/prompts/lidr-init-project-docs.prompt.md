@@ -29,7 +29,9 @@ RELATED COMMANDS:
   /lidr-sync-docs             - Updates docs after code changes
 
 SKILLS USED:
-  lidr-generate-rule     - Generates rule files for .claude/rules/lidr-sdlc/
+  lidr-agents-architecture - Generates rule files for .claude/rules/lidr-sdlc/
+                             (rule authoring folded in; see
+                             references/rule-development.md + templates/rule.md)
 
 CHANGELOG:
   v5.0.0 (2026-06-10): "Wrap BMad, don't duplicate" — stopped scaffolding
@@ -37,6 +39,9 @@ CHANGELOG:
                         artifacts now DEFER to bmad-prd, bmad-ux, and
                         bmad-create-architecture. Scaffolds only LIDR-genuine
                         docs (business-case, RF/NFR, ADR, DTC specs).
+  v4.0.2 (2026-06-12): Repointed rule generation from the folded lidr-generate-rule
+                        skill to lidr-agents-architecture (references/rule-development.md
+                        + templates/rule.md) after meta-tooling consolidation.
   v4.0.1 (2026-06-10): Repointed skill template paths (lidr-* prefixes, correct
                         filenames product-brief.md/deployment.md); rules generated
                         under lidr-sdlc/; lidr-generate-rule skill name.
@@ -172,22 +177,24 @@ Update @../rules/lidr-sdlc/project.md to reference new project docs:
 
 ## Generate Rule Files
 
-Use the `lidr-generate-rule` skill to create or update rule files in `.claude/rules/lidr-sdlc/`:
+Use the `lidr-agents-architecture` skill (rule authoring — see
+`references/rule-development.md`) to create or update rule files in
+`.claude/rules/lidr-sdlc/`:
 
 Check if rules exist: !`ls .claude/rules/lidr-sdlc/*.md 2>/dev/null | wc -l`
 
 If no rules exist (new ecosystem):
-Use skill `lidr-generate-rule` to create the 5 core SDLC rules from project context:
+Use skill `lidr-agents-architecture` (rule-development reference) to create the 5 core SDLC rules from project context:
 
 - .claude/rules/lidr-sdlc/org.md (from company info + regulatory context)
 - .claude/rules/lidr-sdlc/tech-stack.md (from stack selection in Question 2)
 - .claude/rules/lidr-sdlc/project.md (from project name, type, objectives)
 - .claude/rules/lidr-sdlc/documentation.md (standard DTC governance)
 - .claude/rules/lidr-sdlc/workflows.md (from commands catalog)
-  Template reference: skills/lidr-generate-rule/templates/rule.md
+  Template reference: skills/lidr-agents-architecture/templates/rule.md
 
 If rules already exist (existing ecosystem):
-Use skill `lidr-generate-rule` to update `.claude/rules/lidr-sdlc/project.md` only:
+Use skill `lidr-agents-architecture` (rule-development reference) to update `.claude/rules/lidr-sdlc/project.md` only:
 
 - Add new project reference: @../../docs/projects/$1/
 - Update current state section

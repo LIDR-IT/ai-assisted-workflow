@@ -11,6 +11,22 @@ applyTo: "**"
 > **Origen**: Adaptación nativa LIDR del patrón mandatory-steps. Pertenece al ecosistema LIDR, no a una dependencia externa.
 
 
+## 0. Relación con el motor BMad (engine ↔ governance — una sola secuencia)
+
+> **No hay "RUTA A vs RUTA B". Hay UNA secuencia: el motor BMad produce, la gobernanza LIDR envuelve, en orden.**
+
+El desarrollo de Phase 4 es una sola cadena donde las skills BMad (motor) y los commands LIDR (gobernanza) se **encadenan** — nunca compiten como rutas paralelas:
+
+| Lo que corre                                                                                                                                 | Quién lo posee                      | Qué aporta                                                                       |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------- |
+| Diseño del loop TDD (red-green-refactor: escribir tests + hacerlos pasar durante la implementación)                                          | **`bmad-dev-story`** (motor BMad)   | Define el patrón TDD; LIDR **no reinventa** un segundo loop                      |
+| Step 0 (branch) · Step N+1 (re-run AUDITABLE de la suite + baseline/restore de DB + report) · N+2 (curl) · N+3 (Playwright) · N+4 (DTC docs) | **`/lidr-spec-apply`** (gobernanza) | La EJECUCIÓN AUDITABLE con evidencia + curl/E2E/DTC que `bmad-dev-story` NO hace |
+
+- `/lidr-spec-apply` **no reinventa** el loop TDD de `bmad-dev-story` (reutiliza su patrón). **Sí re-ejecuta** la suite como verificación auditable (Step N+1, con baseline de DB + report por step), y `/lidr-spec-verify` la re-ejecuta de nuevo como check final independiente — eso es gobernanza/evidencia, **no** un loop TDD paralelo.
+- `/lidr-spec-ff` (planning) envuelve `bmad-spec` / `bmad-create-architecture` / `bmad-create-story` (ver `model-selection.md` §2.1). `spec.md` se construye desde `lidr-generate-rf`/`-nfr` y **omite a propósito** el SPEC kernel de `bmad-spec` (decisión, no olvido).
+- ⚠️ La regla **AGENT MUST EXECUTE** (§4) sigue intacta: la IA ejecuta todos los tests por sí misma (incluido el re-run auditable de la suite), **nunca** los delega al usuario.
+
+
 ## 1. Cuándo aplica esta rule
 
 Esta rule aplica cuando:
@@ -218,7 +234,7 @@ Antes de finalizar cualquier `tasks.md`, verificar:
 ```markdown
 ## 0. Setup: Create Feature Branch (MANDATORY — FIRST STEP)
 
-- [ ] 0.1 Create feature branch `feature/<change-name>` from `main` (or current base)
+- [ ] 0.1 Create feature branch `feature/<change-name>` from the project integration base (`tech-stack.md` §9 — `develop` in Gitflow)
 - [ ] 0.2 Verify branch creation and current branch status
 
 ## 1. Backend: Validator Tests (TDD)
@@ -314,10 +330,12 @@ Si la IA crea `tasks.md` sin seguir estos pasos obligatorios, el usuario tendrá
 - `lidr-sdlc/documentation.md` — DTC (Docs Travel with Code): Step N+4 cierra el lazo DTC
 - `lidr-sdlc/tech-stack.md` §7 — Testing Strategy: define las herramientas (Vitest, Playwright) que esta rule asume
 - `lidr-sdlc/model-selection.md` — `/lidr-spec-apply` corre Sonnet medium (implementación), `/lidr-spec-verify` puede subir a Opus high si encuentra bloqueos
+- `lidr-sdlc/documentation.md` §1 (paso 5) + `lidr-sdlc/org.md` §4 — el verdict `PASSED` de `test-report.md` y los reports por step que esta rule produce son la **unidad de evidencia que consume el Gate 4 (Dev→QA)** (ver `_shared/lidr/gate-evidence.yaml` G4). Esta rule **alimenta** el G4, no lo reemplaza; el gate duro sigue siendo el DoD checklist (route-agnostic, vinculante para todo cambio)
 
 
 ## 10. Changelog
 
-| Versión | Fecha      | Autor                | Cambios                                                              |
-| ------- | ---------- | -------------------- | -------------------------------------------------------------------- |
-| 1.0.0   | 2026-05-20 | TL: LIDR Spec Native | Creación inicial — paridad LIDR-nativa con el patrón mandatory-steps |
+| Versión | Fecha      | Autor                             | Cambios                                                                                                      |
+| ------- | ---------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 1.1.0   | 2026-06-11 | TL: SDD single-sequence coherence | §0 Relación con el motor BMad (engine↔governance, una secuencia, sin RUTA A/B); §9 wiring explícito a Gate 4 |
+| 1.0.0   | 2026-05-20 | TL: LIDR Spec Native              | Creación inicial — paridad LIDR-nativa con el patrón mandatory-steps                                         |

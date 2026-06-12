@@ -45,14 +45,16 @@ tools: ["Read", "Write"]
 
 ### Available Extension Types
 
-| Extension       | Skill                       | Use When                                                |
-| --------------- | --------------------------- | ------------------------------------------------------- |
-| **Skills**      | `/lidr-agents-architecture` | Adding specialized knowledge or workflows               |
-| **Commands**    | `/lidr-command-development` | Creating user-invocable slash commands                  |
-| **Agents**      | `/lidr-agents-architecture` | Building autonomous subprocesses (skill+agent flow)     |
-| **Hooks**       | `/lidr-hook-development`    | Event-driven automation (PreToolUse, PostToolUse, etc.) |
-| **MCP Servers** | `/lidr-mcp-integration`     | Connecting external tools/services                      |
-| **Rules**       | `/lidr-generate-rule`       | Creating Claude Code behavioral rules                   |
+All extension types are authored via the single umbrella skill `/lidr-agents-architecture`; its `references/` files cover command, hook, MCP, and rule design fundamentals.
+
+| Extension       | Skill                       | Reference (deep dive)                | Use When                                                |
+| --------------- | --------------------------- | ------------------------------------ | ------------------------------------------------------- |
+| **Skills**      | `/lidr-agents-architecture` | `references/skill-creation-guide.md` | Adding specialized knowledge or workflows               |
+| **Commands**    | `/lidr-agents-architecture` | `references/command-development.md`  | Creating user-invocable slash commands                  |
+| **Agents**      | `/lidr-agents-architecture` | `references/agent-creation-guide.md` | Building autonomous subprocesses (skill+agent flow)     |
+| **Hooks**       | `/lidr-agents-architecture` | `references/hook-development.md`     | Event-driven automation (PreToolUse, PostToolUse, etc.) |
+| **MCP Servers** | `/lidr-agents-architecture` | `references/mcp-integration.md`      | Connecting external tools/services                      |
+| **Rules**       | `/lidr-agents-architecture` | `references/rule-development.md`     | Creating Claude Code behavioral rules                   |
 
 ### Reference Templates
 
@@ -76,7 +78,7 @@ args: [arg1, arg2]
 # Content here
 ```
 
-**Invoke:** `/lidr-command-development` for full guide
+**Invoke:** `/lidr-agents-architecture` for full guide (see `references/command-development.md`)
 
 #### Creating an Agent
 
@@ -97,7 +99,7 @@ System prompt here
 # .claude/hooks/PreToolUse/validate.sh
 ```
 
-**Invoke:** `/lidr-hook-development` for full guide
+**Invoke:** `/lidr-agents-architecture` for full guide (see `references/hook-development.md`)
 
 #### Adding MCP Server
 
@@ -113,7 +115,7 @@ System prompt here
 }
 ```
 
-**Invoke:** `/lidr-mcp-integration` for full guide
+**Invoke:** `/lidr-agents-architecture` for full guide (see `references/mcp-integration.md`)
 
 ### File Locations
 

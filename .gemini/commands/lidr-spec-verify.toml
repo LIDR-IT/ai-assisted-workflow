@@ -34,7 +34,7 @@ CHANGELOG:
 
 ## Conditional model promote (per lidr-sdlc/model-selection.md §2.3)
 
-Verify starts on Sonnet medium. If CRITICAL findings emerge, **self-promote to Opus high** for analysis: edit `.claude/settings.json` with `"model": "claude-opus-4-7"` and `"effort": "high"`. Then continue.
+Verify starts on Sonnet medium. If CRITICAL findings emerge, **self-promote to Opus high** for analysis: edit `.claude/settings.json` with `"model": "opus"` and `"effort": "high"`. Then continue.
 
 ## Load context
 
@@ -98,7 +98,7 @@ For each of `proposal.md`, `design.md`, `spec.md`, `tasks.md`:
 
 - `last_updated` ≤ today
 - `editHistory` covers all major changes
-- `status` matches reality (`active` not `draft` if applied)
+- `status` is `active` after a PASSED finalize (see "Finalize artifact status" below); `in-progress`/`draft` before verification
 - If broken: WARNING
 
 ## Generate `test-report.md`
@@ -176,6 +176,15 @@ verdict: PASSED | WARNINGS | CRITICAL
 <one of: ready for /lidr-spec-archive | requires apply re-run | requires design update>
 
 
+## Finalize artifact status (on PASSED)
+
+If the verdict is **PASSED**, transition the change artifacts to their applied state — this is the **only** step in the lifecycle that does so (`/lidr-spec-new` scaffolds `draft`, `/lidr-spec-ff` sets `in-progress`):
+
+- Set `status: active` on `proposal.md`, `design.md`, `spec.md`, `tasks.md`
+- Append an `editHistory` entry (step: `spec-verify`, "Verified PASSED — status set to active")
+
+Without this, `status` would stay `in-progress` forever and Check 7 would warn on every run.
+
 ## Report (terminal output)
 
 
@@ -196,7 +205,7 @@ SUGGESTIONS:       <count>
 Test report: docs/projects/<CLIENT_CODE>/changes/<change-name>/test-report.md
 
 Next:
-  PASSED      → /lidr-spec-archive <change-name>
+  PASSED      → test-report.md verdict is the Gate 4 (Dev→QA) evidence → /lidr-advance-gate 4, then /lidr-spec-archive <change-name>
   WARNINGS    → review test-report.md, re-run if needed
   CRITICAL    → fix issues, re-run /lidr-spec-apply or /lidr-spec-verify
 

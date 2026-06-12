@@ -30,7 +30,7 @@ This is **lidr-ecosystem** — a unified monorepo that merges (2026-05-18):
 
 - Edit once in `.agents/` → automatically synced to all 5 platforms
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic) — new in this version: `spec-execution.md` and `model-selection.md` for the LIDR Spec Lifecycle
-- **113 skills** (44 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-impact-analysis` (contract impact + variant compatibility against client-maintained registries; closes the PP-05/PP-06-class capability gaps), `lidr-help` (ecosystem-guide skill, ex-command; mirrors `bmad-help` with the LIDR SDLC governance layer on top), `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`, plus 5 ex-`claude-*` meta-skills renamed to `lidr-*` (agents-architecture, command-development, generate-rule, hook-development, mcp-integration). Follow [Agent Skills](https://agentskills.io) open standard
+- **107 skills** (38 LIDR `lidr-*` — SDLC + spec-lifecycle + meta-tooling — + 69 BMAD `bmad-*`) — new in this version: `lidr-impact-analysis` (contract impact + variant compatibility against client-maintained registries; closes the PP-05/PP-06-class capability gaps), `lidr-help` (ecosystem-guide skill, ex-command; mirrors `bmad-help` with the LIDR SDLC governance layer on top), `lidr-using-git-worktrees`, `lidr-run-parallel-tasks`. The meta-tooling is now consolidated into the single umbrella skill `lidr-agents-architecture` (command, hook, MCP, and rule authoring live in its `references/`; the former `lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`, and `lidr-generate-rule` were folded in); ticket validation was absorbed into `lidr-refinement-notes` (former `lidr-ticket-validation`); commit-message authoring lives in the `process/git-workflow.md` rule and `/lidr-commit` (former `lidr-commit-management`). Follow [Agent Skills](https://agentskills.io) open standard
 - **30 commands** (21 LIDR `lidr-*` SDLC + 7 LIDR `lidr-spec-*` lifecycle + 2 generic: `sync-setup`, `test-hooks`) — the 7 `lidr-spec-*` change-lifecycle commands (`new`, `ff`, `apply`, `verify`, `archive`, `continue`, `bulk-archive`); `lidr-help` converted to a skill (still invocable as `/lidr-help`), `lidr-product-brief` removed (BMAD `bmad-product-brief` covers it); `document-project` and `check-readiness` removed (BMAD `bmad-document-project` + `bmad-check-implementation-readiness` cover them; readiness now lives in Gate 3)
 - **10 subagents** (LIDR `lidr-*` workers only) — new: `lidr-spec-orchestrator` for end-to-end change execution. The 13 BMad personas live exclusively as skills (`bmad-agent-*`, `bmad-cis-agent-*`, `bmad-tea`) — personas are conversational (main-loop) artifacts, not forked workers (ADR-0008)
 - **6 hooks** (3 LIDR + 3 generic, registered in `.agents/hooks/hooks.json`)
@@ -151,7 +151,7 @@ ls .github/agents/*.agent.md
 │   ├── process/              # git-workflow.md, documentation.md
 │   ├── product/, quality/, team/, tools/
 │
-├── skills/                   # 113 skills (44 lidr-* + 69 bmad-*) — Agent Skills open standard
+├── skills/                   # 107 skills (38 lidr-* + 69 bmad-*) — Agent Skills open standard
 │   ├── lidr-business-case/   # ← Unified Phase 1: Analysis
 │   ├── lidr-generate-rf/     # ← Unified Phase 3: Solutioning/specification
 │   ├── lidr-user-stories/    # ← Unified Phase 3: Solutioning/sprint-planning
@@ -162,11 +162,7 @@ ls .github/agents/*.agent.md
 │   ├── lidr-test-execution-report/ # ← Unified Phase 4: Implementation/qa
 │   ├── lidr-security-checklist/    # ← Unified Phase 4: Implementation/security
 │   ├── lidr-release-notes/   # ← Unified Phase 4: Implementation/release
-│   ├── lidr-agents-architecture/   # LIDR meta-skill (skill+command+agent scaffolding)
-│   ├── lidr-command-development/   # LIDR meta-skill (command authoring)
-│   ├── lidr-hook-development/      # LIDR meta-skill (hook authoring)
-│   ├── lidr-mcp-integration/       # LIDR meta-skill (MCP server integration)
-│   ├── lidr-generate-rule/         # LIDR meta-skill (rule generation)
+│   ├── lidr-agents-architecture/   # LIDR umbrella meta-skill (skill+command+agent+hook+MCP+rule authoring in references/)
 │   ├── bmad-prd/, bmad-create-architecture/, ... # ← 69 BMAD skills (base flow + agents + utilities)
 │   └── ...                   # See `ls .agents/skills/` for full list
 │
@@ -604,17 +600,13 @@ arguments: [issue, branch] # Named positional args for $name substitution
 
 **Reference:** see `.agents/skills-readme.md` for full inventory, troubleshooting, and per-platform doc links.
 
-### Available Skills (113 total)
+### Available Skills (107 total)
 
-**LIDR meta-skills (5, prefixed `lidr-*`):**
+**LIDR meta-tooling (1 umbrella skill, prefixed `lidr-*`):**
 
-- `lidr-agents-architecture` — Meta-skill: end-to-end scaffolding for skills, commands, and agents with auto-sync
-- `lidr-command-development` — Deep-dive on command authoring patterns; complements `lidr-agents-architecture`
-- `lidr-hook-development` — Hook authoring patterns
-- `lidr-mcp-integration` — MCP server integration
-- `lidr-generate-rule` — Rule generation
+- `lidr-agents-architecture` — Umbrella meta-skill: end-to-end scaffolding for skills, commands, agents, hooks, MCP servers, and rules with auto-sync. The former `lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`, and `lidr-generate-rule` are folded into its `references/` (command/hook/mcp/rule-development guides).
 
-**LIDR skills (44 total, incl. the 5 meta-skills above):** unified phases 0–4 (BMad-aligned; stages context→release, see `.agents/_shared/lidr/UNIFIED-PHASES.md`) plus spec-lifecycle and meta-tooling, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-user-stories`, `lidr-adr`, `lidr-create-test-cases`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-gate-evaluation`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping.
+**LIDR skills (38 total, incl. the umbrella meta-skill above):** unified phases 0–4 (BMad-aligned; stages context→release, see `.agents/_shared/lidr/UNIFIED-PHASES.md`) plus spec-lifecycle and meta-tooling, all prefixed `lidr-*`. Examples: `lidr-business-case`, `lidr-generate-rf`, `lidr-generate-nfr`, `lidr-user-stories`, `lidr-adr`, `lidr-create-test-cases`, `lidr-security-checklist`, `lidr-release-notes`, `lidr-gate-evaluation`. Run `ls .agents/skills/ | grep ^lidr-` for the full list; see the **LIDR SDLC Methodology** section below for phase-by-phase mapping.
 
 **BMad skills (69, prefixed `bmad-*`):** base flow, agent personas, test-architecture, creative/innovation, utilities. PRD/design/epics/test-plan are owned by BMad (`bmad-prd`, `bmad-create-architecture`, `bmad-create-epics-and-stories`, `bmad-testarch-test-design`) — LIDR wraps those outputs, see `.agents/_shared/lidr/MIGRATION.md`. Run `ls .agents/skills/ | grep ^bmad-` for the full list.
 

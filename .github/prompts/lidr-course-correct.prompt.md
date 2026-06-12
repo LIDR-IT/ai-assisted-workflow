@@ -15,10 +15,10 @@ Detects project drift (scope, timeline, budget, quality) and guides realignment 
 stakeholder involvement. 60% automation level targeting 120+ hours/year ROI.
 
 USAGE:
-  /lidr-course-correct {{CLIENT_CODE}}-sdk scope        -> Scope drift correction
-  /lidr-course-correct mobile-app timeline     -> Timeline realignment
-  /lidr-course-correct identity-platform quality -> Quality degradation recovery
-  /lidr-course-correct domain-specific-api full      -> Comprehensive review
+  /lidr-course-correct {{CLIENT_CODE}}-sdk scope   -> Scope drift correction
+  /lidr-course-correct mobile-app timeline         -> Timeline realignment
+  /lidr-course-correct web-platform quality        -> Quality degradation recovery
+  /lidr-course-correct backend-api full            -> Comprehensive review
 
 ARGUMENTS:
   project-name: Project identifier (required)
@@ -33,7 +33,7 @@ CORRECTION TYPES:
 
 REQUIREMENTS:
   - .claude/rules/lidr-sdlc/ configured (org.md, project.md, workflows.md)
-  - Current sprint data accessible via Jira/tools
+  - Current sprint data accessible via {{TRACKING_TOOL}}
   - Previous retrospective and risk-log data available
   - Stakeholder contact information in project documentation
 
@@ -110,7 +110,7 @@ If role not authorized -> "Solo PME, PO y Tech Lead pueden ejecutar /lidr-course
 - Read project documentation: `docs/projects/$1.md` (if exists)
 - Read latest retrospective: search for most recent retrospective output
 - Read current risk log: search for most recent risk-log output
-- Read current sprint status from team tools/Jira (if available)
+- Read current sprint status via `lidr-sdlc-tracking`, which resolves {{TRACKING_TOOL}} from the registry (if available)
 
 **Automated drift detection based on correction type:**
 
@@ -177,7 +177,7 @@ If role not authorized -> "Solo PME, PO y Tech Lead pueden ejecutar /lidr-course
 **Evidence to collect:**
 
 - Recent bug reports and escape rates
-- Code quality metrics (SonarQube, linting results)
+- Code quality metrics ({{CODE_QUALITY_TOOL}}, linting results)
 - Test coverage trends
 - Performance metrics and user feedback
 
@@ -379,9 +379,9 @@ Based on the evidence and patterns, generate 2-3 most likely root causes with su
 
 ### Communication Plan
 
-| Stakeholder | Message       | Medium                | Timeline |
-| ----------- | ------------- | --------------------- | -------- |
-| [name/role] | [key message] | [email/meeting/slack] | [when]   |
+| Stakeholder | Message       | Medium               | Timeline |
+| ----------- | ------------- | -------------------- | -------- |
+| [name/role] | [key message] | [email/meeting/chat] | [when]   |
 
 ## Action Items
 
@@ -441,7 +441,7 @@ Add findings to next retrospective agenda as dedicated discussion item.
 
 - Send course correction report to stakeholders within 2 hours
 - Schedule alignment session within 24 hours
-- Create Jira/project management tickets for immediate action items
+- Create {{TRACKING_TOOL}} tickets for immediate action items (via `lidr-sdlc-tracking`)
 - Notify sponsor/CTO of critical project risk
 
 ### Medium Urgency Actions:
