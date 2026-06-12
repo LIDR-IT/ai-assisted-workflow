@@ -10,19 +10,19 @@ LAST UPDATED: 2025-03-05
 
 PURPOSE:
 QA workflow: reads ticket + dev handoff + code diff, generates test plan,
-test cases (BDD), regression candidates, and exports CSV for Xray import.
+test cases (BDD), regression candidates, and exports CSV for {{TEST_MGMT_TOOL}} import.
 
 USAGE:
   /lidr-prepare-testing PROJ-123
 
 ARGUMENTS:
-  ticket-id: Jira ticket ID (required)
+  ticket-id: Tracking-tool ticket ID (required)
 
 REQUIREMENTS:
   - Ticket must be in "Ready for QA" status
   - Dev→QA handoff attached to ticket
-  - Manual ticket access or scripts
-  - CSV export scripts for Xray integration
+  - Tracking-tool access via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}})
+  - CSV export for {{TEST_MGMT_TOOL}} integration
 
 RELATED COMMANDS:
   /lidr-implement-ticket - Dev workflow that generates the handoff this command reads
@@ -43,7 +43,7 @@ If "$1" is empty:
 ❌ Ticket ID required. Usage: /lidr-prepare-testing [TICKET-ID]
 Exit.
 
-Read ticket from manual or script: ticket $1
+Read ticket $1 via lidr-sdlc-tracking, which resolves {{TRACKING_TOOL}} from the registry.
 If status != "Ready for QA":
 ⚠️ Ticket $1 is "{status}", not "Ready for QA".
 
@@ -57,7 +57,7 @@ Use AskUserQuestion:
 
 ## Gather Context
 
-From Jira ticket:
+From the tracking ticket (via lidr-sdlc-tracking, resolves {{TRACKING_TOOL}}):
 
 - BDD acceptance criteria (Given/When/Then)
 - Linked User Story and RF
@@ -119,18 +119,18 @@ Using bmad-testarch-automate skill:
 
 ## Write to Test Management
 
-Generate CSV export for Xray import:
+Generate CSV export for {{TEST_MGMT_TOOL}} import (via lidr-external-sync, which resolves {{TEST_MGMT_TOOL}} from the registry):
 
 - Create test plan and test cases in CSV format
 - Save to `.claude/testing/$1-test-suite.csv`
-- Ready for import-to-xray.sh script execution
+- Ready for {{TEST_MGMT_TOOL}} import via lidr-external-sync
 - Also generate markdown document for review
 - Save to `.claude/testing/$1-test-suite.local.md`
 
 ## Transition
 
-Add comment to $1 with test plan summary (manual or script)
-Transition $1 to "In Testing" (manual or script)
+Via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}}): add comment to $1 with test plan summary
+Via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}}): transition $1 to "In Testing"
 
 ## Report
 

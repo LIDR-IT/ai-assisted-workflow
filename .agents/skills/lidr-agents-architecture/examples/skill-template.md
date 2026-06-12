@@ -340,5 +340,5 @@ Study that skill to understand how to structure a full-featured skill.
 
 You can also explore production skills:
 
-- **LIDR SDLC skills (62):** `.agents/skills/lidr-*/SKILL.md` — phase 0-8 of the methodology
-- **Generic meta-skills (4):** `.agents/skills/{agents-architecture,command-development,commit-management,ticket-validation}/SKILL.md`
+- **LIDR SDLC skills:** `.agents/skills/lidr-*/SKILL.md` — the unified phases 0-4 of the methodology
+- **LIDR meta-tooling:** `.agents/skills/lidr-agents-architecture/SKILL.md` — the single umbrella meta-skill; command/hook/MCP/rule authoring are its `references/{command,hook,mcp}-development.md` + `references/rule-development.md` (the former `lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`, `lidr-generate-rule` skills were folded in on 2026-06-12). Commit conventions live in the rule `.agents/rules/process/git-workflow.md`, executed via `/lidr-commit`

@@ -2,7 +2,7 @@
 
 Complete process for creating commands within the `.agents/` system. Commands are reusable prompt templates accessed via `/{command-name}`.
 
-> **Companion skill:** for deep-dive command-authoring patterns (argument design, output contracts, command vs skill vs agent decisions), see the standalone `command-development` skill at `.agents/skills/command-development/SKILL.md`. This guide focuses on `.agents/`-integration workflow; `command-development` covers command design fundamentals.
+> **Companion reference:** for deep-dive command-authoring patterns (frontmatter, argument design, file references, bash execution, interactive commands, plugin features), see the sibling `references/command-development.md` (folded into this skill on 2026-06-12). This guide focuses on the `.agents/`-integration workflow; `command-development.md` covers command design fundamentals.
 
 ## Table of Contents
 

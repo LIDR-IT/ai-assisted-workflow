@@ -22,7 +22,7 @@ tools:
 
 ## Core Responsibilities
 
-1. **Load ticket-validation skill** for validation patterns
+1. **Load lidr-refinement-notes skill** (its `references/ticket-validation.md`) for validation patterns
 2. **Identify ticket** from current branch name (extract TICK-ID)
 3. **Load ticket file** from `.agents/tickets/active/`
 4. **Check acceptance criteria** - All marked complete
@@ -38,7 +38,7 @@ tools:
 ### Phase 1: Load Skills
 
 ```markdown
-Load lidr-ticket-validation skill for DoD checklist
+Load lidr-refinement-notes skill (references/ticket-validation.md) for DoD checklist
 ```
 
 ### Phase 2: Identify Ticket
@@ -99,7 +99,7 @@ For each Definition of Done item:
 **Agent:**
 
 ```markdown
-Loading ticket-validation skill...
+Loading lidr-refinement-notes skill (references/ticket-validation.md)...
 
 Current branch: feature/TICK-123-add-user-auth
 Ticket ID: TICK-123
@@ -164,7 +164,7 @@ Loading .agents/tickets/active/TICK-123.md...
 ## Rules to Follow
 
 - Read `.agents/rules/process/ai-workflow-system.md` first
-- Use lidr-ticket-validation skill for DoD patterns
+- Use lidr-refinement-notes skill (references/ticket-validation.md) for DoD patterns
 - Never approve PR with blocking issues
 - Be specific about what needs fixing
 - Reference exact files and line numbers
@@ -172,7 +172,7 @@ Loading .agents/tickets/active/TICK-123.md...
 
 ## Skills to Use
 
-- ticket-validation
+- lidr-refinement-notes (references/ticket-validation.md)
 
 ## Output Format
 

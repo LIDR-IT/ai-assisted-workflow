@@ -14,8 +14,8 @@ applyTo: "**"
 
 Distintos workflows del SDLC tienen perfiles de razonamiento muy distintos:
 
-- **Planning** (PRD, RFs, design docs, fast-forward de change): necesita razonamiento profundo, exploración de trade-offs, búsqueda de inconsistencias. → **Opus high reasoning** (`claude-opus-4-7`, effort: high)
-- **Implementación** (escribir código según un tasks.md ya generado): necesita velocidad, throughput, ejecución determinista. → **Sonnet medium** (`claude-sonnet-4-6`, effort: medium)
+- **Planning** (PRD, RFs, design docs, fast-forward de change): necesita razonamiento profundo, exploración de trade-offs, búsqueda de inconsistencias. → **Opus high reasoning** (`opus`, effort: high)
+- **Implementación** (escribir código según un tasks.md ya generado): necesita velocidad, throughput, ejecución determinista. → **Sonnet medium** (`sonnet`, effort: medium)
 - **Verificación / análisis cruzado** (validate-requirements, validate-prd, spec-verify): puede subir a Opus si encuentra problemas estructurales. → **Opus high** condicional
 
 Si la sesión está en el modelo equivocado, el agente DEBE auto-corregir editando `.claude/settings.json` (vía el skill `update-config` o edición directa) — **no detenerse a preguntar al usuario**.
@@ -80,7 +80,7 @@ Si la sesión está en el modelo equivocado, el agente DEBE auto-corregir editan
 
 ```bash
 # Edición directa de .claude/settings.json (preserva el JSON válido)
-jq '.model = "claude-opus-4-7" | .effort = "high"' .claude/settings.json > .claude/settings.json.tmp \
+jq '.model = "opus" | .effort = "high"' .claude/settings.json > .claude/settings.json.tmp \
   && mv .claude/settings.json.tmp .claude/settings.json
 ```
 
@@ -93,13 +93,13 @@ Los skills LIDR pueden declarar el modelo requerido directamente en frontmatter:
 
 ```yaml
 name: lidr-generate-rf
-model: claude-opus-4-7 # Claude-only field, ignorado por otras plataformas
+model: opus # Claude-only field, ignorado por otras plataformas
 effort: high # Claude-only
 ```
 
 Si un skill declara `model:` o `effort:`, esta rule lo respeta y se asegura de que la sesión cumpla esos requisitos antes de la primera ejecución del skill.
 
-**Skills críticos a anotar con `model: claude-opus-4-7` + `effort: high`** (la lista de 2.1 arriba):
+**Skills críticos a anotar con `model: opus` + `effort: high`** (la lista de 2.1 arriba):
 
 - Todos los listados en §2.1 deben tener estos campos en su SKILL.md
 - El sync de Claude respeta los campos; otras plataformas los ignoran sin error
@@ -131,11 +131,12 @@ jq -r '.model // "default"' .claude/settings.json
 jq -r '.effort // "default"' .claude/settings.json
 ```
 
-Espera: `claude-opus-4-7` y `high` para workflows §2.1; `claude-sonnet-4-6` y `medium` para §2.2.
+Espera: `opus` y `high` para workflows §2.1; `sonnet` y `medium` para §2.2.
 
 
 ## 8. Changelog
 
-| Versión | Fecha      | Autor                | Cambios                                                             |
-| ------- | ---------- | -------------------- | ------------------------------------------------------------------- |
-| 1.0.0   | 2026-05-20 | TL: LIDR Spec Native | Creación inicial — self-correct nativo LIDR del modelo por workflow |
+| Versión | Fecha      | Autor                    | Cambios                                                                                                                                                                                                                          |
+| ------- | ---------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-06-11 | TL: model-id drift audit | Model-ids hardcoded (`claude-opus-4-7`/`claude-sonnet-4-6`) migrados a los aliases future-proof `opus`/`sonnet` — resuelven siempre al último, nunca quedan stale; alinea con el patrón `model: sonnet` ya usado en ~10 comandos |
+| 1.0.0   | 2026-05-20 | TL: LIDR Spec Native     | Creación inicial — self-correct nativo LIDR del modelo por workflow                                                                                                                                                              |

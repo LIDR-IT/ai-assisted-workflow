@@ -12,7 +12,7 @@
     "sourceReport": "src/data/features/propuestaMejora.tsx (legacy TSX defaults)"
   },
   "summary": {
-    "executiveSummary": "Plantilla base LIDR: 13 pain points genéricos del SDLC sin estandarizar. El framework .agents/ entrega 113 skills (44 lidr-* de gobernanza SDLC + 69 bmad-* del motor BMad), 30 commands, 24 rules, 6 hooks (lidr-frontmatter-guard, lidr-load-context, lidr-validate-ecosystem-counts, notify, auto-format, protect-secrets) y 10 subagents bajo el modelo de fases unificado BMad × LIDR (Phase 0 Context → 1 Analysis → 2 Planning → 3 Solutioning → 4 Implementation, gates G0-G7). Nuevo en v2.1: lidr-impact-analysis — análisis de impacto sobre contratos compartidos (Gate 4) y compatibilidad multi-variante (Gate 2) sobre registries mantenidos por el cliente en docs/projects/{{CLIENT_CODE}}/registries/. Estado actual típico: procesos artesanales, PRDs inconsistentes, RFs sin separación formal, QA reactivo, gaps en seguridad y despliegue. Quick wins LIDR: bmad-prd + lidr-generate-rf + bmad-testarch-test-design en Sprint 1-2. Personaliza este JSON con datos reales del discovery para reemplazar el fallback genérico.",
+    "executiveSummary": "Plantilla base LIDR: 13 pain points genéricos del SDLC sin estandarizar. El framework .agents/ entrega 107 skills (38 lidr-* de gobernanza SDLC + 69 bmad-* del motor BMad), 30 commands, 24 rules, 6 hooks (lidr-frontmatter-guard, lidr-load-context, lidr-validate-ecosystem-counts, notify, auto-format, protect-secrets) y 10 subagents bajo el modelo de fases unificado BMad × LIDR (Phase 0 Context → 1 Analysis → 2 Planning → 3 Solutioning → 4 Implementation, gates G0-G7). Nuevo en v2.1: lidr-impact-analysis — análisis de impacto sobre contratos compartidos (Gate 4) y compatibilidad multi-variante (Gate 2) sobre registries mantenidos por el cliente en docs/projects/{{CLIENT_CODE}}/registries/. Estado actual típico: procesos artesanales, PRDs inconsistentes, RFs sin separación formal, QA reactivo, gaps en seguridad y despliegue. Quick wins LIDR: bmad-prd + lidr-generate-rf + bmad-testarch-test-design en Sprint 1-2. Personaliza este JSON con datos reales del discovery para reemplazar el fallback genérico.",
     "fortalezas": [
       "• Sprint Planning establecido (cadencia regular)",
       "• Equipo organizado con roles diferenciados",
@@ -20,7 +20,7 @@
       "• PO/Product Owner definido y estructura funcional"
     ],
     "oportunidades": [
-      "• Levantar el contexto brownfield con Phase 0: bmad-document-project + bmad-generate-project-context + CLAUDE.md por repo (lidr-generate-rule)",
+      "• Levantar el contexto brownfield con Phase 0: bmad-document-project + bmad-generate-project-context + CLAUDE.md por repo (lidr-agents-architecture, rule-development reference)",
       "• Formalizar PRDs con bmad-prd (un solo PRD F+T) + lidr-review-cruzado + lidr-risk-log",
       "• Extraer RFs desde PRDs con skill lidr-generate-rf + RTM (lidr-validate-requirements)",
       "• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases + ATDD pre-dev (bmad-testarch-atdd)",
@@ -40,7 +40,7 @@
       "fase": "Phase 0 — Context (brownfield)",
       "problema": "Proyectos existentes sin contexto IA estructurado: sin CLAUDE.md por repo, documentación dispersa, resultado de la IA depende del developer.",
       "impacto": "Alto",
-      "mejora": "Phase 0 Context: bmad-document-project + bmad-generate-project-context levantan el contexto del brownfield, y lidr-generate-rule genera CLAUDE.md por repo. Checklist 'Context Ready' como evidencia en Gate 0. Opcional en greenfield."
+      "mejora": "Phase 0 Context: bmad-document-project + bmad-generate-project-context levantan el contexto del brownfield, y lidr-agents-architecture (rule-development reference) genera CLAUDE.md por repo. Checklist 'Context Ready' como evidencia en Gate 0. Opcional en greenfield."
     },
     {
       "fase": "Phase 1 — Analysis (ex-Originación)",

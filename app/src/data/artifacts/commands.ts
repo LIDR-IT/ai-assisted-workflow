@@ -130,7 +130,7 @@ export const commands: Command[] = [
     argument: '[name]',
     model: 'sonnet',
     docPath: '.claude/commands/lidr-init-project-docs.md',
-    relatedSkills: ['bmad-create-architecture', 'lidr-generate-rule'],
+    relatedSkills: ['bmad-create-architecture', 'lidr-agents-architecture'],
   },
   {
     id: 'lidr-validate-project-docs',
@@ -375,20 +375,20 @@ export const commands: Command[] = [
     argument: '[type]',
     model: 'sonnet',
     docPath: '.claude/commands/lidr-create-ticket.md',
-    relatedSkills: ['lidr-ticket-validation'],
+    relatedSkills: ['lidr-refinement-notes'],
   },
   {
     id: 'lidr-enrich-ticket',
     name: 'lidr-enrich-ticket',
     tier: 'tactical',
     description:
-      'Validate ticket completeness and structure using the lidr-ticket-validation skill',
+      'Validate ticket completeness and structure using the lidr-refinement-notes skill (ticket validation)',
     authorizedRoles: ['Dev', 'TL', 'PO'],
     precondition: 'Ticket existente en backlog/active/archived',
     argument: '[ticket-id]',
     model: 'sonnet',
     docPath: '.claude/commands/lidr-enrich-ticket.md',
-    relatedSkills: ['lidr-ticket-validation'],
+    relatedSkills: ['lidr-refinement-notes'],
   },
   {
     id: 'lidr-commit',
@@ -400,7 +400,7 @@ export const commands: Command[] = [
     argument: '[commit-message]',
     model: 'sonnet',
     docPath: '.claude/commands/lidr-commit.md',
-    relatedSkills: ['lidr-commit-management'],
+    relatedSkills: [],
   },
   {
     id: 'lidr-improve-docs',

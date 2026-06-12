@@ -15,7 +15,7 @@ description: >
   Use for new skill creation, skill quality improvement, description optimization, and trigger testing.
   Essential when a team needs a new specialized workflow automated as a reusable skill.
   Always use when building a skill from scratch, always use when improving an existing skill's triggering or output quality.
-  Do NOT use for one-off tasks that don't warrant reusable automation, for command development (use command-development), or for hook creation (use hook-development).
+  Do NOT use for one-off tasks that don't warrant reusable automation, or for command/hook/MCP/rule authoring (use lidr-agents-architecture).
   Triggers on "build a new skill", "create skill from scratch", "test skill performance", "benchmark skill", "evaluate skill", "improve skill description", "optimize triggering", "run skill evals", "measure skill variance".
   Output in English.
   Audience: Tech Lead (creates skills), Developer (uses and refines skills).

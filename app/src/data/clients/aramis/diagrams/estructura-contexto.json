@@ -1,0 +1,801 @@
+{
+  "metadata": {
+    "id": "estructura-contexto",
+    "title": "Estructura de Contexto & Specs — Propuesta Aramis",
+    "description": "Propuesta LIDR de estructura de carpetas del repo (alineada con rutas reales de BMad). architecture.md es 1 documento centralizado/system-wide que reusan TODOS los PRDs (se fragmenta en architecture/ al crecer). UX: ux-designs/ por feature/run, con DESIGN.md (design system · tokens, COMPARTIDO) + EXPERIENCE.md (flujos, POR feature). docs/ (project_knowledge) = index.md derivado + adr/. _bmad-output/ (output_folder) agrupa analisis/, project-context.md (reglas globales IA), PRDs/ (1 por funcionalidad), architecture.md y ux-designs/.",
+    "version": "10.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": [
+      "context",
+      "folder-structure",
+      "_bmad-output",
+      "project-context",
+      "document-project",
+      "index",
+      "deep-dive",
+      "adr-folder",
+      "analisis",
+      "planning-artifacts",
+      "implementation-artifacts",
+      "prd-por-funcionalidad",
+      "uj",
+      "rf",
+      "nfr",
+      "epics",
+      "stories",
+      "retro",
+      "propuesta",
+      "aramis"
+    ],
+    "implementation_status": {
+      "level": "absent",
+      "description": "Estructura propuesta (TO-BE). docs/index.md es un índice derivado; adr/ es una carpeta con index + varios ADRs; project-context.md es un archivo único de reglas globales (se auto-carga en cada workflow BMad). Rutas verificadas en BMad.",
+      "evidence": "Verificado en _bmad/config.toml y SKILL.md/customize.toml de bmad-generate-project-context (output_file=project-context.md; persistent_facts lo auto-cargan en casi todos los workflows) y bmad-document-project (docs/index.md + deep-dives) (2026-06-12)."
+    }
+  },
+  "configuration": {
+    "height": 920,
+    "exportName": "Aramis_Estructura_Contexto_Propuesta",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "x": 0,
+      "y": 1037,
+      "label": "root/",
+      "variant": "slate",
+      "subtitle": "raíz del repo"
+    },
+    {
+      "id": "docs",
+      "x": 300,
+      "y": 265,
+      "label": "docs/",
+      "variant": "slate",
+      "subtitle": "project_knowledge (BMad)"
+    },
+    {
+      "id": "bmad-output",
+      "x": 300,
+      "y": 1809,
+      "label": "_bmad-output/",
+      "variant": "slate",
+      "subtitle": "output_folder (BMad)"
+    },
+    {
+      "id": "index-md",
+      "x": 620,
+      "y": 116,
+      "label": "index.md",
+      "variant": "slate",
+      "subtitle": "índice DERIVADO · se alimenta de PRDs · ADRs · research · deep-dives (frontmatter + tags)"
+    },
+    {
+      "id": "dd-whatsapp",
+      "x": 960,
+      "y": 40,
+      "label": "deep-dive: Whatsapp",
+      "variant": "sky",
+      "subtitle": "venta · docs/"
+    },
+    {
+      "id": "dd-correos",
+      "x": 960,
+      "y": 116,
+      "label": "deep-dive: Correos",
+      "variant": "sky",
+      "subtitle": "compra · docs/"
+    },
+    {
+      "id": "dd-bridge",
+      "x": 960,
+      "y": 192,
+      "label": "deep-dive: Bridge",
+      "variant": "sky",
+      "subtitle": "negocio / bridge · docs/"
+    },
+    {
+      "id": "adr-folder",
+      "x": 620,
+      "y": 414,
+      "label": "adr/",
+      "variant": "slate",
+      "subtitle": "carpeta de decisiones (index + ADRs)"
+    },
+    {
+      "id": "adr-index",
+      "x": 960,
+      "y": 300,
+      "label": "index.md",
+      "variant": "slate",
+      "subtitle": "índice de ADRs"
+    },
+    {
+      "id": "adr-0001",
+      "x": 960,
+      "y": 376,
+      "label": "ADR-0001",
+      "variant": "orange",
+      "subtitle": "decisión (inmutable)"
+    },
+    {
+      "id": "adr-0002",
+      "x": 960,
+      "y": 452,
+      "label": "ADR-0002",
+      "variant": "orange",
+      "subtitle": "decisión (inmutable)"
+    },
+    {
+      "id": "adr-0003",
+      "x": 960,
+      "y": 528,
+      "label": "ADR-0003",
+      "variant": "orange",
+      "subtitle": "decisión (inmutable)"
+    },
+    {
+      "id": "analisis",
+      "x": 620,
+      "y": 957,
+      "label": "analisis/",
+      "variant": "slate",
+      "subtitle": "Fase 1 · análisis por área (agrupación lógica)"
+    },
+    {
+      "id": "ini-whatsapp",
+      "x": 960,
+      "y": 790,
+      "label": "Iniciativa Whatsapp",
+      "variant": "blue",
+      "subtitle": "área · outputs de análisis (ejemplo)"
+    },
+    {
+      "id": "ini2",
+      "x": 960,
+      "y": 1048,
+      "label": "Iniciativa 2",
+      "variant": "blue",
+      "subtitle": "outputs de análisis"
+    },
+    {
+      "id": "ini3",
+      "x": 960,
+      "y": 1124,
+      "label": "Iniciativa 3",
+      "variant": "blue",
+      "subtitle": "outputs de análisis"
+    },
+    {
+      "id": "out-brainstorm",
+      "x": 1300,
+      "y": 638,
+      "label": "Brainstorming",
+      "variant": "teal",
+      "subtitle": "_bmad-output/brainstorming/"
+    },
+    {
+      "id": "out-market",
+      "x": 1300,
+      "y": 714,
+      "label": "Market research",
+      "variant": "teal",
+      "subtitle": "planning-artifacts/research/"
+    },
+    {
+      "id": "out-tech",
+      "x": 1300,
+      "y": 790,
+      "label": "Technical research",
+      "variant": "teal",
+      "subtitle": "planning-artifacts/research/"
+    },
+    {
+      "id": "out-brief",
+      "x": 1300,
+      "y": 866,
+      "label": "Product brief",
+      "variant": "teal",
+      "subtitle": "planning-artifacts/"
+    },
+    {
+      "id": "out-prfaq",
+      "x": 1300,
+      "y": 942,
+      "label": "PRFAQ",
+      "variant": "teal",
+      "subtitle": "planning-artifacts/prfaq-*.md"
+    },
+    {
+      "id": "project-context-md",
+      "x": 620,
+      "y": 1234,
+      "label": "project-context.md",
+      "variant": "slate",
+      "subtitle": "archivo único · reglas globales para la IA (se auto-carga en cada workflow)"
+    },
+    {
+      "id": "kb-prds",
+      "x": 620,
+      "y": 2090,
+      "label": "PRDs/",
+      "variant": "indigo",
+      "subtitle": "capa de INTAKE/cambio · run-folder · status:final → se archiva · sus AC se gradúan a tests"
+    },
+    {
+      "id": "ch-whatsapp",
+      "x": 960,
+      "y": 1629,
+      "label": "PRD · Whatsapp",
+      "variant": "cyan",
+      "subtitle": "funcionalidad · venta · UJ+RF+NFR"
+    },
+    {
+      "id": "ch-correos",
+      "x": 960,
+      "y": 2195,
+      "label": "PRD · Correos internos",
+      "variant": "cyan",
+      "subtitle": "funcionalidad · compra · UJ+RF+NFR"
+    },
+    {
+      "id": "ch-modulo",
+      "x": 960,
+      "y": 2476,
+      "label": "PRD · Módulo preview de coche",
+      "variant": "cyan",
+      "subtitle": "funcionalidad · UJ+RF+NFR"
+    },
+    {
+      "id": "ch-otro",
+      "x": 960,
+      "y": 2552,
+      "label": "PRD · Otro",
+      "variant": "cyan",
+      "subtitle": "funcionalidad · compra"
+    },
+    {
+      "id": "epic1",
+      "x": 1300,
+      "y": 1458,
+      "label": "Epic 1",
+      "variant": "violet"
+    },
+    {
+      "id": "epic2",
+      "x": 1300,
+      "y": 1648,
+      "label": "Epic 2",
+      "variant": "violet"
+    },
+    {
+      "id": "epic3",
+      "x": 1300,
+      "y": 1724,
+      "label": "Epic 3",
+      "variant": "violet"
+    },
+    {
+      "id": "epic4",
+      "x": 1300,
+      "y": 1800,
+      "label": "Epic 4",
+      "variant": "violet"
+    },
+    {
+      "id": "epic5",
+      "x": 1300,
+      "y": 2024,
+      "label": "Epic 5",
+      "variant": "violet"
+    },
+    {
+      "id": "epic6",
+      "x": 1300,
+      "y": 2214,
+      "label": "Epic 6",
+      "variant": "violet"
+    },
+    {
+      "id": "epic7",
+      "x": 1300,
+      "y": 2290,
+      "label": "Epic 7",
+      "variant": "violet"
+    },
+    {
+      "id": "epic8",
+      "x": 1300,
+      "y": 2366,
+      "label": "Epic 8",
+      "variant": "violet"
+    },
+    {
+      "id": "st1-1",
+      "x": 1660,
+      "y": 1344,
+      "label": "Stories 1",
+      "variant": "green"
+    },
+    {
+      "id": "st1-2",
+      "x": 1660,
+      "y": 1420,
+      "label": "Stories 2",
+      "variant": "green"
+    },
+    {
+      "id": "st1-3",
+      "x": 1660,
+      "y": 1496,
+      "label": "Stories 3",
+      "variant": "green"
+    },
+    {
+      "id": "retro1",
+      "x": 1660,
+      "y": 1572,
+      "label": "Retro",
+      "variant": "amber",
+      "subtitle": "implementation-artifacts/"
+    },
+    {
+      "id": "st5-1",
+      "x": 1660,
+      "y": 1910,
+      "label": "Stories 1",
+      "variant": "green"
+    },
+    {
+      "id": "st5-2",
+      "x": 1660,
+      "y": 1986,
+      "label": "Stories 2",
+      "variant": "green"
+    },
+    {
+      "id": "st5-3",
+      "x": 1660,
+      "y": 2062,
+      "label": "Stories 3",
+      "variant": "green"
+    },
+    {
+      "id": "retro5",
+      "x": 1660,
+      "y": 2138,
+      "label": "Retro",
+      "variant": "amber",
+      "subtitle": "implementation-artifacts/"
+    },
+    {
+      "id": "kb-arq",
+      "x": 620,
+      "y": 2662,
+      "label": "architecture.md",
+      "variant": "slate",
+      "subtitle": "1 centralizado · system-wide · lo reusan TODOS los PRDs · → architecture/ (sharded) al crecer"
+    },
+    {
+      "id": "ux",
+      "x": 620,
+      "y": 2880,
+      "label": "ux-designs/",
+      "variant": "slate",
+      "subtitle": "UX por feature/run (planning-artifacts)"
+    },
+    {
+      "id": "ux-design",
+      "x": 960,
+      "y": 2842,
+      "label": "DESIGN.md",
+      "variant": "emerald",
+      "subtitle": "design system · tokens · COMPARTIDO entre features"
+    },
+    {
+      "id": "ux-exp",
+      "x": 960,
+      "y": 2918,
+      "label": "EXPERIENCE.md",
+      "variant": "emerald",
+      "subtitle": "IA · flujos · POR feature"
+    },
+    {
+      "id": "test-artifacts",
+      "x": 620,
+      "y": 3118,
+      "label": "test-artifacts/",
+      "variant": "yellow",
+      "subtitle": "FUENTE DE VERDAD ejecutable · test-design · traceability (matriz+gate) · test-reviews"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-root-docs",
+      "source": "root",
+      "target": "docs",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-root-bmad",
+      "source": "root",
+      "target": "bmad-output",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-docs-index",
+      "source": "docs",
+      "target": "index-md",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-docs-adr",
+      "source": "docs",
+      "target": "adr-folder",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-index-ddwa",
+      "source": "index-md",
+      "target": "dd-whatsapp",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-index-ddcorreos",
+      "source": "index-md",
+      "target": "dd-correos",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-index-ddbridge",
+      "source": "index-md",
+      "target": "dd-bridge",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-adr-index",
+      "source": "adr-folder",
+      "target": "adr-index",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-adr-0001",
+      "source": "adr-folder",
+      "target": "adr-0001",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-adr-0002",
+      "source": "adr-folder",
+      "target": "adr-0002",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-adr-0003",
+      "source": "adr-folder",
+      "target": "adr-0003",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-bmad-analisis",
+      "source": "bmad-output",
+      "target": "analisis",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-bmad-pcmd",
+      "source": "bmad-output",
+      "target": "project-context-md",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-bmad-prds",
+      "source": "bmad-output",
+      "target": "kb-prds",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-bmad-arq",
+      "source": "bmad-output",
+      "target": "kb-arq",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-analisis-iniwa",
+      "source": "analisis",
+      "target": "ini-whatsapp",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-analisis-ini2",
+      "source": "analisis",
+      "target": "ini2",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-analisis-ini3",
+      "source": "analisis",
+      "target": "ini3",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-iniwa-brainstorm",
+      "source": "ini-whatsapp",
+      "target": "out-brainstorm",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-iniwa-market",
+      "source": "ini-whatsapp",
+      "target": "out-market",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-iniwa-tech",
+      "source": "ini-whatsapp",
+      "target": "out-tech",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-iniwa-brief",
+      "source": "ini-whatsapp",
+      "target": "out-brief",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-iniwa-prfaq",
+      "source": "ini-whatsapp",
+      "target": "out-prfaq",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-prds-wa",
+      "source": "kb-prds",
+      "target": "ch-whatsapp",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-prds-correos",
+      "source": "kb-prds",
+      "target": "ch-correos",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-prds-modulo",
+      "source": "kb-prds",
+      "target": "ch-modulo",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-prds-otro",
+      "source": "kb-prds",
+      "target": "ch-otro",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-wa-epic1",
+      "source": "ch-whatsapp",
+      "target": "epic1",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-wa-epic2",
+      "source": "ch-whatsapp",
+      "target": "epic2",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-wa-epic3",
+      "source": "ch-whatsapp",
+      "target": "epic3",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-wa-epic4",
+      "source": "ch-whatsapp",
+      "target": "epic4",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-correos-epic5",
+      "source": "ch-correos",
+      "target": "epic5",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-correos-epic6",
+      "source": "ch-correos",
+      "target": "epic6",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-correos-epic7",
+      "source": "ch-correos",
+      "target": "epic7",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-correos-epic8",
+      "source": "ch-correos",
+      "target": "epic8",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic1-st1",
+      "source": "epic1",
+      "target": "st1-1",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic1-st2",
+      "source": "epic1",
+      "target": "st1-2",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic1-st3",
+      "source": "epic1",
+      "target": "st1-3",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic1-retro",
+      "source": "epic1",
+      "target": "retro1",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic5-st1",
+      "source": "epic5",
+      "target": "st5-1",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic5-st2",
+      "source": "epic5",
+      "target": "st5-2",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic5-st3",
+      "source": "epic5",
+      "target": "st5-3",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-epic5-retro",
+      "source": "epic5",
+      "target": "retro5",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-bmad-ux",
+      "source": "bmad-output",
+      "target": "ux",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-ux-design",
+      "source": "ux",
+      "target": "ux-design",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-ux-exp",
+      "source": "ux",
+      "target": "ux-exp",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-bmad-ta",
+      "source": "bmad-output",
+      "target": "test-artifacts",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    }
+  ],
+  "legend": [
+    {
+      "color": "bg-slate-200",
+      "label": "Carpeta o archivo (root · _bmad-output · docs · index.md · adr/ · project-context.md · analisis · PRDs · arquitecture)"
+    },
+    {
+      "color": "bg-orange-200",
+      "label": "ADR — decisión arquitectónica (en adr/, indexada por adr/index.md)"
+    },
+    {
+      "color": "bg-sky-200",
+      "label": "Deep-dive por funcionalidad en docs/ (indexado por docs/index.md)"
+    },
+    {
+      "color": "bg-blue-200",
+      "label": "Iniciativa / área (folder con sus outputs de análisis)"
+    },
+    {
+      "color": "bg-teal-200",
+      "label": "Output de análisis BMad (Fase 1) — ruta real anotada"
+    },
+    {
+      "color": "bg-indigo-200",
+      "label": "PRDs/ — planning-artifacts (1 PRD por funcionalidad: UJ+RF+NFR)"
+    },
+    {
+      "color": "bg-cyan-200",
+      "label": "PRD por funcionalidad / User Journey (venta · compra)"
+    },
+    {
+      "color": "bg-violet-200",
+      "label": "Epic"
+    },
+    {
+      "color": "bg-green-200",
+      "label": "Story (implementation-artifacts/)"
+    },
+    {
+      "color": "bg-amber-200",
+      "label": "Retro del epic (implementation-artifacts/)"
+    },
+    {
+      "color": "bg-emerald-200",
+      "label": "UX — DESIGN.md (design system, compartido) + EXPERIENCE.md (por feature)"
+    },
+    {
+      "color": "bg-yellow-200",
+      "label": "test-artifacts/ — capa de verdad ejecutable (tests · trazabilidad · gate)"
+    }
+  ],
+  "tables": [
+    {
+      "label": "Siglas",
+      "value": "PRD = Product Requirement Document · PRFAQ = Press Release + FAQ (Working Backwards) · ADR = Architecture Decision Record · UJ = User Journey · RF = Requisito Funcional · NFR = Requisito No Funcional"
+    }
+  ]
+}

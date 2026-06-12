@@ -5,9 +5,9 @@ agent: 'agent'
 
 <!--
 COMMAND: lidr-advance-gate
-VERSION: 2.1.1
+VERSION: 2.1.2
 AUTHOR: SDLC Team
-LAST UPDATED: 2026-06-10
+LAST UPDATED: 2026-06-11
 
 PURPOSE:
 Universal handoff orchestrator — evaluates a gate's criteria with CONTENT
@@ -58,6 +58,10 @@ CHANGELOG:
                         rewritten to unified phase model (G0-G7); handoffs now
                         written to AND read from docs/projects/{client}/handoffs/
                         gate-N-handoff.md (aligns with gate-evidence.yaml contract).
+  v2.1.2 (2026-06-11): Tool-routing — Jira registration/transition prose routed
+                        through Skill(lidr-sdlc-tracking) and {{TRACKING_TOOL}};
+                        Jira priority enum replaced by neutral severity mapping
+                        resolved by the tracking skill.
 -->
 
 > **Model note** (per @../rules/lidr-sdlc/model-selection.md): gate evaluation is
@@ -254,7 +258,7 @@ The output MUST follow the tpl-gate-evaluation schema:
 - Action Items (if CONDITIONAL or FAIL)
 - Evidence with links to actual files
 - Handoff Context for next phase
-- Jira Registration metadata
+- Tracking-tool registration metadata
 
 ## Step 8: Execute Transitions
 
@@ -269,16 +273,16 @@ If PASS:
 
 If CONDITIONAL:
 
-- Jira: transition epic/tickets to next phase BUT add comment with action items (manual or script)
+- Tracking (via `lidr-sdlc-tracking`, resolving {{TRACKING_TOOL}} from the registry): transition epic/tickets to next phase BUT add comment with action items
 - Notification: notify with "CONDITIONAL" status and list mandatory action items with deadlines
-- Create Jira subtasks for each action item (assigned to owner role)
+- Create {{TRACKING_TOOL}} subtasks for each action item (assigned to owner role)
 
 If FAIL:
 
 - List ALL failed criteria with specific actions to fix each
 - Suggest who should fix each item (based on role from @../rules/lidr-sdlc/workflows.md)
 - Do NOT transition tracking status
-- Create tracking subtasks for each FAIL item (assigned to owner role)
+- Create {{TRACKING_TOOL}} subtasks for each FAIL item (assigned to owner role)
 
 ## Step 9: Calculate Weighted Score
 
@@ -329,9 +333,10 @@ Date: [today]
 Next command: /lidr-advance-gate [N+1] (when next phase completes)
 ```
 
-## Step 11: Register Result in Jira
+## Step 11: Register Result in the Tracking Tool
 
-Via Jira (manual or script), register the gate evaluation result:
+Via `lidr-sdlc-tracking` (which resolves {{TRACKING_TOOL}} from the registry),
+register the gate evaluation result:
 
 1. **Update Epic**: Set custom field "Gate Status" on the epic:
    - Value: `Gate {N}: {verdict} ({score}%) — {date}`
@@ -341,7 +346,7 @@ Via Jira (manual or script), register the gate evaluation result:
    - One subtask per action item from the evaluation
    - Title: `[Gate {N}] {action_item_description}`
    - Assignee: based on owner role from action items
-   - Priority: mapped from severity (Critical->Blocker, High->Critical, Medium->Major)
+   - Priority: mapped from neutral severity (Critical->highest, High->high, Medium->medium), then resolved to the bound tracker's priority enum by `lidr-sdlc-tracking`
    - Label: `gate-remediation`
 
 3. **Add Comment to Epic**:

@@ -37,7 +37,7 @@ CHANGELOG:
 
 ## Model self-correct (per lidr-sdlc/model-selection.md)
 
-Before starting, verify the session is using Opus high reasoning. If not, self-correct by editing `.claude/settings.json` (use `update-config` skill or jq) with `"model": "claude-opus-4-7"` and `"effort": "high"`. **Do not stop and ask the user** — this is planning work and Opus is mandatory.
+Before starting, verify the session is using Opus high reasoning. If not, self-correct by editing `.claude/settings.json` (use `update-config` skill or jq) with `"model": "opus"` and `"effort": "high"`. **Do not stop and ask the user** — this is planning work and Opus is mandatory.
 
 ## Validate input
 
@@ -91,6 +91,8 @@ Content must cover:
 
 Invoke logic from skills `lidr-generate-rf` (RFs with BDD) + `lidr-generate-nfr` (NFRs measurable). Update frontmatter (append to `editHistory`, add `step-04-spec` to `stepsCompleted`).
 
+> **`bmad-spec` deliberately bypassed here.** LIDR builds `spec.md` from `lidr-generate-rf`/`lidr-generate-nfr` (human-readable RFs with BDD + measurable NFRs), **not** from BMad's `bmad-spec` SPEC kernel (a machine-contract artifact). This is a deliberate decision, not an oversight: the change container's `spec.md` is the governance/traceability spec, while `bmad-spec`'s kernel is consumed (when present) only as planning input to Step 1's `proposal.md`.
+
 Content must cover:
 
 - Functional Requirements (RF-1, RF-2, ...) with BDD Given/When/Then
@@ -99,7 +101,7 @@ Content must cover:
 
 ### Step 4 — Generate `tasks.md` (CRITICAL — apply spec-execution.md)
 
-Invoke logic from skill `lidr-user-stories` for the slicing, then **MANDATORY**: apply the rule `lidr-sdlc/spec-execution.md` to enforce structure:
+Story context comes from the BMad engine `bmad-create-story` (the dev-ready story content); `lidr-user-stories` then slices it into LIDR-formatted tasks. Invoke logic from skill `lidr-user-stories` for the slicing, then **MANDATORY**: apply the rule `lidr-sdlc/spec-execution.md` to enforce structure:
 
 - Step 0 = Create Feature Branch (FIRST)
 - All implementation steps in numbered sections

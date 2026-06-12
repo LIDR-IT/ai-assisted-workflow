@@ -92,8 +92,9 @@ Verdict: PASSED (or WARNINGS-accepted)
 Status:  archived
 
 Next:
-  /lidr-create-pr <ticket-id>   → create PR referencing this archived change
-  /lidr-sync-docs                    → propagate any final doc updates
+  /lidr-create-pr <ticket-id|change-name>   → create PR referencing this archived change
+                                            (use <change-name> when the source US had no {{TRACKING_TOOL}} ticket)
+  /lidr-sync-docs                           → propagate any final doc updates
 ```
 
 ## Guardrails

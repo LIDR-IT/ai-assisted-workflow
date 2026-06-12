@@ -1,0 +1,325 @@
+{
+  "metadata": {
+    "id": "estructura-contexto-ciclo",
+    "title": "Ciclo de mantenimiento del contexto — Aramis",
+    "description": "Ciclo BMad extendido: Análisis → PRD (planning) → Implementación → Retro → Monitoring (vigila KPIs de la feature) → Reportes / Mejoras; las Mejoras alimentan el PRD (siguiente ciclo). La info de PRODUCTO vive en los PRDs (se actualiza cada iteración); la TÉCNICA se reparte entre rules/, project-context.md, arquitecture/+adr/ y docs/ deep-dives. La tabla resume la cadencia de lectura y actualización.",
+    "version": "1.1.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": [
+      "cycle",
+      "maintenance",
+      "read-cadence",
+      "update-cadence",
+      "producto",
+      "tecnica",
+      "dtc",
+      "aramis"
+    ],
+    "implementation_status": {
+      "level": "absent",
+      "description": "Modelo de mantenimiento propuesto. Cadencias derivadas de cómo BMad carga cada artefacto (project-context.md vía persistent_facts en cada workflow; docs/index.md como índice; ADR inmutable por decisión).",
+      "evidence": "persistent_facts en customize.toml de los skills BMad; config.toml (planning_artifacts, project_knowledge); bmad-document-project (index + deep-dive)."
+    }
+  },
+  "configuration": {
+    "height": 640,
+    "exportName": "Aramis_Ciclo_Mantenimiento_Contexto",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "cyc-analisis",
+      "x": 160,
+      "y": 40,
+      "label": "1 · Análisis",
+      "variant": "teal",
+      "subtitle": "por área → decide qué PRD"
+    },
+    {
+      "id": "cyc-prd",
+      "x": 500,
+      "y": 40,
+      "label": "2 · PRD (planning)",
+      "variant": "indigo",
+      "subtitle": "UJ+RF+NFR → épicas → stories"
+    },
+    {
+      "id": "cyc-impl",
+      "x": 840,
+      "y": 40,
+      "label": "3 · Implementación",
+      "variant": "violet",
+      "subtitle": "stories → código"
+    },
+    {
+      "id": "cyc-retro",
+      "x": 1180,
+      "y": 40,
+      "label": "4 · Retro",
+      "variant": "amber",
+      "subtitle": "dispara actualizaciones (DTC)"
+    },
+    {
+      "id": "lane-prod",
+      "x": 0,
+      "y": 300,
+      "label": "INFO DE PRODUCTO",
+      "variant": "slate",
+      "subtitle": "qué construir · dueño: PO"
+    },
+    {
+      "id": "a-prd",
+      "x": 360,
+      "y": 300,
+      "label": "PRDs/ por funcionalidad",
+      "variant": "cyan",
+      "subtitle": "planning-artifacts/ · LEE: al trabajar la func · ACTUALIZA: cada iteración (planning + retro)"
+    },
+    {
+      "id": "lane-tech",
+      "x": 0,
+      "y": 665,
+      "label": "INFO TÉCNICA",
+      "variant": "slate",
+      "subtitle": "cómo construir · dueño: TL / Dev"
+    },
+    {
+      "id": "a-rules",
+      "x": 360,
+      "y": 440,
+      "label": "rules/ (org + stack)",
+      "variant": "slate",
+      "subtitle": ".agents/rules · LEE: cada sesión (plataforma) · ACTUALIZA: muy raro"
+    },
+    {
+      "id": "a-pctx",
+      "x": 360,
+      "y": 590,
+      "label": "project-context.md",
+      "variant": "slate",
+      "subtitle": "_bmad-output/ · LEE: inicio de cada workflow · ACTUALIZA: raro (patrones del repo)"
+    },
+    {
+      "id": "a-archadr",
+      "x": 360,
+      "y": 740,
+      "label": "arquitecture/ + adr/",
+      "variant": "orange",
+      "subtitle": "docs/ · ACTUALIZA: por decisión (ADR inmutable) · LEE: si aplica"
+    },
+    {
+      "id": "a-docs",
+      "x": 360,
+      "y": 890,
+      "label": "docs/ index + deep-dives",
+      "variant": "sky",
+      "subtitle": "docs/ · LEE: vía index (carga selectiva) · ACTUALIZA: al profundizar una func"
+    },
+    {
+      "id": "cyc-monitoring",
+      "x": 1520,
+      "y": 40,
+      "label": "5 · Monitoring",
+      "variant": "green",
+      "subtitle": "vigila KPIs de la feature en prod"
+    },
+    {
+      "id": "reportes",
+      "x": 1860,
+      "y": 40,
+      "label": "Reportes",
+      "variant": "blue",
+      "subtitle": "KPIs · dashboards"
+    },
+    {
+      "id": "mejoras",
+      "x": 1860,
+      "y": 190,
+      "label": "Mejoras",
+      "variant": "emerald",
+      "subtitle": "→ alimentan el PRD"
+    }
+  ],
+  "edges": [
+    {
+      "id": "c1",
+      "source": "cyc-analisis",
+      "target": "cyc-prd",
+      "label": "decide",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "c2",
+      "source": "cyc-prd",
+      "target": "cyc-impl",
+      "label": "stories",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "c3",
+      "source": "cyc-impl",
+      "target": "cyc-retro",
+      "label": "entrega",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "c4",
+      "source": "cyc-monitoring",
+      "target": "cyc-analisis",
+      "label": "siguiente ciclo",
+      "style": "dashed",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-bottom"
+    },
+    {
+      "id": "e-lane-prod",
+      "source": "lane-prod",
+      "target": "a-prd",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-lane-tech-rules",
+      "source": "lane-tech",
+      "target": "a-rules",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-lane-tech-pctx",
+      "source": "lane-tech",
+      "target": "a-pctx",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-lane-tech-archadr",
+      "source": "lane-tech",
+      "target": "a-archadr",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-lane-tech-docs",
+      "source": "lane-tech",
+      "target": "a-docs",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "c5",
+      "source": "cyc-retro",
+      "target": "cyc-monitoring",
+      "label": "deploy",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "c-mon-rep",
+      "source": "cyc-monitoring",
+      "target": "reportes",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "c-mon-mej",
+      "source": "cyc-monitoring",
+      "target": "mejoras",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "c-mej-prd",
+      "source": "mejoras",
+      "target": "cyc-prd",
+      "label": "alimenta el PRD",
+      "style": "dashed",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-bottom"
+    }
+  ],
+  "legend": [
+    {
+      "color": "bg-teal-200",
+      "label": "Análisis (Fase 1)"
+    },
+    {
+      "color": "bg-indigo-200",
+      "label": "PRD / Planning"
+    },
+    {
+      "color": "bg-violet-200",
+      "label": "Implementación"
+    },
+    {
+      "color": "bg-amber-200",
+      "label": "Retro (dispara DTC)"
+    },
+    {
+      "color": "bg-cyan-200",
+      "label": "Info de PRODUCTO (PRDs)"
+    },
+    {
+      "color": "bg-sky-200",
+      "label": "Info TÉCNICA — docs/deep-dives"
+    },
+    {
+      "color": "bg-orange-200",
+      "label": "Info TÉCNICA — arquitectura / ADR"
+    },
+    {
+      "color": "bg-green-200",
+      "label": "Monitoring — vigila KPIs de la feature"
+    },
+    {
+      "color": "bg-blue-200",
+      "label": "Reportes (KPIs · dashboards)"
+    },
+    {
+      "color": "bg-emerald-200",
+      "label": "Mejoras → alimentan el PRD (siguiente ciclo)"
+    }
+  ],
+  "tables": [
+    {
+      "label": "Siglas",
+      "value": "PRD = Product Requirement Document · UJ = User Journey · RF = Requisito Funcional · NFR = Requisito No Funcional · DTC = Docs Travel with Code · KPI = Key Performance Indicator · ADR = Architecture Decision Record"
+    },
+    {
+      "label": "rules/ (org + stack)",
+      "value": "Lee: cada sesión (la plataforma lo carga siempre / path-scoped) · Actualiza: muy raro — cuando cambia un estándar org (TL)"
+    },
+    {
+      "label": "project-context.md",
+      "value": "Lee: al inicio de CADA workflow BMad (persistent_facts) · Actualiza: raro — cuando cambian patrones del repo (regenerado, no a mano)"
+    },
+    {
+      "label": "docs/index.md (índice)",
+      "value": "Lee: al iniciar una tarea, para cargar selectivamente los deep-dives · Actualiza: derivado — se regenera al añadir/cambiar docs, ADRs o PRDs"
+    },
+    {
+      "label": "docs/ deep-dives",
+      "value": "Lee: bajo demanda vía el índice · Actualiza: al profundizar una funcionalidad (bmad-document-project deep-dive)"
+    },
+    {
+      "label": "adr/ (index + ADRs)",
+      "value": "Lee: si la decisión aplica a la tarea · Actualiza: por decisión — ADR inmutable, un nuevo ADR supersede al anterior"
+    },
+    {
+      "label": "PRD por funcionalidad",
+      "value": "Lee: al trabajar esa funcionalidad · Actualiza: cada iteración — en planning y tras cada retro (DTC)"
+    },
+    {
+      "label": "stories / retro",
+      "value": "Lee/escribe: durante el sprint de esa funcionalidad (implementation-artifacts/)"
+    },
+    {
+      "label": "Monitoring / KPIs",
+      "value": "Lee: KPIs de la feature en prod (continuo / por release) · Genera: reportes + mejoras → las mejoras alimentan el PRD (siguiente ciclo)"
+    }
+  ]
+}

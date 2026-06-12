@@ -21,7 +21,7 @@
       "icon": null,
       "actual": "TODO AS-IS: estado del contexto del proyecto existente (docs, CLAUDE.md por repo, conocimiento tribal).",
       "propuesta": [
-        "TODO TO-BE con bmad-document-project + bmad-generate-project-context + lidr-generate-rule (CLAUDE.md por repo)",
+        "TODO TO-BE con bmad-document-project + bmad-generate-project-context + lidr-agents-architecture (rule-development reference → CLAUDE.md por repo)",
         "TODO checklist Context Ready como evidencia brownfield de Gate 0"
       ]
     },

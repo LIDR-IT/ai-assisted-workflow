@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   Bot,
   FileJson2,
+  FolderTree,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -89,6 +90,11 @@ const HelpCenter = lazy(() =>
 const AgentsArchitecture = lazy(() =>
   import('./components/diagrams/AgentsArchitecture').then((m) => ({
     default: m.AgentsArchitecture,
+  }))
+);
+const EstructuraContexto = lazy(() =>
+  import('./components/diagrams/EstructuraContexto').then((m) => ({
+    default: m.EstructuraContexto,
   }))
 );
 const ContentDemo = lazy(() =>
@@ -268,6 +274,18 @@ export const ROUTE_REGISTRY: readonly RouteEntry[] = [
     icon: Bot,
     defaultLabel: 'Agentes IA',
     defaultShortLabel: 'Agentes',
+    group: 'proposal',
+    phase: null,
+    gate: null,
+    isProposal: true,
+  },
+  {
+    id: 'estructura-contexto',
+    path: 'estructura-contexto',
+    Component: EstructuraContexto,
+    icon: FolderTree,
+    defaultLabel: 'Estructura de Contexto',
+    defaultShortLabel: 'Contexto',
     group: 'proposal',
     phase: null,
     gate: null,

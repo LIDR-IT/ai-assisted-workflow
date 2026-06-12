@@ -291,5 +291,5 @@ This repo has 30 commands in `.agents/commands/` (23 LIDR `lidr-*` + 7 generic).
 
 **LIDR (23):** `lidr-advance-gate`, `lidr-implement-ticket`, `lidr-prepare-testing`, `lidr-validate-prd`, `lidr-validate-requirements`, etc. (full list: `ls .agents/commands/ | grep ^lidr-`)
 
-For deep-dive command authoring patterns, see the `command-development` skill at `.agents/skills/command-development/SKILL.md`.
+For deep-dive command authoring patterns, see `references/command-development.md` (folded into this skill).
 ```

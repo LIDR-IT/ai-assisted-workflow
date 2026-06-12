@@ -1,10 +1,10 @@
 ---
 name: lidr-agents-architecture
 id: agents-architecture
-description: This skill should be used when the user wants to "create a skill", "create a subagent", "add a command to .agents/", "understand .agents/ architecture", "explain how to create components", "what's the difference between skills, commands, and subagents", or needs guidance on creating skills, commands, or subagents within the .agents/ source-of-truth system, with automatic synchronization across all platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode).
-version: "1.1.0"
-last_updated: "2026-06-10"
-updated_by: "TL: Gate-evidence contract fix"
+description: This skill should be used when the user wants to author any piece of the .agents/ ecosystem — "create a skill", "create a subagent", "add a command to .agents/", "create a slash command", "create a hook", "PreToolUse"/"PostToolUse"/"SessionStart" automation, "add an MCP server", "integrate MCP", "create a behavioral rule", "generate rule" — or needs guidance on the .agents/ source-of-truth system, choosing the right component type, or how creation propagates with automatic synchronization across all platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot/VSCode). Umbrella meta-skill folding command, hook, MCP, and rule authoring (see references/).
+version: "1.2.0"
+last_updated: "2026-06-12"
+updated_by: "TL: meta-tooling consolidation"
 status: active
 phase: 0 # meta/cross-cutting — applies anytime
 stage: anytime
@@ -13,17 +13,19 @@ owner_role: "TL"
 
 # Agents Architecture
 
-Create and manage **skills**, **commands**, and **subagents** within the `.agents/` centralized architecture with automatic synchronization across all five supported AI platforms.
+Author and manage every piece of the `.agents/` ecosystem — **skills**, **commands**, **subagents**, **hooks**, **MCP servers**, and **rules** — within the centralized source-of-truth architecture, with automatic synchronization across all five supported AI platforms.
 
 ## Overview
 
-**agents-architecture** is the entry-point meta-skill for `.agents/` ecosystem authoring. It combines:
+**agents-architecture** is the single umbrella meta-skill for `.agents/` ecosystem authoring. It absorbed the former `lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`, and `lidr-generate-rule` skills as progressive-disclosure references (2026-06-12 consolidation). It combines:
 
 - **Understanding** the `.agents/` source-of-truth system
 - **Decision guidance** for choosing the right component type
-- **Creation workflows** for skills, commands, and subagents
+- **Creation workflows** for skills, commands, subagents, hooks, MCP servers, and rules
 - **Automatic synchronization** across all platforms
 - **Validation** and troubleshooting
+
+> **Deep dives (progressive disclosure):** command authoring → `references/command-development.md`; hook authoring → `references/hook-development.md`; MCP server integration → `references/mcp-integration.md`; behavioral rule authoring → `references/rule-development.md`.
 
 ### What is the `.agents/` system?
 
@@ -315,6 +317,45 @@ What do you need to create?
 **Detailed process:** `references/agent-creation-guide.md`
 **Template:** `examples/agent-template.md`
 
+### Workflow: Creating a hook
+
+Hooks are event-driven scripts (PreToolUse/PostToolUse/Stop/SessionStart, etc.) that enforce a quality or security check automatically on every relevant AI action.
+
+1. **Decide the event + matcher** (e.g. `PreToolUse` on `Write|Edit`) and pick **prompt-based** (complex reasoning) or **command** (fast deterministic).
+2. **Write the script** in `.agents/hooks/scripts/{name}.sh` (validate stdin via `jq`, quote all vars, return structured JSON, exit `2` to block).
+3. **Register it** in `.agents/hooks/hooks.json` (events, matcher, type, timeout).
+4. **Sync:** `./.agents/sync.sh --only=hooks` (Claude full; Cursor/Copilot partial; Antigravity global-only).
+5. **Restart the agent** — hooks load at session start; edits don't hot-swap. Test with `claude --debug` and `/hooks`.
+
+**Detailed process:** `references/hook-development.md`
+**Example scripts:** `examples/hook-scripts/{validate-write,validate-bash,load-context}.sh`
+
+### Workflow: Adding an MCP server
+
+MCP servers expose an external service (Jira, GitHub, a database, a custom API) as native agent tools.
+
+1. **Choose the transport** — `stdio` (local process), `sse` (cloud + OAuth), `http` (REST + token), `ws` (streaming).
+2. **Edit the source** `.agents/mcp/mcp-servers.json` (add the server entry with a `platforms` array; use `${VAR}` for secrets, `${CLAUDE_PLUGIN_ROOT}` for paths).
+3. **Validate JSON:** `jq empty .agents/mcp/mcp-servers.json`.
+4. **Sync:** `./.agents/sync.sh --only=mcp` — generates `.mcp.json` (Claude, repo root), `.cursor/mcp.json`, `.gemini/settings.json`, `.vscode/mcp.json`.
+5. **Commit BOTH** source and generated configs; restart the agent; verify with `/mcp`.
+
+**Detailed process:** `references/mcp-integration.md`
+**Example configs:** `examples/mcp-servers/{stdio,sse,http}-server.json`
+
+### Workflow: Creating a rule
+
+Rules are the identity layer — loaded (always or path-scoped) to shape every interaction.
+
+1. **Pick the type** — one of `org`, `tech-stack`, `project`, `documentation`, `workflows`.
+2. **Create the file** in `.agents/rules/{category}/{name}.md` with the universal YAML frontmatter (`name`, `description`, optional `globs`/`paths`/`alwaysApply`).
+3. **Write a thin wrapper** — header block (Nivel/Carga/Propósito) + `@`-references to `docs/`; do NOT copy-paste full checklists.
+4. **Sync:** `./.agents/sync.sh --only=rules` (Claude symlink; Cursor `.mdc`; Copilot `.instructions.md`; Gemini index; Antigravity native).
+5. **Verify** the generated copies and that the `CLAUDE.md` inventory reflects the new rule.
+
+**Detailed process:** `references/rule-development.md`
+**Template:** `templates/rule.md`
+
 ## Automatic synchronization
 
 ### What `sync.sh` does
@@ -481,31 +522,40 @@ For a deep dive into the `.agents/` system, see `references/architecture-overvie
 - **Synchronization:** symlinks, native detection, generation, or copy depending on platform/component
 - **Component types:** Rules, Skills, Commands, Subagents, Hooks, MCP
 
-**Platform support matrix (verified May 2026):**
-
-| Platform         | Rules                           | Skills  | Commands           | Subagents        | MCP                      | Hooks     |
-| ---------------- | ------------------------------- | ------- | ------------------ | ---------------- | ------------------------ | --------- |
-| Cursor           | Copy `.mdc`                     | Symlink | Symlink            | Symlink          | ✅ project               | Partial   |
-| Claude Code      | Symlink                         | Symlink | Symlink            | Symlink          | ✅ (`.mcp.json` at root) | Full      |
-| Gemini CLI       | Index in `GEMINI.md`            | Native  | Generated `.toml`  | Symlink          | ✅ project               | Full      |
-| Antigravity      | Native                          | Native  | Native (workflows) | ❌               | ❌ global                | ❌ global |
-| Copilot (VSCode) | Copy `.instructions.md` + index | Native  | Copy `.prompt.md`  | Copy `.agent.md` | ✅ project               | Partial   |
+For the full platform support matrix (Rules/Skills/Commands/Subagents/MCP/Hooks × 5
+platforms), see the **Per-platform sync strategy** table above and
+`references/architecture-overview.md`.
 
 ## References & resources
 
 ### Detailed guides
 
+`.agents/`-integration workflow (create → sync → verify):
+
 - `references/skill-creation-guide.md` — Complete process for creating skills with progressive disclosure
-- `references/command-creation-guide.md` — Detailed workflow for creating commands
+- `references/command-creation-guide.md` — `.agents/`-integration workflow for commands
 - `references/agent-creation-guide.md` — Subagent creation, system prompt design, multi-platform distribution
 - `references/architecture-overview.md` — Deep dive into `.agents/` architecture and sync strategies
 - `references/sync-system.md` — Internal workings of `sync.sh`, adapters, and troubleshooting
+
+Component design fundamentals (folded-in deep dives, 2026-06-12 consolidation):
+
+- `references/command-development.md` — Command design: frontmatter, arguments, file refs, bash execution, interactive commands, plugin features
+- `references/hook-development.md` — Hook design: events, matchers, prompt vs command hooks, security, lifecycle
+- `references/mcp-integration.md` — MCP server integration: stdio/SSE/HTTP/ws types, auth, tool naming, security
+- `references/rule-development.md` — Behavioral rule authoring: the 5 rule types, thin-wrapper pattern, validation
 
 ### Templates
 
 - `examples/skill-template.md` — Copy-paste skill template
 - `examples/command-template.md` — Copy-paste command template
 - `examples/agent-template.md` — Copy-paste subagent template
+- `templates/rule.md` — Rule file template (all 5 types)
+
+### Examples
+
+- `examples/hook-scripts/{validate-write,validate-bash,load-context}.sh` — working hook scripts
+- `examples/mcp-servers/{stdio,sse,http}-server.json` — working MCP server configs
 
 ### Validation scripts
 
@@ -513,16 +563,16 @@ For a deep dive into the `.agents/` system, see `references/architecture-overvie
 - `scripts/validate-command.sh`
 - `scripts/validate-agent.sh`
 
-### Related sub-skills (deeper dives)
+### Related skills (deeper dives)
 
-For specialized creation workflows, see:
+`agents-architecture` is the single umbrella meta-skill for authoring skills, commands,
+subagents, hooks, MCP servers, and rules in `.agents/` — the deep dives for command,
+hook, MCP, and rule authoring now live in the `references/` files above (they folded the
+former `lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`, and
+`lidr-generate-rule` skills). For the BMad-flavored alternative skill-authoring path:
 
-- **`bmad-workflow-builder`** — Deep dive into skill authoring
-- **`command-development`** — Generic command authoring patterns
-- **`bmad-agent-builder`** — Subagent design and orchestration
-- **`bmad-agent-builder`** — Generic skill creation workflow
-
-**Note:** `agents-architecture` is the meta-skill that provides architectural context and routing. For in-depth component-specific guidance, use the specialized skills above.
+- **`bmad-workflow-builder`** — BMad deep dive into skill/workflow authoring
+- **`bmad-agent-builder`** — BMad agent/skill design and orchestration
 
 ## Quick reference
 
@@ -581,12 +631,13 @@ readlink .agents/workflows                      # → commands
 
 ---
 
-**Ready to create?** Decide which component fits your need (skill, command, or subagent), then follow the appropriate workflow above. Synchronization is one command away: `./.agents/sync.sh`.
+**Ready to create?** Decide which component fits your need (skill, command, subagent, hook, MCP server, or rule), then follow the appropriate workflow above. Synchronization is one command away: `./.agents/sync.sh`.
 
 ## Changelog
 
 | Version | Date       | Author                         | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ------- | ---------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.2.0   | 2026-06-12 | TL: meta-tooling consolidation | Became the single umbrella meta-skill: folded `lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`, `lidr-generate-rule` into `references/{command,hook,mcp}-development.md` + `references/rule-development.md`; moved hook example scripts → `examples/hook-scripts/`, MCP configs → `examples/mcp-servers/`, rule template → `templates/rule.md`; broadened description + added hook/MCP/rule creation workflows; rewrote "Related skills"                                                |
 | 1.1.0   | 2026-06-10 | TL: Gate-evidence contract fix | Reconstructed entry — frontmatter was bumped to 1.1.0 without a changelog row (version↔changelog coherence sweep 2026-06-11)                                                                                                                                                                                                                                                                                                                                                                                       |
 | 1.0.0   | 2026-05-19 | TL: agents-architecture audit  | Major rewrite: corrected subagent source-of-truth to `.agents/subagents/` (was `.claude/agents/`); subagents now correctly described as supported in 4 of 5 platforms (Claude, Cursor, Gemini Apr 2026, Copilot — not Antigravity); Gemini skills/rules marked as native (not symlinked); Copilot copy + rename distribution documented; full directory tree includes `subagents/, hooks/, _shared/, memory/, orchestrator/, adapters/, lib/, sync/, workflows/`; updated cross-references to `lidr-*` sub-skills. |
 | 0.2.0   | 2025-Q4    | (original)                     | Initial version after `team-bmad-agent-builder` rename. Claimed agents were Claude Code only; described Gemini as full symlinks (incorrect post-2026 architecture).                                                                                                                                                                                                                                                                                                                                                |

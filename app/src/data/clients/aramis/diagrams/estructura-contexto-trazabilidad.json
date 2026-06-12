@@ -1,0 +1,227 @@
+{
+  "metadata": {
+    "id": "estructura-contexto-trazabilidad",
+    "title": "El hilo de trazabilidad — Aramis",
+    "description": "Trazabilidad end-to-end: cada salto del hilo (necesidad → PRD → épica/story → Pull Request/código → test+gate → release → monitoring → mejora) con la LLAVE que lo enlaza (el identificador o referencia). Dos matrices dedicadas cubren el centro: la RTM (requisitos→épicas/stories, lidr-validate-requirements) y la matriz de tests (criterios de aceptación↔test+gate, bmad-testarch-trace). El eslabón débil (en rojo) es el feedback Mejora→PRD: falta un identificador que ate el KPI/mejora al PRD-delta que origina. Los ADR enlazan las decisiones de forma transversal.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": [
+      "traceability",
+      "rtm",
+      "trace-matrix",
+      "ids",
+      "join-key",
+      "gate",
+      "adr",
+      "feedback",
+      "aramis"
+    ],
+    "implementation_status": {
+      "level": "absent",
+      "description": "Hilo de trazabilidad propuesto. Requiere enforcement de identificadores estables (RF-NN, UJ-N, EPIC-N, STORY-N, ADR-NNNN, ticket) y referencias cruzadas (PR→ticket+change). LIDR ya trae los enforcers: DTC, hook frontmatter-guard, Gate 4 (Definition of Done), RTM y conventional commits.",
+      "evidence": "RTM en lidr-validate-requirements; matriz de tests + gate en bmad-testarch-trace; PR refs ticket+change en git-workflow.md/workflows.md. Eslabón Mejora→PRD sin identificador formal (hueco real del modelo)."
+    }
+  },
+  "configuration": {
+    "height": 520,
+    "exportName": "Aramis_Hilo_Trazabilidad",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "t-need",
+      "x": 0,
+      "y": 140,
+      "label": "Necesidad + Análisis",
+      "variant": "teal",
+      "subtitle": "research · brief · prfaq"
+    },
+    {
+      "id": "t-prd",
+      "x": 320,
+      "y": 140,
+      "label": "PRD",
+      "variant": "indigo",
+      "subtitle": "lleva: RF-NN · UJ-N · NFR-NN"
+    },
+    {
+      "id": "t-epic",
+      "x": 640,
+      "y": 140,
+      "label": "Épica / Story",
+      "variant": "violet",
+      "subtitle": "lleva: EPIC-N · STORY-N (citan el RF/UJ origen)"
+    },
+    {
+      "id": "t-pr",
+      "x": 960,
+      "y": 140,
+      "label": "Pull Request / Código",
+      "variant": "cyan",
+      "subtitle": "lleva: Refs ticket + change · commit convencional"
+    },
+    {
+      "id": "t-test",
+      "x": 1280,
+      "y": 140,
+      "label": "Test + Gate",
+      "variant": "amber",
+      "subtitle": "matriz criterios↔test · cada AC mapeado"
+    },
+    {
+      "id": "t-rel",
+      "x": 1600,
+      "y": 140,
+      "label": "Release",
+      "variant": "slate",
+      "subtitle": "lleva: tag vX.Y.Z + changelog"
+    },
+    {
+      "id": "t-mon",
+      "x": 1920,
+      "y": 140,
+      "label": "Monitoring",
+      "variant": "green",
+      "subtitle": "lleva: KPI"
+    },
+    {
+      "id": "t-mej",
+      "x": 2240,
+      "y": 140,
+      "label": "Mejora",
+      "variant": "emerald",
+      "subtitle": "→ PRD-delta"
+    },
+    {
+      "id": "t-adr",
+      "x": 640,
+      "y": 360,
+      "label": "ADR-NNNN",
+      "variant": "orange",
+      "subtitle": "decisión · referenciada donde aplica (transversal)"
+    }
+  ],
+  "edges": [
+    {
+      "id": "z1",
+      "source": "t-need",
+      "target": "t-prd",
+      "label": "inputs[ ]",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "z2",
+      "source": "t-prd",
+      "target": "t-epic",
+      "label": "RTM",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "z3",
+      "source": "t-epic",
+      "target": "t-pr",
+      "label": "Refs ticket + change",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "z4",
+      "source": "t-pr",
+      "target": "t-test",
+      "label": "matriz de tests",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "z5",
+      "source": "t-test",
+      "target": "t-rel",
+      "label": "changelog ← PRs",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "z6",
+      "source": "t-rel",
+      "target": "t-mon",
+      "label": "deploy",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "z7",
+      "source": "t-mon",
+      "target": "t-mej",
+      "label": "reporte / KPI",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "z-weak",
+      "source": "t-mej",
+      "target": "t-prd",
+      "label": "falta ID — eslabón débil",
+      "style": "red",
+      "sourceHandle": "source-top",
+      "targetHandle": "target-top"
+    },
+    {
+      "id": "z-adr",
+      "source": "t-prd",
+      "target": "t-adr",
+      "label": "decide",
+      "style": "dashed",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-top"
+    }
+  ],
+  "legend": [
+    { "color": "bg-teal-200", "label": "Necesidad / Análisis" },
+    { "color": "bg-indigo-200", "label": "PRD (RF · UJ · NFR)" },
+    { "color": "bg-violet-200", "label": "Épica / Story" },
+    { "color": "bg-cyan-200", "label": "Pull Request / Código" },
+    { "color": "bg-amber-200", "label": "Test + Gate (matriz de tests)" },
+    { "color": "bg-slate-200", "label": "Release (tag + changelog)" },
+    { "color": "bg-green-200", "label": "Monitoring (KPI)" },
+    { "color": "bg-emerald-200", "label": "Mejora" },
+    { "color": "bg-orange-200", "label": "ADR — decisión (transversal)" },
+    { "color": "bg-red-200", "label": "Eslabón débil — falta identificador (a formalizar)" }
+  ],
+  "tables": [
+    {
+      "label": "Siglas",
+      "value": "RTM = Requirements Traceability Matrix (matriz de trazabilidad de requisitos) · PRD = Product Requirement Document · RF = Requisito Funcional · UJ = User Journey · NFR = Requisito No Funcional · AC = Acceptance Criteria · ADR = Architecture Decision Record · KPI = Key Performance Indicator"
+    },
+    {
+      "label": "PRD",
+      "value": "Identificadores: RF-NN (requisito funcional) · UJ-N (user journey) · NFR-NN. Su frontmatter lista inputs[] (docs de análisis usados)"
+    },
+    {
+      "label": "Épica / Story",
+      "value": "Identificadores: EPIC-N · STORY-N, que citan el RF/UJ de origen (enlace vía RTM = lidr-validate-requirements)"
+    },
+    {
+      "label": "Pull Request / commit",
+      "value": "Refs: ticket (PROJ-123) + change (<name>) · conventional commit. Enforzado por Docs Travel with Code + hook frontmatter-guard + Gate 4"
+    },
+    {
+      "label": "Test",
+      "value": "Matriz criterios↔test + gate (bmad-testarch-trace): cada criterio de aceptación mapeado a su(s) test(s) y estado de cobertura"
+    },
+    {
+      "label": "Release",
+      "value": "tag vX.Y.Z + changelog que lista los Pull Requests mergeados (lidr-create-release-notes) → trazas hacia atrás a ticket/story/PRD"
+    },
+    {
+      "label": "ADR",
+      "value": "ADR-NNNN referenciado desde PRD / arquitectura / código donde la decisión aplica"
+    },
+    {
+      "label": "Eslabón débil (rojo)",
+      "value": "Mejora → PRD-delta: falta un identificador que ate el KPI/reporte/mejora al PRD que origina. Es el único hueco real — recomendado formalizar (p. ej. mejora lleva el ID del PRD-delta)"
+    }
+  ]
+}

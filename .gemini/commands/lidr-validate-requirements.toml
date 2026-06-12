@@ -103,12 +103,14 @@ Using skill `lidr-generate-nfr`:
 5. Cross-reference each NFR with applicable RFs
 6. Generate NFR Summary Matrix
 
-Special attention for {{CLIENT_NAME}} domain-specific projects:
+When the active client binds a domain pack, give special attention to its
+domain-specific NFRs (e.g. accuracy/quality thresholds, domain processing
+latency, special-category data-protection NFRs). The default NFR set stays
+domain-agnostic and always covers:
 
-- FAR/FRR thresholds
-- domain-specific matching latency
-- GDPR Art. 9 compliance NFRs
-- Encryption requirements (AES-256, TLS 1.2+)
+- Performance latency/throughput thresholds
+- Security requirements (encryption in transit/at rest, e.g. AES-256, TLS 1.2+)
+- General data-protection / compliance NFRs declared by the client
 
 Output: NFR documents saved to `docs/projects/$1/nfrs/`
 
@@ -128,7 +130,7 @@ For each functionality in PRD-F §2.4:
 
 For each NFR category in PRD-T §5:
 ✅ At least 1 standalone NFR exists
-❌ CRITICAL if Security/Compliance missing for domain-specific project
+❌ CRITICAL if a mandatory category (Security/Compliance) is missing
 
 ### Pass 3: NFR Allocation (NFRs → RFs)
 
@@ -165,12 +167,12 @@ Use AskUserQuestion:
 If yes, using skill `bmad-create-epics-and-stories` with LIDR rules:
 
 1. Load LIDR decomposition rules: @../../\\_shared/lidr/references/epic-decomposition-rules.md
-2. Read master epic (from tracking tool or tracking-integration output)
+2. Read master epic — via `lidr-sdlc-tracking`, which resolves {{TRACKING_TOOL}} from the registry (or the `lidr-tracking-integration` output)
 3. Group RFs into feature epics by cluster + business cohesion
 4. Assign NFRs to epics
 5. Calculate dependencies between epics
 6. Estimate sprint ranges per epic
-7. Generate epic breakdown using @../../\\_shared/lidr/templates/epic.md (Spanish format)
+7. Generate epic breakdown using @../../\\_shared/lidr/templates/epic.md (artifact language follows the client `language` setting — see `_shared/lidr/integrations/tool-registry.yaml`, default English)
 
 Output: `docs/projects/$1/epics.md`
 
@@ -217,13 +219,13 @@ Next: /lidr-advance-gate 2 (if PASS)
 
 ## Error Handling
 
-If Jira MCP unavailable:
-→ Operate with local files, skip Jira ticket creation
-→ Output JSON for manual Jira population
+If `lidr-sdlc-tracking` cannot resolve {{TRACKING_TOOL}} from the registry:
+→ Operate with local files, skip tracking-ticket creation
+→ Output JSON for manual {{TRACKING_TOOL}} population
 
-If Confluence MCP unavailable:
+If `lidr-external-sync` cannot resolve {{DOCS_TOOL}} from the registry:
 → Save all documents as local markdown
-→ Provide instructions for manual Confluence upload
+→ Provide instructions for manual {{DOCS_TOOL}} upload
 
 If PRDs are incomplete:
 → Generate partial RFs/NFRs with explicit markers for gaps

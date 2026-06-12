@@ -1,23 +1,27 @@
 ---
-name: lidr-ticket-validation
 id: ticket-validation
-description: This skill should be used when agents need to "validate ticket structure", "check YAML frontmatter", "verify acceptance criteria", "review Definition of Done", or "validate BDD scenarios". Provides validation patterns and checklists for ticket quality.
-version: "0.2.0"
-last_updated: "2026-06-10"
-updated_by: "TL: Gate-evidence contract fix"
+version: "1.0.0"
+last_updated: "2026-06-12"
+updated_by: "TL: ticket-fusion consolidation"
 status: active
-phase: 0 # meta/cross-cutting — applies anytime
-stage: anytime
+type: standard
 owner_role: "TL"
 ---
 
-# Ticket Validation Skill
+# Reference: Ticket / Story Quality Validation
 
-## Overview
+> **Owner skill**: `lidr-refinement-notes` (single ticket/story-quality + DoR authority).
+> **Consolidated from**: the former `lidr-ticket-validation` skill (folded here 2026-06-12).
+> **Use for**: validating ticket structure, YAML frontmatter, acceptance-criteria quality,
+> Definition of Done completeness, BDD/Gherkin scenario quality, tasks-section validation,
+> and enriching incomplete tickets before sprint commitment.
 
-Provides comprehensive patterns and checklists for validating ticket structure, completeness, and quality. Use this skill when validating tickets in `.agents/tickets/`.
+Provides comprehensive patterns and checklists for validating ticket structure, completeness,
+and quality. The Definition-of-Ready gate lives in `checklists/dor.md`; this reference supplies
+the ticket-level structural and content checks the appliers (`/lidr-enrich-ticket` command,
+`lidr-ticket-enricher` subagent, `lidr-pr-validator` subagent) run.
 
-## When to Use This Skill
+## When to Use
 
 - Validating ticket YAML frontmatter
 - Checking acceptance criteria specificity
@@ -350,27 +354,25 @@ Scenario: User logs in with valid credentials
 - [ ] Write tests - Assigned to: test-runner agent
 ```
 
-## Integration with Agents
+## Integration with Appliers
 
-This skill is used by:
+This reference is consumed by:
 
-1. **ticket-enricher agent:** Validates new tickets, suggests improvements
-2. **pr-validator agent:** Checks ticket completeness before PR creation
+1. **`/lidr-enrich-ticket` command** — validates new tickets, suggests improvements
+2. **`lidr-ticket-enricher` subagent:** Validates new tickets, suggests improvements
+3. **`lidr-pr-validator` subagent:** Checks ticket completeness (DoD) before PR creation
 
 **Usage pattern:**
 
 ```markdown
-1. Load ticket-validation skill
+1. Load lidr-refinement-notes skill (this reference + checklists/dor.md)
 2. Parse ticket YAML and content
-3. Run validation checks from this skill
+3. Run validation checks from this reference
 4. Generate report with issues
 5. Suggest fixes based on patterns
 ```
 
-## References
+## Related
 
-- YAML Schema: `references/yaml-schema.md`
-- Definition of Done Checklist: `references/dod-checklist.md`
-- Valid Ticket Example: `examples/valid-ticket.md`
-- Invalid Ticket Example: `examples/invalid-ticket.md`
+- Definition of Ready checklist: `checklists/dor.md` (Gate 3 DoR validation)
 - Workflow System: `.agents/rules/process/ai-workflow-system.md`

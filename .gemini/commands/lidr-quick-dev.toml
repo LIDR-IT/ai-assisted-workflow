@@ -25,7 +25,7 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
 
 | Parámetro      | Tipo     | Descripción                                                        | Default |
 | -------------- | -------- | ------------------------------------------------------------------ | ------- |
-| `TICKET-ID`    | Required | ID del ticket Jira (ej: SDLC-123)                                  | -       |
+| `TICKET-ID`    | Required | ID del ticket en {{TRACKING_TOOL}} (ej: SDLC-123)                  | -       |
 | `--type`       | Optional | Tipo de cambio: `fix`, `feat`, `docs`, `style`, `refactor`, `test` | `fix`   |
 | `--skip-tests` | Flag     | Saltear generación de tests (solo para fixes menores)              | false   |
 
@@ -48,7 +48,7 @@ Streamlines: branch creation → implementation → basic testing → PR creatio
 
 - **Estimación > 8 horas**: Usar `/lidr-implement-ticket` estándar
 - **Cambios de API**: Usar proceso completo con PRD + RFs
-- **Datos biométricos**: Requiere security review mandatory
+- **Datos sensibles / special-category** (p.ej. biométricos, salud — GDPR Art. 9): Requiere security review mandatory
 - **Múltiples componentes**: Usar epic breakdown
 - **Breaking changes**: Requiere ADR + revisión de arquitectura
 
@@ -208,7 +208,7 @@ markdown
 yaml
 tools_sequence:
   validation:
-    - jira_check_ticket_status
+    - tracking_check_ticket_status # via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}})
     - estimate_validation
     - scope_validation
 

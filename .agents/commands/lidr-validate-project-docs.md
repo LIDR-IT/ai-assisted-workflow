@@ -28,7 +28,9 @@ RELATED COMMANDS:
   /lidr-sync-docs         - Updates docs to match code
 
 SKILLS USED:
-  generate-rule      - Referenced for rule validation criteria
+  lidr-agents-architecture - Referenced for rule validation criteria
+                             (rule authoring folded in; see
+                             references/rule-development.md)
 
 CHANGELOG:
   v3.0.0 (2026-03-09): Added rule file validation (section 7)
@@ -142,7 +144,7 @@ Expected rule types (5):
 - [ ] documentation.md — doc governance and DTC
 - [ ] workflows.md — command orchestration map
 
-Flag missing rule types as ⚠️ — suggest `/lidr-init-project-docs` or skill `lidr-generate-rule` to create them.
+Flag missing rule types as ⚠️ — suggest `/lidr-init-project-docs` or skill `lidr-agents-architecture` (rule authoring; see `references/rule-development.md`) to create them.
 
 Score: {existing rules}/{5 expected} + {valid references}/{total references}
 

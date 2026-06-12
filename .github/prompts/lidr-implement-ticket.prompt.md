@@ -10,28 +10,35 @@ AUTHOR: SDLC Team
 LAST UPDATED: 2025-03-05
 
 PURPOSE:
-Complete dev workflow: reads ticket from Jira, creates branch, generates
-implementation plan, assists coding, validates DoD, creates PR, generates
-handoff for QA, and transitions ticket status.
+Tracking-tool entry point of the single development sequence: reads ticket from
+the bound {{TRACKING_TOOL}}, checks dependencies, and either DELEGATES
+implementation to the LIDR change lifecycle (/lidr-spec-*) when the ticket has an
+associated change, or runs the lightweight in-line path. Then creates PR,
+generates QA handoff, transitions status. NOT a route that competes with
+/lidr-spec-* — the same chain, entered from the tracking tool instead of from
+/lidr-spec-new.
 
 USAGE:
   /lidr-implement-ticket PROJ-123
   /lidr-implement-ticket PROJ-456
 
 ARGUMENTS:
-  ticket-id: Jira ticket ID (required). Format: PROJECT-NUMBER
+  ticket-id: Tracking-tool ticket ID (required). Format: PROJECT-NUMBER
 
 REQUIREMENTS:
-  - Manual ticket access or scripts
+  - Tracking-tool access via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}})
   - GitHub CLI (gh) configured (degrades without)
   - .claude/rules/ configured
 
 RELATED COMMANDS:
-  /lidr-create-branch  - Standalone branch creation (Step 2 of this command)
-  /lidr-create-pr      - Standalone PR creation (Step 6 of this command)
+  /lidr-spec-apply     - This command's implementation engine when the ticket has an
+                         associated LIDR change (Step 2.5 delegates to it — same chain)
+  /lidr-create-branch  - Decomposed Step 3 of this command (not an alternative route)
+  /lidr-create-pr      - Decomposed Step 7 of this command (not an alternative route)
   /lidr-advance-gate 4 - Sprint aggregator after all tickets done
 
 CHANGELOG:
+  v2.1.0 (2026-06-11): Tracking-tool entry of the single sequence — Step 2.5 delegates to /lidr-spec-apply when a change exists; base branch reconciled to tech-stack §9
   v2.0.0 (2025-03-05): Rewritten to official command format
   v1.0.0 (2025-02-15): Initial version (specification format)
 -->
@@ -52,7 +59,7 @@ Usage: /lidr-implement-ticket [TICKET-ID]
 Example: /lidr-implement-ticket PROJ-123
 Exit.
 
-Read ticket from Jira MCP: GET /issue/$1
+Read ticket $1 via lidr-sdlc-tracking, which resolves {{TRACKING_TOOL}} from the registry.
 Extract: title, description, acceptance criteria (BDD), linked User Story, linked RF, priority, sprint, component, attachments.
 
 Validate:
@@ -73,7 +80,7 @@ Validate:
 
 ## Step 2: Check Dependencies
 
-Read ticket links from Jira: GET /issue/$1?expand=issuelinks
+Read ticket links for $1 via lidr-sdlc-tracking, which resolves {{TRACKING_TOOL}} from the registry.
 
 For each "is blocked by" or "depends on" link:
 
@@ -89,13 +96,27 @@ Use AskUserQuestion if blockers found:
   - Resolver primero (Cancelar e implementar dependencia)
   - Escalar (Notificar al Tech Lead)
 
-## Step 3: Create Branch (if not exists)
+## Step 2.5: Single-sequence routing — delegate to the LIDR change lifecycle when applicable
+
+This command is the **{{TRACKING_TOOL}} entry point of the single development sequence**, not a route that competes with `/lidr-spec-*`. Decide the path before creating any branch:
+
+- Look in `docs/projects/<CLIENT_CODE>/changes/` for a change associated with ticket `$1` (by name, by frontmatter ticket reference, or ask the user).
+
+**If an associated change exists** (or the work warrants the auditable change container) → **delegate implementation to the spec chain and SKIP Steps 3–6**:
+
+- `/lidr-spec-ff <change-name>` (if not yet planned) → `/lidr-spec-apply <change-name>` → `/lidr-spec-verify <change-name>`.
+- `/lidr-spec-apply` owns Step 0 (feature branch), the BMad `bmad-dev-story` unit/regression loop, and the LIDR mandatory curl / Playwright / DTC-docs / reports (see `lidr-sdlc/spec-execution.md` §0). Do **not** also create a branch here — the spec chain owns it.
+- Then continue at **Step 7 (Create PR)**, referencing both the ticket and the change (`Refs: $1` + `Change: <change-name>`).
+
+**If there is NO associated change** (small ticket, no container) → continue with Steps 3–6 below as the lightweight path.
+
+## Step 3: Create Branch (only if NOT delegating per Step 2.5)
 
 Current branch: !`git branch --show-current`
 
 If not already on a feature branch for this ticket:
 
-Determine branch type from Jira issue type:
+Determine branch type from the {{TRACKING_TOOL}} issue type:
 
 - Story → feature/
 - Bug → bugfix/
@@ -107,7 +128,9 @@ Branch name: {type}/$1-{slug-from-title}
 !`git fetch origin`
 !`git checkout -b {branch-name} origin/develop`
 
-Jira MCP: transition $1 to "In Progress" (if not already).
+> Base branch `develop` follows `tech-stack.md` §9 (Gitflow integration base) — the **same base** the spec chain's Step 0 uses, so a ticket implemented in-line here and one implemented via `/lidr-spec-apply` land on the same base.
+
+Via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}}): transition $1 to "In Progress" (if not already).
 
 ## Step 4: Generate Implementation Plan
 
@@ -155,7 +178,7 @@ During implementation:
 
 - Verify each function against BDD criteria from ticket
 - If code introduces a TODO without ticket: WARN
-- If tech-debt detected: use lidr-tech-debt skill to register, create Jira subtask
+- If tech-debt detected: use lidr-tech-debt skill to register, create a tracking subtask via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}})
 - If architectural decision needed: suggest creating ADR with lidr-adr skill
 
 Run validations continuously:
@@ -171,7 +194,7 @@ Validate Definition of Done checklist skills/lidr-pr-description/checklists/dod.
 - ✅ Tests pass: !`npm test`
 - ✅ Lint clean: !`npm run lint`
 - ✅ Build succeeds: !`npm run build`
-- ⏳ SAST/SCA: check SonarQube results if available
+- ⏳ SAST/SCA: check {{CODE_QUALITY_TOOL}} results if available
 - ⏳ Code review: pending (will happen after PR)
 
 If any FAIL → suggest specific fixes before continuing.
@@ -211,13 +234,13 @@ Use lidr-dev-handoff-qa skill to generate handoff document:
 - Known limitations / edge cases
 - Environment to test in
 
-Attach handoff to Jira ticket: POST /issue/$1/attachments
+Attach handoff to ticket $1 via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}}).
 
 ## Step 9: Transition and Notify
 
-Jira MCP: transition $1 to "Ready for QA"
+Via lidr-sdlc-tracking (resolves {{TRACKING_TOOL}}): transition $1 to "Ready for QA".
 
-Slack MCP: notify QA channel:
+Via lidr-external-sync (resolves {{CHAT_TOOL}}): notify the QA channel:
 "Ticket $1 ready for QA. Handoff attached. PR: {link}. Environment: staging."
 
 Report:

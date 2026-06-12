@@ -5,7 +5,7 @@ agent: 'agent'
 
 # Enrich Ticket Command
 
-Validates ticket completeness, structure, and quality using the `lidr-ticket-validation` skill.
+Validates ticket completeness, structure, and quality using the `lidr-refinement-notes` skill (its `references/ticket-validation.md`).
 
 ## Usage
 
@@ -46,7 +46,7 @@ Validates ticket completeness, structure, and quality using the `lidr-ticket-val
 
 ## Implementation
 
-This command invokes the `lidr-ticket-enricher` agent, which uses the `lidr-ticket-validation` skill.
+This command invokes the `lidr-ticket-enricher` agent, which uses the `lidr-refinement-notes` skill (its `references/ticket-validation.md`).
 
 **Agent:**
 
@@ -54,7 +54,7 @@ This command invokes the `lidr-ticket-enricher` agent, which uses the `lidr-tick
 name: lidr-ticket-enricher
 description: Validates and enriches ticket quality
 tools: [Read, Skill]
-skills: [lidr-ticket-validation, bmad-testarch-atdd]
+skills: [lidr-refinement-notes, bmad-testarch-atdd]
 ```
 
 **Process:**
@@ -241,6 +241,6 @@ Once validation passes:
 
 ## See Also
 
-- `.agents/skills/lidr-ticket-validation/` - Validation skill documentation
+- `.agents/skills/lidr-refinement-notes/references/ticket-validation.md` - Validation reference documentation
 - `.agents/rules/process/ai-workflow-system.md` - Complete workflow
 - `.agents/tickets/README.md` - Ticket system overview

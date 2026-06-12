@@ -197,7 +197,7 @@ captured by the OPCIONAL/anytime classification, not by a separate prefix.
 | `commit-management` | `lidr-commit-management` | `anytime` → `lidr` | `optional`    |
 | `ticket-validation` | `lidr-ticket-validation` | `anytime` → `lidr` | `recommended` |
 
-`lidr-ticket-validation` was upgraded to `recommended` (was optional) because it validates LIDR/BMad ticket structure pre-PR — has real value in the flow, not just niche.
+`lidr-ticket-validation` was upgraded to `recommended` (was optional) because it validates LIDR/BMad ticket structure pre-PR — has real value in the flow, not just niche. _(Superseded: later consolidated into `lidr-refinement-notes` as `references/ticket-validation.md` — see the Phase I consolidation section below.)_
 
 ### 4 LIDR SKILL.md refactors (thin-wrapper framing)
 
@@ -333,7 +333,7 @@ prefix no longer exists anywhere in the ecosystem.
 
 These bring the LIDR count from 38 (post-Phase-F cleanup) to 44.
 
-## Final inventory (current — 2026-06-11)
+## Inventory snapshot — 2026-06-11 (superseded by Phase I below)
 
 ```
 LIDR:  44 skills (23 OBLIGATORIO + 9 RECOMENDABLE + 12 OPCIONAL) — all prefixed lidr-*
@@ -345,3 +345,37 @@ Companion ecosystem counts: 30 commands, 24 rules, 10 subagents (since 2026-06-1
 (`notify`, `auto-format`, `protect-secrets`, `frontmatter-guard`, `load-context`,
 `validate-ecosystem-counts`). See `.agents/_shared/lidr/CRITICALITY.md` for the
 per-skill criticality classification.
+
+## Phase I — meta-tooling consolidation (2026-06-12)
+
+**Context:** The 5 meta-tooling skills were over-fragmented — 4 of them
+(`lidr-command-development`, `lidr-hook-development`, `lidr-mcp-integration`,
+`lidr-generate-rule`) overlapped heavily with the umbrella `lidr-agents-architecture`
+("author a piece of the `.agents/` ecosystem"). They were **folded into
+`lidr-agents-architecture` as progressive-disclosure references** and the 4 skill
+directories deleted.
+
+### Folded (4) — now `references/` of `lidr-agents-architecture`
+
+| Former skill (deleted)     | Now lives at                                                         |
+| -------------------------- | -------------------------------------------------------------------- |
+| `lidr-command-development` | `references/command-development.md` + `examples/command-template.md` |
+| `lidr-hook-development`    | `references/hook-development.md` + `examples/hook-scripts/*.sh`      |
+| `lidr-mcp-integration`     | `references/mcp-integration.md` + `examples/mcp-servers/*.json`      |
+| `lidr-generate-rule`       | `references/rule-development.md` + `templates/rule.md`               |
+
+`lidr-agents-architecture` bumped 1.1.0 → 1.2.0; description broadened to the umbrella
+"author skills/commands/subagents/hooks/MCP/rules", trigger phrases of all 4 folded in.
+
+### Final inventory (current — 2026-06-12)
+
+```
+LIDR:  38 skills — all prefixed lidr-*
+BMad:  69 skills (base flow, untouched) — all prefixed bmad-*
+Total: 107 skills
+```
+
+> LIDR 44 → 38 reflects this Phase-I fold (−4) plus 2 unrelated removals from other
+> streams (`lidr-commit-management`, `lidr-ticket-validation`, −2). The RESERVED count
+> advertisements (`CLAUDE.md`, `AGENTS.md`, `README.md`) are updated by the Reconcile
+> phase, not here.

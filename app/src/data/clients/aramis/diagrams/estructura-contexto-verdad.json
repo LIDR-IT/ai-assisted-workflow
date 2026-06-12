@@ -1,0 +1,291 @@
+{
+  "metadata": {
+    "id": "estructura-contexto-verdad",
+    "title": "La capa de verdad (TEA) — Aramis",
+    "description": "Cómo los tests se vuelven el centro de la verdad ejecutable vía el módulo TEA (Murat) de BMad. Feature nuevo (truth-first/ATDD): AC/UJ → test-design (risk) → ATDD (tests rojos = spec) → dev-story (verde) → trace (matriz AC↔test + gate PASS/CONCERNS/FAIL/WAIVED) → NFR audit. Alineación brownfield (ratchet): document-project (código→docs/index) → framework+ci → automate/caracterización (golden master del comportamiento actual) → trace con oráculo sintético (infiere journeys del código) → priorizar P1. La cobertura solo sube.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": [
+      "tea",
+      "test",
+      "atdd",
+      "traceability",
+      "gate",
+      "nfr",
+      "brownfield",
+      "ratchet",
+      "source-of-truth",
+      "aramis"
+    ],
+    "implementation_status": {
+      "level": "absent",
+      "description": "Modelo propuesto de capa de verdad con TEA. Artefactos en _bmad-output/test-artifacts/ (test-design, traceability, test-reviews). Gate = PASS/CONCERNS/FAIL/WAIVED. risk_threshold=p1.",
+      "evidence": "Skills bmad-tea + bmad-testarch-* y config.toml (test_artifacts, test_design_output, trace_output, risk_threshold=p1). trace resuelve oráculo: formal → contrato/spec → externo → journeys sintéticos del código."
+    }
+  },
+  "configuration": {
+    "height": 560,
+    "exportName": "Aramis_Capa_Verdad_TEA",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "hdr-feature",
+      "x": 0,
+      "y": 40,
+      "label": "FEATURE NUEVO",
+      "variant": "slate",
+      "subtitle": "truth-first / ATDD"
+    },
+    {
+      "id": "v-ac",
+      "x": 300,
+      "y": 40,
+      "label": "AC / UJ",
+      "variant": "cyan",
+      "subtitle": "del PRD-delta (la intención)"
+    },
+    {
+      "id": "v-design",
+      "x": 620,
+      "y": 40,
+      "label": "test-design",
+      "variant": "indigo",
+      "subtitle": "risk-based · test-artifacts/test-design/"
+    },
+    {
+      "id": "v-atdd",
+      "x": 940,
+      "y": 40,
+      "label": "ATDD — tests ROJOS",
+      "variant": "red",
+      "subtitle": "el AC se vuelve spec ejecutable (antes del código)"
+    },
+    {
+      "id": "v-dev",
+      "x": 1260,
+      "y": 40,
+      "label": "dev-story — VERDE",
+      "variant": "green",
+      "subtitle": "implementa hasta pasar (story autocontenida)"
+    },
+    {
+      "id": "v-trace",
+      "x": 1580,
+      "y": 40,
+      "label": "trace — matriz + GATE",
+      "variant": "amber",
+      "subtitle": "traceability/ · PASS / CONCERNS / FAIL / WAIVED"
+    },
+    {
+      "id": "v-nfr",
+      "x": 1900,
+      "y": 40,
+      "label": "NFR audit",
+      "variant": "orange",
+      "subtitle": "perf · seguridad · fiabilidad"
+    },
+    {
+      "id": "hdr-brown",
+      "x": 0,
+      "y": 300,
+      "label": "ALINEACIÓN BROWNFIELD",
+      "variant": "slate",
+      "subtitle": "ratchet · la cobertura solo sube"
+    },
+    {
+      "id": "b-doc",
+      "x": 300,
+      "y": 300,
+      "label": "document-project",
+      "variant": "sky",
+      "subtitle": "código → docs/index (contexto actual)"
+    },
+    {
+      "id": "b-frame",
+      "x": 620,
+      "y": 300,
+      "label": "framework + ci",
+      "variant": "slate",
+      "subtitle": "harness Playwright/Cypress + pipeline"
+    },
+    {
+      "id": "b-char",
+      "x": 940,
+      "y": 300,
+      "label": "automate / caracterización",
+      "variant": "teal",
+      "subtitle": "fija el comportamiento actual (golden master)"
+    },
+    {
+      "id": "b-trace",
+      "x": 1260,
+      "y": 300,
+      "label": "trace (oráculo sintético)",
+      "variant": "amber",
+      "subtitle": "infiere journeys del código → matriz + gate"
+    },
+    {
+      "id": "b-p1",
+      "x": 1580,
+      "y": 300,
+      "label": "priorizar P1",
+      "variant": "violet",
+      "subtitle": "risk_threshold = p1 (no boil-the-ocean)"
+    }
+  ],
+  "edges": [
+    {
+      "id": "f0",
+      "source": "hdr-feature",
+      "target": "v-ac",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "f1",
+      "source": "v-ac",
+      "target": "v-design",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "f2",
+      "source": "v-design",
+      "target": "v-atdd",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "f3",
+      "source": "v-atdd",
+      "target": "v-dev",
+      "label": "red → green",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "f4",
+      "source": "v-dev",
+      "target": "v-trace",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "f5",
+      "source": "v-trace",
+      "target": "v-nfr",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "n0",
+      "source": "hdr-brown",
+      "target": "b-doc",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "n1",
+      "source": "b-doc",
+      "target": "b-frame",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "n2",
+      "source": "b-frame",
+      "target": "b-char",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "n3",
+      "source": "b-char",
+      "target": "b-trace",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "n4",
+      "source": "b-trace",
+      "target": "b-p1",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "bridge",
+      "source": "b-p1",
+      "target": "v-ac",
+      "label": "ya alineado → features truth-first",
+      "style": "dashed",
+      "sourceHandle": "source-top",
+      "targetHandle": "target-bottom"
+    }
+  ],
+  "legend": [
+    {
+      "color": "bg-cyan-200",
+      "label": "AC / UJ — la intención (del PRD-delta)"
+    },
+    {
+      "color": "bg-indigo-200",
+      "label": "test-design — plan risk-based"
+    },
+    {
+      "color": "bg-red-200",
+      "label": "ATDD — tests rojos (el AC como spec ejecutable)"
+    },
+    {
+      "color": "bg-green-200",
+      "label": "dev — verde (implementación)"
+    },
+    {
+      "color": "bg-amber-200",
+      "label": "trace — matriz AC↔test + GATE"
+    },
+    {
+      "color": "bg-orange-200",
+      "label": "NFR audit (perf · seguridad · fiabilidad)"
+    },
+    {
+      "color": "bg-sky-200",
+      "label": "document-project — deriva contexto del código"
+    },
+    {
+      "color": "bg-teal-200",
+      "label": "Caracterización (golden master del comportamiento actual)"
+    },
+    {
+      "color": "bg-violet-200",
+      "label": "Priorización por riesgo (P1)"
+    },
+    {
+      "color": "bg-slate-200",
+      "label": "Harness / CI / carriles"
+    }
+  ],
+  "tables": [
+    {
+      "label": "Siglas",
+      "value": "AC = Acceptance Criteria (criterios de aceptación) · UJ = User Journey · ATDD = Acceptance Test-Driven Development · NFR = Requisito No Funcional · TEA = Test Architect (módulo BMad) · P1 = Prioridad 1 · PRD = Product Requirement Document"
+    },
+    {
+      "label": "Gate (trace)",
+      "value": "PASS = cobertura suficiente · CONCERNS = gaps no bloqueantes · FAIL = gaps críticos · WAIVED = aceptado con riesgo asumido"
+    },
+    {
+      "label": "Oráculo de trace",
+      "value": "Resuelve en orden: requisitos formales → contrato/spec → punteros externos → journeys SINTÉTICOS inferidos del código (clave en brownfield sin specs)"
+    },
+    {
+      "label": "Ratchet",
+      "value": "La cobertura solo sube: lo cubierto no baja y cada feature nace con su test (ATDD). El CI lo ejecuta siempre; se prioriza P1, no el 100%"
+    },
+    {
+      "label": "El AC es la membrana",
+      "value": "Se escribe en el PRD (intención) → ATDD lo vuelve test rojo (ejecutable) → trace lo mantiene honesto. En cuanto es test trazado, el PRD cumplió su función"
+    }
+  ]
+}

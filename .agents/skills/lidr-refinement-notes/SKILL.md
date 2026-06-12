@@ -1,9 +1,9 @@
 ---
 name: lidr-refinement-notes
 id: refinement-notes
-version: "1.3.0"
-last_updated: "2026-06-11"
-updated_by: "TL: BMad-seam visibility"
+version: "1.4.0"
+last_updated: "2026-06-12"
+updated_by: "TL: ticket-fusion consolidation"
 status: active
 phase: 3
 stage: sprint-planning
@@ -12,7 +12,7 @@ automation: false
 domain_agnostic: true
 language_default: en
 integrations: [tracking]
-description: "POST-BMad WRAPPER: consumes the Phase-3 backlog stories (the `bmad-create-epics-and-stories` story skeleton and/or the `lidr-user-stories` PO backlog) and captures DoR-readiness grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer BMad has no concept of. ALWAYS use during backlog grooming — after the story skeleton exists, before sprint commitment (and before the Phase-4 `bmad-create-story`/`bmad-dev-story` context-fill + implement the story)."
+description: 'POST-BMad WRAPPER + single ticket/story-quality authority: consumes the Phase-3 backlog stories (the `bmad-create-epics-and-stories` story skeleton and/or the `lidr-user-stories` PO backlog) and captures DoR-readiness grooming notes (domain decisions, compliance clarifications, performance thresholds, cross-platform needs). Adds the LIDR Gate 3 DoR validation layer BMad has no concept of, and owns ticket/story-quality validation — use when agents need to "validate ticket structure", "check YAML frontmatter", "verify acceptance criteria", "review Definition of Done", or "validate BDD scenarios" (see references/ticket-validation.md). ALWAYS use during backlog grooming — after the story skeleton exists, before sprint commitment (and before the Phase-4 `bmad-create-story`/`bmad-dev-story` context-fill + implement the story).'
 ---
 
 # Refinement Notes Structurer
@@ -24,6 +24,22 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 ## Relationship to BMad
 
 POST-BMad wrapper (BMad has no Definition-of-Ready gate). `bmad-create-epics-and-stories` produces the epic→story skeleton and `lidr-user-stories` refines it into the PO backlog, but nothing in the base flow grooms those stories for readiness before sprint commitment. This skill (Phase 3 · sprint-planning) consumes those **Phase-3 backlog stories** — the `bmad-create-epics-and-stories` skeleton and/or the `lidr-user-stories` PO backlog — and captures the LIDR refinement record (domain decisions, compliance clarifications, performance thresholds, blockers), flagging each story `sprint-ready` vs `needs investigation`. Feeds **Gate 3** evidence (DoR validation) — which gates BEFORE the Phase-4 `bmad-create-story` context-fill, `bmad-dev-story`, or the `lidr-spec-*` lifecycle implements the story.
+
+## Ticket / Story Validation
+
+This skill is the **single ticket/story-quality + DoR authority** for the ecosystem (consolidated 2026-06-12; absorbed the former `lidr-ticket-validation` skill). It validates ticket structure, YAML frontmatter, acceptance-criteria specificity, Definition of Done completeness, BDD/Gherkin scenario quality, and tasks-section assignments — then enriches incomplete tickets before they reach sprint commitment.
+
+Two layers cover the readiness story:
+
+- **`references/ticket-validation.md`** — ticket-level structural + content checks (frontmatter, AC quality, DoD, BDD, tasks) and common-issue→fix patterns. Trigger phrases: "validate ticket structure", "check YAML frontmatter", "verify acceptance criteria", "review Definition of Done", "validate BDD scenarios".
+- **`checklists/dor.md`** — the Definition-of-Ready gate (Gate 3 evidence).
+
+The actionable appliers run on this single source: the `/lidr-enrich-ticket` command and `lidr-ticket-enricher` subagent (enrich incomplete tickets) and the `lidr-pr-validator` subagent (DoD readiness before PR).
+
+## References
+
+- `references/ticket-validation.md` — ticket/story-quality validation patterns + checklists
+- `checklists/dor.md` — Definition of Ready (Gate 3 DoR)
 
 ## Workflow
 
@@ -160,8 +176,9 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                       | Changes                                                                                                                                                                                                                                                                                  |
-| ------- | ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.3.0   | 2026-06-11 | TL: BMad-seam visibility     | Added "## Relationship to BMad": makes explicit that it consumes `bmad-create-story` / `lidr-user-stories` output and feeds Gate 3 DoR before `bmad-dev-story` / `lidr-spec-*` (relationship was only in the `description:` before); normalized body `Phase:` prose to unified numbering |
-| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix | Added `language_default: en` frontmatter (P5 bookkeeping)                                                                                                                                                                                                                                |
-| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic       | Language to English-default-configurable; abstracted Jira (tracking) via tool-registry                                                                                                                                                                                                   |
+| Version | Date       | Author                          | Changes                                                                                                                                                                                                                                                                                                          |
+| ------- | ---------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4.0   | 2026-06-12 | TL: ticket-fusion consolidation | Absorbed the former `lidr-ticket-validation` skill: added `references/ticket-validation.md` (full ticket/story-quality validation patterns), a "## Ticket / Story Validation" body section, and the 5 ticket-validation trigger phrases into `description:`. Now the single ticket/story-quality + DoR authority |
+| 1.3.0   | 2026-06-11 | TL: BMad-seam visibility        | Added "## Relationship to BMad": makes explicit that it consumes `bmad-create-story` / `lidr-user-stories` output and feeds Gate 3 DoR before `bmad-dev-story` / `lidr-spec-*` (relationship was only in the `description:` before); normalized body `Phase:` prose to unified numbering                         |
+| 1.2.1   | 2026-06-09 | TL: BMad-coherence batch-fix    | Added `language_default: en` frontmatter (P5 bookkeeping)                                                                                                                                                                                                                                                        |
+| 1.2.0   | 2026-06-09 | TL: lang+tool agnostic          | Language to English-default-configurable; abstracted Jira (tracking) via tool-registry                                                                                                                                                                                                                           |

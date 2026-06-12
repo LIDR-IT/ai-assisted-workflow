@@ -1,0 +1,274 @@
+{
+  "metadata": {
+    "id": "estructura-contexto-git",
+    "title": "Flujo de ramas, PRs y release — Aramis",
+    "description": "Flujo operativo de Git que complementa el ciclo de contexto. Por feature: 1 rama + 1 PR (cada story de un PRD), commits convencionales, review + CI (Gate 4 DoD), merge a develop. Por release: rama release/x.y.z desde develop, release notes + CHANGELOG generados desde los PRs mergeados, merge a main + tag, deploy a PROD (Gate 7, CR aprobado). Hotfix P1 desde main. Comandos LIDR anotados.",
+    "version": "1.0.0",
+    "client": "{{CLIENT_NAME}}",
+    "industry": "{{INDUSTRY}}",
+    "tags": [
+      "git",
+      "branch",
+      "pr",
+      "release",
+      "changelog",
+      "gitflow",
+      "gate-4",
+      "gate-7",
+      "hotfix",
+      "lidr-commands",
+      "aramis"
+    ],
+    "implementation_status": {
+      "level": "absent",
+      "description": "Flujo propuesto (gitflow + comandos LIDR). 1 feature/story = 1 rama + 1 PR; el release agrupa los PRs mergeados y genera el changelog.",
+      "evidence": "Branch strategy en .agents/rules/process/git-workflow.md (main/develop/feature/release/hotfix, squash a develop, merge commit a main) y comandos en .agents/rules/lidr-sdlc/workflows.md (/lidr-create-branch, /lidr-create-pr, /lidr-create-release-notes, /lidr-update-changelog)."
+    }
+  },
+  "configuration": {
+    "height": 460,
+    "exportName": "Aramis_Flujo_Git_Release",
+    "layout": "LR"
+  },
+  "nodes": [
+    {
+      "id": "f-branch",
+      "x": 0,
+      "y": 140,
+      "label": "feature/FEAT-123-whatsapp",
+      "variant": "green",
+      "subtitle": "/lidr-create-branch · 1 por feature/story (desde develop)"
+    },
+    {
+      "id": "f-commit",
+      "x": 300,
+      "y": 140,
+      "label": "Implementar + commits",
+      "variant": "green",
+      "subtitle": "/lidr-commit · conventional commits"
+    },
+    {
+      "id": "f-pr",
+      "x": 600,
+      "y": 140,
+      "label": "Pull Request",
+      "variant": "cyan",
+      "subtitle": "/lidr-create-pr · refs ticket + change"
+    },
+    {
+      "id": "f-review",
+      "x": 900,
+      "y": 140,
+      "label": "Review + CI",
+      "variant": "violet",
+      "subtitle": "Gate 4 · DoD · SAST/SCA"
+    },
+    {
+      "id": "f-merge",
+      "x": 1200,
+      "y": 140,
+      "label": "Merge → develop",
+      "variant": "slate",
+      "subtitle": "squash merge"
+    },
+    {
+      "id": "develop",
+      "x": 1500,
+      "y": 140,
+      "label": "develop",
+      "variant": "slate",
+      "subtitle": "rama de integración"
+    },
+    {
+      "id": "r-branch",
+      "x": 1800,
+      "y": 140,
+      "label": "release/1.4.0",
+      "variant": "indigo",
+      "subtitle": "desde develop"
+    },
+    {
+      "id": "r-notes",
+      "x": 2100,
+      "y": 140,
+      "label": "Release notes",
+      "variant": "indigo",
+      "subtitle": "/lidr-create-release-notes · desde PRs mergeados"
+    },
+    {
+      "id": "r-changelog",
+      "x": 2400,
+      "y": 140,
+      "label": "CHANGELOG.md",
+      "variant": "indigo",
+      "subtitle": "/lidr-update-changelog v1.4.0"
+    },
+    {
+      "id": "r-tag",
+      "x": 2700,
+      "y": 140,
+      "label": "Merge → main + tag v1.4.0",
+      "variant": "slate",
+      "subtitle": "merge commit"
+    },
+    {
+      "id": "r-deploy",
+      "x": 3000,
+      "y": 140,
+      "label": "Deploy PROD",
+      "variant": "orange",
+      "subtitle": "Gate 7 · CR aprobado"
+    },
+    {
+      "id": "hotfix",
+      "x": 2700,
+      "y": 360,
+      "label": "hotfix/* (P1)",
+      "variant": "red",
+      "subtitle": "desde main → fix → main + develop (fast-track)"
+    }
+  ],
+  "edges": [
+    {
+      "id": "g1",
+      "source": "f-branch",
+      "target": "f-commit",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g2",
+      "source": "f-commit",
+      "target": "f-pr",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g3",
+      "source": "f-pr",
+      "target": "f-review",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g4",
+      "source": "f-review",
+      "target": "f-merge",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g5",
+      "source": "f-merge",
+      "target": "develop",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g6",
+      "source": "develop",
+      "target": "r-branch",
+      "label": "release",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g7",
+      "source": "r-branch",
+      "target": "r-notes",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g8",
+      "source": "r-notes",
+      "target": "r-changelog",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g9",
+      "source": "r-changelog",
+      "target": "r-tag",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g10",
+      "source": "r-tag",
+      "target": "r-deploy",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "g-loop",
+      "source": "f-merge",
+      "target": "f-branch",
+      "label": "por cada feature/story",
+      "style": "dashed",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-bottom"
+    },
+    {
+      "id": "g-hotfix",
+      "source": "r-tag",
+      "target": "hotfix",
+      "label": "P1",
+      "style": "red",
+      "sourceHandle": "source-bottom",
+      "targetHandle": "target-top"
+    }
+  ],
+  "legend": [
+    {
+      "color": "bg-green-200",
+      "label": "Rama feature (1 por feature/story de un PRD)"
+    },
+    {
+      "color": "bg-cyan-200",
+      "label": "Pull Request (/lidr-create-pr · refs ticket + change)"
+    },
+    {
+      "color": "bg-violet-200",
+      "label": "Review + CI (Gate 4 · DoD)"
+    },
+    {
+      "color": "bg-indigo-200",
+      "label": "Release (notes + CHANGELOG desde PRs)"
+    },
+    {
+      "color": "bg-orange-200",
+      "label": "Deploy PROD (Gate 7 · CR aprobado)"
+    },
+    {
+      "color": "bg-red-200",
+      "label": "Hotfix P1 (desde main → main + develop)"
+    },
+    {
+      "color": "bg-slate-200",
+      "label": "Rama / merge (develop · main · tag)"
+    }
+  ],
+  "tables": [
+    {
+      "label": "Siglas",
+      "value": "PR = Pull Request · CI = Continuous Integration · DoD = Definition of Done · SAST = Static Application Security Testing · SCA = Software Composition Analysis · CR = Change Request · P1 = Prioridad 1"
+    },
+    {
+      "label": "Por feature",
+      "value": "/lidr-create-branch (desde develop) → /lidr-commit (conventional) → /lidr-create-pr → review + CI (Gate 4 DoD) → squash merge a develop"
+    },
+    {
+      "label": "Por release",
+      "value": "release/x.y.z desde develop → /lidr-create-release-notes (changelog desde PRs mergeados) → /lidr-update-changelog vX.Y.Z → merge a main + tag → deploy PROD (Gate 7)"
+    },
+    {
+      "label": "Hotfix (P1)",
+      "value": "hotfix/* desde main → fix → merge a main + develop (fast-track, CR retroactivo)"
+    },
+    {
+      "label": "Atadura con PRDs",
+      "value": "1 feature/story de un PRD = 1 rama + 1 PR; el PR referencia ticket + change; el release agrupa los PRs mergeados y de ahí sale el CHANGELOG"
+    }
+  ]
+}
