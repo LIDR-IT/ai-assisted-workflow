@@ -25,18 +25,19 @@ const PROJECT_CONTEXT_MD = `# Project Context — How We Work (LIDR × BMad)
   time and is not re-read during dev.
 - The living truth is layered and mostly DERIVED:
   · WHAT IT DOES (present): code + test suite, made verifiable by the traceability matrix + gate
-    (bmad-testarch-trace) and legible by the per-feature deep-dive (bmad-document-project →
-    docs/index.md).
+    (bmad-testarch-trace), specified by the per-feature LIVING SPEC (docs/features/<f>/spec.md:
+    UJ/RF/NFR/AC consolidated, same format as the PRD) and explained by the deep-dive (prose).
   · WHY (past): .decision-log.md + ADRs (docs/adr/) + archived PRDs.
   · HOW (rules): project-context.md (this file) + platform rules/.
 - The durable residue of a PRD is its acceptance criteria (AC) + user journeys (UJ): they graduate
-  into tests. The PRD narrative is transient; its AC are eternal as tests.
+  into tests AND consolidate into the feature's living spec. The PRD narrative is transient; its AC
+  are eternal as tests (Gherkin = AC + test, one artifact).
 
 ## Features and PRDs
 - One feature = one product (Whatsapp, Correos, Módulo preview, …). One PRD-line per feature.
 - A change is a PRD-delta: bmad-prd Update on the feature (extend) or Create (new feature). Same
-  UJ/domain/release-cycle → extend; otherwise → create. What grows is the FEATURE (its derived
-  deep-dive + its test suite), not a perpetually-open PRD.
+  UJ/domain/release-cycle → extend; otherwise → create. What grows is the FEATURE (its living spec +
+  deep-dive + test suite), not a perpetually-open PRD.
 
 ## Cross-feature initiatives
 - An initiative may touch several features → it fans out into N PRD-deltas (one per feature). It
@@ -98,6 +99,14 @@ function EstructuraContextoComponent() {
               {(
                 [
                   ['PRD', 'Product Requirement Document (requisitos de producto)'],
+                  [
+                    'PRD-delta',
+                    'PRD de un cambio concreto sobre una funcionalidad (no su estado completo; se archiva)',
+                  ],
+                  [
+                    'spec viva',
+                    'Estado actual CONSOLIDADO de una funcionalidad en formato PRD (UJ/RF/NFR/AC, IDs estables), en docs/features/<func>/spec.md; los deltas la reconcilian (DTC)',
+                  ],
                   ['PRFAQ', 'Press Release + FAQ (formato “Working Backwards”)'],
                   ['ADR', 'Architecture Decision Record (decisión arquitectónica)'],
                   ['UJ', 'User Journey (recorrido del usuario)'],
@@ -307,8 +316,8 @@ function EstructuraContextoComponent() {
                 <span className="font-medium">
                   ¿este cambio pertenece a un feature existente o es un feature nuevo?
                 </span>{' '}
-                La verdad viva del feature (su deep-dive derivado + sus tests/AC) crece igual vía
-                DTC; el PRD es solo el delta que la dispara.
+                La verdad viva del feature (su spec viva UJ/RF/NFR/AC + deep-dive + tests) crece
+                igual vía DTC; el PRD es solo el delta que la dispara.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="rounded-md border border-green-200 bg-green-50 p-3">
@@ -322,7 +331,7 @@ function EstructuraContextoComponent() {
                   </ul>
                   <div className="text-xs text-green-700 mt-1">
                     → un <span className="font-medium">PRD-delta</span> (bmad-prd Update) sobre ese
-                    feature; sus AC entran a la suite de tests + deep-dive del feature. El PRD se
+                    feature; sus AC entran a la spec viva + la suite de tests del feature. El PRD se
                     re-finaliza y se archiva.
                   </div>
                 </div>
@@ -334,8 +343,8 @@ function EstructuraContextoComponent() {
                     <li>Funcionalidad genuinamente distinta = un producto nuevo (tu modelo).</li>
                   </ul>
                   <div className="text-xs text-cyan-700 mt-1">
-                    → un PRD nuevo (nueva línea de feature); arranca su propio deep-dive + suite de
-                    tests.
+                    → un PRD nuevo (nueva línea de feature); arranca su propia spec viva + deep-dive
+                    + suite de tests.
                   </div>
                 </div>
               </div>
@@ -344,9 +353,9 @@ function EstructuraContextoComponent() {
                 registrar en <code className="text-xs bg-white px-1 rounded">.decision-log.md</code>{' '}
                 / changelog; <span className="font-medium">(2)</span> mover el detalle pesado a{' '}
                 <code className="text-xs bg-white px-1 rounded">docs/</code> deep-dives e indexarlo;{' '}
-                <span className="font-medium">(3)</span> que cada AC nuevo entre a la suite de
-                tests. Clave: <span className="font-medium">lo durable no es el PRD</span> sino el
-                deep-dive + los tests del feature.
+                <span className="font-medium">(3)</span> que cada AC nuevo entre a la spec viva + la
+                suite de tests. Clave: <span className="font-medium">lo durable no es el PRD</span>{' '}
+                sino la spec viva + los tests del feature.
               </p>
               <p className="text-xs text-slate-500">
                 BMad lo respalda: <code className="bg-white px-1 rounded">bmad-prd</code> tiene
@@ -391,13 +400,14 @@ function EstructuraContextoComponent() {
                   <span className="font-medium">Siempre</span> → un{' '}
                   <code className="text-xs bg-white px-1 rounded">PRD-delta</code> de la
                   funcionalidad (intake, se archiva) y su backlog (épicas/stories del próximo
-                  ciclo); la spec viva (deep-dive + tests) se actualiza vía DTC cuando entra el
-                  código.
+                  ciclo); la spec viva (UJ/RF/NFR/AC) + los tests se actualizan vía DTC cuando entra
+                  el código.
                 </li>
                 <li>
                   <span className="font-medium">Solo si se profundizó una funcionalidad</span> → su
-                  deep-dive en <code className="text-xs bg-white px-1 rounded">docs/</code> y la
-                  entrada en <code className="text-xs bg-white px-1 rounded">docs/index.md</code>.
+                  deep-dive (prosa) en{' '}
+                  <code className="text-xs bg-white px-1 rounded">docs/features/</code> y la entrada
+                  en <code className="text-xs bg-white px-1 rounded">docs/index.md</code>.
                 </li>
                 <li>
                   <span className="font-medium">Solo si cambió una decisión</span> →{' '}
@@ -410,8 +420,8 @@ function EstructuraContextoComponent() {
                 Clave: <code className="bg-white px-1 rounded">project-context.md</code> son reglas
                 globales (cambia poco) y{' '}
                 <code className="bg-white px-1 rounded">docs/index.md</code> es el índice de
-                deep-dives. Así nunca actualizas tres specs a la vez: editas el PRD-delta, y el
-                resto se toca solo cuando aplica.
+                deep-dives. Así nunca actualizas todo a la vez: editas el PRD-delta → reconcilia la
+                spec viva + tests; deep-dive/adr/context solo cuando aplica.
               </p>
             </div>
           </SectionBox>
@@ -517,10 +527,10 @@ function EstructuraContextoComponent() {
             <div className="text-sm text-slate-600 space-y-3">
               <p>
                 El centro de la verdad no es un documento: es el código vuelto{' '}
-                <span className="font-medium">legible</span> por los docs derivados y vuelto{' '}
-                <span className="font-medium">verificable</span> por la matriz de trazabilidad + el
-                gate. El PRD aporta el AC; en cuanto el AC es test trazado, el PRD cumplió su
-                función.
+                <span className="font-medium">legible</span> por la spec viva (UJ/RF/NFR/AC) + el
+                deep-dive, y vuelto <span className="font-medium">verificable</span> por la matriz
+                de trazabilidad + el gate. El PRD-delta aporta el AC; en cuanto el AC es test
+                trazado, el delta cumplió su función.
               </p>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs border-collapse">
@@ -550,7 +560,7 @@ function EstructuraContextoComponent() {
                       </td>
                       <td className="border border-slate-200 px-2 py-1.5">
                         <code className="bg-white px-1 rounded">prds/</code> (delta, se archiva) →
-                        tests
+                        spec viva + tests
                       </td>
                       <td className="border border-slate-200 px-2 py-1.5">
                         <code className="bg-white px-1 rounded">bmad-prd</code> ·{' '}
@@ -562,11 +572,12 @@ function EstructuraContextoComponent() {
                         Qué HACE de verdad (presente)
                       </td>
                       <td className="border border-slate-200 px-2 py-1.5">
-                        suite de tests + matriz + gate + deep-dives
+                        spec viva (UJ/RF/NFR/AC) + suite de tests + matriz + gate + deep-dive
                       </td>
                       <td className="border border-slate-200 px-2 py-1.5">
-                        <code className="bg-white px-1 rounded">test-artifacts/</code> +{' '}
-                        <code className="bg-white px-1 rounded">docs/</code> + código
+                        <code className="bg-white px-1 rounded">docs/features/</code> (spec.md +
+                        deep-dive) + <code className="bg-white px-1 rounded">test-artifacts/</code>{' '}
+                        + código
                       </td>
                       <td className="border border-slate-200 px-2 py-1.5">
                         <code className="bg-white px-1 rounded">bmad-testarch-trace</code> ·{' '}

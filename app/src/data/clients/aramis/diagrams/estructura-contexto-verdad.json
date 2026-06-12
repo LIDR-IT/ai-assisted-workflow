@@ -44,7 +44,7 @@
       "y": 40,
       "label": "AC / UJ",
       "variant": "indigo",
-      "subtitle": "del PRD-delta (la intención)"
+      "subtitle": "del PRD-delta → consolidados en la spec viva del feature"
     },
     {
       "id": "v-design",
@@ -227,7 +227,7 @@
   "legend": [
     {
       "color": "bg-indigo-200",
-      "label": "AC / UJ — la intención (del PRD-delta)"
+      "label": "AC / UJ — la intención (PRD-delta → spec viva)"
     },
     {
       "color": "bg-amber-200",
@@ -277,7 +277,7 @@
     },
     {
       "label": "El AC es la membrana",
-      "value": "Se escribe en el PRD (intención) → ATDD lo vuelve test rojo (ejecutable) → trace lo mantiene honesto. En cuanto es test trazado, el PRD cumplió su función"
+      "value": "Se escribe en el PRD-delta (cambio) → se consolida en la spec viva del feature (UJ/RF/NFR/AC, estado actual) → ATDD lo vuelve test rojo (Gherkin = AC + test) → trace lo mantiene honesto. En cuanto es test trazado, el delta cumplió su función"
     }
   ]
 }
