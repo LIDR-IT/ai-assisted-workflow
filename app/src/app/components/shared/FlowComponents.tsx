@@ -133,7 +133,16 @@ const TrackingBadge = () => {
   );
 };
 
-export function Legend({ items, title = 'Leyenda' }: { items: LegendItem[]; title?: string }) {
+export function Legend({
+  items,
+  title = 'Leyenda',
+  columns,
+}: {
+  items: LegendItem[];
+  title?: string;
+  /** When set, lay out flow steps in a fixed N-column grid instead of inline wrap (better for long legends) */
+  columns?: 2 | 3;
+}) {
   const { client } = useCurrentClient();
   const jiraStates = items.filter((i) => i.isJiraState);
   const flowSteps = items.filter((i) => !i.isJiraState);
@@ -171,10 +180,20 @@ export function Legend({ items, title = 'Leyenda' }: { items: LegendItem[]; titl
               </span>
             </div>
           )}
-          <div className="flex flex-wrap gap-3 ml-1">
+          <div
+            className={
+              columns
+                ? `grid grid-cols-1 ${
+                    columns === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'
+                  } gap-x-6 gap-y-2 ml-1`
+                : 'flex flex-wrap gap-3 ml-1'
+            }
+          >
             {flowSteps.map((item, i) => (
-              <div key={`f-${i}`} className="flex items-center gap-2">
-                <div className={`w-4 h-4 rounded ${item.color} border border-black/10`} />
+              <div key={`f-${i}`} className="flex items-start gap-2">
+                <div
+                  className={`mt-0.5 w-4 h-4 shrink-0 rounded ${item.color} border border-black/10`}
+                />
                 <span className="text-xs text-slate-600">{item.label}</span>
               </div>
             ))}

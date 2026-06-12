@@ -22,7 +22,7 @@ import React, { type JSX } from 'react';
 import { AlertCircle, Loader2, FileText } from 'lucide-react';
 import { FlowDiagram, n, e, edgeStyles } from './ReactFlowDiagram';
 import type { Node, Edge } from '@xyflow/react';
-import { InfoTable } from './FlowComponents';
+import { InfoTable, Legend } from './FlowComponents';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Badge } from '@/app/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
@@ -136,29 +136,19 @@ function convertEdgesToReactFlow(edges: readonly DiagramEdge[]): Edge[] {
 }
 
 /**
- * Render legend component from legend items
+ * Render the diagram legend using the shared `Legend` component.
+ *
+ * Maps the (readonly) diagram legend items into the shape `Legend` expects and
+ * lays them out in a two-column grid — readable even with 10+ entries. Returns
+ * null for an empty legend so callers don't render an empty box.
  */
-function renderLegend(legend: readonly LegendItem[]): JSX.Element {
+function renderLegend(legend: readonly LegendItem[]): JSX.Element | null {
   if (legend.length === 0) {
-    return <></>;
+    return null;
   }
 
   return (
-    <Card className="mb-4">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium">Legend</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="flex flex-wrap gap-2">
-          {legend.map((item, index) => (
-            <div key={index} className="flex items-center space-x-2">
-              <div className={`w-3 h-3 rounded-sm ${item.color}`} />
-              <span className="text-sm text-muted-foreground">{item.label}</span>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <Legend items={legend.map((item) => ({ color: item.color, label: item.label }))} columns={2} />
   );
 }
 
