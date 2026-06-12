@@ -1,14 +1,19 @@
 {
   "metadata": {
     "id": "estructura-contexto",
-    "title": "Estructura de Contexto & Specs — Propuesta Aramis",
-    "description": "Propuesta LIDR de estructura de carpetas del repo (alineada con rutas reales de BMad). architecture.md es 1 documento centralizado/system-wide que reusan TODOS los PRDs (se fragmenta en architecture/ al crecer). UX: ux-designs/ por feature/run, con DESIGN.md (design system · tokens, COMPARTIDO) + EXPERIENCE.md (flujos, POR feature). docs/ (project_knowledge) = index.md derivado + adr/. _bmad-output/ (output_folder) agrupa analisis/, project-context.md (reglas globales IA), PRDs/ (1 por funcionalidad), architecture.md y ux-designs/.",
-    "version": "10.0.0",
+    "title": "Estructura de Contexto & Specs — Ejemplo: Whatsapp en 2 iteraciones (Aramis)",
+    "description": "Ejemplo instanciado sobre la estructura real de BMad: la funcionalidad WhatsApp (canal de venta) recorrida en 2 iteraciones (deltas) desde la Fase 1. iter1 'ficha + enlace de reserva' (análisis completo); iter2 'plantillas + recordatorios' (delta ligero, nace del monitoring de iter1). EFÍMERO por delta (se archiva): run-folder de análisis, PRD-delta (PRDs/), épicas/stories/retrospectiva (implementation-artifacts/). ACUMULATIVO (verdad viva): docs/features/whatsapp/ con la spec viva (spec.md = UJ/RF/NFR/AC consolidados al estado actual, mismo formato que el PRD) + deep-dive (prosa), más ADRs (adr/, global), architecture.md (centralizado) y test-artifacts/ (ratchet; los AC en Gherkin son spec+test). El PRD-delta describe el CAMBIO sobre la spec viva y la reconcilia al cerrar (DTC). project-context.md = reglas globales. Correos/Módulo/Otro colapsadas.",
+    "version": "12.0.0",
     "client": "{{CLIENT_NAME}}",
     "industry": "{{INDUSTRY}}",
     "tags": [
       "context",
       "folder-structure",
+      "example",
+      "whatsapp",
+      "prd-delta",
+      "spec-viva",
+      "iteration",
       "_bmad-output",
       "project-context",
       "document-project",
@@ -18,32 +23,27 @@
       "analisis",
       "planning-artifacts",
       "implementation-artifacts",
-      "prd-por-funcionalidad",
-      "uj",
-      "rf",
-      "nfr",
-      "epics",
-      "stories",
       "retrospectiva",
-      "propuesta",
+      "test-artifacts",
+      "dtc",
       "aramis"
     ],
     "implementation_status": {
       "level": "absent",
-      "description": "Estructura propuesta (TO-BE). docs/index.md es un índice derivado; adr/ es una carpeta con index + varios ADRs; project-context.md es un archivo único de reglas globales (se auto-carga en cada workflow BMad). Rutas verificadas en BMad.",
-      "evidence": "Verificado en _bmad/config.toml y SKILL.md/customize.toml de bmad-generate-project-context (output_file=project-context.md; persistent_facts lo auto-cargan en casi todos los workflows) y bmad-document-project (docs/index.md + deep-dives) (2026-06-12)."
+      "description": "Ejemplo TO-BE que instancia la estructura sobre un caso real (Whatsapp x2 iteraciones). Distingue lo efímero-por-delta (se archiva) de la verdad viva acumulativa. Rutas verificadas en BMad.",
+      "evidence": "Rutas verificadas en _bmad/config.toml (planning_artifacts, project_knowledge), bmad-generate-project-context (output_file=project-context.md), bmad-document-project (docs/index.md + deep-dives) (2026-06-12)."
     }
   },
   "configuration": {
     "height": 920,
-    "exportName": "Aramis_Estructura_Contexto_Propuesta",
+    "exportName": "Aramis_Estructura_Contexto_Whatsapp_2_Iteraciones",
     "layout": "LR"
   },
   "nodes": [
     {
       "id": "root",
       "x": 0,
-      "y": 1037,
+      "y": 827,
       "label": "root/",
       "variant": "slate",
       "subtitle": "raíz del repo"
@@ -51,364 +51,290 @@
     {
       "id": "docs",
       "x": 300,
-      "y": 265,
+      "y": 190,
       "label": "docs/",
       "variant": "slate",
-      "subtitle": "project_knowledge (BMad)"
+      "subtitle": "project_knowledge · VERDAD VIVA (acumulativa)"
     },
     {
       "id": "bmad-output",
       "x": 300,
-      "y": 1809,
+      "y": 1465,
       "label": "_bmad-output/",
       "variant": "slate",
       "subtitle": "output_folder (BMad)"
     },
     {
       "id": "index-md",
-      "x": 620,
-      "y": 116,
+      "x": 660,
+      "y": 80,
       "label": "index.md",
       "variant": "slate",
-      "subtitle": "índice DERIVADO · se alimenta de PRDs · ADRs · research · deep-dives (frontmatter + tags)"
+      "subtitle": "índice DERIVADO (frontmatter + tags)"
+    },
+    {
+      "id": "feat-whatsapp",
+      "x": 1040,
+      "y": 80,
+      "label": "features/whatsapp/",
+      "variant": "slate",
+      "subtitle": "carpeta de la funcionalidad · VERDAD VIVA (acumulada, no por delta)"
+    },
+    {
+      "id": "spec-whatsapp",
+      "x": 1420,
+      "y": 40,
+      "label": "spec.md · spec viva",
+      "variant": "sky",
+      "subtitle": "UJ+RF+NFR+AC consolidados · estado actual (formato PRD)"
     },
     {
       "id": "dd-whatsapp",
-      "x": 960,
-      "y": 40,
-      "label": "deep-dive: Whatsapp",
+      "x": 1420,
+      "y": 150,
+      "label": "deep-dive.md",
       "variant": "sky",
-      "subtitle": "venta · docs/"
-    },
-    {
-      "id": "dd-correos",
-      "x": 960,
-      "y": 116,
-      "label": "deep-dive: Correos",
-      "variant": "sky",
-      "subtitle": "compra · docs/"
-    },
-    {
-      "id": "dd-bridge",
-      "x": 960,
-      "y": 192,
-      "label": "deep-dive: Bridge",
-      "variant": "sky",
-      "subtitle": "negocio / bridge · docs/"
+      "subtitle": "prosa: cómo funciona / arquitectura local"
     },
     {
       "id": "adr-folder",
-      "x": 620,
-      "y": 414,
+      "x": 660,
+      "y": 300,
       "label": "adr/",
       "variant": "slate",
-      "subtitle": "carpeta de decisiones (index + ADRs)"
+      "subtitle": "carpeta de decisiones (index + ADRs · GLOBAL, no por feature)"
     },
     {
       "id": "adr-index",
-      "x": 960,
-      "y": 300,
+      "x": 1040,
+      "y": 220,
       "label": "index.md",
       "variant": "slate",
       "subtitle": "índice de ADRs"
     },
     {
-      "id": "adr-0001",
-      "x": 960,
-      "y": 376,
-      "label": "ADR-0001",
+      "id": "adr-0007",
+      "x": 1040,
+      "y": 300,
+      "label": "ADR-0007 · WhatsApp API",
       "variant": "orange",
-      "subtitle": "decisión (inmutable)"
+      "subtitle": "iter1 · proveedor (decisión inmutable)"
     },
     {
-      "id": "adr-0002",
-      "x": 960,
-      "y": 452,
-      "label": "ADR-0002",
+      "id": "adr-0009",
+      "x": 1040,
+      "y": 380,
+      "label": "ADR-0009 · plantillas",
       "variant": "orange",
-      "subtitle": "decisión (inmutable)"
-    },
-    {
-      "id": "adr-0003",
-      "x": 960,
-      "y": 528,
-      "label": "ADR-0003",
-      "variant": "orange",
-      "subtitle": "decisión (inmutable)"
+      "subtitle": "iter2 · plantillas + rate-limit (solo si hubo decisión)"
     },
     {
       "id": "analisis",
-      "x": 620,
-      "y": 957,
+      "x": 660,
+      "y": 770,
       "label": "analisis/",
       "variant": "slate",
-      "subtitle": "Fase 1 · análisis por área (agrupación lógica)"
+      "subtitle": "Fase 1 · por iniciativa/área"
     },
     {
       "id": "ini-whatsapp",
-      "x": 960,
-      "y": 790,
+      "x": 1040,
+      "y": 640,
       "label": "Iniciativa Whatsapp",
       "variant": "blue",
-      "subtitle": "área · outputs de análisis (ejemplo)"
-    },
-    {
-      "id": "ini2",
-      "x": 960,
-      "y": 1048,
-      "label": "Iniciativa 2",
-      "variant": "blue",
-      "subtitle": "outputs de análisis"
-    },
-    {
-      "id": "ini3",
-      "x": 960,
-      "y": 1124,
-      "label": "Iniciativa 3",
-      "variant": "blue",
-      "subtitle": "outputs de análisis"
+      "subtitle": "área · agrupa los outputs de análisis"
     },
     {
       "id": "out-brainstorm",
-      "x": 1300,
-      "y": 638,
+      "x": 1420,
+      "y": 480,
       "label": "Brainstorming",
       "variant": "teal",
-      "subtitle": "_bmad-output/brainstorming/"
+      "subtitle": "iter1 · análisis completo"
     },
     {
       "id": "out-market",
-      "x": 1300,
-      "y": 714,
+      "x": 1420,
+      "y": 560,
       "label": "Market research",
       "variant": "teal",
-      "subtitle": "planning-artifacts/research/"
+      "subtitle": "iter1 · planning-artifacts/research/"
     },
     {
       "id": "out-tech",
-      "x": 1300,
-      "y": 790,
+      "x": 1420,
+      "y": 640,
       "label": "Technical research",
       "variant": "teal",
-      "subtitle": "planning-artifacts/research/"
+      "subtitle": "iter1 · planning-artifacts/research/"
     },
     {
       "id": "out-brief",
-      "x": 1300,
-      "y": 866,
-      "label": "Product brief",
+      "x": 1420,
+      "y": 720,
+      "label": "Product brief / PRFAQ",
       "variant": "teal",
-      "subtitle": "planning-artifacts/"
+      "subtitle": "iter1 · planning-artifacts/"
     },
     {
-      "id": "out-prfaq",
-      "x": 1300,
-      "y": 942,
-      "label": "PRFAQ",
+      "id": "out-mejora",
+      "x": 1420,
+      "y": 800,
+      "label": "Brief de mejora",
       "variant": "teal",
-      "subtitle": "planning-artifacts/prfaq-*.md"
+      "subtitle": "iter2 · ligero (sale del monitoring de iter1)"
+    },
+    {
+      "id": "ini-otras",
+      "x": 1040,
+      "y": 900,
+      "label": "…otras iniciativas",
+      "variant": "blue",
+      "subtitle": "Correos · Bridge · … (colapsado)"
     },
     {
       "id": "project-context-md",
-      "x": 620,
-      "y": 1234,
+      "x": 660,
+      "y": 1000,
       "label": "project-context.md",
       "variant": "slate",
-      "subtitle": "archivo único · reglas globales para la IA (se auto-carga en cada workflow)"
+      "subtitle": "reglas globales para la IA · NO cambia por iteración (raro)"
     },
     {
       "id": "kb-prds",
-      "x": 620,
-      "y": 2090,
+      "x": 660,
+      "y": 1440,
       "label": "PRDs/",
       "variant": "slate",
-      "subtitle": "capa de INTAKE/cambio · run-folder · status:final → se archiva · sus AC se gradúan a tests"
+      "subtitle": "INTAKE/cambio · run-folder · status:final → se ARCHIVA · aquí viven los DELTAS"
     },
     {
-      "id": "ch-whatsapp",
-      "x": 960,
-      "y": 1629,
-      "label": "PRD · Whatsapp",
+      "id": "ch-delta1",
+      "x": 1040,
+      "y": 1160,
+      "label": "PRD-delta 1 · ficha+reserva",
       "variant": "indigo",
-      "subtitle": "funcionalidad · venta · UJ+RF+NFR"
+      "subtitle": "iter1 · run-folder whatsapp-ficha-reserva · UJ+RF+NFR de ESTE cambio → archivado"
     },
     {
-      "id": "ch-correos",
-      "x": 960,
-      "y": 2195,
-      "label": "PRD · Correos internos",
-      "variant": "indigo",
-      "subtitle": "funcionalidad · compra · UJ+RF+NFR"
+      "id": "epicas1",
+      "x": 1420,
+      "y": 1160,
+      "label": "Épicas",
+      "variant": "violet",
+      "subtitle": "de PRD-delta 1"
     },
     {
-      "id": "ch-modulo",
-      "x": 960,
-      "y": 2476,
-      "label": "PRD · Módulo preview de coche",
-      "variant": "indigo",
-      "subtitle": "funcionalidad · UJ+RF+NFR"
-    },
-    {
-      "id": "ch-otro",
-      "x": 960,
-      "y": 2552,
-      "label": "PRD · Otro",
-      "variant": "indigo",
-      "subtitle": "funcionalidad · compra"
-    },
-    {
-      "id": "epic1",
-      "x": 1300,
-      "y": 1458,
-      "label": "Epic 1",
-      "variant": "violet"
-    },
-    {
-      "id": "epic2",
-      "x": 1300,
-      "y": 1648,
-      "label": "Epic 2",
-      "variant": "violet"
-    },
-    {
-      "id": "epic3",
-      "x": 1300,
-      "y": 1724,
-      "label": "Epic 3",
-      "variant": "violet"
-    },
-    {
-      "id": "epic4",
-      "x": 1300,
-      "y": 1800,
-      "label": "Epic 4",
-      "variant": "violet"
-    },
-    {
-      "id": "epic5",
-      "x": 1300,
-      "y": 2024,
-      "label": "Epic 5",
-      "variant": "violet"
-    },
-    {
-      "id": "epic6",
-      "x": 1300,
-      "y": 2214,
-      "label": "Epic 6",
-      "variant": "violet"
-    },
-    {
-      "id": "epic7",
-      "x": 1300,
-      "y": 2290,
-      "label": "Epic 7",
-      "variant": "violet"
-    },
-    {
-      "id": "epic8",
-      "x": 1300,
-      "y": 2366,
-      "label": "Epic 8",
-      "variant": "violet"
-    },
-    {
-      "id": "st1-1",
-      "x": 1660,
-      "y": 1344,
-      "label": "Stories 1",
-      "variant": "green"
-    },
-    {
-      "id": "st1-2",
-      "x": 1660,
-      "y": 1420,
-      "label": "Stories 2",
-      "variant": "green"
-    },
-    {
-      "id": "st1-3",
-      "x": 1660,
-      "y": 1496,
-      "label": "Stories 3",
-      "variant": "green"
+      "id": "st1",
+      "x": 1800,
+      "y": 1120,
+      "label": "Stories",
+      "variant": "green",
+      "subtitle": "implementation-artifacts/"
     },
     {
       "id": "retro1",
-      "x": 1660,
-      "y": 1572,
+      "x": 1800,
+      "y": 1200,
       "label": "Retrospectiva",
       "variant": "yellow",
+      "subtitle": "implementation-artifacts/ → se archiva"
+    },
+    {
+      "id": "ch-delta2",
+      "x": 1040,
+      "y": 1400,
+      "label": "PRD-delta 2 · recordatorios",
+      "variant": "indigo",
+      "subtitle": "iter2 · run-folder whatsapp-plantillas-recordatorios · status:final → archivado"
+    },
+    {
+      "id": "epicas2",
+      "x": 1420,
+      "y": 1400,
+      "label": "Épicas",
+      "variant": "violet",
+      "subtitle": "de PRD-delta 2"
+    },
+    {
+      "id": "st2",
+      "x": 1800,
+      "y": 1360,
+      "label": "Stories",
+      "variant": "green",
       "subtitle": "implementation-artifacts/"
     },
     {
-      "id": "st5-1",
-      "x": 1660,
-      "y": 1910,
-      "label": "Stories 1",
-      "variant": "green"
-    },
-    {
-      "id": "st5-2",
-      "x": 1660,
-      "y": 1986,
-      "label": "Stories 2",
-      "variant": "green"
-    },
-    {
-      "id": "st5-3",
-      "x": 1660,
-      "y": 2062,
-      "label": "Stories 3",
-      "variant": "green"
-    },
-    {
-      "id": "retro5",
-      "x": 1660,
-      "y": 2138,
+      "id": "retro2",
+      "x": 1800,
+      "y": 1440,
       "label": "Retrospectiva",
       "variant": "yellow",
-      "subtitle": "implementation-artifacts/"
+      "subtitle": "implementation-artifacts/ → se archiva"
+    },
+    {
+      "id": "ch-correos",
+      "x": 1040,
+      "y": 1560,
+      "label": "PRD · Correos internos",
+      "variant": "indigo",
+      "subtitle": "otra funcionalidad (colapsada)"
+    },
+    {
+      "id": "ch-modulo",
+      "x": 1040,
+      "y": 1640,
+      "label": "PRD · Módulo preview de coche",
+      "variant": "indigo",
+      "subtitle": "otra funcionalidad (colapsada)"
+    },
+    {
+      "id": "ch-otro",
+      "x": 1040,
+      "y": 1720,
+      "label": "PRD · Otro",
+      "variant": "indigo",
+      "subtitle": "otra funcionalidad (colapsada)"
     },
     {
       "id": "kb-arq",
-      "x": 620,
-      "y": 2662,
+      "x": 660,
+      "y": 1860,
       "label": "architecture.md",
       "variant": "slate",
-      "subtitle": "1 centralizado · system-wide · lo reusan TODOS los PRDs · → architecture/ (sharded) al crecer"
+      "subtitle": "centralizado · iter1 +integración WhatsApp · iter2 +cola de recordatorios (mismo doc)"
     },
     {
       "id": "ux",
-      "x": 620,
-      "y": 2880,
+      "x": 660,
+      "y": 2000,
       "label": "ux-designs/",
       "variant": "slate",
       "subtitle": "UX por feature/run (planning-artifacts)"
     },
     {
       "id": "ux-design",
-      "x": 960,
-      "y": 2842,
+      "x": 1040,
+      "y": 1960,
       "label": "DESIGN.md",
       "variant": "purple",
-      "subtitle": "design system · tokens · COMPARTIDO entre features"
+      "subtitle": "design system · tokens · COMPARTIDO (no cambia por iteración)"
     },
     {
       "id": "ux-exp",
-      "x": 960,
-      "y": 2918,
+      "x": 1040,
+      "y": 2040,
       "label": "EXPERIENCE.md",
       "variant": "purple",
-      "subtitle": "IA · flujos · POR feature"
+      "subtitle": "flujo WhatsApp · iter1 lo crea · iter2 lo ajusta"
     },
     {
       "id": "test-artifacts",
-      "x": 620,
-      "y": 3118,
+      "x": 660,
+      "y": 2160,
       "label": "test-artifacts/",
       "variant": "amber",
-      "subtitle": "FUENTE DE VERDAD ejecutable · test-design · traceability (matriz+gate) · test-reviews"
+      "subtitle": "VERDAD ejecutable · ACUMULATIVA (ratchet) · suite iter1 + iter2, la cobertura solo sube"
     }
   ],
   "edges": [
@@ -441,23 +367,23 @@
       "targetHandle": "left"
     },
     {
-      "id": "e-index-ddwa",
+      "id": "e-index-featwa",
       "source": "index-md",
+      "target": "feat-whatsapp",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-featwa-spec",
+      "source": "feat-whatsapp",
+      "target": "spec-whatsapp",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-featwa-dd",
+      "source": "feat-whatsapp",
       "target": "dd-whatsapp",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-index-ddcorreos",
-      "source": "index-md",
-      "target": "dd-correos",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-index-ddbridge",
-      "source": "index-md",
-      "target": "dd-bridge",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
@@ -469,23 +395,16 @@
       "targetHandle": "left"
     },
     {
-      "id": "e-adr-0001",
+      "id": "e-adr-0007",
       "source": "adr-folder",
-      "target": "adr-0001",
+      "target": "adr-0007",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
     {
-      "id": "e-adr-0002",
+      "id": "e-adr-0009",
       "source": "adr-folder",
-      "target": "adr-0002",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-adr-0003",
-      "source": "adr-folder",
-      "target": "adr-0003",
+      "target": "adr-0009",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
@@ -518,6 +437,20 @@
       "targetHandle": "left"
     },
     {
+      "id": "e-bmad-ux",
+      "source": "bmad-output",
+      "target": "ux",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-bmad-ta",
+      "source": "bmad-output",
+      "target": "test-artifacts",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
       "id": "e-analisis-iniwa",
       "source": "analisis",
       "target": "ini-whatsapp",
@@ -525,16 +458,9 @@
       "targetHandle": "left"
     },
     {
-      "id": "e-analisis-ini2",
+      "id": "e-analisis-iniotras",
       "source": "analisis",
-      "target": "ini2",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-analisis-ini3",
-      "source": "analisis",
-      "target": "ini3",
+      "target": "ini-otras",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
@@ -567,16 +493,23 @@
       "targetHandle": "left"
     },
     {
-      "id": "e-iniwa-prfaq",
+      "id": "e-iniwa-mejora",
       "source": "ini-whatsapp",
-      "target": "out-prfaq",
+      "target": "out-mejora",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
     {
-      "id": "e-prds-wa",
+      "id": "e-prds-delta1",
       "source": "kb-prds",
-      "target": "ch-whatsapp",
+      "target": "ch-delta1",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e-prds-delta2",
+      "source": "kb-prds",
+      "target": "ch-delta2",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
@@ -602,121 +535,44 @@
       "targetHandle": "left"
     },
     {
-      "id": "e-wa-epic1",
-      "source": "ch-whatsapp",
-      "target": "epic1",
+      "id": "e-delta1-epicas1",
+      "source": "ch-delta1",
+      "target": "epicas1",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
     {
-      "id": "e-wa-epic2",
-      "source": "ch-whatsapp",
-      "target": "epic2",
+      "id": "e-epicas1-st1",
+      "source": "epicas1",
+      "target": "st1",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
     {
-      "id": "e-wa-epic3",
-      "source": "ch-whatsapp",
-      "target": "epic3",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-wa-epic4",
-      "source": "ch-whatsapp",
-      "target": "epic4",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-correos-epic5",
-      "source": "ch-correos",
-      "target": "epic5",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-correos-epic6",
-      "source": "ch-correos",
-      "target": "epic6",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-correos-epic7",
-      "source": "ch-correos",
-      "target": "epic7",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-correos-epic8",
-      "source": "ch-correos",
-      "target": "epic8",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-epic1-st1",
-      "source": "epic1",
-      "target": "st1-1",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-epic1-st2",
-      "source": "epic1",
-      "target": "st1-2",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-epic1-st3",
-      "source": "epic1",
-      "target": "st1-3",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-epic1-retro",
-      "source": "epic1",
+      "id": "e-epicas1-retro1",
+      "source": "epicas1",
       "target": "retro1",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
     {
-      "id": "e-epic5-st1",
-      "source": "epic5",
-      "target": "st5-1",
+      "id": "e-delta2-epicas2",
+      "source": "ch-delta2",
+      "target": "epicas2",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
     {
-      "id": "e-epic5-st2",
-      "source": "epic5",
-      "target": "st5-2",
+      "id": "e-epicas2-st2",
+      "source": "epicas2",
+      "target": "st2",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
     {
-      "id": "e-epic5-st3",
-      "source": "epic5",
-      "target": "st5-3",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-epic5-retro",
-      "source": "epic5",
-      "target": "retro5",
-      "sourceHandle": "right",
-      "targetHandle": "left"
-    },
-    {
-      "id": "e-bmad-ux",
-      "source": "bmad-output",
-      "target": "ux",
+      "id": "e-epicas2-retro2",
+      "source": "epicas2",
+      "target": "retro2",
       "sourceHandle": "right",
       "targetHandle": "left"
     },
@@ -733,13 +589,6 @@
       "target": "ux-exp",
       "sourceHandle": "right",
       "targetHandle": "left"
-    },
-    {
-      "id": "e-bmad-ta",
-      "source": "bmad-output",
-      "target": "test-artifacts",
-      "sourceHandle": "right",
-      "targetHandle": "left"
     }
   ],
   "legend": [
@@ -748,50 +597,66 @@
       "label": "Carpeta · archivo · índice (root · docs · _bmad-output · index.md · adr/ · analisis · project-context.md · PRDs/ · architecture.md · ux-designs/)"
     },
     {
-      "color": "bg-teal-200",
-      "label": "Output de análisis BMad (Fase 1)"
+      "color": "bg-blue-200",
+      "label": "Iniciativa / área (agrupa outputs de análisis de la Fase 1)"
     },
     {
-      "color": "bg-blue-200",
-      "label": "Iniciativa / área (agrupa outputs de análisis)"
+      "color": "bg-teal-200",
+      "label": "Output de análisis BMad (iter1 = completo · iter2 = brief ligero)"
     },
     {
       "color": "bg-indigo-200",
-      "label": "PRD por funcionalidad (UJ + RF + NFR)"
+      "label": "PRD-delta — un cambio concreto sobre la funcionalidad (run-folder · status:final → se archiva)"
     },
     {
       "color": "bg-violet-200",
-      "label": "Epic"
+      "label": "Épicas del delta (implementation-artifacts/)"
     },
     {
       "color": "bg-green-200",
-      "label": "Story (implementation-artifacts/)"
+      "label": "Stories (implementation-artifacts/)"
     },
     {
       "color": "bg-yellow-200",
-      "label": "Retrospectiva del epic (implementation-artifacts/)"
-    },
-    {
-      "color": "bg-amber-200",
-      "label": "test-artifacts/ — capa de verdad ejecutable (tests · trazabilidad · gate)"
-    },
-    {
-      "color": "bg-orange-200",
-      "label": "ADR — decisión arquitectónica (en adr/, indexada por adr/index.md)"
+      "label": "Retrospectiva del delta (implementation-artifacts/ → se archiva)"
     },
     {
       "color": "bg-sky-200",
-      "label": "Deep-dive por funcionalidad en docs/ (indexado por docs/index.md)"
+      "label": "Funcionalidad en docs/features/ — spec viva (UJ/RF/NFR/AC, estado actual) + deep-dive (prosa) · ÚNICA y acumulativa"
+    },
+    {
+      "color": "bg-orange-200",
+      "label": "ADR — decisión (adr/, carpeta global · acumulativa · inmutable)"
     },
     {
       "color": "bg-purple-200",
       "label": "UX — DESIGN.md (design system, compartido) + EXPERIENCE.md (por feature)"
+    },
+    {
+      "color": "bg-amber-200",
+      "label": "test-artifacts/ — verdad ejecutable, acumulativa (ratchet)"
     }
   ],
   "tables": [
     {
       "label": "Siglas",
-      "value": "PRD = Product Requirement Document · PRFAQ = Press Release + FAQ (Working Backwards) · ADR = Architecture Decision Record · UJ = User Journey · RF = Requisito Funcional · NFR = Requisito No Funcional"
+      "value": "PRD = Product Requirement Document · PRD-delta = PRD de un cambio concreto sobre una funcionalidad (no su estado completo; se archiva) · PRFAQ = Press Release + FAQ · ADR = Architecture Decision Record · UJ = User Journey · RF = Requisito Funcional · NFR = Requisito No Funcional · DTC = Docs Travel with Code"
+    },
+    {
+      "label": "Efímero por delta (se ARCHIVA)",
+      "value": "run-folder de análisis · PRD-delta (PRDs/) · épicas/stories/retrospectiva (implementation-artifacts/). Uno por cada cambio; al cerrar, status:final → archivado."
+    },
+    {
+      "label": "Acumulativo (VERDAD VIVA)",
+      "value": "docs/features/<func>/ con la spec viva (spec.md = UJ/RF/NFR/AC consolidados al estado actual, mismo formato que el PRD) + deep-dive (prosa) · ADRs (adr/, global) · architecture.md (centralizado) · test-artifacts/ (ratchet; los AC en Gherkin son spec+test). Se reusa y enriquece, nunca se duplica por iteración."
+    },
+    {
+      "label": "Delta vs spec viva (mismo formato, distinto alcance)",
+      "value": "PRD-delta = el CAMBIO (intake, se archiva). spec viva = el ACUMULADO actual (UJ/RF/NFR/AC). El delta reconcilia la spec viva al cerrar (DTC). ¿Estado actual de la funcionalidad? → spec viva + tests, NO los deltas."
+    },
+    {
+      "label": "Las 2 iteraciones del ejemplo",
+      "value": "iter1 'whatsapp-ficha-reserva' (ficha del coche + enlace de reserva; análisis completo) → iter2 'whatsapp-plantillas-recordatorios' (plantillas WhatsApp Business + recordatorio a 48h; nace del monitoring de iter1)."
     }
   ]
 }

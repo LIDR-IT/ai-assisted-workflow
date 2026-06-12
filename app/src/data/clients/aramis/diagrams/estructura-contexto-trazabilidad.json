@@ -41,9 +41,9 @@
       "id": "t-prd",
       "x": 320,
       "y": 140,
-      "label": "PRD",
+      "label": "PRD-delta",
       "variant": "indigo",
-      "subtitle": "lleva: RF-NN · UJ-N · NFR-NN"
+      "subtitle": "lleva: RF-NN · UJ-N · NFR-NN → se consolidan en la spec viva"
     },
     {
       "id": "t-epic",
@@ -185,7 +185,7 @@
     },
     {
       "color": "bg-indigo-200",
-      "label": "PRD (RF · UJ · NFR)"
+      "label": "PRD-delta (RF · UJ · NFR → spec viva)"
     },
     {
       "color": "bg-violet-200",
@@ -226,8 +226,8 @@
       "value": "RTM = Requirements Traceability Matrix (matriz de trazabilidad de requisitos) · PRD = Product Requirement Document · RF = Requisito Funcional · UJ = User Journey · NFR = Requisito No Funcional · AC = Acceptance Criteria · ADR = Architecture Decision Record · KPI = Key Performance Indicator"
     },
     {
-      "label": "PRD",
-      "value": "Identificadores: RF-NN (requisito funcional) · UJ-N (user journey) · NFR-NN. Su frontmatter lista inputs[] (docs de análisis usados)"
+      "label": "PRD-delta",
+      "value": "Identificadores: RF-NN · UJ-N · NFR-NN. El PRD-delta lleva el CAMBIO; los RF/UJ/NFR/AC se consolidan en la spec viva del feature (docs/features/<f>/spec.md = estado actual trazable). Frontmatter lista inputs[]."
     },
     {
       "label": "Épica / Story",
