@@ -9,6 +9,7 @@ alwaysApply: false
 globs: ["**/*.md", "**/*.tsx", "**/*.jsx"]
 argument-hint: <file-or-pattern>
 trigger: always_on
+paths: ["app/**/*.tsx"]
 ---
 
 # Copywriting Guidelines

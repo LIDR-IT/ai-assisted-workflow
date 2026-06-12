@@ -8,7 +8,7 @@ status: active
 alwaysApply: false
 globs: ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js"]
 argument-hint: <file-or-pattern>
-paths: ["**/*.tsx", "**/*.ts"]
+paths: ["**/*.native.tsx", "**/*.native.ts"]
 trigger: always_on
 ---
 

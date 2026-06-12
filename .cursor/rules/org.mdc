@@ -1,15 +1,16 @@
 ---
 name: lidr-sdlc-org
-description: "LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Tier-1 rule, always loaded."
+description: "LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Path-scoped to docs/projects/** — loaded on demand."
 id: org
 version: "1.1.0"
 last_updated: "2026-06-10"
 updated_by: "TL: ecosystem coherence"
 status: active
 scope: organization
-alwaysApply: true
+alwaysApply: false
 references:
   - "docs/standards/org.md"
+paths: ["docs/projects/**"]
 ---
 
 # Rule: Estándares de Organización

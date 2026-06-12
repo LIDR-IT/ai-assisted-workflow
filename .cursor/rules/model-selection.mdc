@@ -6,7 +6,8 @@ updated_by: "TL: LIDR Spec Native"
 status: active
 scope: workflow
 description: "Self-correct rule: auto-promote to Opus high reasoning for planning workflows, revert to Sonnet medium for implementation. The agent edits .claude/settings.json directly — never stops to ask the user."
-alwaysApply: true
+alwaysApply: false
+paths: ["docs/projects/**"]
 ---
 
 # Rule: Model Selection — Self-correct per Workflow

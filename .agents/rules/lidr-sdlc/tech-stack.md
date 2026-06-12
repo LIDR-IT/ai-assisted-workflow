@@ -8,6 +8,7 @@ updated_by: "IA: sync-docs"
 status: active
 scope: technical
 globs: ["src/**/*.ts", "src/**/*.tsx", "*.ts", "*.tsx", "*.js", "*.jsx", "*.mjs", "*.css"]
+paths: ["app/**"]
 ---
 
 # Rule: Convenciones del Stack Tecnológico

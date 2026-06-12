@@ -27,10 +27,10 @@ Individual rules are in `.github/instructions/*.instructions.md`. Below is a sum
 
 ### LIDR SDLC
 
-- **[](instructions/lidr-sdlc-documentation.instructions.md)** — LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Always applies when creating, reading or modifying any .md in the ecosystem.
+- **[](instructions/lidr-sdlc-documentation.instructions.md)** — LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Path-scoped to docs/** — loaded when working with documentation.
 - **[](instructions/model-selection.instructions.md)** — Self-correct rule: auto-promote to Opus high reasoning for planning workflows, revert to Sonnet medium for implementation. The agent edits .claude/settings.json directly — never stops to ask the user.
-- **[](instructions/org.instructions.md)** — LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Tier-1 rule, always loaded.
-- **[](instructions/project.instructions.md)** — LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded.
+- **[](instructions/org.instructions.md)** — LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Path-scoped to docs/projects/** — loaded on demand.
+- **[](instructions/project.instructions.md)** — LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Path-scoped to app/** — loaded on demand.
 - **[](instructions/spec-execution.instructions.md)** — Mandatory steps and per-step report rule for LIDR change execution (Step 0 branch, unit tests, manual curl, Playwright E2E, docs update). The agent MUST execute all tests itself, never delegate.
 - **[](instructions/tech-stack.instructions.md)** — LIDR SDLC: Tech stack conventions — TypeScript strict, React 18+, Node 20 LTS, ESM, Tailwind v4. Load when writing, reviewing or generating code.
 - **[](instructions/workflows.instructions.md)** — LIDR SDLC: Workflow orchestration map — authorized roles per command, gate preconditions, skill chaining. Load when executing a command, evaluating a gate, or checking role permissions.

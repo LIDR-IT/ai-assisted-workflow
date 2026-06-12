@@ -1,5 +1,5 @@
 ---
-description: LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Tier-1 rule, always loaded.
+description: LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Path-scoped to docs/projects/** — loaded on demand.
 applyTo: "**"
 ---
 

@@ -8,6 +8,7 @@ status: active
 alwaysApply: false
 argument-hint: <file-or-pattern>
 trigger: always_on
+paths: ["app/**/*.tsx", "app/**/*.css"]
 ---
 
 # Web Interface Guidelines

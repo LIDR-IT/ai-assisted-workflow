@@ -5,10 +5,10 @@ id: use-context7
 version: "1.0.0"
 last_updated: "2026-06-11"
 status: active
-alwaysApply: true
+alwaysApply: false
 globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.md"]
 argument-hint: <library-or-api>
-paths: ["**/*"]
+paths: ["app/**"]
 trigger: always_on
 ---
 
