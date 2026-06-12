@@ -60,7 +60,7 @@
       "x": 900,
       "y": 140,
       "label": "Review + CI",
-      "variant": "violet",
+      "variant": "amber",
       "subtitle": "Gate 4 · DoD · SAST/SCA"
     },
     {
@@ -84,7 +84,7 @@
       "x": 1800,
       "y": 140,
       "label": "release/1.4.0",
-      "variant": "indigo",
+      "variant": "slate",
       "subtitle": "desde develop"
     },
     {
@@ -92,7 +92,7 @@
       "x": 2100,
       "y": 140,
       "label": "Release notes",
-      "variant": "indigo",
+      "variant": "sky",
       "subtitle": "/lidr-create-release-notes · desde PRs mergeados"
     },
     {
@@ -100,7 +100,7 @@
       "x": 2400,
       "y": 140,
       "label": "CHANGELOG.md",
-      "variant": "indigo",
+      "variant": "sky",
       "subtitle": "/lidr-update-changelog v1.4.0"
     },
     {
@@ -116,7 +116,7 @@
       "x": 3000,
       "y": 140,
       "label": "Deploy PROD",
-      "variant": "orange",
+      "variant": "amber",
       "subtitle": "Gate 7 · CR aprobado"
     },
     {
@@ -222,31 +222,27 @@
   "legend": [
     {
       "color": "bg-green-200",
-      "label": "Rama feature (1 por feature/story de un PRD)"
+      "label": "Rama feature · commits (1 por feature/story de un PRD)"
     },
     {
       "color": "bg-cyan-200",
       "label": "Pull Request (/lidr-create-pr · refs ticket + change)"
     },
     {
-      "color": "bg-violet-200",
-      "label": "Review + CI (Gate 4 · DoD)"
-    },
-    {
-      "color": "bg-indigo-200",
-      "label": "Release (notes + CHANGELOG desde PRs)"
-    },
-    {
-      "color": "bg-orange-200",
-      "label": "Deploy PROD (Gate 7 · CR aprobado)"
-    },
-    {
-      "color": "bg-red-200",
-      "label": "Hotfix P1 (desde main → main + develop)"
+      "color": "bg-amber-200",
+      "label": "Gate: Review + CI (G4 · DoD) · Deploy PROD (G7 · CR aprobado)"
     },
     {
       "color": "bg-slate-200",
-      "label": "Rama / merge (develop · main · tag)"
+      "label": "Ramas / merge / tag (develop · release/* · main)"
+    },
+    {
+      "color": "bg-sky-200",
+      "label": "Release notes · CHANGELOG (docs del release)"
+    },
+    {
+      "color": "bg-red-200",
+      "label": "Hotfix P1 (main → fix → main + develop)"
     }
   ],
   "tables": [
