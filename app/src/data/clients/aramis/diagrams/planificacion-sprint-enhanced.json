@@ -206,7 +206,10 @@
       "label": "Backlog prioridades (survey)",
       "value": "Agree — el equipo entiende las prioridades"
     },
-    { "label": "Action items retro implementados (survey)", "value": "Most of the time" },
+    {
+      "label": "Action items de retrospectiva implementados (survey)",
+      "value": "Most of the time"
+    },
     {
       "label": "Pain points (survey)",
       "value": "Poor estimation · Interruptions/urgent requests · Unplanned tech debt"

@@ -24,7 +24,7 @@
       "nfr",
       "epics",
       "stories",
-      "retro",
+      "retrospectiva",
       "propuesta",
       "aramis"
     ],
@@ -337,7 +337,7 @@
       "id": "retro1",
       "x": 1660,
       "y": 1572,
-      "label": "Retro",
+      "label": "Retrospectiva",
       "variant": "yellow",
       "subtitle": "implementation-artifacts/"
     },
@@ -366,7 +366,7 @@
       "id": "retro5",
       "x": 1660,
       "y": 2138,
-      "label": "Retro",
+      "label": "Retrospectiva",
       "variant": "yellow",
       "subtitle": "implementation-artifacts/"
     },
@@ -769,7 +769,7 @@
     },
     {
       "color": "bg-yellow-200",
-      "label": "Retro del epic (implementation-artifacts/)"
+      "label": "Retrospectiva del epic (implementation-artifacts/)"
     },
     {
       "color": "bg-amber-200",
