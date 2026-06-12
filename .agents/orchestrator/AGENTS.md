@@ -1,9 +1,9 @@
 # CLAUDE.md
 
-**Single orchestrator for all AI agents.** Root `CLAUDE.md`, `GEMINI.md`, `AGENTS.md` are
-symlinks to `.agents/orchestrator/AGENTS.md` — **edit that file, never the symlinks.**
-Claude Code & Cursor read `CLAUDE.md`; Gemini CLI / Antigravity read `GEMINI.md`; Copilot
-reads `CLAUDE.md` + `AGENTS.md` + `.github/copilot-instructions.md`.
+**Orchestrator for the AI agent.** Root `CLAUDE.md` / `AGENTS.md` are symlinks to
+`.agents/orchestrator/AGENTS.md` — **edit that file, never the symlinks.** This team runs
+**Claude Code only**; the `.agents/` source can still generate the other 4 platforms on
+demand (`./.agents/sync.sh --platform=…`), but their outputs are not kept in the repo.
 
 > This file loads into context **every session** — keep it lean (Claude Code targets
 > <200 lines). Deep detail lives in the `.agents/*-readme.md` files; this is the index.
@@ -14,18 +14,22 @@ reads `CLAUDE.md` + `AGENTS.md` + `.github/copilot-instructions.md`.
 
 ## What This Repository Is
 
-**lidr-ecosystem** — a monorepo merging (2026-05-18):
+**lidr-ecosystem** — the **LIDR SDLC methodology** as a working AI-agent ecosystem. The core
+is the methodology + its artifacts, not the tooling that distributes them:
 
-1. **LIDR SDLC methodology** — the governance layer (gates, roles, RACI, compliance).
-2. **ai-assisted-workflow** — the `.agents/` source-of-truth pattern, synced to 5 AI
-   platforms (Cursor, Claude Code, Gemini CLI, Antigravity, GitHub Copilot).
-3. **React docs app** (`app/`) — interactive visualization of the methodology with
+1. **LIDR SDLC methodology** — the governance layer (gates, roles, RACI, compliance) **and
+   the `.agents/` ecosystem that implements it** (skills, commands, rules, subagents, hooks).
+2. **React docs app** (`app/`) — interactive visualization of the methodology with
    multi-client support (`base`, `docline`, `facephi`, `aramis`), React Flow + Router v7.
 
 LIDR **wraps BMad** (the engine that produces artifacts). **LIDR is the governance /
 nice-to-have layer over BMad — never a hard requirement; the requirements come from BMad.**
 
-**Artifacts in `.agents/`** (single source of truth, synced via `./.agents/sync.sh`):
+> **Infra (secondary):** `.agents/` is a source-of-truth that _can_ sync to 5 AI platforms,
+> but this team runs **Claude Code only** (the other platforms' outputs were removed; the
+> engine stays). The methodology is the product; the multi-platform sync is just distribution.
+
+**The ecosystem — artifacts in `.agents/`** (Claude reads them via `.claude/*` symlinks):
 
 - **24 rules** in 10 categories (7 LIDR SDLC + 17 generic). **All path-scoped (`paths:`)**
   — none load at launch; each loads only when you touch matching files. → `rules-readme.md`
@@ -46,10 +50,7 @@ generic artifacts have no prefix.
 ## Essential Commands
 
 ```bash
-# After ANY change in .agents/ — sync to all 5 platforms
-./.agents/sync.sh                    # all; or --only=rules|mcp|hooks ; --platform=… ; --dry-run
-
-# React app (in app/)
+# React docs app (in app/) — the project
 cd app && npm run dev                # Vite dev server (http://localhost:5173)
 cd app && npm run build              # production build
 cd app && npm run test:ecosystem     # coherence guard — run after .agents/ edits (MUST stay green)
@@ -57,8 +58,10 @@ cd app && npm run test               # Vitest unit tests
 cd app && npm run validate:coherence # LIDR coherence checks
 cd app && npm run client:list        # registered clients
 
-# Formatting (root)
-npm run format
+# Ecosystem maintenance (Claude-only setup)
+./.agents/sync.sh --only=rules       # regenerate Claude's rule derivatives after editing rules
+#                                      (skills/commands are symlinks — no sync; avoid --only=skills)
+npm run format                       # Prettier (root)
 ```
 
 **Git hooks** (Husky at **repo root**, one git dir): pre-commit (secrets guard + lint-staged),
@@ -67,10 +70,11 @@ fast ecosystem-counts guard).
 
 ---
 
-## Architecture: Source-of-Truth Pattern
+## The `.agents/` ecosystem layout
 
-**Edit once in `.agents/` → synced to all platforms.** Never edit `.cursor/`, `.claude/`,
-`.github/`, `.vscode/` directly — sync scripts own those.
+**Edit once in `.agents/` (the source) → Claude reads it via `.claude/*` symlinks.** Never
+edit `.claude/` directly. (The sync engine can also target the other platforms via
+`--platform=…`, but this team only materializes Claude.)
 
 ```
 .agents/
@@ -86,10 +90,9 @@ fast ecosystem-counts guard).
 └── orchestrator/AGENTS.md  ← THIS file
 ```
 
-**Sync strategy per component:** symlinks (skills, commands, subagents — instant);
-symlink+copy (rules: Claude symlink, Cursor `.mdc` / Copilot `.instructions.md` copy,
-Gemini/Copilot index); generated per-platform JSON (MCP, hooks). Full platform matrix +
-per-platform limitations: `.agents/orchestrator-readme.md` and `rules/code/principles.md`.
+**How Claude gets it:** `.claude/{rules,skills,commands,agents}` are symlinks to `.agents/`
+(instant); MCP + hooks are generated into `.claude/`. Multi-platform sync internals (for the
+other platforms, regenerated on demand): `.agents/orchestrator-readme.md`, `rules/code/principles.md`.
 
 **Commit patterns:** symlinked resources → commit **source only**; generated configs
 (MCP/hooks) → commit **source AND generated**. Conventional Commits; see
@@ -99,12 +102,13 @@ per-platform limitations: `.agents/orchestrator-readme.md` and `rules/code/princ
 
 ## Key Principles
 
-1. **Single source of truth** — edit only `.agents/`; sync handles distribution.
-2. **Sync after every change** — `./.agents/sync.sh` (or `--only=…`).
+1. **The methodology is the product** — the `.agents/` ecosystem + the React app are the
+   core; the multi-platform sync is just distribution (this team runs Claude only).
+2. **Single source of truth** — edit only `.agents/`; for rule changes regenerate Claude's
+   derivatives with `./.agents/sync.sh --only=rules` (skills/commands are symlinks — no sync).
 3. **Keep this file lean** — only facts needed every session here; detail → `*-readme.md`,
    procedures → skills, code standards → path-scoped rules (per Claude Code memory docs).
-4. **Test on platforms** — `readlink .claude/rules`, `claude mcp list`,
-   `ls .github/instructions/*.instructions.md`.
+4. **Verify Claude wiring** — `readlink .claude/rules` (→ `../.agents/rules`), `claude mcp list`.
 5. **Regression guard** — `app/src/__tests__/ecosystem-coherence.test.ts` fails on
    count / dead-reference / gate-evidence drift. Run `cd app && npm run test:ecosystem`
    after `.agents/` changes (CI-blocking + husky pre-push).
