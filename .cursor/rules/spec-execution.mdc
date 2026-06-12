@@ -6,7 +6,8 @@ updated_by: "TL: SDD single-sequence coherence"
 status: active
 scope: workflow
 description: "Mandatory steps and per-step report rule for LIDR change execution (Step 0 branch, unit tests, manual curl, Playwright E2E, docs update). The agent MUST execute all tests itself, never delegate."
-alwaysApply: true
+alwaysApply: false
+paths: ["docs/projects/**/changes/**"]
 ---
 
 # Rule: Spec Execution — Mandatory Steps for LIDR Changes

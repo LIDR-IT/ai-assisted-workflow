@@ -1,5 +1,5 @@
 ---
-description: LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded.
+description: LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Path-scoped to app/** — loaded on demand.
 applyTo: "**"
 ---
 

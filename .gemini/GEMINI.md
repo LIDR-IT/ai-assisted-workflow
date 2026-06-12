@@ -46,16 +46,16 @@ Review React Native code for Vercel React Native Best Practices compliance
 ### LIDR SDLC
 
 #### **[](../.agents/rules/lidr-sdlc/documentation.md)**
-LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Always applies when creating, reading or modifying any .md in the ecosystem.
+LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Path-scoped to docs/** — loaded when working with documentation.
 
 #### **[](../.agents/rules/lidr-sdlc/model-selection.md)**
 Self-correct rule: auto-promote to Opus high reasoning for planning workflows, revert to Sonnet medium for implementation. The agent edits .claude/settings.json directly — never stops to ask the user.
 
 #### **[](../.agents/rules/lidr-sdlc/org.md)**
-LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Tier-1 rule, always loaded.
+LIDR SDLC: Organizational standards — values, methodology (Scrum + SDD), 8 SDLC phases with gates, RACI by role, quality and security policy. Path-scoped to docs/projects/** — loaded on demand.
 
 #### **[](../.agents/rules/lidr-sdlc/project.md)**
-LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded.
+LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Path-scoped to app/** — loaded on demand.
 
 #### **[](../.agents/rules/lidr-sdlc/spec-execution.md)**
 Mandatory steps and per-step report rule for LIDR change execution (Step 0 branch, unit tests, manual curl, Playwright E2E, docs update). The agent MUST execute all tests itself, never delegate.

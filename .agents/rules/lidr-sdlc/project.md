@@ -1,14 +1,15 @@
 ---
 name: lidr-sdlc-project
-description: "LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Tier-1, always loaded."
+description: "LIDR SDLC: Active project context — domain, team, architecture, project-specific rules and current state. The rule that changes most between projects. Path-scoped to app/** — loaded on demand."
 id: project
 version: "1.0.1"
 last_updated: "2026-06-11"
 updated_by: "IA: sync-docs"
 status: active
 scope: project
-alwaysApply: true
+alwaysApply: false
 references: []
+paths: ["app/**"]
 ---
 
 # Rule: Contexto del Proyecto Activo

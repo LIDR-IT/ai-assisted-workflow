@@ -7,6 +7,7 @@ last_updated: "2026-06-11"
 status: active
 alwaysApply: false
 trigger: always_on
+paths: ["docs/projects/**"]
 ---
 
 # Git Workflow Guidelines

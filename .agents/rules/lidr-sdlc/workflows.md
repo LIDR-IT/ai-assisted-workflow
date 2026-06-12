@@ -7,6 +7,7 @@ last_updated: "2026-06-10"
 updated_by: "TL: ecosystem coherence"
 status: active
 scope: workflow
+paths: ["docs/projects/**"]
 ---
 
 # Rule: Workflow Orchestration Map

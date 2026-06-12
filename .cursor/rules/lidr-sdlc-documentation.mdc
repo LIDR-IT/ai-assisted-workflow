@@ -1,15 +1,16 @@
 ---
 name: lidr-sdlc-documentation
-description: "LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Always applies when creating, reading or modifying any .md in the ecosystem."
+description: "LIDR SDLC: Documentation governance — obligatory frontmatter, versioning, change tracking, staleness detection, update rules. Path-scoped to docs/** — loaded when working with documentation."
 id: documentation
 version: "2.3.0"
 last_updated: "2026-06-11"
 updated_by: "TL: peripheral docs coherence"
 status: active
 scope: documentation
-alwaysApply: true
+alwaysApply: false
 references:
   - "docs/standards/org.md"
+paths: ["docs/**"]
 ---
 
 # Rule: Documentation Governance
