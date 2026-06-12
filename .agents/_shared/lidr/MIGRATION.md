@@ -112,7 +112,7 @@ No asset migration needed. BMad's retro is 1513 lines (vs LIDR's 149) with Party
 
 ### SKILL.md reframe (no deletion, reposition as wrapper)
 
-`lidr-review-cruzado` description rewritten to make its new role explicit: **Gate 1 enforcer that validates bmad-prd output has both F+T sections complete**. Other LIDR wrappers (generate-rf, generate-nfr, user-stories, sprint-capacity, pr-description, release-notes, gate-evaluation) keep their existing descriptions which already document their pre/post role; full reframe is follow-up doc work.
+`lidr-review-cruzado` description rewritten to make its new role explicit: **Gate 1 enforcer that validates bmad-prd output has both F+T sections complete**. Other LIDR wrappers (requirements per-rf/nfr/validate modes, user-stories, sprint-capacity, pr-description, release-notes, gate-evaluation) keep their existing descriptions which already document their pre/post role; full reframe is follow-up doc work.
 
 ### Criticality classification
 

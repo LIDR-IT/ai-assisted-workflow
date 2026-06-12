@@ -12,7 +12,7 @@
     "sourceReport": "Auditoría Docline 2026-04-06 (citas verbatim del equipo)"
   },
   "summary": {
-    "executiveSummary": "Auditoría Docline (2026-04-06): Se identificaron 9 pain points críticos. Estado actual: 4 procesos FUNCIONANDO (Sprint Planning, Desarrollo, Linear, Estimación), 5 procesos ROTOS/AUSENTES (PRDs inconsistentes, RFs informales, QA reactivo, falta estandarización, gaps seguridad/deploy). Overall Maturity Score: 23/100. Quick wins LIDR: bmad-prd + lidr-generate-rf + bmad-testarch-test-design en Sprint 1-2.",
+    "executiveSummary": "Auditoría Docline (2026-04-06): Se identificaron 9 pain points críticos. Estado actual: 4 procesos FUNCIONANDO (Sprint Planning, Desarrollo, Linear, Estimación), 5 procesos ROTOS/AUSENTES (PRDs inconsistentes, RFs informales, QA reactivo, falta estandarización, gaps seguridad/deploy). Overall Maturity Score: 23/100. Quick wins LIDR: bmad-prd + lidr-requirements (per-rf mode) + bmad-testarch-test-design en Sprint 1-2.",
     "fortalezas": [
       "• Sprint Planning establecido (2 semanas, refinamiento martes)",
       "• Teams front/back organizados con Tech Leads (Héctor/David)",
@@ -22,7 +22,7 @@
     "oportunidades": [
       "• Levantar el contexto brownfield con Phase 0: bmad-document-project + bmad-generate-project-context",
       "• Formalizar PRDs con bmad-prd (un solo PRD unificado F+T) + lidr-review-cruzado",
-      "• Extraer RFs desde PRDs con lidr-generate-rf + RTM (lidr-validate-requirements)",
+      "• Extraer RFs desde PRDs con lidr-requirements (per-rf mode) + RTM (lidr-requirements validate mode)",
       "• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases",
       "• Adaptar Linear integration para commands LIDR"
     ],
@@ -50,7 +50,7 @@
       "fase": "Phase 3 — Solutioning · specification (ex-Especificación)",
       "problema": "\"Los requisitos funcionales son partes del prd\" - RFs mezclados, sin separación formal, no hay NFRs documentados",
       "impacto": "Crítico",
-      "mejora": "lidr-generate-rf + lidr-generate-nfr skills. Extraer RFs desde PRDs existentes, crear NFRs medibles, trazabilidad RF→US→Tasks con lidr-validate-requirements (RTM). bmad-create-architecture como evidencia required del Gate 2"
+      "mejora": "lidr-requirements (per-rf → nfr modes). Extraer RFs desde PRDs existentes, crear NFRs medibles, trazabilidad RF→US→Tasks con lidr-requirements (validate mode, RTM). bmad-create-architecture como evidencia required del Gate 2"
     },
     {
       "fase": "Phase 3 — Solutioning · sprint-planning (ex-Sprint Planning)",

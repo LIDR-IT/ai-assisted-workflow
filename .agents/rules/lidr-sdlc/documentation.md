@@ -126,7 +126,7 @@ Todo documento `.md` del ecosistema (excepto CLAUDE.md que es índice) DEBE tene
 
 ```yaml
 ---
-id: { skill-id } # ej: lidr-business-case, lidr-generate-rf
+id: { skill-id } # ej: lidr-business-case, lidr-requirements
 version: "1.0.0" # semver
 last_updated: "YYYY-MM-DD" # fecha del último cambio significativo
 updated_by: "{rol}: {nombre}" # quién actualizó

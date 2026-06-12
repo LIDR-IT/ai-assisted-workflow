@@ -1,5 +1,5 @@
 ---
-id: generate-rf-bdd-rules
+id: requirements-bdd-rules
 version: "1.0.0"
 last_updated: "2026-06-13"
 updated_by: "TL: workflow refactor"

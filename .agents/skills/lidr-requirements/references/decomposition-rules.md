@@ -1,5 +1,5 @@
 ---
-id: generate-rf-decomposition-rules
+id: requirements-decomposition-rules
 version: "1.0.0"
 last_updated: "2026-06-13"
 updated_by: "TL: workflow refactor"

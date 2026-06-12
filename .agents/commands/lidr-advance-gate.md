@@ -268,7 +268,7 @@ If PASS:
 
 - Tracking: transition epic/tickets to next phase status (manual or script)
 - Notification: notify next phase's team with handoff summary
-- If Gate 1 PASS -> suggest: "Run lidr-generate-rf skill to draft RFs from PRDs"
+- If Gate 1 PASS -> suggest: "Run lidr-requirements skill (per-rf mode) to draft RFs from PRDs"
 - If Gate 2 PASS -> suggest: "Run lidr-user-stories skill to draft US from RFs"
 - If Gate 3 PASS -> suggest: "Devs can now run /lidr-create-branch [ID] for their tickets"
 - If Gate 6 PASS -> suggest: "Run /lidr-create-release-notes then /lidr-update-changelog"

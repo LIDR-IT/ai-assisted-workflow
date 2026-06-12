@@ -1,5 +1,5 @@
 ---
-id: generate-rf-workflow-brownfield-audit
+id: requirements-workflow-brownfield-audit
 version: "1.0.0"
 last_updated: "2026-06-13"
 updated_by: "TL: workflow refactor"
@@ -23,7 +23,7 @@ Run / read **`bmad-document-project`** output: per-feature deep-dives (code-faci
 
 ## Phase 2 — Recover the spec
 
-Turn the documented behavior into the feature's `docs/features/<feature>/spec.md` (UJ/RF/NFR/AC, stable IDs), reusing `references/decomposition-rules.md` + `references/bdd-rules.md`. **Mark every inferred requirement `[REQUIERE VALIDACIÓN HUMANA]`.** Pull NFRs from `lidr-generate-nfr`. Set `status: in-progress`.
+Turn the documented behavior into the feature's `docs/features/<feature>/spec.md` (UJ/RF/NFR/AC, stable IDs), reusing `references/decomposition-rules.md` + `references/bdd-rules.md`. **Mark every inferred requirement `[REQUIERE VALIDACIÓN HUMANA]`.** Pull NFRs from the **nfr mode**. Set `status: in-progress`.
 
 ## Phase 3 — Audit coverage (handoff)
 
@@ -35,4 +35,4 @@ Gaps from the gate → `bmad-testarch-test-design` (risk-based, prioritize P1) +
 
 ## Phase 5 — Finalize
 
-Set `spec.md` `status: final` once human-validated. The trace GATE is the audit result; record it + open gaps in `.decision-log.md`. Close the loop with `lidr-validate-requirements` (RTM).
+Set `spec.md` `status: final` once human-validated. The trace GATE is the audit result; record it + open gaps in `.decision-log.md`. Close the loop with the **validate mode** (RTM).

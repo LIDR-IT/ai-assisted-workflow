@@ -90,7 +90,7 @@ LIDR simplemente sitúa el gate donde corresponde en su modelo de gobernanza:
 | **0 / anytime**         | `bmad-quick-dev`, `bmad-correct-course`, `bmad-spec`, tech-writer, reviews, CIS                                                                      | `lidr-gate-evaluation`, `lidr-audit-standards`, `lidr-sdlc-tracking`, `lidr-external-sync`, `lidr-playwright-cli`, meta-tooling (`lidr-agents-architecture` — umbrella, folds command/hook/MCP/rule authoring as `references/`). Ticket validation lives in `lidr-refinement-notes`; commit conventions in the `process/git-workflow.md` rule + `/lidr-commit`                |
 | **1 / analysis**        | `bmad-brainstorming`, `bmad-market-research`, `bmad-domain-research`, `bmad-technical-research`, `bmad-product-brief` \| `bmad-prfaq`                | `lidr-business-case` ⭐G0, `lidr-kickoff`, `lidr-stakeholder-map`, `lidr-tracking-integration`                                                                                                                                                                                                                                                                                |
 | **2 / planning**        | `bmad-prd` ⭐G1, `bmad-ux`                                                                                                                           | `lidr-review-cruzado` (F+T enforcer), `lidr-risk-log`, `/lidr-validate-prd`, `lidr-propuesta-builder`                                                                                                                                                                                                                                                                         |
-| **3 / specification**   | `bmad-create-architecture` ⭐G2, `bmad-create-epics-and-stories` ⭐G2, `bmad-testarch-test-design`, `bmad-testarch-framework`, `bmad-testarch-ci`    | `lidr-generate-rf` ⭐G2, `lidr-generate-nfr`, `lidr-validate-requirements` (RTM) ⭐G2, `lidr-adr`                                                                                                                                                                                                                                                                             |
+| **3 / specification**   | `bmad-create-architecture` ⭐G2, `bmad-create-epics-and-stories` ⭐G2, `bmad-testarch-test-design`, `bmad-testarch-framework`, `bmad-testarch-ci`    | `lidr-requirements` (per-rf → nfr → validate modes; RTM) ⭐G2, `lidr-adr`                                                                                                                                                                                                                                                                                                     |
 | **3 / sprint-planning** | `bmad-check-implementation-readiness` ⭐G3, `bmad-sprint-planning` ⭐G3                                                                              | `lidr-user-stories`, `lidr-sprint-capacity` ⭐G3, `lidr-refinement-notes`                                                                                                                                                                                                                                                                                                     |
 | **4 / development**     | `bmad-create-story`, `bmad-dev-story`, `bmad-sprint-status`, `bmad-code-review`, `bmad-testarch-atdd`, `bmad-investigate`, `bmad-checkpoint-preview` | `/lidr-spec-*` lifecycle (envuelve `bmad-dev-story` en secuencia → `test-report.md`, evidencia opcional del G4), `lidr-adr`, `lidr-tech-debt`, `lidr-pr-description`, `lidr-impact-analysis` (contract impact G4 · variant compatibility consumida en G2; requiere registries del cliente), `lidr-dev-handoff-qa` ⭐G4, `lidr-using-git-worktrees`, `lidr-run-parallel-tasks` |
 | **4 / qa**              | `bmad-testarch-automate`, `bmad-testarch-trace`, `bmad-testarch-test-review`, `bmad-qa-generate-e2e-tests`, `bmad-testarch-nfr`                      | `lidr-create-test-cases`, `lidr-bug-report`, `lidr-test-execution-report` ⭐G5                                                                                                                                                                                                                                                                                                |
@@ -143,10 +143,10 @@ PHASE 2 — PLANNING
 PHASE 3 — SOLUTIONING / specification
   bmad-create-architecture (PRD+UX) → architecture.md ⭐G2          [→ epics, ADRs, spec-ff design]
   lidr-adr (decisiones arq.) → ADR-NNNN.md                          [→ contexto dev]
-  lidr-generate-rf (PRD-F) → RF-*.md con BDD ⭐G2                   [→ user-stories, test-cases, RTM]
-  lidr-generate-nfr (PRD-T §5) → NFR-*.md medibles                  [→ testarch-nfr, security]
+  lidr-requirements per-rf (PRD-F) → RF-*.md con BDD ⭐G2           [→ user-stories, test-cases, RTM]
+  lidr-requirements nfr (PRD-T §5) → NFR-*.md medibles              [→ testarch-nfr, security]
   bmad-create-epics-and-stories (PRD+architecture) → epics.md ⭐G2  [→ sprint-planning, user-stories]
-  lidr-validate-requirements (RFs+NFRs+epics) → rtm.md ⭐G2         [→ evidencia G2+G5 trazabilidad]
+  lidr-requirements validate (RFs+NFRs+epics) → rtm.md ⭐G2         [→ evidencia G2+G5 trazabilidad]
   bmad-testarch-test-design (epics+NFRs) → test-design.md           [→ create-test-cases, automate]
   ▸ G2 Specs Complete (PO+QA): RF 100% BDD + RTM sin huérfanos + epics 2-40h
 PHASE 3 — SOLUTIONING / sprint-planning
@@ -222,7 +222,7 @@ PHASE 2 — PLANNING
   ▸ G1
 PHASE 3 — SOLUTIONING
   bmad-create-architecture UPDATE (architecture existente + delta) → arch delta + lidr-adr
-  lidr-generate-rf (solo RFs nuevos/modificados) + RTM incremental
+  lidr-requirements (solo RFs nuevos/modificados) + RTM incremental
   bmad-create-epics-and-stories (delta) → epics delta
   ▸ G2 → sprint-planning → G3
 PHASE 4 — IMPLEMENTATION
@@ -244,7 +244,7 @@ ENTRADA: idea de feature / ticket / feedback de cliente
           Phase 1 (light): lidr-business-case SOLO si pide presupuesto/equipo nuevo;
                            si no, el ticket enriquecido es la evidencia de intake
           Phase 2: bmad-prd (feature PRD, hereda project-context + PRD maestro)
-          Phase 3: lidr-generate-rf (RFs del feature) + epics delta + RTM incremental → G2, G3
+          Phase 3: lidr-requirements (RFs del feature) + epics delta + RTM incremental → G2, G3
           Phase 4: pipeline normal → G4…G7
 SALIDA: feature en PROD + change archivado en changes/archive/ + PRD maestro actualizado (DTC)
 ```

@@ -110,15 +110,15 @@ npx tsx scripts/client-manager.ts import --file "client-backup.json"
 
 The framework defines specific roles with different access patterns:
 
-| Role          | Primary Access                    | Key Skills                                         | Commands Authorized             |
-| ------------- | --------------------------------- | -------------------------------------------------- | ------------------------------- |
-| **PME**       | Portfolio management, governance  | business-case, stakeholder-map, epic-review        | /advance-gate, /track-sdlc      |
-| **PO**        | Product definition, requirements  | prd-funcional, user-stories, validate-requirements | /validate-prd, /quick-spec      |
-| **Tech Lead** | Technical decisions, architecture | prd-tecnico, adr, architecture-doc                 | /implement-ticket, /sync-docs   |
-| **Developer** | Implementation, code quality      | pr-description, dev-handoff-qa, tech-debt          | /create-branch, /create-pr      |
-| **QA**        | Testing strategy, validation      | test-plan, bug-report, test-execution-report       | /prepare-testing, /advance-gate |
-| **Security**  | Security assessment, compliance   | vuln-assessment, security-checklist                | /advance-gate (Gate 6)          |
-| **DevOps**    | Deployment, infrastructure        | change-request, rollback-plan, release-notes       | /create-release-notes           |
+| Role          | Primary Access                    | Key Skills                                     | Commands Authorized             |
+| ------------- | --------------------------------- | ---------------------------------------------- | ------------------------------- |
+| **PME**       | Portfolio management, governance  | business-case, stakeholder-map, epic-review    | /advance-gate, /track-sdlc      |
+| **PO**        | Product definition, requirements  | prd-funcional, user-stories, lidr-requirements | /validate-prd, /quick-spec      |
+| **Tech Lead** | Technical decisions, architecture | prd-tecnico, adr, architecture-doc             | /implement-ticket, /sync-docs   |
+| **Developer** | Implementation, code quality      | pr-description, dev-handoff-qa, tech-debt      | /create-branch, /create-pr      |
+| **QA**        | Testing strategy, validation      | test-plan, bug-report, test-execution-report   | /prepare-testing, /advance-gate |
+| **Security**  | Security assessment, compliance   | vuln-assessment, security-checklist            | /advance-gate (Gate 6)          |
+| **DevOps**    | Deployment, infrastructure        | change-request, rollback-plan, release-notes   | /create-release-notes           |
 
 ### Individual Setup
 

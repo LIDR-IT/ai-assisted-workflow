@@ -2,7 +2,7 @@
   "metadata": {
     "id": "estructura-contexto-trazabilidad",
     "title": "El hilo de trazabilidad — Aramis",
-    "description": "Trazabilidad end-to-end: cada salto del hilo (necesidad → PRD → épica/story → Pull Request/código → test+gate → release → monitoring → mejora) con la LLAVE que lo enlaza (el identificador o referencia). Dos matrices dedicadas cubren el centro: la RTM (requisitos→épicas/stories, lidr-validate-requirements) y la matriz de tests (criterios de aceptación↔test+gate, bmad-testarch-trace). El eslabón débil (en rojo) es el feedback Mejora→PRD: falta un identificador que ate el KPI/mejora al PRD-delta que origina. Los ADR enlazan las decisiones de forma transversal.",
+    "description": "Trazabilidad end-to-end: cada salto del hilo (necesidad → PRD → épica/story → Pull Request/código → test+gate → release → monitoring → mejora) con la LLAVE que lo enlaza (el identificador o referencia). Dos matrices dedicadas cubren el centro: la RTM (requisitos→épicas/stories, lidr-requirements validate mode) y la matriz de tests (criterios de aceptación↔test+gate, bmad-testarch-trace). El eslabón débil (en rojo) es el feedback Mejora→PRD: falta un identificador que ate el KPI/mejora al PRD-delta que origina. Los ADR enlazan las decisiones de forma transversal.",
     "version": "1.0.0",
     "client": "{{CLIENT_NAME}}",
     "industry": "{{INDUSTRY}}",
@@ -20,7 +20,7 @@
     "implementation_status": {
       "level": "absent",
       "description": "Hilo de trazabilidad propuesto. Requiere enforcement de identificadores estables (RF-NN, UJ-N, EPIC-N, STORY-N, ADR-NNNN, ticket) y referencias cruzadas (PR→ticket+change). LIDR ya trae los enforcers: DTC, hook frontmatter-guard, Gate 4 (Definition of Done), RTM y conventional commits.",
-      "evidence": "RTM en lidr-validate-requirements; matriz de tests + gate en bmad-testarch-trace; PR refs ticket+change en git-workflow.md/workflows.md. Eslabón Mejora→PRD sin identificador formal (hueco real del modelo)."
+      "evidence": "RTM en lidr-requirements (validate mode); matriz de tests + gate en bmad-testarch-trace; PR refs ticket+change en git-workflow.md/workflows.md. Eslabón Mejora→PRD sin identificador formal (hueco real del modelo)."
     }
   },
   "configuration": {
@@ -231,7 +231,7 @@
     },
     {
       "label": "Épica / Story",
-      "value": "Identificadores: EPIC-N · STORY-N, que citan el RF/UJ de origen (enlace vía RTM = lidr-validate-requirements)"
+      "value": "Identificadores: EPIC-N · STORY-N, que citan el RF/UJ de origen (enlace vía RTM = lidr-requirements validate mode)"
     },
     {
       "label": "Pull Request / commit",

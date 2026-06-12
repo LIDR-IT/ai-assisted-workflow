@@ -172,7 +172,7 @@ Output: Coverage score (0-100%), scope gaps analysis
 
 #### Step 5: Measurability & Testability
 
-Load: skills/generate-rf/checklists/rf-coherence.md
+Load: skills/lidr-requirements/checklists/rf-coherence.md
 
 1. **Acceptance Criteria Analysis**:
    - Every feature has measurable success criteria
@@ -583,7 +583,7 @@ If `lidr-external-sync` cannot resolve {{DOCS_TOOL}} from the registry:
 
 This command integrates with:
 
-- **lidr-validate-requirements**: Feeds the Phase 3 Solutioning specification stage
+- **lidr-requirements (validate mode)**: Feeds the Phase 3 Solutioning specification stage
 - **lidr-review-cruzado**: Cross-PRD validation engine
 - **/lidr-advance-gate**: Quantitative scoring for gate decisions
 - **Memory System**: Persistent validation learning and improvement

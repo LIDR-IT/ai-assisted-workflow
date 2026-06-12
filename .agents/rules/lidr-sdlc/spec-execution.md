@@ -31,7 +31,7 @@ El desarrollo de Phase 4 es una sola cadena donde las skills BMad (motor) y los 
 | Step 0 (branch) · Step N+1 (re-run AUDITABLE de la suite + baseline/restore de DB + report) · N+2 (curl) · N+3 (Playwright) · N+4 (DTC docs) | **`/lidr-spec-apply`** (gobernanza) | La EJECUCIÓN AUDITABLE con evidencia + curl/E2E/DTC que `bmad-dev-story` NO hace |
 
 - `/lidr-spec-apply` **no reinventa** el loop TDD de `bmad-dev-story` (reutiliza su patrón). **Sí re-ejecuta** la suite como verificación auditable (Step N+1, con baseline de DB + report por step), y `/lidr-spec-verify` la re-ejecuta de nuevo como check final independiente — eso es gobernanza/evidencia, **no** un loop TDD paralelo.
-- `/lidr-spec-ff` (planning) envuelve `bmad-spec` / `bmad-create-architecture` / `bmad-create-story` (ver `model-selection.md` §2.1). `spec.md` se construye desde `lidr-generate-rf`/`-nfr` y **omite a propósito** el SPEC kernel de `bmad-spec` (decisión, no olvido).
+- `/lidr-spec-ff` (planning) envuelve `bmad-spec` / `bmad-create-architecture` / `bmad-create-story` (ver `model-selection.md` §2.1). `spec.md` se construye desde `lidr-requirements` (modos per-rf → nfr) y **omite a propósito** el SPEC kernel de `bmad-spec` (decisión, no olvido).
 - ⚠️ La regla **AGENT MUST EXECUTE** (§4) sigue intacta: la IA ejecuta todos los tests por sí misma (incluido el re-run auditable de la suite), **nunca** los delega al usuario.
 
 ---

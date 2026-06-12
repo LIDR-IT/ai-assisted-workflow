@@ -1,7 +1,7 @@
 # Standard Format: Non-Functional Requirement (NFR)
 
 > **Purpose**: Mandatory format for standalone, measurable, and testable NFRs.
-> **Referenced by**: `skills/generate-nfr/SKILL.md` as the output format
+> **Referenced by**: `workflows/nfr.md (nfr mode)` as the output format
 > **Associated gate**: Gate 2 — Requirements Complete
 > **Complements**: `docs/templates/rf-format.md` (functional requirements)
 > **Instances**: `docs/projects/{project}/nfrs/NFR-{PROJ}-{CAT}-{NNN}.md`

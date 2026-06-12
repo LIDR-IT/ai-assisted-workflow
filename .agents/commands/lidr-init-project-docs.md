@@ -152,8 +152,8 @@ Generate project-specific version:
 Files to create (LIDR-genuine docs, using self-contained templates):
 
 - docs/projects/$1/business-case.md (from .claude/skills/lidr-business-case/templates/product-brief.md)
-- docs/projects/$1/requirements/rf.md (from .claude/skills/lidr-generate-rf/templates/rf-format.md)
-- docs/projects/$1/requirements/nfr.md (from .claude/skills/lidr-generate-nfr/templates/nfr-format.md)
+- docs/projects/$1/requirements/rf.md (from .claude/skills/lidr-requirements/templates/rf-format.md)
+- docs/projects/$1/requirements/nfr.md (from .claude/skills/lidr-requirements/templates/nfr-format.md)
 - docs/projects/$1/user-stories.md (from .claude/skills/lidr-user-stories/templates/user-story.md)
 - docs/projects/$1/adr/ADR-0001.md (from .claude/skills/lidr-adr/templates/adr.md)
 - docs/projects/$1/risk-log.md (from .claude/skills/lidr-risk-log/templates/risk-log.md)

@@ -228,8 +228,7 @@ function extractPhaseFromPath(skillPath: string): number {
     // PRD is BMad-owned now (unified F+T via bmad-prd) — Phase 2.
     prd: 2,
     "bmad-prd": 2,
-    "generate-rf": 3,
-    "generate-nfr": 3,
+    requirements: 3,
     "epic-breakdown": 3,
     "user-stories": 4,
     "sprint-capacity": 4,

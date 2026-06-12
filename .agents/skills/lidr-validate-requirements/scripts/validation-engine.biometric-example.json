@@ -1,8 +1,0 @@
-{
-  "_comment": "OVERRIDABLE EXAMPLE industry pack (biometric identity). NOT the active default. Merge this object under the `domain_patterns` key of a --config file to enable biometric domain-coverage checks in validation-engine.py. Mirrors BIOMETRIC_EXAMPLE_DOMAIN_PATTERNS.",
-  "domain_patterns": {
-    "biometric_identity": ["GDPR", "Article 9", "biometric", "template", "FAR", "FRR", "EER"],
-    "document_verification": ["KYC", "onboarding", "OCR", "passport", "DNI", "id document"],
-    "healthcare": ["HIPAA", "PHI", "diagnosis", "clinical", "health"]
-  }
-}

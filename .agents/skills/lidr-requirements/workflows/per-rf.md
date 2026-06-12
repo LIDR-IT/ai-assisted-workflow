@@ -1,5 +1,5 @@
 ---
-id: generate-rf-workflow-per-rf
+id: requirements-workflow-per-rf
 version: "1.0.0"
 last_updated: "2026-06-13"
 updated_by: "TL: workflow refactor"
@@ -40,4 +40,4 @@ Run `checklists/rf-coherence.md` per RF + global: single behavior, full PRD trac
 
 ## Phase 5 — Finalize
 
-Set every RF + `dependency-map.md` frontmatter `status: final`, `last_updated` to today. Record finalization in `.decision-log.md`. **Gate-2 evidence** = the `requirements/RF-*.md` files (gate glob). Common next: `lidr-validate-requirements` (RTM) → `bmad-create-epics-and-stories`.
+Set every RF + `dependency-map.md` frontmatter `status: final`, `last_updated` to today. Record finalization in `.decision-log.md`. **Gate-2 evidence** = the `requirements/RF-*.md` files (gate glob). Common next: the **validate mode** (RTM) → `bmad-create-epics-and-stories`.

@@ -18,7 +18,7 @@ description: >
   Use for transforming RFs into sprint-ready backlog with capacity management and dependency detection.
   Essential after Gate 2: converts validated requirements into implementable user stories for Sprint Planning.
   Always use when RFs are approved and Sprint Planning begins, always use when transforming requirements into actionable development tasks.
-  Do NOT use for requirements generation (use generate-rf), for epic decomposition (use bmad-create-epics-and-stories), or for test case creation (use create-test-cases).
+  Do NOT use for requirements generation (use lidr-requirements per-rf mode), for epic decomposition (use bmad-create-epics-and-stories), or for test case creation (use create-test-cases).
   Triggers on "automated user stories", "RF slicing", "sprint backlog generation", "INVEST validation", "story capacity planning", "requirements to stories".
   Content authored in English; artifact language follows the client `language` setting (see `_shared/lidr/integrations/`). BDD scenarios (Given/When/Then) stay in English; exported for the bound {{TRACKING_TOOL}}.
   Audience: PO (validates stories), SM (plans capacity), Dev (implements stories).
@@ -32,13 +32,13 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 ## Relationship to BMad
 
-LIDR-unique PO artifact. BMad's `bmad-create-epics-and-stories` decomposes the validated requirements into the **epic structure**, and `bmad-create-story` / `bmad-dev-story` then turn a backlog item into a **dev-agent story file** (implementation-context fodder). This skill fills the gap between them: it slices the BDD-bearing RFs authored by `lidr-generate-rf` (within that epic structure) into **INVEST, story-pointed, tracking-tool-ready user stories** for the PO backlog (CSV export to `{{TRACKING_TOOL}}`) — the artifact BMad's dev-facing stories deliberately are not (per `_shared/lidr/MIGRATION.md`: _"BMad stories are dev-agent fodder, not Jira-ready PO artifacts"_). Consumes the RFs from `lidr-generate-rf` within the epics from `bmad-create-epics-and-stories`; feeds `bmad-create-story` (which re-contextualizes each US for the dev agent) and the Gate 3 DoR grooming step (`lidr-refinement-notes`).
+LIDR-unique PO artifact. BMad's `bmad-create-epics-and-stories` decomposes the validated requirements into the **epic structure**, and `bmad-create-story` / `bmad-dev-story` then turn a backlog item into a **dev-agent story file** (implementation-context fodder). This skill fills the gap between them: it slices the BDD-bearing RFs authored by `lidr-requirements` (per-rf mode) (within that epic structure) into **INVEST, story-pointed, tracking-tool-ready user stories** for the PO backlog (CSV export to `{{TRACKING_TOOL}}`) — the artifact BMad's dev-facing stories deliberately are not (per `_shared/lidr/MIGRATION.md`: _"BMad stories are dev-agent fodder, not Jira-ready PO artifacts"_). Consumes the RFs from `lidr-requirements` (per-rf mode) within the epics from `bmad-create-epics-and-stories`; feeds `bmad-create-story` (which re-contextualizes each US for the dev agent) and the Gate 3 DoR grooming step (`lidr-refinement-notes`).
 
 ## Automated Workflow (NEW)
 
 ### Phase 1: RF Analysis and Intelligent Slicing (Automated)
 
-1. **Execute RF Slicer**: `scripts/rf-slicer.py` auto-loads approved RFs from generate-rf outputs
+1. **Execute RF Slicer**: `scripts/rf-slicer.py` auto-loads approved RFs from lidr-requirements outputs
 2. **Complexity Analysis**: Auto-estimates RF hours based on BDD scenarios, acceptance criteria, and domain factors
 3. **Slicing Strategy Selection**: Applies 8 proven slicing patterns (Vertical Path, Workflow Steps, CRUD, User Roles, etc.)
 4. **INVEST Validation**: Automated validation against Independent, Negotiable, Valuable, Estimable, Small, Testable criteria
@@ -73,7 +73,7 @@ If automation fails, use original manual process:
 
 | Input                       | Required  | Source                                      | Automated Processing                           |
 | --------------------------- | --------- | ------------------------------------------- | ---------------------------------------------- |
-| **Approved RFs with BDD**   | ✅        | skill `generate-rf/` + Gate 2               | ✅ `rf-slicer.py` auto-loads from outputs/     |
+| **Approved RFs with BDD**   | ✅        | skill `lidr-requirements/` + Gate 2         | ✅ `rf-slicer.py` auto-loads from outputs/     |
 | **Sprint Capacity (hours)** | ✅        | SM (ceremonies, vacations, buffer deducted) | ✅ Auto-allocates feature vs debt capacity     |
 | **Tech Debt Percentage**    | ✅        | Standard 15-20% or custom                   | ✅ Auto-calculates remaining feature capacity  |
 | Sprint Goal                 | Desirable | PO + team                                   | ⚠️ Manual validation against generated stories |
@@ -119,7 +119,7 @@ RF Hours | Size | Slicing Strategy | Typical Result
 ```bash
 # Standard sprint planning mode
 python scripts/rf-slicer.py \
-  --rf-dir .claude/skills/generate-rf/outputs \
+  --rf-dir .claude/skills/lidr-requirements/outputs \
   --sprint-capacity 400 \
   --debt-percentage 0.20 \
   --verbose
@@ -145,10 +145,10 @@ python scripts/rf-slicer.py \
 
 ```bash
 # Ensure approved RFs exist from Gate 2
-ls .claude/skills/generate-rf/outputs/    # Should show RF-*.md files
+ls .claude/skills/lidr-requirements/outputs/    # Should show RF-*.md files
 
 # Verify RFs have BDD scenarios and are Gate 2 approved
-grep -l "Scenario:" .claude/skills/generate-rf/outputs/*.md
+grep -l "Scenario:" .claude/skills/lidr-requirements/outputs/*.md
 ```
 
 ### Step 2: Execute Automated User Story Generation
@@ -159,7 +159,7 @@ cd .claude/skills/user-stories
 
 # Run automated RF slicing and story generation
 python scripts/rf-slicer.py \
-  --rf-dir ../generate-rf/outputs \
+  --rf-dir ../lidr-requirements/outputs \
   --sprint-capacity 400 \
   --debt-percentage 0.20 \
   --project-code "PROJ" \
@@ -528,7 +528,7 @@ npx tsx scripts/validate-examples.ts
 
 ### Integration Points
 
-- **Generate-RF Skill**: Auto-loads approved RFs from skill outputs
+- **lidr-requirements Skill (per-rf mode)**: Auto-loads approved RFs from skill outputs
 - **Tech-Debt Skill**: Integrates debt allocation for capacity planning
 - **{{TRACKING_TOOL}} Integration**: CSV export format for seamless import
 - **Sprint Planning**: Generated backlog ready for team review and assignment
@@ -544,13 +544,13 @@ npx tsx scripts/validate-examples.ts
 
 ## Changelog
 
-| Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                                                                                                                          |
-| ------- | ---------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 2.5.0   | 2026-06-11 | TL: BMad-seam visibility                  | Added "## Relationship to BMad": positions the skill as the PO-backlog wrapper that slices `lidr-generate-rf` RFs within `bmad-create-epics-and-stories` epics and feeds `bmad-create-story` + Gate 3 DoR (`lidr-refinement-notes`) — closes the MIGRATION.md §115 follow-up for this skill; normalized body `Phase:` prose to unified numbering |
-| 2.4.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted tracking tool (Jira) via tool-registry. Translated remaining Spanish example user story, BDD scenarios, CSV export, template, and examples to English                                                                                                                                       |
-| 2.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix              | Language to English-default-configurable (BDD stays English); abstracted tracking tool via {{TRACKING_TOOL}} in generic prose; added language_default + integrations frontmatter                                                                                                                                                                 |
-| 2.3.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Complete domain-agnostic remediation: replaced examples/user-stories-selphi-document-capture.md with user-stories-document-capture-feature.md using comprehensive template variables ({{PRIMARY_WORKFLOW}}, {{DOCUMENT_TYPE}}, {{VERIFICATION_DEVICE}}, etc.). Removed all banking/biometric-specific content. Achieving 75→92/100 target score. |
-| 2.2.0   | 2026-03-16 | System: QA Enhancement                    | Previous QA improvements                                                                                                                                                                                                                                                                                                                         |
+| Version | Date       | Author                                    | Changes                                                                                                                                                                                                                                                                                                                                           |
+| ------- | ---------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.5.0   | 2026-06-11 | TL: BMad-seam visibility                  | Added "## Relationship to BMad": positions the skill as the PO-backlog wrapper that slices `lidr-requirements` RFs within `bmad-create-epics-and-stories` epics and feeds `bmad-create-story` + Gate 3 DoR (`lidr-refinement-notes`) — closes the MIGRATION.md §115 follow-up for this skill; normalized body `Phase:` prose to unified numbering |
+| 2.4.0   | 2026-06-09 | TL: lang+tool agnostic                    | Language to English-default-configurable; abstracted tracking tool (Jira) via tool-registry. Translated remaining Spanish example user story, BDD scenarios, CSV export, template, and examples to English                                                                                                                                        |
+| 2.3.1   | 2026-06-09 | TL: BMad-coherence batch-fix              | Language to English-default-configurable (BDD stays English); abstracted tracking tool via {{TRACKING_TOOL}} in generic prose; added language_default + integrations frontmatter                                                                                                                                                                  |
+| 2.3.0   | 2026-04-06 | System: Phase 4 Python Script Remediation | Complete domain-agnostic remediation: replaced examples/user-stories-selphi-document-capture.md with user-stories-document-capture-feature.md using comprehensive template variables ({{PRIMARY_WORKFLOW}}, {{DOCUMENT_TYPE}}, {{VERIFICATION_DEVICE}}, etc.). Removed all banking/biometric-specific content. Achieving 75→92/100 target score.  |
+| 2.2.0   | 2026-03-16 | System: QA Enhancement                    | Previous QA improvements                                                                                                                                                                                                                                                                                                                          |
 
 ---
 

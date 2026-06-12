@@ -37,7 +37,7 @@ paths: ["docs/projects/**"]
 | `/lidr-init-project-docs [name]`     | Crea documentación de proyecto desde templates                                        | Tech Lead, PO, PME                                 | Proyecto nuevo aprobado           |
 | `/lidr-validate-project-docs [name]` | Valida docs contra criterios de templates                                             | Tech Lead, PO, QA Lead, PME                        | Docs existentes en docs/projects/ |
 
-> **Nota — `lidr-validate-requirements` (verbo vs motor):** `/lidr-validate-requirements` es el **comando orquestador** de Fase 3 (encadena `lidr-generate-rf` + `lidr-generate-nfr` + el motor RTM + `bmad-create-epics-and-stories`). Existe además una **skill** homónima `lidr-validate-requirements` que es el motor RTM / validación 5-pass; está marcada `user-invocable: false`, así que el slash `/lidr-validate-requirements` siempre resuelve al comando y la skill se alcanza por delegación. Ver `docs/adr/ADR-0007-command-skill-name-resolution.md`.
+> **Nota — `/lidr-validate-requirements` (verbo vs motor):** `/lidr-validate-requirements` es el **comando orquestador** de Fase 3 (encadena los modos `lidr-requirements` per-rf → nfr → validate + `bmad-create-epics-and-stories`). El comando delega en la skill `lidr-requirements` modo **validate** (motor RTM / validación 5-pass), marcada `user-invocable: false`, así que el slash `/lidr-validate-requirements` siempre resuelve al comando y la skill se alcanza por delegación. Ver `docs/adr/ADR-0007-command-skill-name-resolution.md`.
 
 ### Tier 2 — Tactical (workflow enfocado, pueden invocarse standalone o encadenados)
 
@@ -162,16 +162,16 @@ PHASE 2 — PLANNING (ex-Fase 2 Discovery & PRD; BMad-driven, LIDR wrappers)
                               → AUTO: scoring cuantitativo para Gate 1 decision
   PO ejecuta:
     /lidr-advance-gate 1          → Valida Gate 1, genera Handoff
-                              → AUTO: invoca skill lidr-generate-rf (borrador)
+                              → AUTO: invoca skill lidr-requirements modo per-rf (borrador)
                               → AUTO: notifica equipo de Especificación
 
 PHASE 3 — SOLUTIONING · stage specification (ex-Fase 3 Especificación)
   PO ejecuta:
-    lidr-generate-rf       → Genera RFs con BDD desde PRDs
+    lidr-requirements (per-rf)  → Genera RFs con BDD desde PRDs
   TL ejecuta:
-    lidr-generate-nfr      → Genera NFRs standalone medibles desde PRD-T §5
+    lidr-requirements (nfr)     → Genera NFRs standalone medibles desde PRD-T §5
   PO + TL ejecutan:
-    lidr-validate-requirements → Valida RFs + NFRs, genera RTM, detecta gaps
+    lidr-requirements (validate) → Valida RFs + NFRs, genera RTM, detecta gaps
     (verifican coherencia con checklists)
   PO + TL ejecutan:
     bmad-create-epics-and-stories    → Descompone épica master en sub-épicas desde requisitos validados
@@ -225,7 +225,7 @@ PHASE 4 — IMPLEMENTATION · stage development (ex-Fase 5; por cada ticket/stor
     /lidr-spec-ff <name>     → planning (Opus high) — envuelve el motor BMad:
                               ├── bmad-spec / bmad-prd            → proposal.md (+ lidr-review-cruzado G1)
                               ├── bmad-create-architecture        → design.md (+ lidr-adr)
-                              ├── lidr-generate-rf / -nfr         → spec.md (omite el SPEC kernel a propósito)
+                              ├── lidr-requirements (per-rf → nfr) → spec.md (omite el SPEC kernel a propósito)
                               └── bmad-create-story + lidr-user-stories → tasks.md (mandatory steps)
     /lidr-spec-apply <name>  → implementación (Sonnet medium): DELEGA el loop unit/regresión a
                               bmad-dev-story (motor, ejecuta los tests) y AÑADE Step 0 branch +
@@ -391,9 +391,9 @@ TL inspecciona cada worktree, decide archive/PR manual
 /lidr-advance-gate 1                         → PO confirma Discovery
   ↓
 /lidr-validate-requirements my-project       → Orquesta Fase 3 completa:
-  ├── skill: lidr-generate-rf                → RFs con BDD desde PRDs
-  ├── skill: lidr-generate-nfr               → NFRs medibles desde PRD-T §5
-  ├── skill: lidr-validate-requirements      → RTM + gap detection
+  ├── skill: lidr-requirements (per-rf)      → RFs con BDD desde PRDs
+  ├── skill: lidr-requirements (nfr)         → NFRs medibles desde PRD-T §5
+  ├── skill: lidr-requirements (validate)    → RTM + gap detection
   └── skill: bmad-create-epics-and-stories → Sub-épicas (rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
   ↓
 /lidr-advance-gate 2                         → PO + TL validan Gate 2
@@ -424,8 +424,8 @@ Objetivo: levantar las funcionalidades de un sistema existente en formato trazab
 bmad-document-project              → entiende el código: deep-dives + docs/index.md (qué hace cada feature)
 bmad-generate-project-context      → project-context.md (reglas globales para la IA)
   ↓ LEVANTAR LA SPEC TRAZABLE (reverse / brownfield)
-lidr-generate-rf (living-spec)     → docs/features/<f>/spec.md con UJ/RF/AC desde el comportamiento documentado
-lidr-generate-nfr                  → NFRs medibles del sistema actual
+lidr-requirements (living-spec)    → docs/features/<f>/spec.md con UJ/RF/AC desde el comportamiento documentado
+lidr-requirements (nfr)            → NFRs medibles del sistema actual
   (inferidos → marcar [REQUIERE VALIDACIÓN HUMANA]; derivado ≠ confirmado)
   ↓ AUDITAR COBERTURA
 bmad-testarch-automate             → caracterización (golden master del comportamiento actual)
@@ -433,10 +433,10 @@ bmad-testarch-trace                → matriz UJ/AC↔test + GATE (PASS/CONCERNS
   (oráculo sintético: infiere UJ/AC del código → la auditoría puede arrancar sin spec formal)
 bmad-testarch-test-design          → diseña los tests faltantes (risk-based, prioriza P1)
 bmad-testarch-nfr                  → evidencia NFR (perf/seguridad/fiabilidad)
-lidr-validate-requirements         → RTM: cierra RF/NFR ↔ story ↔ test
+lidr-requirements (validate)       → RTM: cierra RF/NFR ↔ story ↔ test
 ```
 
-El GATE de `bmad-testarch-trace` responde la pregunta de la auditoría: **¿cada UJ tiene test que cumple sus AC?** PASS = cubierto · CONCERNS/FAIL = gaps a cerrar (test-design). La capacidad de recuperar la spec vive en `lidr-generate-rf` (modo brownfield/reverse), no en un artefacto nuevo.
+El GATE de `bmad-testarch-trace` responde la pregunta de la auditoría: **¿cada UJ tiene test que cumple sus AC?** PASS = cubierto · CONCERNS/FAIL = gaps a cerrar (test-design). La capacidad de recuperar la spec vive en `lidr-requirements` (modo brownfield-audit / reverse), no en un artefacto nuevo.
 
 ### Cadena típica: Feature sobre producto en marcha (PRD desde funcionalidad extra)
 

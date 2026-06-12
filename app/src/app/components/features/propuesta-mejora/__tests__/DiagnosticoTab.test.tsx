@@ -67,7 +67,7 @@ const mockDiagnosticoContent = {
     ],
     oportunidades: [
       '• Formalizar PRDs con bmad-prd + lidr-review-cruzado',
-      '• Extraer RFs desde PRDs con lidr-generate-rf + RTM',
+      '• Extraer RFs desde PRDs con lidr-requirements (per-rf mode) + RTM',
       '• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases',
       '• Adaptar Linear integration para commands LIDR',
     ],
@@ -257,7 +257,7 @@ describe('DiagnosticoTab', () => {
         screen.getByText('• Formalizar PRDs con bmad-prd + lidr-review-cruzado')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('• Extraer RFs desde PRDs con lidr-generate-rf + RTM')
+        screen.getByText('• Extraer RFs desde PRDs con lidr-requirements (per-rf mode) + RTM')
       ).toBeInTheDocument();
       expect(
         screen.getByText('• QA proactivo con bmad-testarch-test-design + lidr-create-test-cases')

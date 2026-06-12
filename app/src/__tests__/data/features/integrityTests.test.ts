@@ -159,7 +159,9 @@ describe('IntegrityTests Data Layer', () => {
 
     it('has realistic count values', () => {
       // Counts are derived from the data registries (skills.ts / commands.ts arrays).
-      // - 107 skills = 38 lidr-* + 69 bmad-*, matching `.agents/skills/` exactly.
+      // - 106 skills total, matching `.agents/skills/` exactly (was 107 before the
+      //   2026-06-12 requirements fusion: generate-rf + generate-nfr +
+      //   validate-requirements → one lidr-requirements skill, 5 modes).
       //   (2026-06-12 consolidation: lidr-command-development, lidr-hook-development,
       //   lidr-mcp-integration, lidr-generate-rule folded into lidr-agents-architecture;
       //   lidr-ticket-validation absorbed into lidr-refinement-notes; lidr-commit-management
@@ -170,13 +172,14 @@ describe('IntegrityTests Data Layer', () => {
       //   2026-06-10 to close the silent under-report); lidr-help is a skill not
       //   a command, and lidr-product-brief was removed from the ecosystem.
       // - 22 rules pre-spec-lifecycle + 2 new (spec-execution, model-selection) = 24 (Node-side scans .claude/rules)
-      // - validationScripts: 30 - 2 = 28 (lidr-hook-development + lidr-mcp-integration
-      //   each had a validate-examples.ts; both removed in the 2026-06-12 meta-tooling
-      //   consolidation — the folded references/ are docs, not validated-example skills)
-      expect(EXPECTED_COUNTS.skills).toBe(107);
+      // - validationScripts: 27 — the 2026-06-12 requirements fusion removed generate-rf +
+      //   generate-nfr (each had a validate-examples.ts) and added lidr-requirements
+      //   (inherits one), net −1 from 28. The prior 28 = 30 − 2 (lidr-hook-development +
+      //   lidr-mcp-integration validators removed in the meta-tooling consolidation).
+      expect(EXPECTED_COUNTS.skills).toBe(106);
       expect(EXPECTED_COUNTS.commands).toBe(30);
       expect(EXPECTED_COUNTS.rules).toBe(24);
-      expect(EXPECTED_COUNTS.validationScripts).toBe(28);
+      expect(EXPECTED_COUNTS.validationScripts).toBe(27);
     });
   });
 
@@ -222,7 +225,9 @@ describe('IntegrityTests Data Layer', () => {
         });
       });
 
-      it('has expected number of paths (217 artifacts)', () => {
+      it('has expected number of paths (215 artifacts)', () => {
+        // 215 = 217 − 2 (2026-06-12 requirements fusion: 3 specification-skill docpaths —
+        // generate-rf/generate-nfr/validate-requirements — collapse into 1 lidr-requirements).
         // 217 = 223 − 6 skills folded/absorbed on 2026-06-12 (lidr-command-development,
         // lidr-hook-development, lidr-mcp-integration, lidr-generate-rule →
         // lidr-agents-architecture; lidr-ticket-validation → lidr-refinement-notes;
@@ -230,7 +235,7 @@ describe('IntegrityTests Data Layer', () => {
         // Prior baseline: 223 = 236 − 13 BMad persona subagent wrappers removed on
         // 2026-06-11 (personas live exclusively as skills — see ADR-0008);
         // 236 = 225 − 3 deleted command entries + 14 spec-lifecycle artifacts.
-        expect(HELPCENTER_DOCPATHS).toHaveLength(217);
+        expect(HELPCENTER_DOCPATHS).toHaveLength(215);
       });
 
       it('contains valid file paths', () => {

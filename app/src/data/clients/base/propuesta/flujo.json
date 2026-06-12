@@ -109,7 +109,7 @@
         "y": 550,
         "label": "RFs + NFRs con BDD",
         "variant": "cyan",
-        "subtitle": "lidr-generate-rf + lidr-generate-nfr · criterios Given/When/Then · NFRs medibles"
+        "subtitle": "lidr-requirements (per-rf → nfr modes) · criterios Given/When/Then · NFRs medibles"
       },
       {
         "id": "deps",
@@ -117,7 +117,7 @@
         "y": 660,
         "label": "RTM + Epic Breakdown",
         "variant": "cyan",
-        "subtitle": "lidr-validate-requirements (RTM) + bmad-create-epics-and-stories · dependencias mapeadas"
+        "subtitle": "lidr-requirements (validate mode, RTM) + bmad-create-epics-and-stories · dependencias mapeadas"
       },
 
       {
@@ -415,7 +415,7 @@
     {
       "gate": "Gate 2",
       "name": "Specs Complete + ATDD (Solutioning: specification → sprint-planning)",
-      "criteria": "Arquitectura documentada (bmad-create-architecture + lidr-adr — evidencia movida de G1 a G2 en el modelo unificado) · RFs + NFRs documentados (lidr-generate-rf + lidr-generate-nfr) · RTM generada (lidr-validate-requirements) · Epic breakdown aprobado (bmad-create-epics-and-stories) · Test design (bmad-testarch-test-design) · BDD validado por QA pre-dev (bmad-testarch-atdd) · Si hay variantes: compatibilidad multi-variante verificada (lidr-impact-analysis, evidencia opcional — requiere variant-matrix.yaml del cliente)",
+      "criteria": "Arquitectura documentada (bmad-create-architecture + lidr-adr — evidencia movida de G1 a G2 en el modelo unificado) · RFs + NFRs documentados (lidr-requirements per-rf → nfr modes) · RTM generada (lidr-requirements validate mode) · Epic breakdown aprobado (bmad-create-epics-and-stories) · Test design (bmad-testarch-test-design) · BDD validado por QA pre-dev (bmad-testarch-atdd) · Si hay variantes: compatibilidad multi-variante verificada (lidr-impact-analysis, evidencia opcional — requiere variant-matrix.yaml del cliente)",
       "owner": "PO + Tech Lead + QA"
     },
     {

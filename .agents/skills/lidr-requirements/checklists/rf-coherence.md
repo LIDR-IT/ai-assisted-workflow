@@ -13,7 +13,7 @@ owner_role: "PO"
 # Coherence Checklist — Functional Requirements
 
 > **Purpose**: Validation of internal coherence (between RFs) and external coherence (with Technical + Functional PRDs).
-> **Evaluated by**: Skill `generate-rf` (post-generation) + manual review by Product + QA
+> **Evaluated by**: Skill the per-rf mode (post-generation) + manual review by Product + QA
 > **Associated Gate**: Gate 2 — RF Complete
 > **Frequency**: After each RF generation/modification and before Gate 2
 
@@ -98,7 +98,7 @@ owner_role: "PO"
 ## 5. Connection with SDLC Flow
 
 ```
-PRD approved (Gate 1) → RFs generated (skill: generate-rf) → Coherence check
+PRD approved (Gate 1) → RFs generated (per-rf mode) → Coherence check
     ↓                                                              ↓
 If COHERENT → Gate 2: RF Complete → Sprint Planning
 If ISSUES → Fix incoherences → Re-generate/adjust RFs → Re-evaluate

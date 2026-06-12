@@ -71,7 +71,7 @@ analysis → PRD-delta (planning) → epics/stories (implementation) → retrosp
 
 ## Traceability
 - Stable IDs everywhere: RF-NN, UJ-N, EPIC-N, STORY-N, ADR-NNNN, ticket. PR references ticket +
-  change. Two matrices: RTM (lidr-validate-requirements) + test trace (bmad-testarch-trace).
+  change. Two matrices: RTM (lidr-requirements validate mode) + test trace (bmad-testarch-trace).
 
 ## Folder layout (real BMad paths)
 - docs/ (project_knowledge): index.md (derived index → per-feature deep-dives) + adr/.
@@ -668,8 +668,10 @@ function EstructuraContextoComponent() {
                 <span className="font-medium">Del eje principal, sí</span> — y hay{' '}
                 <span className="font-medium">dos matrices dedicadas</span> que lo materializan: la{' '}
                 <span className="font-medium">RTM</span> (requisitos → épicas/stories,{' '}
-                <code className="text-xs bg-white px-1 rounded">lidr-validate-requirements</code>) y
-                la <span className="font-medium">matriz de tests + gate</span> (criterios de
+                <code className="text-xs bg-white px-1 rounded">
+                  lidr-requirements (validate mode)
+                </code>
+                ) y la <span className="font-medium">matriz de tests + gate</span> (criterios de
                 aceptación ↔ test,{' '}
                 <code className="text-xs bg-white px-1 rounded">bmad-testarch-trace</code>
                 ).

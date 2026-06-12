@@ -22,7 +22,7 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 ## Relationship to BMad
 
-LIDR-unique: BMad has no impact-analysis artifact. `bmad-investigate` covers _reactive_ forensic analysis (something already broke); this skill covers _proactive_ impact analysis (what would break) by matching a proposed change against client-maintained registries. It consumes outputs of `lidr-generate-rf` / `bmad-prd` (variant mode) and code diffs / `lidr-spec-*` changes (contract mode), and feeds Gate 2 and Gate 4 evidence (`gate-evidence.yaml`, optional entries).
+LIDR-unique: BMad has no impact-analysis artifact. `bmad-investigate` covers _reactive_ forensic analysis (something already broke); this skill covers _proactive_ impact analysis (what would break) by matching a proposed change against client-maintained registries. It consumes outputs of `lidr-requirements` (per-rf mode) / `bmad-prd` (variant mode) and code diffs / `lidr-spec-*` changes (contract mode), and feeds Gate 2 and Gate 4 evidence (`gate-evidence.yaml`, optional entries).
 
 ## What this skill is — and what the client provides
 
@@ -45,7 +45,7 @@ The **client provides the data**: the registries are CLIENT-OWNED artifacts that
 
 | Input                                                     | Required                 | Source                                                                              |
 | --------------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------- |
-| Change artifact (RF/spec/PRD delta/diff/change container) | ✅                       | `lidr-generate-rf`, `bmad-prd`, git diff, `docs/projects/{client}/changes/<name>/`  |
+| Change artifact (RF/spec/PRD delta/diff/change container) | ✅                       | `lidr-requirements`, `bmad-prd`, git diff, `docs/projects/{client}/changes/<name>/` |
 | Client registry file for the chosen mode                  | ✅ (degrades if missing) | `docs/projects/{client}/registries/contract-registry.yaml` or `variant-matrix.yaml` |
 | Architecture doc (system boundaries)                      | Desirable                | `bmad-create-architecture` output                                                   |
 | Risk log (known integration/variant risks)                | Desirable                | `lidr-risk-log` output                                                              |

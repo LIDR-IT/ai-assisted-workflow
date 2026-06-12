@@ -38,7 +38,7 @@ export const commands: Command[] = [
     relatedSkills: [
       'lidr-business-case',
       'bmad-prd',
-      'lidr-validate-requirements',
+      'lidr-requirements',
       'lidr-security-checklist',
     ],
   },
@@ -113,12 +113,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Gate 2',
     docPath: '.claude/commands/lidr-validate-requirements.md',
-    relatedSkills: [
-      'lidr-generate-rf',
-      'lidr-generate-nfr',
-      'lidr-validate-requirements',
-      'bmad-create-epics-and-stories',
-    ],
+    relatedSkills: ['lidr-requirements', 'bmad-create-epics-and-stories'],
   },
   {
     id: 'lidr-init-project-docs',
@@ -204,12 +199,7 @@ export const commands: Command[] = [
     model: 'sonnet',
     gateContribution: 'Pre-Gate 2 (lightweight requirements)',
     docPath: '.claude/commands/lidr-quick-spec.md',
-    relatedSkills: [
-      'lidr-generate-rf',
-      'lidr-user-stories',
-      'lidr-validate-requirements',
-      'lidr-create-test-cases',
-    ],
+    relatedSkills: ['lidr-requirements', 'lidr-user-stories', 'lidr-create-test-cases'],
   },
   {
     id: 'lidr-quick-dev',
@@ -292,7 +282,7 @@ export const commands: Command[] = [
     relatedSkills: [
       'bmad-prd',
       'bmad-create-architecture',
-      'lidr-generate-rf',
+      'lidr-requirements',
       'lidr-user-stories',
     ],
   },

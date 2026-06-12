@@ -40,15 +40,7 @@ const phaseMap: Record<string, PhaseInfo> = {
   },
 
   // Phase 3 - Especificación
-  'generate-rf': {
-    label: 'Fase 3 — Solutioning (specification)',
-    color: 'bg-cyan-100 text-cyan-700',
-  },
-  'generate-nfr': {
-    label: 'Fase 3 — Solutioning (specification)',
-    color: 'bg-cyan-100 text-cyan-700',
-  },
-  'validate-requirements': {
+  'lidr-requirements': {
     label: 'Fase 3 — Solutioning (specification)',
     color: 'bg-cyan-100 text-cyan-700',
   },

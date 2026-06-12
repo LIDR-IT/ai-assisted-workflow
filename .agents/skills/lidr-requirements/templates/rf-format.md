@@ -2,7 +2,7 @@
 
 > **Purpose**: Mandatory format that defines the structure of every RF in the project.
 > **Referenced by**: `.claude/rules/org.md` via `@../templates/rf-format.md`
-> **Used by**: `skills/generate-rf/SKILL.md` as the mandatory output format
+> **Used by**: `workflows/per-rf.md (per-rf mode)` as the mandatory output format
 > **Associated Gate**: Gate 2 — RF Complete
 > **Policy**: Every RF must follow this exact format. RFs that do not comply are rejected in review.
 
@@ -401,14 +401,14 @@ And the user can: go to sign-in or reset password
 ## 7. Connection with the SDLC Flow
 
 ```
-PRD approved (Gate 1) → RFs generated (skill: generate-rf) → Coherence check → Gate 2
+PRD approved (Gate 1) → RFs generated (per-rf mode) → Coherence check → Gate 2
                             ↑                                        ↑
                      This mandatory format              docs/checklists/rf-coherence.md
 ```
 
 ### Cross-References
 
-- **RF Generation**: `skills/generate-rf/SKILL.md` — uses this format as output
+- **RF Generation**: `workflows/per-rf.md (per-rf mode)` — uses this format as output
 - **Coherence Check**: `docs/checklists/rf-coherence.md` — validates generated RFs
 - **User Stories (next)**: `skills/user-stories/SKILL.md` — consumes RFs as input
 - **Cross Review**: `docs/checklists/review-cruzado.md` — PRDs → RFs
@@ -417,4 +417,4 @@ PRD approved (Gate 1) → RFs generated (skill: generate-rf) → Coherence check
 ---
 
 _Reference format for all RF generation._
-_The generate-rf skill MUST produce RFs in this exact format. Deviations are rejected._
+_The per-rf mode MUST produce RFs in this exact format. Deviations are rejected._

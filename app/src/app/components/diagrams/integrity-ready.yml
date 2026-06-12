@@ -1,503 +1,503 @@
 - generic [ref=e3]:
-  - complementary [ref=e4]:
-    - generic [ref=e6]:
-      - img [ref=e7]
-      - generic [ref=e11]: SDLC {{CLIENT_NAME}}
-    - navigation [ref=e12]:
-      - generic [ref=e14]: Estado Actual
-      - link "Flujo General" [ref=e16] [cursor=pointer]:
-        - /url: /
-        - img [ref=e17]
-        - generic [ref=e21]: Flujo General
-      - link "Fase de Requisitos" [ref=e22] [cursor=pointer]:
-        - /url: /requisitos
-        - img [ref=e23]
-        - generic [ref=e26]: Fase de Requisitos
-      - link "Proceso PRD" [ref=e27] [cursor=pointer]:
-        - /url: /prd
-        - img [ref=e28]
-        - generic [ref=e31]: Proceso PRD
-      - link "Requisitos Funcionales" [ref=e32] [cursor=pointer]:
-        - /url: /requisitos-funcionales
-        - img [ref=e33]
-        - generic [ref=e36]: Requisitos Funcionales
-      - link "Planificacion Sprint" [ref=e37] [cursor=pointer]:
-        - /url: /sprint
-        - img [ref=e38]
-        - generic [ref=e40]: Planificacion Sprint
-      - link "Proceso Desarrollo" [ref=e41] [cursor=pointer]:
-        - /url: /desarrollo
-        - img [ref=e42]
-        - generic [ref=e46]: Proceso Desarrollo
-      - link "Testing y QA" [ref=e47] [cursor=pointer]:
-        - /url: /testing
-        - img [ref=e48]
-        - generic [ref=e51]: Testing y QA
-      - link "Seguridad SDLC" [ref=e52] [cursor=pointer]:
-        - /url: /seguridad
-        - img [ref=e53]
-        - generic [ref=e55]: Seguridad SDLC
-      - link "Entornos y Despliegue" [ref=e56] [cursor=pointer]:
-        - /url: /despliegue
-        - img [ref=e57]
-        - generic [ref=e60]: Entornos y Despliegue
-      - link "Gestion Portafolio" [ref=e61] [cursor=pointer]:
-        - /url: /portafolio
-        - img [ref=e62]
-        - generic [ref=e65]: Gestion Portafolio
-      - link "Gobernanza Workflow" [ref=e66] [cursor=pointer]:
-        - /url: /gobernanza
-        - img [ref=e67]
-        - generic [ref=e71]: Gobernanza Workflow
-      - generic [ref=e73]: Propuesta de Solucion
-      - link "Propuesta de Mejora" [ref=e75] [cursor=pointer]:
-        - /url: /propuesta
-        - img [ref=e76]
-        - generic [ref=e78]: Propuesta de Mejora
-      - link "Handoffs & Templates" [ref=e79] [cursor=pointer]:
-        - /url: /handoffs
-        - img [ref=e80]
-        - generic [ref=e83]: Handoffs & Templates
-      - link "Sitemap" [ref=e84] [cursor=pointer]:
-        - /url: /sitemap
-        - img [ref=e85]
-        - generic [ref=e87]: Sitemap
-      - link "Arquitectura Agents" [ref=e88] [cursor=pointer]:
-        - /url: /agents
-        - img [ref=e89]
-        - generic [ref=e92]: Arquitectura Agents
-      - generic [ref=e94]: Herramientas
-      - link "Centro de Ayuda" [ref=e96] [cursor=pointer]:
-        - /url: /help
-        - img [ref=e97]
-        - generic [ref=e100]: Centro de Ayuda
-      - link "Tests de Integridad" [ref=e101] [cursor=pointer]:
-        - /url: /integrity
-        - img [ref=e102]
-        - generic [ref=e105]: Tests de Integridad
-    - button "Colapsar sidebar" [ref=e106]:
-      - img [ref=e107]
-  - main [ref=e111]:
-    - generic [ref=e112]:
-      - generic [ref=e113]:
-        - heading "Tests de Integridad — Ecosistema SDLC" [level=1] [ref=e114]
-        - paragraph [ref=e115]: "36 verificaciones automatizadas: paths, contadores, relaciones, frontmatter, workflows, triggers, trazabilidad DTC y agent spec compliance"
-      - generic [ref=e117]:
-        - button "Ejecutar 32 tests" [ref=e118]:
-          - img [ref=e195]
-          - text: Ejecutar 32 tests
-        - generic [ref=e197]:
-          - generic [ref=e198]:
-            - img [ref=e199]
-            - generic [ref=e202]: 23 pass
-          - generic [ref=e203]:
-            - img [ref=e204]
-            - generic [ref=e208]: 9 fail
-          - generic [ref=e209]: 32 tests en 122ms
-      - generic [ref=e214]: 9 test(s) fallaron de 32
-      - generic [ref=e215]:
-        - generic [ref=e217]:
-          - generic [ref=e218]:
-            - img [ref=e219]
-            - heading "Integridad de Datos" [level=3] [ref=e222]
-          - generic [ref=e223]:
-            - generic [ref=e225]:
-              - img [ref=e226]
-              - generic [ref=e229]:
-                - generic [ref=e230]:
-                  - generic [ref=e231]: T1
-                  - generic [ref=e232]: HelpCenter docPaths resuelven a archivos reales
-                  - generic [ref=e233]: 0ms
-                - generic [ref=e234]: 166/166 docPaths resuelven correctamente
-            - generic [ref=e236]:
-              - img [ref=e237]
-              - generic [ref=e240]:
-                - generic [ref=e241]:
-                  - generic [ref=e242]: T2
-                  - generic [ref=e243]: SitemapView docPaths resuelven a archivos reales
-                  - generic [ref=e244]: 0ms
-                - generic [ref=e245]: 166/166 docPaths resuelven correctamente
-            - generic [ref=e247]:
-              - img [ref=e248]
-              - generic [ref=e251]:
-                - generic [ref=e252]:
-                  - generic [ref=e253]: T7
-                  - generic [ref=e254]: Sin docPaths duplicados en HelpCenter
-                  - generic [ref=e255]: 0ms
-                - generic [ref=e256]: 166 docPaths, 0 duplicados
-            - generic [ref=e258]:
-              - img [ref=e259]
-              - generic [ref=e262]:
-                - generic [ref=e263]:
-                  - generic [ref=e264]: T8
-                  - generic [ref=e265]: Sin docPaths duplicados en SitemapView
-                  - generic [ref=e266]: 0ms
-                - generic [ref=e267]: 166 docPaths, 0 duplicados
-        - generic [ref=e269]:
-          - generic [ref=e270]:
-            - img [ref=e271]
-            - heading "Cross-Referencia" [level=3] [ref=e281]
-          - generic [ref=e282]:
-            - generic [ref=e284]:
-              - img [ref=e285]
-              - generic [ref=e288]:
-                - generic [ref=e289]:
-                  - generic [ref=e290]: T3
-                  - generic [ref=e291]: "Triple match: HelpCenter skills = SitemapView skills = Filesystem"
-                  - generic [ref=e292]: 0ms
-                - generic [ref=e293]: "Triple match perfecto: 54 skills = HC/SM/FS"
-            - generic [ref=e295]:
-              - img [ref=e296]
-              - generic [ref=e299]:
-                - generic [ref=e300]:
-                  - generic [ref=e301]: T11
-                  - generic [ref=e302]: HelpCenter y SitemapView cubren los mismos docs base
-                  - generic [ref=e303]: 0ms
-                - generic [ref=e304]: 79 docs core (skills/rules/commands) presentes en ambas fuentes
-            - generic [ref=e306]:
-              - img [ref=e307]
-              - generic [ref=e310]:
-                - generic [ref=e311]:
-                  - generic [ref=e312]: T17
-                  - generic [ref=e313]: "Triple match: HelpCenter commands = SitemapView commands = Filesystem"
-                  - generic [ref=e314]: 0ms
-                - generic [ref=e315]: "Triple match perfecto: 20 commands = HC/SM/FS"
-            - generic [ref=e317]:
-              - img [ref=e318]
-              - generic [ref=e321]:
-                - generic [ref=e322]:
-                  - generic [ref=e323]: T18
-                  - generic [ref=e324]: "Triple match: HC docs = SM docs = FS docs (checklists/signoffs/templates)"
-                  - generic [ref=e325]: 0ms
-                - generic [ref=e326]: "Triple match perfecto: 80 docs = HC/SM/FS"
-        - generic [ref=e328]:
-          - generic [ref=e329]:
-            - img [ref=e330]
-            - heading "Legacy Cleanup" [level=3] [ref=e333]
-          - generic [ref=e336]:
-            - img [ref=e337]
-            - generic [ref=e340]:
-              - generic [ref=e341]:
-                - generic [ref=e342]: T4
-                - generic [ref=e343]: Cero archivos SKILLS.md legacy (plural)
-                - generic [ref=e344]: 0ms
-              - generic [ref=e345]: 0 archivos SKILLS.md legacy encontrados
-        - generic [ref=e347]:
-          - generic [ref=e348]:
-            - img [ref=e349]
-            - heading "Naming Convention" [level=3] [ref=e351]
-          - generic [ref=e354]:
-            - img [ref=e355]
-            - generic [ref=e358]:
-              - generic [ref=e359]:
-                - generic [ref=e360]: T5
-                - generic [ref=e361]: Todos los skills usan SKILL.md (singular)
-                - generic [ref=e362]: 0ms
-              - generic [ref=e363]: 54 skill paths usan naming correcto (SKILL.md)
-        - generic [ref=e365]:
-          - generic [ref=e366]:
-            - img [ref=e367]
-            - heading "Contadores" [level=3] [ref=e369]
-          - generic [ref=e372]:
-            - img [ref=e373]
-            - generic [ref=e377]:
-              - generic [ref=e378]:
-                - generic [ref=e379]: T6
-                - generic [ref=e380]: Conteo de artefactos HelpCenter = esperado (10 tipos)
-                - generic [ref=e381]: 0ms
-              - generic [ref=e382]: Mismatch en conteos de artefactos
-              - generic [ref=e383]:
-                - generic [ref=e384]: "mcps: esperado 4, encontrado 3 (-1)"
-                - generic [ref=e385]: → Faltan 1 artefactos del tipo 'mcp'
-                - generic [ref=e386]: "checklists: esperado 17, encontrado 8 (-9)"
-                - generic [ref=e387]: → Faltan 9 artefactos del tipo 'checklist'
-                - generic [ref=e388]: "signoffs: esperado 4, encontrado 2 (-2)"
-                - generic [ref=e389]: → Faltan 2 artefactos del tipo 'signoff'
-                - generic [ref=e390]: "templates: esperado 77, encontrado 9 (-68)"
-                - generic [ref=e391]: → Faltan 68 artefactos del tipo 'template'
-                - generic [ref=e392]: "TOTAL: esperado 277, encontrado 193"
-        - generic [ref=e394]:
-          - generic [ref=e395]:
-            - img [ref=e396]
-            - heading "Cobertura" [level=3] [ref=e402]
-          - generic [ref=e403]:
-            - generic [ref=e405]:
-              - img [ref=e406]
-              - generic [ref=e409]:
-                - generic [ref=e410]:
-                  - generic [ref=e411]: T9
-                  - generic [ref=e412]: Sin documentos huerfanos en filesystem (no registrados)
-                  - generic [ref=e413]: 0ms
-                - generic [ref=e414]: Todos los 169 docs del filesystem estan registrados en HC o SM
-            - generic [ref=e416]:
-              - img [ref=e417]
-              - generic [ref=e420]:
-                - generic [ref=e421]:
-                  - generic [ref=e422]: T10
-                  - generic [ref=e423]: MarkdownViewer glob cubre todos los docPaths
-                  - generic [ref=e424]: 0ms
-                - generic [ref=e425]: Glob cubre 166/166 docPaths
-        - generic [ref=e427]:
-          - generic [ref=e428]:
-            - img [ref=e429]
-            - heading "Sanity Check" [level=3] [ref=e434]
-          - generic [ref=e437]:
-            - img [ref=e438]
-            - generic [ref=e441]:
-              - generic [ref=e442]:
-                - generic [ref=e443]: T12
-                - generic [ref=e444]: Conteo de docs en filesystem es razonable
-                - generic [ref=e445]: 0ms
-              - generic [ref=e446]: "169 documentos .md en filesystem (esperado: 70-200)"
-        - generic [ref=e448]:
-          - generic [ref=e449]:
-            - img [ref=e450]
-            - heading "Validacion de Contenido" [level=3] [ref=e453]
-          - generic [ref=e454]:
-            - generic [ref=e456]:
-              - img [ref=e457]
-              - generic [ref=e460]:
-                - generic [ref=e461]:
-                  - generic [ref=e462]: T13
-                  - generic [ref=e463]: Frontmatter YAML valido en todos los SKILL.md
-                  - generic [ref=e464]: 100ms
-                - generic [ref=e465]: 54/54 SKILL.md tienen frontmatter YAML valido
-            - generic [ref=e467]:
-              - img [ref=e468]
-              - generic [ref=e471]:
-                - generic [ref=e472]:
-                  - generic [ref=e473]: T14
-                  - generic [ref=e474]: Frontmatter YAML valido en todos los command .md
-                  - generic [ref=e475]: 22ms
-                - generic [ref=e476]: 20/20 command .md tienen frontmatter YAML valido con description
-        - generic [ref=e478]:
-          - generic [ref=e479]:
-            - img [ref=e480]
-            - heading "Validacion Relacional" [level=3] [ref=e483]
-          - generic [ref=e484]:
-            - generic [ref=e486]:
-              - img [ref=e487]
-              - generic [ref=e490]:
-                - generic [ref=e491]:
-                  - generic [ref=e492]: T15
-                  - generic [ref=e493]: relatedSkills referencian IDs de skills existentes
-                  - generic [ref=e494]: 0ms
-                - generic [ref=e495]: Todos los relatedSkills de 9 artefactos apuntan a skills validos
-            - generic [ref=e497]:
-              - img [ref=e498]
-              - generic [ref=e502]:
-                - generic [ref=e503]:
-                  - generic [ref=e504]: T16
-                  - generic [ref=e505]: Workflow artifacts referencian artefactos registrados
-                  - generic [ref=e506]: 0ms
-                - generic [ref=e507]: 1 artifact refs rotos en workflows
-                - generic [ref=e509]: "Workflow \"Creación y mantenimiento de Rules\" -> step artifact: 'Rule File' (no existe)"
-            - generic [ref=e511]:
-              - img [ref=e512]
-              - generic [ref=e516]:
-                - generic [ref=e517]:
-                  - generic [ref=e518]: T19
-                  - generic [ref=e519]: Todos los roles usados son del set canonico
-                  - generic [ref=e520]: 0ms
-                - generic [ref=e521]: 6 roles no canonicos encontrados
-                - generic [ref=e522]:
-                  - generic [ref=e523]: "val-prd-tecnico -> role: 'R&D' (no canonico)"
-                  - generic [ref=e524]: "val-poc-report -> role: 'R&D' (no canonico)"
-                  - generic [ref=e525]: "val-adr -> role: 'R&D' (no canonico)"
-                  - generic [ref=e526]: "val-architecture-doc -> role: 'R&D' (no canonico)"
-                  - generic [ref=e527]: "val-agent-development -> role: 'R&D' (no canonico)"
-                  - generic [ref=e528]: "tpl-architecture -> role: 'R&D' (no canonico)"
-        - generic [ref=e530]:
-          - generic [ref=e531]:
-            - img [ref=e532]
-            - heading "Salud del Ecosistema" [level=3] [ref=e536]
-          - generic [ref=e537]:
-            - generic [ref=e539]:
-              - img [ref=e540]
-              - generic [ref=e543]:
-                - generic [ref=e544]:
-                  - generic [ref=e545]: T20
-                  - generic [ref=e546]: Las 8 fases SDLC (Gates 0-7) tienen cobertura de workflow
-                  - generic [ref=e547]: 0ms
-                - generic [ref=e548]: Las 8 fases SDLC (Gates 0-7) estan cubiertas por al menos 1 workflow
-            - generic [ref=e550]:
-              - img [ref=e551]
-              - generic [ref=e554]:
-                - generic [ref=e555]:
-                  - generic [ref=e556]: T21
-                  - generic [ref=e557]: Cada gate (0-7) tiene al menos 1 skill con gateContribution
-                  - generic [ref=e558]: 0ms
-                - generic [ref=e559]: Todos los gates cubiertos [G0:4 G1:7 G2:5 G3:4 G4:2 G5:5 G6:4 G7:3]
-            - generic [ref=e561]:
-              - img [ref=e562]
-              - generic [ref=e566]:
-                - generic [ref=e567]:
-                  - generic [ref=e568]: T22
-                  - generic [ref=e569]: Sin triggers duplicados intra-type (cross-type OK)
-                  - generic [ref=e570]: 0ms
-                - generic [ref=e571]: 1 duplicados intra-type problematicos + 35 cross-type sanos
-                - generic [ref=e572]:
-                  - generic [ref=e573]: "--- INTRA-TYPE (problematico) ---"
-                  - generic [ref=e574]: "\"security compliance\" -> checklist: [NFR Compliance, security-compliance]"
-                  - generic [ref=e575]: "--- CROSS-TYPE (35 sanos, ayudan al buscador) ---"
-                  - generic [ref=e576]: "\"project tracking\" -> [tracking-integration(skill), tpl-epics(template)]"
-                  - generic [ref=e577]: "\"product requirements\" -> [prd-funcional(skill), tpl-prd(template)]"
-                  - generic [ref=e578]: "\"cross review\" -> [review-cruzado(skill), review-cruzado(checklist)]"
-                  - generic [ref=e579]: "\"review cruzado\" -> [review-cruzado(skill), review-cruzado(checklist)]"
-                  - generic [ref=e580]: "\"prd alignment check\" -> [review-cruzado(skill), val-review-cruzado(validation-script)]"
-                  - generic [ref=e581]: "\"generate requirements\" -> [generate-rf(skill), validate-requirements-cmd(command)]"
-                  - generic [ref=e582]: "\"functional requirements\" -> [generate-rf(skill), tpl-rf-format(template)]"
-                  - generic [ref=e583]: "\"non-functional requirements\" -> [generate-nfr(skill), NFR Compliance(checklist)]"
-                  - generic [ref=e584]: "\"requirements traceability\" -> [validate-requirements(skill), val-validate-requirements(validation-script)]"
-                  - generic [ref=e585]: "\"epic breakdown\" -> [epic-breakdown(skill), tpl-epics(template)]"
-                  - generic [ref=e586]: "\"pull request\" -> [pr-description(skill), create-pr(command)]"
-                  - generic [ref=e587]: "\"ready for qa\" -> [dev-handoff-qa(skill), agent-qa-agent(agent)]"
-                  - generic [ref=e588]: "\"sast results\" -> [vuln-assessment(skill), agent-security-agent(agent)]"
-                  - generic [ref=e589]: "\"dast results\" -> [dast-interpretation(skill), agent-security-agent(agent)]"
-                  - generic [ref=e590]: "\"security checklist\" -> [security-checklist(skill), security-compliance(checklist)]"
-                  - generic [ref=e591]: ... y 20 mas
-            - generic [ref=e593]:
-              - img [ref=e594]
-              - generic [ref=e597]:
-                - generic [ref=e598]:
-                  - generic [ref=e599]: T23
-                  - generic [ref=e600]: Checklist repo-structure cubre las 7 categorias obligatorias
-                  - generic [ref=e601]: 0ms
-                - generic [ref=e602]: "Checklist repo-structure cubre 7/7 categorias: governance, CI/CD, API, architecture, documentation, tooling, structure"
-            - generic [ref=e604]:
-              - img [ref=e605]
-              - generic [ref=e609]:
-                - generic [ref=e610]:
-                  - generic [ref=e611]: T24
-                  - generic [ref=e612]: Templates de governance (README, CONTRIBUTING, SECURITY, CHANGELOG) registrados y resolvibles
-                  - generic [ref=e613]: 0ms
-                - generic [ref=e614]: 4 templates de governance con problemas
-                - generic [ref=e615]:
-                  - generic [ref=e616]: "tpl-readme: NO registrado en HelpCenter"
-                  - generic [ref=e617]: "tpl-contributing: NO registrado en HelpCenter"
-                  - generic [ref=e618]: "tpl-security-policy: NO registrado en HelpCenter"
-                  - generic [ref=e619]: "tpl-changelog: NO registrado en HelpCenter"
-        - generic [ref=e621]:
-          - generic [ref=e622]:
-            - img [ref=e623]
-            - heading "Trazabilidad DTC" [level=3] [ref=e626]
-          - generic [ref=e627]:
-            - generic [ref=e629]:
-              - img [ref=e630]
-              - generic [ref=e634]:
-                - generic [ref=e635]:
-                  - generic [ref=e636]: T25
-                  - generic [ref=e637]: Todo doc del filesystem referenciado por ≥1 artefacto HelpCenter
-                  - generic [ref=e638]: 0ms
-                - generic [ref=e639]: 32 docs huerfanos sin artefacto HelpCenter asociado
-                - generic [ref=e640]:
-                  - generic [ref=e641]: docs/audits/audit-catalog.md
-                  - generic [ref=e642]: docs/checklists/repo-structure.md
-                  - generic [ref=e643]: docs/hooks/README.md
-                  - generic [ref=e644]: docs/projects/sdlc-{{CLIENT_CODE}}.md
-                  - generic [ref=e645]: docs/projects/sdlc-{{CLIENT_CODE}}/architecture.md
-                  - generic [ref=e646]: docs/projects/sdlc-{{CLIENT_CODE}}/specs/routes.md
-                  - generic [ref=e647]: docs/settings-reference.md
-                  - generic [ref=e648]: docs/standards/hooks-strategy.md
-                  - generic [ref=e649]: docs/standards/org.md
-                  - generic [ref=e650]: docs/standards/sprint-commitment.md
-                  - generic [ref=e651]: docs/standards/tool-integrations.md
-                  - generic [ref=e652]: docs/templates/adr.md
-                  - generic [ref=e653]: docs/templates/changelog.md
-                  - generic [ref=e654]: docs/templates/contributing.md
-                  - generic [ref=e655]: docs/templates/course-correction-report.md
-                  - generic [ref=e656]: docs/templates/epic-review.md
-                  - generic [ref=e657]: docs/templates/kickoff.md
-                  - generic [ref=e658]: docs/templates/nfr-format.md
-                  - generic [ref=e659]: docs/templates/phases.md
-                  - generic [ref=e660]: docs/templates/readiness-assessment.md
-                  - generic [ref=e661]: docs/templates/readme.md
-                  - generic [ref=e662]: docs/templates/risk-log.md
-                  - generic [ref=e663]: docs/templates/rtm.md
-                  - generic [ref=e664]: docs/templates/rule.md
-                  - generic [ref=e665]: docs/templates/security-policy.md
-                  - generic [ref=e666]: docs/templates/specs/components.md
-                  - generic [ref=e667]: docs/templates/specs/routes.md
-                  - generic [ref=e668]: docs/templates/specs/storage.md
-                  - generic [ref=e669]: docs/templates/stakeholder-map.md
-                  - generic [ref=e670]: docs/templates/tech-debt-registry.md
-                  - generic [ref=e671]: docs/templates/user-story.md
-                  - generic [ref=e672]: guidelines/Guidelines.md
-            - generic [ref=e674]:
-              - img [ref=e675]
-              - generic [ref=e679]:
-                - generic [ref=e680]:
-                  - generic [ref=e681]: T26
-                  - generic [ref=e682]: "Matriz de ownership: cada doc tiene tipo de artefacto (producer/owner inferible)"
-                  - generic [ref=e683]: 0ms
-                - generic [ref=e684]: 1 artefactos sin ownership + 1 tipos sin mapping
-                - generic [ref=e685]:
-                  - generic [ref=e686]: "val-ecosystem-coherence (validation-script): sin roles ni owner inferible"
-                  - generic [ref=e687]: "Tipos sin owner mapping: validation-script"
-        - generic [ref=e689]:
-          - generic [ref=e690]:
-            - img [ref=e691]
-            - heading "Agents" [level=3] [ref=e696]
-          - generic [ref=e699]:
-            - img [ref=e700]
-            - generic [ref=e703]:
-              - generic [ref=e704]:
-                - generic [ref=e705]: T27
-                - generic [ref=e706]: "Agent Spec Compliance: campos requeridos del .md validados por agent"
-                - generic [ref=e707]: 0ms
-              - generic [ref=e708]: "6 agents validados: name, description, color, tools, skills, triggerType OK"
-        - generic [ref=e710]:
-          - generic [ref=e711]:
-            - img [ref=e712]
-            - heading "Cross-cutting" [level=3] [ref=e715]
-          - generic [ref=e718]:
-            - img [ref=e719]
-            - generic [ref=e723]:
-              - generic [ref=e724]:
-                - generic [ref=e725]: T28
-                - generic [ref=e726]: "Rule Ecosystem: generate-rule skill, rule template, y rule-development guide existen en registros"
-                - generic [ref=e727]: 0ms
-              - generic [ref=e728]: 1 gaps en ecosistema de rules
-              - generic [ref=e730]: Template tpl-rule no encontrado en HelpCenter
-        - generic [ref=e732]:
-          - generic [ref=e733]:
-            - img [ref=e734]
-            - heading "consistency" [level=3] [ref=e737]
-          - generic [ref=e740]:
-            - img [ref=e741]
-            - generic [ref=e744]:
-              - generic [ref=e745]:
-                - generic [ref=e746]: T29
-                - generic [ref=e747]: Stats Synchronization
-              - generic [ref=e748]: "Stats sincronizados: 54 skills (9 automatizados), 277 total"
-        - generic [ref=e750]:
-          - generic [ref=e751]:
-            - img [ref=e752]
-            - heading "automation" [level=3] [ref=e755]
-          - generic [ref=e756]:
-            - generic [ref=e758]:
-              - img [ref=e759]
-              - generic [ref=e762]:
-                - generic [ref=e763]:
-                  - generic [ref=e764]: T30
-                  - generic [ref=e765]: Automation Scripts Existence
-                - generic [ref=e766]: 9 skills automatizados verificados con indicadores de automatización
-            - generic [ref=e768]:
-              - img [ref=e769]
-              - generic [ref=e772]:
-                - generic [ref=e773]:
-                  - generic [ref=e774]: T31
-                  - generic [ref=e775]: ROI Calculation Consistency
-                - generic [ref=e776]: "ROI consistente: 775+ horas/año, 19% automatizado"
-        - generic [ref=e778]:
-          - generic [ref=e779]:
-            - img [ref=e780]
-            - heading "governance" [level=3] [ref=e783]
-          - generic [ref=e786]:
-            - img [ref=e787]
-            - generic [ref=e791]:
-              - generic [ref=e792]:
-                - generic [ref=e793]: T32
-                - generic [ref=e794]: Documentation Travel With Code (DTC)
-              - generic [ref=e795]: DTC compliance incompleto
-              - generic [ref=e797]: "Pocos artifacts de governance documentaria: 19 (esperado >45)"
+    - complementary [ref=e4]:
+        - generic [ref=e6]:
+            - img [ref=e7]
+            - generic [ref=e11]: SDLC {{CLIENT_NAME}}
+        - navigation [ref=e12]:
+            - generic [ref=e14]: Estado Actual
+            - link "Flujo General" [ref=e16] [cursor=pointer]:
+                - /url: /
+                - img [ref=e17]
+                - generic [ref=e21]: Flujo General
+            - link "Fase de Requisitos" [ref=e22] [cursor=pointer]:
+                - /url: /requisitos
+                - img [ref=e23]
+                - generic [ref=e26]: Fase de Requisitos
+            - link "Proceso PRD" [ref=e27] [cursor=pointer]:
+                - /url: /prd
+                - img [ref=e28]
+                - generic [ref=e31]: Proceso PRD
+            - link "Requisitos Funcionales" [ref=e32] [cursor=pointer]:
+                - /url: /requisitos-funcionales
+                - img [ref=e33]
+                - generic [ref=e36]: Requisitos Funcionales
+            - link "Planificacion Sprint" [ref=e37] [cursor=pointer]:
+                - /url: /sprint
+                - img [ref=e38]
+                - generic [ref=e40]: Planificacion Sprint
+            - link "Proceso Desarrollo" [ref=e41] [cursor=pointer]:
+                - /url: /desarrollo
+                - img [ref=e42]
+                - generic [ref=e46]: Proceso Desarrollo
+            - link "Testing y QA" [ref=e47] [cursor=pointer]:
+                - /url: /testing
+                - img [ref=e48]
+                - generic [ref=e51]: Testing y QA
+            - link "Seguridad SDLC" [ref=e52] [cursor=pointer]:
+                - /url: /seguridad
+                - img [ref=e53]
+                - generic [ref=e55]: Seguridad SDLC
+            - link "Entornos y Despliegue" [ref=e56] [cursor=pointer]:
+                - /url: /despliegue
+                - img [ref=e57]
+                - generic [ref=e60]: Entornos y Despliegue
+            - link "Gestion Portafolio" [ref=e61] [cursor=pointer]:
+                - /url: /portafolio
+                - img [ref=e62]
+                - generic [ref=e65]: Gestion Portafolio
+            - link "Gobernanza Workflow" [ref=e66] [cursor=pointer]:
+                - /url: /gobernanza
+                - img [ref=e67]
+                - generic [ref=e71]: Gobernanza Workflow
+            - generic [ref=e73]: Propuesta de Solucion
+            - link "Propuesta de Mejora" [ref=e75] [cursor=pointer]:
+                - /url: /propuesta
+                - img [ref=e76]
+                - generic [ref=e78]: Propuesta de Mejora
+            - link "Handoffs & Templates" [ref=e79] [cursor=pointer]:
+                - /url: /handoffs
+                - img [ref=e80]
+                - generic [ref=e83]: Handoffs & Templates
+            - link "Sitemap" [ref=e84] [cursor=pointer]:
+                - /url: /sitemap
+                - img [ref=e85]
+                - generic [ref=e87]: Sitemap
+            - link "Arquitectura Agents" [ref=e88] [cursor=pointer]:
+                - /url: /agents
+                - img [ref=e89]
+                - generic [ref=e92]: Arquitectura Agents
+            - generic [ref=e94]: Herramientas
+            - link "Centro de Ayuda" [ref=e96] [cursor=pointer]:
+                - /url: /help
+                - img [ref=e97]
+                - generic [ref=e100]: Centro de Ayuda
+            - link "Tests de Integridad" [ref=e101] [cursor=pointer]:
+                - /url: /integrity
+                - img [ref=e102]
+                - generic [ref=e105]: Tests de Integridad
+        - button "Colapsar sidebar" [ref=e106]:
+            - img [ref=e107]
+    - main [ref=e111]:
+        - generic [ref=e112]:
+            - generic [ref=e113]:
+                - heading "Tests de Integridad — Ecosistema SDLC" [level=1] [ref=e114]
+                - paragraph [ref=e115]: '36 verificaciones automatizadas: paths, contadores, relaciones, frontmatter, workflows, triggers, trazabilidad DTC y agent spec compliance'
+            - generic [ref=e117]:
+                - button "Ejecutar 32 tests" [ref=e118]:
+                    - img [ref=e195]
+                    - text: Ejecutar 32 tests
+                - generic [ref=e197]:
+                    - generic [ref=e198]:
+                        - img [ref=e199]
+                        - generic [ref=e202]: 23 pass
+                    - generic [ref=e203]:
+                        - img [ref=e204]
+                        - generic [ref=e208]: 9 fail
+                    - generic [ref=e209]: 32 tests en 122ms
+            - generic [ref=e214]: 9 test(s) fallaron de 32
+            - generic [ref=e215]:
+                - generic [ref=e217]:
+                    - generic [ref=e218]:
+                        - img [ref=e219]
+                        - heading "Integridad de Datos" [level=3] [ref=e222]
+                    - generic [ref=e223]:
+                        - generic [ref=e225]:
+                            - img [ref=e226]
+                            - generic [ref=e229]:
+                                - generic [ref=e230]:
+                                    - generic [ref=e231]: T1
+                                    - generic [ref=e232]: HelpCenter docPaths resuelven a archivos reales
+                                    - generic [ref=e233]: 0ms
+                                - generic [ref=e234]: 166/166 docPaths resuelven correctamente
+                        - generic [ref=e236]:
+                            - img [ref=e237]
+                            - generic [ref=e240]:
+                                - generic [ref=e241]:
+                                    - generic [ref=e242]: T2
+                                    - generic [ref=e243]: SitemapView docPaths resuelven a archivos reales
+                                    - generic [ref=e244]: 0ms
+                                - generic [ref=e245]: 166/166 docPaths resuelven correctamente
+                        - generic [ref=e247]:
+                            - img [ref=e248]
+                            - generic [ref=e251]:
+                                - generic [ref=e252]:
+                                    - generic [ref=e253]: T7
+                                    - generic [ref=e254]: Sin docPaths duplicados en HelpCenter
+                                    - generic [ref=e255]: 0ms
+                                - generic [ref=e256]: 166 docPaths, 0 duplicados
+                        - generic [ref=e258]:
+                            - img [ref=e259]
+                            - generic [ref=e262]:
+                                - generic [ref=e263]:
+                                    - generic [ref=e264]: T8
+                                    - generic [ref=e265]: Sin docPaths duplicados en SitemapView
+                                    - generic [ref=e266]: 0ms
+                                - generic [ref=e267]: 166 docPaths, 0 duplicados
+                - generic [ref=e269]:
+                    - generic [ref=e270]:
+                        - img [ref=e271]
+                        - heading "Cross-Referencia" [level=3] [ref=e281]
+                    - generic [ref=e282]:
+                        - generic [ref=e284]:
+                            - img [ref=e285]
+                            - generic [ref=e288]:
+                                - generic [ref=e289]:
+                                    - generic [ref=e290]: T3
+                                    - generic [ref=e291]: 'Triple match: HelpCenter skills = SitemapView skills = Filesystem'
+                                    - generic [ref=e292]: 0ms
+                                - generic [ref=e293]: 'Triple match perfecto: 54 skills = HC/SM/FS'
+                        - generic [ref=e295]:
+                            - img [ref=e296]
+                            - generic [ref=e299]:
+                                - generic [ref=e300]:
+                                    - generic [ref=e301]: T11
+                                    - generic [ref=e302]: HelpCenter y SitemapView cubren los mismos docs base
+                                    - generic [ref=e303]: 0ms
+                                - generic [ref=e304]: 79 docs core (skills/rules/commands) presentes en ambas fuentes
+                        - generic [ref=e306]:
+                            - img [ref=e307]
+                            - generic [ref=e310]:
+                                - generic [ref=e311]:
+                                    - generic [ref=e312]: T17
+                                    - generic [ref=e313]: 'Triple match: HelpCenter commands = SitemapView commands = Filesystem'
+                                    - generic [ref=e314]: 0ms
+                                - generic [ref=e315]: 'Triple match perfecto: 20 commands = HC/SM/FS'
+                        - generic [ref=e317]:
+                            - img [ref=e318]
+                            - generic [ref=e321]:
+                                - generic [ref=e322]:
+                                    - generic [ref=e323]: T18
+                                    - generic [ref=e324]: 'Triple match: HC docs = SM docs = FS docs (checklists/signoffs/templates)'
+                                    - generic [ref=e325]: 0ms
+                                - generic [ref=e326]: 'Triple match perfecto: 80 docs = HC/SM/FS'
+                - generic [ref=e328]:
+                    - generic [ref=e329]:
+                        - img [ref=e330]
+                        - heading "Legacy Cleanup" [level=3] [ref=e333]
+                    - generic [ref=e336]:
+                        - img [ref=e337]
+                        - generic [ref=e340]:
+                            - generic [ref=e341]:
+                                - generic [ref=e342]: T4
+                                - generic [ref=e343]: Cero archivos SKILLS.md legacy (plural)
+                                - generic [ref=e344]: 0ms
+                            - generic [ref=e345]: 0 archivos SKILLS.md legacy encontrados
+                - generic [ref=e347]:
+                    - generic [ref=e348]:
+                        - img [ref=e349]
+                        - heading "Naming Convention" [level=3] [ref=e351]
+                    - generic [ref=e354]:
+                        - img [ref=e355]
+                        - generic [ref=e358]:
+                            - generic [ref=e359]:
+                                - generic [ref=e360]: T5
+                                - generic [ref=e361]: Todos los skills usan SKILL.md (singular)
+                                - generic [ref=e362]: 0ms
+                            - generic [ref=e363]: 54 skill paths usan naming correcto (SKILL.md)
+                - generic [ref=e365]:
+                    - generic [ref=e366]:
+                        - img [ref=e367]
+                        - heading "Contadores" [level=3] [ref=e369]
+                    - generic [ref=e372]:
+                        - img [ref=e373]
+                        - generic [ref=e377]:
+                            - generic [ref=e378]:
+                                - generic [ref=e379]: T6
+                                - generic [ref=e380]: Conteo de artefactos HelpCenter = esperado (10 tipos)
+                                - generic [ref=e381]: 0ms
+                            - generic [ref=e382]: Mismatch en conteos de artefactos
+                            - generic [ref=e383]:
+                                - generic [ref=e384]: 'mcps: esperado 4, encontrado 3 (-1)'
+                                - generic [ref=e385]: → Faltan 1 artefactos del tipo 'mcp'
+                                - generic [ref=e386]: 'checklists: esperado 17, encontrado 8 (-9)'
+                                - generic [ref=e387]: → Faltan 9 artefactos del tipo 'checklist'
+                                - generic [ref=e388]: 'signoffs: esperado 4, encontrado 2 (-2)'
+                                - generic [ref=e389]: → Faltan 2 artefactos del tipo 'signoff'
+                                - generic [ref=e390]: 'templates: esperado 77, encontrado 9 (-68)'
+                                - generic [ref=e391]: → Faltan 68 artefactos del tipo 'template'
+                                - generic [ref=e392]: 'TOTAL: esperado 277, encontrado 193'
+                - generic [ref=e394]:
+                    - generic [ref=e395]:
+                        - img [ref=e396]
+                        - heading "Cobertura" [level=3] [ref=e402]
+                    - generic [ref=e403]:
+                        - generic [ref=e405]:
+                            - img [ref=e406]
+                            - generic [ref=e409]:
+                                - generic [ref=e410]:
+                                    - generic [ref=e411]: T9
+                                    - generic [ref=e412]: Sin documentos huerfanos en filesystem (no registrados)
+                                    - generic [ref=e413]: 0ms
+                                - generic [ref=e414]: Todos los 169 docs del filesystem estan registrados en HC o SM
+                        - generic [ref=e416]:
+                            - img [ref=e417]
+                            - generic [ref=e420]:
+                                - generic [ref=e421]:
+                                    - generic [ref=e422]: T10
+                                    - generic [ref=e423]: MarkdownViewer glob cubre todos los docPaths
+                                    - generic [ref=e424]: 0ms
+                                - generic [ref=e425]: Glob cubre 166/166 docPaths
+                - generic [ref=e427]:
+                    - generic [ref=e428]:
+                        - img [ref=e429]
+                        - heading "Sanity Check" [level=3] [ref=e434]
+                    - generic [ref=e437]:
+                        - img [ref=e438]
+                        - generic [ref=e441]:
+                            - generic [ref=e442]:
+                                - generic [ref=e443]: T12
+                                - generic [ref=e444]: Conteo de docs en filesystem es razonable
+                                - generic [ref=e445]: 0ms
+                            - generic [ref=e446]: '169 documentos .md en filesystem (esperado: 70-200)'
+                - generic [ref=e448]:
+                    - generic [ref=e449]:
+                        - img [ref=e450]
+                        - heading "Validacion de Contenido" [level=3] [ref=e453]
+                    - generic [ref=e454]:
+                        - generic [ref=e456]:
+                            - img [ref=e457]
+                            - generic [ref=e460]:
+                                - generic [ref=e461]:
+                                    - generic [ref=e462]: T13
+                                    - generic [ref=e463]: Frontmatter YAML valido en todos los SKILL.md
+                                    - generic [ref=e464]: 100ms
+                                - generic [ref=e465]: 54/54 SKILL.md tienen frontmatter YAML valido
+                        - generic [ref=e467]:
+                            - img [ref=e468]
+                            - generic [ref=e471]:
+                                - generic [ref=e472]:
+                                    - generic [ref=e473]: T14
+                                    - generic [ref=e474]: Frontmatter YAML valido en todos los command .md
+                                    - generic [ref=e475]: 22ms
+                                - generic [ref=e476]: 20/20 command .md tienen frontmatter YAML valido con description
+                - generic [ref=e478]:
+                    - generic [ref=e479]:
+                        - img [ref=e480]
+                        - heading "Validacion Relacional" [level=3] [ref=e483]
+                    - generic [ref=e484]:
+                        - generic [ref=e486]:
+                            - img [ref=e487]
+                            - generic [ref=e490]:
+                                - generic [ref=e491]:
+                                    - generic [ref=e492]: T15
+                                    - generic [ref=e493]: relatedSkills referencian IDs de skills existentes
+                                    - generic [ref=e494]: 0ms
+                                - generic [ref=e495]: Todos los relatedSkills de 9 artefactos apuntan a skills validos
+                        - generic [ref=e497]:
+                            - img [ref=e498]
+                            - generic [ref=e502]:
+                                - generic [ref=e503]:
+                                    - generic [ref=e504]: T16
+                                    - generic [ref=e505]: Workflow artifacts referencian artefactos registrados
+                                    - generic [ref=e506]: 0ms
+                                - generic [ref=e507]: 1 artifact refs rotos en workflows
+                                - generic [ref=e509]: 'Workflow "Creación y mantenimiento de Rules" -> step artifact: ''Rule File'' (no existe)'
+                        - generic [ref=e511]:
+                            - img [ref=e512]
+                            - generic [ref=e516]:
+                                - generic [ref=e517]:
+                                    - generic [ref=e518]: T19
+                                    - generic [ref=e519]: Todos los roles usados son del set canonico
+                                    - generic [ref=e520]: 0ms
+                                - generic [ref=e521]: 6 roles no canonicos encontrados
+                                - generic [ref=e522]:
+                                    - generic [ref=e523]: "val-prd-tecnico -> role: 'R&D' (no canonico)"
+                                    - generic [ref=e524]: "val-poc-report -> role: 'R&D' (no canonico)"
+                                    - generic [ref=e525]: "val-adr -> role: 'R&D' (no canonico)"
+                                    - generic [ref=e526]: "val-architecture-doc -> role: 'R&D' (no canonico)"
+                                    - generic [ref=e527]: "val-agent-development -> role: 'R&D' (no canonico)"
+                                    - generic [ref=e528]: "tpl-architecture -> role: 'R&D' (no canonico)"
+                - generic [ref=e530]:
+                    - generic [ref=e531]:
+                        - img [ref=e532]
+                        - heading "Salud del Ecosistema" [level=3] [ref=e536]
+                    - generic [ref=e537]:
+                        - generic [ref=e539]:
+                            - img [ref=e540]
+                            - generic [ref=e543]:
+                                - generic [ref=e544]:
+                                    - generic [ref=e545]: T20
+                                    - generic [ref=e546]: Las 8 fases SDLC (Gates 0-7) tienen cobertura de workflow
+                                    - generic [ref=e547]: 0ms
+                                - generic [ref=e548]: Las 8 fases SDLC (Gates 0-7) estan cubiertas por al menos 1 workflow
+                        - generic [ref=e550]:
+                            - img [ref=e551]
+                            - generic [ref=e554]:
+                                - generic [ref=e555]:
+                                    - generic [ref=e556]: T21
+                                    - generic [ref=e557]: Cada gate (0-7) tiene al menos 1 skill con gateContribution
+                                    - generic [ref=e558]: 0ms
+                                - generic [ref=e559]: Todos los gates cubiertos [G0:4 G1:7 G2:5 G3:4 G4:2 G5:5 G6:4 G7:3]
+                        - generic [ref=e561]:
+                            - img [ref=e562]
+                            - generic [ref=e566]:
+                                - generic [ref=e567]:
+                                    - generic [ref=e568]: T22
+                                    - generic [ref=e569]: Sin triggers duplicados intra-type (cross-type OK)
+                                    - generic [ref=e570]: 0ms
+                                - generic [ref=e571]: 1 duplicados intra-type problematicos + 35 cross-type sanos
+                                - generic [ref=e572]:
+                                    - generic [ref=e573]: '--- INTRA-TYPE (problematico) ---'
+                                    - generic [ref=e574]: '"security compliance" -> checklist: [NFR Compliance, security-compliance]'
+                                    - generic [ref=e575]: '--- CROSS-TYPE (35 sanos, ayudan al buscador) ---'
+                                    - generic [ref=e576]: '"project tracking" -> [tracking-integration(skill), tpl-epics(template)]'
+                                    - generic [ref=e577]: '"product requirements" -> [prd-funcional(skill), tpl-prd(template)]'
+                                    - generic [ref=e578]: '"cross review" -> [review-cruzado(skill), review-cruzado(checklist)]'
+                                    - generic [ref=e579]: '"review cruzado" -> [review-cruzado(skill), review-cruzado(checklist)]'
+                                    - generic [ref=e580]: '"prd alignment check" -> [review-cruzado(skill), val-review-cruzado(validation-script)]'
+                                    - generic [ref=e581]: '"generate requirements" -> [lidr-requirements per-rf mode(skill), validate-requirements-cmd(command)]'
+                                    - generic [ref=e582]: '"functional requirements" -> [lidr-requirements per-rf mode(skill), tpl-rf-format(template)]'
+                                    - generic [ref=e583]: '"non-functional requirements" -> [lidr-requirements nfr mode(skill), NFR Compliance(checklist)]'
+                                    - generic [ref=e584]: '"requirements traceability" -> [lidr-requirements validate mode(skill), val-validate-requirements(validation-script)]'
+                                    - generic [ref=e585]: '"epic breakdown" -> [epic-breakdown(skill), tpl-epics(template)]'
+                                    - generic [ref=e586]: '"pull request" -> [pr-description(skill), create-pr(command)]'
+                                    - generic [ref=e587]: '"ready for qa" -> [dev-handoff-qa(skill), agent-qa-agent(agent)]'
+                                    - generic [ref=e588]: '"sast results" -> [vuln-assessment(skill), agent-security-agent(agent)]'
+                                    - generic [ref=e589]: '"dast results" -> [dast-interpretation(skill), agent-security-agent(agent)]'
+                                    - generic [ref=e590]: '"security checklist" -> [security-checklist(skill), security-compliance(checklist)]'
+                                    - generic [ref=e591]: ... y 20 mas
+                        - generic [ref=e593]:
+                            - img [ref=e594]
+                            - generic [ref=e597]:
+                                - generic [ref=e598]:
+                                    - generic [ref=e599]: T23
+                                    - generic [ref=e600]: Checklist repo-structure cubre las 7 categorias obligatorias
+                                    - generic [ref=e601]: 0ms
+                                - generic [ref=e602]: 'Checklist repo-structure cubre 7/7 categorias: governance, CI/CD, API, architecture, documentation, tooling, structure'
+                        - generic [ref=e604]:
+                            - img [ref=e605]
+                            - generic [ref=e609]:
+                                - generic [ref=e610]:
+                                    - generic [ref=e611]: T24
+                                    - generic [ref=e612]: Templates de governance (README, CONTRIBUTING, SECURITY, CHANGELOG) registrados y resolvibles
+                                    - generic [ref=e613]: 0ms
+                                - generic [ref=e614]: 4 templates de governance con problemas
+                                - generic [ref=e615]:
+                                    - generic [ref=e616]: 'tpl-readme: NO registrado en HelpCenter'
+                                    - generic [ref=e617]: 'tpl-contributing: NO registrado en HelpCenter'
+                                    - generic [ref=e618]: 'tpl-security-policy: NO registrado en HelpCenter'
+                                    - generic [ref=e619]: 'tpl-changelog: NO registrado en HelpCenter'
+                - generic [ref=e621]:
+                    - generic [ref=e622]:
+                        - img [ref=e623]
+                        - heading "Trazabilidad DTC" [level=3] [ref=e626]
+                    - generic [ref=e627]:
+                        - generic [ref=e629]:
+                            - img [ref=e630]
+                            - generic [ref=e634]:
+                                - generic [ref=e635]:
+                                    - generic [ref=e636]: T25
+                                    - generic [ref=e637]: Todo doc del filesystem referenciado por ≥1 artefacto HelpCenter
+                                    - generic [ref=e638]: 0ms
+                                - generic [ref=e639]: 32 docs huerfanos sin artefacto HelpCenter asociado
+                                - generic [ref=e640]:
+                                    - generic [ref=e641]: docs/audits/audit-catalog.md
+                                    - generic [ref=e642]: docs/checklists/repo-structure.md
+                                    - generic [ref=e643]: docs/hooks/README.md
+                                    - generic [ref=e644]: docs/projects/sdlc-{{CLIENT_CODE}}.md
+                                    - generic [ref=e645]: docs/projects/sdlc-{{CLIENT_CODE}}/architecture.md
+                                    - generic [ref=e646]: docs/projects/sdlc-{{CLIENT_CODE}}/specs/routes.md
+                                    - generic [ref=e647]: docs/settings-reference.md
+                                    - generic [ref=e648]: docs/standards/hooks-strategy.md
+                                    - generic [ref=e649]: docs/standards/org.md
+                                    - generic [ref=e650]: docs/standards/sprint-commitment.md
+                                    - generic [ref=e651]: docs/standards/tool-integrations.md
+                                    - generic [ref=e652]: docs/templates/adr.md
+                                    - generic [ref=e653]: docs/templates/changelog.md
+                                    - generic [ref=e654]: docs/templates/contributing.md
+                                    - generic [ref=e655]: docs/templates/course-correction-report.md
+                                    - generic [ref=e656]: docs/templates/epic-review.md
+                                    - generic [ref=e657]: docs/templates/kickoff.md
+                                    - generic [ref=e658]: docs/templates/nfr-format.md
+                                    - generic [ref=e659]: docs/templates/phases.md
+                                    - generic [ref=e660]: docs/templates/readiness-assessment.md
+                                    - generic [ref=e661]: docs/templates/readme.md
+                                    - generic [ref=e662]: docs/templates/risk-log.md
+                                    - generic [ref=e663]: docs/templates/rtm.md
+                                    - generic [ref=e664]: docs/templates/rule.md
+                                    - generic [ref=e665]: docs/templates/security-policy.md
+                                    - generic [ref=e666]: docs/templates/specs/components.md
+                                    - generic [ref=e667]: docs/templates/specs/routes.md
+                                    - generic [ref=e668]: docs/templates/specs/storage.md
+                                    - generic [ref=e669]: docs/templates/stakeholder-map.md
+                                    - generic [ref=e670]: docs/templates/tech-debt-registry.md
+                                    - generic [ref=e671]: docs/templates/user-story.md
+                                    - generic [ref=e672]: guidelines/Guidelines.md
+                        - generic [ref=e674]:
+                            - img [ref=e675]
+                            - generic [ref=e679]:
+                                - generic [ref=e680]:
+                                    - generic [ref=e681]: T26
+                                    - generic [ref=e682]: 'Matriz de ownership: cada doc tiene tipo de artefacto (producer/owner inferible)'
+                                    - generic [ref=e683]: 0ms
+                                - generic [ref=e684]: 1 artefactos sin ownership + 1 tipos sin mapping
+                                - generic [ref=e685]:
+                                    - generic [ref=e686]: 'val-ecosystem-coherence (validation-script): sin roles ni owner inferible'
+                                    - generic [ref=e687]: 'Tipos sin owner mapping: validation-script'
+                - generic [ref=e689]:
+                    - generic [ref=e690]:
+                        - img [ref=e691]
+                        - heading "Agents" [level=3] [ref=e696]
+                    - generic [ref=e699]:
+                        - img [ref=e700]
+                        - generic [ref=e703]:
+                            - generic [ref=e704]:
+                                - generic [ref=e705]: T27
+                                - generic [ref=e706]: 'Agent Spec Compliance: campos requeridos del .md validados por agent'
+                                - generic [ref=e707]: 0ms
+                            - generic [ref=e708]: '6 agents validados: name, description, color, tools, skills, triggerType OK'
+                - generic [ref=e710]:
+                    - generic [ref=e711]:
+                        - img [ref=e712]
+                        - heading "Cross-cutting" [level=3] [ref=e715]
+                    - generic [ref=e718]:
+                        - img [ref=e719]
+                        - generic [ref=e723]:
+                            - generic [ref=e724]:
+                                - generic [ref=e725]: T28
+                                - generic [ref=e726]: 'Rule Ecosystem: generate-rule skill, rule template, y rule-development guide existen en registros'
+                                - generic [ref=e727]: 0ms
+                            - generic [ref=e728]: 1 gaps en ecosistema de rules
+                            - generic [ref=e730]: Template tpl-rule no encontrado en HelpCenter
+                - generic [ref=e732]:
+                    - generic [ref=e733]:
+                        - img [ref=e734]
+                        - heading "consistency" [level=3] [ref=e737]
+                    - generic [ref=e740]:
+                        - img [ref=e741]
+                        - generic [ref=e744]:
+                            - generic [ref=e745]:
+                                - generic [ref=e746]: T29
+                                - generic [ref=e747]: Stats Synchronization
+                            - generic [ref=e748]: 'Stats sincronizados: 54 skills (9 automatizados), 277 total'
+                - generic [ref=e750]:
+                    - generic [ref=e751]:
+                        - img [ref=e752]
+                        - heading "automation" [level=3] [ref=e755]
+                    - generic [ref=e756]:
+                        - generic [ref=e758]:
+                            - img [ref=e759]
+                            - generic [ref=e762]:
+                                - generic [ref=e763]:
+                                    - generic [ref=e764]: T30
+                                    - generic [ref=e765]: Automation Scripts Existence
+                                - generic [ref=e766]: 9 skills automatizados verificados con indicadores de automatización
+                        - generic [ref=e768]:
+                            - img [ref=e769]
+                            - generic [ref=e772]:
+                                - generic [ref=e773]:
+                                    - generic [ref=e774]: T31
+                                    - generic [ref=e775]: ROI Calculation Consistency
+                                - generic [ref=e776]: 'ROI consistente: 775+ horas/año, 19% automatizado'
+                - generic [ref=e778]:
+                    - generic [ref=e779]:
+                        - img [ref=e780]
+                        - heading "governance" [level=3] [ref=e783]
+                    - generic [ref=e786]:
+                        - img [ref=e787]
+                        - generic [ref=e791]:
+                            - generic [ref=e792]:
+                                - generic [ref=e793]: T32
+                                - generic [ref=e794]: Documentation Travel With Code (DTC)
+                            - generic [ref=e795]: DTC compliance incompleto
+                            - generic [ref=e797]: 'Pocos artifacts de governance documentaria: 19 (esperado >45)'
