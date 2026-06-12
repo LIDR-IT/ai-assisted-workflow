@@ -54,11 +54,13 @@ const PROJECT_CONTEXT_MD = `# Project Context — How We Work (LIDR × BMad)
   feature.
 
 ## The loop
-analysis → PRD-delta (planning) → epics/stories (implementation) → retro → monitoring (feature KPIs)
-→ reports/improvements → improvements feed the next PRD-delta.
-- DTC (Docs Travel with Code): ship code and update affected derived docs + tests in the SAME PR.
-  Retro always updates the PRD-delta; project-context/docs/ADR only when rules/decisions/behavior
-  actually change.
+analysis → PRD-delta (planning) → epics/stories (implementation) → retrospective → monitoring
+(feature KPIs) → reports/improvements → improvements feed the next PRD-delta.
+- DTC (Docs Travel with Code): during implementation each PR ships code + the affected derived docs
+  + tests — not batched later.
+- The retrospective does NOT rewrite everything: it reconciles the PRD-delta (intake → archived) +
+  the next backlog, and propagates conditionally — project-context/docs/ADR only when a rule,
+  decision or behavior actually changed (and DTC did not already cover it).
 
 ## Tests = executable truth (TEA / Murat)
 - New feature (truth-first): AC/UJ → test-design (risk) → ATDD (red tests = the spec, before code)
@@ -81,7 +83,7 @@ function EstructuraContextoComponent() {
     <div>
       <PageHeader
         title="Estructura de Contexto & Specs"
-        subtitle="Propuesta LIDR de carpetas del repo (alineada con las rutas reales de BMad). Distingue project-context.md (archivo único global de reglas para la IA, bmad-generate-project-context) de docs/index.md (índice maestro que apunta a los deep-dives por funcionalidad, bmad-document-project). Más: analisis/ (Fase 1 por área), PRDs/ (planning-artifacts, capa de intake/cambio: 1 PRD por funcionalidad UJ+RF+NFR → épicas → stories/retro en implementation-artifacts; la verdad viva son los tests + docs derivados) y arquitecture/."
+        subtitle="Propuesta LIDR de carpetas del repo (alineada con las rutas reales de BMad). Distingue project-context.md (archivo único global de reglas para la IA, bmad-generate-project-context) de docs/index.md (índice maestro que apunta a los deep-dives por funcionalidad, bmad-document-project). Más: analisis/ (Fase 1 por área), PRDs/ (planning-artifacts, capa de intake/cambio: 1 PRD por funcionalidad UJ+RF+NFR → épicas → stories/retrospectivas en implementation-artifacts; la verdad viva son los tests + docs derivados) y arquitecture/."
       />
 
       <div className="mt-6 space-y-6">
@@ -204,7 +206,7 @@ function EstructuraContextoComponent() {
                         <code className="text-xs bg-white px-1 rounded">PRDs/</code> —{' '}
                         <span className="text-indigo-700 font-medium">planning-artifacts/</span>: 1
                         PRD por funcionalidad (cada funcionalidad = un producto) que extiende UJ +
-                        RF + NFR → épicas. Stories y retros en{' '}
+                        RF + NFR → épicas. Stories y retrospectivas en{' '}
                         <span className="font-medium">implementation-artifacts/</span>.
                       </li>
                       <li>
@@ -270,7 +272,7 @@ function EstructuraContextoComponent() {
                 <li>
                   <span className="text-indigo-500 font-medium mr-1">4.</span>
                   Cada épica genera <span className="text-green-700 font-medium">stories</span> y
-                  una <span className="text-amber-700 font-medium">retro</span>{' '}
+                  una <span className="text-amber-700 font-medium">retrospectiva</span>{' '}
                   (implementation-artifacts/). Al profundizar una funcionalidad, su deep-dive entra
                   en <code className="text-xs bg-slate-100 px-1 rounded">docs/index.md</code>.
                 </li>
@@ -371,8 +373,8 @@ function EstructuraContextoComponent() {
                 <span>
                   El ciclo BMad:{' '}
                   <span className="font-medium">
-                    analisis → PRD (planning) → épicas/stories (implementation) → retro → monitoring
-                    (KPIs de la feature)
+                    analisis → PRD (planning) → épicas/stories (implementation) → retrospectiva →
+                    monitoring (KPIs de la feature)
                   </span>
                   ; el monitoring genera <span className="font-medium">reportes</span> y{' '}
                   <span className="font-medium">mejoras</span>, y las mejoras{' '}
@@ -380,9 +382,9 @@ function EstructuraContextoComponent() {
                 </span>
               </p>
               <p>
-                Para evitar el problema de “actualizar PRD + docs + contexto a la vez”, el retro{' '}
-                <span className="font-medium">no</span> reescribe todo: actualiza una fuente de
-                verdad y propaga condicionalmente (regla DTC — Docs Travel with Code):
+                Para evitar el problema de “actualizar PRD + docs + contexto a la vez”, la{' '}
+                <span className="font-medium">retrospectiva</span> no reescribe todo: actualiza una
+                fuente de verdad y propaga condicionalmente (regla DTC — Docs Travel with Code):
               </p>
               <ul className="space-y-1 ml-4 list-disc">
                 <li>

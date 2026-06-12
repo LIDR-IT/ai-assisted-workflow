@@ -2,7 +2,7 @@
   "metadata": {
     "id": "estructura-contexto-ciclo",
     "title": "Ciclo de mantenimiento del contexto — Aramis",
-    "description": "Ciclo BMad extendido: Análisis → PRD (planning) → Implementación → Retro → Monitoring (vigila KPIs de la feature) → Reportes / Mejoras; las Mejoras alimentan el PRD (siguiente ciclo). La info de PRODUCTO vive en los PRDs (se actualiza cada iteración); la TÉCNICA se reparte entre rules/, project-context.md, arquitecture/+adr/ y docs/ deep-dives. La tabla resume la cadencia de lectura y actualización.",
+    "description": "Ciclo BMad extendido: Análisis → PRD (planning) → Implementación → Retrospectiva → Monitoring (vigila KPIs de la feature) → Reportes / Mejoras; las Mejoras alimentan el PRD (siguiente ciclo). La intención de PRODUCTO se captura en los PRD-deltas (intake, 1 por cambio; se archivan status:final) — la verdad viva del producto son el código + tests + deep-dives derivados. La info TÉCNICA se reparte entre rules/, project-context.md, arquitecture/+adr/ y docs/ deep-dives. La tabla resume la cadencia de lectura y actualización.",
     "version": "1.1.0",
     "client": "{{CLIENT_NAME}}",
     "industry": "{{INDUSTRY}}",
@@ -50,15 +50,15 @@
       "y": 40,
       "label": "3 · Implementación",
       "variant": "green",
-      "subtitle": "stories → código"
+      "subtitle": "stories → código + tests + docs derivados afectados (DTC, por PR)"
     },
     {
       "id": "cyc-retro",
       "x": 1180,
       "y": 40,
-      "label": "4 · Retro",
+      "label": "4 · Retrospectiva",
       "variant": "yellow",
-      "subtitle": "dispara actualizaciones (DTC)"
+      "subtitle": "reconcilia el PRD-delta + lecciones → backlog · propaga condicional (no reescribe todo)"
     },
     {
       "id": "lane-prod",
@@ -74,7 +74,7 @@
       "y": 300,
       "label": "PRDs/ por funcionalidad",
       "variant": "indigo",
-      "subtitle": "planning-artifacts/ · LEE: al trabajar la func · ACTUALIZA: cada iteración (planning + retro)"
+      "subtitle": "planning-artifacts/ · LEE: al trabajar la func · ACTUALIZA: nuevo delta en planning, reconciliado en la retrospectiva (se archiva)"
     },
     {
       "id": "lane-tech",
@@ -253,11 +253,11 @@
     },
     {
       "color": "bg-green-200",
-      "label": "Implementación (stories → código)"
+      "label": "Implementación (código + tests + docs afectados · DTC por PR)"
     },
     {
       "color": "bg-yellow-200",
-      "label": "Retro (dispara DTC)"
+      "label": "Retrospectiva (reconcilia PRD-delta · propaga condicional)"
     },
     {
       "color": "bg-slate-200",
@@ -307,10 +307,10 @@
     },
     {
       "label": "PRD por funcionalidad",
-      "value": "Lee: al trabajar esa funcionalidad · Actualiza: cada iteración — en planning y tras cada retro (DTC)"
+      "value": "Lee: al trabajar esa funcionalidad · Actualiza: nuevo PRD-delta en planning, reconciliado en la retrospectiva y archivado status:final (la spec viva son los tests + deep-dives, vía DTC al entrar el código)"
     },
     {
-      "label": "stories / retro",
+      "label": "stories / retrospectiva",
       "value": "Lee/escribe: durante el sprint de esa funcionalidad (implementation-artifacts/)"
     },
     {
