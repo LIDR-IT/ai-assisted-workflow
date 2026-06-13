@@ -19,7 +19,7 @@ const createIAFlowNodes = (client: any) => [
     'green',
     'Templates especializados por fase'
   ),
-  n('rules', 1100, 250, '⚙️ Rules (5)', 'orange', 'Contexto organizacional y técnico'),
+  n('rules', 1100, 250, '⚙️ Rules (24)', 'orange', 'Contexto organizacional y técnico'),
   n('memory', 550, 450, '🧠 Memory Graph', 'cyan', 'Conocimiento persistente entre sesiones'),
   n(
     'tools',

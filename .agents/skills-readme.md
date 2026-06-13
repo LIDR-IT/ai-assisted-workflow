@@ -2,7 +2,7 @@
 
 Source-of-truth for Agent Skills across 5 AI platforms. Skills follow the [Agent Skills](https://agentskills.io) open standard, supported by Claude Code, Cursor, Gemini CLI, GitHub Copilot, and Antigravity.
 
-**Source:** `.agents/skills/<skill-name>/SKILL.md` — 113 skills (44 LIDR `lidr-*` + 69 BMad `bmad-*`).
+**Source:** `.agents/skills/<skill-name>/SKILL.md` — 106 skills (37 LIDR `lidr-*` + 69 BMad `bmad-*`).
 
 ## How each platform discovers skills (verified against official docs, May 2026)
 
@@ -117,7 +117,7 @@ Anti-patterns:
 - "I help with X" (first person — doesn't match how Claude/Gemini reason about skills)
 - Multi-paragraph descriptions (most chars never reach Claude's listing budget)
 
-## Inventory (107 skills)
+## Inventory (106 skills)
 
 All artifacts inherited from the LIDR SDLC methodology are prefixed `lidr-*`;
 BMad skills (base flow + agents + utilities) keep the `bmad-*` prefix. LIDR

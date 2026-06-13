@@ -451,7 +451,7 @@ Didac ya está usando Claude Code para hacer ambas dimensiones, pero es iniciati
 [Gate 1: PRD aprobado]
       │
       ▼
-[RFs + NFRs con BDD] ◄── Skill: generate-rf + generate-nfr
+[RFs + NFRs con BDD] ◄── Skill: lidr-requirements (per-rf + nfr modes)
       │               ◄── Validación de trazabilidad requisito↔código
       │
       ▼

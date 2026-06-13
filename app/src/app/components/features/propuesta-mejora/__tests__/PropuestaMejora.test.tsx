@@ -38,9 +38,9 @@ vi.mock('@/hooks', () => ({
 
 vi.mock('@/data', () => ({
   ecosystemStats: {
-    totalArtifacts: 201,
-    skills: 60,
-    commands: 23,
+    totalArtifacts: 244,
+    skills: 106,
+    commands: 30,
   },
   summaryStrings: {
     qualityGatesCount: '8 quality gates',
@@ -85,10 +85,10 @@ describe('PropuestaMejora', () => {
       expect(
         screen.getByText(/Ecosistema SDLC FacePhi — Propuesta Implementada/)
       ).toBeInTheDocument();
-      expect(screen.getByText(/201 artefactos/)).toBeInTheDocument();
+      expect(screen.getByText(/244 artefactos/)).toBeInTheDocument();
       expect(screen.getByText(/8 quality gates/)).toBeInTheDocument();
-      expect(screen.getByText(/60 skills/)).toBeInTheDocument();
-      expect(screen.getByText(/23 commands/)).toBeInTheDocument();
+      expect(screen.getByText(/106 skills/)).toBeInTheDocument();
+      expect(screen.getByText(/30 commands/)).toBeInTheDocument();
     });
 
     it('renders all tab navigation buttons', () => {

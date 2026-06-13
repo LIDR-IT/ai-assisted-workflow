@@ -133,7 +133,7 @@ PHASE 1 — ANALYSIS
   ▸ G0 Intake (PME+Sponsor): BC aprobado + brief poblado
 ─────────────────────────────────────────────────────────────────────
 PHASE 2 — PLANNING
-  bmad-prd (product-brief + business-case) → PRD.md ⭐G1            [→ ux, architecture, generate-rf]
+  bmad-prd (product-brief + business-case) → PRD.md ⭐G1            [→ ux, architecture, lidr-requirements per-rf]
   bmad-ux (PRD) → ux-design.md                                      [→ architecture, user-stories]
   lidr-review-cruzado (PRD) → review-cruzado.md (F+T completas)     [→ evidencia G1]
   lidr-risk-log (PRD+BC) → risk-log.md                              [→ evidencia G1, sprint-capacity buffer]

@@ -455,6 +455,6 @@ Then the system must automatically generate:
 **Next Steps**:
 
 1. Technical-product cross review (review-cruzado skill)
-2. Generation of detailed NFRs (generate-nfr skill)
+2. Generation of detailed NFRs (lidr-requirements nfr mode)
 3. Breakdown into implementable user stories (user-stories skill)
 4. Epic planning into sub-epics (epic-breakdown skill)

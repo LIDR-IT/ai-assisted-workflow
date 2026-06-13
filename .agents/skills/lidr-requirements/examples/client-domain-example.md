@@ -1,5 +1,5 @@
 ---
-id: generate-rf-{{CLIENT_CODE}}-examples
+id: lidr-requirements-{{CLIENT_CODE}}-examples
 version: "1.0.0"
 last_updated: "2026-03-25"
 updated_by: "TL: tier3-remediation"

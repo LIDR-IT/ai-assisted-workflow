@@ -53,7 +53,7 @@ Bulk merge triggers comprehensive documentation sync via docs-agent.
 
 1. CLAUDE.md (central index)
 2. rules/ (24 rules)
-3. skills/ (113 skills)
+3. skills/ (106 skills)
 4. commands/ (30 commands)
 5. hooks/ (6 hooks)
 6. docs/ (checklists, signoffs, templates, standards)

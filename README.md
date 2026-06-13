@@ -12,8 +12,8 @@
 This repository is the result of merging two projects:
 
 - **LIDR SDLC Methodology** — a comprehensive software development lifecycle
-  framework with 62 specialized skills for every SDLC phase, 23 orchestrator
-  commands, 5 governance rules, and 6 autonomous agents. Authored by LIDR
+  framework with 106 specialized skills (37 LIDR + 69 BMAD) for every SDLC phase, 30 orchestrator
+  commands, 24 governance rules, and 10 autonomous agents. Authored by LIDR
   Consultorias for multi-client SDLC implementation.
 - **ai-assisted-workflow** — a source-of-truth pattern (`.agents/`) with
   automated synchronization to 5 AI platforms (Cursor, Claude Code, Gemini CLI,

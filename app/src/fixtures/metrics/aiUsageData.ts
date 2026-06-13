@@ -20,7 +20,7 @@ export interface IASkillUsage {
 // Mock IA usage data for skills
 export const iaUsageData: IASkillUsage[] = [
   {
-    skill: 'validate-requirements',
+    skill: 'lidr-requirements',
     category: 'governance',
     executions: 45,
     timesSaved: 180,

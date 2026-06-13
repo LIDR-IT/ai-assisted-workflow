@@ -88,7 +88,7 @@ export interface ArtifactRegistry {
 /* ─── SKILLS DATA (57 core skills) ─────────────────────────────── */
 
 export const skills: Artifact[] = [
-  // Updated: 57 skills verified in filesystem (.claude/skills/) [54 core + 3 enhanced]
+  // Updated: 106 skills verified in filesystem (.claude/skills/)
 
   // Fase 1 — Originacion (4)
   {
@@ -739,7 +739,7 @@ export const skills: Artifact[] = [
   },
 ];
 
-/* ─── COMMANDS DATA (37 commands — 30 LIDR + 7 generic) ─────────────────────────────── */
+/* ─── COMMANDS DATA (30 commands — 28 LIDR + 2 generic) ─────────────────────────────── */
 
 export const commands: Artifact[] = [
   // Tier 1 - Orchestrators
@@ -2215,7 +2215,7 @@ export const detailedWorkflowSuggestions: WorkflowSuggestion[] = [
       },
       { artifact: 'review-cruzado', type: 'skill', action: 'Cross-review PRD sections' },
       {
-        artifact: 'validate-requirements',
+        artifact: 'lidr-requirements',
         type: 'skill',
         action: 'Generate and validate RFs+NFRs',
       },
@@ -2286,13 +2286,17 @@ export const detailedWorkflowSuggestions: WorkflowSuggestion[] = [
       'Complete Specification Phase: generate and validate functional and non-functional requirements with BDD acceptance criteria',
     steps: [
       {
-        artifact: 'generate-rf',
+        artifact: 'lidr-requirements',
         type: 'skill',
         action: 'Generate Functional Requirements with BDD',
       },
-      { artifact: 'generate-nfr', type: 'skill', action: 'Generate Non-Functional Requirements' },
       {
-        artifact: 'validate-requirements',
+        artifact: 'lidr-requirements',
+        type: 'skill',
+        action: 'Generate Non-Functional Requirements',
+      },
+      {
+        artifact: 'lidr-requirements',
         type: 'command',
         action: 'Validate RF+NFR coherence and traceability',
       },
@@ -2304,7 +2308,7 @@ export const detailedWorkflowSuggestions: WorkflowSuggestion[] = [
       { artifact: '/advance-gate', type: 'command', action: 'Advance to Sprint Planning (Gate 2)' },
     ],
     roles: ['PO', 'TL', 'QA'],
-    tags: ['specification', 'RF', 'NFR', 'BDD', 'validate-requirements', 'especificacion'],
+    tags: ['specification', 'RF', 'NFR', 'BDD', 'lidr-requirements', 'especificacion'],
   },
 ];
 

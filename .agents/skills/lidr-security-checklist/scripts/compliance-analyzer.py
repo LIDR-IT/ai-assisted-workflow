@@ -4,7 +4,7 @@ Security Compliance Analyzer for generic software projects
 Automated SAST/SCA/DAST analysis with gate-readiness and compliance scoring.
 
 Transforms 4+ hours of manual security analysis into a 5-minute automated workflow.
-Follows proven patterns from tech-debt and validate-requirements automation.
+Follows proven patterns from tech-debt and lidr-requirements automation.
 
 Domain configuration is DOMAIN-AGNOSTIC by default. LIDR is a multi-industry
 framework, so the built-in pattern set is a generic security baseline (risk,

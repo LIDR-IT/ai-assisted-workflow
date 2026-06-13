@@ -98,8 +98,8 @@
 - `business-case` - Examples + templates well structured
 - `change-request` - Deployment-ready templates
 - `dast-interpretation` - Security scan examples present
-- `generate-nfr` - NFR generation with templates
-- `generate-rf` - RF templates + BDD examples
+- `lidr-requirements (nfr mode)` - NFR generation with templates
+- `lidr-requirements (per-rf mode)` - RF templates + BDD examples
 - `mcp-integration` - MCP configuration examples
 - `postmortem` - Incident analysis templates
 - `pr-description` - PR template examples
@@ -127,7 +127,7 @@
 - `test-execution-report` - Examples present, scripts missing
 - `test-plan` - Automation present, template issues
 - `user-stories` - Automation good, examples need updating
-- `validate-requirements` - Templates exist, examples minimal
+- `lidr-requirements (validate mode)` - Templates exist, examples minimal
 - [... and 8 more with similar issues]
 
 ### ❌ NON-COMPLIANT (10 skills)

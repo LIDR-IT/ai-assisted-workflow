@@ -110,10 +110,10 @@ class RTMGenerator:
         return list(self.DEFAULT_CLUSTER_PATTERNS)
 
     def load_requirements(self):
-        """Load RFs from generate-rf skill outputs"""
-        rf_dir = self.project_dir / ".claude" / "skills" / "generate-rf" / "outputs"
+        """Load RFs from the lidr-requirements per-rf mode outputs (requirements/)"""
+        rf_dir = self.project_dir / "requirements"
         if not rf_dir.exists():
-            print("⚠️  RF directory not found. Run generate-rf skill first.")
+            print("⚠️  RF directory not found. Run lidr-requirements (per-rf mode) first.")
             return
 
         for rf_file in rf_dir.glob("RF-*.md"):
@@ -124,10 +124,10 @@ class RTMGenerator:
         print(f"✅ Loaded {len(self.rfs)} functional requirements")
 
     def load_nfrs(self):
-        """Load NFRs from generate-nfr skill outputs"""
-        nfr_dir = self.project_dir / ".claude" / "skills" / "generate-nfr" / "outputs"
+        """Load NFRs from the lidr-requirements nfr mode outputs (requirements/)"""
+        nfr_dir = self.project_dir / "requirements"
         if not nfr_dir.exists():
-            print("⚠️  NFR directory not found. Run generate-nfr skill first.")
+            print("⚠️  NFR directory not found. Run lidr-requirements (nfr mode) first.")
             return
 
         for nfr_file in nfr_dir.glob("NFR-*.md"):
@@ -906,7 +906,7 @@ def main():
     generator.load_prd_context()
 
     if not generator.rfs and not generator.nfrs:
-        print("❌ No RFs or NFRs found. Run generate-rf and generate-nfr first.")
+        print("❌ No RFs or NFRs found. Run lidr-requirements (per-rf and nfr modes) first.")
         sys.exit(1)
 
     # Execute validation passes

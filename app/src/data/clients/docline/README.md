@@ -22,7 +22,7 @@ Located in `.claude/rules/` and core framework files:
 - **SDLC process structure**: 8 phases, 8 gates, workflows
 - **Role definitions**: PME, PO, Tech Lead, QA, Security, DevOps, SM
 - **Skill templates**: 60+ skills with templates, checklists, validation
-- **Command orchestration**: 23 commands for SDLC automation
+- **Command orchestration**: 30 commands for SDLC automation
 - **Quality standards**: DoR/DoD, code review, testing, documentation
 - **Architecture patterns**: React Flow, TypeScript, testing strategies
 
@@ -108,7 +108,7 @@ const content = processTemplate(template, {
 ### Framework Skills with Client Context
 
 ```typescript
-// generate-rf skill uses client domain terms
+// lidr-requirements (per-rf mode) uses client domain terms
 const requirements = await generateRF({
   domain: 'healthcare technology and telemedicine services',
   regulations: ['HIPAA', 'HITECH', 'FDA 21 CFR Part 11'],

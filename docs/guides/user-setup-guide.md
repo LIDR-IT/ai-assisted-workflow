@@ -47,7 +47,7 @@ ls -la .claude/
 
 # Verify skills are installed
 ls .claude/skills/ | wc -l
-# Should show 61+ skills
+# Should show 106+ skills (37 LIDR + 69 BMAD)
 
 # Verify rules are configured
 ls .claude/rules/
@@ -76,7 +76,7 @@ The LIDR SDLC framework supports multiple client configurations:
 
 ```
 your-project/
-├── .claude/                     # Framework core (61 skills, 23 commands, 5 rules)
+├── .claude/                     # Framework core (106 skills, 30 commands, 24 rules)
 ├── src/data/client.ts          # Current client configuration
 ├── clients/                    # Client-specific configurations
 │   ├── default/
@@ -413,7 +413,7 @@ chmod +x .git/hooks/pre-commit
 
 After setup completion:
 
-- [ ] All 57 skills accessible via `/lidr-help`
+- [ ] All 106 skills accessible via `/lidr-help`
 - [ ] Role permissions working per `rules/workflows.md`
 - [ ] Client configuration displays correctly
 - [ ] External tool integrations responding

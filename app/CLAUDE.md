@@ -283,11 +283,11 @@ const phaseColor = getPhaseColor(phaseId);
 
 This application is part of a larger SDLC ecosystem located in `.claude/`:
 
-- **Skills** (60+): Automated workflows for each SDLC phase
-- **Commands** (23): Claude Code slash commands for SDLC operations
-- **Rules** (5): Governance and standards
-- **Hooks** (4): Automated quality guards
-- **Agents** (6): Autonomous subagents for complex tasks
+- **Skills** (106): Automated workflows for each SDLC phase
+- **Commands** (30): Claude Code slash commands for SDLC operations
+- **Rules** (24): Governance and standards
+- **Hooks** (6): Automated quality guards
+- **Agents** (10): Autonomous subagents for complex tasks
 
 See `.claude/CLAUDE.md` for the complete ecosystem documentation.
 

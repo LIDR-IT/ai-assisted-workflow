@@ -25,7 +25,7 @@ This skill audits the **structure** of the `.agents/` ecosystem itself — front
 
 **Purpose:** Comprehensive validation of all ecosystem artifacts — skills, rules, docs, ADRs, standards, and guides — against established SDLC ecosystem standards for quality, consistency, and compliance.
 
-**Scope:** Validates skills (57) against 8 critical categories of standards, PLUS validates non-skill documents (rules, ADRs, standards, guides, audits) against frontmatter compliance, staleness, and reference integrity standards defined in `rules/documentation.md`.
+**Scope:** Validates skills (106) against 8 critical categories of standards, PLUS validates non-skill documents (rules, ADRs, standards, guides, audits) against frontmatter compliance, staleness, and reference integrity standards defined in `rules/documentation.md`.
 
 ---
 

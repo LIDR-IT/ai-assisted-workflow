@@ -10,7 +10,7 @@ AUTOMATED ROLLBACK PLAN CREATION ENGINE
 - Follows proven automation pattern: 4+ hours manual → 5 minutes automated
 
 Part of {{CLIENT_NAME}} SDLC Ecosystem - Phase 2 Automation (45h/year ROI)
-Following proven patterns from validate-requirements and tech-debt skills
+Following proven patterns from lidr-requirements and tech-debt skills
 """
 
 import os

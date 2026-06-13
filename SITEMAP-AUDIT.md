@@ -101,7 +101,7 @@ Las 19 rutas de `ROUTE_REGISTRY` (`app/src/app/route-registry.ts`). **Todos los 
 
 | `.claude/…`                             | Tipo         | Apunta a               | Contenido          |
 | --------------------------------------- | ------------ | ---------------------- | ------------------ |
-| `skills`                                | symlink      | `../.agents/skills`    | 114 skills         |
+| `skills`                                | symlink      | `../.agents/skills`    | 106 skills         |
 | `commands`                              | symlink      | `../.agents/commands`  | 37 commands        |
 | `rules`                                 | symlink      | `../.agents/rules`     | 24 rules           |
 | `agents`                                | symlink      | `../.agents/subagents` | 23 subagents       |

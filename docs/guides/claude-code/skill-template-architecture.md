@@ -408,7 +408,7 @@ describe("TemplateGenerator", () => {
 
 ```bash
 # Test skill end-to-end
-./scripts/test-skill.sh generate-rf
+./scripts/test-skill.sh lidr-requirements
 ./scripts/test-skill.sh epic-breakdown
 ```
 
@@ -443,7 +443,7 @@ npm run test:performance -- --skills all
 **High Priority** (migrate first):
 
 - Skills with multiple template references
-- Frequently used skills (generate-rf, epic-breakdown)
+- Frequently used skills (lidr-requirements, epic-breakdown)
 - Skills with complex template dependencies
 
 **Medium Priority**:
@@ -543,7 +543,7 @@ Clear explanation of template purpose and usage.
 
 #### Template Naming
 
-- Primary template matches skill: `generate-rf` → `rf-format.md`
+- Primary template matches skill: `lidr-requirements` → `rf-format.md`
 - Descriptive names: `test-plan-template.md` not `template1.md`
 - Consistent patterns: `*-template.md`, `*-format.md`, `*-checklist.md`
 

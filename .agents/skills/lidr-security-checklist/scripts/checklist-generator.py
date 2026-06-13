@@ -4,7 +4,7 @@ Security Checklist Generator for generic software projects
 Automated generation of security checklists with regulatory compliance scoring.
 
 Transforms compliance-analyzer.py results into actionable security checklist reports.
-Follows proven patterns from tech-debt and validate-requirements automation.
+Follows proven patterns from tech-debt and lidr-requirements automation.
 
 Domain-relevance keys consumed here (`domain_critical`, `domain_relevance`) match
 the keys emitted by compliance-analyzer.py. The active industry requirement set is

@@ -234,4 +234,4 @@ Then my screen must show:
 
 - Epic: VOICE-100
 - Features: VOICE-101 (Enrollment), VOICE-102 (Verification), VOICE-103 (Privacy)
-- NFRs: Pending generation with the generate-nfr skill
+- NFRs: Pending generation with the lidr-requirements skill (nfr mode)
