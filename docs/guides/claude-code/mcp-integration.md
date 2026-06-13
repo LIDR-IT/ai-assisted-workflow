@@ -44,7 +44,7 @@ Model Context Protocol (MCP) enables Claude Code to integrate with external serv
 | -------------- | --------------------- | ------------------------------------------------------- |
 | **Jira**       | mcp.atlassian.com     | implement-ticket, prepare-testing, create-release-notes |
 | **GitHub**     | api.githubcopilot.com | implement-ticket, create-pr, create-release-notes       |
-| **Confluence** | mcp.atlassian.com     | create-release-notes, generate-rf                       |
+| **Confluence** | mcp.atlassian.com     | create-release-notes, lidr-requirements                 |
 | **Xray**       | xray-mcp-server       | prepare-testing                                         |
 | **Slack**      | mcp.slack.com         | implement-ticket, prepare-testing, create-release-notes |
 

@@ -94,7 +94,7 @@ Los skills generan documentos específicos del proyecto en:
 docs/projects/mi-proyecto/
 ├── business-case.md            # Generado desde skills/business-case/templates/
 ├── architecture.md             # Generado desde skills/architecture-doc/templates/
-├── requirements/               # Generado desde skills/generate-rf/
+├── requirements/               # Generado desde skills/lidr-requirements/
 │   ├── functional-requirements.md
 │   └── non-functional-requirements.md
 └── testing/                    # Generado desde skills/test-plan/

@@ -70,9 +70,9 @@ trigger: always_on
 ### Key Components
 
 1. **Rules:** Project-specific coding standards and guidelines (8 categories)
-2. **Skills:** Reusable agent capabilities and knowledge modules (11 skills)
-3. **Commands:** Slash commands for workflow automation (6 commands)
-4. **Agents:** Specialized subagents for complex tasks (3 agents: doc-improver, ticket-enricher, pr-validator)
+2. **Skills:** Reusable agent capabilities and knowledge modules (106 skills)
+3. **Commands:** Slash commands for workflow automation (30 commands)
+4. **Agents:** Specialized subagents for complex tasks (10 subagents: doc-improver, ticket-enricher, pr-validator)
 5. **MCP Servers:** External tool integrations (Context7, etc.)
 6. **Hooks:** Git workflow automation (Husky pre-commit + 3 AI hooks: notify, auto-format, protect-secrets)
 

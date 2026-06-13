@@ -40,7 +40,7 @@ export interface RoadmapItem {
 export const mejorasIntroData = {
   automatedWorkflows: [
     {
-      skill: 'validate-requirements',
+      skill: 'lidr-requirements',
       before: '6h manual',
       after: '5min script',
       roiAnual: '150+ horas',

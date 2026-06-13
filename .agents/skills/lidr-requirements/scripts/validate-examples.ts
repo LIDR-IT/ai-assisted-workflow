@@ -2,7 +2,7 @@
 /**
  * validate-examples.ts - Generate RF Skill Example Validator
  *
- * Validates that generate-rf skill examples contain proper structure
+ * Validates that lidr-requirements (per-rf mode) examples contain proper structure
  * for generating structured Functional Requirements (RFs) with BDD criteria.
  *
  * Validates:

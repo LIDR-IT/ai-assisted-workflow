@@ -10,7 +10,7 @@ AUTOMATED ROLLBACK ANALYSIS ENGINE
 - Follows proven automation pattern: 4+ hours manual → 5 minutes automated
 
 Part of the LIDR SDLC Ecosystem - Phase 2 Automation (45h/year ROI)
-Following proven patterns from validate-requirements and tech-debt skills
+Following proven patterns from lidr-requirements and tech-debt skills
 
 Domain configuration is DOMAIN-AGNOSTIC by default. LIDR is a multi-industry
 framework, so the built-in domain risk-pattern set is a generic deployment

@@ -32,7 +32,7 @@ The LIDR SDLC Methodology follows a self-contained architecture:
 ├── rules/                        # 5 core governance rules
 ├── commands/                     # 23 slash commands
 ├── hooks/                        # 4 automation guards
-├── agents/                       # 6 autonomous subagents
+├── agents/                       # 10 autonomous subagents
 └── memory/                       # Persistent context
 
 src/                              # Application layer

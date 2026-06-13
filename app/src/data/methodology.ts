@@ -27,11 +27,12 @@ export const methodology = {
 
   // Methodology Components
   components: {
-    skills: '61 autonomous skills with self-contained architecture',
-    commands: '23 orchestrator commands with role-based access',
-    rules: '5 identity rules (Tier 1 + Tier 2)',
+    skills: '106 autonomous skills with self-contained architecture',
+    commands: '30 orchestrator commands with role-based access',
+    rules: '24 governance rules (7 LIDR SDLC + 17 generic)',
     gates: '8 formal quality gates (G0-G7)',
-    hooks: '4 automated guards (DTC, context, notifications)',
+    hooks:
+      '6 automated guards (frontmatter, context, ecosystem-counts, notify, auto-format, protect-secrets)',
     phases: '5 unified phases (0-4) · 9 stages with clear handoffs',
   },
 
@@ -51,7 +52,7 @@ export const methodology = {
     frontmatterCompliance: '100% YAML frontmatter for all artifacts',
     traceability: 'Business Case → PRD → RF → US → Code → Test → Release',
     docsHealthScore: '90%+ target (architecture, rules, project docs)',
-    automationCoverage: '9 of 61 skills fully automated',
+    automationCoverage: '8 of 106 skills fully automated',
     ruleCompliance: 'Tier 1 (always) + Tier 2 (on-demand) loading',
     gatePassRate: '85%+ first-time pass rate target',
   },

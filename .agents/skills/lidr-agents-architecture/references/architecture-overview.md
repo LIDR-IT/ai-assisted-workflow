@@ -63,9 +63,9 @@ The `.agents/` system provides **centralized configuration management** for AI a
 ```
 .agents/
 ├── rules/          # Coding standards (5 LIDR + 17 generic, in 10 categories)
-├── skills/         # 66 skills (62 lidr-* + 4 generic)
-├── commands/       # 30 commands (23 lidr-* + 7 generic)
-├── subagents/      # 9 subagents (6 lidr-* + 3 generic)
+├── skills/         # 106 skills (37 lidr-* + 69 bmad-*)
+├── commands/       # 30 commands (28 lidr-* + 2 generic)
+├── subagents/      # 10 subagents
 ├── hooks/          # 6 hooks across 5 events; hooks.json + scripts/
 ├── mcp/            # MCP server configurations (mcp-servers.json + .env)
 ├── _shared/        # Shared validators (TypeScript, ~3,482 LOC)
@@ -147,7 +147,7 @@ Platform-specific directories receive synced configurations:
 
 **Purpose:** Modular packages with specialized knowledge and bundled resources, following the [Agent Skills open standard](https://agentskills.io).
 
-**Contents:** 66 skills (62 `lidr-*` + 4 generic).
+**Contents:** 106 skills (37 `lidr-*` + 69 `bmad-*`).
 
 **Structure per skill:**
 
@@ -169,7 +169,7 @@ Platform-specific directories receive synced configurations:
 
 **Purpose:** Frequently-used prompts invoked via `/{command-name}`.
 
-**Contents:** 30 commands (23 `lidr-*` + 7 generic).
+**Contents:** 30 commands (28 `lidr-*` + 2 generic).
 
 **Sync strategy per platform:**
 
@@ -182,7 +182,7 @@ Platform-specific directories receive synced configurations:
 
 **Purpose:** Autonomous workers with their own context and tool budget.
 
-**Contents:** 9 subagents (6 `lidr-*` + 3 generic).
+**Contents:** 10 subagents.
 
 **Sync strategy per platform:**
 

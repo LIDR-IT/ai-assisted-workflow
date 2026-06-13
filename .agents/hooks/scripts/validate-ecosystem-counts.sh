@@ -32,10 +32,10 @@ ACTUAL_HOOKS=$(find "$BASE_DIR/.agents/hooks/scripts" -maxdepth 1 -name "*.sh" 2
 
 # --- Extract expected counts from the orchestrator markdown ---
 # Matches the current bullet format used by AGENTS.md:
-#   "- **22 rules** in 10 categories ..."
-#   "- **67 skills** (61 LIDR ...)"
-#   "- **30 commands** (23 LIDR ...)"
-#   "- **9 subagents** (6 LIDR ...)"
+#   "- **24 rules** in 10 categories ..."
+#   "- **106 skills** (37 LIDR ...)"
+#   "- **30 commands** (28 LIDR ...)"
+#   "- **10 subagents** (10 LIDR ...)"
 #   "- **6 hooks** (3 LIDR ...)"
 extract_count() {
   local label=$1

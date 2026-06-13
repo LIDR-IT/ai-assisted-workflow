@@ -190,7 +190,7 @@ gemini_agents() {
   # Gemini CLI subagents (Apr 2026): official project path is .gemini/agents/*.md
   # per https://geminicli.com/docs/core/subagents/
   # Unlike skills/rules, there is NO .agents/subagents/ alias documented.
-  # We create .gemini/agents → .agents/subagents symlink to expose our 9 subagents.
+  # We create .gemini/agents → .agents/subagents symlink to expose our 10 subagents.
   mkdir -p "$GEMINI_DIR"
   create_symlink "../.agents/subagents" "$GEMINI_DIR/agents" "agents"
 }

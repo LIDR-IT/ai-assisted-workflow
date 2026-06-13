@@ -18,7 +18,7 @@ trigger: always_on
 
 ### Delivered Components
 
-- **Rules System:** 14 rules across 8 categories (code, content, design, frameworks, process, quality, team, tools)
+- **Rules System:** 24 rules across 10 categories (code, content, design, frameworks, process, quality, team, tools)
 - **Skills System:** operational skills (agent-development, command-development, skill-development, hook-development, mcp-integration, commit-management, ticket-validation, bdd-gherkin-patterns, keybindings-help, agents-architecture) — note: snapshot pre-dates 2026-05-18 LIDR merge; see `.agents/skills-readme.md` for current 66-skill inventory
 - **Commands:** 5 workflow commands (commit, improve-docs, sync-setup, create-ticket, enrich-ticket, test-hooks)
 - **Agents:** 3 specialized agents (doc-improver, ticket-enricher ✅, pr-validator)

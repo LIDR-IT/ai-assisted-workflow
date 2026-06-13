@@ -265,7 +265,7 @@ class RFSlicer:
         ]
 
     def load_requirements(self, rf_dir: str) -> bool:
-        """Load RFs from generate-rf skill outputs"""
+        """Load RFs from the lidr-requirements per-rf mode outputs"""
         rf_path = Path(rf_dir)
         if not rf_path.exists():
             print(f"❌ RF directory not found: {rf_path}")

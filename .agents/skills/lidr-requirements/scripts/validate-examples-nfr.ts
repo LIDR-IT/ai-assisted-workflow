@@ -2,7 +2,7 @@
 /**
  * validate-examples.ts - Generate NFR Skill Example Validator
  *
- * Validates that generate-nfr skill examples contain proper structure
+ * Validates that lidr-requirements (nfr mode) examples contain proper structure
  * for generating measurable Non-Functional Requirements (NFRs).
  *
  * Validates:

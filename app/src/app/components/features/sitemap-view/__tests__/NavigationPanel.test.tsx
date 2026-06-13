@@ -54,7 +54,7 @@ describe('NavigationPanel', () => {
           ],
         },
         {
-          name: 'generate-rf',
+          name: 'lidr-requirements',
           type: 'folder',
           iconName: 'FolderOpen',
           children: [
@@ -63,7 +63,7 @@ describe('NavigationPanel', () => {
               type: 'file',
               iconName: 'FileText',
               badge: { label: 'Skill', color: 'bg-violet-100 text-violet-700' },
-              desc: 'Requirements generation skill',
+              desc: 'Requirements spec skill (per-rf/nfr/validate modes)',
             },
           ],
         },
