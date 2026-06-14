@@ -35,6 +35,12 @@ export interface Template {
   mandatory: boolean;
   aiAssist?: 'skill' | 'rule' | 'command' | 'hook' | 'agent' | 'mcp';
   claudePath?: string;
+  /**
+   * Tip de desambiguación de 1 línea para pares de skills que se confunden
+   * (¿uso esta o aquella?). Se renderiza como hint atenuado bajo la descripción.
+   * Solo se puebla en filas con un homólogo confundible; el resto lo deja vacío.
+   */
+  vsTip?: string;
 }
 
 export interface PhaseTemplates {
@@ -490,6 +496,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-business-case/SKILL.md',
+        vsTip:
+          '¿vs Product Brief (T-ORI-005, BMad)? El brief define QUÉ construir (intake principal, input de bmad-prd); el BC justifica SI invertir (ROI/riesgo). En G0 basta uno — añade el BC cuando hay decisión de presupuesto.',
       },
       {
         code: 'T-ORI-005',
@@ -500,6 +508,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/bmad-product-brief/SKILL.md',
+        vsTip:
+          '¿vs Business Case (T-ORI-001, LIDR)? Este es el intake principal que alimenta bmad-prd; el BC es complementario (ROI/riesgo). Si no hay decisión de inversión que justificar, brief solo.',
       },
       {
         code: 'T-ORI-006',
@@ -629,6 +639,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: true,
         aiAssist: 'skill',
         claudePath: '.claude/skills/bmad-create-epics-and-stories/SKILL.md',
+        vsTip:
+          '¿vs User Stories (T-SPR-001, LIDR)? Esto es el esqueleto épica→story que verifica el gate G2; lidr-user-stories lo refina en US implementables. Misma jerarquía, dos profundidades — no dos backlogs.',
       },
       {
         code: 'T-RF-001',
@@ -755,6 +767,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: true,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-sprint-capacity/SKILL.md',
+        vsTip:
+          '¿vs sprint-planning (T-SPR-004, BMad)? Capacity es el INPUT (cifra comprometible con buffer 15-20%); sprint-planning la consume para generar el sprint-status.yaml. Productor → consumidor, no solapan.',
       },
       {
         code: 'T-SPR-001',
@@ -765,6 +779,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-user-stories/SKILL.md',
+        vsTip:
+          '¿vs Epics & Stories (T-RF-005, BMad)? BMad da la estructura y el artefacto de gate (G2); esto produce las US RF-trazables con BDD+INVEST que se comprometen en el sprint (G3).',
       },
       {
         code: 'T-SPR-002',
@@ -813,6 +829,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-dev-handoff-qa/SKILL.md',
+        vsTip:
+          '¿vs DoD (T-DEV-002)? La DoD + bmad-code-review es el gate DURO del G4 (vinculante); el handoff es complementario (contexto para QA) y no bloquea el gate.',
       },
       {
         code: 'T-DEV-002',
@@ -863,6 +881,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-playwright-cli/SKILL.md',
+        vsTip:
+          '¿vs Code Review (T-DEV-004, BMad)? code-review es estático sobre el diff; esto valida en runtime (render, flujos clave, consola, a11y). Se complementan, no se sustituyen.',
       },
       {
         code: 'T-DEV-008',
@@ -921,6 +941,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-test-execution-report/SKILL.md',
+        vsTip:
+          '¿vs TEA (T-QA-005/006, BMad)? La evidencia QA del G5 puede ser BMad TEA (automate/trace) O este report — no ambos. El gate lo cierra el sign-off del QA Lead (T-QA-007).',
       },
       {
         code: 'T-QA-007',
@@ -939,6 +961,8 @@ export const phases: PhaseTemplates[] = [
         mandatory: false,
         aiAssist: 'skill',
         claudePath: '.claude/skills/lidr-create-test-cases/SKILL.md',
+        vsTip:
+          '¿vs Test Design (T-SOL-002, BMad)? Test Design es la estrategia risk-based (qué probar); esto son los casos concretos con datos Given/When/Then ejecutables. Estrategia → casos.',
       },
       {
         code: 'T-QA-005',

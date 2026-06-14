@@ -23,7 +23,8 @@ export function TemplateTable({ templates }: TemplateTableProps) {
         searchTerm === '' ||
         template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         template.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        template.desc.toLowerCase().includes(searchTerm.toLowerCase());
+        template.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (template.vsTip?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false);
 
       const matchesAI =
         filterByAI === null || (filterByAI ? template.aiAssist : !template.aiAssist);
@@ -139,6 +140,12 @@ export function TemplateTable({ templates }: TemplateTableProps) {
                   </td>
                   <td className="px-3 py-2 text-xs text-slate-600 border-b border-slate-100">
                     {template.desc}
+                    {template.vsTip && (
+                      <div className="mt-1.5 flex items-start gap-1 rounded border border-amber-100 bg-amber-50 px-2 py-1 text-[11px] leading-snug text-amber-800">
+                        <span aria-hidden>💡</span>
+                        <span>{template.vsTip}</span>
+                      </div>
+                    )}
                   </td>
                   <td className="px-3 py-2 text-center border-b border-slate-100">
                     <span
