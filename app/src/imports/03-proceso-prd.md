@@ -6,9 +6,9 @@ El PRD (Product Requirements Document) es el documento maestro que contiene todo
 
 ---
 
-## Estructura del PRD Funcional
+## Estructura de la Seccion Funcional del PRD
 
-El PRD Funcional sigue una estructura definida que permite organizar la informacion de forma coherente y accionable:
+La seccion funcional del PRD unificado sigue una estructura definida que permite organizar la informacion de forma coherente y accionable (convive con la seccion tecnica que aporta R&D en el mismo documento):
 
 ### Secciones Principales
 
@@ -49,7 +49,7 @@ Cada RF generado se revisa para asegurar:
 
 - Coherencia interna (el RF no se contradice a si mismo).
 - Coherencia con otros RFs del mismo modulo.
-- Coherencia con el PRD Tecnico de R&D (lo solicitado es tecnicamentente viable).
+- Coherencia con la seccion tecnica del PRD que aporta R&D (lo solicitado es tecnicamentente viable).
 - Completitud de los criterios de aceptacion.
 
 ### Paso 6: Mapeo de Dependencias
@@ -108,7 +108,7 @@ Todos los Requisitos Funcionales del Proyecto 360 estan organizados en un "playb
 ## Relacion Jerarquica: PRD -> RF -> User Story
 
 ```
-PRD Funcional
+PRD unificado (seccion funcional)
 ├── RF-360-001: Pantalla de Login Biometrico
 │   ├── US-001: Como usuario quiero autenticarme con facial
 │   ├── US-002: Como usuario quiero ver feedback de la captura

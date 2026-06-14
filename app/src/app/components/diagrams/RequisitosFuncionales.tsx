@@ -208,7 +208,7 @@ function RequisitosFuncionalesComponent() {
                   {
                     step: '3',
                     title: 'Revisión de Coherencia',
-                    desc: 'Interna, entre RFs, con PRD Técnico',
+                    desc: 'Interna, entre RFs, con la sección técnica del PRD',
                   },
                 ].map((item) => (
                   <div

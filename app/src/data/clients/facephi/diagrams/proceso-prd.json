@@ -52,7 +52,7 @@
       "y": 400,
       "label": "5. Revisión de Coherencia",
       "variant": "yellow",
-      "subtitle": "Interna · Entre RFs · Con PRD Técnico"
+      "subtitle": "Interna · Entre RFs · con la sección técnica del PRD"
     },
     {
       "id": "deps",

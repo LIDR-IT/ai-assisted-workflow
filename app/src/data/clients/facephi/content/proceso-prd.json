@@ -109,11 +109,11 @@
       "content": {
         "rows": [
           {
-            "label": "PRD Funcional",
+            "label": "PRD (funcional)",
             "value": "Owner: Producto. Contiene user stories, criterios de aceptación, mockups."
           },
           {
-            "label": "PRD Técnico",
+            "label": "PRD (técnico)",
             "value": "Owner: R&D Core. Arquitectura, NFRs, decisiones técnicas, PoCs."
           },
           {
@@ -182,13 +182,13 @@
             "children": [
               {
                 "id": "functional-prd",
-                "label": "PRD Funcional (Producto)",
+                "label": "PRD · scope funcional (Producto)",
                 "level": 1,
                 "color": "text-yellow-400"
               },
               {
                 "id": "technical-prd",
-                "label": "PRD Técnico (R&D Core)",
+                "label": "PRD · scope técnico (R&D Core)",
                 "level": 1,
                 "color": "text-yellow-400"
               },
