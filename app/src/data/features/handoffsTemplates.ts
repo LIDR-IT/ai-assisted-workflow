@@ -184,7 +184,8 @@ export const handoffs: HandoffResponsibility[] = [
       { role: 'Arquitecto / TL', action: 'Usa el PRD como input para bmad-create-architecture' },
       {
         role: 'Producto (PO)',
-        action: 'Usa el PRD-F como input para lidr-requirements (per-rf mode)',
+        action:
+          'Usa prd.md (§4 Features + §2.3 User Journeys) como input para lidr-requirements (per-rf mode)',
       },
     ],
     artifacts: [
@@ -632,7 +633,7 @@ export const phases: PhaseTemplates[] = [
       {
         code: 'T-RF-001',
         name: 'Requisitos Funcionales (BDD)',
-        desc: 'RFs con ID (RF-PROY-NUM), descripción, comportamiento y criterios BDD Given/When/Then generados desde el PRD-F (lidr-requirements per-rf mode, formato en templates/rf-format.md). Evidencia REQUIRED del G2 (requirements/RF-*.md). Input de user-stories, test-cases y RTM.',
+        desc: 'RFs con ID (RF-PROY-NUM), descripción, comportamiento y criterios BDD Given/When/Then generados desde prd.md (§4 Features + §2.3 User Journeys) (lidr-requirements per-rf mode, formato en templates/rf-format.md). Evidencia REQUIRED del G2 (requirements/RF-*.md). Input de user-stories, test-cases y RTM.',
         format: 'docs/projects/{client}/requirements/',
         owner: 'Producto',
         mandatory: true,
@@ -652,7 +653,7 @@ export const phases: PhaseTemplates[] = [
       {
         code: 'T-NFR-001',
         name: 'Requisitos No Funcionales',
-        desc: 'NFRs standalone con categoría, métrica medible, umbral y método de verificación, generados desde el PRD-T §5 (lidr-requirements nfr mode, formato en templates/nfr-format.md). Evidencia opcional del G2. Input de bmad-testarch-nfr y de la fase security.',
+        desc: 'NFRs standalone con categoría, métrica medible, umbral y método de verificación, generados desde prd.md §4 feature NFRs + Cross-Cutting NFRs (Adapt-In) (lidr-requirements nfr mode, formato en templates/nfr-format.md). Evidencia opcional del G2. Input de bmad-testarch-nfr y de la fase security.',
         format: 'docs/projects/{client}/requirements/',
         owner: 'TL + Producto',
         mandatory: false,

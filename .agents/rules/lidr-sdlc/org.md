@@ -183,18 +183,18 @@ Excepciones de emergencia (hotfix):
 
 ### 5.1 Roles del Equipo
 
-| Rol                    | Responsabilidad Principal                           | Artefactos Clave                                |
-| ---------------------- | --------------------------------------------------- | ----------------------------------------------- |
-| **PME**                | Governance, portafolio, métricas, change management | Business Case, Change Request, Retro report     |
-| **Product Owner (PO)** | Visión funcional, priorización, sign-off funcional  | PRD Funcional, User Stories, backlog            |
-| **R&D / Core**         | Viabilidad técnica, algoritmos, arquitectura        | PRD Técnico, PoC Report, ADR                    |
-| **TL**                 | Estándares técnicos, code review, mentoring         | Rules técnicas, DoD enforcement, ADR            |
-| **Developer**          | Implementación, PR, handoff QA                      | Código, PR description, handoff doc             |
-| **QA Lead**            | Estrategia de testing, sign-off QA                  | Test Plan, QA Sign-off                          |
-| **QA Engineer**        | Ejecución de tests, bug reporting                   | Test Cases, Bug Reports, Test Execution Report  |
-| **Seguridad / CISO**   | Evaluación de seguridad, compliance, sign-off       | Vuln Assessment, DAST Report, Security Sign-off |
-| **DevOps**             | CI/CD, entornos, deploy, monitoreo                  | Pipeline config, Rollback Plan, Deploy scripts  |
-| **SM**                 | Facilitación, impedimentos, métricas de equipo      | Capacity, Refinement Notes, Retro facilitation  |
+| Rol                    | Responsabilidad Principal                           | Artefactos Clave                                                |
+| ---------------------- | --------------------------------------------------- | --------------------------------------------------------------- |
+| **PME**                | Governance, portafolio, métricas, change management | Business Case, Change Request, Retro report                     |
+| **Product Owner (PO)** | Visión funcional, priorización, sign-off funcional  | prd.md unificado (secciones funcionales), User Stories, backlog |
+| **R&D / Core**         | Viabilidad técnica, algoritmos, arquitectura        | prd.md unificado (secciones técnicas), PoC Report, ADR          |
+| **TL**                 | Estándares técnicos, code review, mentoring         | Rules técnicas, DoD enforcement, ADR                            |
+| **Developer**          | Implementación, PR, handoff QA                      | Código, PR description, handoff doc                             |
+| **QA Lead**            | Estrategia de testing, sign-off QA                  | Test Plan, QA Sign-off                                          |
+| **QA Engineer**        | Ejecución de tests, bug reporting                   | Test Cases, Bug Reports, Test Execution Report                  |
+| **Seguridad / CISO**   | Evaluación de seguridad, compliance, sign-off       | Vuln Assessment, DAST Report, Security Sign-off                 |
+| **DevOps**             | CI/CD, entornos, deploy, monitoreo                  | Pipeline config, Rollback Plan, Deploy scripts                  |
+| **SM**                 | Facilitación, impedimentos, métricas de equipo      | Capacity, Refinement Notes, Retro facilitation                  |
 
 ### 5.2 RACI por Fase
 
@@ -330,7 +330,7 @@ La IA DEBE verificar estos checklists en los puntos indicados:
 | Definition of Ready | Antes de aceptar US en sprint                                                                                                                 | lidr-refinement-notes/checklists/dor.md                   |
 | Definition of Done  | Al escribir/editar archivos (hook lidr-frontmatter-guard, PreToolUse: Write\|Edit) + TL review                                                | lidr-pr-description/checklists/dod.md                     |
 | Coherencia RF       | Al generar o validar RFs                                                                                                                      | lidr-requirements/checklists/rf-coherence.md              |
-| Review Cruzado PRD  | Al revisar PRD-T vs PRD-F                                                                                                                     | lidr-review-cruzado/checklists/review-cruzado.md          |
+| Review Cruzado PRD  | Al revisar la coherencia F↔T dentro del prd.md unificado                                                                                      | lidr-review-cruzado/checklists/review-cruzado.md          |
 | Security Compliance | Pre-deploy (skill lidr-security-checklist, manual)                                                                                            | lidr-security-checklist/checklists/security-compliance.md |
 | Post-Deploy         | Post-deploy a producción (DevOps manual + /lidr-advance-gate 7)                                                                               | lidr-change-request/checklists/post-deploy.md             |
 | NFR Compliance      | Pre-deploy: verificación de NFRs (performance, scalability, availability, security)                                                           | lidr-requirements/checklists/nfr-compliance.md            |

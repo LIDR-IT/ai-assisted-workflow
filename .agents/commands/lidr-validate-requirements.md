@@ -24,7 +24,7 @@ ARGUMENTS:
 
 REQUIREMENTS:
   - Gate 1 PASS (PRDs approved + cross-review OK)
-  - PRD Funcional and PRD Técnico approved
+  - the unified PRD (prd.md) approved
   - Business Case and Epic master exist (from Phase 1)
 
 RELATED COMMANDS:
@@ -34,7 +34,7 @@ RELATED COMMANDS:
 
 RELATED SKILLS:
   lidr-requirements (per-rf mode)   - Step 1: Generates RFs with BDD from PRDs
-  lidr-requirements (nfr mode)      - Step 2: Generates NFRs from PRD-T §5
+  lidr-requirements (nfr mode)      - Step 2: Generates NFRs from prd.md §4 feature NFRs + Cross-Cutting NFRs (Adapt-In)
   lidr-requirements (validate mode) - Step 3: Cross-validates RFs + NFRs, generates RTM
   bmad-create-epics-and-stories - Step 4: Decomposes master epic (LIDR rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
 
@@ -77,7 +77,7 @@ Use AskUserQuestion:
 
 Using skill `lidr-requirements` (per-rf mode):
 
-1. Read PRD-F §2.4 (Funcionalidades Clave) and PRD-T §3 (Arquitectura)
+1. Read prd.md §4 (Features / FRs) and prd.md §4 feature descriptions / the Architecture doc (referenced in PRD §0)
 2. Decompose each functionality into atomic RFs
 3. Generate BDD Gherkin scenarios per RF (min: happy + alt + error)
 4. Build dependency map with implementation clusters
@@ -97,8 +97,8 @@ Output: RF documents saved to `docs/projects/$1/rfs/`
 
 Using skill `lidr-requirements` (nfr mode):
 
-1. Read PRD-T §5 (NFRs de alto nivel)
-2. Read PRD-F §2.5 (Métricas de éxito)
+1. Read prd.md §4 feature NFRs + Cross-Cutting NFRs (Adapt-In)
+2. Read prd.md §2 (Target User) / §2.3 (User Journeys) success metrics
 3. Read `rules/tech-stack.md` for infrastructure constraints
 4. Generate NFRs per category using @../skills/lidr-requirements/templates/nfr-format.md:
    - **Mandatory**: Performance, Security, Scalability, Availability, Compliance
@@ -123,15 +123,15 @@ Using skill `lidr-requirements` (validate mode):
 
 Execute 5 validation passes:
 
-### Pass 1: Functional Coverage (PRD-F → RFs)
+### Pass 1: Functional Coverage (prd.md §4 → RFs)
 
-For each functionality in PRD-F §2.4:
+For each functionality in prd.md §4 (Features / FRs):
 ✅ At least 1 RF traces to this functionality
 ❌ GAP if functionality has 0 RFs
 
-### Pass 2: Technical Coverage (PRD-T → NFRs)
+### Pass 2: Technical Coverage (prd.md → NFRs)
 
-For each NFR category in PRD-T §5:
+For each NFR category in prd.md §4 feature NFRs + Cross-Cutting NFRs (Adapt-In):
 ✅ At least 1 standalone NFR exists
 ❌ CRITICAL if a mandatory category (Security/Compliance) is missing
 

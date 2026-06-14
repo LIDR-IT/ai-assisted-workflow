@@ -98,14 +98,14 @@ Example: `docs/projects/docline/test-execution-report-v1.4.0.md`
 
 ## Exit Criteria Evaluation
 
-| #   | Criterion            | Threshold   | Actual   | Status |
-| --- | -------------------- | ----------- | -------- | ------ |
-| 1   | Pass rate            | ≥95%        | {X}%     | ✅/❌  |
-| 2   | Blockers open        | 0           | {N}      | ✅/❌  |
-| 3   | Criticals open       | 0           | {N}      | ✅/❌  |
-| 4   | Regression pass rate | 100%        | {X}%     | ✅/❌  |
-| 5   | Performance NFRs     | Per PRD-T   | [detail] | ✅/❌  |
-| 6   | Security scan clean  | 0 High/Crit | {N}      | ✅/❌  |
+| #   | Criterion            | Threshold                                       | Actual   | Status |
+| --- | -------------------- | ----------------------------------------------- | -------- | ------ |
+| 1   | Pass rate            | ≥95%                                            | {X}%     | ✅/❌  |
+| 2   | Blockers open        | 0                                               | {N}      | ✅/❌  |
+| 3   | Criticals open       | 0                                               | {N}      | ✅/❌  |
+| 4   | Regression pass rate | 100%                                            | {X}%     | ✅/❌  |
+| 5   | Performance NFRs     | Per prd.md §4 feature NFRs / Cross-Cutting NFRs | [detail] | ✅/❌  |
+| 6   | Security scan clean  | 0 High/Crit                                     | {N}      | ✅/❌  |
 
 ## Trends (vs previous cycles)
 

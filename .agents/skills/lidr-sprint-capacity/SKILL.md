@@ -23,7 +23,7 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 ## Relationship to BMad
 
-This skill is a **LIDR-native artifact** (no BMad equivalent). It produces the team capacity calculation (productive-hours, buffer, tech-debt reserve) that is a **required input to Gate 3 (Sprint committed)** and feeds `bmad-sprint-planning`, which consumes the committable-capacity figure when generating the sprint plan.
+This skill is a **LIDR-native artifact** (no BMad equivalent). It produces the team capacity calculation (productive-hours, buffer, tech-debt reserve) that is a **required input to Gate 3 (Sprint committed)** — the governance ceiling the team commits against. `bmad-sprint-planning` independently generates the sprint tracking from the epics/stories and does **not** consume this figure: LIDR **governs** capacity (Gate-3 evidence), it does not feed BMad.
 
 ## Output Location
 

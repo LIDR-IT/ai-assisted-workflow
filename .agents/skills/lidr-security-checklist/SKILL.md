@@ -158,16 +158,16 @@ python scripts/checklist-generator.py \
 
 ## Input
 
-| Input                     | Required  | Source                          | Automated Processing                                        |
-| ------------------------- | --------- | ------------------------------- | ----------------------------------------------------------- |
-| SAST results              | ✅        | {{CODE_QUALITY_TOOL}} (SAST)    | ✅ `compliance-analyzer.py` auto-discovers JSON exports     |
-| SCA results               | ✅        | {{CODE_QUALITY_TOOL}} (SCA)     | ✅ `compliance-analyzer.py` processes vulnerability reports |
-| DAST results              | Desirable | {{CODE_QUALITY_TOOL}} (DAST)    | ✅ `compliance-analyzer.py` parses dynamic scan results     |
-| Infrastructure config     | ✅        | Nginx, K8s, headers             | ⚠️ Manual configuration review                              |
-| ADRs (security decisions) | Desirable | skill `adr/`                    | ⚠️ Manual context integration                               |
-| PRD-T security NFRs       | Desirable | skill `bmad-prd/`               | ⚠️ Manual requirements mapping                              |
-| Applicable regulations    | Desirable | Legal (GDPR, PCI-DSS, SOC2)     | ✅ Auto-detected from project context                       |
-| Security Sign-off format  | ✅        | `@signoffs/security-signoff.md` | ✅ Automated sign-off generation                            |
+| Input                                                  | Required  | Source                          | Automated Processing                                        |
+| ------------------------------------------------------ | --------- | ------------------------------- | ----------------------------------------------------------- |
+| SAST results                                           | ✅        | {{CODE_QUALITY_TOOL}} (SAST)    | ✅ `compliance-analyzer.py` auto-discovers JSON exports     |
+| SCA results                                            | ✅        | {{CODE_QUALITY_TOOL}} (SCA)     | ✅ `compliance-analyzer.py` processes vulnerability reports |
+| DAST results                                           | Desirable | {{CODE_QUALITY_TOOL}} (DAST)    | ✅ `compliance-analyzer.py` parses dynamic scan results     |
+| Infrastructure config                                  | ✅        | Nginx, K8s, headers             | ⚠️ Manual configuration review                              |
+| ADRs (security decisions)                              | Desirable | skill `adr/`                    | ⚠️ Manual context integration                               |
+| prd.md §4 feature NFRs + Cross-Cutting NFRs (Adapt-In) | Desirable | skill `bmad-prd/`               | ⚠️ Manual requirements mapping                              |
+| Applicable regulations                                 | Desirable | Legal (GDPR, PCI-DSS, SOC2)     | ✅ Auto-detected from project context                       |
+| Security Sign-off format                               | ✅        | `@signoffs/security-signoff.md` | ✅ Automated sign-off generation                            |
 
 ## Output Template
 

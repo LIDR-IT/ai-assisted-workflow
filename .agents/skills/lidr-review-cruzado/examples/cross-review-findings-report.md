@@ -31,12 +31,12 @@
 
 **Dimension**: GDPR Requirements ↔ Compliance Architecture
 **Severity**: CRITICAL
-**Source Documents**: PRD-F §6.3 vs PRD-T §5.2
+**Within prd.md**: Functional §6.3 ↔ Technical §5.2
 
 #### Problem Description
 
-- **PRD-F states**: "Users can request complete deletion of biometric data within 72 hours"
-- **PRD-T limitation**: Current architecture only supports template deletion, not training data removal from ML models
+- **Functional states**: "Users can request complete deletion of biometric data within 72 hours"
+- **Technical limitation**: Current architecture only supports template deletion, not training data removal from ML models
 
 #### Impact Analysis
 
@@ -46,7 +46,7 @@
 
 #### Required Resolution
 
-1. **PRD-T Update**: Add ML model retraining capability for data erasure
+1. **Technical Update**: Add ML model retraining capability for data erasure
 2. **Architecture Change**: Implement versioned model deployment for rapid rollback
 3. **Timeline Impact**: +2 weeks development, +1 week testing
 
@@ -59,12 +59,12 @@
 
 **Dimension**: Performance Expectations ↔ Algorithm Capabilities
 **Severity**: CRITICAL
-**Source Documents**: PRD-F §7.2 vs PRD-T §4.1
+**Within prd.md**: Functional §7.2 ↔ Technical §4.1
 
 #### Problem Description
 
-- **PRD-F expectation**: "Facial verification in <2 seconds on mobile devices"
-- **PRD-T reality**: Current algorithm achieves 2.8-3.2 seconds on target devices
+- **Functional expectation**: "Facial verification in <2 seconds on mobile devices"
+- **Technical reality**: Current algorithm achieves 2.8-3.2 seconds on target devices
 
 #### Impact Analysis
 
@@ -76,7 +76,7 @@
 
 1. **Performance Analysis**: Benchmark current algorithm on 5 target device models
 2. **Technical Options**: Algorithm optimization vs device requirements upgrade
-3. **PRD Alignment**: Either improve algorithm or adjust PRD-F expectations
+3. **PRD Alignment**: Either improve algorithm or adjust Functional expectations
 
 **Assigned to**: R&D Lead + Mobile Team
 **Resolution Deadline**: Before Gate 1 review (2026-03-20)
@@ -87,12 +87,12 @@
 
 **Dimension**: GDPR Requirements ↔ Compliance Architecture
 **Severity**: CRITICAL
-**Source Documents**: PRD-F §6.1 vs PRD-T §5.3
+**Within prd.md**: Functional §6.1 ↔ Technical §5.3
 
 #### Problem Description
 
-- **PRD-F requirement**: "biometric templates encrypted with user-specific keys"
-- **PRD-T limitation**: Proposed AES-256 encryption uses shared keys for performance
+- **Functional requirement**: "biometric templates encrypted with user-specific keys"
+- **Technical limitation**: Proposed AES-256 encryption uses shared keys for performance
 
 #### Impact Analysis
 
@@ -115,12 +115,12 @@
 
 **Dimension**: biometric Functionalities ↔ Technical Capabilities
 **Severity**: CRITICAL
-**Source Documents**: PRD-F §4.2 vs PRD-T §3.4
+**Within prd.md**: Functional §4.2 ↔ Technical §3.4
 
 #### Problem Description
 
-- **PRD-F requirement**: "Voice authentication with 99.5% accuracy in noisy environments"
-- **PRD-T limitation**: Current voice algorithm achieves 97.8% in lab, untested in noise
+- **Functional requirement**: "Voice authentication with 99.5% accuracy in noisy environments"
+- **Technical limitation**: Current voice algorithm achieves 97.8% in lab, untested in noise
 
 #### Impact Analysis
 
@@ -144,11 +144,11 @@
 ### CN-001: Liveness Detection - Mobile Performance Optimization
 
 **Dimension**: Performance Expectations ↔ Algorithm Capabilities
-**Source Documents**: PRD-F §4.1 vs PRD-T §3.2
+**Within prd.md**: Functional §4.1 ↔ Technical §3.2
 
 #### Issue
 
-PRD-F expects liveness detection on older mobile devices, but PRD-T specifies minimum hardware requirements that exclude 30% of target market.
+Functional expects liveness detection on older mobile devices, but Technical specifies minimum hardware requirements that exclude 30% of target market.
 
 #### Resolution Plan
 
@@ -160,11 +160,11 @@ PRD-F expects liveness detection on older mobile devices, but PRD-T specifies mi
 ### CN-002: biometric Template Versioning - Future Algorithm Updates
 
 **Dimension**: biometric Functionalities ↔ Technical Capabilities
-**Source Documents**: PRD-F §4.4 vs PRD-T §3.1
+**Within prd.md**: Functional §4.4 ↔ Technical §3.1
 
 #### Issue
 
-PRD-F mentions "seamless algorithm updates," but PRD-T doesn't specify template migration strategy.
+Functional mentions "seamless algorithm updates," but Technical doesn't specify template migration strategy.
 
 #### Resolution Plan
 
@@ -178,19 +178,19 @@ PRD-F mentions "seamless algorithm updates," but PRD-T doesn't specify template 
 ### MN-001: API Rate Limiting Documentation
 
 **Dimension**: User Journeys ↔ API Flow
-**Issue**: PRD-F user journeys don't specify behavior during API rate limiting
+**Issue**: Functional user journeys don't specify behavior during API rate limiting
 **Resolution**: Document rate limiting error messages in user journey specs
 
 ### MN-002: Audit Log Retention Period Mismatch
 
 **Dimension**: GDPR Requirements ↔ Compliance Architecture
-**Issue**: PRD-F states "regulatory compliance period," PRD-T specifies "5 years"
+**Issue**: Functional states "regulatory compliance period," Technical specifies "5 years"
 **Resolution**: Clarify regulatory requirements for biometric audit logs
 
 ### MN-003: Load Balancing Strategy for biometric Processing
 
 **Dimension**: Scalability Requirements ↔ Infrastructure Design
-**Issue**: PRD-F mentions "enterprise scale," but load balancing strategy unclear
+**Issue**: Functional mentions "enterprise scale," but load balancing strategy unclear
 **Resolution**: Detail biometric processing distribution across nodes
 
 ---
@@ -199,7 +199,7 @@ PRD-F mentions "seamless algorithm updates," but PRD-T doesn't specify template 
 
 ### GDPR Article 9 (biometric Data) Compliance
 
-| Requirement                 | PRD-F Coverage                 | PRD-T Implementation            | Status     |
+| Requirement                 | Functional Coverage            | Technical Implementation        | Status     |
 | --------------------------- | ------------------------------ | ------------------------------- | ---------- |
 | **Explicit Consent**        | ✅ §6.1 Consent flows          | ✅ §5.1 Consent API             | ALIGNED    |
 | **Data Minimization**       | ✅ §6.2 Template-only storage  | ✅ §5.3 No image retention      | ALIGNED    |
@@ -209,7 +209,7 @@ PRD-F mentions "seamless algorithm updates," but PRD-T doesn't specify template 
 
 ### Industry-Specific Requirements (Financial Services)
 
-| Requirement                  | PRD-F Coverage                | PRD-T Implementation             | Status     |
+| Requirement                  | Functional Coverage           | Technical Implementation         | Status     |
 | ---------------------------- | ----------------------------- | -------------------------------- | ---------- |
 | **PSD2 SCA Compliance**      | ✅ §4.3 Multi-factor auth     | ✅ §3.3 biometric + PIN          | ALIGNED    |
 | **AML KYC Integration**      | ✅ §5.2 Identity verification | ✅ §3.5 Document validation      | ALIGNED    |
@@ -240,7 +240,7 @@ PRD-F mentions "seamless algorithm updates," but PRD-T doesn't specify template 
 | Benchmark voice algorithm in realistic environments | R&D Lead      | 2026-03-18 |
 | Design user-specific encryption architecture        | Security Lead | 2026-03-19 |
 | Prototype ML model retraining for data erasure      | Tech Lead     | 2026-03-20 |
-| Update performance expectations in PRD-F            | Product Owner | 2026-03-20 |
+| Update performance expectations in Functional       | Product Owner | 2026-03-20 |
 
 ---
 

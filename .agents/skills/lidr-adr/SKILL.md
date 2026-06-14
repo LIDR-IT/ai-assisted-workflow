@@ -60,13 +60,13 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 ## Input
 
-| Input                          | Required  | Source                                |
-| ------------------------------ | --------- | ------------------------------------- |
-| Technical context / problem    | ✅        | Discussion, RFC, {{CHAT_TOOL}} thread |
-| Alternatives evaluated (min 2) | ✅        | Research, PoC, team experience        |
-| Decision (or proposal)         | ✅        | Team consensus / Tech Lead            |
-| Supporting data                | Desirable | Benchmarks, PoC results, vendor docs  |
-| Known constraints              | Desirable | PRD-T, rules/tech-stack.md, budget    |
+| Input                          | Required  | Source                                                                       |
+| ------------------------------ | --------- | ---------------------------------------------------------------------------- |
+| Technical context / problem    | ✅        | Discussion, RFC, {{CHAT_TOOL}} thread                                        |
+| Alternatives evaluated (min 2) | ✅        | Research, PoC, team experience                                               |
+| Decision (or proposal)         | ✅        | Team consensus / Tech Lead                                                   |
+| Supporting data                | Desirable | Benchmarks, PoC results, vendor docs                                         |
+| Known constraints              | Desirable | prd.md (§4 Features / Constraints & Guardrails), rules/tech-stack.md, budget |
 
 ## Output Location
 
@@ -163,7 +163,7 @@ owner_role: "Tech Lead"
 ## Links
 
 - [Related ADR-XXX]({link})
-- [PRD-T reference]({link})
+- [PRD reference]({link})
 - [PoC results]({link})
 ```
 

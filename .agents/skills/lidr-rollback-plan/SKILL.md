@@ -119,14 +119,14 @@ python rollback-generator.py --analysis-dir rollback-analysis --output-dir rollb
 
 ### 📋 Manual Input (Legacy - if automation not available)
 
-| Input                     | Required  | Source                                |
-| ------------------------- | --------- | ------------------------------------- |
-| Release PRs               | ✅        | Git: `git log --merges v{prev}..HEAD` |
-| Database migrations       | ✅        | Migration files                       |
-| Infrastructure changes    | ✅        | Terraform / K8s manifests             |
-| Feature flags             | ✅        | Config management                     |
-| Architecture diagram      | Desirable | PRD-T                                 |
-| Previous rollback history | Desirable | Incident reports                      |
+| Input                     | Required  | Source                                  |
+| ------------------------- | --------- | --------------------------------------- |
+| Release PRs               | ✅        | Git: `git log --merges v{prev}..HEAD`   |
+| Database migrations       | ✅        | Migration files                         |
+| Infrastructure changes    | ✅        | Terraform / K8s manifests               |
+| Feature flags             | ✅        | Config management                       |
+| Architecture diagram      | Desirable | Architecture doc (referenced in PRD §0) |
+| Previous rollback history | Desirable | Incident reports                        |
 
 ## 🤖 Automation Scripts
 
