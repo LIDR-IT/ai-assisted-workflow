@@ -282,6 +282,30 @@ describe('lidr-* skills declare a valid unified phase + stage', () => {
     );
   });
 
+  // Multi-phase skills (e.g. lidr-requirements) declare an explicit `modes` map where each
+  // mode carries its own phase + stage. The top-level phase is the PRIMARY (gate-home) phase;
+  // the per-mode map is the source of truth for where each mode actually runs.
+  it.each(lidrSkills)('%s: every declared mode maps to a valid phase + stage', (skill) => {
+    const fm = frontmatter(read(path.join(AGENTS, 'skills', skill, 'SKILL.md')));
+    const meta = parseYaml(fm as string) as {
+      modes?: Record<string, { phase?: unknown; stage?: unknown }>;
+    };
+    if (!meta.modes || typeof meta.modes !== 'object') {
+      return; // single-phase skill — no per-mode map to validate
+    }
+    for (const [mode, m] of Object.entries(meta.modes)) {
+      expect(typeof m.phase, `${skill} mode "${mode}" missing numeric phase`).toBe('number');
+      expect(m.phase as number, `${skill} mode "${mode}" phase out of 0-4`).toBeGreaterThanOrEqual(
+        0
+      );
+      expect(m.phase as number, `${skill} mode "${mode}" phase out of 0-4`).toBeLessThanOrEqual(4);
+      expect(
+        VALID_STAGES.has(String(m.stage)),
+        `${skill} mode "${mode}" stage "${m.stage}" invalid`
+      ).toBe(true);
+    }
+  });
+
   // Frontmatter is unified (phase 0-4), but the human-readable "Phase: N — …" line
   // in the body must NOT regress to pre-unification numbering (ex-Fase 5/6/7/8).
   // Canonical form: "Phase: <0-4> — <Unified> · <stage> (ex-Fase N)".

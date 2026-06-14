@@ -1,7 +1,7 @@
 # Functional Requirements: Voice Verification Call Center
 
 **Project**: Telefónica Voice Authentication
-**Generated from**: Functional PRD v1.0
+**Generated from**: unified PRD v1.0 (functional scope)
 **Date**: 2026-03-15
 **Complexity**: Simple (5 core RFs)
 

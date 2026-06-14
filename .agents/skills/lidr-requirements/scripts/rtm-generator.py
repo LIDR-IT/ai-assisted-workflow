@@ -365,11 +365,11 @@ class RTMGenerator:
         results = {}
 
         # Pass 1: Functional Coverage
-        print("Pass 1: Functional Coverage (PRD-F → RFs)")
+        print("Pass 1: Functional Coverage (PRD functional scope → RFs)")
         results['pass1'] = self._validate_functional_coverage()
 
         # Pass 2: Technical Coverage
-        print("Pass 2: Technical Coverage (PRD-T → NFRs)")
+        print("Pass 2: Technical Coverage (PRD NFR scope → NFRs)")
         results['pass2'] = self._validate_technical_coverage()
 
         # Pass 3: NFR Allocation
@@ -665,7 +665,7 @@ owner_role: "PO + TL"
 """
 
         for rf in self.rfs.values():
-            prd_ref = f"PRD-F {rf.source}" if rf.source else "—"
+            prd_ref = f"PRD {rf.source}" if rf.source else "—"
             functionality = self.prd_functionalities.get(rf.source, None)
             func_title = functionality.title if functionality else "—"
             validated = "✅" if rf.source and len(rf.bdd_scenarios) >= 3 else "❌"
@@ -674,7 +674,7 @@ owner_role: "PO + TL"
 
         for nfr in self.nfrs.values():
             category_ref = self.prd_nfr_categories.get(nfr.category, "—")
-            prd_ref = f"PRD-T {category_ref}" if category_ref != "—" else "—"
+            prd_ref = f"PRD {category_ref}" if category_ref != "—" else "—"
             validated = "✅" if nfr.metric and nfr.threshold else "❌"
 
             rtm_content += f"| {nfr.id} | {prd_ref} | {nfr.category} | {validated} |\n"
@@ -684,8 +684,8 @@ owner_role: "PO + TL"
 
 | Source | Total Items | Covered | Gaps | Coverage % |
 |--------|-------------|-----------|------|-------------|
-| **PRD-F Functionalities** | {total_functionalities} | {covered_functionalities} | {total_functionalities - covered_functionalities} | {functional_coverage:.1f}% |
-| **PRD-T NFR Categories** | {total_nfr_categories} | {covered_categories} | {total_nfr_categories - covered_categories} | {nfr_coverage:.1f}% |
+| **PRD Functionalities** | {total_functionalities} | {covered_functionalities} | {total_functionalities - covered_functionalities} | {functional_coverage:.1f}% |
+| **PRD NFR Categories** | {total_nfr_categories} | {covered_categories} | {total_nfr_categories - covered_categories} | {nfr_coverage:.1f}% |
 | **RFs with BDD ≥3** | {len(self.rfs)} | {rfs_with_bdd} | {len(self.rfs) - rfs_with_bdd} | {bdd_coverage:.1f}% |
 | **NFRs with Metrics** | {len(self.nfrs)} | {nfrs_measurable} | {len(self.nfrs) - nfrs_measurable} | {nfr_measurable_coverage:.1f}% |
 

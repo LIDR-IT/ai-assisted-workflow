@@ -108,7 +108,7 @@ owner_role: "PO"
 
 ### 4.2 External Coherence
 
-- [ ] **PRD Alignment** — Requirements align with both technical and functional PRDs
+- [ ] **PRD Alignment** — Requirements align with the unified PRD (functional + NFR scope)
 - [ ] **Architecture Compatibility** — RFs implementable with proposed architecture
 - [ ] **Technology Stack Alignment** — Requirements achievable with chosen technologies
 - [ ] **Resource Constraints** — Requirements fit within budget and timeline constraints

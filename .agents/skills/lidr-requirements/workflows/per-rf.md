@@ -8,7 +8,7 @@ status: active
 
 # Workflow — Mode 1: Per-RF (forward, Gate-2)
 
-**When:** the Functional PRD is approved (Gate 1 ✅) and you need atomic, testable RFs before Sprint Planning. This is the **default** mode. Output = one file per RF (the G2 evidence contract).
+**When:** the unified PRD is approved (Gate 1 ✅) and you need atomic, testable RFs before Sprint Planning. This is the **default** mode. Output = one file per RF (the G2 evidence contract).
 
 > Run each phase in order. After each phase, write the artifact(s) and update the run `status` frontmatter — never hold all RFs in context at once. Stop and resume freely.
 
@@ -16,11 +16,11 @@ status: active
 
 1. Read `customize.toml` → resolve `{CLIENT_CODE}`, output paths, `persistent_facts`.
 2. **Resume check:** scan `docs/projects/{CLIENT_CODE}/requirements/` for `RF-*.md` whose frontmatter `status` is not `final`. If found, offer to resume (continue decomposition / BDD / validation) rather than restart.
-3. Load the Functional PRD (`bmad-prd` output) + Technical PRD. Create `.decision-log.md` at the requirements root if absent.
+3. Load the unified PRD (`bmad-prd` output — functional requirements and NFRs in ONE document). Create `.decision-log.md` at the requirements root if absent.
 
 ## Phase 1 — Decompose
 
-Apply `references/decomposition-rules.md`: 1 RF = 1 observable behavior (split on "and"/"also"); error flows are separate RFs; compliance separate. Extract functionalities from PRD-F §4, journeys from §5, constraints from PRD-T §3.
+Apply `references/decomposition-rules.md`: 1 RF = 1 observable behavior (split on "and"/"also"); error flows are separate RFs; compliance separate. Extract functionalities and user journeys from the PRD's functional sections (features + FRs); technical constraints from its cross-cutting NFR sections.
 
 → Write each RF file with frontmatter (`status: draft`) using `templates/rf-body.md`. Log scope decisions to `.decision-log.md`.
 

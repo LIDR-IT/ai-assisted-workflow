@@ -12,7 +12,7 @@ owner_role: "PO"
 
 # Coherence Checklist — Functional Requirements
 
-> **Purpose**: Validation of internal coherence (between RFs) and external coherence (with Technical + Functional PRDs).
+> **Purpose**: Validation of internal coherence (between RFs) and external coherence (with the unified PRD — functional + NFR scope — and the architecture doc).
 > **Evaluated by**: Skill the per-rf mode (post-generation) + manual review by Product + QA
 > **Associated Gate**: Gate 2 — RF Complete
 > **Frequency**: After each RF generation/modification and before Gate 2
@@ -46,26 +46,26 @@ owner_role: "PO"
 
 ---
 
-## 2. External Coherence (with Technical PRD)
+## 2. External Coherence (with the unified PRD + architecture doc)
 
 ### 2.1 Coverage
 
-- [ ] **Complete PRD→RF Coverage** — Everything described in Technical PRD is covered by at least 1 RF
-- [ ] **No Scope Creep** — No RF describes functionality outside scope declared in PRDs
+- [ ] **Complete PRD→RF Coverage** — Everything described in the PRD is covered by at least 1 RF
+- [ ] **No Scope Creep** — No RF describes functionality outside scope declared in the PRD
 - [ ] **Complete RF→PRD Coverage** — Every RF has at least 1 PRD section that originated it
 
 ### 2.2 Technical Feasibility
 
-- [ ] **Limitations Respected** — RFs do not require capabilities excluded by Technical PRD limitations
-- [ ] **Architecture Compatible** — RF flows are implementable with architecture proposed in Technical PRD
-- [ ] **APIs Aligned** — RFs involving APIs are compatible with Technical PRD API design
+- [ ] **Limitations Respected** — RFs do not require capabilities excluded by the PRD's stated limitations
+- [ ] **Architecture Compatible** — RF flows are implementable with the proposed architecture (architecture doc)
+- [ ] **APIs Aligned** — RFs involving APIs are compatible with the architecture doc's API design
 - [ ] **Performance Achievable** — Implicit performance requirements in RFs are achievable with proposed stack
-- [ ] **Integrations Covered** — RFs requiring external integrations have that integration contemplated in Technical PRD
+- [ ] **Integrations Covered** — RFs requiring external integrations have that integration contemplated in the architecture doc
 
-### 2.3 Coherence with Functional PRD
+### 2.3 Coherence with the PRD's functional scope
 
-- [ ] **User Journeys Covered** — User journeys from Functional PRD are completely decomposed into RFs
-- [ ] **Traceable Success Metrics** — Success metrics from Functional PRD are measurable through implemented RFs
+- [ ] **User Journeys Covered** — User journeys from the PRD are completely decomposed into RFs
+- [ ] **Traceable Success Metrics** — Success metrics from the PRD are measurable through implemented RFs
 - [ ] **Consistent Prioritization** — RFs derived from P0 functionalities in PRD are marked as mandatory, not optional
 
 ---

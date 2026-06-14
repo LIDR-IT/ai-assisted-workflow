@@ -18,7 +18,7 @@ id: RF-{PROJ}-{NNN}
 title: { Descriptive requirement title — maximum 15 words }
 version: { 1.0 }
 status: Draft | In Review | Approved | Obsolete
-prd_source: { Link to the Technical and/or Functional PRD }
+prd_source: { Link to the unified PRD section (feature / FR) + architecture doc if applicable }
 author: { Full name }
 created_date: { YYYY-MM-DD }
 last_modified_date: { YYYY-MM-DD }
@@ -323,7 +323,7 @@ id: RF-001
 title: User registration with email verification
 version: 1.0
 status: Approved
-prd_source: PRD-T §3.2, PRD-F §2.1
+prd_source: PRD → User Management feature, FR-3; architecture doc § Auth
 author: Author Name
 created_date: 2025-11-15
 last_modified_date: 2025-11-20

@@ -15,12 +15,12 @@
 ```markdown
 ## Coverage Summary
 
-| Source                | Total Items | Covered | Gaps | Coverage |
-| --------------------- | ----------- | ------- | ---- | -------- |
-| PRD-F Functionalities | N           | N       | N    | N%       |
-| PRD-T NFR Categories  | N           | N       | N    | N%       |
-| RFs with BDD          | N           | N       | N    | N%       |
-| NFRs with Metrics     | N           | N       | N    | N%       |
+| Source              | Total Items | Covered | Gaps | Coverage |
+| ------------------- | ----------- | ------- | ---- | -------- |
+| PRD Functionalities | N           | N       | N    | N%       |
+| PRD NFR Categories  | N           | N       | N    | N%       |
+| RFs with BDD        | N           | N       | N    | N%       |
+| NFRs with Metrics   | N           | N       | N    | N%       |
 
 **Overall Status**: ✅ PASS / ⚠️ CONDITIONAL / ❌ FAIL
 ```
@@ -41,11 +41,11 @@
 ```markdown
 ## Backward: Requirements → Business
 
-| RF/NFR         | PRD Reference    | BC Objective | Validated   |
-| -------------- | ---------------- | ------------ | ----------- |
-| RF-XX-001      | PRD-F §2.4 F-001 | {objective}  | ✅          |
-| NFR-XX-SEC-001 | PRD-T §5.2       | {security}   | ✅          |
-| RF-XX-015      | —                | —            | ❌ Orphaned |
+| RF/NFR         | PRD Reference            | BC Objective | Validated   |
+| -------------- | ------------------------ | ------------ | ----------- |
+| RF-XX-001      | PRD → F-001              | {objective}  | ✅          |
+| NFR-XX-SEC-001 | PRD → Cross-Cutting NFRs | {security}   | ✅          |
+| RF-XX-015      | —                        | —            | ❌ Orphaned |
 ```
 
 ### 4. Decomposition Traceability (RF/NFR → Epic → Story → Test)
