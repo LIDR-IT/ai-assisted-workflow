@@ -43,11 +43,11 @@ The `dependency-map.md` companion uses the same shape with `id: {project-name}-r
 
 ## Traceability
 
-| Reference      | Value         |
-| -------------- | ------------- |
-| PRD-F source   | PRD-F §4.X FX |
-| PRD-T support  | PRD-T §3.X    |
-| Business rules | RN-FX-NN      |
+| Reference        | Value                              |
+| ---------------- | ---------------------------------- |
+| PRD source       | PRD → feature / FR-N               |
+| Architecture ref | architecture doc § (if applicable) |
+| Business rules   | RN-FX-NN                           |
 
 ## Description
 

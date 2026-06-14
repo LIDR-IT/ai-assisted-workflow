@@ -18,14 +18,14 @@ Read `customize.toml`. Confirm RFs (`requirements/RF-*.md`) + NFRs (`requirement
 
 ## Phase 1 — PRD parser
 
-Run `scripts/prd-parser.py`: auto-discover + parse the unified PRD (bmad-prd output); extract functionalities §2.4 + NFR categories §5 → `prd-analysis.json` + `prd-summary.md`.
+Run `scripts/prd-parser.py`: auto-discover + parse the unified PRD (bmad-prd output); extract functional requirements (features + FRs) and NFR categories (cross-cutting + feature-specific) from the one document → `prd-analysis.json` + `prd-summary.md`.
 
 ## Phase 2 — 5-pass validation
 
 Run `scripts/rtm-generator.py` (engine `scripts/validation-engine.py`):
 
-- **Pass 1** PRD-F → RFs (functional coverage, 100% required)
-- **Pass 2** PRD-T → NFRs + mandatory categories (security + performance)
+- **Pass 1** PRD functional scope → RFs (functional coverage, 100% required)
+- **Pass 2** PRD NFR scope → NFRs + mandatory categories (security + performance)
 - **Pass 3** NFR allocation + orphan detection
 - **Pass 4** circular dependencies + contradictions (0 required)
 - **Pass 5** BDD scenarios ≥3/RF + NFR measurability

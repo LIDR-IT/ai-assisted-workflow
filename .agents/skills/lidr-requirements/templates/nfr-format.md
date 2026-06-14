@@ -19,7 +19,7 @@ title: { Descriptive title — maximum 15 words }
 category: Performance | Security | Scalability | Availability | Compliance | Accessibility | Observability
 version: { 1.0 }
 status: Draft | In Review | Approved | Obsolete
-prd_source: { PRD-T §5.X }
+prd_source: { PRD → Cross-Cutting NFRs / feature NFR section }
 author: { Full name }
 created_date: { YYYY-MM-DD }
 priority: Must Have | Should Have | Could Have
@@ -86,13 +86,13 @@ criticality: Blocking | High | Medium | Low
 ```markdown
 ## Traceability
 
-| Reference     | Value                               |
-| ------------- | ----------------------------------- |
-| PRD-T source  | PRD-T §5.X                          |
-| PRD-F metrics | PRD-F §2.5 (if applicable)          |
-| Affected RFs  | RF-{PROJ}-{NNN}, RF-{PROJ}-{NNN}    |
-| Related risks | RISK-{NNN} (from risk-log)          |
-| Regulation    | {GDPR Art. X, OWASP A-XX, eIDAS §X} |
+| Reference     | Value                                   |
+| ------------- | --------------------------------------- |
+| PRD source    | PRD → Cross-Cutting NFRs / feature NFRs |
+| PRD metrics   | PRD success metrics (if applicable)     |
+| Affected RFs  | RF-{PROJ}-{NNN}, RF-{PROJ}-{NNN}        |
+| Related risks | RISK-{NNN} (from risk-log)              |
+| Regulation    | {GDPR Art. X, OWASP A-XX, eIDAS §X}     |
 ```
 
 ### 6. Architecture Implications (Mandatory)

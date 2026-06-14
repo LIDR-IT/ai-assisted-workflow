@@ -7,11 +7,15 @@ states = ["draft", "in-progress", "final"]
 state_field = "status"
 resume_on_activation = true
 
-# Five parallel modes (intents). The orchestrator detects the mode and routes to its workflow.
+# Five modes (intents) across two unified phases. The orchestrator detects the mode,
+# routes to its workflow, and inherits the mode's phase/stage. Input PRD = the SINGLE
+# unified bmad-prd doc (FRs under features + cross-cutting/feature NFRs) — no F/T split.
 [workflow.modes.per-rf]
 workflow = "workflows/per-rf.md"
 output = "docs/projects/{CLIENT_CODE}/requirements/RF-{PROJ}-{NNN}.md"
 companion = "docs/projects/{CLIENT_CODE}/requirements/dependency-map.md"
+phase = 3
+stage = "specification"
 gate = "G2"
 owner = "PO"
 
@@ -19,6 +23,8 @@ owner = "PO"
 workflow = "workflows/nfr.md"
 output = "docs/projects/{CLIENT_CODE}/requirements/NFR-{PROJ}-{CAT}-{NNN}.md"
 companion = "docs/projects/{CLIENT_CODE}/requirements/nfr-summary-matrix.md"
+phase = 3
+stage = "specification"
 gate = "G2"
 owner = "TL"
 
@@ -26,6 +32,8 @@ owner = "TL"
 workflow = "workflows/validate.md"
 output = "docs/projects/{CLIENT_CODE}/rtm.md" # REQUIRED Gate-2 artifact
 companion = "docs/projects/{CLIENT_CODE}/gap-report.md"
+phase = 3
+stage = "specification"
 gate = "G2"
 owner = "PO + TL"
 command = "/lidr-validate-requirements" # the command delegates to this mode
@@ -34,10 +42,14 @@ command = "/lidr-validate-requirements" # the command delegates to this mode
 workflow = "workflows/living-spec.md"
 output = "docs/features/{feature}/spec.md"
 per_client = "docs/projects/{CLIENT_CODE}/features/{feature}/spec.md"
+phase = 0          # Phase 0 — Context / anytime (DTC living doc), not a gate artifact
+stage = "anytime"
 
 [workflow.modes.brownfield-audit]
 workflow = "workflows/brownfield-audit.md"
 output = "docs/features/{feature}/spec.md"
+phase = 0          # Phase 0 — Context (recover spec from an existing system)
+stage = "context"
 inputs = ["bmad-document-project"]
 handoff = "bmad-testarch-trace"
 

@@ -1,7 +1,7 @@
 # Functional Requirements: SelphID Banking Onboarding
 
 **Project**: BBVA Digital Onboarding
-**Generated from**: Functional PRD v1.0 + Technical PRD v1.0
+**Generated from**: unified PRD v1.0 (functional + technical/NFR scope)
 **Date**: 2026-03-15
 **Approved by**: Product Owner + QA Lead
 **Traceability**: Epic BANK-123 → Features BANK-124, BANK-125, BANK-126

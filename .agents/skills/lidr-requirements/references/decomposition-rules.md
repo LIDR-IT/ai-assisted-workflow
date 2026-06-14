@@ -29,7 +29,7 @@ status: active
 
 ## Validation Checklist (per RF + global)
 
-Per RF: single observable behavior · full PRD-F/PRD-T traceability · input data with type/validation/example · ≥3 Gherkin scenarios (happy + error + edge) · measurable thresholds · data-sensitivity handled (encryption, no PII in logs) · error-recovery paths · NFRs declared · dependencies ordered · assumptions explicit.
+Per RF: single observable behavior · full traceability to the unified PRD (functional + NFR scope) · input data with type/validation/example · ≥3 Gherkin scenarios (happy + error + edge) · measurable thresholds · data-sensitivity handled (encryption, no PII in logs) · error-recovery paths · NFRs declared · dependencies ordered · assumptions explicit.
 
 Global: sequential IDs no gaps · complete feature lifecycle (create→update→delete) · compliance coverage (consent/processing/retention/deletion) · no cycles in dependency map · critical path identified · every "Must" functionality has ≥1 RF · no orphan RFs · `checklists/rf-coherence.md` executed.
 

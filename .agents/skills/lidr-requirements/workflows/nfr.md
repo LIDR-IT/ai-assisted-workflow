@@ -8,7 +8,7 @@ status: active
 
 # Workflow — Mode: NFR (Non-Functional Requirements)
 
-**When:** the Technical PRD §5 exists and you need measurable, testable NFRs (performance, security, scalability, availability, compliance) before Sprint Planning. **Owner: TL.** Output = one file per NFR (G2 evidence, optional) + a summary matrix. NFRs share the `requirements/` directory with RFs so the RTM builds from one location.
+**When:** the unified PRD's NFR scope exists (cross-cutting NFRs + any feature-specific NFRs — same document as the FRs; BMad has no separate "Technical PRD") and you need measurable, testable NFRs (performance, security, scalability, availability, compliance) before Sprint Planning. **Owner: TL.** Output = one file per NFR (G2 evidence, optional) + a summary matrix. NFRs share the `requirements/` directory with RFs so the RTM builds from one location.
 
 > NFRs are MEASURABLE (metric + threshold + method — never "good performance"), affect architecture (state implications), and are testable. One NFR = one measurable quality. Stop and resume freely.
 
@@ -19,7 +19,7 @@ status: active
 
 ## Phase 1 — Input collection
 
-Read PRD-T §5 (high-level NFRs), PRD-F §2.5 (success metrics), `rules/lidr-sdlc/tech-stack.md` (infra constraints), `rules/lidr-sdlc/org.md` §1.3 (data criticality). Identify the workflows/data flows that drive quality constraints.
+Read the unified PRD's NFR scope (cross-cutting + feature-specific NFR sections), its success metrics, `rules/lidr-sdlc/tech-stack.md` (infra constraints), `rules/lidr-sdlc/org.md` §1.3 (data criticality). Identify the workflows/data flows that drive quality constraints.
 
 ## Phase 2 — Domain analysis & regulatory mapping
 
