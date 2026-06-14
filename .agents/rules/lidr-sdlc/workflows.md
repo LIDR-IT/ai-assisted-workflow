@@ -169,7 +169,7 @@ PHASE 3 — SOLUTIONING · stage specification (ex-Fase 3 Especificación)
   PO ejecuta:
     lidr-requirements (per-rf)  → Genera RFs con BDD desde PRDs
   TL ejecuta:
-    lidr-requirements (nfr)     → Genera NFRs standalone medibles desde PRD-T §5
+    lidr-requirements (nfr)     → Genera NFRs standalone medibles desde prd.md §4 (feature NFRs) y Cross-Cutting NFRs (Adapt-In)
   PO + TL ejecutan:
     lidr-requirements (validate) → Valida RFs + NFRs, genera RTM, detecta gaps
     (verifican coherencia con checklists)
@@ -392,7 +392,7 @@ TL inspecciona cada worktree, decide archive/PR manual
   ↓
 /lidr-validate-requirements my-project       → Orquesta Fase 3 completa:
   ├── skill: lidr-requirements (per-rf)      → RFs con BDD desde PRDs
-  ├── skill: lidr-requirements (nfr)         → NFRs medibles desde PRD-T §5
+  ├── skill: lidr-requirements (nfr)         → NFRs medibles desde prd.md §4 (feature NFRs) y Cross-Cutting NFRs (Adapt-In)
   ├── skill: lidr-requirements (validate)    → RTM + gap detection
   └── skill: bmad-create-epics-and-stories → Sub-épicas (rules: .agents/_shared/lidr/references/epic-decomposition-rules.md)
   ↓

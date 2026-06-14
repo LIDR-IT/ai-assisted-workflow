@@ -23,12 +23,12 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 
 ## Relationship to BMad
 
-LIDR-unique: BMad has no formal risk-registry artifact. This skill consumes the risk sections of `bmad-prd` (PRD-T §8 / PRD-F §8) plus `lidr-business-case` §6, and produces a living risk log that feeds Gate 1 evidence and is maintained across all phases.
+LIDR-unique: BMad has no formal risk-registry artifact. This skill consumes the risk-relevant sections of the unified PRD (prd.md §8 Open Questions, §9 Assumptions Index, Risk & Mitigations Adapt-In) plus `lidr-business-case` §6, and produces a living risk log that feeds Gate 1 evidence and is maintained across all phases.
 
 ## Workflow
 
 1. **Read Business Case** §6 (initial project risks)
-2. **Read PRD-T** §8 (technical risks) and **PRD-F** §8 (functional risks)
+2. **Read prd.md** §8/§9 + Risk & Mitigations (Adapt-In)
 3. **Analyze project-specific risk patterns**:
    - Third-party API integration failures and vendor dependency risks
    - Data migration complexity and data integrity risks
@@ -42,14 +42,13 @@ LIDR-unique: BMad has no formal risk-registry artifact. This skill consumes the 
 
 ## Input
 
-| Input                               | Required     | Source                                  |
-| ----------------------------------- | ------------ | --------------------------------------- |
-| Business Case §6 (risks)            | ✅           | skill `business-case/`                  |
-| PRD-T §8 (technical risks)          | ✅           | skill `bmad-prd/`                       |
-| PRD-F §8 (functional risks)         | ✅           | skill `bmad-prd/`                       |
-| Tech stack                          | Desirable    | `rules/tech-stack.md`                   |
-| Project type                        | Desirable    | BC (new product, migration, regulatory) |
-| Historical risks from past projects | If available | PME / retros                            |
+| Input                                        | Required     | Source                                  |
+| -------------------------------------------- | ------------ | --------------------------------------- |
+| Business Case §6 (risks)                     | ✅           | skill `business-case/`                  |
+| prd.md §8/§9 + Risk & Mitigations (Adapt-In) | ✅           | skill `bmad-prd/`                       |
+| Tech stack                                   | Desirable    | `rules/tech-stack.md`                   |
+| Project type                                 | Desirable    | BC (new product, migration, regulatory) |
+| Historical risks from past projects          | If available | PME / retros                            |
 
 ## Output Location
 

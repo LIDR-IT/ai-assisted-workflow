@@ -56,14 +56,14 @@ Example: `docs/projects/docline/vuln-assessment-2026-06-10.md`
 
 ## Input
 
-| Input             | Required  | Source                                        |
-| ----------------- | --------- | --------------------------------------------- |
-| SAST report       | ✅        | {{CODE_QUALITY_TOOL}} (SAST engine)           |
-| SCA report        | ✅        | {{CODE_QUALITY_TOOL}} (SCA / dependency scan) |
-| Project context   | ✅        | `rules/project.md`, PRD-T §5.4                |
-| Tech stack        | ✅        | `rules/tech-stack.md`                         |
-| Previous baseline | Desirable | Prior assessment                              |
-| Threat model      | Desirable | Security architecture docs                    |
+| Input             | Required  | Source                                                               |
+| ----------------- | --------- | -------------------------------------------------------------------- |
+| SAST report       | ✅        | {{CODE_QUALITY_TOOL}} (SAST engine)                                  |
+| SCA report        | ✅        | {{CODE_QUALITY_TOOL}} (SCA / dependency scan)                        |
+| Project context   | ✅        | `rules/project.md`, prd.md §4 (feature NFRs) / security architecture |
+| Tech stack        | ✅        | `rules/tech-stack.md`                                                |
+| Previous baseline | Desirable | Prior assessment                                                     |
+| Threat model      | Desirable | Security architecture docs                                           |
 
 ## Output Template
 

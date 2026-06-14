@@ -186,8 +186,7 @@ Uses: templates/kickoff.md
 | #      | Action                                                 | Owner      | Deadline     | Completion Criterion                       | Status |
 | ------ | ------------------------------------------------------ | ---------- | ------------ | ------------------------------------------ | ------ |
 | AI-001 | Create master epic in {{TRACKING_TOOL}} with sub-epics | [PME]      | [YYYY-MM-DD] | {{TRACKING_TOOL}} epic visible to the team | 📝     |
-| AI-002 | Start Technical PRD (skill bmad-prd)                   | [R&D Lead] | [YYYY-MM-DD] | PRD-T v0.1 draft in {{DOCS_TOOL}}          | 📝     |
-| AI-003 | Start Functional PRD (skill bmad-prd)                  | [PO]       | [YYYY-MM-DD] | PRD-F v0.1 draft in {{DOCS_TOOL}}          | 📝     |
+| AI-002 | Start PRD (skill bmad-prd)                             | [R&D Lead] | [YYYY-MM-DD] | PRD v0.1 draft in {{DOCS_TOOL}}            | 📝     |
 | AI-004 | Set up project in tooling                              | [DevOps]   | [YYYY-MM-DD] | Repo, CI/CD, DEV/STG environments          | 📝     |
 | AI-005 | Initial compliance analysis                            | [Security] | [YYYY-MM-DD] | Privacy impact assessment if applicable    | 📝     |
 
@@ -207,7 +206,7 @@ Uses: templates/kickoff.md
 
 **Gate 1 Objective** (in [N] weeks):
 
-- Functional and Technical PRD complete
+- PRD complete (Functional + Technical sections aligned)
 - Cross-review approved (skill `review-cruzado`)
 - Risk log updated (skill `risk-log`)
 - Technical feasibility PoC reports (if applicable)

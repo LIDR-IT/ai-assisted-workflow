@@ -47,7 +47,7 @@ Tools resolve via the central registry `_shared/lidr/integrations/tool-registry.
 | QA Sign-off            | ✅       | skill `test-execution-report/` (Gate 5)               |
 | Security Sign-off      | ✅       | skills `vuln-assessment/`, `pentest-report/` (Gate 6) |
 | Rollback Plan          | ✅       | skill `rollback-plan/`                                |
-| Architecture / impact  | ✅       | PRD-T / PRs                                           |
+| Architecture / impact  | ✅       | prd.md (technical sections) / Architecture doc / PRs  |
 | Deployment window      | ✅       | Calendar + team                                       |
 
 ## Output Location

@@ -82,18 +82,18 @@ Client-specific content is isolated from framework rules through:
 
 ### 3.1 Composición
 
-| Rol                 | Personas | Dedicación | Responsabilidad Principal                               |
-| ------------------- | -------- | ---------- | ------------------------------------------------------- |
-| **PME**             | 1        | 30%        | Governance, métricas, portafolio, sponsor liaison       |
-| **Product Owner**   | 1        | 50%        | PRD Funcional, User Stories, priorización, stakeholders |
-| **R&D / Core Lead** | 1        | 40%        | PRD Técnico, arquitectura, PoCs, tech decisions         |
-| **Tech Lead**       | 1        | 70%        | Code review, estándares, mentoring, DoD enforcement     |
-| **Developers**      | 3-4      | 100%       | Implementación, PRs, handoffs QA                        |
-| **QA Lead**         | 1        | 60%        | Test strategy, sign-off, regression                     |
-| **QA Engineers**    | 1-2      | 100%       | Test cases, ejecución, bug reports                      |
-| **Security (CISO)** | 1        | 20%        | Vuln assessment, DAST, pen test, sign-off               |
-| **DevOps**          | 1        | 30%        | CI/CD, entornos, deploy, monitoreo                      |
-| **Scrum Master**    | 1        | 40%        | Facilitación, impedimentos, métricas de equipo          |
+| Rol                 | Personas | Dedicación | Responsabilidad Principal                                                |
+| ------------------- | -------- | ---------- | ------------------------------------------------------------------------ |
+| **PME**             | 1        | 30%        | Governance, métricas, portafolio, sponsor liaison                        |
+| **Product Owner**   | 1        | 50%        | prd.md (secciones funcionales), User Stories, priorización, stakeholders |
+| **R&D / Core Lead** | 1        | 40%        | prd.md (secciones técnicas), arquitectura, PoCs, tech decisions          |
+| **Tech Lead**       | 1        | 70%        | Code review, estándares, mentoring, DoD enforcement                      |
+| **Developers**      | 3-4      | 100%       | Implementación, PRs, handoffs QA                                         |
+| **QA Lead**         | 1        | 60%        | Test strategy, sign-off, regression                                      |
+| **QA Engineers**    | 1-2      | 100%       | Test cases, ejecución, bug reports                                       |
+| **Security (CISO)** | 1        | 20%        | Vuln assessment, DAST, pen test, sign-off                                |
+| **DevOps**          | 1        | 30%        | CI/CD, entornos, deploy, monitoreo                                       |
+| **Scrum Master**    | 1        | 40%        | Facilitación, impedimentos, métricas de equipo                           |
 
 ### 3.2 Capacidad por Sprint (2 semanas)
 

@@ -63,7 +63,8 @@ const FINDINGS_REPORT_RULES: ValidationRule[] = [
   },
   {
     name: "Compliance Section",
-    description: "Must validate compliance/regulatory alignment between PRD-F and PRD-T",
+    description:
+      "Must validate compliance/regulatory alignment within the unified PRD (Functional ↔ Technical scopes)",
     check: (content) =>
       content.includes("Compliance") ||
       content.includes("Regulatory") ||
@@ -111,10 +112,11 @@ const ALIGNMENT_MATRIX_RULES: ValidationRule[] = [
   },
   {
     name: "Functionalities Matrix",
-    description: "Must map PRD-F functionalities to PRD-T capabilities",
+    description: "Must map Functional functionalities to Technical capabilities",
     check: (content) =>
       content.includes("Functionalities Alignment") &&
-      content.includes("PRD-F Functionality | PRD-T Capability"),
+      content.includes("Functional Functionality") &&
+      content.includes("Technical Capability"),
     severity: "ERROR",
   },
   {
@@ -122,7 +124,8 @@ const ALIGNMENT_MATRIX_RULES: ValidationRule[] = [
     description: "Must map user journey steps to API endpoints",
     check: (content) =>
       content.includes("User Journey ↔ API Flow Mapping") &&
-      content.includes("PRD-F User Journey Step | PRD-T API Endpoint"),
+      content.includes("Functional User Journey Step") &&
+      content.includes("Technical API Endpoint"),
     severity: "ERROR",
   },
   {

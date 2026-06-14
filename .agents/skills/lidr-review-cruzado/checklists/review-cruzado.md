@@ -10,9 +10,9 @@ next_review: "2026-07-12"
 owner_role: "PO"
 ---
 
-# Cross Review Checklist — Technical ↔ Functional PRD
+# PRD Alignment Checklist — Functional ↔ Technical Coherence (unified PRD)
 
-> **Purpose**: Bidirectional consistency validation between Technical PRD and Functional PRD.
+> **Purpose**: Bidirectional consistency validation of the unified PRD's Functional ↔ Technical scopes (one `prd.md`, not two documents).
 > **Evaluated by**: Skill `review-cruzado` + in-person review by Product + R&D
 > **Associated Gate**: Gate 1 — PRD Approved
 > **Frequency**: Mandatory before closing Gate 1. Repeated if any PRD changes post-Gate.
@@ -23,16 +23,16 @@ owner_role: "PO"
 
 ### 1.1 Scope Alignment
 
-- [ ] **Aligned Scope** — Both PRDs describe same project scope
-- [ ] **Functionalities Covered** — All Functional PRD functionality has technical support in Technical PRD
-- [ ] **Limitations Communicated** — Technical PRD limitations are reflected in functional scope (exclusions, restrictions)
+- [ ] **Aligned Scope** — Functional and technical scopes describe the same project scope
+- [ ] **Functionalities Covered** — All functional-scope requirements have technical support in the PRD's technical scope
+- [ ] **Limitations Communicated** — Technical-scope limitations are reflected in the functional scope (exclusions, restrictions)
 - [ ] **Consistent Exclusions** — What's excluded in one is excluded in both
 - [ ] **Coherent Roadmap** — Functional roadmap phases are viable with proposed technical roadmap
 
 ### 1.2 Terminology
 
-- [ ] **Consistent Glossary** — Same concepts use same terms in both PRDs
-- [ ] **Aligned Actors** — Actors/roles mentioned in both PRDs are the same with same responsibilities
+- [ ] **Consistent Glossary** — Same concepts use same terms across the functional and technical sections
+- [ ] **Aligned Actors** — Actors/roles mentioned across the functional and technical sections are the same with same responsibilities
 - [ ] **Compatible Metrics** — Functional success metrics are measurable with proposed technical architecture
 
 ---
@@ -41,15 +41,15 @@ owner_role: "PO"
 
 ### 2.1 Technical Feasibility of Functional
 
-- [ ] **Viable User Journeys** — Each Functional PRD journey is implementable with Technical PRD architecture
-- [ ] **Sufficient Technical Capabilities** — Technical PRD capabilities cover all key Functional PRD functionalities
+- [ ] **Viable User Journeys** — Each functional-scope journey is implementable with the technical-scope architecture
+- [ ] **Sufficient Technical Capabilities** — Technical-scope capabilities cover all key functional-scope requirements
 - [ ] **Compatible Performance** — Implicit performance requirements in functional are achievable with technical stack
 - [ ] **Aligned Scalability** — Functional growth scenarios are supported by technical architecture
 
 ### 2.2 Integrations and Dependencies
 
 - [ ] **Aligned Integrations** — Integrations needed for functional are contemplated in technical (APIs, services, SDKs)
-- [ ] **Explicit Technical Dependencies** — Technical dependencies mentioned in Technical PRD do not block priority Functional functionalities
+- [ ] **Explicit Technical Dependencies** — Technical dependencies in the technical scope do not block priority functional requirements
 - [ ] **Bidirectional APIs** — If functional requires data from external system, technical describes how to obtain it
 - [ ] **Data and Storage** — Data that functional requires to persist is contemplated in technical data model
 
@@ -57,7 +57,7 @@ owner_role: "PO"
 
 - [ ] **Traced Security Requirements** — Functionalities handling sensitive data have technical security counterpart
 - [ ] **Reflected Compliance** — Functional regulatory requirements have described technical implementation
-- [ ] **Handled Special-Category Data** — If involving special-category data (e.g. biometric/health, GDPR Art. 9): Technical PRD details encryption, storage, and specific compliance
+- [ ] **Handled Special-Category Data** — If involving special-category data (e.g. biometric/health, GDPR Art. 9): the technical scope details encryption, storage, and specific compliance
 
 ---
 
@@ -99,8 +99,8 @@ _(Risks impacting both PRDs requiring coordinated mitigation)_
 - [ ] **Major gaps with owner and deadline** assigned
 - [ ] **Cross risks with documented mitigation**
 - [ ] **Action items assigned** with realistic dates
-- [ ] **Product confirms**: Functional PRD is consistent with Technical PRD
-- [ ] **R&D/Core confirms**: Technical PRD supports all committed functionalities
+- [ ] **Product confirms**: the functional scope is consistent with the technical scope
+- [ ] **R&D/Core confirms**: the technical scope supports all committed functionalities
 - [ ] **QA confirms** (observer): RFs will be testable with this foundation
 
 ### 4.2 Required Signatures
@@ -113,20 +113,20 @@ _(Risks impacting both PRDs requiring coordinated mitigation)_
 
 ## 5. Anti-patterns to Avoid
 
-| Anti-pattern                 | Alert Signal                                                                | Solution                                                                  |
-| ---------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| **Cosmetic review**          | Session <15 min, 0 findings                                                 | Use AI report as baseline — there are always items                        |
-| **"We'll see it later"**     | Critical gaps deferred without plan                                         | Force decision: cover now, defer with date, or explicitly exclude         |
-| **Session without QA**       | QA discovers inconsistencies in Gate 2 that should have been seen in Gate 1 | QA as mandatory observer — brings testability perspective                 |
-| **PRDs diverging post-Gate** | PRD changes without re-review                                               | Any post-Gate 1 change requires re-evaluation (minimum impact assessment) |
-| **One PRD dominates**        | Technical ignores functional or vice versa                                  | Facilitator ensures balance                                               |
+| Anti-pattern                       | Alert Signal                                                                | Solution                                                                  |
+| ---------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Cosmetic review**                | Session <15 min, 0 findings                                                 | Use AI report as baseline — there are always items                        |
+| **"We'll see it later"**           | Critical gaps deferred without plan                                         | Force decision: cover now, defer with date, or explicitly exclude         |
+| **Session without QA**             | QA discovers inconsistencies in Gate 2 that should have been seen in Gate 1 | QA as mandatory observer — brings testability perspective                 |
+| **PRD scopes diverging post-Gate** | PRD changes without re-review                                               | Any post-Gate 1 change requires re-evaluation (minimum impact assessment) |
+| **One scope dominates**            | Technical ignores functional or vice versa                                  | Facilitator ensures balance                                               |
 
 ---
 
 ## 6. Connection with SDLC Flow
 
 ```
-PRD-T generated + PRD-F generated
+prd.md generated (Functional + Technical scopes)
     ↓
 Cross Review (this checklist + skill review-cruzado)
     ↓

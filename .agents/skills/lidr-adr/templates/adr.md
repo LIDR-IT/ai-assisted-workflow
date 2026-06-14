@@ -77,6 +77,6 @@ We choose **Option {N}: {name}** because {justification tied to the decision dri
 ### Links
 
 - Related RF/NFR: {RF-NNN, NFR-NNN}
-- Source PRD: {PRD-T section N / PRD-F section N}
+- Source PRD: {prd.md section N — e.g. §4 Features, Cross-Cutting NFRs}
 - Related ADRs: {ADR-NNNN (if applicable)}
 - {{TRACKING_TOOL}} ticket: {PROJ-NNN}

@@ -237,7 +237,7 @@ Essential for complex projects spanning multiple phases:
 
 | Sub-project                       | Phase    | Owner         | Duration    | Key Deliverables                                          |
 | --------------------------------- | -------- | ------------- | ----------- | --------------------------------------------------------- |
-| **{Project}-Discovery**           | Phase 2  | PO + R&D Lead | 2-3 sprints | PRD-Technical, PRD-Functional, Cross-review, Risk Log     |
+| **{Project}-Discovery**           | Phase 2  | PO + R&D Lead | 2-3 sprints | PRD (unified), Cross-review, Risk Log                     |
 | **{Project}-Specification**       | Phase 3  | PO + QA Lead  | 2-3 sprints | RFs with BDD, NFRs, Requirements Traceability Matrix      |
 | **{Project}-Core-Development**    | Phase 5a | Tech Lead     | 4-8 sprints | Core algorithms, APIs, database schema                    |
 | **{Project}-Integration**         | Phase 5b | Tech Lead     | 2-4 sprints | Tool integration, mobile components, UI                   |
