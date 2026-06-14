@@ -172,7 +172,8 @@ export const skills: Artifact[] = [
     phase: 'Fase 2 — Planning',
     phaseNum: 2,
     stage: 'planning',
-    description: 'Compara PRD Tecnico vs PRD Funcional, detecta gaps y contradicciones.',
+    description:
+      'Valida la alineación F↔T dentro del PRD unificado (prd.md), detecta gaps y contradicciones.',
     triggers: ['cross review', 'review cruzado', 'compare PRDs', 'PRD alignment check'],
     roles: ['PO', 'TL'],
     gateContribution: 'Gate 1',

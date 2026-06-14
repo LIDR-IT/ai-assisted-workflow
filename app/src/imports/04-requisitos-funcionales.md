@@ -2,7 +2,7 @@
 
 ## Definicion
 
-Un Requisito Funcional (RF) es una especificacion detallada de una funcionalidad individual del producto. Forma parte de un PRD Funcional y contiene toda la informacion necesaria para que el equipo de desarrollo implemente la funcionalidad y para que QA valide su correcto funcionamiento.
+Un Requisito Funcional (RF) es una especificacion detallada de una funcionalidad individual del producto. Forma parte de la seccion funcional del PRD unificado y contiene toda la informacion necesaria para que el equipo de desarrollo implemente la funcionalidad y para que QA valide su correcto funcionamiento.
 
 ---
 

@@ -36,7 +36,7 @@ export function WorkflowDiagram() {
         : [
             { color: `bg-${getPhaseColor(1)}-200`, label: 'Originación (Business/CTO)' },
             { color: `bg-${getPhaseColor(2)}-200`, label: 'Análisis R&D' },
-            { color: 'bg-green-200', label: 'Producto (PRD Funcional)' },
+            { color: 'bg-green-200', label: 'Producto (PRD · scope funcional)' },
             { color: `bg-${getPhaseColor(3)}-200`, label: 'Requisitos Funcionales' },
             { color: `bg-${getPhaseColor(4)}-200`, label: 'User Stories' },
             { color: 'bg-indigo-200', label: `Gestión ${trackingTool}` },
@@ -98,8 +98,8 @@ export function WorkflowDiagram() {
             // Other clients: Formal process
             e('e1', 'business', 'rnd', 'Solicita análisis'),
             e('e2', 'business', 'po', 'Comunica visión'),
-            e('e3', 'rnd', 'rf', 'PRD Técnico', { sourceHandle: 'right' }),
-            e('e4', 'po', 'rf', 'PRD Funcional', { sourceHandle: 'source-left' }),
+            e('e3', 'rnd', 'rf', 'PRD (técnico)', { sourceHandle: 'right' }),
+            e('e4', 'po', 'rf', 'PRD (funcional)', { sourceHandle: 'source-left' }),
             e('e5', 'rf', 'us', 'Derivar'),
             e('e6', 'us', 'jira', 'Crear tickets'),
             e('e7', 'jira', 'sprint', 'Priorizar'),
@@ -220,8 +220,8 @@ export function WorkflowDiagram() {
               getPhaseColor(1),
               'Requisitos Alto Nivel'
             ),
-            n('rnd', 50, 110, 'R&D Analiza', getPhaseColor(2), 'PRD Técnico · Viabilidad'),
-            n('po', 450, 110, 'Product Owners', getPhaseColor(2), 'PRD Funcional'),
+            n('rnd', 50, 110, 'R&D Analiza', getPhaseColor(2), 'PRD · scope técnico · Viabilidad'),
+            n('po', 450, 110, 'Product Owners', getPhaseColor(2), 'PRD · scope funcional'),
             n(
               'rf',
               250,

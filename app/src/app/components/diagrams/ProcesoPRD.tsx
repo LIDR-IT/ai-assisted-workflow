@@ -36,7 +36,7 @@ function ProcesoPRDComponent() {
         {/* PRD Structure */}
         <DiagramCard>
           <SectionBox
-            title="Estructura del PRD Funcional"
+            title="Estructura del PRD (scope funcional)"
             borderColor="border-cyan-200"
             bgColor="bg-cyan-50"
             icon={<FileText className="text-cyan-600" size={20} />}
@@ -66,7 +66,7 @@ function ProcesoPRDComponent() {
             icon={<ClipboardList className="text-teal-600" size={20} />}
           >
             <div className="bg-white rounded-lg p-4 border border-teal-200 font-mono text-sm text-slate-700 overflow-x-auto">
-              <div className="font-semibold text-teal-800">PRD Funcional</div>
+              <div className="font-semibold text-teal-800">PRD (funcional)</div>
               <div className="ml-4 mt-2">
                 <div className="text-blue-700">├── RF-360-001: Pantalla de Login Biométrico</div>
                 <div className="ml-8 text-slate-500">├── US-001: Autenticación facial</div>

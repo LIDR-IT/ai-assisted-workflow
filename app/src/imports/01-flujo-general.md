@@ -4,8 +4,9 @@
 
 ```
 Business/Liderazgo -> Requisitos Alto Nivel
-    -> R&D Analiza -> PRD Tecnico
-    -> Product Owners -> PRD Funcional
+    -> R&D valida viabilidad tecnica (seccion tecnica del PRD)
+    -> Product Owners definen alcance funcional (seccion funcional del PRD)
+        -> PRD unificado (F+T, co-autoria PO + R&D)
         -> Requisitos Funcionales (RF)
             -> User Stories
                 -> Tickets Jira
@@ -38,33 +39,33 @@ El flujo comienza cuando el liderazgo de negocio o el CTO identifican una necesi
 
 ## Fase 2: Analisis de R&D (Viabilidad tecnica y prototipado)
 
-| Aspecto                  | Detalle                                                                                                   |
-| ------------------------ | --------------------------------------------------------------------------------------------------------- |
-| **Inputs**               | Solicitudes del CTO, requisitos de alto nivel del negocio                                                 |
-| **Outputs**              | PRD Tecnico, prototipos, analisis de viabilidad, propuestas de solucion tecnica                           |
-| **Responsables**         | Equipo de R&D / Core                                                                                      |
-| **Herramientas**         | Herramientas de prototipado, laboratorios internos, Confluence para documentacion                         |
-| **Mecanismo de handoff** | R&D genera un PRD Tecnico que alimenta al equipo de Producto con las capacidades tecnologicas disponibles |
+| Aspecto                  | Detalle                                                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| **Inputs**               | Solicitudes del CTO, requisitos de alto nivel del negocio                                                               |
+| **Outputs**              | Seccion tecnica del PRD (viabilidad, algoritmos, NFRs, restricciones), prototipos, analisis de viabilidad               |
+| **Responsables**         | Equipo de R&D / Core                                                                                                    |
+| **Herramientas**         | Herramientas de prototipado, laboratorios internos, Confluence para documentacion                                       |
+| **Mecanismo de handoff** | R&D valida la viabilidad tecnica y aporta la seccion tecnica del PRD unificado, en co-autoria con el equipo de Producto |
 
 ### Descripcion
 
-Cuando el CTO envia una solicitud a R&D, el equipo investiga, analiza las capacidades actuales del sistema y propone soluciones tecnicas. Esta fase puede incluir la creacion de prototipos, pruebas de concepto y evaluacion de algoritmos (por ejemplo, algoritmos domain-specificos). El resultado principal es un PRD Tecnico, centrado en las capacidades tecnicas, los algoritmos involucrados y las limitaciones o posibilidades de la tecnologia. Este documento es fundamental porque define el "techo" de lo que es tecnicamente posible y sirve de insumo para que el equipo de Producto diseñe la solucion funcional.
+Cuando el CTO envia una solicitud a R&D, el equipo investiga, analiza las capacidades actuales del sistema y propone soluciones tecnicas. Esta fase puede incluir la creacion de prototipos, pruebas de concepto y evaluacion de algoritmos (por ejemplo, algoritmos domain-specificos). El resultado principal es la **seccion tecnica del PRD unificado**, centrada en las capacidades tecnicas, los algoritmos involucrados y las limitaciones o posibilidades de la tecnologia. Esta seccion es fundamental porque define el "techo" de lo que es tecnicamente posible; no es un documento aparte, sino la parte tecnica del mismo PRD que el equipo de Producto co-redacta para definir la solucion funcional.
 
 ---
 
-## Fase 3: Definicion de Producto (PRD Funcional y Requisitos Funcionales)
+## Fase 3: Definicion de Producto (alcance funcional del PRD y Requisitos Funcionales)
 
-| Aspecto                  | Detalle                                                                                   |
-| ------------------------ | ----------------------------------------------------------------------------------------- |
-| **Inputs**               | PRD Tecnico de R&D, requisitos de alto nivel de negocio, reuniones con stakeholders       |
-| **Outputs**              | PRD Funcional, Requisitos Funcionales (RF), User Stories                                  |
-| **Responsables**         | Product Owners (PO, Product Lead), Tech Lead                                              |
-| **Herramientas**         | Confluence (documentacion), Robo/RoboFlow (generacion asistida por IA), ChatGPT           |
-| **Mecanismo de handoff** | Los RFs documentados en Confluence se transforman en User Stories que se trasladan a Jira |
+| Aspecto                  | Detalle                                                                                                   |
+| ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| **Inputs**               | Seccion tecnica del PRD validada por R&D, requisitos de alto nivel de negocio, reuniones con stakeholders |
+| **Outputs**              | PRD unificado (secciones funcional + tecnica), Requisitos Funcionales (RF), User Stories                  |
+| **Responsables**         | Product Owners (PO, Product Lead), Tech Lead, R&D (co-autoria de la seccion tecnica)                      |
+| **Herramientas**         | Confluence (documentacion), Robo/RoboFlow (generacion asistida por IA), ChatGPT                           |
+| **Mecanismo de handoff** | Los RFs documentados en Confluence se transforman en User Stories que se trasladan a Jira                 |
 
 ### Descripcion
 
-El equipo de Producto asiste a reuniones con los stakeholders de negocio, recibe la documentacion de alto nivel y realiza el ejercicio de "escuchar, entender lo que realmente se quiere, y aterrizarlo". El PO y el Tech Lead son los principales responsables de traducir las necesidades de negocio en requisitos accionables. Conociendo las capacidades tecnicas que R&D ha validado, el equipo de Producto crea el PRD Funcional, que contiene la vision completa del producto, el alcance, las funcionalidades principales y los Requisitos Funcionales individuales (RF).
+El equipo de Producto asiste a reuniones con los stakeholders de negocio, recibe la documentacion de alto nivel y realiza el ejercicio de "escuchar, entender lo que realmente se quiere, y aterrizarlo". El PO y el Tech Lead son los principales responsables de traducir las necesidades de negocio en requisitos accionables. Conociendo las capacidades tecnicas que R&D ha validado, el equipo de Producto define la **seccion funcional del PRD** (vision completa del producto, alcance, funcionalidades principales y Requisitos Funcionales individuales, RF). Esta seccion funcional y la seccion tecnica que aporta R&D conviven en un **unico PRD unificado** co-redactado entre ambos equipos; lidr-review-cruzado valida la alineacion funcional-tecnica (F↔T).
 
 Cada RF se documenta con una estructura estandar que incluye descripcion, comportamiento esperado (flujos principales, alternativos y de error), criterios de aceptacion y dependencias. Se utiliza asistencia de IA (Robo integrado con Confluence) para acelerar la generacion de RFs, aunque se revisan manualmente para garantizar coherencia. De los RFs se derivan User Stories que alimentan el backlog de Jira.
 

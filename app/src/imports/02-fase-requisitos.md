@@ -10,7 +10,7 @@ El liderazgo de negocio identifica necesidades basadas en demanda de mercado, so
 
 ### Fuente 2: CTO y R&D
 
-El CTO envia solicitudes directamente a R&D. El equipo de R&D investiga, analiza las capacidades actuales del sistema, evalua la viabilidad tecnica y propone soluciones. Como resultado, R&D produce PRDs Tecnicos que describen las capacidades algoritmicas, las limitaciones tecnicas y las propuestas de solucion desde una perspectiva de ingenieria.
+El CTO envia solicitudes directamente a R&D. El equipo de R&D investiga, analiza las capacidades actuales del sistema, evalua la viabilidad tecnica y propone soluciones. Como resultado, R&D aporta la **seccion tecnica del PRD** que describe las capacidades algoritmicas, las limitaciones tecnicas y las propuestas de solucion desde una perspectiva de ingenieria. Esta seccion no es un documento aparte: convive con la seccion funcional dentro del mismo PRD unificado.
 
 ---
 
@@ -22,7 +22,7 @@ El equipo de R&D (tambien referido como Core) juega un rol fundamental en la fas
 - **Investigacion**: R&D investiga las capacidades tecnicas necesarias para satisfacer las necesidades de negocio.
 - **Analisis**: Se evaluan algoritmos existentes, se prueban nuevas aproximaciones y se determina la viabilidad tecnica.
 - **Propuesta**: R&D propone soluciones tecnicas concretas basadas en su investigacion.
-- **Documentacion**: El resultado se formaliza en un PRD Tecnico, centrado en algoritmos, capacidades tecnicas y prototipos.
+- **Documentacion**: El resultado se formaliza en la **seccion tecnica del PRD unificado**, centrada en algoritmos, capacidades tecnicas, NFRs, restricciones y prototipos.
 
 ---
 
@@ -42,37 +42,39 @@ El equipo de Producto:
 
 ---
 
-## Dos Tipos de PRD
+## Un PRD Unificado con Dos Secciones
 
-La organizacion maneja dos tipos de PRD complementarios que alimentan el proceso de desarrollo:
+La organizacion mantiene **un unico PRD unificado** (prd.md, producido via bmad-prd) con dos secciones complementarias que conviven en el mismo documento y se co-redactan entre Producto y R&D:
 
-### 1. PRD Tecnico
+### 1. Seccion tecnica del PRD
 
 | Aspecto              | Detalle                                                                        |
 | -------------------- | ------------------------------------------------------------------------------ |
-| **Generado por**     | R&D / Core                                                                     |
-| **Enfoque**          | Algoritmos, capacidades tecnicas, prototipos                                   |
+| **Co-autoria**       | R&D / Core (responsable de esta seccion)                                       |
+| **Enfoque**          | Algoritmos, capacidades tecnicas, NFRs, restricciones, prototipos              |
 | **Contenido tipico** | Viabilidad tecnica, limitaciones, rendimiento esperado, arquitectura propuesta |
 | **Proposito**        | Definir el "techo" de lo que es tecnicamentente posible                        |
 
-### 2. PRD Funcional
+### 2. Seccion funcional del PRD
 
 | Aspecto              | Detalle                                                                               |
 | -------------------- | ------------------------------------------------------------------------------------- |
-| **Generado por**     | Equipo de Producto (PO, Product Lead)                                                 |
+| **Co-autoria**       | Equipo de Producto (PO, Product Lead) (responsable de esta seccion)                   |
 | **Enfoque**          | Solucion de producto, requisitos funcionales                                          |
 | **Contenido tipico** | Overview del proyecto, alcance, funcionalidades, RFs, roadmap, dependencias           |
 | **Proposito**        | Definir QUE debe construirse y COMO debe comportarse desde la perspectiva del usuario |
+
+> Ambas secciones viven en el **mismo PRD** y son cruzadas por lidr-review-cruzado para garantizar la alineacion funcional-tecnica (F↔T). No son dos documentos separados.
 
 ---
 
 ## Transicion entre R&D y Producto
 
-El equipo de Producto actua como puente entre las capacidades tecnicas y las necesidades de negocio:
+El equipo de Producto actua como puente entre las capacidades tecnicas y las necesidades de negocio, co-redactando un unico PRD con R&D:
 
-1. R&D valida la viabilidad y define las capacidades en el PRD Tecnico.
-2. El equipo de Producto conoce estas capacidades tecnologicas.
-3. Con ese conocimiento, Producto crea requisitos funcionales que aprovechan al maximo las capacidades de R&D.
+1. R&D valida la viabilidad y define las capacidades en la seccion tecnica del PRD.
+2. El equipo de Producto conoce estas capacidades tecnologicas (la seccion tecnica del mismo PRD).
+3. Con ese conocimiento, Producto redacta la seccion funcional con requisitos funcionales que aprovechan al maximo las capacidades de R&D.
 4. Los RFs se diseñan para ser realistas (dentro de lo tecnicamentente posible) y valiosos (alineados con las necesidades de negocio).
 
 Esta transicion es clave porque asegura que lo que se construye es tanto tecnicamentente viable como comercialmente relevante.
@@ -107,13 +109,13 @@ Este problema evidencia la importancia de formalizar el proceso de requisitos an
 ```
 Negocio/CTO
     |
-    |--- (CTO) ---> R&D ---> PRD Tecnico
-    |                              |
-    |--- (Negocio) ---> Producto   |
-                            |      |
-                            v      v
-                    PRD Funcional (alimentado por PRD Tecnico)
-                            |
+    |--- (CTO) ---> R&D ------------> seccion tecnica
+    |                                       |
+    |--- (Negocio) ---> Producto -> seccion funcional
+                            |               |
+                            v               v
+                    PRD unificado (F+T, co-autoria PO + R&D)
+                            | (lidr-review-cruzado valida F<->T)
                             v
                     Requisitos Funcionales (RF)
                             |

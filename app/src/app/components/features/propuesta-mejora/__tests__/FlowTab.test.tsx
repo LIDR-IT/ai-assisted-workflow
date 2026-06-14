@@ -126,8 +126,7 @@ const mockFlujoContent = {
     {
       gate: 'Gate 1',
       name: 'PRD Aprobado',
-      criteria:
-        'PRD Técnico + Funcional completos · Review cruzado aprobado · Riesgos identificados',
+      criteria: 'PRD unificado (F+T) completo · Review cruzado aprobado · Riesgos identificados',
       owner: 'Producto + R&D',
     },
     {
@@ -361,7 +360,7 @@ describe('FlowTab', () => {
 
       // Check a few key criteria
       expect(screen.getByText(/Business Case aprobado/)).toBeInTheDocument();
-      expect(screen.getByText(/PRD Técnico \+ Funcional completos/)).toBeInTheDocument();
+      expect(screen.getByText(/PRD unificado \(F\+T\) completo/)).toBeInTheDocument();
       expect(screen.getByText(/DoR cumplida/)).toBeInTheDocument();
     });
   });

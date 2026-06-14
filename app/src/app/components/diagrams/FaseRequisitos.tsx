@@ -74,7 +74,7 @@ function FaseRequisitosComponent() {
                   <span className="text-blue-500 mt-1">4.</span> Propuestas de soluciones técnicas
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">5.</span> Formalización en PRD Técnico
+                  <span className="text-blue-500 mt-1">5.</span> Formalización en PRD (técnico)
                 </li>
               </ul>
             </SectionBox>
@@ -82,21 +82,21 @@ function FaseRequisitosComponent() {
 
           <DiagramCard>
             <SectionBox
-              title="Dos Tipos de PRD"
+              title="Dos secciones del PRD unificado"
               borderColor="border-cyan-200"
               bgColor="bg-cyan-50"
               icon={<FileText className="text-cyan-600" size={20} />}
             >
               <div className="space-y-3">
                 <div className="bg-blue-50 rounded p-3 border border-blue-200">
-                  <div className="font-semibold text-sm text-blue-800">PRD Técnico</div>
+                  <div className="font-semibold text-sm text-blue-800">PRD (técnico)</div>
                   <div className="text-xs text-blue-600 mt-1">
                     R&D / Core · Algoritmos, prototipos, viabilidad
                   </div>
                   <div className="text-xs text-blue-500 mt-1">Define el "techo" técnico</div>
                 </div>
                 <div className="bg-green-50 rounded p-3 border border-green-200">
-                  <div className="font-semibold text-sm text-green-800">PRD Funcional</div>
+                  <div className="font-semibold text-sm text-green-800">PRD (funcional)</div>
                   <div className="text-xs text-green-600 mt-1">
                     Producto · Overview, alcance, RFs, roadmap
                   </div>
