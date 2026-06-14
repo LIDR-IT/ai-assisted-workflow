@@ -11,7 +11,7 @@ import {
   getTacticalCommands,
   getUtilityCommands,
 } from '@/data/artifacts/commands';
-import { phases, totalPhases, totalGates } from '@/data/phases';
+import { unifiedPhases, totalPhases, totalGates } from '@/data/phases';
 import fs from 'fs';
 import path from 'path';
 
@@ -216,18 +216,19 @@ export const ecosystemStats = {
   },
 };
 
-// Phase Distribution
-export const phaseDistribution = phases.map((phase) => ({
+// Phase Distribution — grouped by the unified 5-phase model (0-4). skill.phaseNum
+// is derived from stage (skills.ts), so this is BMad-inclusive and never legacy-bucketed.
+export const phaseDistribution = unifiedPhases.map((phase) => ({
   id: phase.id,
   name: phase.name,
-  shortName: phase.shortName,
+  shortName: `F${phase.id}`,
   skillCount: skills.filter((skill) => skill.phaseNum === phase.id).length,
   color: phase.color,
-  duration: phase.duration,
+  duration: '',
 }));
 
-// Skills by Phase (computed)
-export const skillsByPhaseDetailed = phases.map((phase) => ({
+// Skills by Phase (computed) — unified 0-4 buckets
+export const skillsByPhaseDetailed = unifiedPhases.map((phase) => ({
   phase: phase.name,
   phaseNum: phase.id,
   skills: skills.filter((skill) => skill.phaseNum === phase.id),
@@ -284,7 +285,7 @@ export const validateCounts = () => {
 
   // Check for missing skills in phases
   const skillsWithoutPhase = skills.filter(
-    (skill) => !phases.find((phase) => phase.id === skill.phaseNum)
+    (skill) => !unifiedPhases.find((phase) => phase.id === skill.phaseNum)
   );
 
   if (skillsWithoutPhase.length > 0) {
@@ -292,7 +293,7 @@ export const validateCounts = () => {
   }
 
   // Check for empty phases
-  const emptyPhases = phases.filter(
+  const emptyPhases = unifiedPhases.filter(
     (phase) => !skills.find((skill) => skill.phaseNum === phase.id)
   );
 

@@ -156,7 +156,7 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 0 — Context & Anytime',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '12 LIDR + 38 BMad', color: 'bg-gray-100 text-gray-700' },
+            badge: { label: '7 LIDR + 39 BMad', color: 'bg-gray-100 text-gray-700' },
             desc: 'Unified Phase 0: contexto de proyecto (brownfield) + skills transversales invocables en cualquier momento. Stages: context, anytime.',
             children: [
               {
@@ -550,14 +550,14 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 1 — Analysis',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '4 LIDR + 6 BMad', color: getPhaseColorClass(1) },
+            badge: { label: '4 LIDR + 5 BMad', color: getPhaseColorClass(1) },
             desc: 'Unified Phase 1: análisis y originación. Stage: analysis (ex-F1 Originación). Cierra con Gate 0 (Intake).',
             children: [
               {
                 name: 'analysis (ex-F1 Originación)',
                 type: 'folder',
                 iconName: 'FolderOpen',
-                badge: { label: '10 skills', color: getPhaseColorClass(1) },
+                badge: { label: '9 skills', color: getPhaseColorClass(1) },
                 children: [
                   {
                     name: 'lidr-business-case/SKILL.md',
@@ -710,7 +710,7 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 3 — Solutioning',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '6 LIDR + 7 BMad', color: getPhaseColorClass(3) },
+            badge: { label: '4 LIDR + 7 BMad', color: getPhaseColorClass(3) },
             desc: 'Unified Phase 3: arquitectura, RFs/NFRs, epics y sprint planning. Stages: specification (→ Gate 2 Specs Complete) y sprint-planning (→ Gate 3 Ready to Implement).',
             children: [
               {
@@ -768,7 +768,7 @@ export const projectTree: TreeNode[] = [
                 name: 'sprint-planning (ex-F4 Sprint Planning)',
                 type: 'folder',
                 iconName: 'FolderOpen',
-                badge: { label: '5 skills', color: getPhaseColorClass(4) },
+                badge: { label: '5 skills', color: getPhaseColorClass(3) },
                 desc: 'Stage sprint-planning → Gate 3: Ready to Implement',
                 children: [
                   {
@@ -814,7 +814,7 @@ export const projectTree: TreeNode[] = [
             name: 'Fase 4 — Implementation',
             type: 'folder',
             iconName: 'FolderOpen',
-            badge: { label: '17 LIDR + 14 BMad', color: getPhaseColorClass(5) },
+            badge: { label: '19 LIDR + 13 BMad', color: getPhaseColorClass(5) },
             desc: 'Unified Phase 4: stage-gates internos — development (→ G4), qa (→ G5), security (→ G6), release (→ G7).',
             children: [
               {
@@ -935,7 +935,7 @@ export const projectTree: TreeNode[] = [
                 name: 'qa (ex-F6 QA & Testing)',
                 type: 'folder',
                 iconName: 'FolderOpen',
-                badge: { label: '8 skills', color: getPhaseColorClass(6) },
+                badge: { label: '10 skills', color: getPhaseColorClass(6) },
                 desc: 'Stage qa → Gate 5: QA Sign-off',
                 children: [
                   {
