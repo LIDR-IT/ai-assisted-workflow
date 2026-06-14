@@ -54,13 +54,12 @@ export interface Skill {
   automated?: boolean;
 }
 
-export const skills: Skill[] = [
+const rawSkills: Omit<Skill, 'phaseNum'>[] = [
   // Phase 1 — Analysis · analysis (ex-Fase 1 Originación) (4)
   {
     id: 'lidr-business-case',
     name: 'lidr-business-case',
     phase: 'Phase 1 — Analysis · analysis',
-    phaseNum: 1,
     stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
@@ -80,7 +79,6 @@ export const skills: Skill[] = [
     id: 'lidr-kickoff',
     name: 'lidr-kickoff',
     phase: 'Phase 1 — Analysis · analysis',
-    phaseNum: 1,
     stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
@@ -95,7 +93,6 @@ export const skills: Skill[] = [
     id: 'lidr-stakeholder-map',
     name: 'lidr-stakeholder-map',
     phase: 'Phase 1 — Analysis · analysis',
-    phaseNum: 1,
     stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
@@ -109,7 +106,6 @@ export const skills: Skill[] = [
     id: 'lidr-tracking-integration',
     name: 'lidr-tracking-integration',
     phase: 'Phase 1 — Analysis · analysis',
-    phaseNum: 1,
     stage: 'analysis',
     source: 'lidr',
     criticality: 'required',
@@ -126,7 +122,6 @@ export const skills: Skill[] = [
     id: 'lidr-review-cruzado',
     name: 'lidr-review-cruzado',
     phase: 'Phase 2 — Planning · planning',
-    phaseNum: 2,
     stage: 'planning',
     source: 'lidr',
     criticality: 'required',
@@ -141,7 +136,6 @@ export const skills: Skill[] = [
     id: 'lidr-risk-log',
     name: 'lidr-risk-log',
     phase: 'Phase 2 — Planning · planning',
-    phaseNum: 2,
     stage: 'planning',
     source: 'lidr',
     criticality: 'recommended',
@@ -156,7 +150,6 @@ export const skills: Skill[] = [
     id: 'lidr-propuesta-builder',
     name: 'lidr-propuesta-builder',
     phase: 'Phase 2 — Planning · planning',
-    phaseNum: 2,
     stage: 'planning',
     source: 'lidr',
     criticality: 'optional',
@@ -178,7 +171,6 @@ export const skills: Skill[] = [
     id: 'lidr-requirements',
     name: 'lidr-requirements',
     phase: 'Phase 3 — Solutioning · specification',
-    phaseNum: 3,
     stage: 'specification',
     source: 'lidr',
     criticality: 'required',
@@ -204,7 +196,6 @@ export const skills: Skill[] = [
     id: 'lidr-user-stories',
     name: 'lidr-user-stories',
     phase: 'Phase 3 — Solutioning · sprint-planning',
-    phaseNum: 4,
     stage: 'sprint-planning',
     source: 'lidr',
     criticality: 'required',
@@ -220,7 +211,6 @@ export const skills: Skill[] = [
     id: 'lidr-sprint-capacity',
     name: 'lidr-sprint-capacity',
     phase: 'Phase 3 — Solutioning · sprint-planning',
-    phaseNum: 4,
     stage: 'sprint-planning',
     source: 'lidr',
     criticality: 'recommended',
@@ -235,7 +225,6 @@ export const skills: Skill[] = [
     id: 'lidr-refinement-notes',
     name: 'lidr-refinement-notes',
     phase: 'Phase 3 — Solutioning · sprint-planning',
-    phaseNum: 4,
     stage: 'sprint-planning',
     source: 'lidr',
     criticality: 'recommended',
@@ -251,7 +240,6 @@ export const skills: Skill[] = [
     id: 'lidr-using-git-worktrees',
     name: 'lidr-using-git-worktrees',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 5,
     stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
@@ -267,7 +255,6 @@ export const skills: Skill[] = [
     id: 'lidr-run-parallel-tasks',
     name: 'lidr-run-parallel-tasks',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 5,
     stage: 'development',
     source: 'lidr',
     criticality: 'optional',
@@ -285,7 +272,6 @@ export const skills: Skill[] = [
     id: 'lidr-pr-description',
     name: 'lidr-pr-description',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 5,
     stage: 'development',
     source: 'lidr',
     criticality: 'required',
@@ -300,7 +286,6 @@ export const skills: Skill[] = [
     id: 'lidr-adr',
     name: 'lidr-adr',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 5,
     stage: 'development',
     source: 'lidr',
     criticality: 'required',
@@ -314,7 +299,6 @@ export const skills: Skill[] = [
     id: 'lidr-tech-debt',
     name: 'lidr-tech-debt',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 5,
     stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
@@ -330,7 +314,6 @@ export const skills: Skill[] = [
     id: 'lidr-impact-analysis',
     name: 'lidr-impact-analysis',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 4,
     stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
@@ -352,7 +335,6 @@ export const skills: Skill[] = [
     id: 'lidr-contract-extraction',
     name: 'lidr-contract-extraction',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 4,
     stage: 'development',
     source: 'lidr',
     criticality: 'recommended',
@@ -374,7 +356,6 @@ export const skills: Skill[] = [
     id: 'lidr-dev-handoff-qa',
     name: 'lidr-dev-handoff-qa',
     phase: 'Phase 4 — Implementation · development',
-    phaseNum: 5,
     stage: 'development',
     source: 'lidr',
     criticality: 'required',
@@ -390,7 +371,6 @@ export const skills: Skill[] = [
     id: 'lidr-create-test-cases',
     name: 'lidr-create-test-cases',
     phase: 'Phase 4 — Implementation · qa',
-    phaseNum: 6,
     stage: 'qa',
     source: 'lidr',
     criticality: 'required',
@@ -405,7 +385,6 @@ export const skills: Skill[] = [
     id: 'lidr-bug-report',
     name: 'lidr-bug-report',
     phase: 'Phase 4 — Implementation · qa',
-    phaseNum: 6,
     stage: 'qa',
     source: 'lidr',
     criticality: 'recommended',
@@ -420,7 +399,6 @@ export const skills: Skill[] = [
     id: 'lidr-test-execution-report',
     name: 'lidr-test-execution-report',
     phase: 'Phase 4 — Implementation · qa',
-    phaseNum: 6,
     stage: 'qa',
     source: 'lidr',
     criticality: 'required',
@@ -436,7 +414,6 @@ export const skills: Skill[] = [
     id: 'lidr-vuln-assessment',
     name: 'lidr-vuln-assessment',
     phase: 'Phase 4 — Implementation · security',
-    phaseNum: 7,
     stage: 'security',
     source: 'lidr',
     criticality: 'required',
@@ -450,7 +427,6 @@ export const skills: Skill[] = [
     id: 'lidr-dast-interpretation',
     name: 'lidr-dast-interpretation',
     phase: 'Phase 4 — Implementation · security',
-    phaseNum: 7,
     stage: 'security',
     source: 'lidr',
     criticality: 'required',
@@ -465,7 +441,6 @@ export const skills: Skill[] = [
     id: 'lidr-pentest-report',
     name: 'lidr-pentest-report',
     phase: 'Phase 4 — Implementation · security',
-    phaseNum: 7,
     stage: 'security',
     source: 'lidr',
     criticality: 'required',
@@ -480,7 +455,6 @@ export const skills: Skill[] = [
     id: 'lidr-security-checklist',
     name: 'lidr-security-checklist',
     phase: 'Phase 4 — Implementation · security',
-    phaseNum: 7,
     stage: 'security',
     source: 'lidr',
     criticality: 'required',
@@ -497,7 +471,6 @@ export const skills: Skill[] = [
     id: 'lidr-change-request',
     name: 'lidr-change-request',
     phase: 'Phase 4 — Implementation · release',
-    phaseNum: 8,
     stage: 'release',
     source: 'lidr',
     criticality: 'required',
@@ -512,7 +485,6 @@ export const skills: Skill[] = [
     id: 'lidr-rollback-plan',
     name: 'lidr-rollback-plan',
     phase: 'Phase 4 — Implementation · release',
-    phaseNum: 8,
     stage: 'release',
     source: 'lidr',
     criticality: 'required',
@@ -528,7 +500,6 @@ export const skills: Skill[] = [
     id: 'lidr-release-notes',
     name: 'lidr-release-notes',
     phase: 'Phase 4 — Implementation · release',
-    phaseNum: 8,
     stage: 'release',
     source: 'lidr',
     criticality: 'required',
@@ -544,7 +515,6 @@ export const skills: Skill[] = [
     id: 'lidr-postmortem',
     name: 'lidr-postmortem',
     phase: 'Phase 4 — Implementation · release',
-    phaseNum: 8,
     stage: 'release',
     source: 'lidr',
     criticality: 'required',
@@ -560,7 +530,6 @@ export const skills: Skill[] = [
     id: 'lidr-audit-standards',
     name: 'lidr-audit-standards',
     phase: 'Phase 0 — Context · context',
-    phaseNum: 0,
     stage: 'context',
     source: 'lidr',
     criticality: 'recommended',
@@ -583,7 +552,6 @@ export const skills: Skill[] = [
     id: 'lidr-help',
     name: 'lidr-help',
     phase: 'Anytime · anytime',
-    phaseNum: 99,
     stage: 'anytime',
     source: 'lidr',
     criticality: 'recommended',
@@ -603,7 +571,6 @@ export const skills: Skill[] = [
     id: 'lidr-gate-evaluation',
     name: 'lidr-gate-evaluation',
     phase: 'Anytime · anytime',
-    phaseNum: 99,
     stage: 'anytime',
     source: 'lidr',
     criticality: 'required',
@@ -618,7 +585,6 @@ export const skills: Skill[] = [
     id: 'lidr-agents-architecture',
     name: 'lidr-agents-architecture',
     phase: 'Anytime · anytime',
-    phaseNum: 100,
     stage: 'anytime',
     source: 'anytime',
     criticality: 'optional',
@@ -640,7 +606,6 @@ export const skills: Skill[] = [
     id: 'lidr-playwright-cli',
     name: 'lidr-playwright-cli',
     phase: 'Anytime · anytime',
-    phaseNum: 99,
     stage: 'anytime',
     source: 'lidr',
     criticality: 'optional',
@@ -654,7 +619,6 @@ export const skills: Skill[] = [
     id: 'lidr-external-sync',
     name: 'lidr-external-sync',
     phase: 'Anytime · anytime',
-    phaseNum: 0,
     stage: 'anytime',
     source: 'lidr',
     criticality: 'optional',
@@ -671,7 +635,6 @@ export const skills: Skill[] = [
     id: 'lidr-sdlc-tracking',
     name: 'lidr-sdlc-tracking',
     phase: 'Anytime · anytime',
-    phaseNum: 0,
     stage: 'anytime',
     source: 'lidr',
     criticality: 'recommended',
@@ -694,7 +657,6 @@ export const skills: Skill[] = [
     id: 'bmad-agent-analyst',
     name: 'bmad-agent-analyst',
     phase: 'BMad — Agents',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -707,7 +669,6 @@ export const skills: Skill[] = [
     id: 'bmad-agent-architect',
     name: 'bmad-agent-architect',
     phase: 'BMad — Agents',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -720,7 +681,6 @@ export const skills: Skill[] = [
     id: 'bmad-agent-dev',
     name: 'bmad-agent-dev',
     phase: 'BMad — Agents',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -733,7 +693,6 @@ export const skills: Skill[] = [
     id: 'bmad-agent-pm',
     name: 'bmad-agent-pm',
     phase: 'BMad — Agents',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -746,7 +705,6 @@ export const skills: Skill[] = [
     id: 'bmad-agent-tech-writer',
     name: 'bmad-agent-tech-writer',
     phase: 'BMad — Agents',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -759,7 +717,6 @@ export const skills: Skill[] = [
     id: 'bmad-agent-ux-designer',
     name: 'bmad-agent-ux-designer',
     phase: 'BMad — Agents',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -774,7 +731,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-agent-brainstorming-coach',
     name: 'bmad-cis-agent-brainstorming-coach',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -787,7 +743,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-agent-creative-problem-solver',
     name: 'bmad-cis-agent-creative-problem-solver',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -800,7 +755,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-agent-design-thinking-coach',
     name: 'bmad-cis-agent-design-thinking-coach',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -813,7 +767,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-agent-innovation-strategist',
     name: 'bmad-cis-agent-innovation-strategist',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -826,7 +779,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-agent-presentation-master',
     name: 'bmad-cis-agent-presentation-master',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -839,7 +791,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-agent-storyteller',
     name: 'bmad-cis-agent-storyteller',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -852,7 +803,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-design-thinking',
     name: 'bmad-cis-design-thinking',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -865,7 +815,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-innovation-strategy',
     name: 'bmad-cis-innovation-strategy',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -878,7 +827,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-problem-solving',
     name: 'bmad-cis-problem-solving',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -891,7 +839,6 @@ export const skills: Skill[] = [
     id: 'bmad-cis-storytelling',
     name: 'bmad-cis-storytelling',
     phase: 'BMad — CIS (Innovation)',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -906,7 +853,6 @@ export const skills: Skill[] = [
     id: 'bmad-tea',
     name: 'bmad-tea',
     phase: 'Anytime · anytime',
-    phaseNum: 0,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -919,7 +865,6 @@ export const skills: Skill[] = [
     id: 'bmad-qa-generate-e2e-tests',
     name: 'bmad-qa-generate-e2e-tests',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'qa',
     source: 'bmad',
     description:
@@ -932,7 +877,6 @@ export const skills: Skill[] = [
     id: 'bmad-teach-me-testing',
     name: 'bmad-teach-me-testing',
     phase: 'Anytime · anytime',
-    phaseNum: 0,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -945,7 +889,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-atdd',
     name: 'bmad-testarch-atdd',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'qa',
     source: 'bmad',
     description:
@@ -958,7 +901,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-automate',
     name: 'bmad-testarch-automate',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'qa',
     source: 'bmad',
     description:
@@ -971,7 +913,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-ci',
     name: 'bmad-testarch-ci',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'specification',
     source: 'bmad',
     description:
@@ -984,7 +925,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-framework',
     name: 'bmad-testarch-framework',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'specification',
     source: 'bmad',
     description:
@@ -997,7 +937,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-nfr',
     name: 'bmad-testarch-nfr',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'qa',
     source: 'bmad',
     description:
@@ -1010,7 +949,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-test-design',
     name: 'bmad-testarch-test-design',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'specification',
     source: 'bmad',
     description:
@@ -1023,7 +961,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-test-review',
     name: 'bmad-testarch-test-review',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'qa',
     source: 'bmad',
     description:
@@ -1036,7 +973,6 @@ export const skills: Skill[] = [
     id: 'bmad-testarch-trace',
     name: 'bmad-testarch-trace',
     phase: 'BMad — Test Architect',
-    phaseNum: 200,
     stage: 'qa',
     source: 'bmad',
     description:
@@ -1051,7 +987,6 @@ export const skills: Skill[] = [
     id: 'bmad-create-prd',
     name: 'bmad-create-prd',
     phase: 'BMad — PRD & Product',
-    phaseNum: 200,
     stage: 'planning',
     source: 'bmad',
     description:
@@ -1064,7 +999,6 @@ export const skills: Skill[] = [
     id: 'bmad-edit-prd',
     name: 'bmad-edit-prd',
     phase: 'BMad — PRD & Product',
-    phaseNum: 200,
     stage: 'planning',
     source: 'bmad',
     description:
@@ -1077,7 +1011,6 @@ export const skills: Skill[] = [
     id: 'bmad-prd',
     name: 'bmad-prd',
     phase: 'BMad — PRD & Product',
-    phaseNum: 200,
     stage: 'planning',
     source: 'bmad',
     description:
@@ -1090,7 +1023,6 @@ export const skills: Skill[] = [
     id: 'bmad-prfaq',
     name: 'bmad-prfaq',
     phase: 'BMad — PRD & Product',
-    phaseNum: 200,
     stage: 'analysis',
     source: 'bmad',
     description:
@@ -1103,7 +1035,6 @@ export const skills: Skill[] = [
     id: 'bmad-product-brief',
     name: 'bmad-product-brief',
     phase: 'BMad — PRD & Product',
-    phaseNum: 200,
     stage: 'analysis',
     source: 'bmad',
     description:
@@ -1116,7 +1047,6 @@ export const skills: Skill[] = [
     id: 'bmad-validate-prd',
     name: 'bmad-validate-prd',
     phase: 'BMad — PRD & Product',
-    phaseNum: 200,
     stage: 'planning',
     source: 'bmad',
     description:
@@ -1131,7 +1061,6 @@ export const skills: Skill[] = [
     id: 'bmad-create-architecture',
     name: 'bmad-create-architecture',
     phase: 'Phase 3 — Solutioning · specification',
-    phaseNum: 3,
     stage: 'specification',
     source: 'bmad',
     description:
@@ -1144,7 +1073,6 @@ export const skills: Skill[] = [
     id: 'bmad-create-epics-and-stories',
     name: 'bmad-create-epics-and-stories',
     phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
     stage: 'specification',
     source: 'bmad',
     description:
@@ -1157,7 +1085,6 @@ export const skills: Skill[] = [
     id: 'bmad-create-story',
     name: 'bmad-create-story',
     phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
     stage: 'development',
     source: 'bmad',
     description:
@@ -1170,7 +1097,6 @@ export const skills: Skill[] = [
     id: 'bmad-ux',
     name: 'bmad-ux',
     phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
     stage: 'planning',
     source: 'bmad',
     description:
@@ -1183,7 +1109,6 @@ export const skills: Skill[] = [
     id: 'bmad-dev-story',
     name: 'bmad-dev-story',
     phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
     stage: 'development',
     source: 'bmad',
     description:
@@ -1196,7 +1121,6 @@ export const skills: Skill[] = [
     id: 'bmad-document-project',
     name: 'bmad-document-project',
     phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
     stage: 'context',
     source: 'bmad',
     description:
@@ -1209,7 +1133,6 @@ export const skills: Skill[] = [
     id: 'bmad-generate-project-context',
     name: 'bmad-generate-project-context',
     phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
     stage: 'context',
     source: 'bmad',
     description:
@@ -1222,7 +1145,6 @@ export const skills: Skill[] = [
     id: 'bmad-quick-dev',
     name: 'bmad-quick-dev',
     phase: 'BMad — Architecture & Stories',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1237,7 +1159,6 @@ export const skills: Skill[] = [
     id: 'bmad-check-implementation-readiness',
     name: 'bmad-check-implementation-readiness',
     phase: 'BMad — Sprint & Process',
-    phaseNum: 200,
     stage: 'sprint-planning',
     source: 'bmad',
     description:
@@ -1250,7 +1171,6 @@ export const skills: Skill[] = [
     id: 'bmad-correct-course',
     name: 'bmad-correct-course',
     phase: 'BMad — Sprint & Process',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1263,7 +1183,6 @@ export const skills: Skill[] = [
     id: 'bmad-retrospective',
     name: 'bmad-retrospective',
     phase: 'BMad — Sprint & Process',
-    phaseNum: 200,
     stage: 'release',
     source: 'bmad',
     description:
@@ -1276,7 +1195,6 @@ export const skills: Skill[] = [
     id: 'bmad-sprint-planning',
     name: 'bmad-sprint-planning',
     phase: 'BMad — Sprint & Process',
-    phaseNum: 200,
     stage: 'sprint-planning',
     source: 'bmad',
     description:
@@ -1289,7 +1207,6 @@ export const skills: Skill[] = [
     id: 'bmad-sprint-status',
     name: 'bmad-sprint-status',
     phase: 'BMad — Sprint & Process',
-    phaseNum: 200,
     stage: 'development',
     source: 'bmad',
     description:
@@ -1304,7 +1221,6 @@ export const skills: Skill[] = [
     id: 'bmad-code-review',
     name: 'bmad-code-review',
     phase: 'BMad — Review',
-    phaseNum: 200,
     stage: 'development',
     source: 'bmad',
     description:
@@ -1317,7 +1233,6 @@ export const skills: Skill[] = [
     id: 'bmad-editorial-review-prose',
     name: 'bmad-editorial-review-prose',
     phase: 'BMad — Review',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1330,7 +1245,6 @@ export const skills: Skill[] = [
     id: 'bmad-editorial-review-structure',
     name: 'bmad-editorial-review-structure',
     phase: 'BMad — Review',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1343,7 +1257,6 @@ export const skills: Skill[] = [
     id: 'bmad-review-adversarial-general',
     name: 'bmad-review-adversarial-general',
     phase: 'BMad — Review',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1356,7 +1269,6 @@ export const skills: Skill[] = [
     id: 'bmad-review-edge-case-hunter',
     name: 'bmad-review-edge-case-hunter',
     phase: 'BMad — Review',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1371,7 +1283,6 @@ export const skills: Skill[] = [
     id: 'bmad-agent-builder',
     name: 'bmad-agent-builder',
     phase: 'BMad — Meta',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1384,7 +1295,6 @@ export const skills: Skill[] = [
     id: 'bmad-bmb-setup',
     name: 'bmad-bmb-setup',
     phase: 'BMad — Meta',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1397,7 +1307,6 @@ export const skills: Skill[] = [
     id: 'bmad-customize',
     name: 'bmad-customize',
     phase: 'BMad — Meta',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1410,7 +1319,6 @@ export const skills: Skill[] = [
     id: 'bmad-eval-runner',
     name: 'bmad-eval-runner',
     phase: 'BMad — Meta',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1423,7 +1331,6 @@ export const skills: Skill[] = [
     id: 'bmad-module-builder',
     name: 'bmad-module-builder',
     phase: 'BMad — Meta',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1436,7 +1343,6 @@ export const skills: Skill[] = [
     id: 'bmad-workflow-builder',
     name: 'bmad-workflow-builder',
     phase: 'BMad — Meta',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1451,7 +1357,6 @@ export const skills: Skill[] = [
     id: 'bmad-advanced-elicitation',
     name: 'bmad-advanced-elicitation',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1464,7 +1369,6 @@ export const skills: Skill[] = [
     id: 'bmad-brainstorming',
     name: 'bmad-brainstorming',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1477,7 +1381,6 @@ export const skills: Skill[] = [
     id: 'bmad-checkpoint-preview',
     name: 'bmad-checkpoint-preview',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'qa',
     source: 'bmad',
     description:
@@ -1490,7 +1393,6 @@ export const skills: Skill[] = [
     id: 'bmad-spec',
     name: 'bmad-spec',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1503,7 +1405,6 @@ export const skills: Skill[] = [
     id: 'bmad-domain-research',
     name: 'bmad-domain-research',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'analysis',
     source: 'bmad',
     description:
@@ -1516,7 +1417,6 @@ export const skills: Skill[] = [
     id: 'bmad-help',
     name: 'bmad-help',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1529,7 +1429,6 @@ export const skills: Skill[] = [
     id: 'bmad-index-docs',
     name: 'bmad-index-docs',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'context',
     source: 'bmad',
     description:
@@ -1542,7 +1441,6 @@ export const skills: Skill[] = [
     id: 'bmad-investigate',
     name: 'bmad-investigate',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'development',
     source: 'bmad',
     description:
@@ -1555,7 +1453,6 @@ export const skills: Skill[] = [
     id: 'bmad-market-research',
     name: 'bmad-market-research',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'analysis',
     source: 'bmad',
     description:
@@ -1568,7 +1465,6 @@ export const skills: Skill[] = [
     id: 'bmad-party-mode',
     name: 'bmad-party-mode',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'anytime',
     source: 'bmad',
     description:
@@ -1581,7 +1477,6 @@ export const skills: Skill[] = [
     id: 'bmad-shard-doc',
     name: 'bmad-shard-doc',
     phase: 'BMad — Utilities',
-    phaseNum: 200,
     stage: 'context',
     source: 'bmad',
     description:
@@ -1594,7 +1489,6 @@ export const skills: Skill[] = [
     id: 'bmad-technical-research',
     name: 'bmad-technical-research',
     phase: 'Phase 1 — Analysis · analysis',
-    phaseNum: 1,
     stage: 'analysis',
     source: 'bmad',
     description:
@@ -1604,6 +1498,27 @@ export const skills: Skill[] = [
     docPath: '.agents/skills/bmad-technical-research/SKILL.md',
   },
 ];
+
+// phaseNum is DERIVED from `stage` (single source of truth) so it can never drift
+// from the unified 0-4 model. Enforced by ecosystem-coherence.test.ts. The legacy
+// granular 0-8 numbering survives only as the `stage` slug.
+const STAGE_TO_UNIFIED_PHASE: Record<SkillStage, number> = {
+  context: 0,
+  anytime: 0,
+  analysis: 1,
+  planning: 2,
+  specification: 3,
+  'sprint-planning': 3,
+  development: 4,
+  qa: 4,
+  security: 4,
+  release: 4,
+};
+
+export const skills: Skill[] = rawSkills.map((s) => ({
+  ...s,
+  phaseNum: s.stage ? STAGE_TO_UNIFIED_PHASE[s.stage] : 0,
+}));
 
 // Export computed values
 export const skillsCount = skills.length;

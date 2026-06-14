@@ -738,7 +738,7 @@ export const phases: PhaseTemplates[] = [
       {
         code: 'T-SPR-005',
         name: 'Readiness Report (BMad)',
-        desc: 'Valida completitud de PRD/UX/Architecture/Epics antes de implementar (bmad-check-implementation-readiness). Evidencia REQUIRED del G3 (*readiness*.md). Absorbe el antiguo /lidr-check-readiness.',
+        desc: 'Valida completitud de PRD/UX/Architecture/Epics antes de implementar (bmad-check-implementation-readiness). Evidencia REQUIRED del G3 (*readiness*.md).',
         format: '_bmad-output/planning-artifacts/',
         owner: 'TL',
         mandatory: true,

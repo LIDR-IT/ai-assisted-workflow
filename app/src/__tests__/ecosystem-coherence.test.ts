@@ -308,6 +308,48 @@ describe('lidr-* skills declare a valid unified phase + stage', () => {
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
+describe('every artifacts/skills.ts entry has unified phaseNum (0-4) derived from stage', () => {
+  // Canonical stage → unified phase (0-4). skills.ts derives phaseNum from this map,
+  // so legacy 0-8 / sentinel (99/100/200) values can never reappear.
+  const STAGE_TO_PHASE: Record<string, number> = {
+    context: 0,
+    anytime: 0,
+    analysis: 1,
+    planning: 2,
+    specification: 3,
+    'sprint-planning': 3,
+    development: 4,
+    qa: 4,
+    security: 4,
+    release: 4,
+  };
+
+  it('every skill has phaseNum in 0-4 (no legacy 5-8 or sentinel 99/100/200)', () => {
+    const bad = appSkills
+      .filter((s) => typeof s.phaseNum !== 'number' || s.phaseNum < 0 || s.phaseNum > 4)
+      .map((s) => `${s.id}: phaseNum=${s.phaseNum}`);
+    expect(bad, `skills.ts phaseNum outside 0-4: ${bad.join(', ')}`).toEqual([]);
+  });
+
+  it('every skill has a valid stage', () => {
+    const bad = appSkills
+      .filter((s) => !(s.stage && s.stage in STAGE_TO_PHASE))
+      .map((s) => `${s.id}: stage="${s.stage}"`);
+    expect(bad, `skills.ts invalid/missing stage: ${bad.join(', ')}`).toEqual([]);
+  });
+
+  it('phaseNum equals the stage-derived unified phase', () => {
+    const drift = appSkills
+      .filter((s) => s.stage && s.phaseNum !== STAGE_TO_PHASE[s.stage])
+      .map(
+        (s) =>
+          `${s.id}: phaseNum=${s.phaseNum} but stage="${s.stage}" → ${STAGE_TO_PHASE[s.stage as string]}`
+      );
+    expect(drift, `skills.ts phaseNum drifted from stage: ${drift.join(' | ')}`).toEqual([]);
+  });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
 describe('gate-evidence.yaml contract is satisfiable', () => {
   const gePath = path.join(AGENTS, '_shared/lidr/gate-evidence.yaml');
   const ge = parseYaml(read(gePath)) as {

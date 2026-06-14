@@ -147,17 +147,13 @@ Configured in `vite.config.test.ts` (applies to both app and tests):
 
 ### Phase-Based Architecture
 
-The application is organized around **8 SDLC phases** (0-8) plus cross-cutting concerns:
+The application is organized around the **unified 5-phase SDLC model (0-4)**; the legacy LIDR phases 0-8 survive only as granular **stages**:
 
-- Phase 0: Preparación (Preparation)
-- Phase 1: Originación (Origination)
-- Phase 2: Discovery & PRD
-- Phase 3: Especificación (Requirements)
-- Phase 4: Sprint Planning
-- Phase 5: Desarrollo (Development)
-- Phase 6: QA & Testing
-- Phase 7: Seguridad (Security)
-- Phase 8: Despliegue (Deployment)
+- **Phase 0 — Context & Anytime** · stages: `context`, `anytime` (cross-cutting, brownfield)
+- **Phase 1 — Analysis** · stage: `analysis` (ex-Fase 1 Originación) → Gate 0
+- **Phase 2 — Planning** · stage: `planning` (ex-Fase 2 Discovery & PRD) → Gate 1
+- **Phase 3 — Solutioning** · stages: `specification` (ex-Fase 3) → Gate 2, `sprint-planning` (ex-Fase 4) → Gate 3
+- **Phase 4 — Implementation** · stages: `development` (ex-Fase 5) → Gate 4, `qa` (ex-Fase 6) → Gate 5, `security` (ex-Fase 7) → Gate 6, `release` (ex-Fase 8) → Gate 7
 
 Each phase has associated colors, gates, artifacts, and workflows defined in `src/data/phases.ts`.
 
